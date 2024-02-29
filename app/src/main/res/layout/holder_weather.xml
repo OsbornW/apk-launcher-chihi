@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:paddingTop="@dimen/holder_weather_root_padding_top"
+    android:paddingBottom="@dimen/holder_weather_root_padding_bottom"
+    android:layout_width="@dimen/holder_weather_root_width"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/date"
+            android:textSize="@dimen/holder_weather_date_text_size"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_marginTop="@dimen/holder_weather_icon_margint_top"
+            android:layout_marginBottom="@dimen/holder_weather_icon_margint_bottom"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/baseline_wb_cloudy_100"
+            android:layout_width="@dimen/holder_weather_icon_width"
+            android:layout_height="@dimen/holder_weather_icon_height"/>
+        <TextView
+            android:id="@+id/range"
+            android:text="-"
+            android:textSize="@dimen/holder_weather_range_text_size"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</FrameLayout>

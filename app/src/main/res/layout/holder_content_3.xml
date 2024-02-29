@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.soya.launcher.view.MyFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:clipToOutline="false"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <FrameLayout
+        android:layout_marginLeft="@dimen/holder_content_3_root_margin_left"
+        android:layout_marginRight="@dimen/holder_content_3_root_margin_right"
+        android:layout_marginTop="@dimen/holder_content_3_root_margin_top"
+        android:layout_marginBottom="@dimen/holder_content_3_root_margin_bottom"
+        android:foreground="@drawable/bg_app"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:clipToOutline="false"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.soya.launcher.view.MyCardView
+            app:cardCornerRadius="@dimen/holder_content_3_root_radius"
+            app:cardBackgroundColor="@color/solid_style_2"
+            app:cardElevation="0dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/loading"
+                android:layout_gravity="center"
+                android:textColor="@color/text_color_style_1"
+                android:textSize="@dimen/holder_content_loading_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/image"
+                android:scaleType="centerCrop"
+                android:layout_width="@dimen/holder_content_3_image_width"
+                android:layout_height="@dimen/holder_content_3_image_height"/>
+        </com.soya.launcher.view.MyCardView>
+    </FrameLayout>
+</com.soya.launcher.view.MyFrameLayout>

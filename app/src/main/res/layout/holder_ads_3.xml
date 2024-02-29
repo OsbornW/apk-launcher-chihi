@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.soya.launcher.view.MyFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:layout_gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <com.soya.launcher.view.MyCardView
+        app:cardCornerRadius="@dimen/holder_content_3_root_radius"
+        app:cardBackgroundColor="@color/solid_style_1"
+        android:clickable="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/holder_content_3_root_margin_left"
+        android:layout_marginRight="@dimen/holder_content_3_root_margin_right"
+        android:layout_marginTop="@dimen/holder_content_3_root_margin_top"
+        android:layout_marginBottom="@dimen/holder_content_3_root_margin_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/image"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ads_3"
+            android:layout_width="@dimen/holder_ads_3_image_width"
+            android:layout_height="match_parent"/>
+    </com.soya.launcher.view.MyCardView>
+</com.soya.launcher.view.MyFrameLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/fragment_search_web_padding_left"
+    android:paddingRight="@dimen/fragment_search_web_padding_right"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:clipToOutline="false"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/title"
+        android:textColor="@color/text_color_style_1"
+        android:textSize="@dimen/fragment_search_web_title_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <FrameLayout
+        android:minHeight="@dimen/fragment_search_web_min_height"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:clipToOutline="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.leanback.widget.HorizontalGridView
+            android:id="@+id/content"
+            app:focusOutFront="true"
+            app:focusOutEnd="true"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:clipToOutline="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <ProgressBar
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:visibility="gone"
+            android:id="@+id/progressBar"
+            android:layout_gravity="center_vertical"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/mask"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            android:text="@string/no_data"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

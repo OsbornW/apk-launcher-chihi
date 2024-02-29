@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.MyTv"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dialog_progress_root_margin"
+        android:background="@color/solid_style_3"
+        app:cardCornerRadius="@dimen/dialog_progress_root_card_raidus"
+        android:orientation="horizontal"
+        android:layout_width="@dimen/dialog_progress_root_width"
+        android:layout_height="@dimen/dialog_progress_root_height">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/dialog_progress_opt_margin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_margin="@dimen/dialog_progress_opt_bar_margin"
+                android:layout_gravity="center_vertical"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:text="@string/place_waiting"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/dialog_progress_opt_text_text_size"
+                android:layout_marginLeft="@dimen/dialog_progress_opt_text_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

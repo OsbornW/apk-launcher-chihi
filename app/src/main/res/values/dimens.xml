@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- dialog_app -->
+    <dimen name="dialog_app_card_corner_radius">8dp</dimen>
+    <dimen name="dialog_app_carld_layout_width">300dp</dimen>
+    <dimen name="dialog_app_title_height">45dp</dimen>
+    <dimen name="dialog_app_title_margin_top">16dp</dimen>
+    <dimen name="dialog_app_margin_top">26dp</dimen>
+    <dimen name="dialog_app_margin_bottom">26dp</dimen>
+    <dimen name="dialog_app_margin_left">16dp</dimen>
+    <dimen name="dialog_app_card_icon_width">55dp</dimen>
+    <dimen name="dialog_app_card_icon_height">55dp</dimen>
+    <dimen name="dialog_app_title_text_size">25sp</dimen>
+    <dimen name="dialog_app_name_text_size">22sp</dimen>
+    <dimen name="dialog_app_version_text_size">16sp</dimen>
+    <dimen name="dialog_app_opt_padding">8dp</dimen>
+    <dimen name="dialog_app_opt_height">50dp</dimen>
+    <dimen name="dialog_app_opt_text_size">16sp</dimen>
+    
+    <!-- dialog_progress -->
+    <dimen name="dialog_progress_root_margin">16dp</dimen>
+    <dimen name="dialog_progress_root_card_raidus">8dp</dimen>
+    <dimen name="dialog_progress_root_width">250dp</dimen>
+    <dimen name="dialog_progress_root_height">60dp</dimen>
+    <dimen name="dialog_progress_opt_margin">10dp</dimen>
+    <dimen name="dialog_progress_opt_bar_margin">8dp</dimen>
+    <dimen name="dialog_progress_opt_text_margin">16dp</dimen>
+    <dimen name="dialog_progress_opt_text_text_size">16sp</dimen>
+    
+    <!-- fragment_apps -->
+    <dimen name="fragment_apps_cotent_padding_left">16dp</dimen>
+    <dimen name="fragment_apps_cotent_padding_right">16dp</dimen>
+    
+    <!-- fragment_city -->
+    <dimen name="fragment_city_search_margin_top">26dp</dimen>
+    <dimen name="fragment_city_search_margin_bottom">16dp</dimen>
+    <dimen name="fragment_city_search_width">350dp</dimen>
+    <dimen name="fragment_city_search_height">40dp</dimen>
+    <dimen name="fragment_city_search_icon_padding">4dp</dimen>
+    <dimen name="fragment_city_search_icon_margin_left">10dp</dimen>
+    <dimen name="fragment_city_search_icon_width">35dp</dimen>
+    <dimen name="fragment_city_search_icon_height">35dp</dimen>
+    <dimen name="fragment_city_search_edit_pading_left">8dp</dimen>
+    <dimen name="fragment_city_search_edit_pading_right">8dp</dimen>
+    <dimen name="fragment_city_search_edit_text_size">16sp</dimen>
+    <dimen name="fragment_city_content_padding_left">16dp</dimen>
+    <dimen name="fragment_city_content_padding_right">16dp</dimen>
+    <dimen name="fragment_city_recommend_margin_top">10dp</dimen>
+    <dimen name="fragment_city_recommend_margin_bottom">16dp</dimen>
+    <dimen name="fragment_city_recommend_margin_left">26dp</dimen>
+    <dimen name="fragment_city_recommend_margin_right">26dp</dimen>
+    <dimen name="fragment_city_recommend_title_margin_top">16dp</dimen>
+    <dimen name="fragment_city_recommend_title_margin_left">10dp</dimen>
+    <dimen name="fragment_city_recommend_title_text_size">15sp</dimen>
+    <dimen name="fragment_city_recommend_content_width">120dp</dimen>
+    
+    <!-- fragment_movice_list -->
+    <dimen name="fragment_movice_list_content_padding_left">16dp</dimen>
+    <dimen name="fragment_movice_list_content_padding_right">16dp</dimen>
+
+    <!-- fragment_search -->
+    <dimen name="fragment_search_search_margin_top">26dp</dimen>
+    <dimen name="fragment_search_search_margin_bottom">16dp</dimen>
+    <dimen name="fragment_search_search_width">350dp</dimen>
+    <dimen name="fragment_search_search_height">40dp</dimen>
+    <dimen name="fragment_search_search_icon_padding">4dp</dimen>
+    <dimen name="fragment_search_search_icon_margin_left">10dp</dimen>
+    <dimen name="fragment_search_search_icon_width">35dp</dimen>
+    <dimen name="fragment_search_search_icon_height">35dp</dimen>
+    <dimen name="fragment_search_search_edit_pading_left">8dp</dimen>
+    <dimen name="fragment_search_search_edit_pading_right">8dp</dimen>
+    <dimen name="fragment_search_search_edit_text_size">16sp</dimen>
+    <dimen name="fragment_search_content_padding_left">16dp</dimen>
+    <dimen name="fragment_search_content_padding_right">16dp</dimen>
+    <dimen name="fragment_search_recommend_margin_top">10dp</dimen>
+    <dimen name="fragment_search_recommend_margin_bottom">16dp</dimen>
+    <dimen name="fragment_search_recommend_margin_left">26dp</dimen>
+    <dimen name="fragment_search_recommend_margin_right">26dp</dimen>
+    <dimen name="fragment_search_recommend_title_margin_top">16dp</dimen>
+    <dimen name="fragment_search_recommend_title_margin_left">10dp</dimen>
+    <dimen name="fragment_search_recommend_title_text_size">15sp</dimen>
+    <dimen name="fragment_search_recommend_content_width">120dp</dimen>
+    <dimen name="fragment_search_web_title_text_size">16sp</dimen>
+    <dimen name="fragment_search_web_padding_left">26dp</dimen>
+    <dimen name="fragment_search_web_padding_right">26dp</dimen>
+    <dimen name="fragment_search_web_height">120dp</dimen>
+    <dimen name="fragment_search_web_min_height">72dp</dimen>
+    
+    <!-- fragment_setting -->
+    <dimen name="fragment_setting_list_content_padding_left">16dp</dimen>
+    <dimen name="fragment_setting_list_content_padding_right">16dp</dimen>
+    
+    <!-- fragment_weather -->
+    <dimen name="fragment_weather_opt_width">60dp</dimen>
+    <dimen name="fragment_weather_search_icon_margin_left">16dp</dimen>
+    <dimen name="fragment_weather_search_icon_margin_right">16dp</dimen>
+    <dimen name="fragment_weather_search_icon_padding">6dp</dimen>
+    <dimen name="fragment_weather_search_icon_width">36dp</dimen>
+    <dimen name="fragment_weather_search_icon_height">36dp</dimen>
+    <dimen name="fragment_weather_city_name_text_size">18sp</dimen>
+    <dimen name="fragment_weather_time_text_size">16sp</dimen>
+    <dimen name="fragment_weather_time_margin_left">26sp</dimen>
+    <dimen name="fragment_weather_time_margin_right">26sp</dimen>
+    <dimen name="fragment_weather_update_text_size">18sp</dimen>
+    <dimen name="fragment_weather_update_text_min_width">60dp</dimen>
+    <dimen name="fragment_weather_update_text_padding_left">10dp</dimen>
+    <dimen name="fragment_weather_update_text_padding_right">10dp</dimen>
+    <dimen name="fragment_weather_update_text_height">35dp</dimen>
+    <dimen name="fragment_weather_weather_desc_margin_right">26dp</dimen>
+    <dimen name="fragment_weather_weather_icon_name_margin_right">26dp</dimen>
+    <dimen name="fragment_weather_icon_name_text_size">16sp</dimen>
+    <dimen name="fragment_weather_range_text_size">16sp</dimen>
+    <dimen name="fragment_weather_date_text_size">20sp</dimen>
+    <dimen name="fragment_weather_day_icon_margin_right">26dp</dimen>
+    <dimen name="fragment_weather_day_icon_width">55dp</dimen>
+    <dimen name="fragment_weather_day_icon_height">40dp</dimen>
+    <dimen name="fragment_weather_current_temperature_text_size">30sp</dimen>
+    <dimen name="fragment_weather_day_content_radius">8dp</dimen>
+    <dimen name="fragment_weather_day_content_margin_bottom">16dp</dimen>
+
+    <!-- holder_app -->
+    <dimen name="holder_app_root_radius">8dp</dimen>
+    <dimen name="holder_app_root_margin">8dp</dimen>
+    <dimen name="holder_app_image_width">220dp</dimen>
+    <dimen name="holder_app_image_height">124dp</dimen>
+    <dimen name="holder_app_opt_height">70dp</dimen>
+    <dimen name="holder_app_opt_title_text_size">19sp</dimen>
+    <dimen name="holder_app_opt_title_margin_left">8dp</dimen>
+    <dimen name="holder_app_opt_title_margin_right">8dp</dimen>
+    <dimen name="holder_app_image_small_width">90dp</dimen>
+    <dimen name="holder_app_image_small_height">90dp</dimen>
+
+    <!-- holder_app_2 -->
+    <dimen name="holder_app_2_root_radius">8dp</dimen>
+    <dimen name="holder_app_2_root_margin_left">8dp</dimen>
+    <dimen name="holder_app_2_root_margin_right">8dp</dimen>
+    <dimen name="holder_app_2_root_margin_top">10dp</dimen>
+    <dimen name="holder_app_2_root_margin_bottom">10dp</dimen>
+    <dimen name="holder_app_2_image_width">200dp</dimen>
+    <dimen name="holder_app_2_image_height">114dp</dimen>
+    <dimen name="holder_app_2_opt_height">55dp</dimen>
+    <dimen name="holder_app_2_opt_title_text_size">17sp</dimen>
+    <dimen name="holder_app_2_opt_title_margin_left">8dp</dimen>
+    <dimen name="holder_app_2_opt_title_margin_right">8dp</dimen>
+    <dimen name="holder_app_2_image_small_width">90dp</dimen>
+    <dimen name="holder_app_2_image_small_height">90dp</dimen>
+
+    <!-- holder_app_store -->
+    <dimen name="holder_app_store_root_radius">8dp</dimen>
+    <dimen name="holder_app_store_root_margin">8dp</dimen>
+    <dimen name="holder_app_store_image_width">220dp</dimen>
+    <dimen name="holder_app_store_image_height">124dp</dimen>
+    <dimen name="holder_app_store_opt_height">70dp</dimen>
+    <dimen name="holder_app_store_opt_padding">8dp</dimen>
+    <dimen name="holder_app_store_opt_title_text_size">17sp</dimen>
+    <dimen name="holder_app_store_opt_mes_text_size">14sp</dimen>
+    <dimen name="holder_app_store_opt_mes_margin_top">2dp</dimen>
+
+    <!-- holder_city -->
+    <dimen name="holder_city_root_radius">8dp</dimen>
+    <dimen name="holder_city_root_margin">8dp</dimen>
+    <dimen name="holder_city_root_padding_left">10dp</dimen>
+    <dimen name="holder_city_root_padding_right">10dp</dimen>
+    <dimen name="holder_city_root_width">220dp</dimen>
+    <dimen name="holder_city_root_height">90dp</dimen>
+    <dimen name="holder_city_title_text_size">22sp</dimen>
+    <dimen name="holder_city_des_text_size">14sp</dimen>
+
+    <!-- holder_city_2 -->
+    <dimen name="holder_city_2_root_radius">8dp</dimen>
+    <dimen name="holder_city_2_root_margin">8dp</dimen>
+    <dimen name="holder_city_2_root_padding_left">10dp</dimen>
+    <dimen name="holder_city_2_root_padding_right">10dp</dimen>
+    <dimen name="holder_city_2_root_width">280dp</dimen>
+    <dimen name="holder_city_2_root_height">90dp</dimen>
+    <dimen name="holder_city_2_title_text_size">22sp</dimen>
+    <dimen name="holder_city_2_des_text_size">15sp</dimen>
+
+    <!-- holder_content -->
+    <dimen name="holder_content_root_radius">8dp</dimen>
+    <dimen name="holder_content_root_margin_left">8dp</dimen>
+    <dimen name="holder_content_root_margin_right">8dp</dimen>
+    <dimen name="holder_content_root_margin_top">20dp</dimen>
+    <dimen name="holder_content_root_margin_bottom">20dp</dimen>
+    <dimen name="holder_content_image_width">124dp</dimen>
+    <dimen name="holder_content_image_height">220dp</dimen>
+    <dimen name="holder_content_loading_text_size">14sp</dimen>
+
+    <!-- holder_content_2 -->
+    <dimen name="holder_content_2_root_radius">8dp</dimen>
+    <dimen name="holder_content_2_root_margin_left">14dp</dimen>
+    <dimen name="holder_content_2_root_margin_right">14dp</dimen>
+    <dimen name="holder_content_2_root_margin_top">8dp</dimen>
+    <dimen name="holder_content_2_root_margin_bottom">8dp</dimen>
+    <dimen name="holder_content_2_image_width">338dp</dimen>
+    <dimen name="holder_content_2_image_height">190dp</dimen>
+
+    <!-- holder_content_3 -->
+    <dimen name="holder_content_3_root_radius">8dp</dimen>
+    <dimen name="holder_content_3_root_margin_left">8dp</dimen>
+    <dimen name="holder_content_3_root_margin_right">8dp</dimen>
+    <dimen name="holder_content_3_root_margin_top">10dp</dimen>
+    <dimen name="holder_content_3_root_margin_bottom">10dp</dimen>
+    <dimen name="holder_content_3_image_width">210dp</dimen>
+    <dimen name="holder_content_3_image_height">119dp</dimen>
+
+    <!-- holder_content_4 -->
+    <dimen name="holder_content_4_root_radius">8dp</dimen>
+    <dimen name="holder_content_4_root_margin_left">5dp</dimen>
+    <dimen name="holder_content_4_root_margin_right">5dp</dimen>
+    <dimen name="holder_content_4_root_margin_top">7dp</dimen>
+    <dimen name="holder_content_4_root_margin_bottom">7dp</dimen>
+    <dimen name="holder_content_4_image_width">200dp</dimen>
+    <dimen name="holder_content_4_image_height">110dp</dimen>
+
+    <!-- holder_header -->
+    <dimen name="holder_header_root_radius">8dp</dimen>
+    <dimen name="holder_header_root_margin">8dp</dimen>
+    <dimen name="holder_header_image_width">200dp</dimen>
+    <dimen name="holder_header_image_height">180dp</dimen>
+    <dimen name="holder_header_title_text_size">18sp</dimen>
+    <dimen name="holder_header_title_height">40dp</dimen>
+
+    <!-- holder_projector -->
+    <dimen name="holder_projector_root_radius">8dp</dimen>
+    <dimen name="holder_projector_root_margin">8dp</dimen>
+    <dimen name="holder_projector_image_width">194dp</dimen>
+    <dimen name="holder_projector_image_height">194dp</dimen>
+    <dimen name="holder_projector_image_padding">50dp</dimen>
+
+    <!-- holder_recommend -->
+    <dimen name="holder_recommend_root_radius">8dp</dimen>
+    <dimen name="holder_recommend_root_margin_left">8dp</dimen>
+    <dimen name="holder_recommend_root_margin_right">8dp</dimen>
+    <dimen name="holder_recommend_root_margin_top">10dp</dimen>
+    <dimen name="holder_recommend_root_margin_bottom">10dp</dimen>
+    <dimen name="holder_recommend_image_width">160dp</dimen>
+    <dimen name="holder_recommend_image_height">90dp</dimen>
+
+    <!-- holder_search -->
+    <dimen name="holder_search_root_radius">8dp</dimen>
+    <dimen name="holder_search_root_margin_left">8dp</dimen>
+    <dimen name="holder_search_root_margin_right">8dp</dimen>
+    <dimen name="holder_search_root_margin_top">10dp</dimen>
+    <dimen name="holder_search_root_margin_bottom">10dp</dimen>
+    <dimen name="holder_search_image_width">195dp</dimen>
+    <dimen name="holder_search_image_height">110dp</dimen>
+    <dimen name="holder_search_title_text_size">14sp</dimen>
+    <dimen name="holder_search_title_padding">8dp</dimen>
+    <dimen name="holder_search_title_height">50dp</dimen>
+
+    <!-- holder_setting -->
+    <dimen name="holder_setting_root_radius">8dp</dimen>
+    <dimen name="holder_setting_root_margin_left">8dp</dimen>
+    <dimen name="holder_setting_root_margin_right">8dp</dimen>
+    <dimen name="holder_setting_root_margin_top">26dp</dimen>
+    <dimen name="holder_setting_root_margin_bottom">26dp</dimen>
+    <dimen name="holder_setting_root_width">150dp</dimen>
+    <dimen name="holder_setting_root_height">170dp</dimen>
+    <dimen name="holder_setting_image_width">70dp</dimen>
+    <dimen name="holder_setting_image_height">70dp</dimen>
+    <dimen name="holder_setting_title_size">18sp</dimen>
+    <dimen name="holder_setting_title_height">50dp</dimen>
+
+    <!-- holder_setting_2 -->
+    <dimen name="holder_setting_2_root_radius">8dp</dimen>
+    <dimen name="holder_setting_2_root_margin_left">14dp</dimen>
+    <dimen name="holder_setting_2_root_margin_right">14dp</dimen>
+    <dimen name="holder_setting_2_root_margin_top">26dp</dimen>
+    <dimen name="holder_setting_2_root_margin_bottom">26dp</dimen>
+    <dimen name="holder_setting_2_root_width">190dp</dimen>
+    <dimen name="holder_setting_2_root_height">220dp</dimen>
+    <dimen name="holder_setting_2_image_width">60dp</dimen>
+    <dimen name="holder_setting_2_image_height">60dp</dimen>
+    <dimen name="holder_setting_2_title_size">18sp</dimen>
+    <dimen name="holder_setting_2_title_height">50dp</dimen>
+
+    <!-- holder_setting_3 -->
+    <dimen name="holder_setting_3_root_height">190dp</dimen>
+    <dimen name="holder_setting_3_image_width">100dp</dimen>
+    <dimen name="holder_setting_3_image_height">100dp</dimen>
+
+    <!-- holder_weather -->
+    <dimen name="holder_weather_root_width">130dp</dimen>
+    <dimen name="holder_weather_root_padding_top">12dp</dimen>
+    <dimen name="holder_weather_root_padding_bottom">12dp</dimen>
+    <dimen name="holder_weather_date_text_size">16sp</dimen>
+    <dimen name="holder_weather_icon_margint_top">3dp</dimen>
+    <dimen name="holder_weather_icon_margint_bottom">3dp</dimen>
+    <dimen name="holder_weather_icon_width">40dp</dimen>
+    <dimen name="holder_weather_icon_height">40dp</dimen>
+    <dimen name="holder_weather_range_text_size">15sp</dimen>
+
+    <!-- fragment_main -->
+    <dimen name="fragment_main_toolbar_height">250dp</dimen>
+    <dimen name="fragment_main_opt_margin_left">26dp</dimen>
+    <dimen name="fragment_main_opt_margin_right">26dp</dimen>
+    <dimen name="fragment_main_opt_height">70dp</dimen>
+    <dimen name="fragment_main_opt_time_text_size">20sp</dimen>
+    <dimen name="fragment_main_opt_segment_test_size">11sp</dimen>
+    <dimen name="fragment_main_opt_segment_margin_left">2dp</dimen>
+    <dimen name="fragment_main_opt_cut_margin_left">14dp</dimen>
+    <dimen name="fragment_main_opt_cut_margin_right">10dp</dimen>
+    <dimen name="fragment_main_opt_cut_width">2dp</dimen>
+    <dimen name="fragment_main_opt_cut_height">20dp</dimen>
+    <dimen name="fragment_main_opt_icon_padding">7dp</dimen>
+    <dimen name="fragment_main_opt_icon_width">40dp</dimen>
+    <dimen name="fragment_main_opt_icon_height">40dp</dimen>
+    <dimen name="fragment_main_opt_icon_margin_left">10dp</dimen>
+    <dimen name="fragment_main_opt_search_padding_left">20dp</dimen>
+    <dimen name="fragment_main_opt_search_padding_right">20dp</dimen>
+    <dimen name="fragment_main_opt_search_width">150dp</dimen>
+    <dimen name="fragment_main_opt_search_height">32dp</dimen>
+    <dimen name="fragment_main_opt_search_icon_width">22dp</dimen>
+    <dimen name="fragment_main_opt_search_icon_height">22dp</dimen>
+    <dimen name="fragment_main_opt_search_text_size">16sp</dimen>
+    <dimen name="fragment_main_opt_search_text_margin_left">8dp</dimen>
+    <dimen name="fragment_main_opt_search_margin_right">8dp</dimen>
+    <dimen name="fragment_main_header_padding_top">10dp</dimen>
+    <dimen name="fragment_main_header_padding_bottom">10dp</dimen>
+    <dimen name="fragment_main_header_margin_top">70dp</dimen>
+    <dimen name="fragment_main_div_content_margin_left">16dp</dimen>
+    <dimen name="fragment_main_div_content_margin_right">16dp</dimen>
+    <dimen name="fragment_main_div_content_margin_top">16dp</dimen>
+    <dimen name="fragment_main_div_content_height">260dp</dimen>
+    <dimen name="fragment_main_vertical_content_padding">5dp</dimen>
+    <dimen name="fragment_main_div_search_padding_left">16dp</dimen>
+    <dimen name="fragment_main_div_search_padding_right">16dp</dimen>
+    <dimen name="fragment_main_banner_margin_left">10dp</dimen>
+    <dimen name="fragment_main_banner_margin_right">10dp</dimen>
+    <dimen name="fragment_main_banner_width">150dp</dimen>
+    <dimen name="fragment_main_banner_height">35dp</dimen>
+    <dimen name="fragment_main_header_height">180dp</dimen>
+
+    <!-- include_title -->
+    <dimen name="include_title_root_margint_top">16dp</dimen>
+    <dimen name="include_title_root_margint_bottom">16dp</dimen>
+    <dimen name="include_title_root_margint_left">26dp</dimen>
+    <dimen name="include_title_min_oval_width">6dp</dimen>
+    <dimen name="include_title_min_oval_height">6dp</dimen>
+    <dimen name="include_title_min_rect_margin_left">5dp</dimen>
+    <dimen name="include_title_min_rect_width">10dp</dimen>
+    <dimen name="include_title_min_rect_height">4dp</dimen>
+    <dimen name="include_title_min_rect_margin_top">3dp</dimen>
+    <dimen name="include_title_min_rect_margin_bottom">3dp</dimen>
+    <dimen name="include_title_title_text_size">28sp</dimen>
+    <dimen name="include_title_title_margin_left">10dp</dimen>
+
+    <!-- fragment_wallpaper -->
+    <dimen name="fragment_wallpaper_list_content_padding_left">63dp</dimen>
+    <dimen name="fragment_wallpaper_list_content_padding_right">63dp</dimen>
+    <dimen name="fragment_wallpaper_list_content_height">374dp</dimen>
+
+    <!-- holder_wallpaper -->
+    <dimen name="holder_wallpaper_root_radius">8dp</dimen>
+    <dimen name="holder_wallpaper_root_margin_left">12dp</dimen>
+    <dimen name="holder_wallpaper_root_margin_right">12dp</dimen>
+    <dimen name="holder_wallpaper_root_margin_top">12dp</dimen>
+    <dimen name="holder_wallpaper_root_margin_bottom">12dp</dimen>
+    <dimen name="holder_wallpaper_image_width">260dp</dimen>
+    <dimen name="holder_wallpaper_image_height">147dp</dimen>
+    <dimen name="holder_wallpaper_check_margin">16dp</dimen>
+    <dimen name="holder_wallpaper_check_padding">6dp</dimen>
+    <dimen name="holder_wallpaper_check_width">35dp</dimen>
+    <dimen name="holder_wallpaper_check_height">35dp</dimen>
+
+    <!-- fragment_about -->
+    <dimen name="fragment_about_div_account_radius">8dp</dimen>
+    <dimen name="fragment_about_div_account_margin_top">16dp</dimen>
+    <dimen name="fragment_about_div_account_margin_bottom">16dp</dimen>
+    <dimen name="fragment_about_div_account_margin_left">26dp</dimen>
+    <dimen name="fragment_about_div_account_margin_right">26dp</dimen>
+    <dimen name="fragment_about_account_width">150dp</dimen>
+    <dimen name="fragment_about_account_height">150dp</dimen>
+    <dimen name="fragment_about_content_margin_left">16dp</dimen>
+    <dimen name="fragment_about_content_margin_right">16dp</dimen>
+    <dimen name="fragment_about_content_height">300dp</dimen>
+    <dimen name="fragment_about_upgrade_margin_bottom">26dp</dimen>
+    <dimen name="fragment_about_upgrade_text_size">18sp</dimen>
+    <dimen name="fragment_about_upgrade_width">200dp</dimen>
+    <dimen name="fragment_about_upgrade_height">45dp</dimen>
+
+    <!-- holder_about -->
+    <dimen name="holder_about_root_padding_left">16dp</dimen>
+    <dimen name="holder_about_root_padding_right">16dp</dimen>
+    <dimen name="holder_about_root_width">300dp</dimen>
+    <dimen name="holder_about_root_height">55dp</dimen>
+    <dimen name="holder_about_icon_width">25dp</dimen>
+    <dimen name="holder_about_icon_height">25dp</dimen>
+    <dimen name="holder_about_title_text_size">15sp</dimen>
+    <dimen name="holder_about_title_margin_left">16dp</dimen>
+    <dimen name="holder_about_desc_text_size">15sp</dimen>
+
+    <!-- holder_ads_max -->
+    <dimen name="holder_ads_max_image_width">180dp</dimen>
+
+    <!-- holder_ads_3 -->
+    <dimen name="holder_ads_3_image_width">180dp</dimen>
+
+    <!-- holder_banner -->
+    <dimen name="holder_banner_root_padding_left">8dp</dimen>
+    <dimen name="holder_banner_root_padding_right">8dp</dimen>
+    <dimen name="holder_banner_root_radius">100dp</dimen>
+    <dimen name="holder_banner_image_width">25dp</dimen>
+    <dimen name="holder_banner_image_height">25dp</dimen>
+    <dimen name="holder_banner_title_margin_left">8dp</dimen>
+    <dimen name="holder_banner_title_text_size">13sp</dimen>
+
+    <!-- fragment_upgrade -->
+    <dimen name="fragment_upgrade_tip_text_size">16sp</dimen>
+    <dimen name="fragment_upgrade_tip_margin_left">26dp</dimen>
+    <dimen name="fragment_upgrade_mes_text_size">14sp</dimen>
+    <dimen name="fragment_upgrade_progress_margin_top">10dp</dimen>
+    <dimen name="fragment_upgrade_progress_width">400dp</dimen>
+    <dimen name="fragment_upgrade_button_margin">8dp</dimen>
+    <dimen name="fragment_upgrade_button_width">150dp</dimen>
+
+    <!-- fragment_choose_wallpaper -->
+    <dimen name="fragment_choose_wallpaper_text_size">36sp</dimen>
+    <dimen name="fragment_choose_wallpaper_text_margin_top">26dp</dimen>
+    <dimen name="fragment_choose_wallpaper_text_margin_bottom">26dp</dimen>
+
+    <!-- fragment_focus -->
+    <dimen name="fragment_focus_root_margin_bottom">46dp</dimen>
+    <dimen name="fragment_focus_image_width">300dp</dimen>
+    <dimen name="fragment_focus_image_height">300dp</dimen>
+    <dimen name="fragment_focus_text_text_size">22sp</dimen>
+    <dimen name="fragment_focus_text_margin_top">26dp</dimen>
+    <dimen name="fragment_focus_next_margin_top">26dp</dimen>
+    <dimen name="fragment_focus_next_text_size">18sp</dimen>
+    <dimen name="fragment_focus_next_width">150dp</dimen>
+    <dimen name="fragment_focus_next_height">45dp</dimen>
+
+    <!-- fragment_set_language -->
+    <dimen name="fragment_set_language_text_text_size">36sp</dimen>
+    <dimen name="fragment_set_language_text_margin_top">26dp</dimen>
+    <dimen name="fragment_set_language_next_margin_top">26dp</dimen>
+    <dimen name="fragment_set_language_next_text_size">14sp</dimen>
+    <dimen name="fragment_set_language_next_width">150dp</dimen>
+    <dimen name="fragment_set_language_next_height">45dp</dimen>
+    <dimen name="fragment_set_language_content_height">250dp</dimen>
+
+    <!-- fragment_set_netword -->
+    <dimen name="fragment_set_netword_margin_bottom">46dp</dimen>
+    <dimen name="fragment_set_netword_content_width">190dp</dimen>
+
+    <!-- fragment_gradient -->
+    <dimen name="fragment_gradient_text_text_size">26sp</dimen>
+    <dimen name="fragment_gradient_root_margin_top">26dp</dimen>
+    <dimen name="fragment_gradient_text_size">18sp</dimen>
+    <dimen name="fragment_gradient_confirm_margin_left">16dp</dimen>
+    <dimen name="fragment_gradient_confirm_margin_right">16dp</dimen>
+    <dimen name="fragment_gradient_button_width">35dp</dimen>
+    <dimen name="fragment_gradient_screen_width">400dp</dimen>
+    <dimen name="fragment_gradient_screen_height">225dp</dimen>
+    <dimen name="fragment_gradient_indicator_height">45dp</dimen>
+    <dimen name="fragment_gradient_indicator_image_width">40dp</dimen>
+    <dimen name="fragment_gradient_indicator_image_height">35dp</dimen>
+    <dimen name="fragment_gradient_indicator_text_width">50dp</dimen>
+    <dimen name="fragment_gradient_indicator_text_v_width">50dp</dimen>
+    <dimen name="fragment_gradient_indicator_text_v_height">50dp</dimen>
+    <dimen name="fragment_gradient_indicator_tip_text_size">16sp</dimen>
+    <dimen name="fragment_gradient_indicator_tip_margin">16dp</dimen>
+    <dimen name="fragment_gradient_inner_home_width">150dp</dimen>
+    <dimen name="fragment_gradient_inner_home_height">150dp</dimen>
+    <dimen name="fragment_gradient_content_radius">5dp</dimen>
+    <dimen name="fragment_gradient_content_margin">6dp</dimen>
+    <dimen name="fragment_gradient_content_image_width_1">50dp</dimen>
+    <dimen name="fragment_gradient_content_image_height_1">50dp</dimen>
+    <dimen name="fragment_gradient_content_percen_width">60dp</dimen>
+    <dimen name="fragment_gradient_content_anchors_margin_top">-10dp</dimen>
+    <dimen name="fragment_gradient_content_anchors_margin_left">-10dp</dimen>
+    <dimen name="fragment_gradient_content_anchors_width">20dp</dimen>
+    <dimen name="fragment_gradient_content_anchors_height">20dp</dimen>
+    <dimen name="fragment_gradient_content_opt_tip_margin_top">46dp</dimen>
+    <dimen name="fragment_gradient_content_opt_tip_text_size_1">14sp</dimen>
+    <dimen name="fragment_gradient_content_opt_tip_image_width">25dp</dimen>
+    <dimen name="fragment_gradient_content_opt_tip_image_height">25dp</dimen>
+    <dimen name="fragment_gradient_content_opt_tip_image_margin_left">6dp</dimen>
+    <dimen name="fragment_gradient_content_direction_image_margin_left">26dp</dimen>
+    <dimen name="fragment_gradient_content_direction_image_width">40dp</dimen>
+    <dimen name="fragment_gradient_content_direction_image_height">40dp</dimen>
+
+    <!-- fragment_welcome -->
+    <dimen name="fragment_welcome_image_radius">8dp</dimen>
+    <dimen name="fragment_welcome_image_width">200dp</dimen>
+    <dimen name="fragment_welcome_image_height">200dp</dimen>
+
+    <!-- fragment_remote_control -->
+    <dimen name="fragment_remote_control_root_margin_bottom">46dp</dimen>
+    <dimen name="fragment_remote_control_title_margin_bottom">46dp</dimen>
+    <dimen name="fragment_remote_control_title_text_size">46sp</dimen>
+    <dimen name="fragment_remote_control_icon_width">180dp</dimen>
+    <dimen name="fragment_remote_control_icon_height">170dp</dimen>
+    <dimen name="fragment_remote_control_text_margin_top">8dp</dimen>
+    <dimen name="fragment_remote_control_text_margin_bottom">8dp</dimen>
+    <dimen name="fragment_remote_control_text_text_size">16sp</dimen>
+    <dimen name="fragment_remote_control_text_text_min_width">430dp</dimen>
+    <dimen name="fragment_remote_control_div_paring_width">620dp</dimen>
+    <dimen name="fragment_remote_control_div_paring_height">65dp</dimen>
+    <dimen name="fragment_remote_control_paring_message_text_size">25sp</dimen>
+    <dimen name="fragment_remote_control_paring_icon_padding">4dp</dimen>
+    <dimen name="fragment_remote_control_paring_icon_margin">8dp</dimen>
+    <dimen name="fragment_remote_control_paring_icon_width">55dp</dimen>
+    <dimen name="fragment_remote_control_paring_icon_height">65dp</dimen>
+
+    <!-- holder_language -->
+    <dimen name="holder_language_root_padding_left">16dp</dimen>
+    <dimen name="holder_language_root_padding_right">16dp</dimen>
+    <dimen name="holder_language_root_width">300dp</dimen>
+    <dimen name="holder_language_root_height">55dp</dimen>
+    <dimen name="holder_language_icon_width">25dp</dimen>
+    <dimen name="holder_language_icon_height">25dp</dimen>
+    <dimen name="holder_language_title_text_size">15sp</dimen>
+    <dimen name="holder_language_title_margin_left">16dp</dimen>
+    <dimen name="holder_language_desc_text_size">10sp</dimen>
+    <dimen name="holder_language_check_width">20dp</dimen>
+    <dimen name="holder_language_check_height">20dp</dimen>
+
+    <!-- fragment_set_date -->
+    <dimen name="fragment_set_date_text_text_size">16sp</dimen>
+    <dimen name="fragment_set_date_text_margin_top">26dp</dimen>
+    <dimen name="fragment_set_date_next_margin_top">26dp</dimen>
+    <dimen name="fragment_set_date_next_text_size">18sp</dimen>
+    <dimen name="fragment_set_date_next_width">150dp</dimen>
+    <dimen name="fragment_set_date_next_height">45dp</dimen>
+    <dimen name="fragment_set_date_root_margin_bottom">46dp</dimen>
+    <dimen name="fragment_set_date_slide_width">300dp</dimen>
+    <dimen name="fragment_set_date_slide_height">220dp</dimen>
+    <dimen name="fragment_set_date_content_margin_left">26dp</dimen>
+    <dimen name="fragment_set_date_content_width">150dp</dimen>
+
+    <!-- dialog_date_picker -->
+    <dimen name="dialog_date_picker_root_width">450dp</dimen>
+    <dimen name="dialog_date_picker_text_text_size">16sp</dimen>
+    <dimen name="dialog_date_picker_text_text_width">100dp</dimen>
+    <dimen name="dialog_date_picker_content_padding_right">16dp</dimen>
+
+    <!-- dialog_time_picker -->
+    <dimen name="dialog_time_picker_root_width">450dp</dimen>
+    <dimen name="dialog_time_picker_text_text_size">16sp</dimen>
+    <dimen name="dialog_time_picker_text_text_width">100dp</dimen>
+    <dimen name="dialog_time_picker_content_padding_right">16dp</dimen>
+
+    <!-- holder_date_list -->
+    <dimen name="holder_date_list_point_width">3dp</dimen>
+    <dimen name="holder_date_list_point_height">3dp</dimen>
+
+    <!-- holder_date_select -->
+    <dimen name="holder_date_select_root_margin">8dp</dimen>
+    <dimen name="holder_date_select_root_min_width">60dp</dimen>
+    <dimen name="holder_date_select_padding">8dp</dimen>
+    <dimen name="holder_date_select_width">35dp</dimen>
+    <dimen name="holder_date_text_text_size">16sp</dimen>
+
+    <!-- include_instructions -->
+    <dimen name="include_instructions_margin">36dp</dimen>
+    <dimen name="include_instructions_rect_width_1">60dp</dimen>
+    <dimen name="include_instructions_rect_height_1">12dp</dimen>
+    <dimen name="include_instructions_rect_width_2">12dp</dimen>
+    <dimen name="include_instructions_rect_height_2">48dp</dimen>
+    <dimen name="include_instructions_margin_slide">24dp</dimen>
+    <dimen name="include_instructions_text_text_size">26sp</dimen>
+
+    <!-- holder_setting_4 -->
+    <dimen name="holder_setting_4_root_width">180dp</dimen>
+    <dimen name="holder_setting_4_root_height">180dp</dimen>
+
+    <!-- fragment_projector -->
+    <dimen name="fragment_projector_content_padding_left">36dp</dimen>
+    <dimen name="fragment_projector_content_padding_right">36dp</dimen>
+
+    <!-- menu_item_3 -->
+    <dimen name="menu_item_3_stroke">6dp</dimen>
+    <dimen name="menu_item_3_radius">8dp</dimen>
+
+    <!-- fragment_wifi_list -->
+    <dimen name="fragment_wifi_list_next_margin_top">26dp</dimen>
+    <dimen name="fragment_wifi_list_wifi_mes_margin_left">26dp</dimen>
+    <dimen name="fragment_wifi_list_wifi_mes_margin_right">26dp</dimen>
+    <dimen name="fragment_wifi_list_wifi_mes_padding_top">16dp</dimen>
+    <dimen name="fragment_wifi_list_wifi_mes_padding_bottom">16dp</dimen>
+    <dimen name="fragment_wifi_list_wifi_mes_width">200dp</dimen>
+    <dimen name="fragment_wifi_list_wifi_name_text_size">25sp</dimen>
+    <dimen name="fragment_wifi_list_wifi_mes_text_size">18sp</dimen>
+    <dimen name="fragment_wifi_list_wifi_mes_text_size_2">15sp</dimen>
+    <dimen name="fragment_wifi_list_wifi_name_margin_left">16dp</dimen>
+    <dimen name="fragment_wifi_list_wifi_name_margin_right">16dp</dimen>
+    <dimen name="fragment_wifi_list_wifi_name_margin_bottom">16dp</dimen>
+    <dimen name="fragment_wifi_list_wifi_loop_progress">100dp</dimen>
+
+    <!-- dialog_toast -->
+    <dimen name="dialog_toast_root_height">100dp</dimen>
+    <dimen name="dialog_toast_root_padding_left">10dp</dimen>
+    <dimen name="dialog_toast_root_padding_right">10dp</dimen>
+    <dimen name="dialog_toast_text_text_size">16sp</dimen>
+    <dimen name="dialog_toast_opt_margin">8dp</dimen>
+
+    <!-- dialog_wifi_pass -->
+    <dimen name="dialog_wifi_pass_edit_pass_padding_left">10dp</dimen>
+    <dimen name="dialog_wifi_pass_edit_pass_padding_right">10dp</dimen>
+    <dimen name="dialog_wifi_pass_edit_pass_margin_left">16dp</dimen>
+    <dimen name="dialog_wifi_pass_edit_pass_margin_right">16dp</dimen>
+    <dimen name="dialog_wifi_pass_edit_pass_height">45dp</dimen>
+    <dimen name="dialog_wifi_pass_edit_pass_text_size">18sp</dimen>
+    <dimen name="dialog_wifi_pass_root_height">100dp</dimen>
+    <dimen name="dialog_wifi_pass_root_margin">16dp</dimen>
+
+    <!-- dialog_wifi_save -->
+    <dimen name="dialog_wifi_save_root_height">100dp</dimen>
+    <dimen name="dialog_wifi_save_root_padding_left">10dp</dimen>
+    <dimen name="dialog_wifi_save_root_padding_right">10dp</dimen>
+    <dimen name="dialog_wifi_save_wifi_name_text_size">29sp</dimen>
+    <dimen name="dialog_wifi_save_save_toast_text_size">16sp</dimen>
+    <dimen name="dialog_wifi_save_root_padding_top">8dp</dimen>
+
+    <!-- holder_wifi -->
+    <dimen name="holder_wifi_signal_padding">7dp</dimen>
+    <dimen name="holder_wifi_signal_width">35dp</dimen>
+    <dimen name="holder_wifi_signal_height">35dp</dimen>
+
+    <!-- dialog_blu_fail -->
+    <dimen name="dialog_blu_fail_text_size">28sp</dimen>
+    <dimen name="dialog_blu_fail_text_toast_text_size">15sp</dimen>
+    <dimen name="dialog_blu_fail_margin_bottom">26dp</dimen>
+    <dimen name="dialog_blu_fail_image_width">120dp</dimen>
+    <dimen name="dialog_blu_fail_image_height">120dp</dimen>
+    <dimen name="dialog_blu_fail_root_width">300dp</dimen>
+    <dimen name="dialog_blu_fail_root_height">300dp</dimen>
+
+    <!-- holder_web -->
+    <dimen name="holder_web_root_width">160dp</dimen>
+    <dimen name="holder_web_root_height">90dp</dimen>
+    <dimen name="holder_web_image_width">60dp</dimen>
+    <dimen name="holder_web_image_height">60dp</dimen>
+
+    <!-- holder_app_3 -->
+    <dimen name="holder_app_3_root_width">100dp</dimen>
+    <dimen name="holder_app_3_root_height">56dp</dimen>
+    <dimen name="holder_app_3_image_width">40dp</dimen>
+    <dimen name="holder_app_3_image_height">40dp</dimen>
+    <dimen name="holder_app_3_title_text_height">30dp</dimen>
+    <dimen name="holder_app_3_title_text_size">10sp</dimen>
+
+    <!-- dialog_keyboard -->
+    <dimen name="dialog_keyboard_root_margin">16dp</dimen>
+    <dimen name="dialog_keyboard_root_width">476dp</dimen>
+    <dimen name="dialog_keyboard_recycler">16dp</dimen>
+
+    <!-- holder_keyboard -->
+    <dimen name="holder_keyboard_root_margin">4dp</dimen>
+    <dimen name="holder_keyboard_root_height">40dp</dimen>
+    <dimen name="holder_keyboard_text_text_size">14sp</dimen>
+    <dimen name="holder_keyboard_text_padding">3dp</dimen>
+    <dimen name="holder_keyboard_icon_width">20dp</dimen>
+    <dimen name="holder_keyboard_icon_height">20dp</dimen>
+
+    <dimen name="margin_decoration_max">16dp</dimen>
+    <dimen name="margin_decoration_min">4dp</dimen>
+    <dimen name="until_collapsed_height">90dp</dimen>
+    <dimen name="main_page_vertical_spacing">2dp</dimen>
+    <dimen name="card_elevation">8dp</dimen>
+    <dimen name="card_radius">8dp</dimen>
+</resources>

@@ -1,0 +1,79 @@
+plugins {
+    id 'com.android.application'
+}
+
+def getTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getDefault());
+}
+
+android {
+    namespace 'com.soya.launcher'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.soya.launcher"
+        minSdk 24
+        targetSdk 33
+        versionCode 36
+        versionName "1.36"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        //打包应用
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}.apk"
+            }
+        }
+    }
+    signingConfigs{
+        debug{
+            storeFile file("platform_H710.jks")
+            storePassword "platform"
+            keyAlias "platform"
+            keyPassword "platform"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        buildConfig = true
+    }
+}
+
+dependencies {
+    implementation files('libs/hslib-r0.0.2-release-LA23001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
+    //implementation files('libs/hslib-r0.0.2-release-LA27001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
+
+    implementation 'androidx.leanback:leanback:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'androidx.core:core-role:1.0.0'
+    implementation 'androidx.test.ext:junit:1.1.5'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
+    implementation 'me.laoyuyu.aria:core:3.8.16'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.9.0'
+    annotationProcessor 'me.laoyuyu.aria:compiler:3.8.16'
+}

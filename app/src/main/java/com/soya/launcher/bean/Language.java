@@ -1,0 +1,27 @@
+package com.soya.launcher.bean;
+
+import java.util.Locale;
+
+public class Language {
+    private String name;
+    private String desc;
+    private Locale language;
+
+    public Language(String name, String desc, Locale language){
+        this.name = name;
+        this.desc = desc;
+        this.language = language;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public Locale getLanguage() {
+        return language;
+    }
+}

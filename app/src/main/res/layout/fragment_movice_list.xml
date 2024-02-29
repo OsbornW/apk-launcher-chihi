@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/wallpaper"
+        android:src="@drawable/wallpaper_1"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/include_title"/>
+        <androidx.leanback.widget.VerticalGridView
+            android:id="@+id/content"
+            android:clipToOutline="false"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/fragment_movice_list_content_padding_left"
+            android:paddingBottom="@dimen/fragment_movice_list_content_padding_left"
+            android:paddingLeft="@dimen/fragment_movice_list_content_padding_left"
+            android:paddingRight="@dimen/fragment_movice_list_content_padding_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</FrameLayout>

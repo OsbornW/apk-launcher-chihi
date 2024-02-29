@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.soya.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
+        app:cardCornerRadius="@dimen/holder_wallpaper_root_radius"
+        app:cardUseCompatPadding="false"
+        app:cardBackgroundColor="@color/solid_style_1"
+        android:layout_marginLeft="@dimen/holder_wallpaper_root_margin_left"
+        android:layout_marginRight="@dimen/holder_wallpaper_root_margin_right"
+        android:layout_marginTop="@dimen/holder_wallpaper_root_margin_top"
+        android:layout_marginBottom="@dimen/holder_wallpaper_root_margin_bottom"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/image"
+            android:scaleType="centerCrop"
+            android:layout_width="@dimen/holder_wallpaper_image_width"
+            android:layout_height="@dimen/holder_wallpaper_image_height"/>
+        <ImageView
+            android:id="@+id/check"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="@dimen/holder_wallpaper_check_margin"
+            android:background="@drawable/rect_solid_100dp_alpha_2"
+            android:src="@drawable/baseline_check_100"
+            android:padding="@dimen/holder_wallpaper_check_padding"
+            android:layout_width="@dimen/holder_wallpaper_check_width"
+            android:layout_height="@dimen/holder_wallpaper_check_height"/>
+    </androidx.cardview.widget.CardView>
+</com.soya.launcher.view.MyFrameLayout>
