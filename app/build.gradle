@@ -40,16 +40,16 @@ android {
             }
         }
     }
-    signingConfigs{
+    signingConfigs {
         /*debug{
-            storeFile file("platform_H710.jks")
+            storeFile file("platform_H710_701.jks")
             storePassword "platform"
             keyAlias "platform"
             keyPassword "platform"
         }*/
 
-        debug{
-            storeFile file("rk3528_android13_platform.keystore")
+        debug {
+            storeFile file("platform_X98K_301.keystore")
             storePassword 'android'
             keyAlias 'platform'
             keyPassword 'android'
