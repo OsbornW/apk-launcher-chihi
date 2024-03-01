@@ -115,7 +115,6 @@
         <activity android:name="com.soya.launcher.ui.activity.BluetoothActivity" />
         <activity android:name="com.soya.launcher.ui.activity.RemoteControlActivity" />
 
-
         <provider
             android:authorities="${applicationId}.provider"
             android:name="androidx.core.content.FileProvider"
@@ -126,6 +125,7 @@
                 android:resource="@xml/file_paths">
             </meta-data>
         </provider>
+
         <service
             android:exported="true"
             android:enabled="true"
