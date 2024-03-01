@@ -42,6 +42,7 @@ import com.open.system.bean.StorageVolumeInfo;
 import com.soya.launcher.BuildConfig;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.Version;
+import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.Types;
 import com.soya.launcher.ui.activity.MainActivity;
@@ -57,9 +58,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class AndroidSystem {
-
-
-
     public static boolean isSdCardAvaiable(Context context){
         List<StorageVolumeInfo> infos = SystemUtils.getVolumeInfos(context);
         return !infos.isEmpty();
@@ -470,9 +468,9 @@ public class AndroidSystem {
             version.setActivity(MainActivity.class.getName());
             version.setPackageName(BuildConfig.APPLICATION_ID);
             Gson gson = new Gson();
-            PackageInfo info = findPackageInfo(context, "com.soya.launcher.upgrade");
+            PackageInfo info = findPackageInfo(context, Config.PACKAGE_NAME);
             if (info != null){
-                Intent intent = new Intent(Intent.ACTION_MAIN).setClassName("com.soya.launcher.upgrade", "com.soya.launcher.upgrade.UpgradeActivity");
+                Intent intent = new Intent(Intent.ACTION_MAIN).setClassName(Config.PACKAGE_NAME, Config.CLASS_NAME);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.putExtra(Atts.BEAN, gson.toJson(version));
                 context.startActivity(intent);

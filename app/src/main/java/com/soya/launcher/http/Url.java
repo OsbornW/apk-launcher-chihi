@@ -22,7 +22,6 @@ public class Url {
 
     public static final String CHECK_VERSION = "appapi/appinfo/getVersion";
     public static final String UID_PULL = "api/v1/app-callback-info";
-
     public static final String APP_LIST = "cj/carApp/getAppListTV";
 
     public static String conformity(String url, String id){

@@ -3,6 +3,11 @@ package com.soya.launcher.config;
 public class Config {
     public static final boolean IS_TEST = false;
 
+    public static String APPID = "launcher";
+    public static String PACKAGE_NAME = "com.soya.launcher.upgrade";
+    public static String CLASS_NAME = "com.soya.launcher.upgrade.UpgradeActivity";
+
+
     //修改渠道信息，修改build.gradle
     //0、弘信 1、爱泊优投影仪 2、爱泊优TV 3、玥芯通(TV-X98K)
     public static final int COMPANY = 3;
@@ -27,6 +32,4 @@ public class Config {
     public static final String CHANNEL = "LA23001";
     public static final String CHIHI_TYPE = "X98K";
     public static final String MODEL = "001";
-
-    public static final String APPID = "launcher";
 }
