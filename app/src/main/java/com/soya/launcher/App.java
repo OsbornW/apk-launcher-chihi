@@ -90,11 +90,11 @@ public class App extends Application {
         initRemote();
 
         WALLPAPERS.add(new Wallpaper(0, R.drawable.wallpaper_1));
-        WALLPAPERS.add(new Wallpaper(1, R.drawable.wallpaper_2));
-        WALLPAPERS.add(new Wallpaper(2, R.drawable.wallpaper_3));
-        WALLPAPERS.add(new Wallpaper(3, R.drawable.wallpaper_15));
-        WALLPAPERS.add(new Wallpaper(4, R.drawable.wallpaper_13));
-        WALLPAPERS.add(new Wallpaper(5, R.drawable.wallpaper_12));
+        WALLPAPERS.add(new Wallpaper(1, R.drawable.wallpaper_20));
+        WALLPAPERS.add(new Wallpaper(2, R.drawable.wallpaper_21));
+        WALLPAPERS.add(new Wallpaper(3, R.drawable.wallpaper_22));
+        WALLPAPERS.add(new Wallpaper(4, R.drawable.wallpaper_24));
+        WALLPAPERS.add(new Wallpaper(5, R.drawable.wallpaper_25));
 
         com.hs.App.init(this);
         startService(new Intent(this, AppService.class));

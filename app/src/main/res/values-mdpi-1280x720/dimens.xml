@@ -255,6 +255,9 @@
 <dimen name="fragment_main_opt_icon_padding">9dp</dimen>
 <dimen name="fragment_main_opt_icon_width">53dp</dimen>
 <dimen name="fragment_main_opt_icon_height">53dp</dimen>
+<dimen name="fragment_main_opt_notify_icon_padding">5dp</dimen>
+<dimen name="fragment_main_opt_notify_icon_width">26dp</dimen>
+<dimen name="fragment_main_opt_notify_icon_height">26dp</dimen>
 <dimen name="fragment_main_opt_icon_margin_left">13dp</dimen>
 <dimen name="fragment_main_opt_search_padding_left">26dp</dimen>
 <dimen name="fragment_main_opt_search_padding_right">26dp</dimen>

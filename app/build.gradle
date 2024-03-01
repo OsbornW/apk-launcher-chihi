@@ -14,8 +14,8 @@ android {
         applicationId "com.soya.launcher"
         minSdk 24
         targetSdk 33
-        versionCode 36
-        versionName "1.36"
+        versionCode 39
+        versionName "1.39"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,11 +41,18 @@ android {
         }
     }
     signingConfigs{
-        debug{
+        /*debug{
             storeFile file("platform_H710.jks")
             storePassword "platform"
             keyAlias "platform"
             keyPassword "platform"
+        }*/
+
+        debug{
+            storeFile file("rk3528_android13_platform.keystore")
+            storePassword 'android'
+            keyAlias 'platform'
+            keyPassword 'android'
         }
     }
 

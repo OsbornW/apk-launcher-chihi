@@ -22,6 +22,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
@@ -29,6 +30,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 import android.os.SystemClock;
+import android.os.storage.StorageManager;
+import android.os.storage.StorageVolume;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -41,6 +44,7 @@ import androidx.core.role.RoleManagerCompat;
 
 import com.google.gson.Gson;
 import com.open.system.SystemUtils;
+import com.open.system.bean.StorageVolumeInfo;
 import com.soya.launcher.BuildConfig;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.Version;
@@ -60,6 +64,19 @@ import java.util.List;
 import java.util.Locale;
 
 public class AndroidSystem {
+
+
+
+    public static boolean isSdCardAvaiable(Context context){
+        List<StorageVolumeInfo> infos = SystemUtils.getVolumeInfos(context);
+        return !infos.isEmpty();
+    }
+
+    public static boolean isEthernetConnected(Context context){
+        ConnectivityManager cm = context.getSystemService(ConnectivityManager.class);
+        NetworkInfo info = cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET);
+        return info != null && info.isConnectedOrConnecting() && info.isAvailable();
+    }
 
     public static void openSystemSetting2(Context context){
         openActivityName(context, "com.android.tv.settings", "com.android.tv.settings.MainSettings");
@@ -567,7 +584,7 @@ public class AndroidSystem {
 
             }
             Intent intent = getPackageNameIntent(context, packageInfo.packageName);
-            if (intent != null) result.add(packageInfo);
+            if (intent != null && !packageInfo.packageName.equals(BuildConfig.APPLICATION_ID)) result.add(packageInfo);
         }
         return result;
     }

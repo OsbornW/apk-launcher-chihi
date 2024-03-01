@@ -115,7 +115,7 @@ public class AppsFragment extends AbsFragment{
 
             @Override
             public void onClick(ApplicationInfo bean) {
-                if (App.COMPANY == 1 || App.COMPANY == 2){
+                if (App.COMPANY == 1 || App.COMPANY == 2 || App.COMPANY == 3){
                     AndroidSystem.openPackageName(getActivity(), bean.packageName);
                 }else {
                     AppDialog dialog = AppDialog.newInstance(bean);

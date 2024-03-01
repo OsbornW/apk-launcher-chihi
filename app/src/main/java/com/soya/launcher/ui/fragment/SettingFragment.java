@@ -178,8 +178,11 @@ public class SettingFragment extends AbsFragment {
             public void onClick(SettingItem bean) {
                 switch (bean.getType()){
                     case 0:
-                        //AndroidSystem.openWifiSetting(getActivity());
-                        startActivity(new Intent(getActivity(), WifiListActivity.class));
+                        if (App.COMPANY == 3){
+                            AndroidSystem.openWifiSetting(getActivity());
+                        }else {
+                            startActivity(new Intent(getActivity(), WifiListActivity.class));
+                        }
                         break;
                     case 1:
                         startActivity(new Intent(getActivity(), WallpaperActivity.class));

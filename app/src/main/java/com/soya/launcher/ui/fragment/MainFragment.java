@@ -1,5 +1,6 @@
 package com.soya.launcher.ui.fragment;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,7 +8,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
+import android.hardware.input.InputManager;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -17,6 +23,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.InputDevice;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -39,6 +46,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import com.open.system.SystemUtils;
 import com.soya.launcher.App;
 import com.soya.launcher.BuildConfig;
 import com.soya.launcher.R;
@@ -128,6 +136,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         return fragment;
     }
 
+    private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ExecutorService exec = Executors.newCachedThreadPool();
     private HorizontalGridView mHeaderGrid;
     private HorizontalGridView mHorizontalContentGrid;
@@ -144,6 +153,13 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private TextView mSegmentView;
     private View mHelpView;
     private TextView mTestView;
+
+    private View mLanView;
+    private View mBluetoothView;
+    private View mSdCardView;
+    private View mAPView;
+    private View mNetwordView;
+
     private Handler uiHandler;
     private String uuid;
     private Call call;
@@ -185,6 +201,11 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         filter1.addAction(IntentAction.ACTION_UPDATE_WALLPAPER);
         filter1.addAction(Intent.ACTION_SCREEN_ON);
         filter1.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+        filter.addAction(UsbManager.ACTION_USB_ACCESSORY_ATTACHED);
+        filter.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED);
+        filter.addAction("android.hardware.usb.action.USB_STATE");
         getActivity().registerReceiver(wallpaperReceiver, filter1);
     }
 
@@ -204,10 +225,26 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        stopLoopTime();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        syncWeather();
+        syncTime();
+        syncNotify();
+        startLoopTime();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         syncWeather();
         syncTime();
+        syncNotify();
         startLoopTime();
     }
 
@@ -242,6 +279,11 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mTimeView = view.findViewById(R.id.loop_time);
         mHelpView = view.findViewById(R.id.help);
         mTestView = view.findViewById(R.id.test);
+        mLanView = view.findViewById(R.id.lan);
+        mBluetoothView = view.findViewById(R.id.bluetooth);
+        mSdCardView = view.findViewById(R.id.sd_card);
+        mAPView = view.findViewById(R.id.ap);
+        mNetwordView = view.findViewById(R.id.netword);
 
         mHorizontalContentGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
         mHeaderGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
@@ -261,6 +303,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mWifiView.setOnClickListener(this);
         mLoginView.setOnClickListener(this);
         mHelpView.setOnClickListener(this);
+        mBluetoothView.setOnClickListener(this);
     }
 
     @Override
@@ -322,30 +365,51 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
 
     private void stopLoopTime(){
         if (timeRunnable != null) timeRunnable.interrupt();
+        timeRunnable = null;
     }
 
     private void startLoopTime(){
-        stopLoopTime();
+        if (timeRunnable != null) return;
         timeRunnable = new MyRunnable() {
             @Override
             public void run() {
                 while (!isInterrupt()){
                     SystemClock.sleep(2000);
-                    uiHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!isAdded()) return;
-                            syncTime();
-                            boolean old = isNetworkAvailable;
-                            isNetworkAvailable = AndroidSystem.isNetworkAvailable(getActivity());
-                            if (isNetworkAvailable != old && isNetworkAvailable) uidPull();
-                            mWifiView.setImageResource(isNetworkAvailable ? R.drawable.baseline_wifi_100 : R.drawable.baseline_wifi_off_100);
-                        }
-                    });
+                    syncNotify();
                 }
             }
         };
         exec.execute(timeRunnable);
+    }
+
+    private void syncNotify(){
+        uiHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (!isAdded()) return;
+                syncTime();
+                boolean old = isNetworkAvailable;
+                isNetworkAvailable = AndroidSystem.isNetworkAvailable(getActivity());
+                if (isNetworkAvailable != old && isNetworkAvailable) uidPull();
+                mWifiView.setImageResource(isNetworkAvailable ? R.drawable.baseline_wifi_100 : R.drawable.baseline_wifi_off_100);
+                mLanView.setVisibility(AndroidSystem.isEthernetConnected(getActivity()) ? View.VISIBLE : View.GONE);
+                mBluetoothView.setVisibility(bluetoothAdapter != null && bluetoothAdapter.isEnabled() ? View.VISIBLE : View.GONE);
+                HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) getActivity().getSystemService(Context.USB_SERVICE)).getDeviceList();
+                mSdCardView.setVisibility(!deviceHashMap.isEmpty() ? View.VISIBLE : View.GONE);
+                mAPView.setVisibility(SystemUtils.isApEnable(getActivity()) ? View.VISIBLE : View.GONE);
+                mNetwordView.setVisibility(isNetworkAvailable ? View.VISIBLE : View.GONE);
+            }
+        });
+    }
+
+    private boolean isKeyBoard(InputDevice device) {
+        int sourceMask = device.getSources();
+        return (sourceMask & InputDevice.SOURCE_KEYBOARD) == InputDevice.SOURCE_KEYBOARD;
+    }
+
+    private boolean isMouse(InputDevice device) {
+        int sourceMask = device.getSources();
+        return (sourceMask & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE;
     }
 
     private void startWeather(){
@@ -496,7 +560,11 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         }else if (v.equals(mSearchView)){
             startActivity(new Intent(getActivity(), SearchActivity.class));
         }else if (v.equals(mWifiView)){
-            startActivity(new Intent(getActivity(), WifiListActivity.class));
+            if (App.COMPANY == 3){
+                AndroidSystem.openWifiSetting(getActivity());
+            }else {
+                startActivity(new Intent(getActivity(), WifiListActivity.class));
+            }
         }else if (v.equals(mLoginView)){
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }else if (v.equals(mHelpView)){
@@ -904,7 +972,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void openApp(ApplicationInfo bean){
-        if (App.COMPANY == 1 || App.COMPANY == 2){
+        if (App.COMPANY == 1 || App.COMPANY == 2 || App.COMPANY == 3){
             AndroidSystem.openPackageName(getActivity(), bean.packageName);
         }else {
             AppDialog dialog = AppDialog.newInstance(bean);
@@ -979,6 +1047,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             switch (intent.getAction()){
                 case IntentAction.ACTION_UPDATE_WALLPAPER:
                     updateWallpaper();
+                    break;
+                case UsbManager.ACTION_USB_DEVICE_ATTACHED:
+                    break;
+                case UsbManager.ACTION_USB_DEVICE_DETACHED:
                     break;
             }
         }
