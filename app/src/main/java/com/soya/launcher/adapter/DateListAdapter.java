@@ -8,11 +8,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.leanback.widget.Presenter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.soya.launcher.R;
-import com.soya.launcher.bean.AboutItem;
 import com.soya.launcher.bean.DateItem;
 
 import java.util.List;

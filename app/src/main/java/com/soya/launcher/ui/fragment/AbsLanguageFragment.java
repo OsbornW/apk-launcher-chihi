@@ -1,29 +1,19 @@
 package com.soya.launcher.ui.fragment;
 
 import android.content.res.Resources;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.os.ConfigurationCompat;
-import androidx.core.os.LocaleListCompat;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 
-import com.open.system.SystemUtils;
-import com.open.system.bean.MyLocaleInfo;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.LanguageAdapter;
 import com.soya.launcher.bean.Language;
-import com.soya.launcher.utils.AndroidSystem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;

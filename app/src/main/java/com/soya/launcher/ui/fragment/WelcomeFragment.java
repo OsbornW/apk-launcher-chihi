@@ -1,6 +1,5 @@
 package com.soya.launcher.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -9,9 +8,6 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.soya.launcher.R;
-import com.soya.launcher.manager.PreferencesManager;
-import com.soya.launcher.ui.activity.GuideActivity;
-import com.soya.launcher.ui.activity.MainActivity;
 
 public class WelcomeFragment extends AbsFragment{
 

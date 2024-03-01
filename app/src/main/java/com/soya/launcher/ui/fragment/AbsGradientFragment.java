@@ -1,13 +1,11 @@
 package com.soya.launcher.ui.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +14,6 @@ import com.softwinner.keystone.KeystoneCorrection;
 import com.softwinner.keystone.KeystoneCorrectionManager;
 import com.soya.launcher.R;
 import com.soya.launcher.view.KeyEventFrameLayout;
-import com.soya.launcher.view.MyInstructionView;
 
 import java.util.concurrent.TimeUnit;
 

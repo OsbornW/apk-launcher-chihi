@@ -5,20 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.core.content.FileProvider;
 
 import com.soya.launcher.BuildConfig;
-import com.soya.launcher.enums.Atts;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class AppUtils {
     public static void installApk(Context context, String filePath) {

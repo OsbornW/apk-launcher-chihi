@@ -8,7 +8,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.FocusHighlight;
 import androidx.leanback.widget.FocusHighlightHelper;
@@ -23,9 +22,6 @@ import com.soya.launcher.enums.Atts;
 import com.soya.launcher.ui.activity.MainActivity;
 import com.soya.launcher.utils.GlideUtils;
 import com.soya.launcher.utils.PreferencesUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChooseWallpaperFragment extends AbsFragment{
 

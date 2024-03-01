@@ -13,7 +13,6 @@ import androidx.leanback.widget.HorizontalGridView;
 
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.DateSelectAdapter;
-import com.soya.launcher.utils.GlideUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;

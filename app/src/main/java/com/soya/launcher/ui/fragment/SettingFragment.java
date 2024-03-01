@@ -20,14 +20,13 @@ import androidx.leanback.widget.FocusHighlightHelper;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 
-import com.soya.launcher.App;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.SettingAdapter;
 import com.soya.launcher.bean.SettingItem;
+import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.IntentAction;
 import com.soya.launcher.handler.PermissionHandler;
 import com.soya.launcher.ui.activity.AboutActivity;
-import com.soya.launcher.ui.activity.BluetoothActivity;
 import com.soya.launcher.ui.activity.LanguageActivity;
 import com.soya.launcher.ui.activity.ProjectorActivity;
 import com.soya.launcher.ui.activity.RemoteControlActivity;
@@ -120,7 +119,7 @@ public class SettingFragment extends AbsFragment {
         mContentGrid.setAdapter(itemBridgeAdapter);
         mContentGrid.setNumColumns(4);
 
-        if (App.COMPANY == 0){
+        if (Config.COMPANY == 0){
             arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem[]{
                     new SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
                     new SettingItem(2, getString(R.string.pojector), R.drawable.baseline_cast_connected_100),
@@ -131,7 +130,7 @@ public class SettingFragment extends AbsFragment {
                     new SettingItem(10, getString(R.string.remote_control), R.drawable.baseline_settings_remote_100),
                     new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100),
             }));
-        }else if (App.COMPANY == 1){
+        }else if (Config.COMPANY == 1){
             arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem[]{
                     new SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
                     new SettingItem(2, getString(R.string.pojector), R.drawable.baseline_cast_connected_100),
@@ -142,7 +141,7 @@ public class SettingFragment extends AbsFragment {
                     new SettingItem(5, getString(R.string.bluetooth), R.drawable.baseline_bluetooth_100),
                     new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100),
             }));
-        }else if (App.COMPANY == 2){
+        }else if (Config.COMPANY == 2){
             arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem[]{
                     new SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
                     new SettingItem(8, getString(R.string.sound), R.drawable.baseline_settings_voice_100),
@@ -178,7 +177,7 @@ public class SettingFragment extends AbsFragment {
             public void onClick(SettingItem bean) {
                 switch (bean.getType()){
                     case 0:
-                        if (App.COMPANY == 3){
+                        if (Config.COMPANY == 3){
                             AndroidSystem.openWifiSetting(getActivity());
                         }else {
                             startActivity(new Intent(getActivity(), WifiListActivity.class));
@@ -188,9 +187,9 @@ public class SettingFragment extends AbsFragment {
                         startActivity(new Intent(getActivity(), WallpaperActivity.class));
                         break;
                     case 2:
-                        if (App.COMPANY == 0){
+                        if (Config.COMPANY == 0){
                             startActivity(new Intent(getActivity(), ProjectorActivity.class));
-                        }else if (App.COMPANY == 1){
+                        }else if (Config.COMPANY == 1){
                             AndroidSystem.openActivityName(getActivity(), "com.qf.keystone.AllActivity");
                         }
                         break;
@@ -201,9 +200,9 @@ public class SettingFragment extends AbsFragment {
                         startActivity(new Intent(getActivity(), SetDateActivity.class));
                         break;
                     case 5:
-                        if (App.COMPANY == 1 || App.COMPANY == 2){
+                        if (Config.COMPANY == 1 || Config.COMPANY == 2){
                             AndroidSystem.openBluetoothSetting2(getActivity());
-                        }else if (App.COMPANY == 3){
+                        }else if (Config.COMPANY == 3){
                             AndroidSystem.openBluetoothSetting3(getActivity());
                         }
                         //startActivity(new Intent(getActivity(), BluetoothActivity.class));
@@ -212,7 +211,7 @@ public class SettingFragment extends AbsFragment {
                         startActivity(new Intent(getActivity(), AboutActivity.class));
                         break;
                     case 7:
-                        if (App.COMPANY == 0 || App.COMPANY == 1){
+                        if (Config.COMPANY == 0 || Config.COMPANY == 1){
                             AndroidSystem.openSystemSetting(getActivity());
                         }else {
                             AndroidSystem.openSystemSetting2(getActivity());

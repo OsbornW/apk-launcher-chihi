@@ -1,7 +1,5 @@
 package com.soya.launcher.bean;
 
-import android.text.TextUtils;
-
 public class City {
     private String CityName;
     private String Latitude;

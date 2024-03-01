@@ -1,20 +1,16 @@
 package com.soya.launcher.service;
 
 import android.app.Service;
-import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.soya.launcher.R;
 import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.IntentAction;
-import com.soya.launcher.ui.dialog.RemoteDialog;
 import com.soya.launcher.utils.AppUtils;
 
 public class AppService extends Service {

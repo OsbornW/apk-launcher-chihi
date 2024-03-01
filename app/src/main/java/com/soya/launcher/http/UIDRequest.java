@@ -1,13 +1,10 @@
 package com.soya.launcher.http;
 
 import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.soya.launcher.bean.AppInfo;
 import com.soya.launcher.enums.ServiceStatus;
-import com.soya.launcher.http.response.AppListResponse;
 import com.soya.launcher.http.ssl.CustomTrustManager;
 import com.soya.launcher.http.ssl.SSLSocketClient;
 

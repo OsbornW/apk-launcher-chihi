@@ -1,16 +1,12 @@
 package com.soya.launcher.ui.fragment;
 
-import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,28 +14,23 @@ import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 
-import com.soya.launcher.App;
 import com.soya.launcher.BuildConfig;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.AboutAdapter;
 import com.soya.launcher.bean.AboutItem;
 import com.soya.launcher.bean.Version;
+import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.Atts;
 import com.soya.launcher.http.HttpRequest;
 import com.soya.launcher.http.ServiceRequest;
 import com.soya.launcher.http.response.VersionResponse;
-import com.soya.launcher.manager.FilePathMangaer;
-import com.soya.launcher.ui.activity.MainActivity;
-import com.soya.launcher.ui.activity.UpgradeActivity;
 import com.soya.launcher.ui.dialog.ProgressDialog;
 import com.soya.launcher.ui.dialog.ToastDialog;
 import com.soya.launcher.utils.AndroidSystem;
-import com.soya.launcher.utils.AppUtils;
 import com.soya.launcher.utils.PreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 
@@ -140,10 +131,10 @@ public class AboutFragment extends AbsFragment implements View.OnClickListener {
                     dialog.dismiss();
                     if (!isAdded() || call.isCanceled() || response == null || response.getData() == null) return;
                     Version result = response.getData();
-                    if (result.getVersion() > BuildConfig.VERSION_CODE && App.CHANNEL.equals(result.getChannel())) {
+                    if (result.getVersion() > BuildConfig.VERSION_CODE && Config.CHANNEL.equals(result.getChannel())) {
                         PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, (int) result.getVersion());
                         AndroidSystem.jumpUpgrade(getActivity(), result);
-                    }else {
+                    } else {
                         ToastDialog toastDialog = ToastDialog.newInstance(getString(R.string.already_latest_version), ToastDialog.MODE_CONFIRM);
                         toastDialog.show(getChildFragmentManager(), ToastDialog.TAG);
                     }

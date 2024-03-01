@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.soya.launcher.bean.MyRunnable;
 

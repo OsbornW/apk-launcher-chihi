@@ -3,7 +3,6 @@ package com.soya.launcher.adapter;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;

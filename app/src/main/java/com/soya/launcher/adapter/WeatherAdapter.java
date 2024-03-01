@@ -17,7 +17,6 @@ import com.soya.launcher.manager.FilePathMangaer;
 import com.soya.launcher.utils.AndroidSystem;
 
 import java.util.List;
-import java.util.Locale;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.Holder> {
     private Context context;

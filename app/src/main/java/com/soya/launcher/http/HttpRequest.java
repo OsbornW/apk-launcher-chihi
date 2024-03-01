@@ -6,9 +6,7 @@ import com.soya.launcher.bean.AppInfo;
 import com.soya.launcher.bean.City;
 import com.soya.launcher.bean.MoviceList;
 import com.soya.launcher.bean.RecommendData;
-import com.soya.launcher.bean.Version;
 import com.soya.launcher.bean.WeatherData;
-import com.soya.launcher.http.response.AppListResponse;
 import com.soya.launcher.http.response.VersionResponse;
 
 import okhttp3.ResponseBody;

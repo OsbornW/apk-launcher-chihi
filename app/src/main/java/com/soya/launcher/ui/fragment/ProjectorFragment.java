@@ -16,9 +16,7 @@ import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 
 import com.soya.launcher.R;
-import com.soya.launcher.adapter.ProjectorAdapter;
 import com.soya.launcher.adapter.SettingAdapter;
-import com.soya.launcher.bean.Movice;
 import com.soya.launcher.bean.Projector;
 import com.soya.launcher.bean.SettingItem;
 import com.soya.launcher.ui.activity.GradientActivity;

@@ -1,10 +1,6 @@
 package com.soya.launcher.ui.dialog;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,7 +20,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.soya.launcher.R;
 import com.soya.launcher.utils.AndroidSystem;
-import com.soya.launcher.utils.GlideUtils;
 
 public abstract class SingleDialogFragment extends DialogFragment {
     public static final int NO_ANIMATION = -1;

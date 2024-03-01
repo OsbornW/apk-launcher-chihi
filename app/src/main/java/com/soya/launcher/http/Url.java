@@ -1,7 +1,5 @@
 package com.soya.launcher.http;
 
-import com.soya.launcher.App;
-
 public class Url {
     public static final String YOUTUBE_PLAY = "https://www.youtube.com/watch?v=%s";
     public static final String NETFLIX_PLAY = "http://www.netflix.com/watch/%s";

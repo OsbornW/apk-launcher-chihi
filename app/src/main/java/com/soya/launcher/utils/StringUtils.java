@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.soya.launcher.R;
 import com.soya.launcher.enums.Types;
-import com.soya.launcher.manager.FilePathMangaer;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

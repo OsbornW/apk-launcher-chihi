@@ -2,7 +2,6 @@ package com.soya.launcher.indicators;
 
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.ArrayList;

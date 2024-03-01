@@ -4,11 +4,8 @@ import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.provider.Settings;
 import android.text.format.Formatter;
-import android.view.WindowManager;
 
-import com.open.system.ASystemProperties;
 import com.open.system.SystemUtils;
 import com.soya.launcher.BuildConfig;
 import com.soya.launcher.R;

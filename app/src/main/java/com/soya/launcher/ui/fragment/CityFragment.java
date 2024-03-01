@@ -7,7 +7,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,8 +29,6 @@ import com.soya.launcher.http.HttpRequest;
 import com.soya.launcher.http.ServiceRequest;
 import com.soya.launcher.ui.dialog.KeyboardDialog;
 import com.soya.launcher.utils.PreferencesUtils;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;

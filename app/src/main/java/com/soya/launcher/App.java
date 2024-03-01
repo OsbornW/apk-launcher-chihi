@@ -1,19 +1,14 @@
 package com.soya.launcher;
 
 import android.app.Application;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.open.system.SystemUtils;
 import com.soya.launcher.bean.AppItem;
 import com.soya.launcher.bean.CacheWeather;
 import com.soya.launcher.bean.Movice;
@@ -34,39 +29,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
-
-import okhttp3.OkHttpClient;
-
 public class App extends Application {
-    //修改渠道信息，修改build.gradle
-    //0虹信 1爱泊优投影仪 2爱泊优TV //3 TV-X98K
-    public static final boolean IS_TEST = false;
-    public static final int COMPANY = 3;
-    public static final String USER_ID = "62";
-
-    //宏信
-    /*public static final String CHANNEL = "LA27001";
-    public static final String CHIHI_TYPE = "H700";
-    public static final String MODEL = "cupid";*/
-
-    //爱泊优 投影仪
-    /*public static final String CHANNEL = "LA22001";
-    public static final String CHIHI_TYPE = "PROJECTOR_001";
-    public static final String MODEL = "001";*/
-
-    //爱泊优 TV
-    /*public static final String CHANNEL = "LA22001";
-    public static final String CHIHI_TYPE = "TV_001";
-    public static final String MODEL = "001";*/
-
-    //X98K
-    public static final String CHANNEL = "LA23001";
-    public static final String CHIHI_TYPE = "X98K";
-    public static final String MODEL = "001";
-
-    public static final String APPID = "launcher";
     public static final Map<Integer, List<Movice>> MOVIE_MAP = new ConcurrentHashMap<>();
     public static final CacheWeather WEATHER = new CacheWeather();
     public static final List<Wallpaper> WALLPAPERS = new ArrayList<>();

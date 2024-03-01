@@ -1,34 +1,22 @@
 package com.soya.launcher.ui.fragment;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.ResolveInfo;
-import android.content.res.Configuration;
-import android.graphics.drawable.BitmapDrawable;
-import android.hardware.input.InputManager;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.InputDevice;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,12 +27,10 @@ import androidx.leanback.widget.HorizontalGridView;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.open.system.SystemUtils;
 import com.soya.launcher.App;
@@ -52,10 +38,8 @@ import com.soya.launcher.BuildConfig;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.AdsAdapter;
 import com.soya.launcher.adapter.AppListAdapter;
-import com.soya.launcher.adapter.BannerAdapter;
 import com.soya.launcher.adapter.MainContentAdapter;
 import com.soya.launcher.adapter.MainHeaderAdapter;
-import com.soya.launcher.adapter.ProjectorAdapter;
 import com.soya.launcher.adapter.SettingAdapter;
 import com.soya.launcher.adapter.StoreAdapter;
 import com.soya.launcher.bean.Ads;
@@ -70,6 +54,7 @@ import com.soya.launcher.bean.SettingItem;
 import com.soya.launcher.bean.TypeItem;
 import com.soya.launcher.bean.Version;
 import com.soya.launcher.bean.WeatherData;
+import com.soya.launcher.config.Config;
 import com.soya.launcher.decoration.HSlideMarginDecoration;
 import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.IntentAction;
@@ -90,8 +75,6 @@ import com.soya.launcher.ui.activity.MoviceListActivity;
 import com.soya.launcher.ui.activity.ScaleScreenActivity;
 import com.soya.launcher.ui.activity.SearchActivity;
 import com.soya.launcher.ui.activity.SettingActivity;
-import com.soya.launcher.ui.activity.UpgradeActivity;
-import com.soya.launcher.ui.activity.WallpaperActivity;
 import com.soya.launcher.ui.activity.WeatherActivity;
 import com.soya.launcher.ui.activity.WifiListActivity;
 import com.soya.launcher.ui.dialog.AppDialog;
@@ -101,10 +84,6 @@ import com.soya.launcher.utils.AppUtils;
 import com.soya.launcher.utils.FileUtils;
 import com.soya.launcher.utils.PreferencesUtils;
 import com.soya.launcher.utils.StringUtils;
-import com.soya.launcher.view.BannerLinearLayoutManager;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileReader;
@@ -114,7 +93,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -185,7 +163,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 new TypeItem(getString(R.string.apps), R.drawable.app_list, Types.TYPE_MY_APPS),
         }));
 
-        if (App.COMPANY == 0){
+        if (Config.COMPANY == 0){
             items.add(new TypeItem(getString(R.string.pojector), R.drawable.projector, Types.TYPE_PROJECTOR));
         }
 
@@ -320,7 +298,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void uidPull(){
-        if (!App.IS_TEST) HttpRequest.uidPull(AppInfo.newInfo(getActivity()));
+        if (!Config.IS_TEST) HttpRequest.uidPull(AppInfo.newInfo(getActivity()));
     }
 
     private void setHeader(List<TypeItem> items){
@@ -560,7 +538,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         }else if (v.equals(mSearchView)){
             startActivity(new Intent(getActivity(), SearchActivity.class));
         }else if (v.equals(mWifiView)){
-            if (App.COMPANY == 3){
+            if (Config.COMPANY == 3) {
                 AndroidSystem.openWifiSetting(getActivity());
             }else {
                 startActivity(new Intent(getActivity(), WifiListActivity.class));
@@ -726,7 +704,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     App.APP_STORE_ITEMS.addAll(result.getResult().getAppList());
                     setStoreContent(App.APP_STORE_ITEMS);
                 }
-            }, App.USER_ID, null, "hot", null, 1, 20);
+            }, Config.USER_ID, null, "hot", null, 1, 20);
         }else {
             setStoreContent(App.APP_STORE_ITEMS);
         }
@@ -972,7 +950,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void openApp(ApplicationInfo bean){
-        if (App.COMPANY == 1 || App.COMPANY == 2 || App.COMPANY == 3){
+        if (Config.COMPANY == 1 || Config.COMPANY == 2 || Config.COMPANY == 3){
             AndroidSystem.openPackageName(getActivity(), bean.packageName);
         }else {
             AppDialog dialog = AppDialog.newInstance(bean);
@@ -1013,7 +991,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             public void onCallback(Call call, int status, VersionResponse result) {
                 if (!isAdded() || call.isCanceled() || result == null || result.getData() == null) return;
                 Version version = result.getData();
-                if (version.getVersion() > BuildConfig.VERSION_CODE && App.CHANNEL.equals(version.getChannel())) {
+                if (version.getVersion() > BuildConfig.VERSION_CODE && Config.CHANNEL.equals(version.getChannel())) {
                     PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, (int) version.getVersion());
                     AndroidSystem.jumpUpgrade(getActivity(), version);
                 }

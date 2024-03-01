@@ -1,26 +1,16 @@
 package com.soya.launcher.ui.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,11 +25,8 @@ import com.google.gson.Gson;
 import com.soya.launcher.App;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.AppItemAdapter;
-import com.soya.launcher.adapter.AppListAdapter;
 import com.soya.launcher.adapter.FullSearchAdapter;
 import com.soya.launcher.adapter.RecommendAdapter;
-import com.soya.launcher.adapter.SearchAdapter;
-import com.soya.launcher.adapter.StoreAdapter;
 import com.soya.launcher.adapter.TextWatcherAdapter;
 import com.soya.launcher.adapter.WebAdapter;
 import com.soya.launcher.bean.AppItem;
@@ -48,6 +35,7 @@ import com.soya.launcher.bean.Movice;
 import com.soya.launcher.bean.Recommend;
 import com.soya.launcher.bean.RecommendData;
 import com.soya.launcher.bean.WebItem;
+import com.soya.launcher.config.Config;
 import com.soya.launcher.decoration.HSlideMarginDecoration;
 import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.Types;
@@ -60,9 +48,6 @@ import com.soya.launcher.ui.dialog.KeyboardDialog;
 import com.soya.launcher.ui.dialog.ToastDialog;
 import com.soya.launcher.utils.AndroidSystem;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -197,7 +182,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
                 }
 
             }
-        }, App.USER_ID, null, null, searchText, 1, 50);
+        }, Config.USER_ID, null, null, searchText, 1, 50);
     }
 
     private void setRecommenContent(List<Movice> list){
@@ -255,7 +240,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
                     App.APP_STORE_ITEMS.addAll(result.getResult().getAppList());
                     setStoreContent(App.APP_STORE_ITEMS);
                 }
-            }, App.USER_ID, "81", null, null, 1, 20);
+            }, Config.USER_ID, "81", null, null, 1, 20);
         }else {
             setStoreContent(App.APP_STORE_ITEMS);
         }

@@ -2,24 +2,11 @@ package com.soya.launcher.ui.dialog;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +15,6 @@ import androidx.annotation.Nullable;
 
 import com.soya.launcher.R;
 import com.soya.launcher.enums.Atts;
-import com.soya.launcher.utils.GlideUtils;
 
 public class AppDialog extends SingleDialogFragment implements View.OnClickListener {
     public static final String TAG = "AppDialog";

@@ -16,12 +16,8 @@
 
 package com.soya.launcher.bean;
 
-import android.Manifest;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
-import android.content.pm.PackageManager;
-
-import androidx.core.app.ActivityCompat;
 
 import java.util.regex.Pattern;
 

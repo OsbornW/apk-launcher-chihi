@@ -2,12 +2,10 @@ package com.soya.launcher.ui.fragment;
 
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.leanback.widget.ArrayObjectAdapter;
@@ -20,23 +18,19 @@ import androidx.leanback.widget.VerticalGridView;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.DateListAdapter;
 import com.soya.launcher.adapter.SettingAdapter;
-import com.soya.launcher.bean.AboutItem;
 import com.soya.launcher.bean.DateItem;
 import com.soya.launcher.bean.SettingItem;
-import com.soya.launcher.manager.PreferencesManager;
 import com.soya.launcher.ui.dialog.DatePickerDialog;
 import com.soya.launcher.ui.dialog.TimePickerDialog;
 import com.soya.launcher.ui.dialog.ToastDialog;
 import com.soya.launcher.utils.AndroidSystem;
 import com.soya.launcher.utils.AppUtils;
 
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public abstract class AbsDateFragment extends AbsFragment implements View.OnClickListener {
 

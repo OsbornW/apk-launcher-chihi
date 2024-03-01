@@ -1,7 +1,6 @@
 package com.soya.launcher.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import com.soya.launcher.R;
 import com.soya.launcher.bean.TypeItem;
 import com.soya.launcher.callback.SelectedCallback;
 import com.soya.launcher.view.MyCardView;
-import com.soya.launcher.view.MyTextView;
 
 import java.util.List;
 

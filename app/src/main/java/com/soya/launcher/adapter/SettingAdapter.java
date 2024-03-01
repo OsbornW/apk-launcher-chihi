@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.leanback.widget.Presenter;
 
 import com.soya.launcher.R;
-import com.soya.launcher.bean.Projector;
 import com.soya.launcher.bean.SettingItem;
 import com.soya.launcher.callback.SelectedCallback;
 import com.soya.launcher.view.MyFrameLayout;

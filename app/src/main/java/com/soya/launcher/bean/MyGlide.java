@@ -9,14 +9,11 @@ import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.Registry;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.stream.HttpGlideUrlLoader;
-import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.module.GlideModule;
 import com.soya.launcher.http.ssl.CustomTrustManager;
 import com.soya.launcher.http.ssl.SSLSocketClient;
 
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;

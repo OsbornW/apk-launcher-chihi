@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.open.system.ASystemProperties;
@@ -23,9 +22,6 @@ import com.soya.launcher.R;
 import com.soya.launcher.view.KeyEventFrameLayout;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class ScaleScreenFragment extends AbsFragment implements KeyEventFrameLayout.KeyEventCallback {
 

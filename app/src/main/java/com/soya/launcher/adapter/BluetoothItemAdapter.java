@@ -2,8 +2,6 @@ package com.soya.launcher.adapter;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.open.system.SystemUtils;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.BluetoothItem;
-import com.soya.launcher.bean.WifiItem;
-import com.soya.launcher.utils.AndroidSystem;
 
 import java.util.List;
 

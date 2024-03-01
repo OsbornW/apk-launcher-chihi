@@ -3,7 +3,6 @@ package com.soya.launcher.adapter;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.soya.launcher.R;
 import com.soya.launcher.bean.WifiItem;
 import com.soya.launcher.utils.AndroidSystem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WifiListAdapter extends RecyclerView.Adapter<WifiListAdapter.Holder> {

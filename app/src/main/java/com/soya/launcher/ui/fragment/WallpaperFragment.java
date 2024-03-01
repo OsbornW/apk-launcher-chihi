@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,9 +23,6 @@ import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.IntentAction;
 import com.soya.launcher.utils.GlideUtils;
 import com.soya.launcher.utils.PreferencesUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WallpaperFragment extends AbsFragment{
 

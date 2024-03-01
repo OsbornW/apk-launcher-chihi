@@ -22,7 +22,6 @@ import com.arialyy.aria.core.task.DownloadTask;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.Version;
 import com.soya.launcher.enums.Atts;
-import com.soya.launcher.enums.IntentAction;
 import com.soya.launcher.handler.PermissionHandler;
 import com.soya.launcher.manager.FilePathMangaer;
 import com.soya.launcher.ui.activity.WifiListActivity;

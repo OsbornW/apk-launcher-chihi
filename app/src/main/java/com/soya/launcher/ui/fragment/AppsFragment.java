@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +18,9 @@ import androidx.leanback.widget.FocusHighlightHelper;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 
-import com.soya.launcher.App;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.AppListAdapter;
+import com.soya.launcher.config.Config;
 import com.soya.launcher.ui.dialog.AppDialog;
 import com.soya.launcher.utils.AndroidSystem;
 
@@ -115,9 +114,9 @@ public class AppsFragment extends AbsFragment{
 
             @Override
             public void onClick(ApplicationInfo bean) {
-                if (App.COMPANY == 1 || App.COMPANY == 2 || App.COMPANY == 3){
+                if (Config.COMPANY == 1 || Config.COMPANY == 2 || Config.COMPANY == 3) {
                     AndroidSystem.openPackageName(getActivity(), bean.packageName);
-                }else {
+                } else {
                     AppDialog dialog = AppDialog.newInstance(bean);
                     dialog.setCallback(new AppDialog.Callback() {
                         @Override

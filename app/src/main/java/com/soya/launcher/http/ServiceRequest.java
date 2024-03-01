@@ -5,11 +5,10 @@ import android.os.Build;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.soya.launcher.App;
 import com.soya.launcher.bean.City;
 import com.soya.launcher.bean.MoviceList;
-import com.soya.launcher.bean.Version;
 import com.soya.launcher.bean.WeatherData;
+import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.ServiceStatus;
 import com.soya.launcher.http.response.VersionResponse;
 import com.soya.launcher.http.ssl.CustomTrustManager;
@@ -93,10 +92,10 @@ public class ServiceRequest {
 
     public Call<ResponseBody> checkVersion(Callback<VersionResponse> callback){
         Map<String, String> map = new HashMap<>();
-        map.put("appId", App.APPID);
-        map.put("channel", App.CHANNEL);
-        map.put("model", App.MODEL);
-        map.put("chihi_type", App.CHIHI_TYPE);
+        map.put("appId", Config.APPID);
+        map.put("channel", Config.CHANNEL);
+        map.put("model", Config.MODEL);
+        map.put("chihi_type", Config.CHIHI_TYPE);
         map.put("sdk", String.valueOf(Build.VERSION.SDK_INT));
         Call<ResponseBody> call = request.checkVersion(map);
         asyncRequest(call, VersionResponse.class, callback, "checkVersion");

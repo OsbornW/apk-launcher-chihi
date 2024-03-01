@@ -2,12 +2,9 @@ package com.soya.launcher.adapter;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.ResolveInfo;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,16 +13,12 @@ import androidx.leanback.widget.FocusHighlight;
 import androidx.leanback.widget.FocusHighlightHelper;
 import androidx.leanback.widget.HorizontalGridView;
 import androidx.leanback.widget.ItemBridgeAdapter;
-import androidx.leanback.widget.Presenter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.soya.launcher.R;
 import com.soya.launcher.bean.AppItem;
 import com.soya.launcher.bean.DivSearch;
-import com.soya.launcher.bean.Movice;
 import com.soya.launcher.bean.WebItem;
-import com.soya.launcher.utils.AndroidSystem;
-import com.soya.launcher.utils.GlideUtils;
 
 import java.util.List;
 

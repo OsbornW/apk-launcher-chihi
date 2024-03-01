@@ -6,10 +6,6 @@ def getTime() {
     return new Date().format("yyyyMMdd", TimeZone.getDefault());
 }
 
-def getChannelName() {
-    return "LA23001";
-}
-
 android {
     namespace 'com.soya.launcher'
     compileSdk 33
@@ -40,7 +36,7 @@ android {
         //打包应用
         android.applicationVariants.all { variant ->
             variant.outputs.all {
-                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${getChannelName()}.apk"
+                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}.apk"
             }
         }
     }
@@ -70,6 +66,7 @@ android {
 }
 
 dependencies {
+    //implementation files('libs/hslib-r0.0.2-release-LA22001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
     implementation files('libs/hslib-r0.0.2-release-LA23001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
     //implementation files('libs/hslib-r0.0.2-release-LA27001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
 
