@@ -1,2 +1,0 @@
-名称                          包名                                            版本名称         版本代码     CHANNEL                CHIHI_TYPE             MODEL
-Chihi Launcher         com.soya.launcher                           1.39                 39            LA23001                    X98K               001
