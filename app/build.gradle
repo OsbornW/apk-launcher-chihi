@@ -3,7 +3,7 @@ plugins {
 }
 
 def getTime() {
-    return new Date().format("yyyyMMdd", TimeZone.getDefault());
+    return new Date().format("yyyyMMdd_HHmm", TimeZone.getDefault());
 }
 
 def getChannel() {
