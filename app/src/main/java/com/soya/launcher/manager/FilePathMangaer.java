@@ -26,4 +26,8 @@ public class FilePathMangaer {
     public static final String getLocalDisneyPictures(Context context){
         return "picture/disney";
     }
+
+    public static final String getAppDownload(Context context) {
+        return context.getFilesDir().getAbsolutePath();
+    }
 }

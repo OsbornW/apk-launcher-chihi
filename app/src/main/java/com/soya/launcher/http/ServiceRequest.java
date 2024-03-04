@@ -12,6 +12,7 @@ import com.soya.launcher.bean.WeatherData;
 import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.ServiceStatus;
 import com.soya.launcher.http.response.HomeResponse;
+import com.soya.launcher.http.response.PushResponse;
 import com.soya.launcher.http.response.VersionResponse;
 import com.soya.launcher.http.ssl.CustomTrustManager;
 import com.soya.launcher.http.ssl.SSLSocketClient;
@@ -105,11 +106,11 @@ public class ServiceRequest {
         return call;
     }
 
-    public Call<ResponseBody> pushApps(Callback callback){
+    public Call<ResponseBody> pushApps(Callback<PushResponse> callback){
         Map<String, String> map = new HashMap<>();
         map.put("channel", Config.CHANNEL);
         Call<ResponseBody> call = request.pushApps(map);
-        asyncRequest(call, VersionResponse.class, callback, "pushApps");
+        asyncRequest(call, PushResponse.class, callback, "pushApps");
         return call;
     }
 

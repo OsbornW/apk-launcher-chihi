@@ -10,7 +10,7 @@ public class Config {
 
     //修改渠道信息，修改build.gradle
     //0、弘信 1、爱泊优投影仪 2、爱泊优TV 3、玥芯通(TV-X98K)
-    public static final int COMPANY = 3;
+    public static final int COMPANY = 0;
     public static final String USER_ID = "62";
 
     //弘信

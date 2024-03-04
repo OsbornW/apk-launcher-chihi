@@ -33,6 +33,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 import com.open.system.SystemUtils;
 import com.soya.launcher.App;
 import com.soya.launcher.BuildConfig;
@@ -52,6 +54,7 @@ import com.soya.launcher.bean.MoviceData;
 import com.soya.launcher.bean.MoviceList;
 import com.soya.launcher.bean.MyRunnable;
 import com.soya.launcher.bean.Projector;
+import com.soya.launcher.bean.PushApp;
 import com.soya.launcher.bean.SettingItem;
 import com.soya.launcher.bean.TypeItem;
 import com.soya.launcher.bean.Version;
@@ -103,7 +106,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.Response;
 import retrofit2.Call;
 
 public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
@@ -117,6 +122,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         return fragment;
     }
 
+    private final int MAX_WEATHER_TIME = 90 * 1000;
     private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ExecutorService exec = Executors.newCachedThreadPool();
     private HorizontalGridView mHeaderGrid;
@@ -148,9 +154,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private final List<TypeItem> items = new ArrayList<>();
     private final List<TypeItem> targetMenus = new ArrayList<>();
     private MyRunnable timeRunnable;
-    private MyRunnable weatherRunnable;
     private boolean isConnectFirst = false;
     private boolean isNetworkAvailable;
+    private long lastWeatherTime = -1;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,7 +198,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (weatherRunnable != null) weatherRunnable.interrupt();
         getActivity().unregisterReceiver(receiver);
         getActivity().unregisterReceiver(wallpaperReceiver);
         exec.shutdownNow();
@@ -287,7 +293,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     protected void initBind(View view, LayoutInflater inflater){
         super.initBind(view, inflater);
         fillHeader();
-        startWeather();
     }
 
     @Override
@@ -352,6 +357,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 while (!isInterrupt()){
                     SystemClock.sleep(2000);
                     syncNotify();
+                    if (lastWeatherTime <= 0 || TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastWeatherTime) > MAX_WEATHER_TIME){
+                        HttpRequest.getCityWeather(newWeatherCallback(), PreferencesManager.getCityName());
+                        lastWeatherTime = System.currentTimeMillis();
+                    }
                 }
             }
         };
@@ -388,20 +397,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private boolean isMouse(InputDevice device) {
         int sourceMask = device.getSources();
         return (sourceMask & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE;
-    }
-
-    private void startWeather(){
-        if (weatherRunnable != null) weatherRunnable.interrupt();
-        weatherRunnable = new MyRunnable() {
-            @Override
-            public void run() {
-                while (!isInterrupt()){
-                    HttpRequest.getCityWeather(newWeatherCallback(), PreferencesManager.getCityName());
-                    SystemClock.sleep(90 * 1000);
-                }
-            }
-        };
-        exec.execute(weatherRunnable);
     }
 
     private ServiceRequest.Callback<WeatherData> newWeatherCallback(){
@@ -497,8 +492,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             public void onClick(SettingItem bean) {
                 switch (bean.getType()){
                     case Projector.TYPE_SETTING:{
-                        /*boolean success = AndroidSystem.openProjectorSetting(getActivity());
-                        if (!success) Toast.makeText(getActivity(), getString(R.string.place_install_app), Toast.LENGTH_SHORT).show();*/
                         startActivity(new Intent(getActivity(), ScaleScreenActivity.class));
                     }
                         break;
