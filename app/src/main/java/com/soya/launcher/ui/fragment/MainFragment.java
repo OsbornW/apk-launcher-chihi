@@ -749,13 +749,19 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 header.addAll(items);
                 setHeader(header);
             }else {
-                List<TypeItem> header = new ArrayList<>();
-                header.add(new TypeItem(getString(R.string.netflix), R.drawable.netflix, UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_2));
-                header.add(new TypeItem(getString(R.string.disney), R.drawable.disney, UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_2));
-                header.addAll(items);
-                setHeader(header);
+                setDefault();
             }
-        }catch (Exception e){}
+        }catch (Exception e){
+            setDefault();
+        }
+    }
+
+    private void setDefault(){
+        List<TypeItem> header = new ArrayList<>();
+        header.add(new TypeItem(getString(R.string.netflix), R.drawable.netflix, UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_2));
+        header.add(new TypeItem(getString(R.string.disney), R.drawable.disney, UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_2));
+        header.addAll(items);
+        setHeader(header);
     }
 
     private List<TypeItem> fillData(HomeResponse result){
