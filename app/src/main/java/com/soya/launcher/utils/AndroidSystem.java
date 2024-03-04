@@ -41,6 +41,8 @@ import com.open.system.SystemUtils;
 import com.open.system.bean.StorageVolumeInfo;
 import com.soya.launcher.BuildConfig;
 import com.soya.launcher.R;
+import com.soya.launcher.bean.AppPackage;
+import com.soya.launcher.bean.HomeItem;
 import com.soya.launcher.bean.Version;
 import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.Atts;
@@ -457,7 +459,7 @@ public class AndroidSystem {
         }
 
         if (!success && defaultInfo != null && infos.size() != 0){
-            openActivityInfo(context, infos.get(0).activityInfo);
+            //openActivityInfo(context, infos.get(0).activityInfo);
         }
         return success;
     }
@@ -480,28 +482,13 @@ public class AndroidSystem {
         }
     }
 
-    public static boolean jumpVideoApp(Context context, int type, String url){
+    public static boolean jumpVideoApp(Context context, AppPackage[] packages, String url){
         boolean success = false;
-        switch (type){
-            case Types.TYPE_DISNEY:
-                success = AndroidSystem.jumpDisney(context, url);
-                break;
-            case Types.TYPE_NETFLIX:
-                success = AndroidSystem.jumpNetflix(context, url);
-                break;
-            case Types.TYPE_YOUTUBE:
-                success = AndroidSystem.jumpYouTube(context, url);
-                break;
-            case Types.TYPE_HULU:
-                success = AndroidSystem.jumpHulu(context, url);
-                break;
-            case Types.TYPE_MAX:
-                success = AndroidSystem.jumpMax(context, url);
-                break;
-            case Types.TYPE_PRIME_VIDEO:
-                success = AndroidSystem.jumpPrimeVideo(context, url);
-                break;
+        String[] packageArray = new String[packages.length];
+        for (int i = 0; i < packages.length; i++){
+            packageArray[i] = packages[i].getPackageName();
         }
+        success = jumpPlayer(context, packageArray, url);
         return success;
     }
 

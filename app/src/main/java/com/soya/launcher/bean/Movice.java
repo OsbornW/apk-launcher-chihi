@@ -1,27 +1,51 @@
 package com.soya.launcher.bean;
 
-public class Movice {
+import java.io.Serializable;
+
+public class Movice implements Serializable {
     public static final int PIC_ASSETS = 0;
     public static final int PIC_NETWORD = 1;
     public static final int PIC_PLACEHOLDING = 2;
 
     private int type;
-
+    private Object imageUrl;
     private String picture;
     private String url;
     private String title;
+    private String appName;
+    private AppPackage[] appPackage;
     private int picType = PIC_ASSETS;
 
-    public Movice(int type, String url, String picture, int picType){
-        this(type, "", url, picture, picType);
+    public Movice(int type, String url, String imageUrl, int picType){
+        this(type, "", url, imageUrl, picType);
     }
 
-    public Movice(int type, String title, String url, String picture, int picType){
+    public Movice(int type, String title, String url, String imageUrl, int picType){
         this.type = type;
         this.title = title;
         this.url = url;
-        this.picture = picture;
+        this.imageUrl = imageUrl;
         this.picType = picType;
+    }
+
+    public void setAppPackage(AppPackage[] appPackage) {
+        this.appPackage = appPackage;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public void setPicType(int picType) {
+        this.picType = picType;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public String getPicture() {
+        return picture;
     }
 
     public String getTitle() {
@@ -36,8 +60,12 @@ public class Movice {
         return url;
     }
 
-    public String getPicture() {
-        return picture;
+    public AppPackage[] getAppPackage() {
+        return appPackage;
+    }
+
+    public Object getImageUrl() {
+        return imageUrl;
     }
 
     public int getPicType() {

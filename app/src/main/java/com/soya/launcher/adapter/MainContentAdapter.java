@@ -60,10 +60,10 @@ public class MainContentAdapter extends Presenter {
         public void bind(Movice item){
             switch (item.getPicType()){
                 case Movice.PIC_ASSETS:
-                    GlideUtils.bind(context, mIV, AndroidSystem.getImageFromAssetsFile(context, item.getPicture()));
+                    GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) item.getImageUrl()) ? R.drawable.transparent : AndroidSystem.getImageFromAssetsFile(context, (String) item.getImageUrl()));
                     break;
                 case Movice.PIC_NETWORD:
-                    GlideUtils.bind(context, mIV, TextUtils.isEmpty(item.getPicture()) ? R.drawable.transparent : item.getPicture());
+                    GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) item.getImageUrl()) ? R.drawable.transparent : item.getImageUrl());
                     break;
                 default:
                     GlideUtils.bind(context, mIV, R.drawable.transparent);

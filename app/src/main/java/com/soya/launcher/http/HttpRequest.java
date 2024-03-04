@@ -7,6 +7,7 @@ import com.soya.launcher.bean.City;
 import com.soya.launcher.bean.MoviceList;
 import com.soya.launcher.bean.RecommendData;
 import com.soya.launcher.bean.WeatherData;
+import com.soya.launcher.http.response.HomeResponse;
 import com.soya.launcher.http.response.VersionResponse;
 
 import okhttp3.ResponseBody;
@@ -23,7 +24,7 @@ public class HttpRequest {
         appServiceRequest = new AppServiceRequest(context);
         uidRequest = new UIDRequest(context);
     }
-    public static Call<ResponseBody> getMoviceList(ServiceRequest.Callback<MoviceList[]> callback){
+    private static Call<ResponseBody> getMoviceList(ServiceRequest.Callback<MoviceList[]> callback){
         return request.getMoviceList(callback);
     }
 
@@ -49,6 +50,10 @@ public class HttpRequest {
 
     public static Call<ResponseBody> checkVersion(ServiceRequest.Callback<VersionResponse> callback){
         return request.checkVersion(callback);
+    }
+
+    public static Call<ResponseBody> getHomeContents(ServiceRequest.Callback<HomeResponse> callback){
+        return request.getHomeContents(callback);
     }
 
     public static Call<ResponseBody> uidPull(AppInfo bean){

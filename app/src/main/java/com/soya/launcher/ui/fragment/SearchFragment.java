@@ -185,17 +185,6 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
         }, Config.USER_ID, null, null, searchText, 1, 50);
     }
 
-    private void setRecommenContent(List<Movice> list){
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new RecommendAdapter(getActivity(), getLayoutInflater(), newRecommendClickCallback()));
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-        mRecommendGrid.setAdapter(itemBridgeAdapter);
-
-        mTitleView.setText(getString(R.string.recommend_for_you, list.size()));
-        arrayObjectAdapter.addAll(0, list);
-        requestFocus(mDivSearch);
-    }
-
     private WebAdapter.Callback newWebCallback(){
         return new WebAdapter.Callback() {
             @Override
@@ -255,18 +244,6 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
         arrayObjectAdapter.addAll(0, list);
     }
 
-    private RecommendAdapter.Callback newRecommendClickCallback(){
-        return new RecommendAdapter.Callback() {
-            @Override
-            public void onClick(Movice bean) {
-                boolean success = AndroidSystem.jumpVideoApp(getActivity(), bean.getType(), bean.getUrl());
-                if (!success) {
-                    toastInstall();
-                }
-            }
-        };
-    }
-
     private void toastInstall(){
         ToastDialog dialog = ToastDialog.newInstance(getString(R.string.place_install_app));
         dialog.show(getChildFragmentManager(), ToastDialog.TAG);
@@ -282,26 +259,6 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
             @Override
             public void onClick(AppItem bean) {
                 if (!TextUtils.isEmpty(bean.getAppDownLink())) AndroidSystem.jumpAppStore(getActivity(), new Gson().toJson(bean));
-            }
-        };
-    }
-
-    private RecommendServiceRequest.Callback<RecommendData> newRecommendSearchCallback(int type){
-        return new RecommendServiceRequest.Callback<RecommendData>() {
-            @Override
-            public void onCallback(Call call, int status, RecommendData result) {
-                if (!isAdded() || call.isCanceled() || result == null) return;
-
-                List<Movice> list = new ArrayList<>();
-                for (Recommend item : result.getItems()){
-                    if (item.getSnippet().getThumbnails().getStandard() == null) continue;
-                    list.add(new Movice(Types.TYPE_YOUTUBE, item.getSnippet().getTitle(), Url.conformity(Url.YOUTUBE_PLAY, item.getId()), item.getSnippet().getThumbnails().getStandard().getUrl(), Movice.PIC_NETWORD));
-                }
-                switch (type){
-                    case 0:
-                        setRecommenContent(list);
-                        break;
-                }
             }
         };
     }

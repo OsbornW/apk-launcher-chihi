@@ -5,11 +5,13 @@ import android.os.Build;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.soya.launcher.BuildConfig;
 import com.soya.launcher.bean.City;
 import com.soya.launcher.bean.MoviceList;
 import com.soya.launcher.bean.WeatherData;
 import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.ServiceStatus;
+import com.soya.launcher.http.response.HomeResponse;
 import com.soya.launcher.http.response.VersionResponse;
 import com.soya.launcher.http.ssl.CustomTrustManager;
 import com.soya.launcher.http.ssl.SSLSocketClient;
@@ -96,11 +98,29 @@ public class ServiceRequest {
         map.put("channel", Config.CHANNEL);
         map.put("model", Config.MODEL);
         map.put("chihi_type", Config.CHIHI_TYPE);
+        map.put("version", String.valueOf(BuildConfig.VERSION_CODE));
         map.put("sdk", String.valueOf(Build.VERSION.SDK_INT));
         Call<ResponseBody> call = request.checkVersion(map);
         asyncRequest(call, VersionResponse.class, callback, "checkVersion");
         return call;
     }
+
+    public Call<ResponseBody> pushApps(Callback callback){
+        Map<String, String> map = new HashMap<>();
+        map.put("channel", Config.CHANNEL);
+        Call<ResponseBody> call = request.pushApps(map);
+        asyncRequest(call, VersionResponse.class, callback, "pushApps");
+        return call;
+    }
+
+    public Call<ResponseBody> getHomeContents(Callback<HomeResponse> callback){
+        Map<String, String> map = new HashMap<>();
+        map.put("channel", Config.CHANNEL);
+        Call<ResponseBody> call = request.getHomeContents(map);
+        asyncRequest(call, HomeResponse.class, callback, "getHomeContents");
+        return call;
+    }
+
 
     public <T> void asyncRequest(Call<ResponseBody> call, Class<T> tClass, Callback<T> callback, String tag){
         call.enqueue(new retrofit2.Callback<ResponseBody>() {

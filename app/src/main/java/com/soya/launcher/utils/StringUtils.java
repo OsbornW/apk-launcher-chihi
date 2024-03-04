@@ -63,31 +63,6 @@ public class StringUtils {
         return bd.doubleValue();
     }
 
-    public static String getMoviceCollectionTitle(Context context, int type){
-        String title = "";
-        switch (type){
-            case Types.TYPE_NETFLIX:
-                title = context.getString(R.string.netflix);
-                break;
-            case Types.TYPE_YOUTUBE:
-                title = context.getString(R.string.youtube);
-                break;
-            case Types.TYPE_DISNEY:
-                title = context.getString(R.string.disney);
-                break;
-            case Types.TYPE_MAX:
-                title = context.getString(R.string.max);
-                break;
-            case Types.TYPE_HULU:
-                title = context.getString(R.string.hulu);
-                break;
-            case Types.TYPE_PRIME_VIDEO:
-                title = context.getString(R.string.prime_video);
-                break;
-        }
-        return title;
-    }
-
     public static String dayToWeek(Context context, int type){
         String name = context.getString(R.string.sunday);
         switch (type){

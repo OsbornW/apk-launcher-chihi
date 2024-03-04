@@ -40,7 +40,12 @@ public interface ServiceHttp {
     @POST(Url.APP_LIST)
     Call<ResponseBody> appList(@FieldMap Map<String, String> map, @QueryMap Map<String, String> query);
 
-
     @POST(Url.UID_PULL)
     Call<ResponseBody> uidPull(@Body Map<String, String> map);
+
+    @GET(Url.PUSH_APPS)
+    Call<ResponseBody> pushApps(@QueryMap Map<String, String> map);
+
+    @GET(Url.HOME_MAIN_CONTENT)
+    Call<ResponseBody> getHomeContents(@QueryMap Map<String, String> map);
 }

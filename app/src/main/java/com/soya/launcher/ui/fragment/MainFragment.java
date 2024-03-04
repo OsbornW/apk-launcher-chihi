@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.InputDevice;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,7 @@ import com.soya.launcher.adapter.StoreAdapter;
 import com.soya.launcher.bean.Ads;
 import com.soya.launcher.bean.AppInfo;
 import com.soya.launcher.bean.AppItem;
+import com.soya.launcher.bean.HomeItem;
 import com.soya.launcher.bean.Movice;
 import com.soya.launcher.bean.MoviceData;
 import com.soya.launcher.bean.MoviceList;
@@ -64,6 +66,7 @@ import com.soya.launcher.http.HttpRequest;
 import com.soya.launcher.http.ServiceRequest;
 import com.soya.launcher.http.Url;
 import com.soya.launcher.http.response.AppListResponse;
+import com.soya.launcher.http.response.HomeResponse;
 import com.soya.launcher.http.response.VersionResponse;
 import com.soya.launcher.manager.FilePathMangaer;
 import com.soya.launcher.manager.PreferencesManager;
@@ -132,11 +135,9 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private View mHelpView;
     private TextView mTestView;
 
-    private View mLanView;
     private View mBluetoothView;
     private View mSdCardView;
     private View mAPView;
-    private View mNetwordView;
 
     private Handler uiHandler;
     private String uuid;
@@ -159,12 +160,12 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         wallpaperReceiver = new WallpaperReceiver();
 
         items.addAll(Arrays.asList(new TypeItem[]{
-                new TypeItem(getString(R.string.app_store), R.drawable.store, Types.TYPE_APP_STORE),
-                new TypeItem(getString(R.string.apps), R.drawable.app_list, Types.TYPE_MY_APPS),
+                new TypeItem(getString(R.string.app_store), R.drawable.store, 0, Types.TYPE_APP_STORE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW),
+                new TypeItem(getString(R.string.apps), R.drawable.app_list, 0, Types.TYPE_MY_APPS, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW),
         }));
 
         if (Config.COMPANY == 0){
-            items.add(new TypeItem(getString(R.string.pojector), R.drawable.projector, Types.TYPE_PROJECTOR));
+            items.add(new TypeItem(getString(R.string.pojector), R.drawable.projector, 0, Types.TYPE_PROJECTOR, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW));
         }
 
         IntentFilter filter = new IntentFilter();
@@ -257,11 +258,9 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mTimeView = view.findViewById(R.id.loop_time);
         mHelpView = view.findViewById(R.id.help);
         mTestView = view.findViewById(R.id.test);
-        mLanView = view.findViewById(R.id.lan);
         mBluetoothView = view.findViewById(R.id.bluetooth);
         mSdCardView = view.findViewById(R.id.sd_card);
         mAPView = view.findViewById(R.id.ap);
-        mNetwordView = view.findViewById(R.id.netword);
 
         mHorizontalContentGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
         mHeaderGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
@@ -288,7 +287,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     protected void initBind(View view, LayoutInflater inflater){
         super.initBind(view, inflater);
         fillHeader();
-        fillMovice(Types.TYPE_NETFLIX, 0, 0, R.layout.holder_content);
         startWeather();
     }
 
@@ -319,13 +317,13 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
         FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_SMALL, false);
         switch (direction){
-            case 0:
+            case 1:
                 mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
                 mVerticalContentGrid.setVisibility(View.GONE);
                 mHorizontalContentGrid.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
                 break;
-            case 1:
+            case 0:
                 if (list.size() > columns * 2){
                     list = list.subList(0, columns * 2);
                 }
@@ -369,13 +367,15 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 boolean old = isNetworkAvailable;
                 isNetworkAvailable = AndroidSystem.isNetworkAvailable(getActivity());
                 if (isNetworkAvailable != old && isNetworkAvailable) uidPull();
-                mWifiView.setImageResource(isNetworkAvailable ? R.drawable.baseline_wifi_100 : R.drawable.baseline_wifi_off_100);
-                mLanView.setVisibility(AndroidSystem.isEthernetConnected(getActivity()) ? View.VISIBLE : View.GONE);
+                if (AndroidSystem.isEthernetConnected(getActivity())){
+                    mWifiView.setImageResource(R.drawable.baseline_lan_100);
+                }else {
+                    mWifiView.setImageResource(isNetworkAvailable ? R.drawable.baseline_wifi_100 : R.drawable.baseline_wifi_off_100);
+                }
                 mBluetoothView.setVisibility(bluetoothAdapter != null && bluetoothAdapter.isEnabled() ? View.VISIBLE : View.GONE);
                 HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) getActivity().getSystemService(Context.USB_SERVICE)).getDeviceList();
                 mSdCardView.setVisibility(!deviceHashMap.isEmpty() ? View.VISIBLE : View.GONE);
                 mAPView.setVisibility(SystemUtils.isApEnable(getActivity()) ? View.VISIBLE : View.GONE);
-                mNetwordView.setVisibility(isNetworkAvailable ? View.VISIBLE : View.GONE);
             }
         });
     }
@@ -550,19 +550,19 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         }
     }
 
-    private void work(final String flag, final int type){
+    private void work(final String flag, final TypeItem bean){
         uiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (flag.equals(uuid)){
-                    selectWork(type);
+                    selectWork(bean);
                 }
             }
         }, 120);
     }
 
-    private void selectWork(int type){
-        switch (type){
+    private void selectWork(TypeItem bean){
+        switch (bean.getType()){
             case Types.TYPE_MY_APPS:{
                 fillApps();
             }
@@ -609,7 +609,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             }
             break;
             default:
-                switchMovice(type);
+                switchMovice(bean);
         }
     }
 
@@ -618,14 +618,13 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             @Override
             public void onClick(TypeItem bean) {
                 switch (bean.getType()){
-                    case Types.TYPE_HULU:
-                    case Types.TYPE_MAX:
-                    case Types.TYPE_PRIME_VIDEO:
-                    case Types.TYPE_DISNEY:
-                    case Types.TYPE_NETFLIX:
-                    case Types.TYPE_YOUTUBE:{
+                    case Types.TYPE_MOVICE:{
+                        if (!App.MOVIE_MAP.containsKey(bean.getId())){
+                            toast(getString(R.string.place_waiting), ToastDialog.MODE_CONFIRM,null);
+                            break;
+                        }
                         Intent intent = new Intent(getActivity(), MoviceListActivity.class);
-                        intent.putExtra(Atts.TYPE, bean.getType());
+                        intent.putExtra(Atts.BEAN, bean);
                         startActivity(intent);
                     }
                         break;
@@ -649,7 +648,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     try {
                         if (call != null) call.cancel();
                         uuid = UUID.randomUUID().toString();
-                        work(uuid, bean.getType());
+                        work(uuid, bean);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -659,25 +658,41 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void toastInstall(){
-        toastInstall(getString(R.string.place_install_app), null);
+        toast(getString(R.string.place_install_app), ToastDialog.MODE_DEFAULT, null);
     }
 
     private void toastInstallApp(String name, ToastDialog.Callback callback){
-        toastInstall(getString(R.string.place_install, name), callback);
+        toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback);
     }
 
-    private void toastInstall(String title, ToastDialog.Callback callback){
-        ToastDialog dialog = ToastDialog.newInstance(title);
+    private void toast(String title, int mode, ToastDialog.Callback callback){
+        ToastDialog dialog = ToastDialog.newInstance(title, mode);
         dialog.setCallback(callback);
         dialog.show(getChildFragmentManager(), ToastDialog.TAG);
     }
 
-    private void fillMovice(int type, int dirction, int columns, int layoutId){
-        if (App.MOVIE_MAP.containsKey(type) && isConnectFirst){
-            setMoviceContent(App.MOVIE_MAP.get(type), dirction, columns, layoutId);
+    private void fillMovice(TypeItem bean){
+        int layoutId = R.layout.holder_content;
+        int columns = 1;
+        switch (bean.getLayoutType()){
+            case 1:
+                columns = 0;
+                layoutId = R.layout.holder_content;
+                break;
+            case 0:
+                columns = 4;
+                layoutId = R.layout.holder_content_4;
+                break;
+        }
+        fillMovice(bean.getId(), bean.getLayoutType(), columns, layoutId);
+    }
+
+    private void fillMovice(long id, int dirction, int columns, int layoutId){
+        if (App.MOVIE_MAP.containsKey(id) && isConnectFirst){
+            setMoviceContent(App.MOVIE_MAP.get(id), dirction, columns, layoutId);
         }else {
-            setMoviceContent(App.MOVIE_MAP.containsKey(type) ? App.MOVIE_MAP.get(type) : getPlaceholdings(), dirction, columns, layoutId);
-            call = HttpRequest.getMoviceList(newMoviceListCallback(type));
+            setMoviceContent(App.MOVIE_MAP.containsKey(id) ? App.MOVIE_MAP.get(id) : getPlaceholdings(), dirction, columns, layoutId);
+            call = HttpRequest.getHomeContents(newMoviceListCallback());
         }
     }
 
@@ -736,90 +751,34 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         try {
             String path = FilePathMangaer.getJsonPath(getActivity()) + "/Home.json";
             if (new File(path).exists()){
-                MoviceList[] result = new Gson().fromJson(new JsonReader(new FileReader(path)), MoviceList[].class);
+                HomeResponse result = new Gson().fromJson(new JsonReader(new FileReader(path)), HomeResponse.class);
                 List<TypeItem> header = fillData(result);
                 header.addAll(items);
                 setHeader(header);
             }else {
                 List<TypeItem> header = new ArrayList<>();
-                header.add(new TypeItem(getString(R.string.netflix), R.drawable.netflix, Types.TYPE_NETFLIX));
-                header.add(new TypeItem(getString(R.string.disney), R.drawable.disney, Types.TYPE_DISNEY));
+                header.add(new TypeItem(getString(R.string.netflix), R.drawable.netflix, UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_2));
+                header.add(new TypeItem(getString(R.string.disney), R.drawable.disney, UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_2));
                 header.addAll(items);
                 setHeader(header);
             }
         }catch (Exception e){}
     }
 
-    private List<TypeItem> fillData(MoviceList[] result){
-        Map<Integer, TypeItem> itemMap = new LinkedHashMap<>();
-        for (MoviceList child : result){
-            List<Movice> youtubes = new ArrayList<>();
-            List<Movice> netflixs = new ArrayList<>();
-            List<Movice> disneys = new ArrayList<>();
-            List<Movice> hulus = new ArrayList<>();
-            List<Movice> maxs = new ArrayList<>();
-            List<Movice> primes = new ArrayList<>();
-
-            if (child.getYoutube() != null){
-                itemMap.put(Types.TYPE_YOUTUBE, new TypeItem(getString(R.string.youtube), R.drawable.youtube, Types.TYPE_YOUTUBE));
-                for (MoviceData item : child.getYoutube()){
-                    youtubes.add(new Movice(Types.TYPE_YOUTUBE, Url.conformity(Url.YOUTUBE_PLAY, item.getVideoId()), item.getThumbnailMap().get("high"), Movice.PIC_NETWORD));
-                }
-            }
-
-            MoviceList.Inner inner = child.getOthers();
-            if (inner != null){
-               if (inner.getDisney() != null){
-                   itemMap.put(Types.TYPE_DISNEY, new TypeItem(getString(R.string.disney), R.drawable.disney, Types.TYPE_DISNEY));
-                   for (MoviceData item : inner.getDisney()){
-                       disneys.add(new Movice(Types.TYPE_DISNEY, Url.conformity(Url.DISNEY_PLAY, item.getDisney_id()), item.getMain_img(), Movice.PIC_NETWORD));
-                   }
-               }
-
-                if (inner.getMax() != null){
-                    itemMap.put(Types.TYPE_MAX, new TypeItem(getString(R.string.max), R.drawable.max, Types.TYPE_MAX));
-                    for (MoviceData item : inner.getMax()){
-                        maxs.add(new Movice(Types.TYPE_MAX, Url.conformity(Url.MAX_PLAY, item.getMax_id()), item.getDefault_image(), Movice.PIC_NETWORD));
-                    }
-                }
-
-                if (inner.getHulu() != null){
-                    itemMap.put(Types.TYPE_HULU, new TypeItem(getString(R.string.hulu), R.drawable.hulu, Types.TYPE_HULU));
-                    for (MoviceData item : inner.getHulu()){
-                        hulus.add(new Movice(Types.TYPE_HULU, Url.conformity(Url.HULU_PLAY, item.getHulu_id()), item.getDefault_image(), Movice.PIC_NETWORD));
-                    }
-                }
-
-                if (inner.getPrime_video() != null){
-                    itemMap.put(Types.TYPE_PRIME_VIDEO, new TypeItem(getString(R.string.prime_video), R.drawable.prime_video, Types.TYPE_PRIME_VIDEO));
-                    for (MoviceData item : inner.getPrime_video()){
-                        primes.add(new Movice(Types.TYPE_PRIME_VIDEO, Url.conformity(Url.PRIME_VIDEO_PLAY, item.getPrime_videoid()), item.getDefault_image(), Movice.PIC_NETWORD));
-                    }
-                }
-
-                if (inner.getNetflix() != null){
-                    itemMap.put(Types.TYPE_NETFLIX, new TypeItem(getString(R.string.netflix), R.drawable.netflix, Types.TYPE_NETFLIX));
-                    for (MoviceData item : inner.getNetflix()){
-                        netflixs.add(new Movice(Types.TYPE_NETFLIX, Url.conformity(Url.NETFLIX_PLAY, item.getNetflix_id()), item.getLarge_image(), Movice.PIC_NETWORD));
-                    }
-                }
-            }
-
-            if (netflixs.size() != 0) App.MOVIE_MAP.put(Types.TYPE_NETFLIX, netflixs);
-            if (disneys.size() != 0) App.MOVIE_MAP.put(Types.TYPE_DISNEY, disneys);
-            if (youtubes.size() != 0) App.MOVIE_MAP.put(Types.TYPE_YOUTUBE, youtubes);
-            if (maxs.size() != 0) App.MOVIE_MAP.put(Types.TYPE_MAX, maxs);
-            if (hulus.size() != 0) App.MOVIE_MAP.put(Types.TYPE_HULU, hulus);
-            if (primes.size() != 0) App.MOVIE_MAP.put(Types.TYPE_PRIME_VIDEO, primes);
-        }
-
+    private List<TypeItem> fillData(HomeResponse result){
+        List<HomeItem> homeItems = result.getData().getMovies();
         List<TypeItem> menus = new ArrayList<>();
-        for (Map.Entry<Integer, TypeItem> entry : itemMap.entrySet()) {
-            if (entry.getKey() == Types.TYPE_NETFLIX || entry.getKey() == Types.TYPE_MAX){
-                menus.add(0, entry.getValue());
-            }else {
-                menus.add(entry.getValue());
+        for (HomeItem bean : homeItems){
+            List<Movice> movices = new ArrayList<>(bean.getDatas().length);
+            for (Movice movice : bean.getDatas()){
+                movice.setPicType(Movice.PIC_NETWORD);
+                movice.setAppName(bean.getName());
+                movice.setAppPackage(bean.getPackageNames());
+                movices.add(movice);
             }
+            TypeItem item = new TypeItem(bean.getName(), bean.getIcon(), UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, TypeItem.TYPE_ICON_IMAGE_URL, bean.getType());
+            App.MOVIE_MAP.put(item.getId(), movices);
+            menus.add(item);
         }
         return menus;
     }
@@ -842,15 +801,14 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         return new MainContentAdapter.Callback() {
             @Override
             public void onClick(Movice bean) {
-                boolean success = AndroidSystem.jumpVideoApp(getActivity(), bean.getType(), bean.getUrl());
+                boolean success = AndroidSystem.jumpVideoApp(getActivity(), bean.getAppPackage(), bean.getUrl());
                 if (!success) {
-                    String title = StringUtils.getMoviceCollectionTitle(getActivity(), bean.getType());
-                    toastInstallApp(title, new ToastDialog.Callback() {
+                    toastInstallApp(bean.getAppName(), new ToastDialog.Callback() {
                         @Override
                         public void onClick(int type) {
                             if (type == 1){
                                 Intent intent = new Intent(getActivity(), SearchActivity.class);
-                                intent.putExtra(Atts.WORD, title);
+                                intent.putExtra(Atts.WORD, bean.getAppName());
                                 startActivity(intent);
                             }
                         }
@@ -867,10 +825,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         };
     }
 
-    private ServiceRequest.Callback<MoviceList[]> newMoviceListCallback(final int type){
-        return new ServiceRequest.Callback<MoviceList[]>() {
+    private ServiceRequest.Callback<HomeResponse> newMoviceListCallback(){
+        return new ServiceRequest.Callback<HomeResponse>() {
             @Override
-            public void onCallback(Call call, int status, MoviceList[] result) {
+            public void onCallback(Call call, int status, HomeResponse result) {
                 try {
                     if (!isAdded() || call.isCanceled() || result == null) return;
 
@@ -897,7 +855,8 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     }
                     isConnectFirst = true;
 
-                    switchMovice(type);
+                    TypeItem item = header.get(0);
+                    fillMovice(item);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -905,33 +864,8 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         };
     }
 
-    private void switchMovice(int type){
-        switch (type) {
-            case Types.TYPE_NETFLIX: {
-                fillMovice(type, 0, 0, R.layout.holder_content);
-            }
-            break;
-            case Types.TYPE_DISNEY: {
-                fillMovice(type, 1, 4, R.layout.holder_content_4);
-            }
-            break;
-            case Types.TYPE_YOUTUBE: {
-                fillMovice(type, 1, 4, R.layout.holder_content_4);
-            }
-            break;
-            case Types.TYPE_MAX: {
-                fillMovice(type, 0, 0, R.layout.holder_content);
-            }
-            break;
-            case Types.TYPE_HULU: {
-                fillMovice(type, 1, 4, R.layout.holder_content_4);
-            }
-            break;
-            case Types.TYPE_PRIME_VIDEO: {
-                fillMovice(type, 1, 4, R.layout.holder_content_4);
-            }
-            break;
-        }
+    private void switchMovice(TypeItem bean){
+        fillMovice(bean);
     }
 
     private AppListAdapter.Callback newAppListCallback(){

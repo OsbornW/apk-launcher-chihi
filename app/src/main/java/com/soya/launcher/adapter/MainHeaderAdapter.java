@@ -13,6 +13,7 @@ import androidx.leanback.widget.Presenter;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.TypeItem;
 import com.soya.launcher.callback.SelectedCallback;
+import com.soya.launcher.utils.GlideUtils;
 import com.soya.launcher.view.MyCardView;
 
 import java.util.List;
@@ -69,9 +70,6 @@ public class MainHeaderAdapter extends Presenter {
         public void bind(TypeItem item){
             mTitleView.setBackgroundResource(R.drawable.light_item);
             mTitleView.setTextColor(context.getColorStateList(R.color.text_selector_color_1));
-            if (item.getColor() != -1){
-                mIV.setBackgroundColor(context.getColor(item.getColor()));
-            }
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -86,7 +84,13 @@ public class MainHeaderAdapter extends Presenter {
                 }
             });
 
-            mIV.setImageResource(item.getPicture());
+            switch (item.getIconType()){
+                case TypeItem.TYPE_ICON_IMAGE_RES:
+                    mIV.setImageResource((Integer) item.getIcon());
+                    break;
+                default:
+                    GlideUtils.bind(context, mIV, item.getIcon());
+            }
             mTitleView.setText(item.getName());
         }
 

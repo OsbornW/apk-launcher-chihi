@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class App extends Application {
-    public static final Map<Integer, List<Movice>> MOVIE_MAP = new ConcurrentHashMap<>();
+    public static final Map<Long, List<Movice>> MOVIE_MAP = new ConcurrentHashMap<>();
     public static final CacheWeather WEATHER = new CacheWeather();
     public static final List<Wallpaper> WALLPAPERS = new ArrayList<>();
     public static final List<AppItem> APP_STORE_ITEMS = new CopyOnWriteArrayList<>();
