@@ -4,10 +4,8 @@ import java.nio.charset.StandardCharsets
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-id 'com.android.application' version '8.1.2' apply false
+    id 'com.android.application' version '8.1.2' apply false
 }
-
-
 
 gradle.buildFinished {
     Gson gson = new Gson()
@@ -25,17 +23,21 @@ gradle.buildFinished {
         data.put("chihi_type", buildField.manifestPlaceholders.chihi_type);
         data.put("model", buildField.manifestPlaceholders.model);
 
-        def projectDir = project.rootDir
+        android.applicationVariants.all { variant ->
+            if (variant.buildType.name == 'release') {
+                def fileName = "readme.json"
 
-        def buildPath = new File(projectDir, "app/release")
-        createPath(buildPath)
-        def dstFile = new File(buildPath, "/readme.json")
-        println dstFile
+                def projectDir = project.rootDir
+                def buildPath = new File(projectDir, "app/" + variant.buildType.name)
+                createPath(buildPath)
+                def dstFile = new File(buildPath, "/" + fileName)
 
-        def json = gson.toJson(data)
-        FileOutputStream fos = new FileOutputStream(dstFile)
-        fos.write(json.getBytes(StandardCharsets.UTF_8));
-        fos.close();
+                FileOutputStream fos = new FileOutputStream(dstFile)
+                def json = gson.toJson(data)
+                fos.write(json.getBytes(StandardCharsets.UTF_8));
+                fos.close();
+            }
+        }
     }
 }
 
