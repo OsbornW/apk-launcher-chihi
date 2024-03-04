@@ -459,7 +459,8 @@ public class AndroidSystem {
         }
 
         if (!success && defaultInfo != null && infos.size() != 0){
-            //openActivityInfo(context, infos.get(0).activityInfo);
+            success = true;
+            openActivityInfo(context, infos.get(0).activityInfo);
         }
         return success;
     }

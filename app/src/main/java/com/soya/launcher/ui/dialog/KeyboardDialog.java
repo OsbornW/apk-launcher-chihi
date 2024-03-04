@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -66,6 +67,23 @@ public class KeyboardDialog extends SingleDialogFragment implements KeyboardAdap
     protected void initBefore(LayoutInflater inflater, View view) {
         super.initBefore(inflater, view);
         mAdapter.setCallback(this);
+        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP){
+                    if (event.getUnicodeChar() == 0){
+                        switch (keyCode){
+                            case KeyEvent.KEYCODE_DEL:
+                                del();
+                                break;
+                        }
+                    }else {
+                        mTargetView.append(String.valueOf(event.getDisplayLabel()));
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -144,8 +162,7 @@ public class KeyboardDialog extends SingleDialogFragment implements KeyboardAdap
                 mAdapter.setUPCase(!mAdapter.isUPCase());
                 break;
             case KeyItem.TYPE_DEL:
-                int len = mTargetView.getText().length();
-                if (len != 0) mTargetView.setText(mTargetView.getText().subSequence(0, len - 1));
+                del();
                 break;
             case KeyItem.TYPE_SEARCH:
                 mTargetView.onEditorAction(EditorInfo.IME_ACTION_DONE);
@@ -153,6 +170,11 @@ public class KeyboardDialog extends SingleDialogFragment implements KeyboardAdap
             default:
                 mTargetView.append(text);
         }
+    }
+
+    private void del(){
+        int len = mTargetView.getText().length();
+        if (len != 0) mTargetView.setText(mTargetView.getText().subSequence(0, len - 1));
     }
 
     @Override
