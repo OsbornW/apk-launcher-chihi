@@ -1,7 +1,3 @@
-import com.google.gson.Gson
-
-import java.nio.charset.StandardCharsets
-
 plugins {
     id 'com.android.application'
 }
@@ -86,14 +82,6 @@ android {
     lintOptions {
         abortOnError false
     }
-
-    task genRawJson() {
-        doLast {
-            println "genRawJson"
-            writeRawJson()
-        }
-    }
-    genRawJson.dependsOn(build)
 }
 
 dependencies {
@@ -120,45 +108,6 @@ dependencies {
 
 def getTime() {
     return new Date().format("yyyyMMdd_HHmm", TimeZone.getDefault());
-}
-
-def createPath(file) {
-    if (!file.exists()) {
-        file.mkdirs();
-    }
-}
-
-def writeRawJson() {
-    try {
-        Gson gson = new Gson();
-        Map<String, String> data = new HashMap<>();
-        data.put("appId", android.defaultConfig.manifestPlaceholders.getAt("appId"));
-        data.put("packageName", android.defaultConfig.applicationId);
-        data.put("versionName", android.defaultConfig.versionName);
-        data.put("version", android.defaultConfig.versionCode);
-        data.put("channel", android.defaultConfig.manifestPlaceholders.getAt("channel"));
-        data.put("chihi_type", android.defaultConfig.manifestPlaceholders.getAt("chihi_type"));
-        data.put("model", android.defaultConfig.manifestPlaceholders.getAt("model"));
-        String json = gson.toJson(data);
-
-        def fileName = "readme.json"
-        android.applicationVariants.all { variant ->
-            if (variant.buildType.name == 'release') {
-                def projectDir = project.rootDir
-
-                def buildPath = new File(projectDir, "app/" + variant.buildType.name)
-                createPath(buildPath)
-                def dstFile = new File(buildPath, "/" + fileName)
-                println dstFile
-
-                FileOutputStream fos = new FileOutputStream(dstFile)
-                fos.write(json.getBytes(StandardCharsets.UTF_8));
-                fos.close();
-            }
-        }
-    } catch (Exception e) {
-        e.printStackTrace()
-    }
 }
 
 // 设置编译前的任务
