@@ -112,7 +112,7 @@ import okhttp3.Response;
 import retrofit2.Call;
 
 public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
-
+    private boolean IS_TEST = false;
     public static MainFragment newInstance() {
         
         Bundle args = new Bundle();
@@ -301,7 +301,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void uidPull(){
-        if (!Config.IS_TEST) HttpRequest.uidPull(AppInfo.newInfo(getActivity()));
+        if (!IS_TEST) HttpRequest.uidPull(AppInfo.newInfo(getActivity()));
     }
 
     private void setHeader(List<TypeItem> items){
