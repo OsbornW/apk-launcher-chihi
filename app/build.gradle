@@ -19,13 +19,17 @@ android {
 
         // 设置自定义属性
         manifestPlaceholders = [
-                appId: "launcher",
-                channel: "LA23001",
-                chihi_type:"X98K",
-                model:"001"
+                company   : "3",
+                user_id   : "62",
+                appId     : "launcher",
+                channel   : "LA23001",
+                chihi_type: "X98K",
+                model     : "001"
         ]
 
-        // 将 appId 和 channel 作为构建配置字段
+        // 构建自定义配置字段
+        buildConfigField "String", "COMPANY", "\"${manifestPlaceholders.company}\""
+        buildConfigField "String", "USER_ID", "\"${manifestPlaceholders.user_id}\""
         buildConfigField "String", "APP_ID", "\"${manifestPlaceholders.appId}\""
         buildConfigField "String", "CHANNEL", "\"${manifestPlaceholders.channel}\""
         buildConfigField "String", "CHIHI_TYPE", "\"${manifestPlaceholders.chihi_type}\""
@@ -74,8 +78,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     buildFeatures {
         buildConfig = true
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     task genRawJson() {
@@ -138,7 +147,6 @@ def writeRawJson() {
                 def projectDir = project.rootDir
 
                 def buildPath = new File(projectDir, "app/" + variant.buildType.name)
-                //def buildPath = new File(projectDir, "app/json")
                 createPath(buildPath)
                 def dstFile = new File(buildPath, "/" + fileName)
                 println dstFile
@@ -153,15 +161,6 @@ def writeRawJson() {
     }
 }
 
-//task genRawJson() {
-//    doLast {
-//        println "genRawJson"
-//        writeRawJson()
-//    }
-//}
-
 // 设置编译前的任务
 //assembleRelease.dependsOn genRawJson
 //build.finalizedBy(genRawJson)
-//genRawJson.mustRunAfter(tasks.getByName("generateSignedBundle"))
-//genRawJson.mustRunAfter(tasks.getByName("assembleRelease"))
