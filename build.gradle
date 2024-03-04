@@ -8,35 +8,37 @@ plugins {
 }
 
 gradle.buildFinished {
-    Gson gson = new Gson()
-
     project('app') {
-        def buildField = it.android.defaultConfig
-        println "buildField: $buildField"
+        try {
+            Gson gson = new Gson()
 
-        Map<String, String> data = new HashMap<>();
-        data.put("packageName", buildField.applicationId);
-        data.put("versionName", buildField.versionName);
-        data.put("version", buildField.versionCode);
-        data.put("appId", buildField.manifestPlaceholders.appId);
-        data.put("channel", buildField.manifestPlaceholders.channel);
-        data.put("chihi_type", buildField.manifestPlaceholders.chihi_type);
-        data.put("model", buildField.manifestPlaceholders.model);
+            def buildField = it.android.defaultConfig
+            Map<String, String> data = new HashMap<>();
+            data.put("packageName", buildField.applicationId);
+            data.put("versionName", buildField.versionName);
+            data.put("version", buildField.versionCode);
+            data.put("appId", buildField.manifestPlaceholders.appId);
+            data.put("channel", buildField.manifestPlaceholders.channel);
+            data.put("chihi_type", buildField.manifestPlaceholders.chihi_type);
+            data.put("model", buildField.manifestPlaceholders.model);
 
-        android.applicationVariants.all { variant ->
-            if (variant.buildType.name == 'release') {
-                def fileName = "readme.json"
+            android.applicationVariants.all { variant ->
+                if (variant.buildType.name == 'release') {
+                    def fileName = "readme.json"
 
-                def projectDir = project.rootDir
-                def buildPath = new File(projectDir, "app/" + variant.buildType.name)
-                createPath(buildPath)
-                def dstFile = new File(buildPath, "/" + fileName)
+                    def projectDir = project.rootDir
+                    def buildPath = new File(projectDir, "app/" + variant.buildType.name)
+                    createPath(buildPath)
+                    def dstFile = new File(buildPath, "/" + fileName)
 
-                FileOutputStream fos = new FileOutputStream(dstFile)
-                def json = gson.toJson(data)
-                fos.write(json.getBytes(StandardCharsets.UTF_8));
-                fos.close();
+                    FileOutputStream fos = new FileOutputStream(dstFile)
+                    def json = gson.toJson(data)
+                    fos.write(json.getBytes(StandardCharsets.UTF_8));
+                    fos.close();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
