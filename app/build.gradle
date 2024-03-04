@@ -1,13 +1,9 @@
+import com.google.gson.Gson
+
+import java.nio.charset.StandardCharsets
+
 plugins {
     id 'com.android.application'
-}
-
-def getTime() {
-    return new Date().format("yyyyMMdd_HHmm", TimeZone.getDefault());
-}
-
-def getChannel() {
-    return "LA23001";
 }
 
 android {
@@ -21,6 +17,20 @@ android {
         versionCode 39
         versionName "1.39"
 
+        // 设置自定义属性
+        manifestPlaceholders = [
+                appId: "launcher",
+                channel: "LA23001",
+                chihi_type:"X98K",
+                model:"001"
+        ]
+
+        // 将 appId 和 channel 作为构建配置字段
+        buildConfigField "String", "APP_ID", "\"${manifestPlaceholders.appId}\""
+        buildConfigField "String", "CHANNEL", "\"${manifestPlaceholders.channel}\""
+        buildConfigField "String", "CHIHI_TYPE", "\"${manifestPlaceholders.chihi_type}\""
+        buildConfigField "String", "MODEL", "\"${manifestPlaceholders.model}\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -32,32 +42,32 @@ android {
         }
 
         debug {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         //打包应用
         android.applicationVariants.all { variant ->
             variant.outputs.all {
-                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${getChannel()}.apk"
+                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${defaultConfig.manifestPlaceholders.channel}.apk"
             }
         }
     }
     signingConfigs {
-        debug{
+        /*debug{
             storeFile file("platform_H710_701.jks")
             storePassword "platform"
             keyAlias "platform"
             keyPassword "platform"
-        }
+        }*/
 
-        /*debug {
+        debug {
             storeFile file("platform_X98K_301.keystore")
             storePassword 'android'
             keyAlias 'platform'
             keyPassword 'android'
-        }*/
+        }
     }
 
     compileOptions {
@@ -67,6 +77,14 @@ android {
     buildFeatures {
         buildConfig = true
     }
+
+    task genRawJson() {
+        doLast {
+            println "genRawJson"
+            writeRawJson()
+        }
+    }
+    genRawJson.dependsOn(build)
 }
 
 dependencies {
@@ -90,3 +108,60 @@ dependencies {
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.9.0'
     annotationProcessor 'me.laoyuyu.aria:compiler:3.8.16'
 }
+
+def getTime() {
+    return new Date().format("yyyyMMdd_HHmm", TimeZone.getDefault());
+}
+
+def createPath(file) {
+    if (!file.exists()) {
+        file.mkdirs();
+    }
+}
+
+def writeRawJson() {
+    try {
+        Gson gson = new Gson();
+        Map<String, String> data = new HashMap<>();
+        data.put("appId", android.defaultConfig.manifestPlaceholders.getAt("appId"));
+        data.put("packageName", android.defaultConfig.applicationId);
+        data.put("versionName", android.defaultConfig.versionName);
+        data.put("version", android.defaultConfig.versionCode);
+        data.put("channel", android.defaultConfig.manifestPlaceholders.getAt("channel"));
+        data.put("chihi_type", android.defaultConfig.manifestPlaceholders.getAt("chihi_type"));
+        data.put("model", android.defaultConfig.manifestPlaceholders.getAt("model"));
+        String json = gson.toJson(data);
+
+        def fileName = "readme.json"
+        android.applicationVariants.all { variant ->
+            if (variant.buildType.name == 'release') {
+                def projectDir = project.rootDir
+
+                def buildPath = new File(projectDir, "app/" + variant.buildType.name)
+                //def buildPath = new File(projectDir, "app/json")
+                createPath(buildPath)
+                def dstFile = new File(buildPath, "/" + fileName)
+                println dstFile
+
+                FileOutputStream fos = new FileOutputStream(dstFile)
+                fos.write(json.getBytes(StandardCharsets.UTF_8));
+                fos.close();
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+}
+
+//task genRawJson() {
+//    doLast {
+//        println "genRawJson"
+//        writeRawJson()
+//    }
+//}
+
+// 设置编译前的任务
+//assembleRelease.dependsOn genRawJson
+//build.finalizedBy(genRawJson)
+//genRawJson.mustRunAfter(tasks.getByName("generateSignedBundle"))
+//genRawJson.mustRunAfter(tasks.getByName("assembleRelease"))
