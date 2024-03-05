@@ -55,12 +55,14 @@ android {
         }
     }
     signingConfigs {
-        /*debug{
+        /*
+        debug{
             storeFile file("platform_H710_701.jks")
             storePassword "platform"
             keyAlias "platform"
             keyPassword "platform"
-        }*/
+        }
+        */
 
         debug {
             storeFile file("platform_X98K_301.keystore")
@@ -109,7 +111,3 @@ dependencies {
 def getTime() {
     return new Date().format("yyyyMMdd_HHmm", TimeZone.getDefault());
 }
-
-// 设置编译前的任务
-//assembleRelease.dependsOn genRawJson
-//build.finalizedBy(genRawJson)

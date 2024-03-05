@@ -399,13 +399,13 @@ public class AndroidSystem {
         List<ResolveInfo> infos = getAppStores(context);
         ResolveInfo defaultInfo = null;
         for (ResolveInfo resolveInfo : infos) {
-            if (resolveInfo.activityInfo.packageName.equals("com.soya.store")){
+            if (resolveInfo.activityInfo.packageName.equals(Config.STORE_PACKAGE_NAME)){
                 if (TextUtils.isEmpty(data)) {
                     openActivityInfo(context, resolveInfo.activityInfo);
                 }else {
                     ActivityInfo info = resolveInfo.activityInfo;
                     Intent intent = new Intent(Intent.ACTION_MAIN)
-                            .setClassName(info.applicationInfo.packageName, "com.soya.store.ui.activity.AppDetialActivity");
+                            .setClassName(info.applicationInfo.packageName, Config.STORE_CLASS_NAME);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.putExtra(Atts.BEAN, data);
                     context.startActivity(intent);
@@ -430,9 +430,9 @@ public class AndroidSystem {
             version.setActivity(MainActivity.class.getName());
             version.setPackageName(BuildConfig.APPLICATION_ID);
             Gson gson = new Gson();
-            PackageInfo info = findPackageInfo(context, Config.PACKAGE_NAME);
+            PackageInfo info = findPackageInfo(context, Config.UPDATE_PACKAGE_NAME);
             if (info != null){
-                Intent intent = new Intent(Intent.ACTION_MAIN).setClassName(Config.PACKAGE_NAME, Config.CLASS_NAME);
+                Intent intent = new Intent(Intent.ACTION_MAIN).setClassName(Config.UPDATE_PACKAGE_NAME, Config.UPDATE_CLASS_NAME);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.putExtra(Atts.BEAN, gson.toJson(version));
                 context.startActivity(intent);
