@@ -382,10 +382,12 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 }else {
                     mWifiView.setImageResource(isNetworkAvailable ? R.drawable.baseline_wifi_100 : R.drawable.baseline_wifi_off_100);
                 }
-                mBluetoothView.setVisibility(bluetoothAdapter != null && bluetoothAdapter.isEnabled() ? View.VISIBLE : View.GONE);
-                HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) getActivity().getSystemService(Context.USB_SERVICE)).getDeviceList();
-                mSdCardView.setVisibility(!deviceHashMap.isEmpty() ? View.VISIBLE : View.GONE);
-                mAPView.setVisibility(SystemUtils.isApEnable(getActivity()) ? View.VISIBLE : View.GONE);
+                if (Config.COMPANY != 0){
+                    mBluetoothView.setVisibility(bluetoothAdapter != null && bluetoothAdapter.isEnabled() ? View.VISIBLE : View.GONE);
+                    HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) getActivity().getSystemService(Context.USB_SERVICE)).getDeviceList();
+                    mSdCardView.setVisibility(!deviceHashMap.isEmpty() ? View.VISIBLE : View.GONE);
+                    mAPView.setVisibility(SystemUtils.isApEnable(getActivity()) ? View.VISIBLE : View.GONE);
+                }
             }
         });
     }
