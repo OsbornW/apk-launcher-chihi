@@ -17,7 +17,7 @@ public class Config {
 
     //弘信
 //    manifestPlaceholders = [
-//    company   : "3",
+//    company   : "0",
 //    user_id   : "62",
 //    appId     : "launcher",
 //    channel   : "LA27001",
@@ -27,7 +27,7 @@ public class Config {
 
     //爱泊优 投影仪
 //    manifestPlaceholders = [
-//    company   : "3",
+//    company   : "1",
 //    user_id   : "62",
 //    appId     : "launcher",
 //    channel   : "LA22001",
@@ -37,7 +37,7 @@ public class Config {
 
     //爱泊优 TV(BOX)
 //    manifestPlaceholders = [
-//    company   : "3",
+//    company   : "2",
 //    user_id   : "62",
 //    appId     : "launcher",
 //    channel   : "LA22001",
