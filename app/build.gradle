@@ -15,11 +15,11 @@ android {
 
         // 设置自定义属性
         manifestPlaceholders = [
-                company   : "0",
+                company   : "1",
                 user_id   : "62",
                 appId     : "launcher",
-                channel   : "LA23001",
-                chihi_type: "X98K",
+                channel   : "LA22001",
+                chihi_type: "PROJECTOR_001",
                 model     : "001"
         ]
 
@@ -87,8 +87,8 @@ android {
 }
 
 dependencies {
-    //implementation files('libs/hslib-r0.0.2-release-LA22001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
-    implementation files('libs/hslib-r0.0.2-release-LA23001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
+    implementation files('libs/hslib-r0.0.2-release-LA22001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
+    //implementation files('libs/hslib-r0.0.2-release-LA23001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
     //implementation files('libs/hslib-r0.0.2-release-LA27001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
 
     implementation 'androidx.leanback:leanback:1.0.0'
