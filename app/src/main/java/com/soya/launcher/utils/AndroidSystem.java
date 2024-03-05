@@ -375,7 +375,7 @@ public class AndroidSystem {
 
         for (ResolveInfo resolveInfo : infos) {
             for (AppPackage pk : packages){
-                if (pk.equals(resolveInfo.activityInfo.packageName)){
+                if (pk.getPackageName().equals(resolveInfo.activityInfo.packageName)){
                     ActivityInfo info = resolveInfo.activityInfo;
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url))
                             .setClassName(info.applicationInfo.packageName, !TextUtils.isEmpty(pk.getActivityName()) ? pk.getActivityName() : info.name)

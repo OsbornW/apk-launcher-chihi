@@ -157,6 +157,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private boolean isConnectFirst = false;
     private boolean isNetworkAvailable;
     private long lastWeatherTime = -1;
+    private long lastCheckPushApk = -1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

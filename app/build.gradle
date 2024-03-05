@@ -15,7 +15,7 @@ android {
 
         // 设置自定义属性
         manifestPlaceholders = [
-                company   : "3",
+                company   : "0",
                 user_id   : "62",
                 appId     : "launcher",
                 channel   : "LA23001",
@@ -55,21 +55,21 @@ android {
         }
     }
     signingConfigs {
-        /*
+
         debug{
             storeFile file("platform_H710_701.jks")
             storePassword "platform"
             keyAlias "platform"
             keyPassword "platform"
         }
-        */
 
-        debug {
+
+        /*debug {
             storeFile file("platform_X98K_301.keystore")
             storePassword 'android'
             keyAlias 'platform'
             keyPassword 'android'
-        }
+        }*/
     }
 
     compileOptions {
