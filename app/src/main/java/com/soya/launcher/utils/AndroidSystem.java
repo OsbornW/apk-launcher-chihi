@@ -369,57 +369,16 @@ public class AndroidSystem {
         return isNetworkConnected;
     }
 
-    public static boolean jumpYouTube(Context context, String url){
-        return jumpPlayer(context, new String[]{
-                "com.google.android.youtube.tv",
-                "com.google.android.youtube",
-        }, url);
-    }
-
-    public static boolean jumpNetflix(Context context, String url){
-        return jumpPlayer(context, new String[]{
-                "com.netflix.mediaclient",
-                "com.netflix.ninja",
-        }, url);
-    }
-
-    public static boolean jumpDisney(Context context, String url){
-        return jumpPlayer(context, new String[]{
-                "com.disney.disneyplus"
-        }, url);
-    }
-
-    public static boolean jumpHulu(Context context, String url){
-        return jumpPlayer(context, new String[]{
-                "com.hulu.plus",
-                "com.hulu.livingroomplus"
-        }, url);
-    }
-
-    public static boolean jumpMax(Context context, String url){
-        return jumpPlayer(context, new String[]{
-                "com.hbo.hbonow",
-                "com.wbd.stream"
-        }, url);
-    }
-
-    public static boolean jumpPrimeVideo(Context context, String url){
-        return jumpPlayer(context, new String[]{
-                "com.amazon.avod.thirdpartyclient",
-                "com.amazon.amazonvideo.livingroom"
-        }, url);
-    }
-
-    public static boolean jumpPlayer(Context context, String[] packages, String url){
+    public static boolean jumpPlayer(Context context, AppPackage[] packages, String url){
         boolean success = false;
         List<ResolveInfo> infos = queryCategoryAllLauncher(context);
 
         for (ResolveInfo resolveInfo : infos) {
-            for (String pk : packages){
+            for (AppPackage pk : packages){
                 if (pk.equals(resolveInfo.activityInfo.packageName)){
                     ActivityInfo info = resolveInfo.activityInfo;
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                            .setClassName(info.applicationInfo.packageName, info.name)
+                            .setClassName(info.applicationInfo.packageName, !TextUtils.isEmpty(pk.getActivityName()) ? pk.getActivityName() : info.name)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     success = true;
@@ -485,11 +444,7 @@ public class AndroidSystem {
 
     public static boolean jumpVideoApp(Context context, AppPackage[] packages, String url){
         boolean success = false;
-        String[] packageArray = new String[packages.length];
-        for (int i = 0; i < packages.length; i++){
-            packageArray[i] = packages[i].getPackageName();
-        }
-        success = jumpPlayer(context, packageArray, url);
+        success = jumpPlayer(context, packages, url);
         return success;
     }
 

@@ -35,6 +35,7 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
+import com.lzy.okgo.model.Response;
 import com.open.system.SystemUtils;
 import com.soya.launcher.App;
 import com.soya.launcher.BuildConfig;
@@ -108,7 +109,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Response;
 import retrofit2.Call;
 
 public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
