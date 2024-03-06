@@ -22,7 +22,7 @@ public class Config {
 //    appId     : "launcher",
 //    channel   : "LA27001",
 //    chihi_type: "H700",
-//    model     : "001"
+//    model     : "cupid"
 //            ]
 
     //爱泊优 投影仪
