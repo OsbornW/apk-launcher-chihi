@@ -22,9 +22,17 @@ public class AppUtils {
     }
 
     public static void adbInstallApk(String filePath) throws Exception {
-        String cmd = "pm install -r "+filePath+" & reboot";
+        String cmd = "pm install -r "+filePath;
         Process process = Runtime.getRuntime().exec(cmd);
         process.waitFor();
+        process.destroy();
+    }
+
+    public static void adbUninstallApk(String packageName) throws Exception {
+        String cmd = "pm uninstall " + packageName;
+        Process process = Runtime.getRuntime().exec(cmd);
+        process.waitFor();
+        process.destroy();
     }
 
     public static void restart() throws Exception {

