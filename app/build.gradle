@@ -13,7 +13,7 @@ android {
         versionCode 39
         versionName "1.39"
 
-        /*// 宏信
+        // 宏信
         manifestPlaceholders = [
                 company   : "0",
                 user_id   : "62",
@@ -21,7 +21,7 @@ android {
                 channel   : "LA27001",
                 chihi_type: "H700",
                 model     : "cupid"
-        ]*/
+        ]
 
         /*
         // 爱泊优 投影仪
@@ -47,7 +47,7 @@ android {
         ]
          */
 
-        // X98K TV
+        /*// X98K TV
         manifestPlaceholders = [
                 company   : "3",
                 user_id   : "62",
@@ -55,7 +55,7 @@ android {
                 channel   : "LA23001",
                 chihi_type: "X98K",
                 model     : "001"
-        ]
+        ]*/
 
         // 构建自定义配置字段
         buildConfigField "String", "COMPANY", "\"${manifestPlaceholders.company}\""

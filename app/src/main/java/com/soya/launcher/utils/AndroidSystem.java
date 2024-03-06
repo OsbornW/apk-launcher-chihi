@@ -149,6 +149,7 @@ public class AndroidSystem {
     public static List<ResolveInfo> queryCategoryLauncher(Context context){
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory("android.intent.category.LAUNCHER");
+        intent.addCategory("android.intent.category.LEANBACK_LAUNCHER");
         PackageManager packageManager = context.getPackageManager();
         return packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL);
     }
@@ -239,7 +240,7 @@ public class AndroidSystem {
 
     public static boolean openActivityNames(Context context, String[] names){
         boolean success = false;
-        List<ResolveInfo> infos = AndroidSystem.queryCategoryLauncher(context);
+        List<ResolveInfo> infos = AndroidSystem.queryCategoryAllLauncher(context);
         outside:
         for (String name : names){
             for (ResolveInfo info : infos) {
