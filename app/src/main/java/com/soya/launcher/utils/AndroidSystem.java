@@ -377,11 +377,22 @@ public class AndroidSystem {
             for (AppPackage pk : packages){
                 if (pk.getPackageName().equals(resolveInfo.activityInfo.packageName)){
                     ActivityInfo info = resolveInfo.activityInfo;
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                            .setClassName(info.applicationInfo.packageName, !TextUtils.isEmpty(pk.getActivityName()) ? pk.getActivityName() : info.name)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                    success = true;
+                    if (TextUtils.isEmpty(pk.getActivityName())){
+                        Intent intent = getPackageNameIntent(context, info.packageName);
+                        if (intent != null){
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setData(Uri.parse(url));
+                            context.startActivity(intent);
+                            success = true;
+                        }
+                    }else {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                                .setClassName(info.applicationInfo.packageName, pk.getActivityName())
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                        success = true;
+                    }
                     break;
                 }
             }
