@@ -11,8 +11,11 @@ import android.content.pm.ResolveInfo;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.os.storage.StorageManager;
+import android.os.storage.StorageVolume;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.InputDevice;
@@ -490,6 +493,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     notifies.add(new Notify(R.drawable.baseline_usb_100));
                 }
                 if (SystemUtils.isApEnable(getActivity())) notifies.add(new Notify(R.drawable.baseline_wifi_tethering_100_2));
+                StorageManager storageManager = getActivity().getSystemService(StorageManager.class);
+                for (StorageVolume volume : storageManager.getStorageVolumes()){
+                    if (!volume.isEmulated()) notifies.add(new Notify(R.drawable.baseline_sd_storage_100));
+                }
                 mNotifyAdapter.replace(notifies);
             }
         });
