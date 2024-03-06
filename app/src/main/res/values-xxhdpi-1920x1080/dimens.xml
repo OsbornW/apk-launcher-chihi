@@ -510,11 +510,13 @@
 <dimen name="holder_wifi_signal_padding">4dp</dimen>
 <dimen name="holder_wifi_signal_width">23dp</dimen>
 <dimen name="holder_wifi_signal_height">23dp</dimen>
-<dimen name="dialog_blu_fail_text_size">18sp</dimen>
-<dimen name="dialog_blu_fail_text_toast_text_size">10sp</dimen>
+<dimen name="dialog_blu_fail_text_size">12sp</dimen>
+<dimen name="dialog_blu_fail_text_toast_text_size">8sp</dimen>
+<dimen name="dialog_blu_fail_text_toast_margin_top">6dp</dimen>
 <dimen name="dialog_blu_fail_margin_bottom">17dp</dimen>
-<dimen name="dialog_blu_fail_image_width">80dp</dimen>
-<dimen name="dialog_blu_fail_image_height">80dp</dimen>
+<dimen name="dialog_blu_fail_image_width">46dp</dimen>
+<dimen name="dialog_blu_fail_image_height">46dp</dimen>
+<dimen name="dialog_blu_fail_root_margin">10dp</dimen>
 <dimen name="dialog_blu_fail_root_width">200dp</dimen>
 <dimen name="dialog_blu_fail_root_height">200dp</dimen>
 <dimen name="holder_web_root_width">106dp</dimen>

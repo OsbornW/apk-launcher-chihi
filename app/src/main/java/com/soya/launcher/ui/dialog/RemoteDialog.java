@@ -21,6 +21,16 @@ public class RemoteDialog extends TranslucentDialog{
         mNameView = decorView.findViewById(R.id.blu_name);
     }
 
+    @Override
+    protected boolean isTorch() {
+        return false;
+    }
+
+    @Override
+    protected float getDimAmount() {
+        return 0;
+    }
+
     public void setName(String name){
         if (mNameView != null) mNameView.setText(name);
     }

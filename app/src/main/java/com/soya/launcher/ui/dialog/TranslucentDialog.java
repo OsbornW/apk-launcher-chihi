@@ -39,13 +39,26 @@ public class TranslucentDialog extends Dialog {
         Window window = getWindow();
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        window.addFlags(
-                WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
-                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
-                        | WindowManager.LayoutParams.FLAG_DIM_BEHIND
-                        | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-        );
+        if (isTorch()){
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+                            | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                            | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
+                            | WindowManager.LayoutParams.FLAG_DIM_BEHIND
+                            | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+            );
+        }else {
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+                            | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                            | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
+                            | WindowManager.LayoutParams.FLAG_DIM_BEHIND
+                            | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                            | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                            | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                            | WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG
+            );
+        }
 
         window.setDimAmount(getDimAmount());
         if (getAnimation() != -1) window.setWindowAnimations(getAnimation());
@@ -61,6 +74,10 @@ public class TranslucentDialog extends Dialog {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
 
         decorView = window.getDecorView();
+    }
+
+    protected boolean isTorch(){
+        return true;
     }
 
     protected int getAnimation(){

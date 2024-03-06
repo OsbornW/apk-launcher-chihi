@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.hardware.input.InputManager;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
@@ -500,16 +501,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 mNotifyAdapter.replace(notifies);
             }
         });
-    }
-
-    private boolean isKeyBoard(InputDevice device) {
-        int sourceMask = device.getSources();
-        return (sourceMask & InputDevice.SOURCE_KEYBOARD) == InputDevice.SOURCE_KEYBOARD;
-    }
-
-    private boolean isMouse(InputDevice device) {
-        int sourceMask = device.getSources();
-        return (sourceMask & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE;
     }
 
     private ServiceRequest.Callback<WeatherData> newWeatherCallback(){

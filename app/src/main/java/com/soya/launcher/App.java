@@ -13,6 +13,7 @@ import com.lzy.okgo.OkGo;
 import com.soya.launcher.bean.AppItem;
 import com.soya.launcher.bean.CacheWeather;
 import com.soya.launcher.bean.Movice;
+import com.soya.launcher.bean.MyRunnable;
 import com.soya.launcher.bean.PushApp;
 import com.soya.launcher.bean.Wallpaper;
 import com.soya.launcher.enums.Atts;
@@ -30,8 +31,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class App extends Application {
+    private final ExecutorService exec = Executors.newCachedThreadPool();
     public static final List<PushApp> PUSH_APPS = new CopyOnWriteArrayList<>();
     public static final Map<Long, List<Movice>> MOVIE_MAP = new ConcurrentHashMap<>();
     public static final CacheWeather WEATHER = new CacheWeather();
@@ -42,6 +47,8 @@ public class App extends Application {
     private InnerReceiver receiver;
     private RemoteDialog mFailDialog;
     private RemoteDialog mSuccessDialog;
+    private MyRunnable remoteRunnable;
+    private long lastRemoteTime = -1;
 
     @Override
     public void onCreate() {
@@ -67,6 +74,25 @@ public class App extends Application {
         startService(new Intent(this, AppService.class));
 
         AndroidSystem.setEnableBluetooth(this, true);
+        timeRemote();
+    }
+
+    private void timeRemote(){
+        if (remoteRunnable != null) remoteRunnable.interrupt();
+        remoteRunnable = new MyRunnable() {
+            @Override
+            public void run() {
+                while (!isInterrupt()){
+                    if (lastRemoteTime == -1) continue;
+                    if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastRemoteTime) >= 5){
+                        lastRemoteTime = System.currentTimeMillis();
+                        if (mFailDialog.isShowing()) mFailDialog.dismiss();
+                        if (mSuccessDialog.isShowing()) mSuccessDialog.dismiss();
+                    }
+                }
+            }
+        };
+        exec.execute(remoteRunnable);
     }
 
     private void initRemote(){
@@ -91,12 +117,14 @@ public class App extends Application {
                     if (!mSuccessDialog.isShowing() && canDrawOverlays() && useRemoteDialog) mSuccessDialog.show();
                     if (mFailDialog.isShowing()) mFailDialog.dismiss();
                     mSuccessDialog.setName(device.getName());
+                    lastRemoteTime = System.currentTimeMillis();
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
                     if (device.getType() != BluetoothDevice.DEVICE_TYPE_LE) break;
                     if (!mFailDialog.isShowing() && canDrawOverlays() && useRemoteDialog) mFailDialog.show();
                     if (mSuccessDialog.isShowing()) mSuccessDialog.dismiss();
                     mFailDialog.setName(device.getName());
+                    lastRemoteTime = System.currentTimeMillis();
                     break;
                 case IntentAction.ACTION_SHOW_REMOTE_DIALOG:
                     useRemoteDialog = true;

@@ -8,24 +8,26 @@
         app:cardCornerRadius="@dimen/dialog_app_card_corner_radius"
         app:cardBackgroundColor="@color/dialog_background"
         app:cardElevation="@dimen/card_elevation"
-        android:layout_gravity="center"
-        android:layout_width="@dimen/dialog_blu_fail_root_width"
-        android:layout_height="@dimen/dialog_blu_fail_root_height">
+        android:layout_margin="@dimen/dialog_blu_fail_root_margin"
+        android:layout_gravity="bottom|right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:layout_gravity="center"
+            android:layout_margin="@dimen/dialog_blu_fail_root_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/baseline_bluetooth_connected_100"
                 android:scaleType="centerCrop"
-                android:layout_marginBottom="@dimen/dialog_blu_fail_margin_bottom"
                 android:layout_width="@dimen/dialog_blu_fail_image_width"
                 android:layout_height="@dimen/dialog_blu_fail_image_height"/>
             <TextView
                 android:id="@+id/blu_name"
                 android:lines="1"
+                android:text="Remote control"
                 android:ellipsize="end"
                 android:textSize="@dimen/dialog_blu_fail_text_size"
                 android:textColor="@color/text_color_style_2"
@@ -33,8 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:layout_marginTop="@dimen/dialog_blu_fail_text_toast_margin_top"
                 android:text="@string/blu_connected_success"
-                android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
                 android:textSize="@dimen/dialog_blu_fail_text_toast_text_size"
                 android:textColor="@color/text_color_style_2"

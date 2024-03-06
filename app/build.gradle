@@ -13,15 +13,49 @@ android {
         versionCode 39
         versionName "1.39"
 
-        // 设置自定义属性
+        // 宏信
         manifestPlaceholders = [
                 company   : "0",
+                user_id   : "62",
+                appId     : "launcher",
+                channel   : "LA27001",
+                chihi_type: "H700",
+                model     : "cupid"
+        ]
+
+        /*
+        // 爱泊优 投影仪
+        manifestPlaceholders = [
+                company   : "1",
                 user_id   : "62",
                 appId     : "launcher",
                 channel   : "LA22001",
                 chihi_type: "PROJECTOR_001",
                 model     : "001"
         ]
+         */
+
+        /*
+        // 爱泊优 TV
+        manifestPlaceholders = [
+                company   : "2",
+                user_id   : "62",
+                appId     : "launcher",
+                channel   : "LA22001",
+                chihi_type: "TV_001",
+                model     : "001"
+        ]
+         */
+
+        /*// X98K TV
+        manifestPlaceholders = [
+                company   : "3",
+                user_id   : "62",
+                appId     : "launcher",
+                channel   : "LA23001",
+                chihi_type: "X98K",
+                model     : "001"
+        ]*/
 
         // 构建自定义配置字段
         buildConfigField "String", "COMPANY", "\"${manifestPlaceholders.company}\""
@@ -56,20 +90,20 @@ android {
     }
     signingConfigs {
 
-        /*debug{
+        debug{
             storeFile file("platform_H710_701.jks")
             storePassword "platform"
             keyAlias "platform"
             keyPassword "platform"
-        }*/
+        }
 
 
-        debug {
+        /*debug {
             storeFile file("platform_X98K_301.keystore")
             storePassword 'android'
             keyAlias 'platform'
             keyPassword 'android'
-        }
+        }*/
     }
 
     compileOptions {
