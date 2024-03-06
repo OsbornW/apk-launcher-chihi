@@ -59,6 +59,9 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.Holder> {
         }
 
         public void bind(Notify bean){
+            itemView.setFocusable(false);
+            itemView.setFocusableInTouchMode(false);
+            itemView.setEnabled(false);
             GlideUtils.bind(context, mIV, bean.getIcon());
         }
     }

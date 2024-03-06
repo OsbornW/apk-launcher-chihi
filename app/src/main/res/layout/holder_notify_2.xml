@@ -3,6 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:clickable="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
     android:layout_marginLeft="@dimen/fragment_main_opt_notify_margin_left_1"
     android:layout_marginRight="@dimen/fragment_main_opt_notify_margin_right_1">
     <ImageView

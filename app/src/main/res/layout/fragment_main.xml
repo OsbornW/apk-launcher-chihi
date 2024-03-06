@@ -152,9 +152,12 @@
                         android:textSize="@dimen/fragment_main_opt_segment_test_size"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
-                    <androidx.recyclerview.widget.RecyclerView
+                    <com.soya.launcher.view.NoFocuRecyclerView
                         android:id="@+id/notify_recycler"
+                        android:descendantFocusability="blocksDescendants"
                         android:layout_gravity="center"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <LinearLayout

@@ -341,7 +341,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void downloadApk(PushApp bean){
-        OkGo.get(bean.getUrl()).execute(new FileCallback() {
+        OkGo.get(bean.getUrl()).execute(new FileCallback(FilePathMangaer.getAppDownload(getActivity()), bean.getName()+".apk") {
             @Override
             public void onError(okhttp3.Call call, Response response, Exception e) {
                 doPushApp();
