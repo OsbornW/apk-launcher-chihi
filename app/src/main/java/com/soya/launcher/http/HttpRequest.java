@@ -8,6 +8,7 @@ import com.soya.launcher.bean.MoviceList;
 import com.soya.launcher.bean.RecommendData;
 import com.soya.launcher.bean.WeatherData;
 import com.soya.launcher.http.response.HomeResponse;
+import com.soya.launcher.http.response.PushResponse;
 import com.soya.launcher.http.response.VersionResponse;
 
 import okhttp3.ResponseBody;
@@ -58,5 +59,9 @@ public class HttpRequest {
 
     public static Call<ResponseBody> uidPull(AppInfo bean){
         return uidRequest.uidPull(bean);
+    }
+
+    public static Call<ResponseBody> pushApp(ServiceRequest.Callback<PushResponse> callback){
+        return request.pushApps(callback);
     }
 }

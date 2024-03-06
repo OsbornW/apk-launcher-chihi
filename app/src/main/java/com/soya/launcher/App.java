@@ -9,9 +9,11 @@ import android.content.IntentFilter;
 import android.provider.Settings;
 import android.text.TextUtils;
 
+import com.lzy.okgo.OkGo;
 import com.soya.launcher.bean.AppItem;
 import com.soya.launcher.bean.CacheWeather;
 import com.soya.launcher.bean.Movice;
+import com.soya.launcher.bean.PushApp;
 import com.soya.launcher.bean.Wallpaper;
 import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.IntentAction;
@@ -30,6 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class App extends Application {
+    public static final List<PushApp> PUSH_APPS = new CopyOnWriteArrayList<>();
     public static final Map<Long, List<Movice>> MOVIE_MAP = new ConcurrentHashMap<>();
     public static final CacheWeather WEATHER = new CacheWeather();
     public static final List<Wallpaper> WALLPAPERS = new ArrayList<>();
@@ -43,6 +46,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        OkGo.init(this);
         HttpRequest.init(this);
         PreferencesUtils.init(this);
 
