@@ -487,18 +487,20 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     mWifiView.setImageResource(isNetworkAvailable ? R.drawable.baseline_wifi_100 : R.drawable.baseline_wifi_off_100);
                 }
 
-                List<Notify> notifies = new ArrayList<>();
-                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) notifies.add(new Notify(R.drawable.baseline_bluetooth_100));
-                HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) getActivity().getSystemService(Context.USB_SERVICE)).getDeviceList();
-                for (int i = 0; i < deviceHashMap.size(); i++){
-                    notifies.add(new Notify(R.drawable.baseline_usb_100));
+                if (Config.COMPANY != 0){
+                    List<Notify> notifies = new ArrayList<>();
+                    if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) notifies.add(new Notify(R.drawable.baseline_bluetooth_100));
+                    HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) getActivity().getSystemService(Context.USB_SERVICE)).getDeviceList();
+                    for (int i = 0; i < deviceHashMap.size(); i++){
+                        notifies.add(new Notify(R.drawable.baseline_usb_100));
+                    }
+                    if (SystemUtils.isApEnable(getActivity())) notifies.add(new Notify(R.drawable.baseline_wifi_tethering_100_2));
+                    StorageManager storageManager = getActivity().getSystemService(StorageManager.class);
+                    for (StorageVolume volume : storageManager.getStorageVolumes()){
+                        if (!volume.isEmulated()) notifies.add(new Notify(R.drawable.baseline_sd_storage_100));
+                    }
+                    mNotifyAdapter.replace(notifies);
                 }
-                if (SystemUtils.isApEnable(getActivity())) notifies.add(new Notify(R.drawable.baseline_wifi_tethering_100_2));
-                StorageManager storageManager = getActivity().getSystemService(StorageManager.class);
-                for (StorageVolume volume : storageManager.getStorageVolumes()){
-                    if (!volume.isEmulated()) notifies.add(new Notify(R.drawable.baseline_sd_storage_100));
-                }
-                mNotifyAdapter.replace(notifies);
             }
         });
     }

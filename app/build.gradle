@@ -10,8 +10,8 @@ android {
         applicationId "com.soya.launcher"
         minSdk 24
         targetSdk 33
-        versionCode 39
-        versionName "1.39"
+        versionCode 42
+        versionName "1.42"
 
         // 宏信
         manifestPlaceholders = [

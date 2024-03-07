@@ -136,4 +136,5 @@
     <string name="time_display">使用24小时制</string>
     <string name="sound">声音</string>
     <string name="remote_control">遥控器</string>
+    <string name="device_id">设备ID</string>
 </resources>

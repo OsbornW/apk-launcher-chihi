@@ -110,6 +110,7 @@ public class AboutFragment extends AbsFragment implements View.OnClickListener {
         list.add(new AboutItem(0, R.drawable.baseline_translate_100, getString(R.string.language), AndroidSystem.getSystemLanguage(getActivity())));
         list.add(new AboutItem(0, R.drawable.baseline_apps_100, getString(R.string.apps), String.valueOf(AndroidSystem.getUserApps(getActivity()).size())));
         list.add(new AboutItem(0, R.drawable.baseline_workspaces_100, getString(R.string.software_version), BuildConfig.VERSION_NAME));
+        list.add(new AboutItem(0, R.drawable.baseline_token_100, getString(R.string.device_id), AndroidSystem.getDeviceId(getActivity())));
 
         ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new AboutAdapter(getActivity(), getLayoutInflater()));
         ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);

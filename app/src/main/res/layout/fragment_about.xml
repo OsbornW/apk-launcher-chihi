@@ -38,7 +38,7 @@
                     android:paddingLeft="@dimen/fragment_movice_list_content_padding_left"
                     android:paddingRight="@dimen/fragment_movice_list_content_padding_right"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/fragment_about_content_height"/>
+                    android:layout_height="match_parent"/>
             </FrameLayout>
             <TextView
                 android:id="@+id/upgrade"

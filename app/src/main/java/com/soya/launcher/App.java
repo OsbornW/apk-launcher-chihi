@@ -36,6 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class App extends Application {
+    private static App instance;
     private final ExecutorService exec = Executors.newCachedThreadPool();
     public static final List<PushApp> PUSH_APPS = new CopyOnWriteArrayList<>();
     public static final Map<Long, List<Movice>> MOVIE_MAP = new ConcurrentHashMap<>();
@@ -53,6 +54,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         OkGo.init(this);
         HttpRequest.init(this);
         PreferencesUtils.init(this);
@@ -138,5 +140,9 @@ public class App extends Application {
 
     private boolean canDrawOverlays(){
         return Settings.canDrawOverlays(this);
+    }
+
+    public static App getInstance() {
+        return instance;
     }
 }

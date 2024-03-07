@@ -146,14 +146,6 @@ public class AndroidSystem {
         return bitmap;
     }
 
-    public static List<ResolveInfo> queryCategoryLauncher(Context context){
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory("android.intent.category.LAUNCHER");
-        intent.addCategory("android.intent.category.LEANBACK_LAUNCHER");
-        PackageManager packageManager = context.getPackageManager();
-        return packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL);
-    }
-
     public static List<ResolveInfo> queryCategoryAllLauncher(Context context){
         Intent intent = new Intent(Intent.ACTION_MAIN);
         PackageManager packageManager = context.getPackageManager();
@@ -207,27 +199,9 @@ public class AndroidSystem {
         return true;
     }
 
-    public static boolean restart(Context context){
-        Intent intent = new Intent(Intent.ACTION_MAIN)
-                .setClassName(context.getPackageName(), context.getPackageName()+".MainActivity")
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
-        return true;
-    }
-
-    public static ResolveInfo findResolveInfoByName(Context context, String name){
-        List<ResolveInfo> infos = AndroidSystem.queryCategoryLauncher(context);
-        for (ResolveInfo info : infos) {
-            if (info.activityInfo.name.equals(name) || info.activityInfo.packageName.equals(name)) {
-                return info;
-            }
-        }
-        return null;
-    }
-
     public static boolean openActivityName(Context context, String name){
         boolean success = false;
-        List<ResolveInfo> infos = AndroidSystem.queryCategoryLauncher(context);
+        List<ResolveInfo> infos = AndroidSystem.queryCategoryAllLauncher(context);
         for (ResolveInfo info : infos) {
             if (info.activityInfo.name.equals(name)){
                 AndroidSystem.openActivityInfo(context, info.activityInfo);

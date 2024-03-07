@@ -5,6 +5,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.soya.launcher.App;
 import com.soya.launcher.BuildConfig;
 import com.soya.launcher.bean.City;
 import com.soya.launcher.bean.MoviceList;
@@ -16,6 +17,7 @@ import com.soya.launcher.http.response.PushResponse;
 import com.soya.launcher.http.response.VersionResponse;
 import com.soya.launcher.http.ssl.CustomTrustManager;
 import com.soya.launcher.http.ssl.SSLSocketClient;
+import com.soya.launcher.utils.AndroidSystem;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -101,6 +103,7 @@ public class ServiceRequest {
         map.put("chihi_type", Config.CHIHI_TYPE);
         map.put("version", String.valueOf(BuildConfig.VERSION_CODE));
         map.put("sdk", String.valueOf(Build.VERSION.SDK_INT));
+        map.put("uid", String.valueOf(AndroidSystem.getDeviceId(App.getInstance())));
         Call<ResponseBody> call = request.checkVersion(map);
         asyncRequest(call, VersionResponse.class, callback, "checkVersion");
         return call;

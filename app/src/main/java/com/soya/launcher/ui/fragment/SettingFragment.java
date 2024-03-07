@@ -126,8 +126,8 @@ public class SettingFragment extends AbsFragment {
                     new SettingItem(1, getString(R.string.wallpaper), R.drawable.baseline_wallpaper_100),
                     new SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
                     new SettingItem(4, getString(R.string.date), R.drawable.baseline_calendar_month_100),
-                    new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(10, getString(R.string.remote_control), R.drawable.baseline_settings_remote_100),
+                    new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100),
             }));
         }else if (Config.COMPANY == 1){
@@ -137,8 +137,8 @@ public class SettingFragment extends AbsFragment {
                     new SettingItem(1, getString(R.string.wallpaper), R.drawable.baseline_wallpaper_100),
                     new SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
                     new SettingItem(4, getString(R.string.date), R.drawable.baseline_calendar_month_100),
-                    new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(5, getString(R.string.bluetooth), R.drawable.baseline_bluetooth_100),
+                    new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100),
             }));
         }else if (Config.COMPANY == 2){
@@ -148,8 +148,8 @@ public class SettingFragment extends AbsFragment {
                     new SettingItem(1, getString(R.string.wallpaper), R.drawable.baseline_wallpaper_100),
                     new SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
                     new SettingItem(4, getString(R.string.date), R.drawable.baseline_calendar_month_100),
-                    new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(5, getString(R.string.bluetooth), R.drawable.baseline_bluetooth_100),
+                    new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100),
             }));
         }else {
@@ -159,8 +159,8 @@ public class SettingFragment extends AbsFragment {
                     new SettingItem(1, getString(R.string.wallpaper), R.drawable.baseline_wallpaper_100),
                     new SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
                     new SettingItem(4, getString(R.string.date), R.drawable.baseline_calendar_month_100),
-                    new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(9, getString(R.string.keyboard), R.drawable.baseline_keyboard_100),
+                    new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100),
             }));
         }
