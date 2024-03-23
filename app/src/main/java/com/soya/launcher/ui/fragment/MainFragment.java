@@ -487,7 +487,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     mWifiView.setImageResource(isNetworkAvailable ? R.drawable.baseline_wifi_100 : R.drawable.baseline_wifi_off_100);
                 }
 
-                if (Config.COMPANY != 0){
+                if (Config.COMPANY == 3){
                     List<Notify> notifies = new ArrayList<>();
                     if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) notifies.add(new Notify(R.drawable.baseline_bluetooth_100));
                     HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) getActivity().getSystemService(Context.USB_SERVICE)).getDeviceList();
@@ -630,14 +630,18 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     @Override
     public void onClick(View v) {
         if (v.equals(mSettingView)){
-            startActivity(new Intent(getActivity(), SettingActivity.class));
+            if (Config.COMPANY == 4){
+                AndroidSystem.openSystemSetting(getActivity());
+            }else {
+                startActivity(new Intent(getActivity(), SettingActivity.class));
+            }
             //AndroidSystem.openSystemSetting(getActivity());
         }else if (v.equals(mWeatherView)){
             startActivity(new Intent(getActivity(), WeatherActivity.class));
         }else if (v.equals(mSearchView)){
             startActivity(new Intent(getActivity(), SearchActivity.class));
         }else if (v.equals(mWifiView)){
-            if (Config.COMPANY == 3) {
+            if (Config.COMPANY == 3 || Config.COMPANY == 4) {
                 AndroidSystem.openWifiSetting(getActivity());
             }else {
                 startActivity(new Intent(getActivity(), WifiListActivity.class));
