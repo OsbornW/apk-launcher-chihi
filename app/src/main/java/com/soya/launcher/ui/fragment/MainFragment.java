@@ -328,7 +328,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void uidPull(){
-        if (!IS_TEST) HttpRequest.uidPull(AppInfo.newInfo(getActivity()));
+        //if (!IS_TEST) HttpRequest.uidPull(AppInfo.newInfo(getActivity()));
     }
 
     private void setHeader(List<TypeItem> items){

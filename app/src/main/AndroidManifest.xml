@@ -111,13 +111,23 @@
             android:screenOrientation="landscape"
             android:exported="true">
             <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="com.soya.launcher.ui.activity.ScaleScreenActivity" />
         <activity android:name="com.soya.launcher.ui.activity.BluetoothActivity" />
         <activity android:name="com.soya.launcher.ui.activity.RemoteControlActivity" />
-        <activity android:name="com.soya.launcher.ui.activity.NotifyActivity" />
+        <activity
+            android:enabled="true"
+            android:name="com.soya.launcher.ui.activity.NotifyActivity"
+            android:screenOrientation="landscape"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <provider
             android:authorities="${applicationId}.provider"
