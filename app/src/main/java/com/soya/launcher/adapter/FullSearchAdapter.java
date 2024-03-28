@@ -20,6 +20,7 @@ import com.soya.launcher.bean.AppItem;
 import com.soya.launcher.bean.DivSearch;
 import com.soya.launcher.bean.WebItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Holder> {
@@ -118,7 +119,7 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
         }
 
         private void setAppContent(DivSearch bean){
-            ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new AppListAdapter(context, inflater, R.layout.holder_app_3, new AppListAdapter.Callback() {
+            AppListAdapter adapter = new AppListAdapter(context, inflater, new ArrayList<>(bean.getList()), R.layout.holder_app_3, new AppListAdapter.Callback() {
                 @Override
                 public void onSelect(boolean selected) {
 
@@ -133,16 +134,13 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
                 public void onMenuClick(ApplicationInfo bean) {
 
                 }
-            }));
-            ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-            FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-            mContentGrid.setAdapter(itemBridgeAdapter);
-            arrayObjectAdapter.addAll(0, bean.getList());
+            });
+            mContentGrid.setAdapter(adapter);
             mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         }
 
         private void setAppStore(DivSearch bean){
-            ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new AppItemAdapter(context, inflater, R.layout.holder_app_3, new AppItemAdapter.Callback() {
+            AppItemAdapter adapter = new AppItemAdapter(context, inflater, new ArrayList<>(bean.getList()), R.layout.holder_app_3, new AppItemAdapter.Callback() {
                 @Override
                 public void onSelect(boolean selected) {
 
@@ -152,11 +150,8 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
                 public void onClick(AppItem child) {
                     if (callback != null) callback.onClick(bean.getType(), child);
                 }
-            }));
-            ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-            FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-            mContentGrid.setAdapter(itemBridgeAdapter);
-            arrayObjectAdapter.addAll(0, bean.getList());
+            });
+            mContentGrid.setAdapter(adapter);
             mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         }
 

@@ -5,10 +5,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.leanback.widget.Presenter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.soya.launcher.R;
 import com.soya.launcher.bean.AppItem;
@@ -16,37 +20,46 @@ import com.soya.launcher.callback.SelectedCallback;
 import com.soya.launcher.utils.GlideUtils;
 import com.soya.launcher.view.MyFrameLayout;
 
-public class StoreAdapter extends Presenter {
+import java.util.List;
+
+public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.Holder> {
 
     private Context context;
     private LayoutInflater inflater;
+    private List<AppItem> dataList;
 
     private Callback callback;
 
-    public StoreAdapter(Context context, LayoutInflater inflater, Callback callback){
+    public StoreAdapter(Context context, LayoutInflater inflater, List<AppItem> dataList, Callback callback){
         this.context = context;
         this.inflater = inflater;
         this.callback = callback;
+        this.dataList = dataList;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent) {
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new Holder(inflater.inflate(R.layout.holder_app_store, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        Holder holder = (Holder) viewHolder;
-        holder.bind((AppItem) item);
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
+        holder.bind(dataList.get(position));
     }
 
     @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
-        Holder holder = (Holder) viewHolder;
-        holder.unbind();
+    public int getItemCount() {
+        return dataList.size();
     }
 
-    public class Holder extends ViewHolder {
+    public void replace(List<AppItem> list){
+        dataList.clear();
+        dataList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public class Holder extends RecyclerView.ViewHolder {
         private MyFrameLayout mRootView;
         private ImageView mIV;
         private TextView mTitleView;
@@ -63,7 +76,7 @@ public class StoreAdapter extends Presenter {
         }
 
         public void bind(AppItem bean){
-
+            View root = itemView.getRootView();
             GlideUtils.bind(context, mIV, TextUtils.isEmpty(bean.getLocalIcon()) ? bean.getAppIcon() : bean.getLocalIcon());
             mTitleView.setText(bean.getAppName());
             if (!TextUtils.isEmpty(bean.getAppSize()))
@@ -78,7 +91,17 @@ public class StoreAdapter extends Presenter {
                 }
             });
 
-            view.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    mRootView.setSelected(hasFocus);
+                    Animation animation = AnimationUtils.loadAnimation(context, hasFocus ? R.anim.zoom_in_middle : R.anim.zoom_out_middle);
+                    root.startAnimation(animation);
+                    animation.setFillAfter(true);
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (callback != null) callback.onClick(bean);

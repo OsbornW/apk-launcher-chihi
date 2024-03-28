@@ -71,6 +71,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
     private View mDivSearch;
 
     private FullSearchAdapter mAdapter;
+    private AppItemAdapter mAppItemAdapter;
 
     private DivSearch store;
     private String searchText;
@@ -98,6 +99,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
         mContentGrid = view.findViewById(R.id.content);
         mDivSearch = view.findViewById(R.id.div_search);
 
+        mAppItemAdapter = new AppItemAdapter(getActivity(), getLayoutInflater(), new ArrayList<>(), R.layout.holder_app_3, newAppClickCallback());
         mAdapter = new FullSearchAdapter(getActivity(), inflater, new ArrayList<>(), this);
         mRecommendGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
     }
@@ -119,6 +121,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
     @Override
     protected void initBind(View view, LayoutInflater inflater) {
         super.initBind(view, inflater);
+        mRecommendGrid.setAdapter(mAppItemAdapter);
         fillAppStore();
 
         mContentGrid.setAdapter(mAdapter);
@@ -237,11 +240,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
 
     private void setStoreContent(List<AppItem> list){
         mTitleView.setText(getString(R.string.recommend_for_you, list.size()));
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new AppItemAdapter(getActivity(), getLayoutInflater(), R.layout.holder_app_3, newAppClickCallback()));
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-        mRecommendGrid.setAdapter(itemBridgeAdapter);
-        arrayObjectAdapter.addAll(0, list);
+        mAppItemAdapter.replace(list);
     }
 
     private void toastInstall(){

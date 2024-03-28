@@ -180,6 +180,8 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private MainHeaderAdapter mMainHeaderAdapter;
     private MainContentAdapter mHMainContentAdapter;
     private MainContentAdapter mVMainContentAdapter;
+    private AppListAdapter mAppListAdapter;
+    private StoreAdapter mStoreAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -300,10 +302,12 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
 
         mHeaderGrid.setPivotY(maxVerticalOffset);
         mTestView.setText("CHIHI Test Version: "+BuildConfig.VERSION_NAME);
+        mStoreAdapter = new StoreAdapter(getActivity(), getLayoutInflater(), new CopyOnWriteArrayList<>(), newStoreClickCallback());
         mNotifyAdapter = new NotifyAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), Config.COMPANY == 3 ? R.layout.holder_notify : R.layout.holder_notify_2);
         mMainHeaderAdapter = new MainHeaderAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newHeaderCallback());
         mHMainContentAdapter = new MainContentAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newContentCallback());
         mVMainContentAdapter = new MainContentAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newContentCallback());
+        mAppListAdapter = new AppListAdapter(getActivity(), getLayoutInflater(), new CopyOnWriteArrayList<>(), R.layout.holder_app, newAppListCallback());
     }
 
     @Override
@@ -325,8 +329,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         super.initBind(view, inflater);
 
         mHeaderGrid.setAdapter(mMainHeaderAdapter);
-        mHorizontalContentGrid.setAdapter(mHMainContentAdapter);
-        mVerticalContentGrid.setAdapter(mVMainContentAdapter);
 
         fillLocal();
         fillHeader();
@@ -353,6 +355,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private void setMoviceContent(List<Movice> list, int direction, int columns, int layoutId){
         switch (direction){
             case 1:
+                mHorizontalContentGrid.setAdapter(mHMainContentAdapter);
                 mHMainContentAdapter.setLayoutId(layoutId);
                 mVerticalContentGrid.setVisibility(View.GONE);
                 mHorizontalContentGrid.setVisibility(View.VISIBLE);
@@ -362,6 +365,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 if (list.size() > columns * 2){
                     list = list.subList(0, columns * 2);
                 }
+                mVerticalContentGrid.setAdapter(mVMainContentAdapter);
                 mVMainContentAdapter.setLayoutId(layoutId);
                 mVerticalContentGrid.setVisibility(View.VISIBLE);
                 mHorizontalContentGrid.setVisibility(View.GONE);
@@ -467,14 +471,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void setAppContent(List<ApplicationInfo> list){
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new AppListAdapter(getActivity(), getLayoutInflater(), R.layout.holder_app, newAppListCallback()));
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-        mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
+        mAppListAdapter.replace(list);
+        mHorizontalContentGrid.setAdapter(mAppListAdapter);
         mVerticalContentGrid.setVisibility(View.GONE);
         mHorizontalContentGrid.setVisibility(View.VISIBLE);
-
-        arrayObjectAdapter.addAll(0, list);
     }
 
     private void setProjectorContent(){
@@ -606,7 +606,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     selectWork(bean);
                 }
             }
-        }, 300);
+        }, 220);
     }
 
     private void selectWork(TypeItem bean){
@@ -675,6 +675,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
 
             @Override
             public void onSelect(boolean selected, TypeItem bean) {
+                Log.e("TAG", "onSelect: "+bean.getType());
                 if (selected){
                     setExpanded(true);
                     try {
@@ -776,14 +777,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void setStoreContent(List<AppItem> list){
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new StoreAdapter(getActivity(), getLayoutInflater(), newStoreClickCallback()));
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-        mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
+        mStoreAdapter.replace(list);
+        mHorizontalContentGrid.setAdapter(mStoreAdapter);
         mVerticalContentGrid.setVisibility(View.GONE);
         mHorizontalContentGrid.setVisibility(View.VISIBLE);
-
-        arrayObjectAdapter.addAll(0, list);
     }
 
     private void local(String filePath, int direction, int columns, int layoutId){

@@ -19,11 +19,13 @@ import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 
 import com.soya.launcher.R;
+import com.soya.launcher.adapter.AppItemAdapter;
 import com.soya.launcher.adapter.AppListAdapter;
 import com.soya.launcher.config.Config;
 import com.soya.launcher.ui.dialog.AppDialog;
 import com.soya.launcher.utils.AndroidSystem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppsFragment extends AbsFragment{
@@ -41,6 +43,8 @@ public class AppsFragment extends AbsFragment{
     private TextView mTitleView;
 
     private InnerReceiver receiver;
+
+    private AppListAdapter mAppItemAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,11 +76,13 @@ public class AppsFragment extends AbsFragment{
         mTitleView = view.findViewById(R.id.title);
 
         mTitleView.setText(getString(R.string.apps));
+        mAppItemAdapter = new AppListAdapter(getActivity(), getLayoutInflater(), new ArrayList<>(), R.layout.holder_app_2, newAppListCallback());
     }
 
     @Override
     protected void initBind(View view, LayoutInflater inflater) {
         super.initBind(view, inflater);
+        mContentGrid.setAdapter(mAppItemAdapter);
         fillApps();
     }
 
@@ -96,12 +102,8 @@ public class AppsFragment extends AbsFragment{
     }
 
     private void setContent(List<ApplicationInfo> list){
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new AppListAdapter(getActivity(), getLayoutInflater(), R.layout.holder_app_2, newAppListCallback()));
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-        mContentGrid.setAdapter(itemBridgeAdapter);
         mContentGrid.setNumColumns(4);
-        arrayObjectAdapter.addAll(0, list);
+        mAppItemAdapter.replace(list);
         requestFocus(mContentGrid);
     }
 

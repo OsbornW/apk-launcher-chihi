@@ -8,10 +8,14 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.leanback.widget.Presenter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.soya.launcher.R;
 import com.soya.launcher.callback.SelectedCallback;
@@ -19,39 +23,47 @@ import com.soya.launcher.config.Config;
 import com.soya.launcher.view.AppLayout;
 import com.soya.launcher.view.MyFrameLayout;
 
-public class AppListAdapter extends Presenter {
+import java.util.List;
+
+public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.Holder> {
     private Context context;
     private LayoutInflater inflater;
-
+    private List<ApplicationInfo> dataList;
     private Callback callback;
 
     private int layoutId;
 
-    public AppListAdapter(Context context, LayoutInflater inflater, int layoutId, Callback callback){
+    public AppListAdapter(Context context, LayoutInflater inflater, List<ApplicationInfo> dataList, int layoutId, Callback callback){
         this.context = context;
         this.inflater = inflater;
         this.layoutId = layoutId;
         this.callback = callback;
+        this.dataList = dataList;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent) {
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new Holder(inflater.inflate(layoutId, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        Holder holder = (Holder) viewHolder;
-        holder.bind((ApplicationInfo) item);
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
+        holder.bind(dataList.get(position));
     }
 
     @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
-        Holder holder = (Holder) viewHolder;
-        holder.unbind();
+    public int getItemCount() {
+        return dataList.size();
     }
 
-    public class Holder extends ViewHolder {
+    public void replace(List<ApplicationInfo> list){
+        dataList.clear();
+        dataList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public class Holder extends RecyclerView.ViewHolder {
         private ImageView mIV;
         private ImageView mIVSmall;
         private TextView mTitle;
@@ -69,6 +81,7 @@ public class AppListAdapter extends Presenter {
         }
 
         public void bind(ApplicationInfo bean){
+            View root = itemView.getRootView();
             PackageManager pm = context.getPackageManager();
             //Drawable banner = bean.activityInfo.loadBanner(pm);
             Drawable banner = null;
@@ -94,10 +107,20 @@ public class AppListAdapter extends Presenter {
                 }
             });
 
-            view.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (callback != null) callback.onClick(bean);
+                }
+            });
+
+            itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    mRootView.setSelected(hasFocus);
+                    Animation animation = AnimationUtils.loadAnimation(context, hasFocus ? R.anim.zoom_in_middle : R.anim.zoom_out_middle);
+                    root.startAnimation(animation);
+                    animation.setFillAfter(true);
                 }
             });
 
