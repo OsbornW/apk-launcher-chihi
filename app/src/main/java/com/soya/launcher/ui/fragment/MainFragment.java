@@ -317,6 +317,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     @Override
     protected void initBind(View view, LayoutInflater inflater){
         super.initBind(view, inflater);
+        fillLocal();
         fillHeader();
         mNotifyRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         mNotifyRecycler.setAdapter(mNotifyAdapter);
@@ -629,6 +630,21 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         }
     }
 
+    private void fillLocal(){
+        try {
+            HomeResponse.Inner data = new Gson().fromJson(new FileReader(FilePathMangaer.getMoviePath(getActivity())+"/data/movie.json"), HomeResponse.Inner.class);
+            for (HomeItem home : data.getMovies()){
+                for (Movice movice : home.getDatas()){
+                    App.MOVIE_IMAGE.put(movice.getUrl(), FilePathMangaer.getMoviePath(getActivity())+"/"+movice.getImageUrl());
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+
+        }
+    }
+
     private MainHeaderAdapter.Callback newHeaderCallback(){
         return new MainHeaderAdapter.Callback() {
             @Override
@@ -782,20 +798,19 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         try {
             String path = FilePathMangaer.getJsonPath(getActivity()) + "/Home.json";
             if (new File(path).exists()){
-                setDefault(false);
                 HomeResponse result = new Gson().fromJson(new JsonReader(new FileReader(path)), HomeResponse.class);
                 List<TypeItem> header = fillData(result);
                 header.addAll(items);
                 setHeader(header);
             }else {
-                setDefault(true);
+                setDefault();
             }
         }catch (Exception e){
-            setDefault(true);
+            setDefault();
         }
     }
 
-    private void setDefault(boolean isSet){
+    private void setDefault(){
         try {
             HomeResponse.Inner data = new Gson().fromJson(new FileReader(FilePathMangaer.getMoviePath(getActivity())+"/data/movie.json"), HomeResponse.Inner.class);
             HomeResponse response = new HomeResponse();
@@ -805,7 +820,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 item.setIcon(FilePathMangaer.getMoviePath(getActivity())+"/"+item.getIcon());
             }
             header.addAll(items);
-            if (isSet) setHeader(header);
+            setHeader(header);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -829,7 +844,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     String path = FilePathMangaer.getMoviePath(getActivity())+"/"+movice.getImageUrl();
                     movice.setImageUrl(path);
                     movice.setLocal(true);
-                    if (!TextUtils.isEmpty(movice.getUrl())) App.MOVIE_IMAGE.put(movice.getUrl(), path);
+                    if (!TextUtils.isEmpty(movice.getUrl()) && !App.MOVIE_IMAGE.containsKey(movice.getUrl())) App.MOVIE_IMAGE.put(movice.getUrl(), path);
                 }
                 movices.add(movice);
             }

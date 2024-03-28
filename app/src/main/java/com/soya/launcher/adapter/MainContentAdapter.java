@@ -72,11 +72,12 @@ public class MainContentAdapter extends Presenter {
                     break;
                 case Movice.PIC_NETWORD:
                     Object image = item.getImageUrl();
-                    if (!item.isLocal() && !TextUtils.isEmpty(item.getUrl())){
+                    if (!item.isLocal() && !TextUtils.isEmpty(item.getUrl()) && App.MOVIE_IMAGE.containsKey(item.getUrl())){
                         Object obj = App.MOVIE_IMAGE.get(item.getUrl());
                         if (obj != null) image = obj;
                     }
-                    GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) item.getImageUrl()) ? R.drawable.transparent : image);
+                    Log.e("TAG", "bind: "+image+"  "+item.getUrl());
+                    GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image);
                     break;
                 default:
                     GlideUtils.bind(context, mIV, R.drawable.transparent);
