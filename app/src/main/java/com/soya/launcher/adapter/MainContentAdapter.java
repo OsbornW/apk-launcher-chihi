@@ -76,7 +76,6 @@ public class MainContentAdapter extends Presenter {
                         Object obj = App.MOVIE_IMAGE.get(item.getUrl());
                         if (obj != null) image = obj;
                     }
-                    Log.e("TAG", "bind: "+image+"  "+item.getUrl());
                     GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image);
                     break;
                 default:
