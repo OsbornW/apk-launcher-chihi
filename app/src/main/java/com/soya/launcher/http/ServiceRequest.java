@@ -17,6 +17,7 @@ import com.soya.launcher.http.response.PushResponse;
 import com.soya.launcher.http.response.VersionResponse;
 import com.soya.launcher.http.ssl.CustomTrustManager;
 import com.soya.launcher.http.ssl.SSLSocketClient;
+import com.soya.launcher.manager.PreferencesManager;
 import com.soya.launcher.utils.AndroidSystem;
 
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class ServiceRequest {
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
                 .sslSocketFactory(SSLSocketClient.getSSLSocketFactory(), new CustomTrustManager())
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -118,8 +120,16 @@ public class ServiceRequest {
     }
 
     public Call<ResponseBody> getHomeContents(Callback<HomeResponse> callback){
+        long time = PreferencesManager.getLastUpdateHomeTime();
+        boolean isSet = true;
+        if (time <= 0){
+            isSet = true;
+        }else {
+            isSet = TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - time) >= 25 ? true : false;
+        }
         Map<String, String> map = new HashMap<>();
         map.put("channel", Config.CHANNEL);
+        map.put("req_id", isSet ? String.valueOf(1) : String.valueOf(PreferencesManager.getRecentlyModified()));
         Call<ResponseBody> call = request.getHomeContents(map);
         asyncRequest(call, HomeResponse.class, callback, "getHomeContents");
         return call;

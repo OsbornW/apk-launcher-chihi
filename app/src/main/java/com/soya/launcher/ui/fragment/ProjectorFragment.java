@@ -78,10 +78,10 @@ public class ProjectorFragment extends AbsFragment{
         mContentGrid.setAdapter(itemBridgeAdapter);
         mContentGrid.setNumColumns(4);
         List<SettingItem> list = new ArrayList<>();
-        list.add(new SettingItem(Projector.TYPE_SETTING, getString(R.string.project_crop), R.drawable.baseline_crop_100));
         list.add(new SettingItem(Projector.TYPE_PROJECTOR_MODE, getString(R.string.project_mode), R.drawable.baseline_model_training_100));
-        list.add(new SettingItem(Projector.TYPE_HDMI, getString(R.string.project_hdmi), R.drawable.baseline_settings_input_hdmi_100));
+        list.add(new SettingItem(Projector.TYPE_SETTING, getString(R.string.project_crop), R.drawable.baseline_crop_100));
         list.add(new SettingItem(Projector.TYPE_SCREEN, getString(R.string.project_gradient), R.drawable.baseline_screenshot_monitor_100));
+        list.add(new SettingItem(Projector.TYPE_HDMI, getString(R.string.project_hdmi), R.drawable.baseline_settings_input_hdmi_100));
 
         arrayObjectAdapter.addAll(0, list);
     }

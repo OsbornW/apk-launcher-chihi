@@ -6,7 +6,6 @@ public interface Types {
     int TYPE_MY_APPS = 5;
     int TYPE_PROJECTOR = 6;
     int TYPE_WALLPAPER = 7;
-    int TYPE_ADS = 8;
-    int TYPE_ADS2 = 9;
     int TYPE_MOVICE = 10;
+    int TYPE_TOOL = 11;
 }

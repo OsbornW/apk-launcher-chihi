@@ -28,6 +28,10 @@ public class FilePathMangaer {
     }
 
     public static final String getAppDownload(Context context) {
-        return context.getFilesDir().getAbsolutePath();
+        return context.getFilesDir().getAbsolutePath()+"/apk";
+    }
+
+    public static final String getMoviePath(Context context){
+        return context.getFilesDir().getAbsolutePath()+"/movies";
     }
 }

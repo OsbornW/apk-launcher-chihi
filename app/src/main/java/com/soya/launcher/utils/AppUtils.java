@@ -21,15 +21,23 @@ public class AppUtils {
         context.startActivity(intent);
     }
 
-    public static void adbInstallApk(String filePath) throws Exception {
+    public static int adbInstallApk(String filePath) throws Exception {
         String cmd = "pm install -r "+filePath;
+        Process process = Runtime.getRuntime().exec(cmd);
+        int code = process.waitFor();
+        process.destroy();
+        return code;
+    }
+
+    public static void adbUninstallApk(String packageName) throws Exception {
+        String cmd = "pm uninstall " + packageName;
         Process process = Runtime.getRuntime().exec(cmd);
         process.waitFor();
         process.destroy();
     }
 
-    public static void adbUninstallApk(String packageName) throws Exception {
-        String cmd = "pm uninstall " + packageName;
+    public static void openHDMI() throws Exception {
+        String cmd = "am broadcast -a android.cvim.action.HDMI.SOURCE ";
         Process process = Runtime.getRuntime().exec(cmd);
         process.waitFor();
         process.destroy();

@@ -10,9 +10,11 @@ import android.widget.TextView;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.Presenter;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.TypeItem;
 import com.soya.launcher.callback.SelectedCallback;
+import com.soya.launcher.utils.FileUtils;
 import com.soya.launcher.utils.GlideUtils;
 import com.soya.launcher.view.MyCardView;
 
@@ -87,6 +89,9 @@ public class MainHeaderAdapter extends Presenter {
             switch (item.getIconType()){
                 case TypeItem.TYPE_ICON_IMAGE_RES:
                     mIV.setImageResource((Integer) item.getIcon());
+                    break;
+                case TypeItem.TYPE_ICON_ASSETS:
+                    GlideUtils.bind(context, mIV, FileUtils.readAssets(context, (String) item.getIcon()));
                     break;
                 default:
                     GlideUtils.bind(context, mIV, item.getIcon());

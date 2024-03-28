@@ -64,7 +64,7 @@ public class StoreAdapter extends Presenter {
 
         public void bind(AppItem bean){
 
-            GlideUtils.bind(context, mIV, bean.getAppIcon());
+            GlideUtils.bind(context, mIV, TextUtils.isEmpty(bean.getLocalIcon()) ? bean.getAppIcon() : bean.getLocalIcon());
             mTitleView.setText(bean.getAppName());
             if (!TextUtils.isEmpty(bean.getAppSize()))
                 mMesView.setText(String.format("%.01f★ | %s", bean.getScore(), bean.getAppSize()));

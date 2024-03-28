@@ -334,6 +334,9 @@
 <dimen name="holder_about_title_text_size">6sp</dimen>
 <dimen name="holder_about_title_margin_left">7dp</dimen>
 <dimen name="holder_about_desc_text_size">6sp</dimen>
+<dimen name="holder_notify_bar_action_width">35dp</dimen>
+<dimen name="holder_notify_bar_action_height">13dp</dimen>
+<dimen name="holder_notify_bar_action_text_size">5sp</dimen>
 <dimen name="holder_ads_max_image_width">79dp</dimen>
 <dimen name="holder_ads_3_image_width">79dp</dimen>
 <dimen name="holder_banner_root_padding_left">3dp</dimen>

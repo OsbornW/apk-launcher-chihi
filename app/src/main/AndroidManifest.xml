@@ -41,6 +41,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BROADCASTS" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -66,11 +67,13 @@
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:hardwareAccelerated ="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:preserveLegacyExternalStorage="true"
         android:theme="@style/Theme.MyTv">
 
         <meta-data
             android:name="com.soya.launcher.bean.MyGlide"
-            android:value="GlideModule" />
+            android:value="AppGlideModule" />
 
         <activity
             android:name=".ui.activity.MainActivity"
@@ -114,6 +117,7 @@
         <activity android:name="com.soya.launcher.ui.activity.ScaleScreenActivity" />
         <activity android:name="com.soya.launcher.ui.activity.BluetoothActivity" />
         <activity android:name="com.soya.launcher.ui.activity.RemoteControlActivity" />
+        <activity android:name="com.soya.launcher.ui.activity.NotifyActivity" />
 
         <provider
             android:authorities="${applicationId}.provider"
@@ -127,9 +131,25 @@
         </provider>
 
         <service
+            android:name=".service.AppService"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:process=":app_progress"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:directBootAware="true"
             android:exported="true"
             android:enabled="true"
-            android:process=":app_process"
-            android:name="com.soya.launcher.service.AppService" />
+            android:name="com.soya.launcher.service.OutsideBroadcast" >
+            <intent-filter>
+                <action android:name="android.intent.action.store.download.apk"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

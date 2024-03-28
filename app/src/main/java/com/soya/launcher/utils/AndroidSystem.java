@@ -351,24 +351,23 @@ public class AndroidSystem {
         for (ResolveInfo resolveInfo : infos) {
             for (AppPackage pk : packages){
                 if (pk.getPackageName().equals(resolveInfo.activityInfo.packageName)){
+                    success = true;
                     ActivityInfo info = resolveInfo.activityInfo;
-                    if (TextUtils.isEmpty(pk.getActivityName())){
-                        Intent intent = getPackageNameIntent(context, info.packageName);
-                        if (intent != null){
-                            intent.setAction(Intent.ACTION_VIEW);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.setData(Uri.parse(url));
-                            context.startActivity(intent);
-                            success = true;
-                        }
+                    Intent intent = getPackageNameIntent(context, info.packageName);
+                    if (TextUtils.isEmpty(url)){
+                        openPackageName(context, resolveInfo.activityInfo.packageName);
                     }else {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                                .setClassName(info.applicationInfo.packageName, pk.getActivityName())
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
-                        success = true;
+                        if (TextUtils.isEmpty(pk.getActivityName())){
+                            if (intent != null){
+                                intent.setAction(Intent.ACTION_VIEW);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setData(Uri.parse(url));
+                                context.startActivity(intent);
+                            }
+                        }else {
+                            openPN(context, url, intent.getComponent().getPackageName(), pk.getActivityName());
+                        }
                     }
-                    break;
                 }
             }
         }
@@ -376,17 +375,24 @@ public class AndroidSystem {
         return success;
     }
 
-    public static boolean jumpAppStore(Context context){
-        return jumpAppStore(context, null);
+    public static void openPN(Context context, String url, String packageName, String className){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                .setClassName(packageName, className)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
-    public static boolean jumpAppStore(Context context, String data){
+    public static boolean jumpAppStore(Context context){
+        return jumpAppStore(context, null, null);
+    }
+
+    public static boolean jumpAppStore(Context context, String data, String[] packageName){
         boolean success = false;
         List<ResolveInfo> infos = getAppStores(context);
         ResolveInfo defaultInfo = null;
         for (ResolveInfo resolveInfo : infos) {
             if (resolveInfo.activityInfo.packageName.equals(Config.STORE_PACKAGE_NAME)){
-                if (TextUtils.isEmpty(data)) {
+                if (TextUtils.isEmpty(data) && packageName == null) {
                     openActivityInfo(context, resolveInfo.activityInfo);
                 }else {
                     ActivityInfo info = resolveInfo.activityInfo;
@@ -394,6 +400,7 @@ public class AndroidSystem {
                             .setClassName(info.applicationInfo.packageName, Config.STORE_CLASS_NAME);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.putExtra(Atts.BEAN, data);
+                    intent.putExtra(Atts.PACKAGE_NAME, packageName);
                     context.startActivity(intent);
                 }
                 success = true;

@@ -105,7 +105,7 @@ public class AboutFragment extends AbsFragment implements View.OnClickListener {
 
     private void setContent(){
         List<AboutItem> list = new ArrayList<>();
-        list.add(new AboutItem(0, R.drawable.baseline_storage_100, getString(R.string.storage), getString(R.string.storage_total_mask, AndroidSystem.getTotalInternalMemorySize() / 1024000000.0F)));
+        //list.add(new AboutItem(0, R.drawable.baseline_storage_100, getString(R.string.storage), getString(R.string.storage_total_mask, AndroidSystem.getTotalInternalMemorySize() / 1024000000.0F)));
         list.add(new AboutItem(0, R.drawable.baseline_tv_100, getString(R.string.android_tv_os_version), Build.VERSION.RELEASE));
         list.add(new AboutItem(0, R.drawable.baseline_translate_100, getString(R.string.language), AndroidSystem.getSystemLanguage(getActivity())));
         list.add(new AboutItem(0, R.drawable.baseline_apps_100, getString(R.string.apps), String.valueOf(AndroidSystem.getUserApps(getActivity()).size())));

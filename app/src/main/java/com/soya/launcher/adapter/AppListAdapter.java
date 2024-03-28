@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import androidx.leanback.widget.Presenter;
 
 import com.soya.launcher.R;
 import com.soya.launcher.callback.SelectedCallback;
+import com.soya.launcher.config.Config;
+import com.soya.launcher.view.AppLayout;
 import com.soya.launcher.view.MyFrameLayout;
 
 public class AppListAdapter extends Presenter {
@@ -53,6 +56,7 @@ public class AppListAdapter extends Presenter {
         private ImageView mIVSmall;
         private TextView mTitle;
         private MyFrameLayout mRootView;
+        private AppLayout mAppLayout;
 
         public Holder(View view) {
             super(view);
@@ -60,6 +64,7 @@ public class AppListAdapter extends Presenter {
             mIV = view.findViewById(R.id.image);
             mTitle = view.findViewById(R.id.title);
             mIVSmall = view.findViewById(R.id.image_small);
+            mAppLayout = view.findViewById(R.id.root);
             mRootView = (MyFrameLayout) view;
         }
 
@@ -72,7 +77,13 @@ public class AppListAdapter extends Presenter {
             }else {
                 mIVSmall.setImageDrawable(bean.loadIcon(pm));
             }
-            mTitle.setText(bean.loadLabel(pm));
+
+            if (Config.COMPANY == 4 && bean.packageName.equals("com.mediatek.tvinput")){
+                mTitle.setText("HDMI");
+            }else {
+                mTitle.setText(bean.loadLabel(pm));
+            }
+
             mIV.setVisibility(banner == null ? View.GONE : View.VISIBLE);
             mIVSmall.setVisibility(banner == null ? View.VISIBLE : View.GONE);
 
@@ -89,6 +100,17 @@ public class AppListAdapter extends Presenter {
                     if (callback != null) callback.onClick(bean);
                 }
             });
+
+            mAppLayout.setListener(new AppLayout.EventListener() {
+                @Override
+                public boolean onKeyDown(int keyCode, KeyEvent event) {
+                    if (callback != null && event.getKeyCode() == KeyEvent.KEYCODE_MENU){
+                        callback.onMenuClick(bean);
+                        return false;
+                    }
+                    return true;
+                }
+            });
         }
 
         public void unbind(){
@@ -103,5 +125,6 @@ public class AppListAdapter extends Presenter {
     public interface Callback{
         void onSelect(boolean selected);
         void onClick(ApplicationInfo bean);
+        void onMenuClick(ApplicationInfo bean);
     }
 }

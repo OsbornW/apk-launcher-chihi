@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -21,7 +22,7 @@ public class AppService extends Service {
         super.onCreate();
         receiver = new InnerReceiver();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(IntentAction.ACTION_UPGRADE_APP);
+        filter.addAction(IntentAction.ACTION_DOWNLOAD_APK);
         registerReceiver(receiver, filter);
     }
 
@@ -37,19 +38,10 @@ public class AppService extends Service {
         return null;
     }
 
-    public class InnerReceiver extends BroadcastReceiver{
+    public static class InnerReceiver extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()){
-                case IntentAction.ACTION_UPGRADE_APP:
-                    try {
-                        String path = intent.getStringExtra(Atts.BEAN);
-                        AppUtils.adbInstallApk(path);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    break;
-            }
+            Toast.makeText(context, intent.getAction(), Toast.LENGTH_SHORT).show();
         }
     }
 }

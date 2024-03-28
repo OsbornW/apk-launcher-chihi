@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class TypeItem implements Serializable {
     public static final int TYPE_ICON_IMAGE_RES = 0;
     public static final int TYPE_ICON_IMAGE_URL = 1;
+    public static final int TYPE_ICON_ASSETS = 2;
     public static final int TYPE_LAYOUT_STYLE_UNKNOW = -1;
     public static final int TYPE_LAYOUT_STYLE_1 = 0;
     public static final int TYPE_LAYOUT_STYLE_2 = 1;
@@ -15,6 +16,7 @@ public class TypeItem implements Serializable {
     private Object icon;
     private long id;
     private int type;
+    private String data;
 
     public TypeItem(String name, Object icon, long id, int type, int iconType, int layoutType){
         this.name = name;
@@ -23,6 +25,18 @@ public class TypeItem implements Serializable {
         this.type = type;
         this.iconType = iconType;
         this.layoutType = layoutType;
+    }
+
+    public void setIcon(Object icon) {
+        this.icon = icon;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getData() {
+        return data;
     }
 
     public String getName() {

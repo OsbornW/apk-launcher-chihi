@@ -56,6 +56,7 @@ import com.soya.launcher.adapter.StoreAdapter;
 import com.soya.launcher.bean.Ads;
 import com.soya.launcher.bean.AppInfo;
 import com.soya.launcher.bean.AppItem;
+import com.soya.launcher.bean.AppPackage;
 import com.soya.launcher.bean.HomeItem;
 import com.soya.launcher.bean.Movice;
 import com.soya.launcher.bean.MoviceData;
@@ -72,6 +73,7 @@ import com.soya.launcher.config.Config;
 import com.soya.launcher.decoration.HSlideMarginDecoration;
 import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.IntentAction;
+import com.soya.launcher.enums.Tools;
 import com.soya.launcher.enums.Types;
 import com.soya.launcher.http.AppServiceRequest;
 import com.soya.launcher.http.HttpRequest;
@@ -88,6 +90,7 @@ import com.soya.launcher.ui.activity.AppsActivity;
 import com.soya.launcher.ui.activity.GradientActivity;
 import com.soya.launcher.ui.activity.LoginActivity;
 import com.soya.launcher.ui.activity.MoviceListActivity;
+import com.soya.launcher.ui.activity.NotifyActivity;
 import com.soya.launcher.ui.activity.ScaleScreenActivity;
 import com.soya.launcher.ui.activity.SearchActivity;
 import com.soya.launcher.ui.activity.SettingActivity;
@@ -102,6 +105,7 @@ import com.soya.launcher.utils.PreferencesUtils;
 import com.soya.launcher.utils.StringUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -139,7 +143,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private HorizontalGridView mHeaderGrid;
     private HorizontalGridView mHorizontalContentGrid;
     private VerticalGridView mVerticalContentGrid;
-    private RecyclerView mRecyclerView;
     private AppBarLayout mAppBarLayout;
     private View mRootView;
     private View mSettingView;
@@ -152,11 +155,14 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private View mHelpView;
     private TextView mTestView;
     private RecyclerView mNotifyRecycler;
+    private View mNotifyView;
 
     private NotifyAdapter mNotifyAdapter;
     private Handler uiHandler;
     private String uuid;
     private Call call;
+    private Call homeCall;
+    private boolean isReqHome = false;
     private InnerReceiver receiver;
     private WallpaperReceiver wallpaperReceiver;
     private float maxVerticalOffset;
@@ -166,9 +172,11 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private MyRunnable installRunnable;
     private MyRunnable uninstallRunnable;
     private boolean isConnectFirst = false;
+    private boolean isFullAll = false;
     private boolean isNetworkAvailable;
     private long lastWeatherTime = -1;
     private long lastCheckPushTime = System.currentTimeMillis();
+    private boolean isFullStoreNow = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -185,6 +193,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
 
         if (Config.COMPANY == 0){
             items.add(new TypeItem(getString(R.string.pojector), R.drawable.projector, 0, Types.TYPE_PROJECTOR, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW));
+        }
+
+        if (Config.COMPANY == 4){
+            items.add(new TypeItem(getString(R.string.tool), R.drawable.tool, 0, Types.TYPE_TOOL, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW));
         }
 
         IntentFilter filter = new IntentFilter();
@@ -210,6 +222,8 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (call != null) call.cancel();
+        if (homeCall != null) homeCall.cancel();
         getActivity().unregisterReceiver(receiver);
         getActivity().unregisterReceiver(wallpaperReceiver);
         exec.shutdownNow();
@@ -271,12 +285,12 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mSearchView = view.findViewById(R.id.search);
         mWifiView = view.findViewById(R.id.wifi);
         mLoginView = view.findViewById(R.id.login);
-        mRecyclerView = view.findViewById(R.id.recycler);
         mSegmentView = view.findViewById(R.id.loop_segment);
         mTimeView = view.findViewById(R.id.loop_time);
         mHelpView = view.findViewById(R.id.help);
         mTestView = view.findViewById(R.id.test);
         mNotifyRecycler = view.findViewById(R.id.notify_recycler);
+        mNotifyView = view.findViewById(R.id.notify);
 
         mHorizontalContentGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
         mHeaderGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
@@ -297,6 +311,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mWifiView.setOnClickListener(this);
         mLoginView.setOnClickListener(this);
         mHelpView.setOnClickListener(this);
+        mNotifyView.setOnClickListener(this);
     }
 
     @Override
@@ -310,83 +325,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     @Override
     protected int getWallpaperView() {
         return R.id.wallpaper;
-    }
-
-    private void doPushApp(){
-        PushApp bean = App.PUSH_APPS.isEmpty() ? null : App.PUSH_APPS.remove(0);
-        if (bean == null || !isAdded()) return;
-
-        if (bean.getInstallFlag()){
-            try {
-                PackageManager pm = getActivity().getPackageManager();
-                List<ResolveInfo> infos = AndroidSystem.queryCategoryAllLauncher(getActivity());
-                boolean caInstall = true;
-                for (ResolveInfo info : infos) {
-                    if (info.activityInfo.packageName.equals(bean.getPackageName()) && pm.getPackageInfo(bean.getPackageName(), 0).versionName.equals(bean.getVersion())){
-                        caInstall = false;
-                        break;
-                    }
-                }
-                if (caInstall){
-                    downloadApk(bean);
-                }else {
-                    doPushApp();
-                }
-            }catch (Exception e){
-                doPushApp();
-            }
-        }else {
-            silentUninstall(bean.getPackageName());
-        }
-    }
-
-    private void downloadApk(PushApp bean){
-        OkGo.get(bean.getUrl()).execute(new FileCallback(FilePathMangaer.getAppDownload(getActivity()), bean.getName()+".apk") {
-            @Override
-            public void onError(okhttp3.Call call, Response response, Exception e) {
-                doPushApp();
-            }
-
-            @Override
-            public void onSuccess(File file, okhttp3.Call call, Response response) {
-                silentInstall(file);
-            }
-        });
-    }
-
-    private void silentUninstall(final String packageName){
-        if (uninstallRunnable != null) uninstallRunnable.interrupt();
-        uninstallRunnable = new MyRunnable() {
-            @Override
-            public void run() {
-                try {
-                    AppUtils.adbUninstallApk(packageName);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    doPushApp();
-                }
-            }
-        };
-        exec.execute(uninstallRunnable);
-    }
-
-    private void silentInstall(final File file){
-        if (installRunnable != null) installRunnable.interrupt();
-        installRunnable = new MyRunnable() {
-            @Override
-            public void run() {
-                try {
-                    AppUtils.adbInstallApk(file.getAbsolutePath());
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    if (file.exists()) file.delete();
-                    doPushApp();
-                }
-            }
-        };
-        exec.execute(installRunnable);
     }
 
     private void uidPull(){
@@ -415,7 +353,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
                 mVerticalContentGrid.setVisibility(View.GONE);
                 mHorizontalContentGrid.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
                 break;
             case 0:
                 if (list.size() > columns * 2){
@@ -424,7 +361,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 mVerticalContentGrid.setAdapter(itemBridgeAdapter);
                 mVerticalContentGrid.setVisibility(View.VISIBLE);
                 mHorizontalContentGrid.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.GONE);
                 mVerticalContentGrid.setNumColumns(columns);
                 mVerticalContentGrid.setVerticalSpacing((int) getResources().getDimension(R.dimen.main_page_vertical_spacing));
                 break;
@@ -438,7 +374,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         timeRunnable = null;
     }
 
-    private void startLoopTime(){
+    private void startLoopTime() {
         if (timeRunnable != null) return;
         timeRunnable = new MyRunnable() {
             @Override
@@ -450,26 +386,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                         HttpRequest.getCityWeather(newWeatherCallback(), PreferencesManager.getCityName());
                         lastWeatherTime = System.currentTimeMillis();
                     }
-
-                    if (lastCheckPushTime != -1 && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastCheckPushTime) >= 20){
-                        lastCheckPushTime = -1;
-                        HttpRequest.pushApp(newPushResponseCallback());
-                    }
                 }
             }
         };
         exec.execute(timeRunnable);
-    }
-
-    private ServiceRequest.Callback<PushResponse> newPushResponseCallback(){
-        return new ServiceRequest.Callback<PushResponse>() {
-            @Override
-            public void onCallback(Call call, int status, PushResponse result) {
-                if (call.isCanceled() || !isAdded() || result == null || result.getData() == null || result.getData().isEmpty()) return;
-                App.PUSH_APPS.addAll(result.getData());
-                doPushApp();
-            }
-        };
     }
 
     private void syncNotify(){
@@ -480,7 +400,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 syncTime();
                 boolean old = isNetworkAvailable;
                 isNetworkAvailable = AndroidSystem.isNetworkAvailable(getActivity());
-                if (isNetworkAvailable != old && isNetworkAvailable) uidPull();
+                if (isNetworkAvailable != old && isNetworkAvailable) {
+                    uidPull();
+                    requestHome();
+                }
                 if (AndroidSystem.isEthernetConnected(getActivity())){
                     mWifiView.setImageResource(R.drawable.baseline_lan_100);
                 }else {
@@ -540,23 +463,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mTimeView.setText(time);
     }
 
-    private void setAdsContent(List<Ads> dataList, Map<Integer, Integer> layoutMap) {
-        mVerticalContentGrid.setVisibility(View.GONE);
-        mHorizontalContentGrid.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-
-        AdsAdapter adapter = new AdsAdapter(getActivity(), getLayoutInflater(), dataList, layoutMap);
-        GridLayoutManager lm = new GridLayoutManager(getActivity(), 2, RecyclerView.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(lm);
-        mRecyclerView.setAdapter(adapter);
-        setSpanSizeLookup(lm, new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return dataList.get(position).getSpanSize();
-            }
-        });
-    }
-
     private void setAppContent(List<ApplicationInfo> list){
         ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new AppListAdapter(getActivity(), getLayoutInflater(), R.layout.holder_app, newAppListCallback()));
         ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
@@ -564,7 +470,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
         mVerticalContentGrid.setVisibility(View.GONE);
         mHorizontalContentGrid.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
 
         arrayObjectAdapter.addAll(0, list);
     }
@@ -576,13 +481,27 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
         mVerticalContentGrid.setVisibility(View.GONE);
         mHorizontalContentGrid.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
 
         List<SettingItem> list = new ArrayList<>();
-        list.add(new SettingItem(Projector.TYPE_SETTING, getString(R.string.project_crop), R.drawable.baseline_crop_100));
         list.add(new SettingItem(Projector.TYPE_PROJECTOR_MODE, getString(R.string.project_mode), R.drawable.baseline_model_training_100));
-        list.add(new SettingItem(Projector.TYPE_HDMI, getString(R.string.project_hdmi), R.drawable.baseline_settings_input_hdmi_100));
+        list.add(new SettingItem(Projector.TYPE_SETTING, getString(R.string.project_crop), R.drawable.baseline_crop_100));
         list.add(new SettingItem(Projector.TYPE_SCREEN, getString(R.string.project_gradient), R.drawable.baseline_screenshot_monitor_100));
+        list.add(new SettingItem(Projector.TYPE_HDMI, getString(R.string.project_hdmi), R.drawable.baseline_settings_input_hdmi_100));
+
+        arrayObjectAdapter.addAll(0, list);
+    }
+
+    private void setToolContent(){
+        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new SettingAdapter(getActivity(), getLayoutInflater(), newToolCallback(), R.layout.holder_setting_3));
+        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
+        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
+        mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
+        mVerticalContentGrid.setVisibility(View.GONE);
+        mHorizontalContentGrid.setVisibility(View.VISIBLE);
+
+        List<SettingItem> list = new ArrayList<>();
+        list.add(new SettingItem(Tools.TYPE_HDMI, getString(R.string.project_hdmi), R.drawable.baseline_settings_input_hdmi_100));
+        list.add(new SettingItem(Tools.TYPE_FILE, getString(R.string.file_management), R.drawable.baseline_sd_storage_100_3));
 
         arrayObjectAdapter.addAll(0, list);
     }
@@ -620,6 +539,27 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         };
     }
 
+    private SettingAdapter.Callback newToolCallback(){
+        return new SettingAdapter.Callback() {
+            @Override
+            public void onSelect(boolean selected, SettingItem bean) {
+                if (selected) setExpanded(false);
+            }
+
+            @Override
+            public void onClick(SettingItem bean) {
+                switch (bean.getType()){
+                    case Tools.TYPE_HDMI:
+                       AndroidSystem.openPackageName(getActivity(), "com.mediatek.tvinput");
+                        break;
+                    case Tools.TYPE_FILE:
+                        AndroidSystem.openPackageName(getActivity(), "com.conocx.fileexplorer");
+                        break;
+                }
+            }
+        };
+    }
+
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         float value = 1f - Math.abs(verticalOffset / 2f) / maxVerticalOffset;
@@ -650,6 +590,8 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }else if (v.equals(mHelpView)){
             startActivity(new Intent(getActivity(), AboutActivity.class));
+        }else if (v.equals(mNotifyView)){
+            startActivity(new Intent(getActivity(), NotifyActivity.class));
         }
     }
 
@@ -678,37 +620,8 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 setProjectorContent();
             }
             break;
-            case Types.TYPE_ADS:{
-                List<Ads> dataList = new ArrayList<>();
-                dataList.add(new Ads(2, R.drawable.ads_3));
-                dataList.add(new Ads(1, R.drawable.ads_5));
-                dataList.add(new Ads(1, R.drawable.ads_6));
-                dataList.add(new Ads(1, R.drawable.ads_7));
-                dataList.add(new Ads(1, R.drawable.ads_5));
-                dataList.add(new Ads(1, R.drawable.ads_6));
-                dataList.add(new Ads(1, R.drawable.ads_7));
-                dataList.add(new Ads(1, R.drawable.ads_5));
-                dataList.add(new Ads(1, R.drawable.ads_6));
-                dataList.add(new Ads(1, R.drawable.ads_7));
-                Map<Integer, Integer> map = new HashMap<>();
-                map.put(AdsAdapter.TYPE_MAX, R.layout.holder_ads_max);
-                map.put(AdsAdapter.TYPE_MIN, R.layout.holder_ads);
-                setAdsContent(dataList, map);
-            }
-            break;
-            case Types.TYPE_ADS2:{
-                List<Ads> dataList = new ArrayList<>();
-                dataList.add(new Ads(2, R.drawable.ads_4));
-                dataList.add(new Ads(2, R.drawable.ads_3));
-                dataList.add(new Ads(2, R.drawable.ads_1));
-                dataList.add(new Ads(2, R.drawable.ads_3));
-                dataList.add(new Ads(2, R.drawable.ads_4));
-                dataList.add(new Ads(2, R.drawable.ads_1));
-                Map<Integer, Integer> map = new HashMap<>();
-                map.put(AdsAdapter.TYPE_MAX, R.layout.holder_ads_3);
-                map.put(AdsAdapter.TYPE_MIN, R.layout.holder_ads_3);
-                setAdsContent(dataList, map);
-                setAdsContent(dataList, map);
+            case Types.TYPE_TOOL:{
+                setToolContent();
             }
             break;
             default:
@@ -722,13 +635,11 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             public void onClick(TypeItem bean) {
                 switch (bean.getType()){
                     case Types.TYPE_MOVICE:{
-                        if (!App.MOVIE_MAP.containsKey(bean.getId())){
-                            toast(getString(R.string.place_waiting), ToastDialog.MODE_CONFIRM,null);
-                            break;
+                        AppPackage[] packages = new Gson().fromJson(bean.getData(), AppPackage[].class);
+                        boolean success = AndroidSystem.jumpPlayer(getActivity(), packages, null);
+                        if (!success){
+                            toastInstallPKApp(bean.getName(), packages);
                         }
-                        Intent intent = new Intent(getActivity(), MoviceListActivity.class);
-                        intent.putExtra(Atts.BEAN, bean);
-                        startActivity(intent);
                     }
                         break;
                     case Types.TYPE_APP_STORE:
@@ -791,12 +702,14 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void fillMovice(long id, int dirction, int columns, int layoutId){
-        if (App.MOVIE_MAP.containsKey(id) && isConnectFirst){
-            setMoviceContent(App.MOVIE_MAP.get(id), dirction, columns, layoutId);
-        }else {
-            setMoviceContent(App.MOVIE_MAP.containsKey(id) ? App.MOVIE_MAP.get(id) : getPlaceholdings(), dirction, columns, layoutId);
-            call = HttpRequest.getHomeContents(newMoviceListCallback());
-        }
+        setMoviceContent(App.MOVIE_MAP.get(id), dirction, columns, layoutId);
+        requestHome();
+    }
+
+    private void requestHome(){
+        if (isReqHome || isConnectFirst) return;
+        isReqHome = true;
+        homeCall = HttpRequest.getHomeContents(newMoviceListCallback());
     }
 
 
@@ -811,21 +724,37 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private void fillAppStore(){
         if (App.APP_STORE_ITEMS.isEmpty()){
             List<AppItem> emptys = new ArrayList<>();
-            for (int i = 0; i < 10; i++) emptys.add(new AppItem());
-            setStoreContent(emptys);
-            call = HttpRequest.getAppList(new AppServiceRequest.Callback<AppListResponse>() {
-                @Override
-                public void onCallback(Call call, int status, AppListResponse result) {
-                    if (!isAdded() || call.isCanceled() || result == null || result.getResult() == null || result.getResult().getAppList() == null || result.getResult().getAppList().isEmpty()) return;
-                    if (mHeaderGrid.getSelectedPosition() == -1 || mHeaderGrid.getSelectedPosition() > targetMenus.size() - 1 || targetMenus.get(mHeaderGrid.getSelectedPosition()).getType() != Types.TYPE_APP_STORE) return;
-
-                    App.APP_STORE_ITEMS.addAll(result.getResult().getAppList());
-                    setStoreContent(App.APP_STORE_ITEMS);
+            try {
+                AppItem[] apps = new Gson().fromJson(new FileReader(FilePathMangaer.getMoviePath(getActivity())+"/data/app.json"), AppItem[].class);
+                if (apps != null) {
+                    for (AppItem item : apps) item.setLocalIcon(FilePathMangaer.getMoviePath(getActivity())+"/"+item.getLocalIcon());
+                    emptys.addAll(Arrays.asList(apps));
                 }
-            }, Config.USER_ID, null, "hot", null, 1, 20);
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                if (emptys.isEmpty()) {
+                    for (int i = 0; i < 10; i++) emptys.add(new AppItem());
+                }
+                setStoreContent(emptys);
+                if (!isFullAll){
+                    HttpRequest.getAppList(new AppServiceRequest.Callback<AppListResponse>() {
+                        @Override
+                        public void onCallback(Call call, int status, AppListResponse result) {
+                            isFullAll = false;
+                            if (!isAdded() || call.isCanceled() || result == null || result.getResult() == null || result.getResult().getAppList() == null || result.getResult().getAppList().isEmpty()) return;
+                            if (mHeaderGrid.getSelectedPosition() == -1 || mHeaderGrid.getSelectedPosition() > targetMenus.size() - 1 || targetMenus.get(mHeaderGrid.getSelectedPosition()).getType() != Types.TYPE_APP_STORE) return;
+
+                            App.APP_STORE_ITEMS.addAll(result.getResult().getAppList());
+                            setStoreContent(App.APP_STORE_ITEMS);
+                        }
+                    }, Config.USER_ID, null, "hot", null, 1, 20);
+                }
+            }
         }else {
             setStoreContent(App.APP_STORE_ITEMS);
         }
+        isFullAll = true;
     }
 
     private void setStoreContent(List<AppItem> list){
@@ -835,7 +764,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
         mVerticalContentGrid.setVisibility(View.GONE);
         mHorizontalContentGrid.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
 
         arrayObjectAdapter.addAll(0, list);
     }
@@ -867,25 +795,45 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private void setDefault(){
-        List<TypeItem> header = new ArrayList<>();
-        header.add(new TypeItem(getString(R.string.netflix), R.drawable.netflix, UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_2));
-        header.add(new TypeItem(getString(R.string.disney), R.drawable.disney, UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_2));
-        header.addAll(items);
-        setHeader(header);
+        try {
+            HomeResponse.Inner data = new Gson().fromJson(new FileReader(FilePathMangaer.getMoviePath(getActivity())+"/data/movie.json"), HomeResponse.Inner.class);
+            HomeResponse response = new HomeResponse();
+            response.data = data;
+            List<TypeItem> header = fillData(response, TypeItem.TYPE_ICON_IMAGE_URL, 1);
+            for (TypeItem item : header){
+                item.setIcon(FilePathMangaer.getMoviePath(getActivity())+"/"+item.getIcon());
+            }
+            header.addAll(items);
+            setHeader(header);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private List<TypeItem> fillData(HomeResponse result){
+        return fillData(result, TypeItem.TYPE_ICON_IMAGE_URL, 0);
+    }
+
+    private List<TypeItem> fillData(HomeResponse result, int iconType, int imageType){
         List<HomeItem> homeItems = result.getData().getMovies();
         List<TypeItem> menus = new ArrayList<>();
+        Gson gson = new Gson();
         for (HomeItem bean : homeItems){
             List<Movice> movices = new ArrayList<>(bean.getDatas().length);
             for (Movice movice : bean.getDatas()){
                 movice.setPicType(Movice.PIC_NETWORD);
                 movice.setAppName(bean.getName());
                 movice.setAppPackage(bean.getPackageNames());
+                if (imageType == 1) {
+                    String path = FilePathMangaer.getMoviePath(getActivity())+"/"+movice.getImageUrl();
+                    movice.setImageUrl(path);
+                    movice.setLocal(true);
+                    if (!TextUtils.isEmpty(movice.getUrl())) App.MOVIE_IMAGE.put(movice.getUrl(), path);
+                }
                 movices.add(movice);
             }
-            TypeItem item = new TypeItem(bean.getName(), bean.getIcon(), UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, TypeItem.TYPE_ICON_IMAGE_URL, bean.getType());
+            TypeItem item = new TypeItem(bean.getName(), bean.getIcon(), UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, iconType, bean.getType());
+            item.setData(gson.toJson(bean.getPackageNames()));
             App.MOVIE_MAP.put(item.getId(), movices);
             menus.add(item);
         }
@@ -901,7 +849,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
 
             @Override
             public void onClick(AppItem bean) {
-                if (!TextUtils.isEmpty(bean.getAppDownLink())) AndroidSystem.jumpAppStore(getActivity(), new Gson().toJson(bean));
+                if (!TextUtils.isEmpty(bean.getAppDownLink())) AndroidSystem.jumpAppStore(getActivity(), new Gson().toJson(bean), null);
             }
         };
     }
@@ -912,16 +860,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             public void onClick(Movice bean) {
                 boolean success = AndroidSystem.jumpVideoApp(getActivity(), bean.getAppPackage(), bean.getUrl());
                 if (!success) {
-                    toastInstallApp(bean.getAppName(), new ToastDialog.Callback() {
-                        @Override
-                        public void onClick(int type) {
-                            if (type == 1){
-                                Intent intent = new Intent(getActivity(), SearchActivity.class);
-                                intent.putExtra(Atts.WORD, bean.getAppName());
-                                startActivity(intent);
-                            }
-                        }
-                    });
+                    toastInstallPKApp(bean.getAppName(), bean.getAppPackage());
                 }
             }
 
@@ -934,6 +873,21 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         };
     }
 
+    private void toastInstallPKApp(String name, AppPackage[] packages){
+        toastInstallApp(name, new ToastDialog.Callback() {
+            @Override
+            public void onClick(int type) {
+                if (type == 1){
+                    String[] pns = new String[packages.length];
+                    for (int i = 0; i < pns.length; i++){
+                        pns[i] = packages[i].getPackageName();
+                    }
+                    AndroidSystem.jumpAppStore(getActivity(), null, pns);
+                }
+            }
+        });
+    }
+
     private ServiceRequest.Callback<HomeResponse> newMoviceListCallback(){
         return new ServiceRequest.Callback<HomeResponse>() {
             @Override
@@ -941,33 +895,41 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 try {
                     if (!isAdded() || call.isCanceled() || result == null) return;
 
+                    if (result.data == null || result.data.getMovies() == null || result.data.getMovies().isEmpty()){
+                        isConnectFirst = true;
+                        return;
+                    }
+
+                    PreferencesUtils.setProperty(Atts.LAST_UPDATE_HOME_TIME, System.currentTimeMillis());
                     FileUtils.writeFile(new Gson().toJson(result).getBytes(StandardCharsets.UTF_8), FilePathMangaer.getJsonPath(getActivity()), "Home.json");
 
                     List<TypeItem> header = fillData(result);
                     header.addAll(items);
-                    if (!isConnectFirst) {
 
-                        boolean isChanger = false;
-                        Set<Integer> types = new HashSet<>();
-                        for (TypeItem item : header) types.add(item.getType());
+                    boolean isChanger = false;
+                    Set<Integer> types = new HashSet<>();
+                    for (TypeItem item : header) types.add(item.getType());
 
-                        for (TypeItem item : targetMenus) {
-                            if (!types.contains(item.getType())){
-                                isChanger = true;
-                                break;
-                            }
+                    for (TypeItem item : targetMenus) {
+                        if (!types.contains(item.getType())){
+                            isChanger = true;
+                            break;
                         }
-
-                        if (header.size() != targetMenus.size()) isChanger = true;
-
-                        if (isChanger) setHeader(header);
                     }
-                    isConnectFirst = true;
 
+                    if (header.size() != targetMenus.size()) isChanger = true;
+
+                    if (isChanger) setHeader(header);
+
+                    isConnectFirst = true;
+                    if (result.getData().getReg_id() != null) PreferencesUtils.setProperty(Atts.RECENTLY_MODIFIED, result.getData().getReg_id());
                     TypeItem item = header.get(0);
                     fillMovice(item);
+                    mHeaderGrid.setSelectedPosition(0);
                 }catch (Exception e){
                     e.printStackTrace();
+                }finally {
+                    isReqHome = false;
                 }
             }
         };
@@ -989,27 +951,32 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             public void onClick(ApplicationInfo bean) {
                 openApp(bean);
             }
+
+            @Override
+            public void onMenuClick(ApplicationInfo bean) {
+                appMenu(bean);
+            }
         };
     }
 
     private void openApp(ApplicationInfo bean){
-        if (Config.COMPANY == 1 || Config.COMPANY == 2 || Config.COMPANY == 3){
-            AndroidSystem.openPackageName(getActivity(), bean.packageName);
-        }else {
-            AppDialog dialog = AppDialog.newInstance(bean);
-            dialog.setCallback(new AppDialog.Callback() {
-                @Override
-                public void onDelete() {
-                    AndroidSystem.openApplicationDetials(getActivity(), bean.packageName);
-                }
+        AndroidSystem.openPackageName(getActivity(), bean.packageName);
+    }
 
-                @Override
-                public void onOpen() {
-                    AndroidSystem.openPackageName(getActivity(), bean.packageName);
-                }
-            });
-            dialog.show(getChildFragmentManager(), AppDialog.TAG);
-        }
+    private void appMenu(ApplicationInfo bean){
+        AppDialog dialog = AppDialog.newInstance(bean);
+        dialog.setCallback(new AppDialog.Callback() {
+            @Override
+            public void onDelete() {
+                AndroidSystem.openApplicationDetials(getActivity(), bean.packageName);
+            }
+
+            @Override
+            public void onOpen() {
+                AndroidSystem.openPackageName(getActivity(), bean.packageName);
+            }
+        });
+        dialog.show(getChildFragmentManager(), AppDialog.TAG);
     }
 
     private void setExpanded(boolean isExpanded){

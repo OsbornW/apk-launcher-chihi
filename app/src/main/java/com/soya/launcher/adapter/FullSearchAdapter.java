@@ -128,6 +128,11 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
                 public void onClick(ApplicationInfo child) {
                     if (callback != null) callback.onClick(bean.getType(), child);
                 }
+
+                @Override
+                public void onMenuClick(ApplicationInfo bean) {
+
+                }
             }));
             ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
             FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);

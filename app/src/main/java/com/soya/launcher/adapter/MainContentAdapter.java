@@ -2,6 +2,7 @@ package com.soya.launcher.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,19 @@ import android.widget.ImageView;
 
 import androidx.leanback.widget.Presenter;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.soya.launcher.App;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.Movice;
 import com.soya.launcher.callback.SelectedCallback;
 import com.soya.launcher.utils.AndroidSystem;
+import com.soya.launcher.utils.FileUtils;
 import com.soya.launcher.utils.GlideUtils;
 import com.soya.launcher.view.MyFrameLayout;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
 
 public class MainContentAdapter extends Presenter {
     private Context context;
@@ -60,10 +68,15 @@ public class MainContentAdapter extends Presenter {
         public void bind(Movice item){
             switch (item.getPicType()){
                 case Movice.PIC_ASSETS:
-                    GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) item.getImageUrl()) ? R.drawable.transparent : AndroidSystem.getImageFromAssetsFile(context, (String) item.getImageUrl()));
+                    GlideUtils.bind(context, mIV, FileUtils.readAssets(context, (String) item.getImageUrl()));
                     break;
                 case Movice.PIC_NETWORD:
-                    GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) item.getImageUrl()) ? R.drawable.transparent : item.getImageUrl());
+                    Object image = item.getImageUrl();
+                    if (!item.isLocal() && !TextUtils.isEmpty(item.getUrl())){
+                        Object obj = App.MOVIE_IMAGE.get(item.getUrl());
+                        if (obj != null) image = obj;
+                    }
+                    GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) item.getImageUrl()) ? R.drawable.transparent : image);
                     break;
                 default:
                     GlideUtils.bind(context, mIV, R.drawable.transparent);
@@ -72,6 +85,7 @@ public class MainContentAdapter extends Presenter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (TextUtils.isEmpty(item.getUrl())) return;
                     if (callback != null) callback.onClick(item);
                 }
             });

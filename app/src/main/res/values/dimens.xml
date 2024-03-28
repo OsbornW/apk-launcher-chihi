@@ -397,6 +397,11 @@
     <dimen name="holder_about_title_margin_left">16dp</dimen>
     <dimen name="holder_about_desc_text_size">15sp</dimen>
 
+    <!-- holder_notify_bar -->
+    <dimen name="holder_notify_bar_action_width">80dp</dimen>
+    <dimen name="holder_notify_bar_action_height">30dp</dimen>
+    <dimen name="holder_notify_bar_action_text_size">13sp</dimen>
+
     <!-- holder_ads_max -->
     <dimen name="holder_ads_max_image_width">180dp</dimen>
 

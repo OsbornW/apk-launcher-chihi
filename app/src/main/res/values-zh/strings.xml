@@ -25,6 +25,9 @@
     <string name="place_install_app">请安装相关App</string>
     <string name="pojector">投影仪</string>
     <string name="update">更新</string>
+    <string name="tool">工具</string>
+    <string name="file_management">文件管理</string>
+
     <string name="monday">一</string>
     <string name="tuesday">二</string>
     <string name="wednesday">三</string>
@@ -137,4 +140,11 @@
     <string name="sound">声音</string>
     <string name="remote_control">遥控器</string>
     <string name="device_id">设备ID</string>
+    
+    <string name="waiting">等待中</string>
+    <string name="download_fail_mask">下载失败</string>
+    <string name="install_failed">安装失败</string>
+    <string name="installed">安装成功</string>
+    <string name="installing">安装中</string>
+    <string name="notice">通知</string>
 </resources>

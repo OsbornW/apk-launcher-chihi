@@ -114,25 +114,30 @@ public class AppsFragment extends AbsFragment{
 
             @Override
             public void onClick(ApplicationInfo bean) {
-                if (Config.COMPANY == 1 || Config.COMPANY == 2 || Config.COMPANY == 3) {
-                    AndroidSystem.openPackageName(getActivity(), bean.packageName);
-                } else {
-                    AppDialog dialog = AppDialog.newInstance(bean);
-                    dialog.setCallback(new AppDialog.Callback() {
-                        @Override
-                        public void onDelete() {
-                            AndroidSystem.openApplicationDetials(getActivity(), bean.packageName);
-                        }
+                AndroidSystem.openPackageName(getActivity(), bean.packageName);
+            }
 
-                        @Override
-                        public void onOpen() {
-                            AndroidSystem.openPackageName(getActivity(), bean.packageName);
-                        }
-                    });
-                    dialog.show(getChildFragmentManager(), AppDialog.TAG);
-                }
+            @Override
+            public void onMenuClick(ApplicationInfo bean) {
+                menu(bean);
             }
         };
+    }
+
+    private void menu(ApplicationInfo bean){
+        AppDialog dialog = AppDialog.newInstance(bean);
+        dialog.setCallback(new AppDialog.Callback() {
+            @Override
+            public void onDelete() {
+                AndroidSystem.openApplicationDetials(getActivity(), bean.packageName);
+            }
+
+            @Override
+            public void onOpen() {
+                AndroidSystem.openPackageName(getActivity(), bean.packageName);
+            }
+        });
+        dialog.show(getChildFragmentManager(), AppDialog.TAG);
     }
 
     public class InnerReceiver extends BroadcastReceiver {

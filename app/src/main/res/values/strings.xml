@@ -25,6 +25,8 @@
     <string name="place_install_app">Please install the relevant app</string>
     <string name="pojector">Projector</string>
     <string name="update">UPDATE</string>
+    <string name="tool">Tools</string>
+    <string name="file_management">File management</string>
 
     <string name="monday">Mon.</string>
     <string name="tuesday">Tue.</string>
@@ -137,4 +139,11 @@
     <string name="sound">Sound</string>
     <string name="remote_control">remote control</string>
     <string name="device_id">Device ID</string>
+
+    <string name="waiting">Waiting</string>
+    <string name="download_fail_mask">Download fail</string>
+    <string name="install_failed">Install failed</string>
+    <string name="installed">Installed</string>
+    <string name="installing">Installing</string>
+    <string name="notice">Notice</string>
 </resources>

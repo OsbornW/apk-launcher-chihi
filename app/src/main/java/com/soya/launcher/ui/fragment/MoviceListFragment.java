@@ -145,9 +145,11 @@ public class MoviceListFragment extends AbsFragment {
                         @Override
                         public void onClick(int type) {
                             if (type == 1){
-                                Intent intent = new Intent(getActivity(), SearchActivity.class);
-                                intent.putExtra(Atts.WORD, mTypeItem.getName());
-                                startActivity(intent);
+                                String[] pns = new String[bean.getAppPackage().length];
+                                for (int i = 0; i < pns.length; i++){
+                                    pns[i] = bean.getAppPackage()[i].getPackageName();
+                                }
+                                AndroidSystem.jumpAppStore(getActivity(), null, pns);
                             }
                         }
                     });

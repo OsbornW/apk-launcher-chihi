@@ -15,4 +15,8 @@ public interface Atts {
     String UID = "uid";
     String MODE = "mode";
     String IS_24_DISPLAY = "is_24_display";
+    String PACKAGE_NAME = "package_name";
+    String RECENTLY_MODIFIED = "recently_modified";
+    String LAST_VERSION_CODE = "last_version_code";
+    String LAST_UPDATE_HOME_TIME = "last_update_home_time";
 }

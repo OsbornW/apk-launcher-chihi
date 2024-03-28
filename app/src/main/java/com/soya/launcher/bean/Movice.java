@@ -7,6 +7,7 @@ public class Movice implements Serializable {
     public static final int PIC_NETWORD = 1;
     public static final int PIC_PLACEHOLDING = 2;
 
+    private boolean isLocal;
     private int type;
     private Object imageUrl;
     private String picture;
@@ -70,5 +71,17 @@ public class Movice implements Serializable {
 
     public int getPicType() {
         return picType;
+    }
+
+    public void setImageUrl(Object imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setLocal(boolean local) {
+        isLocal = local;
+    }
+
+    public boolean isLocal() {
+        return isLocal;
     }
 }

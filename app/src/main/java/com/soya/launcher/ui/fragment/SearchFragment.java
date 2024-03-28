@@ -258,7 +258,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
 
             @Override
             public void onClick(AppItem bean) {
-                if (!TextUtils.isEmpty(bean.getAppDownLink())) AndroidSystem.jumpAppStore(getActivity(), new Gson().toJson(bean));
+                if (!TextUtils.isEmpty(bean.getAppDownLink())) AndroidSystem.jumpAppStore(getActivity(), new Gson().toJson(bean), null);
             }
         };
     }
@@ -289,7 +289,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
                 AndroidSystem.openPackageName(getActivity(), ((ApplicationInfo) bean).packageName);
                 break;
             case 1:
-                AndroidSystem.jumpAppStore(getActivity(), new Gson().toJson((AppItem) bean));
+                AndroidSystem.jumpAppStore(getActivity(), new Gson().toJson((AppItem) bean), null);
                 break;
             case 2:
                 webClick((WebItem) bean);

@@ -10,10 +10,10 @@ android {
         applicationId "com.soya.launcher"
         minSdk 24
         targetSdk 33
-        versionCode 42
-        versionName "1.42"
+        versionCode 47
+        versionName "1.47"
 
-        /*// 宏信
+        // 宏信
         manifestPlaceholders = [
                 company   : "0",
                 user_id   : "62",
@@ -21,7 +21,7 @@ android {
                 channel   : "LA27001",
                 chihi_type: "H700",
                 model     : "cupid"
-        ]*/
+        ]
 
         /*
         // 爱泊优 投影仪
@@ -48,14 +48,14 @@ android {
          */
 
         // X98K TV
-        manifestPlaceholders = [
+        /*manifestPlaceholders = [
                 company   : "4",
                 user_id   : "62",
                 appId     : "launcher",
                 channel   : "LA23001",
                 chihi_type: "X98K",
                 model     : "001"
-        ]
+        ]*/
 
         // 构建自定义配置字段
         buildConfigField "String", "COMPANY", "\"${manifestPlaceholders.company}\""
@@ -72,12 +72,6 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-
-        debug {
-            minifyEnabled false
-            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
@@ -136,9 +130,10 @@ dependencies {
     implementation 'me.laoyuyu.aria:core:3.8.16'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.lzy.net:okgo:2.1.4'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    implementation 'com.github.bumptech.glide:compiler:4.9.0'
-    implementation 'com.github.bumptech.glide:okhttp3-integration:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    implementation 'com.github.bumptech.glide:annotations:4.16.0'
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.16.0"
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
     annotationProcessor 'me.laoyuyu.aria:compiler:3.8.16'
 }
 
