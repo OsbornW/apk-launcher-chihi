@@ -11,12 +11,15 @@ import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 
+import com.lzy.okgo.OkGo;
 import com.soya.launcher.App;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.AboutAdapter;
 import com.soya.launcher.adapter.NotifyBarAdapter;
 import com.soya.launcher.bean.AppItem;
 import com.soya.launcher.bean.MyRunnable;
+import com.soya.launcher.ui.dialog.DownloadDialog;
+import com.soya.launcher.ui.dialog.ToastDialog;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -75,9 +78,25 @@ public class NotifyFragment extends AbsFragment{
         mAdapter.setCallback(new NotifyBarAdapter.Callback() {
             @Override
             public void onClick(AppItem bean) {
-                if (bean.getStatus() == AppItem.STATU_DOWNLOAD_FAIL || bean.getStatus() == AppItem.STATU_INSTALL_FAIL){
-                    bean.setStatus(AppItem.STATU_IDLE);
-                }
+                DownloadDialog dialog = DownloadDialog.newInstance(bean.getAppName());
+                dialog.setCallback(new DownloadDialog.Callback() {
+                    @Override
+                    public void onClick(int type) {
+                        if (type == 1){
+                            App.PUSH_APPS.remove(bean);
+                            mAdapter.remove(bean);
+                            OkGo.getInstance().cancelTag(bean.getAppDownLink());
+                            mMaskView.setVisibility(mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                            mContentGrid.setVisibility(mAdapter.getItemCount() == 0 ? View.GONE : View.VISIBLE);
+                        }else if (type == 2){
+                            if (bean.getStatus() == AppItem.STATU_INSTALL_FAIL || bean.getStatus() == AppItem.STATU_DOWNLOAD_FAIL){
+                                bean.setProgress(0);
+                                bean.setStatus(AppItem.STATU_IDLE);
+                            }
+                        }
+                    }
+                });
+                dialog.show(getChildFragmentManager(), ToastDialog.TAG);
             }
         });
     }

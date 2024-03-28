@@ -57,6 +57,14 @@ public class NotifyBarAdapter extends RecyclerView.Adapter<NotifyBarAdapter.Hold
         return dataList.size();
     }
 
+    public void remove(AppItem bean){
+        int index = dataList.indexOf(bean);
+        if (index != -1){
+            dataList.remove(index);
+            notifyItemRemoved(index);
+        }
+    }
+
     public void replace(List<AppItem> list){
         dataList.clear();
         dataList.addAll(list);

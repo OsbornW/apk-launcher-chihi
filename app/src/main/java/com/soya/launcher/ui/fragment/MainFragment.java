@@ -782,19 +782,20 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         try {
             String path = FilePathMangaer.getJsonPath(getActivity()) + "/Home.json";
             if (new File(path).exists()){
+                setDefault(false);
                 HomeResponse result = new Gson().fromJson(new JsonReader(new FileReader(path)), HomeResponse.class);
                 List<TypeItem> header = fillData(result);
                 header.addAll(items);
                 setHeader(header);
             }else {
-                setDefault();
+                setDefault(true);
             }
         }catch (Exception e){
-            setDefault();
+            setDefault(true);
         }
     }
 
-    private void setDefault(){
+    private void setDefault(boolean isSet){
         try {
             HomeResponse.Inner data = new Gson().fromJson(new FileReader(FilePathMangaer.getMoviePath(getActivity())+"/data/movie.json"), HomeResponse.Inner.class);
             HomeResponse response = new HomeResponse();
@@ -804,7 +805,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 item.setIcon(FilePathMangaer.getMoviePath(getActivity())+"/"+item.getIcon());
             }
             header.addAll(items);
-            setHeader(header);
+            if (isSet) setHeader(header);
         }catch (Exception e){
             e.printStackTrace();
         }

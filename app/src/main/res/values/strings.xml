@@ -146,4 +146,6 @@
     <string name="installed">Installed</string>
     <string name="installing">Installing</string>
     <string name="notice">Notice</string>
+    <string name="remove_notify_apk_download">Action</string>
+    <string name="remove">Remove</string>
 </resources>

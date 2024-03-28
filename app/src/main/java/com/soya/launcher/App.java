@@ -78,7 +78,7 @@ public class App extends Application {
     private long lastRemoteTime = -1;
 
     private UDPServer server;
-    private boolean isSkipDonwload;
+    private static boolean isSkipDonwload;
 
     @Override
     public void onCreate() {
@@ -101,6 +101,7 @@ public class App extends Application {
         WALLPAPERS.add(new Wallpaper(4, R.drawable.wallpaper_24));
         WALLPAPERS.add(new Wallpaper(5, R.drawable.wallpaper_25));
 
+        isSkipDonwload = false;
         com.hs.App.init(this);
 
         AndroidSystem.setEnableBluetooth(this, true);
@@ -118,6 +119,10 @@ public class App extends Application {
 
             }
         }
+    }
+
+    public static void retryDownload(){
+        isSkipDonwload = false;
     }
 
     private void timeRemote(){
@@ -210,7 +215,7 @@ public class App extends Application {
     private void downloadApk(final AppItem bean){
         isSkipDonwload = true;
         bean.setStatus(AppItem.STATU_DOWNLOADING);
-        OkGo.get(bean.getAppDownLink()).execute(new FileCallback(FilePathMangaer.getAppDownload(this), bean.getName()+".apk") {
+        OkGo.getInstance().get(bean.getAppDownLink()).tag(bean.getAppDownLink()).execute(new FileCallback(FilePathMangaer.getAppDownload(this), bean.getName()+".apk") {
             @Override
             public void onError(okhttp3.Call call, Response response, Exception e) {
                 bean.setStatus(AppItem.STATU_DOWNLOAD_FAIL);
@@ -227,6 +232,24 @@ public class App extends Application {
             public void downloadProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
                 bean.setStatus(AppItem.STATU_DOWNLOADING);
                 bean.setProgress(progress);
+            }
+
+            @Override
+            public void onCacheSuccess(File file, Call call) {
+                super.onCacheSuccess(file, call);
+                isSkipDonwload = false;
+            }
+
+            @Override
+            public void onCacheError(Call call, Exception e) {
+                super.onCacheError(call, e);
+                isSkipDonwload = false;
+            }
+
+            @Override
+            public void parseError(Call call, Exception e) {
+                super.parseError(call, e);
+                isSkipDonwload = false;
             }
         });
     }
