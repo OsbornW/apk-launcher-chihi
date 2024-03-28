@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import retrofit2.Call;
 
@@ -95,12 +96,14 @@ public class MoviceListFragment extends AbsFragment {
         mContentGrid = view.findViewById(R.id.content);
         mTitleView = view.findViewById(R.id.title);
 
-        mMainContentAdapter = new MainContentAdapter(getActivity(), inflater, layoutId, newContentCallback());
+        mMainContentAdapter = new MainContentAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newContentCallback());
     }
 
     @Override
     protected void initBind(View view, LayoutInflater inflater) {
         super.initBind(view, inflater);
+
+        mContentGrid.setAdapter(mMainContentAdapter);
 
         mTitleView.setText(mTypeItem.getName());
         fillMovice();
@@ -118,12 +121,9 @@ public class MoviceListFragment extends AbsFragment {
     }
 
     private void setMoviceContent(List<Movice> list){
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(mMainContentAdapter);
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-        mContentGrid.setAdapter(itemBridgeAdapter);
+        mMainContentAdapter.setLayoutId(layoutId);
         mContentGrid.setNumColumns(columns);
-        arrayObjectAdapter.addAll(0, list);
+        mMainContentAdapter.replace(list);
     }
 
     private void fillMovice(){

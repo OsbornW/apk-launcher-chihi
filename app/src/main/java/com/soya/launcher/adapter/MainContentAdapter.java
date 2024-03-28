@@ -6,9 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.leanback.widget.Presenter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.soya.launcher.App;
@@ -24,38 +28,49 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class MainContentAdapter extends Presenter {
+public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.Holder> {
     private Context context;
     private LayoutInflater inflater;
+    private List<Movice> dataList;
 
     private Callback callback;
     private int layoutId;
 
-    public MainContentAdapter(Context context, LayoutInflater inflater, int layoutId, Callback callback){
+    public MainContentAdapter(Context context, LayoutInflater inflater, List<Movice> dataList, Callback callback){
         this.context = context;
         this.inflater = inflater;
         this.layoutId = layoutId;
+        this.dataList = dataList;
         this.callback = callback;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent) {
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new Holder(inflater.inflate(layoutId, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        Holder holder = (Holder) viewHolder;
-        holder.bind((Movice) item);
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
+        holder.bind(dataList.get(position));
     }
 
     @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
-        Holder holder = (Holder) viewHolder;
-        holder.unbind();
+    public int getItemCount() {
+        return dataList.size();
     }
 
-    public class Holder extends ViewHolder {
+    public void setLayoutId(int layoutId) {
+        this.layoutId = layoutId;
+    }
+
+    public void replace(List<Movice> list){
+        dataList.clear();
+        dataList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public class Holder extends RecyclerView.ViewHolder {
         private MyFrameLayout mCardView;
         private ImageView mIV;
         public Holder(View view) {
@@ -66,6 +81,7 @@ public class MainContentAdapter extends Presenter {
         }
 
         public void bind(Movice item){
+            View root = itemView.getRootView();
             switch (item.getPicType()){
                 case Movice.PIC_ASSETS:
                     GlideUtils.bind(context, mIV, FileUtils.readAssets(context, (String) item.getImageUrl()));
@@ -82,11 +98,21 @@ public class MainContentAdapter extends Presenter {
                     GlideUtils.bind(context, mIV, R.drawable.transparent);
             }
 
-            view.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (TextUtils.isEmpty(item.getUrl())) return;
                     if (callback != null) callback.onClick(item);
+                }
+            });
+
+            root.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    mCardView.setSelected(hasFocus);
+                    Animation animation = AnimationUtils.loadAnimation(context, hasFocus ? R.anim.zoom_in_middle : R.anim.zoom_out_middle);
+                    root.startAnimation(animation);
+                    animation.setFillAfter(true);
                 }
             });
 

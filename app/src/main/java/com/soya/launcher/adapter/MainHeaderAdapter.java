@@ -4,11 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.Presenter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.soya.launcher.R;
@@ -20,14 +24,13 @@ import com.soya.launcher.view.MyCardView;
 
 import java.util.List;
 
-public class MainHeaderAdapter extends Presenter {
+public class MainHeaderAdapter extends RecyclerView.Adapter<MainHeaderAdapter.Holder> {
     private Context context;
     private LayoutInflater inflater;
     private int selectItem = -1;
 
     private Callback callback;
     private List<TypeItem> items;
-    private ArrayObjectAdapter adapter;
 
     public MainHeaderAdapter(Context context, LayoutInflater inflater, List<TypeItem> items,  Callback callback){
         this.context = context;
@@ -36,31 +39,33 @@ public class MainHeaderAdapter extends Presenter {
         this.callback = callback;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent) {
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new Holder(inflater.inflate(R.layout.holder_header, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        Holder holder = (Holder) viewHolder;
-        holder.bind((TypeItem) item);
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
+        holder.bind(items.get(position));
     }
 
     @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
-        Holder holder = (Holder) viewHolder;
-        holder.unbind();
+    public int getItemCount() {
+        return items.size();
     }
 
-    public void setAdapter(ArrayObjectAdapter adapter) {
-        this.adapter = adapter;
+    public void replace(List<TypeItem> list){
+        items.clear();
+        items.addAll(list);
+        notifyDataSetChanged();
     }
 
-    public class Holder extends ViewHolder {
+    public class Holder extends RecyclerView.ViewHolder {
         private ImageView mIV;
         private TextView mTitleView;
         private MyCardView mCardView;
+
 
         public Holder(View view) {
             super(view);
@@ -70,12 +75,23 @@ public class MainHeaderAdapter extends Presenter {
         }
 
         public void bind(TypeItem item){
+            View root = itemView.getRootView();
             mTitleView.setBackgroundResource(R.drawable.light_item);
             mTitleView.setTextColor(context.getColorStateList(R.color.text_selector_color_1));
-            view.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (callback != null) callback.onClick(item);
+                }
+            });
+
+            root.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    mCardView.setSelected(hasFocus);
+                    Animation animation = AnimationUtils.loadAnimation(context, hasFocus ? R.anim.zoom_in_max : R.anim.zoom_out_max);
+                    root.startAnimation(animation);
+                    animation.setFillAfter(true);
                 }
             });
 

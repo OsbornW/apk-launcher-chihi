@@ -177,6 +177,9 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private long lastWeatherTime = -1;
     private long lastCheckPushTime = System.currentTimeMillis();
     private boolean isFullStoreNow = false;
+    private MainHeaderAdapter mMainHeaderAdapter;
+    private MainContentAdapter mHMainContentAdapter;
+    private MainContentAdapter mVMainContentAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -298,6 +301,9 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mHeaderGrid.setPivotY(maxVerticalOffset);
         mTestView.setText("CHIHI Test Version: "+BuildConfig.VERSION_NAME);
         mNotifyAdapter = new NotifyAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), Config.COMPANY == 3 ? R.layout.holder_notify : R.layout.holder_notify_2);
+        mMainHeaderAdapter = new MainHeaderAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newHeaderCallback());
+        mHMainContentAdapter = new MainContentAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newContentCallback());
+        mVMainContentAdapter = new MainContentAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newContentCallback());
     }
 
     @Override
@@ -317,6 +323,11 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     @Override
     protected void initBind(View view, LayoutInflater inflater){
         super.initBind(view, inflater);
+
+        mHeaderGrid.setAdapter(mMainHeaderAdapter);
+        mHorizontalContentGrid.setAdapter(mHMainContentAdapter);
+        mVerticalContentGrid.setAdapter(mVMainContentAdapter);
+
         fillLocal();
         fillHeader();
         mNotifyRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
@@ -335,39 +346,30 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private void setHeader(List<TypeItem> items){
         targetMenus.clear();
         targetMenus.addAll(items);
-        MainHeaderAdapter adapter = new MainHeaderAdapter(getActivity(), getLayoutInflater(), items, newHeaderCallback());
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(adapter);
-        adapter.setAdapter(arrayObjectAdapter);
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_LARGE, false);
-        mHeaderGrid.setAdapter(itemBridgeAdapter);
-        arrayObjectAdapter.addAll(0, items);
+        mMainHeaderAdapter.replace(items);
         mHeaderGrid.setSelectedPosition(0);
     }
 
     private void setMoviceContent(List<Movice> list, int direction, int columns, int layoutId){
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new MainContentAdapter(getActivity(), getLayoutInflater(), layoutId, newContentCallback()));
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_SMALL, false);
         switch (direction){
             case 1:
-                mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
+                mHMainContentAdapter.setLayoutId(layoutId);
                 mVerticalContentGrid.setVisibility(View.GONE);
                 mHorizontalContentGrid.setVisibility(View.VISIBLE);
+                mHMainContentAdapter.replace(list);
                 break;
             case 0:
                 if (list.size() > columns * 2){
                     list = list.subList(0, columns * 2);
                 }
-                mVerticalContentGrid.setAdapter(itemBridgeAdapter);
+                mVMainContentAdapter.setLayoutId(layoutId);
                 mVerticalContentGrid.setVisibility(View.VISIBLE);
                 mHorizontalContentGrid.setVisibility(View.GONE);
                 mVerticalContentGrid.setNumColumns(columns);
                 mVerticalContentGrid.setVerticalSpacing((int) getResources().getDimension(R.dimen.main_page_vertical_spacing));
+                mVMainContentAdapter.replace(list);
                 break;
         }
-
-        arrayObjectAdapter.addAll(0, list);
     }
 
     private void stopLoopTime(){
@@ -604,7 +606,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     selectWork(bean);
                 }
             }
-        }, 120);
+        }, 300);
     }
 
     private void selectWork(TypeItem bean){
