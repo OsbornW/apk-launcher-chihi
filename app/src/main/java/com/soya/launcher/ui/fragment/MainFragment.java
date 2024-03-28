@@ -138,6 +138,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
     private final int MAX_WEATHER_TIME = 90 * 1000;
+    private final List<ApplicationInfo> useApps = new ArrayList<>();
     private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ExecutorService exec = Executors.newCachedThreadPool();
     private HorizontalGridView mHeaderGrid;
@@ -190,6 +191,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         uiHandler = new Handler();
         receiver = new InnerReceiver();
         wallpaperReceiver = new WallpaperReceiver();
+        useApps.addAll(AndroidSystem.getUserApps(getActivity()));
 
         items.addAll(Arrays.asList(new TypeItem[]{
                 new TypeItem(getString(R.string.app_store), R.drawable.store, 0, Types.TYPE_APP_STORE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW),
@@ -612,7 +614,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private void selectWork(TypeItem bean){
         switch (bean.getType()){
             case Types.TYPE_MY_APPS:{
-                fillApps();
+                fillApps(false);
             }
             break;
             case Types.TYPE_APP_STORE:{
@@ -732,12 +734,16 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
 
-    private void fillApps(){
-        List<ApplicationInfo> infos = AndroidSystem.getUserApps(getActivity());
-        if (infos.size() > 8){
-            infos = infos.subList(0, 8);
+    private void fillApps(boolean replace){
+        if (replace){
+            useApps.clear();
+            List<ApplicationInfo> infos = AndroidSystem.getUserApps(getActivity());
+            if (infos.size() > 8){
+                infos = infos.subList(0, 8);
+            }
+            useApps.addAll(infos);
         }
-        setAppContent(infos);
+        setAppContent(useApps);
     }
 
     private void fillAppStore(){
@@ -1035,7 +1041,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 case Intent.ACTION_PACKAGE_REMOVED:
                 case Intent.ACTION_PACKAGE_REPLACED:
                     if (mHeaderGrid.getSelectedPosition() != -1 && targetMenus.get(mHeaderGrid.getSelectedPosition()).getType() == Types.TYPE_MY_APPS){
-                        fillApps();
+                        fillApps(true);
                         requestFocus(mHorizontalContentGrid, 150);
                     }
                     break;
