@@ -120,16 +120,9 @@ public class ServiceRequest {
     }
 
     public Call<ResponseBody> getHomeContents(Callback<HomeResponse> callback){
-        long time = PreferencesManager.getLastUpdateHomeTime();
-        boolean isSet = true;
-        if (time <= 0){
-            isSet = true;
-        }else {
-            isSet = TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - time) >= 25 ? true : false;
-        }
         Map<String, String> map = new HashMap<>();
         map.put("channel", Config.CHANNEL);
-        map.put("req_id", isSet ? String.valueOf(1) : String.valueOf(PreferencesManager.getRecentlyModified()));
+        map.put("req_id", String.valueOf(PreferencesManager.getRecentlyModified()));
         Call<ResponseBody> call = request.getHomeContents(map);
         asyncRequest(call, HomeResponse.class, callback, "getHomeContents");
         return call;

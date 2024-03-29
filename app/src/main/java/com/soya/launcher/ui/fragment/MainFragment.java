@@ -183,6 +183,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private MainContentAdapter mVMainContentAdapter;
     private AppListAdapter mAppListAdapter;
     private StoreAdapter mStoreAdapter;
+    private long requestTime = System.currentTimeMillis();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -394,6 +395,11 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     if (lastWeatherTime <= 0 || TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastWeatherTime) > MAX_WEATHER_TIME){
                         HttpRequest.getCityWeather(newWeatherCallback(), PreferencesManager.getCityName());
                         lastWeatherTime = System.currentTimeMillis();
+                    }
+
+                    if (TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - requestTime) >= 25){
+                        requestTime = System.currentTimeMillis();
+                        requestHome();
                     }
                 }
             }
