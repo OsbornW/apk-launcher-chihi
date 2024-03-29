@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.LauncherActivityInfo;
+import android.content.pm.LauncherApps;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -496,6 +498,17 @@ public class AndroidSystem {
     public static String getSystemLanguage(Context context){
         Locale locale = context.getResources().getConfiguration().getLocales().get(0);
         return locale.getDisplayLanguage();
+    }
+
+    public static List<ApplicationInfo> getUserApps2(Context context){
+        LauncherApps apps = context.getSystemService(LauncherApps.class);
+        List<LauncherActivityInfo> launchers = apps.getActivityList(null, android.os.Process.myUserHandle());
+
+        List<ApplicationInfo> result = new ArrayList<>();
+        for (LauncherActivityInfo launcher : launchers){
+            result.add(launcher.getApplicationInfo());
+        }
+        return result;
     }
 
     public static List<ApplicationInfo> getUserApps(Context context){

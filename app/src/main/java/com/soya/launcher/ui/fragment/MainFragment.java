@@ -191,7 +191,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         uiHandler = new Handler();
         receiver = new InnerReceiver();
         wallpaperReceiver = new WallpaperReceiver();
-        useApps.addAll(AndroidSystem.getUserApps(getActivity()));
+        useApps.addAll(AndroidSystem.getUserApps2(getActivity()));
 
         items.addAll(Arrays.asList(new TypeItem[]{
                 new TypeItem(getString(R.string.app_store), R.drawable.store, 0, Types.TYPE_APP_STORE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW),
@@ -737,7 +737,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private void fillApps(boolean replace){
         if (replace){
             useApps.clear();
-            List<ApplicationInfo> infos = AndroidSystem.getUserApps(getActivity());
+            List<ApplicationInfo> infos = AndroidSystem.getUserApps2(getActivity());
             if (infos.size() > 8){
                 infos = infos.subList(0, 8);
             }
