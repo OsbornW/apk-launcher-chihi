@@ -331,8 +331,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     protected void initBind(View view, LayoutInflater inflater){
         super.initBind(view, inflater);
 
-        mHeaderGrid.setAdapter(mMainHeaderAdapter);
-
         fillLocal();
         fillHeader();
         mNotifyRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
@@ -351,6 +349,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private void setHeader(List<TypeItem> items){
         targetMenus.clear();
         targetMenus.addAll(items);
+        mHeaderGrid.setAdapter(mMainHeaderAdapter);
         mMainHeaderAdapter.replace(items);
         mHeaderGrid.setSelectedPosition(0);
     }
@@ -855,7 +854,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     String path = FilePathMangaer.getMoviePath(getActivity())+"/"+movice.getImageUrl();
                     movice.setImageUrl(path);
                     movice.setLocal(true);
-                    if (!TextUtils.isEmpty(movice.getUrl()) && !App.MOVIE_IMAGE.containsKey(movice.getUrl())) App.MOVIE_IMAGE.put(movice.getUrl(), path);
                 }
                 movices.add(movice);
             }
@@ -885,7 +883,24 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         return new MainContentAdapter.Callback() {
             @Override
             public void onClick(Movice bean) {
-                boolean success = AndroidSystem.jumpVideoApp(getActivity(), bean.getAppPackage(), bean.getUrl());
+                boolean skip = false;
+                if (bean.getAppPackage() != null){
+                    for (AppPackage appPackage : bean.getAppPackage()){
+                        if (App.SKIP_PAKS.contains(appPackage.getPackageName())){
+                            skip = true;
+                            break;
+                        }
+                    }
+                }
+
+                boolean success = false;
+
+                if (skip){
+                    success = AndroidSystem.jumpVideoApp(getActivity(), bean.getAppPackage(), null);
+                }else {
+                    success = AndroidSystem.jumpVideoApp(getActivity(), bean.getAppPackage(), bean.getUrl());
+                }
+
                 if (!success) {
                     toastInstallPKApp(bean.getAppName(), bean.getAppPackage());
                 }
@@ -933,26 +948,12 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     List<TypeItem> header = fillData(result);
                     header.addAll(items);
 
-                    boolean isChanger = false;
-                    Set<Integer> types = new HashSet<>();
-                    for (TypeItem item : header) types.add(item.getType());
-
-                    for (TypeItem item : targetMenus) {
-                        if (!types.contains(item.getType())){
-                            isChanger = true;
-                            break;
-                        }
-                    }
-
-                    if (header.size() != targetMenus.size()) isChanger = true;
-
-                    if (isChanger) setHeader(header);
+                    setHeader(header);
 
                     isConnectFirst = true;
                     if (result.getData().getReg_id() != null) PreferencesUtils.setProperty(Atts.RECENTLY_MODIFIED, result.getData().getReg_id());
                     TypeItem item = header.get(0);
                     fillMovice(item);
-                    mHeaderGrid.setSelectedPosition(0);
                 }catch (Exception e){
                     e.printStackTrace();
                 }finally {

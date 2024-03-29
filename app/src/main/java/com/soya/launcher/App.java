@@ -45,8 +45,11 @@ import java.io.File;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -67,6 +70,15 @@ public class App extends Application {
     public static final CacheWeather WEATHER = new CacheWeather();
     public static final List<Wallpaper> WALLPAPERS = new ArrayList<>();
     public static final List<AppItem> APP_STORE_ITEMS = new CopyOnWriteArrayList<>();
+    public static final Set<String> SKIP_PAKS = new HashSet<>(Arrays.asList(new String[]{
+            "com.hbo.hbonow",
+            "com.wbd.stream",
+            "com.hulu.plus",
+            "com.hulu.livingroomplus",
+            "com.amazon.amazonvideo.livingroom",
+            "com.amazon.avod.thirdpartyclient",
+            "com.amazon.amazonvideo.livingroom",
+    }));
     public static boolean useRemoteDialog = true;
 
     private InnerReceiver receiver;

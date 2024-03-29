@@ -71,7 +71,7 @@ public class MainHeaderAdapter extends RecyclerView.Adapter<MainHeaderAdapter.Ho
             super(view);
             mIV = view.findViewById(R.id.image);
             mTitleView = view.findViewById(R.id.title);
-            mCardView = (MyCardView) view;
+            mCardView = view.findViewById(R.id.root);
         }
 
         public void bind(TypeItem item){
@@ -90,8 +90,8 @@ public class MainHeaderAdapter extends RecyclerView.Adapter<MainHeaderAdapter.Ho
                 public void onFocusChange(View v, boolean hasFocus) {
                     mCardView.setSelected(hasFocus);
                     Animation animation = AnimationUtils.loadAnimation(context, hasFocus ? R.anim.zoom_in_max : R.anim.zoom_out_max);
-                    root.startAnimation(animation);
                     animation.setFillAfter(true);
+                    itemView.startAnimation(animation);
                 }
             });
 

@@ -349,9 +349,8 @@ public class AndroidSystem {
     public static boolean jumpPlayer(Context context, AppPackage[] packages, String url){
         boolean success = false;
         List<ResolveInfo> infos = queryCategoryAllLauncher(context);
-
-        for (ResolveInfo resolveInfo : infos) {
-            for (AppPackage pk : packages){
+        for (AppPackage pk : packages){
+            for (ResolveInfo resolveInfo : infos) {
                 if (pk.getPackageName().equals(resolveInfo.activityInfo.packageName)){
                     success = true;
                     ActivityInfo info = resolveInfo.activityInfo;
@@ -370,6 +369,7 @@ public class AndroidSystem {
                             openPN(context, url, intent.getComponent().getPackageName(), pk.getActivityName());
                         }
                     }
+                    return success;
                 }
             }
         }
@@ -547,53 +547,6 @@ public class AndroidSystem {
         Configuration configuration = context.getResources().getConfiguration();
         configuration.setLocale(locale);
         context.getResources().updateConfiguration(configuration, null);
-    }
-
-    public static void hookWebView() {
-        Class<?> factoryClass = null;
-        try {
-            factoryClass = Class.forName("android.webkit.WebViewFactory");
-            Method getProviderClassMethod = null;
-            Object sProviderInstance = null;
-
-            if (Build.VERSION.SDK_INT == 23) {
-                getProviderClassMethod = factoryClass.getDeclaredMethod("getProviderClass");
-                getProviderClassMethod.setAccessible(true);
-                Class<?> providerClass = (Class<?>) getProviderClassMethod.invoke(factoryClass);
-                Class<?> delegateClass = Class.forName("android.webkit.WebViewDelegate");
-                Constructor<?> constructor = providerClass.getConstructor(delegateClass);
-                if (constructor != null) {
-                    constructor.setAccessible(true);
-                    Constructor<?> constructor2 = delegateClass.getDeclaredConstructor();
-                    constructor2.setAccessible(true);
-                    sProviderInstance = constructor.newInstance(constructor2.newInstance());
-                }
-            } else if (Build.VERSION.SDK_INT == 22) {
-                getProviderClassMethod = factoryClass.getDeclaredMethod("getFactoryClass");
-                getProviderClassMethod.setAccessible(true);
-                Class<?> providerClass = (Class<?>) getProviderClassMethod.invoke(factoryClass);
-                Class<?> delegateClass = Class.forName("android.webkit.WebViewDelegate");
-                Constructor<?> constructor = providerClass.getConstructor(delegateClass);
-                if (constructor != null) {
-                    constructor.setAccessible(true);
-                    Constructor<?> constructor2 = delegateClass.getDeclaredConstructor();
-                    constructor2.setAccessible(true);
-                    sProviderInstance = constructor.newInstance(constructor2.newInstance());
-                }
-            } else if (Build.VERSION.SDK_INT == 21) {// Android 21无WebView安全限制
-                getProviderClassMethod = factoryClass.getDeclaredMethod("getFactoryClass");
-                getProviderClassMethod.setAccessible(true);
-                Class<?> providerClass = (Class<?>) getProviderClassMethod.invoke(factoryClass);
-                sProviderInstance = providerClass.newInstance();
-            }
-            if (sProviderInstance != null) {
-                Field field = factoryClass.getDeclaredField("sProviderInstance");
-                field.setAccessible(true);
-                field.set("sProviderInstance", sProviderInstance);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public static Intent openWebUrl(String url){
