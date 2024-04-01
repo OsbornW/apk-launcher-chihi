@@ -19,4 +19,5 @@ public interface Atts {
     String RECENTLY_MODIFIED = "recently_modified";
     String LAST_VERSION_CODE = "last_version_code";
     String LAST_UPDATE_HOME_TIME = "last_update_home_time";
+    String DOWNLOAD_URL = "download_url";
 }

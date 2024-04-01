@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:sharedUserId="android.uid.system">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REBOOT" tools:ignore="ProtectedPermissions" />
@@ -158,5 +159,6 @@
                 <action android:name="android.intent.action.store.download.apk"/>
             </intent-filter>
         </receiver>
+        <receiver android:name="com.soya.launcher.manager.InstallManager$InnerBroadcast" />
     </application>
 </manifest>

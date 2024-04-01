@@ -126,7 +126,7 @@ public class SettingFragment extends AbsFragment {
                     new SettingItem(1, getString(R.string.wallpaper), R.drawable.baseline_wallpaper_100),
                     new SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
                     new SettingItem(4, getString(R.string.date), R.drawable.baseline_calendar_month_100),
-                    new SettingItem(10, getString(R.string.remote_control), R.drawable.baseline_settings_remote_100),
+                    new SettingItem(10, getString(R.string.bluetooth), R.drawable.baseline_bluetooth_100),
                     new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100),
             }));
@@ -224,7 +224,8 @@ public class SettingFragment extends AbsFragment {
                         AndroidSystem.openInputSetting(getActivity());
                         break;
                     case 10:
-                        startActivity(new Intent(getActivity(), RemoteControlActivity.class));
+                        AndroidSystem.openBluetoothSetting(getActivity());
+                        //startActivity(new Intent(getActivity(), RemoteControlActivity.class));
                         break;
                 }
             }

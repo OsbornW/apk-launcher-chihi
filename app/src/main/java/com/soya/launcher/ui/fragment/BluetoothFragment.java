@@ -14,6 +14,7 @@ import androidx.leanback.widget.VerticalGridView;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.BluetoothItemAdapter;
 import com.soya.launcher.bean.BluetoothItem;
+import com.soya.launcher.utils.AndroidSystem;
 import com.soya.launcher.utils.BluetoothScannerUtils;
 
 import java.util.ArrayList;
@@ -103,6 +104,6 @@ public class BluetoothFragment extends AbsFragment implements BluetoothItemAdapt
 
     @Override
     public void onClick(BluetoothItem bean) {
-        //AndroidSystem.connect(bean.getDevice());
+
     }
 }

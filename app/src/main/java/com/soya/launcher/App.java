@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -30,6 +31,7 @@ import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.IntentAction;
 import com.soya.launcher.http.HttpRequest;
 import com.soya.launcher.manager.FilePathMangaer;
+import com.soya.launcher.manager.InstallManager;
 import com.soya.launcher.manager.PreferencesManager;
 import com.soya.launcher.manager.UDPServer;
 import com.soya.launcher.service.AppService;
@@ -88,6 +90,7 @@ public class App extends Application {
     private MyRunnable downloadRunnable;
     private MyRunnable installRunnable;
     private long lastRemoteTime = -1;
+    private Handler uiHandler;
 
     private UDPServer server;
     private static boolean isSkipDonwload;
@@ -96,6 +99,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        uiHandler = new Handler(getMainLooper());
         OkGo.init(this);
         HttpRequest.init(this);
         PreferencesUtils.init(this);
@@ -169,10 +173,8 @@ public class App extends Application {
                             boolean isAdd = true;
                             for (AppItem child : PUSH_APPS){
                                 if (child.getAppDownLink().equals(item.getAppDownLink())){
-                                    if (child.getStatus() == AppItem.STATU_DOWNLOAD_FAIL || child.getStatus() == AppItem.STATU_INSTALL_FAIL) {
-                                        child.setStatus(AppItem.STATU_IDLE);
-                                        child.setProgress(0f);
-                                    }
+                                    child.setStatus(AppItem.STATU_IDLE);
+                                    child.setProgress(0f);
                                     isAdd = false;
                                     break;
                                 }
@@ -249,18 +251,21 @@ public class App extends Application {
             @Override
             public void onCacheSuccess(File file, Call call) {
                 super.onCacheSuccess(file, call);
+                bean.setStatus(AppItem.STATU_DOWNLOADING);
                 isSkipDonwload = false;
             }
 
             @Override
             public void onCacheError(Call call, Exception e) {
                 super.onCacheError(call, e);
+                bean.setStatus(AppItem.STATU_DOWNLOADING);
                 isSkipDonwload = false;
             }
 
             @Override
             public void parseError(Call call, Exception e) {
                 super.parseError(call, e);
+                bean.setStatus(AppItem.STATU_DOWNLOADING);
                 isSkipDonwload = false;
             }
         });
@@ -273,13 +278,13 @@ public class App extends Application {
             @Override
             public void run() {
                 try {
-                    int code = AppUtils.adbInstallApk(file.getAbsolutePath());
-                    bean.setStatus(code == 0 ? AppItem.STATU_INSTALL_SUCCESS : AppItem.STATU_INSTALL_FAIL);
+                    InstallManager.installPackage(App.this, bean, file, uiHandler);
                 }catch (Exception e){
+                    isSkipDonwload = false;
                     bean.setStatus(AppItem.STATU_INSTALL_FAIL);
                     e.printStackTrace();
                 }finally {
-                    isSkipDonwload = false;
+                    //isSkipDonwload = false;
                     if (file.exists()) file.delete();
                 }
             }
