@@ -506,7 +506,7 @@ public class AndroidSystem {
 
         List<ApplicationInfo> result = new ArrayList<>();
         for (LauncherActivityInfo launcher : launchers){
-            result.add(launcher.getApplicationInfo());
+            if (!launcher.getApplicationInfo().packageName.equals(BuildConfig.APPLICATION_ID)) result.add(launcher.getApplicationInfo());
         }
         return result;
     }
