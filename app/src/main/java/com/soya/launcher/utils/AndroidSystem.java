@@ -58,6 +58,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -504,6 +506,13 @@ public class AndroidSystem {
         LauncherApps apps = context.getSystemService(LauncherApps.class);
         List<LauncherActivityInfo> launchers = apps.getActivityList(null, android.os.Process.myUserHandle());
 
+        Collections.sort(launchers, new Comparator<LauncherActivityInfo>() {
+            @Override
+            public int compare(LauncherActivityInfo o1, LauncherActivityInfo o2) {
+                return (int) (o2.getFirstInstallTime() - o1.getFirstInstallTime());
+            }
+        });
+
         List<ApplicationInfo> result = new ArrayList<>();
         for (LauncherActivityInfo launcher : launchers){
             if (!launcher.getApplicationInfo().packageName.equals(BuildConfig.APPLICATION_ID)) result.add(launcher.getApplicationInfo());
@@ -520,12 +529,26 @@ public class AndroidSystem {
             if ((packageInfo.flags & ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM) {
 
             } else {
-                Log.e("TAG", "getUserApps: "+packageInfo.loadLabel(pm));
 
             }
             Intent intent = getPackageNameIntent(context, packageInfo.packageName);
             if (intent != null && !packageInfo.packageName.equals(BuildConfig.APPLICATION_ID)) result.add(packageInfo);
         }
+        Collections.sort(result, new Comparator<ApplicationInfo>() {
+            @Override
+            public int compare(ApplicationInfo o1, ApplicationInfo o2) {
+                int value = 0;
+                try {
+                    PackageInfo info1 = pm.getPackageInfo(o1.packageName, 0);
+                    PackageInfo info2 = pm.getPackageInfo(o2.packageName, 0);
+                    value = (int) (info2.firstInstallTime - info1.firstInstallTime);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    return value;
+                }
+            }
+        });
         return result;
     }
 
