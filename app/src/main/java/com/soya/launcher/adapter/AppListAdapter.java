@@ -91,7 +91,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.Holder> 
                 mIVSmall.setImageDrawable(bean.loadIcon(pm));
             }
 
-            if (Config.COMPANY == 4 && bean.packageName.equals("com.mediatek.tvinput")){
+            if (Config.COMPANY == 4 && bean.packageName.equals("com.mediatek.wwtv.tvcenter")){
                 mTitle.setText("HDMI");
             }else {
                 mTitle.setText(bean.loadLabel(pm));

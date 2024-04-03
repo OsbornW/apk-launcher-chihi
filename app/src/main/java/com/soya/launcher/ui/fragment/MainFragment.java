@@ -560,7 +560,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             public void onClick(SettingItem bean) {
                 switch (bean.getType()){
                     case Tools.TYPE_HDMI:
-                       AndroidSystem.openPackageName(getActivity(), "com.mediatek.tvinput");
+                       AndroidSystem.openPackageName(getActivity(), "com.mediatek.wwtv.tvcenter");
                         break;
                     case Tools.TYPE_FILE:
                         AndroidSystem.openPackageName(getActivity(), "com.conocx.fileexplorer");
