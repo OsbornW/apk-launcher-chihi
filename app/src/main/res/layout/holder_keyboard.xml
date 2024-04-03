@@ -13,6 +13,7 @@
         android:textSize="@dimen/holder_keyboard_text_text_size"
         android:padding="@dimen/holder_keyboard_text_padding"
         android:textColor="@color/text_selector_color_1"
+        android:textStyle="bold"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

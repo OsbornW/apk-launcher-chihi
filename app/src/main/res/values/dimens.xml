@@ -657,16 +657,16 @@
 
     <!-- dialog_keyboard -->
     <dimen name="dialog_keyboard_root_margin">16dp</dimen>
-    <dimen name="dialog_keyboard_root_width">476dp</dimen>
+    <dimen name="dialog_keyboard_root_width">592dp</dimen>
     <dimen name="dialog_keyboard_recycler">16dp</dimen>
 
     <!-- holder_keyboard -->
     <dimen name="holder_keyboard_root_margin">4dp</dimen>
-    <dimen name="holder_keyboard_root_height">40dp</dimen>
-    <dimen name="holder_keyboard_text_text_size">14sp</dimen>
+    <dimen name="holder_keyboard_root_height">50dp</dimen>
+    <dimen name="holder_keyboard_text_text_size">23sp</dimen>
     <dimen name="holder_keyboard_text_padding">3dp</dimen>
-    <dimen name="holder_keyboard_icon_width">20dp</dimen>
-    <dimen name="holder_keyboard_icon_height">20dp</dimen>
+    <dimen name="holder_keyboard_icon_width">25dp</dimen>
+    <dimen name="holder_keyboard_icon_height">25dp</dimen>
 
     <dimen name="margin_decoration_max">16dp</dimen>
     <dimen name="margin_decoration_min">4dp</dimen>

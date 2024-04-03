@@ -760,6 +760,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     for (AppItem item : apps) item.setLocalIcon(FilePathMangaer.getMoviePath(getActivity())+"/"+item.getLocalIcon());
                     emptys.addAll(Arrays.asList(apps));
                 }
+                App.APP_STORE_ITEMS.addAll(Arrays.asList(apps));
             }catch (Exception e){
                 e.printStackTrace();
             }finally {
@@ -767,7 +768,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     for (int i = 0; i < 10; i++) emptys.add(new AppItem());
                 }
                 setStoreContent(emptys);
-                if (!isFullAll){
+                if (!isFullAll && false){
                     HttpRequest.getAppList(new AppServiceRequest.Callback<AppListResponse>() {
                         @Override
                         public void onCallback(Call call, int status, AppListResponse result) {

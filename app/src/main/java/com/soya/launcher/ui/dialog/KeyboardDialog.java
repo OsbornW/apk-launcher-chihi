@@ -128,7 +128,7 @@ public class KeyboardDialog extends SingleDialogFragment implements KeyboardAdap
 
         ens.add(new KeyItem(KeyItem.TYPE_SWITCH, "?123", -1, 2, false));
         ens.add(new KeyItem(KeyItem.TYPE_SPACE, " ", -1, 6, false));
-        ens.add(new KeyItem(KeyItem.TYPE_SEARCH, "", R.drawable.baseline_search_100_2, 2, true));
+        ens.add(new KeyItem(KeyItem.TYPE_SEARCH, "DONE", -1, 2, true));
     }
 
     private void fillNums(){
@@ -145,7 +145,7 @@ public class KeyboardDialog extends SingleDialogFragment implements KeyboardAdap
 
         nums.add(new KeyItem(KeyItem.TYPE_SWITCH, "ABC", -1, 2, false));
         nums.add(new KeyItem(KeyItem.TYPE_SPACE, " ", -1, 6, false));
-        nums.add(new KeyItem(KeyItem.TYPE_SEARCH, "", R.drawable.baseline_search_100_2, 2, true));
+        nums.add(new KeyItem(KeyItem.TYPE_SEARCH, "DONE", -1, 2, true));
     }
 
     @Override

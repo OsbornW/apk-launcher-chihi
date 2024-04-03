@@ -109,7 +109,7 @@ public class KeyboardAdapter extends RecyclerView.Adapter<KeyboardAdapter.Holder
                 }
             });
 
-            mTextView.setText(isUPCase ? bean.getName().toUpperCase() : bean.getName().toLowerCase());
+            mTextView.setText(isUPCase || bean.getType() == KeyItem.TYPE_SEARCH ? bean.getName().toUpperCase() : bean.getName().toLowerCase());
             mIconView.setVisibility(bean.isUseIcon() ? View.VISIBLE : View.GONE);
             setIcon(bean);
         }
