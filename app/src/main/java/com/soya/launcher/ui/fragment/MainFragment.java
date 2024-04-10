@@ -6,20 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.hardware.input.InputManager;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.InputDevice;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,31 +35,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.FileCallback;
 import com.open.system.SystemUtils;
 import com.soya.launcher.App;
 import com.soya.launcher.BuildConfig;
 import com.soya.launcher.R;
-import com.soya.launcher.adapter.AdsAdapter;
 import com.soya.launcher.adapter.AppListAdapter;
 import com.soya.launcher.adapter.MainContentAdapter;
 import com.soya.launcher.adapter.MainHeaderAdapter;
 import com.soya.launcher.adapter.NotifyAdapter;
 import com.soya.launcher.adapter.SettingAdapter;
 import com.soya.launcher.adapter.StoreAdapter;
-import com.soya.launcher.bean.Ads;
-import com.soya.launcher.bean.AppInfo;
 import com.soya.launcher.bean.AppItem;
 import com.soya.launcher.bean.AppPackage;
 import com.soya.launcher.bean.HomeItem;
 import com.soya.launcher.bean.Movice;
-import com.soya.launcher.bean.MoviceData;
-import com.soya.launcher.bean.MoviceList;
 import com.soya.launcher.bean.MyRunnable;
 import com.soya.launcher.bean.Notify;
 import com.soya.launcher.bean.Projector;
-import com.soya.launcher.bean.PushApp;
 import com.soya.launcher.bean.SettingItem;
 import com.soya.launcher.bean.TypeItem;
 import com.soya.launcher.bean.Version;
@@ -78,10 +65,8 @@ import com.soya.launcher.enums.Types;
 import com.soya.launcher.http.AppServiceRequest;
 import com.soya.launcher.http.HttpRequest;
 import com.soya.launcher.http.ServiceRequest;
-import com.soya.launcher.http.Url;
 import com.soya.launcher.http.response.AppListResponse;
 import com.soya.launcher.http.response.HomeResponse;
-import com.soya.launcher.http.response.PushResponse;
 import com.soya.launcher.http.response.VersionResponse;
 import com.soya.launcher.manager.FilePathMangaer;
 import com.soya.launcher.manager.PreferencesManager;
@@ -89,8 +74,6 @@ import com.soya.launcher.ui.activity.AboutActivity;
 import com.soya.launcher.ui.activity.AppsActivity;
 import com.soya.launcher.ui.activity.GradientActivity;
 import com.soya.launcher.ui.activity.LoginActivity;
-import com.soya.launcher.ui.activity.MoviceListActivity;
-import com.soya.launcher.ui.activity.NotifyActivity;
 import com.soya.launcher.ui.activity.ScaleScreenActivity;
 import com.soya.launcher.ui.activity.SearchActivity;
 import com.soya.launcher.ui.activity.SettingActivity;
@@ -102,28 +85,21 @@ import com.soya.launcher.utils.AndroidSystem;
 import com.soya.launcher.utils.AppUtils;
 import com.soya.launcher.utils.FileUtils;
 import com.soya.launcher.utils.PreferencesUtils;
-import com.soya.launcher.utils.StringUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Response;
 import retrofit2.Call;
 
 public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
@@ -156,7 +132,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private View mHelpView;
     private TextView mTestView;
     private RecyclerView mNotifyRecycler;
-    private View mNotifyView;
 
     private NotifyAdapter mNotifyAdapter;
     private Handler uiHandler;
@@ -170,8 +145,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private final List<TypeItem> items = new ArrayList<>();
     private final List<TypeItem> targetMenus = new ArrayList<>();
     private MyRunnable timeRunnable;
-    private MyRunnable installRunnable;
-    private MyRunnable uninstallRunnable;
     private boolean isConnectFirst = false;
     private boolean isFullAll = false;
     private boolean isNetworkAvailable;
@@ -298,7 +271,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mHelpView = view.findViewById(R.id.help);
         mTestView = view.findViewById(R.id.test);
         mNotifyRecycler = view.findViewById(R.id.notify_recycler);
-        mNotifyView = view.findViewById(R.id.notify);
 
         mHorizontalContentGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
         mHeaderGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
@@ -324,7 +296,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mWifiView.setOnClickListener(this);
         mLoginView.setOnClickListener(this);
         mHelpView.setOnClickListener(this);
-        mNotifyView.setOnClickListener(this);
     }
 
     @Override
@@ -600,8 +571,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }else if (v.equals(mHelpView)){
             startActivity(new Intent(getActivity(), AboutActivity.class));
-        }else if (v.equals(mNotifyView)){
-            startActivity(new Intent(getActivity(), NotifyActivity.class));
         }
     }
 
@@ -619,7 +588,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private void selectWork(TypeItem bean){
         switch (bean.getType()){
             case Types.TYPE_MY_APPS:{
-                fillApps(false);
+                fillApps(false, true);
             }
             break;
             case Types.TYPE_APP_STORE:{
@@ -739,7 +708,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     }
 
 
-    private void fillApps(boolean replace){
+    private void fillApps(boolean replace, boolean isAttach){
         if (replace){
             useApps.clear();
             List<ApplicationInfo> infos = AndroidSystem.getUserApps2(getActivity());
@@ -748,7 +717,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             }
             useApps.addAll(infos);
         }
-        setAppContent(useApps);
+        if (isAttach) setAppContent(useApps);
     }
 
     private void fillAppStore(){
@@ -1048,10 +1017,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 case Intent.ACTION_PACKAGE_ADDED:
                 case Intent.ACTION_PACKAGE_REMOVED:
                 case Intent.ACTION_PACKAGE_REPLACED:
-                    if (mHeaderGrid.getSelectedPosition() != -1 && targetMenus.get(mHeaderGrid.getSelectedPosition()).getType() == Types.TYPE_MY_APPS){
-                        fillApps(true);
-                        requestFocus(mHorizontalContentGrid, 150);
-                    }
+                    fillApps(true, mHeaderGrid.getSelectedPosition() != -1 && targetMenus.get(mHeaderGrid.getSelectedPosition()).getType() == Types.TYPE_MY_APPS);
                     break;
             }
         }

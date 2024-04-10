@@ -220,7 +220,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
     }
 
     private void fillAppStore(){
-        if (App.APP_STORE_ITEMS.isEmpty()){
+        if (App.APP_SEARCH_STORE_ITEMS.isEmpty()){
             List<AppItem> emptys = new ArrayList<>();
             for (int i = 0; i < 10; i++) emptys.add(new AppItem());
             setStoreContent(emptys);
@@ -229,12 +229,12 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
                 public void onCallback(Call call, int status, AppListResponse result) {
                     if (!isAdded() || call.isCanceled() || result == null || result.getResult() == null || result.getResult().getAppList() == null || result.getResult().getAppList().isEmpty()) return;
 
-                    App.APP_STORE_ITEMS.addAll(result.getResult().getAppList());
-                    setStoreContent(App.APP_STORE_ITEMS);
+                    App.APP_SEARCH_STORE_ITEMS.addAll(result.getResult().getAppList());
+                    setStoreContent(App.APP_SEARCH_STORE_ITEMS);
                 }
             }, Config.USER_ID, "81", null, null, 1, 20);
         }else {
-            setStoreContent(App.APP_STORE_ITEMS);
+            setStoreContent(App.APP_SEARCH_STORE_ITEMS);
         }
     }
 

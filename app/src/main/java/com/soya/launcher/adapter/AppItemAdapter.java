@@ -2,6 +2,7 @@ package com.soya.launcher.adapter;
 
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,7 @@ public class AppItemAdapter extends RecyclerView.Adapter<AppItemAdapter.Holder> 
             View root = itemView.getRootView();
             mIV.setVisibility(View.GONE);
             mIVSmall.setVisibility(View.VISIBLE);
-            GlideUtils.bind(context, mIVSmall, bean.getAppIcon());
+            GlideUtils.bind(context, mIVSmall, TextUtils.isEmpty(bean.getLocalIcon()) ? bean.getAppIcon() : bean.getLocalIcon());
             mTitle.setText(bean.getAppName());
 
             itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {

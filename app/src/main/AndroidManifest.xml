@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:sharedUserId="android.uid.system">
+    android:sharedUserId="android.uid.system"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- android:sharedUserId="android.uid.system" -->
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REBOOT" tools:ignore="ProtectedPermissions" />
@@ -117,15 +119,6 @@
         <activity android:name="com.soya.launcher.ui.activity.ScaleScreenActivity" />
         <activity android:name="com.soya.launcher.ui.activity.BluetoothActivity" />
         <activity android:name="com.soya.launcher.ui.activity.RemoteControlActivity" />
-        <activity
-            android:enabled="true"
-            android:name="com.soya.launcher.ui.activity.NotifyActivity"
-            android:screenOrientation="landscape"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
 
         <provider
             android:authorities="${applicationId}.provider"
@@ -159,6 +152,5 @@
                 <action android:name="android.intent.action.store.download.apk"/>
             </intent-filter>
         </receiver>
-        <receiver android:name="com.soya.launcher.manager.InstallManager$InnerBroadcast" />
     </application>
 </manifest>
