@@ -1,6 +1,7 @@
 package com.soya.launcher.ui.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.soya.launcher.App;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.Wallpaper;
+import com.soya.launcher.config.Config;
 import com.soya.launcher.manager.PreferencesManager;
 import com.soya.launcher.utils.GlideUtils;
 
@@ -72,7 +74,7 @@ public abstract class AbsFragment extends Fragment {
     }
 
     protected void setWallpaper(ImageView view){
-        int id = R.drawable.wallpaper_1;
+        int id = Config.COMPANY == 0 ? R.drawable.wallpaper_22 : R.drawable.wallpaper_1;
         for (Wallpaper wallpaper : App.WALLPAPERS){
             if (wallpaper.getId() == PreferencesManager.getWallpaper()){
                 id = wallpaper.getPicture();

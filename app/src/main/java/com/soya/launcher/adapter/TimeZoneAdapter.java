@@ -4,36 +4,39 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.leanback.widget.Presenter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.soya.launcher.R;
-import com.soya.launcher.bean.DateItem;
+import com.soya.launcher.bean.Language;
+import com.soya.launcher.bean.SimpleTimeZone;
 
 import java.util.List;
+import java.util.TimeZone;
 
-public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.Holder> {
+public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.Holder> {
 
     private Context context;
     private LayoutInflater inflater;
-    private List<DateItem> dataList;
+    private List<SimpleTimeZone> dataList;
 
+    private TimeZone select;
     private Callback callback;
 
-    public DateListAdapter(Context context, LayoutInflater inflater, List<DateItem> dataList, Callback callback){
+    public TimeZoneAdapter(Context context, LayoutInflater inflater, List<SimpleTimeZone> dataList){
         this.context = context;
         this.inflater = inflater;
-        this.callback = callback;
         this.dataList = dataList;
     }
 
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(R.layout.holder_date_list, parent, false));
+        return new Holder(inflater.inflate(R.layout.holder_time_zone, parent, false));
     }
 
     @Override
@@ -46,39 +49,51 @@ public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.Holder
         return dataList.size();
     }
 
+    public void setSelect(TimeZone select) {
+        this.select = select;
+        notifyDataSetChanged();
+    }
+
+    public void replace(List<SimpleTimeZone> list){
+        dataList.clear();
+        dataList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     public class Holder extends RecyclerView.ViewHolder {
         private TextView mTitleView;
         private TextView mDescView;
-        private Switch mSwitch;
+        private ImageView mCheckView;
 
         public Holder(View view) {
             super(view);
             mTitleView = view.findViewById(R.id.title);
             mDescView = view.findViewById(R.id.desc);
-            mSwitch = view.findViewById(R.id.switch_item);
+            mCheckView = view.findViewById(R.id.check);
         }
 
-        public void bind(DateItem bean){
-            int index = dataList.indexOf(bean);
-            mTitleView.setText(bean.getTitle());
-            mDescView.setText(bean.getDescription());
-            mSwitch.setChecked(bean.isSwitch());
-            mSwitch.setVisibility(bean.isUseSwitch() ? View.VISIBLE : View.GONE);
-            mDescView.setVisibility(bean.isUseSwitch() ? View.GONE : View.VISIBLE);
-            mTitleView.setEnabled(dataList.get(0).isSwitch() && (index == 1 || index == 2) ? false : true);
+        public void bind(SimpleTimeZone bean){
+            boolean isSelect = select == null ? false : bean.getZone().getID().equals(select.getID());
+            mTitleView.setText(bean.getName());
+            mDescView.setText(bean.getDesc());
+            mCheckView.setVisibility(isSelect ? View.VISIBLE : View.GONE);
+            mDescView.setVisibility(isSelect ? View.GONE : View.VISIBLE);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    select = bean.getZone();
                     if (callback != null) callback.onClick(bean);
                 }
             });
         }
+    }
 
-        public void unbind(){}
+    public void setCallback(Callback callback) {
+        this.callback = callback;
     }
 
     public interface Callback{
-        void onClick(DateItem bean);
+        void onClick(SimpleTimeZone bean);
     }
 }

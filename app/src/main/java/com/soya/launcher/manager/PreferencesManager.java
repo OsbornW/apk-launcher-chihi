@@ -15,7 +15,7 @@ public class PreferencesManager {
     }
 
     public static final int getWallpaper(){
-        return PreferencesUtils.getInt(Atts.WALLPAPER, 0);
+        return PreferencesUtils.getInt(Atts.WALLPAPER, -1);
     }
 
     public static final String getLanguage(){

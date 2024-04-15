@@ -1,5 +1,6 @@
 package com.soya.launcher.ui.fragment;
 
+import android.app.AlarmManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -20,8 +21,10 @@ import com.soya.launcher.adapter.DateListAdapter;
 import com.soya.launcher.adapter.SettingAdapter;
 import com.soya.launcher.bean.DateItem;
 import com.soya.launcher.bean.SettingItem;
+import com.soya.launcher.bean.SimpleTimeZone;
 import com.soya.launcher.ui.dialog.DatePickerDialog;
 import com.soya.launcher.ui.dialog.TimePickerDialog;
+import com.soya.launcher.ui.dialog.TimeZoneDialog;
 import com.soya.launcher.ui.dialog.ToastDialog;
 import com.soya.launcher.utils.AndroidSystem;
 import com.soya.launcher.utils.AppUtils;
@@ -31,6 +34,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public abstract class AbsDateFragment extends AbsFragment implements View.OnClickListener {
 
@@ -52,8 +56,8 @@ public abstract class AbsDateFragment extends AbsFragment implements View.OnClic
                 new DateItem(1, getString(R.string.set_date_title), getDate(), false, false),
                 new DateItem(2, getString(R.string.set_time_title), getTime(), false, false),
                 new DateItem(3, getString(R.string.time_display), is24 ? getString(R.string.open) : getString(R.string.close), is24, true),
+                new DateItem(4, getString(R.string.time_zone), TimeZone.getDefault().getDisplayName(), false, false),
         }));
-
     }
 
     @Override
@@ -122,11 +126,31 @@ public abstract class AbsDateFragment extends AbsFragment implements View.OnClic
                     case 3:
                         chang24Display(bean);
                         break;
+                    case 4:
+                        openTimeZone(bean);
+                        break;
                 }
             }
         });
         mSlideGrid.setAdapter(mItemAdapter);
         mSlideGrid.setSelectedPosition(0);
+    }
+
+    private void openTimeZone(DateItem item){
+        TimeZoneDialog dialog = TimeZoneDialog.newInstance();
+        dialog.setCallback(new TimeZoneDialog.Callback() {
+            @Override
+            public void onClick(SimpleTimeZone bean) {
+                AlarmManager alarmManager = getActivity().getSystemService(AlarmManager.class);
+                alarmManager.setTimeZone(bean.getZone().getID());
+                item.setDescription(bean.getDesc());
+                itemList.get(1).setDescription(getDate());
+                itemList.get(2).setDescription(getTime());
+                mItemAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        dialog.show(getChildFragmentManager(), TimeZoneDialog.TAG);
     }
 
     private String getDate(){

@@ -149,4 +149,9 @@
     <string name="notice">通知</string>
     <string name="remove_notify_apk_download">执行</string>
     <string name="remove">移除</string>
+    <string name="time_zone">时区</string>
+    <string name="factory_reset">恢复出厂设置</string>
+    <string name="auto">自动</string>
+    <string name="auto_calibration">水平校准</string>
+    <string name="manual">手动</string>
 </resources>

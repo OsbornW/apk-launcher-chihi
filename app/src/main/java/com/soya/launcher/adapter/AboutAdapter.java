@@ -11,6 +11,7 @@ import androidx.leanback.widget.Presenter;
 
 import com.soya.launcher.R;
 import com.soya.launcher.bean.AboutItem;
+import com.soya.launcher.bean.SettingItem;
 import com.soya.launcher.callback.SelectedCallback;
 import com.soya.launcher.view.MyFrameLayout;
 
@@ -18,6 +19,8 @@ public class AboutAdapter extends Presenter {
 
     private Context context;
     private LayoutInflater inflater;
+
+    private Callback callback;
 
     public AboutAdapter(Context context, LayoutInflater inflater){
         this.context = context;
@@ -60,6 +63,14 @@ public class AboutAdapter extends Presenter {
             mIconView.setImageResource(bean.getIcon());
             mTitleView.setText(bean.getTitle());
             mDescView.setText(bean.getDescription());
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (callback != null) callback.onClick(bean);
+                }
+            });
+
             mRootView.setCallback(new SelectedCallback() {
                 @Override
                 public void onSelect(boolean selected) {
@@ -71,5 +82,14 @@ public class AboutAdapter extends Presenter {
         public void unbind(){
 
         }
+    }
+
+    public AboutAdapter setCallback(Callback callback) {
+        this.callback = callback;
+        return this;
+    }
+
+    public interface Callback{
+        void onClick(AboutItem bean);
     }
 }

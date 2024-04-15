@@ -90,19 +90,26 @@ android {
     }
     signingConfigs {
 
+        /*debug{
+            storeFile file("platform_9255.keystore")
+            keyAlias = 'androiddebugkey'
+            storePassword 'android'
+            keyPassword 'android'
+        }*/
+
         debug{
-            storeFile file("platform_H710_701.jks")
-            storePassword "platform"
+            storeFile file("platform_H713.keystore")
+            storePassword "android"
             keyAlias "platform"
-            keyPassword "platform"
+            keyPassword "android"
         }
 
 
         /*debug {
-            storeFile file("platform_X98K_301.keystore")
-            storePassword 'android'
+            storeFile file("platform.keystore")
+            storePassword 'platform'
             keyAlias 'platform'
-            keyPassword 'android'
+            keyPassword 'platform'
         }*/
     }
 

@@ -5,6 +5,7 @@ public class Projector {
     public static final int TYPE_HDMI = 1;
     public static final int TYPE_SCREEN = 2;
     public static final int TYPE_PROJECTOR_MODE = 3;
+    public static final int TYPE_AUTO_MODE = 4;
 
     private int type;
     private int icon;

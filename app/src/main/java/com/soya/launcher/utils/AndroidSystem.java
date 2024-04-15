@@ -1,9 +1,12 @@
 package com.soya.launcher.utils;
 
+import android.app.ActivityManager;
+import android.app.admin.DevicePolicyManager;
 import android.app.role.RoleManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -610,5 +613,9 @@ public class AndroidSystem {
         }finally {
             return success;
         }
+    }
+
+    public static void restoreFactory(Context context){
+        openActivityName(context, "com.android.tv.settings","com.android.tv.settings.device.storage.ResetActivity");
     }
 }

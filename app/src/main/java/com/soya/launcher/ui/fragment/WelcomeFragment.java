@@ -39,7 +39,8 @@ public class WelcomeFragment extends AbsFragment{
         uiHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, RemoteControlFragment.newInstance(true)).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GuideLanguageFragment.newInstance()).commit();
+                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, RemoteControlFragment.newInstance(true)).commit();
             }
         }, 2000);
     }

@@ -60,6 +60,10 @@ public class AppUtils {
         return Settings.System.putString(context.getContentResolver(), Settings.System.TIME_12_24, is24Display ? "24" : "12");
     }
 
+    public static boolean setTimeZone(Context context, String zone){
+        return Settings.System.putString(context.getContentResolver(),  Settings.Global.AUTO_TIME_ZONE, zone);
+    }
+
     public static boolean is24Display(Context context){
         return "24".equals(Settings.System.getString(context.getContentResolver(), Settings.System.TIME_12_24));
     }

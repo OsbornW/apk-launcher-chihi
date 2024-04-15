@@ -35,6 +35,7 @@
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.RESTART_PACKAGES"/>
     <uses-permission android:name="android.permission.DELETE_PACKAGES" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" tools:ignore="ProtectedPermissions" />
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -119,6 +120,7 @@
         <activity android:name="com.soya.launcher.ui.activity.ScaleScreenActivity" />
         <activity android:name="com.soya.launcher.ui.activity.BluetoothActivity" />
         <activity android:name="com.soya.launcher.ui.activity.RemoteControlActivity" />
+        <activity android:name="com.soya.launcher.ui.activity.ChooseGradientActivity" />
 
         <provider
             android:authorities="${applicationId}.provider"

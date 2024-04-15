@@ -1,9 +1,9 @@
 package com.soya.launcher.bean;
 
 public class SettingItem {
-    private final int type;
-    private final String name;
-    private final int ico;
+    private int type;
+    private String name;
+    private int ico;
 
     public SettingItem(int type, String name, int ico){
         this.type = type;
@@ -21,5 +21,19 @@ public class SettingItem {
 
     public int getIco() {
         return ico;
+    }
+
+    public void setIco(int ico) {
+        this.ico = ico;
+    }
+
+    public SettingItem setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public SettingItem setType(int type) {
+        this.type = type;
+        return this;
     }
 }
