@@ -72,6 +72,7 @@ import com.soya.launcher.manager.FilePathMangaer;
 import com.soya.launcher.manager.PreferencesManager;
 import com.soya.launcher.ui.activity.AboutActivity;
 import com.soya.launcher.ui.activity.AppsActivity;
+import com.soya.launcher.ui.activity.ChooseGradientActivity;
 import com.soya.launcher.ui.activity.GradientActivity;
 import com.soya.launcher.ui.activity.LoginActivity;
 import com.soya.launcher.ui.activity.ScaleScreenActivity;
@@ -512,7 +513,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                     }
                         break;
                     case Projector.TYPE_SCREEN:{
-                        startActivity(new Intent(getActivity(), GradientActivity.class));
+                        startActivity(new Intent(getActivity(), ChooseGradientActivity.class));
                     }
                         break;
                 }
