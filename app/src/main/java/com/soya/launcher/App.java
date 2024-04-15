@@ -15,6 +15,7 @@ import com.soya.launcher.bean.CacheWeather;
 import com.soya.launcher.bean.Movice;
 import com.soya.launcher.bean.MyRunnable;
 import com.soya.launcher.bean.Wallpaper;
+import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.IntentAction;
 import com.soya.launcher.http.HttpRequest;
@@ -78,12 +79,21 @@ public class App extends Application {
         BluetoothScannerUtils.init(this);
         initRemote();
 
-        WALLPAPERS.add(new Wallpaper(0, R.drawable.wallpaper_1));
-        WALLPAPERS.add(new Wallpaper(1, R.drawable.wallpaper_20));
-        WALLPAPERS.add(new Wallpaper(2, R.drawable.wallpaper_21));
-        WALLPAPERS.add(new Wallpaper(3, R.drawable.wallpaper_22));
-        WALLPAPERS.add(new Wallpaper(4, R.drawable.wallpaper_24));
-        WALLPAPERS.add(new Wallpaper(5, R.drawable.wallpaper_25));
+        if (Config.COMPANY == 0){
+            WALLPAPERS.add(new Wallpaper(3, R.drawable.wallpaper_22));
+            WALLPAPERS.add(new Wallpaper(0, R.drawable.wallpaper_1));
+            WALLPAPERS.add(new Wallpaper(1, R.drawable.wallpaper_20));
+            WALLPAPERS.add(new Wallpaper(2, R.drawable.wallpaper_21));
+            WALLPAPERS.add(new Wallpaper(4, R.drawable.wallpaper_24));
+            WALLPAPERS.add(new Wallpaper(5, R.drawable.wallpaper_25));
+        }else {
+            WALLPAPERS.add(new Wallpaper(0, R.drawable.wallpaper_1));
+            WALLPAPERS.add(new Wallpaper(1, R.drawable.wallpaper_20));
+            WALLPAPERS.add(new Wallpaper(2, R.drawable.wallpaper_21));
+            WALLPAPERS.add(new Wallpaper(3, R.drawable.wallpaper_22));
+            WALLPAPERS.add(new Wallpaper(4, R.drawable.wallpaper_24));
+            WALLPAPERS.add(new Wallpaper(5, R.drawable.wallpaper_25));
+        }
 
         com.hs.App.init(this);
 
