@@ -152,5 +152,5 @@
     <string name="factory_reset">Factory reset</string>
     <string name="auto">Auto</string>
     <string name="auto_calibration">Horizontal Calibration</string>
-    <string name="manual">Manual</string>
+    <string name="manual">Manual Calibration</string>
 </resources>
