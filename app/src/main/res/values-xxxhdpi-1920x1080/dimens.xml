@@ -541,6 +541,13 @@
 <dimen name="holder_keyboard_text_padding">1dp</dimen>
 <dimen name="holder_keyboard_icon_width">12dp</dimen>
 <dimen name="holder_keyboard_icon_height">12dp</dimen>
+<dimen name="fragment_guide_group_gradient_image_width">165dp</dimen>
+<dimen name="fragment_guide_group_gradient_image_height">93dp</dimen>
+<dimen name="fragment_guide_group_gradient_text_tip_margin_bottom">13dp</dimen>
+<dimen name="fragment_guide_group_gradient_text_max_width">245dp</dimen>
+<dimen name="fragment_guide_group_gradient_text_size">8sp</dimen>
+<dimen name="fragment_guide_group_gradient_div_opt_margin_top">13dp</dimen>
+<dimen name="fragment_guide_group_gradient_button_width">65dp</dimen>
 <dimen name="margin_decoration_max">8dp</dimen>
 <dimen name="margin_decoration_min">2dp</dimen>
 <dimen name="until_collapsed_height">45dp</dimen>

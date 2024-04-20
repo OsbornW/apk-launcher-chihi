@@ -48,7 +48,7 @@ public class FocusFragment extends AbsFragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.equals(mNextView)){
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GuideGradientFragment.newInstance()).addToBackStack(null).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GuideGroupGradientFragment.newInstance()).addToBackStack(null).commit();
         }
     }
 

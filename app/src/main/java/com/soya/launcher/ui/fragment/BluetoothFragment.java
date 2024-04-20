@@ -1,5 +1,6 @@
 package com.soya.launcher.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class BluetoothFragment extends AbsFragment implements BluetoothItemAdapt
     private BluetoothItemAdapter mAdapter;
     private VerticalGridView mContentGrid;
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

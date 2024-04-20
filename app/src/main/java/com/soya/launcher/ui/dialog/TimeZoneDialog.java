@@ -81,6 +81,11 @@ public class TimeZoneDialog extends SingleDialogFragment{
         });
     }
 
+    @Override
+    protected float getDimAmount() {
+        return 0;
+    }
+
     public void setCallback(Callback callback) {
         this.callback = callback;
     }

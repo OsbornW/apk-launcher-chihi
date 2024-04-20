@@ -2,10 +2,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToOutline="false"
+    android:clipToPadding="false"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:id="@+id/root"
+        android:layout_margin="@dimen/dialog_keyboard_root_margin"
         app:cardCornerRadius="@dimen/dialog_app_card_corner_radius"
+        app:cardUseCompatPadding="false"
         app:cardBackgroundColor="@color/transparent"
         app:cardElevation="@dimen/card_elevation"
         android:layout_gravity="center"
