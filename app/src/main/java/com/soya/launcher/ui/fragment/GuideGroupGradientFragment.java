@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.open.system.ASystemProperties;
 import com.soya.launcher.R;
 import com.soya.launcher.ui.activity.ChooseGradientActivity;
 
@@ -54,15 +55,21 @@ public class GuideGroupGradientFragment extends AbsFragment {
         mManualView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ChooseGradientActivity.class));
+                setEnable(false);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GradientFragment.newInstance()).addToBackStack(null).commit();
             }
         });
 
         mSkipView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setEnable(true);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GuideDateFragment.newInstance()).addToBackStack(null).commit();
             }
         });
+    }
+
+    private void setEnable(boolean isEnalbe){
+        ASystemProperties.set("persist.vendor.gsensor.enable", isEnalbe ? "1" : "0");
     }
 }

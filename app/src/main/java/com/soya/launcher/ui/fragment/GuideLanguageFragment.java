@@ -40,6 +40,6 @@ public class GuideLanguageFragment extends AbsLanguageFragment {
     }
 
     private void jump(){
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, FocusFragment.newInstance()).addToBackStack(null).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GuideGroupGradientFragment.newInstance()).addToBackStack(null).commit();
     }
 }
