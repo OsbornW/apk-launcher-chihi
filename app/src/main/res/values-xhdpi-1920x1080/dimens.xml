@@ -382,6 +382,8 @@
 <dimen name="fragment_gradient_button_width">35dp</dimen>
 <dimen name="fragment_gradient_screen_width">400dp</dimen>
 <dimen name="fragment_gradient_screen_height">225dp</dimen>
+<dimen name="fragment_gradient_tip_max_width">600dp</dimen>
+<dimen name="fragment_gradient_tip_text_size">13sp</dimen>
 <dimen name="fragment_gradient_indicator_height">45dp</dimen>
 <dimen name="fragment_gradient_indicator_image_width">40dp</dimen>
 <dimen name="fragment_gradient_indicator_image_height">35dp</dimen>
@@ -541,9 +543,9 @@
 <dimen name="holder_keyboard_text_padding">3dp</dimen>
 <dimen name="holder_keyboard_icon_width">25dp</dimen>
 <dimen name="holder_keyboard_icon_height">25dp</dimen>
-<dimen name="fragment_guide_group_gradient_image_width">330dp</dimen>
-<dimen name="fragment_guide_group_gradient_image_height">186dp</dimen>
-<dimen name="fragment_guide_group_gradient_text_tip_margin_bottom">26dp</dimen>
+<dimen name="fragment_guide_group_gradient_image_width">380dp</dimen>
+<dimen name="fragment_guide_group_gradient_image_height">214dp</dimen>
+<dimen name="fragment_guide_group_gradient_text_tip_margin_bottom">36dp</dimen>
 <dimen name="fragment_guide_group_gradient_text_max_width">490dp</dimen>
 <dimen name="fragment_guide_group_gradient_text_size">17sp</dimen>
 <dimen name="fragment_guide_group_gradient_div_opt_margin_top">26dp</dimen>

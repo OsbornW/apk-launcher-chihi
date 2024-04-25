@@ -53,8 +53,8 @@
             android:background="@drawable/menu_item_3"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:layout_width="@dimen/fragment_guide_group_gradient_image_width"
-            android:layout_height="@dimen/fragment_guide_group_gradient_image_height">
+            android:layout_width="@dimen/fragment_gradient_screen_width"
+            android:layout_height="@dimen/fragment_gradient_screen_height">
             <androidx.cardview.widget.CardView
                 app:cardBackgroundColor="@color/transparent"
                 app:cardElevation="0dp"
@@ -109,7 +109,7 @@
                 android:textSize="@dimen/fragment_set_date_next_text_size"
                 android:textColor="@color/text_color_style_1"
                 android:layout_gravity="right|center_vertical"
-                android:text="@string/skip"
+                android:text="@string/next"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:focusableInTouchMode="true"

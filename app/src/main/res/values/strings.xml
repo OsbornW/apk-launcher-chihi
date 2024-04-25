@@ -153,7 +153,8 @@
     <string name="auto">Auto</string>
     <string name="auto_calibration">Horizontal Calibration</string>
     <string name="manual">Manual Calibration</string>
-    <string name="guide_group_gradient_tip">The correction has been completed. lf adjustment is needed, please select \u0027Manual\u0027; otherwise, select \u0027Skip\u0027.</string>
+    <string name="guide_group_gradient_tip">The correction has been completed. lf adjustment is needed, please select \u0027Manual\u0027; otherwise, select \u0027Next\u0027.</string>
     <string name="manual_text">Manual</string>
     <string name="skip">Skip</string>
+    <string name="manual_gradient_tip">Automatic correction has been turned off, you can enter theProjection settings, choose "Keystone Correction" and switch it back to \u0027Auto\u0027 for further use.</string>
 </resources>

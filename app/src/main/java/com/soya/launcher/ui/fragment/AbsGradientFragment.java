@@ -75,7 +75,6 @@ public abstract class AbsGradientFragment extends AbsFragment implements View.On
     private final int MAX_PROGRESS = 100;
     private int type = TYPE_LT;
     private int index = 0;
-
     private long time = -1;
     private boolean isOut = false;
 

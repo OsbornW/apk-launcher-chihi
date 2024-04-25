@@ -39,14 +39,30 @@
         android:layout_gravity="right|bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <TextView
-        android:text="@string/set_gradient"
-        android:textSize="@dimen/fragment_gradient_text_text_size"
-        android:layout_marginTop="@dimen/fragment_gradient_root_margin_top"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/text_color_style_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="@string/set_gradient"
+            android:textSize="@dimen/fragment_gradient_text_text_size"
+            android:layout_marginTop="@dimen/fragment_gradient_root_margin_top"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/text_color_style_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:text="@string/manual_gradient_tip"
+            android:textColor="@color/text_color_style_1"
+            android:layout_marginTop="@dimen/fragment_gradient_confirm_margin_left"
+            android:lineSpacingExtra="5dp"
+            android:gravity="center"
+            android:maxWidth="@dimen/fragment_gradient_tip_max_width"
+            android:textSize="@dimen/fragment_gradient_tip_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:clipChildren="false"
         android:clipToPadding="false"

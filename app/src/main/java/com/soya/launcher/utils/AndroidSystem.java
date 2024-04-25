@@ -135,9 +135,7 @@ public class AndroidSystem {
     }
 
     public static boolean isUsePassWifi(ScanResult bean){
-        String type = bean.capabilities;
-        boolean usePass = !type.equals("[ESS]");
-        return usePass;
+        return AccessPointState.getScanResultSecurity(bean) != AccessPointState.OPEN;
     }
 
     public static Bitmap getImageForAssets(Context context, String filePath){

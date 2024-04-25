@@ -104,6 +104,12 @@ android {
             keyPassword "android"
         }
 
+       /* debug {
+           storeFile file("platform_H710_701.jks")
+           storePassword 'platform'
+           keyAlias 'platform'
+           keyPassword 'platform'
+       }*/
 
         /*debug {
             storeFile file("platform.keystore")

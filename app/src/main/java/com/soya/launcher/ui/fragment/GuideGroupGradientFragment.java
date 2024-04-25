@@ -63,7 +63,6 @@ public class GuideGroupGradientFragment extends AbsFragment {
         mSkipView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setEnable(true);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GuideDateFragment.newInstance()).addToBackStack(null).commit();
             }
         });
