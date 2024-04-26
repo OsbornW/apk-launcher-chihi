@@ -966,11 +966,6 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         AppDialog dialog = AppDialog.newInstance(bean);
         dialog.setCallback(new AppDialog.Callback() {
             @Override
-            public void onDelete() {
-                AndroidSystem.openApplicationDetials(getActivity(), bean.packageName);
-            }
-
-            @Override
             public void onOpen() {
                 AndroidSystem.openPackageName(getActivity(), bean.packageName);
             }

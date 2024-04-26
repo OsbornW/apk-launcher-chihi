@@ -158,4 +158,7 @@
     <string name="manual_text">手动</string>
     <string name="skip">跳过</string>
     <string name="manual_gradient_tip">自动校正已关闭，您可以进入投影设置，选择“梯形校正”并将其切换回自动以供进一步使用。</string>
+    <string name="uninstalling">卸载中</string>
+    <string name="uninstalled">卸载成功</string>
+    <string name="uninstall_failed">卸载失败</string>
 </resources>

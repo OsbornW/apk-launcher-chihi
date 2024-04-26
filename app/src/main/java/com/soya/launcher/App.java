@@ -1,5 +1,6 @@
 package com.soya.launcher;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.lzy.okgo.OkGo;
 import com.soya.launcher.bean.AppItem;
@@ -143,6 +145,7 @@ public class App extends Application {
     }
 
     public class InnerReceiver extends BroadcastReceiver {
+        @SuppressLint("MissingPermission")
         @Override
         public void onReceive(Context context, Intent intent) {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);

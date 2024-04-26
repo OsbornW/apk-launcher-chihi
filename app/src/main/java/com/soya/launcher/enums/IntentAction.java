@@ -8,4 +8,5 @@ public interface IntentAction {
     String ACTION_SHOW_REMOTE_DIALOG = "action_show_remote_dialog";
     String ACTION_NOT_SHOW_REMOTE_DIALOG = "action_not_show_remote_dialog";
     String ACTION_DOWNLOAD_APK = "android.intent.action.store.download.apk";
+    String ACTION_DELETE_PACKAGE = "action.delete.package";
 }

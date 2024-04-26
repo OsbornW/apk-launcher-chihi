@@ -383,7 +383,7 @@
 <dimen name="fragment_gradient_screen_width">262dp</dimen>
 <dimen name="fragment_gradient_screen_height">147dp</dimen>
 <dimen name="fragment_gradient_tip_max_width">393dp</dimen>
-<dimen name="fragment_gradient_tip_text_size">8sp</dimen>
+<dimen name="fragment_gradient_tip_text_size">10sp</dimen>
 <dimen name="fragment_gradient_indicator_height">29dp</dimen>
 <dimen name="fragment_gradient_indicator_image_width">26dp</dimen>
 <dimen name="fragment_gradient_indicator_image_height">22dp</dimen>
@@ -550,6 +550,8 @@
 <dimen name="fragment_guide_group_gradient_text_size">11sp</dimen>
 <dimen name="fragment_guide_group_gradient_div_opt_margin_top">17dp</dimen>
 <dimen name="fragment_guide_group_gradient_button_width">85dp</dimen>
+<dimen name="dialog_uninstall_height">78dp</dimen>
+<dimen name="dialog_uninstall_text_size">12sp</dimen>
 <dimen name="margin_decoration_max">10dp</dimen>
 <dimen name="margin_decoration_min">2dp</dimen>
 <dimen name="until_collapsed_height">59dp</dimen>

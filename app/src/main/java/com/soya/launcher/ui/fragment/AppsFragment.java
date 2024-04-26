@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInstaller;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import androidx.leanback.widget.FocusHighlightHelper;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 
+import com.open.system.SystemUtils;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.AppItemAdapter;
 import com.soya.launcher.adapter.AppListAdapter;
@@ -129,11 +132,6 @@ public class AppsFragment extends AbsFragment{
     private void menu(ApplicationInfo bean){
         AppDialog dialog = AppDialog.newInstance(bean);
         dialog.setCallback(new AppDialog.Callback() {
-            @Override
-            public void onDelete() {
-                AndroidSystem.openApplicationDetials(getActivity(), bean.packageName);
-            }
-
             @Override
             public void onOpen() {
                 AndroidSystem.openPackageName(getActivity(), bean.packageName);

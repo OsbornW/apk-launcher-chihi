@@ -157,4 +157,7 @@
     <string name="manual_text">Manual</string>
     <string name="skip">Skip</string>
     <string name="manual_gradient_tip">Automatic correction has been turned off, you can enter theProjection settings, choose "Keystone Correction" and switch it back to \u0027Auto\u0027 for further use.</string>
+    <string name="uninstalling">Uninstalling</string>
+    <string name="uninstalled">Uninstall successful</string>
+    <string name="uninstall_failed">Uninstall failed</string>
 </resources>

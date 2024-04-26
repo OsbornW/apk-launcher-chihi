@@ -24,58 +24,59 @@ import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.IntentAction;
 import com.soya.launcher.utils.AndroidSystem;
 
-public class AppDialog extends SingleDialogFragment implements View.OnClickListener {
-    public static final String TAG = "AppDialog";
-    public static AppDialog newInstance(ApplicationInfo info) {
+public class UninstallDialog extends SingleDialogFragment implements View.OnClickListener {
+    public static final String TAG = "UninstallDialog";
+    public static UninstallDialog newInstance(ApplicationInfo info) {
 
         Bundle args = new Bundle();
         args.putParcelable(Atts.BEAN, info);
-        AppDialog fragment = new AppDialog();
+        UninstallDialog fragment = new UninstallDialog();
         fragment.setArguments(args);
         return fragment;
     }
 
-    private View mCloseView;
-    private View mDeleteView;
-    private View mOpenView;
-
-    private ImageView mIV;
-    private TextView mNameView;
-    private TextView mVersionView;
+    private TextView mOptView;
+    private TextView mMsgView;
     private ImageView mBlur;
     private View mRootView;
 
     private ApplicationInfo info;
-
-    private Callback callback;
+    private InnerBroadcast mBroadcast;
+    private boolean isEnd = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         info = getArguments().getParcelable(Atts.BEAN);
+        mBroadcast = new InnerBroadcast();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(IntentAction.ACTION_DELETE_PACKAGE);
+        getActivity().registerReceiver(mBroadcast, filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(mBroadcast);
     }
 
     @Override
     protected int getLayout() {
-        return R.layout.dialog_app;
+        return R.layout.dialog_uninstall;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mOpenView.requestFocus();
+        mOptView.requestFocus();
         blur(mRootView, mBlur);
     }
 
     @Override
     protected void init(LayoutInflater inflater, View view) {
         super.init(inflater, view);
-        mCloseView = view.findViewById(R.id.close);
-        mDeleteView = view.findViewById(R.id.delete);
-        mOpenView = view.findViewById(R.id.open);
-        mIV = view.findViewById(R.id.icon);
-        mNameView = view.findViewById(R.id.name);
-        mVersionView = view.findViewById(R.id.version);
+        mOptView = view.findViewById(R.id.opt);
+        mMsgView = view.findViewById(R.id.msg);
         mBlur = view.findViewById(R.id.blur);
         mRootView = view.findViewById(R.id.root);
     }
@@ -83,23 +84,14 @@ public class AppDialog extends SingleDialogFragment implements View.OnClickListe
     @Override
     protected void initBefore(LayoutInflater inflater, View view) {
         super.initBefore(inflater, view);
-        mDeleteView.setVisibility(AndroidSystem.isSystemApp(info.flags) ? View.GONE : View.VISIBLE);
-        mCloseView.setOnClickListener(this);
-        mDeleteView.setOnClickListener(this);
-        mOpenView.setOnClickListener(this);
+        mOptView.setOnClickListener(this);
     }
 
     @Override
     protected void initBind(LayoutInflater inflater, View view) {
         super.initBind(inflater, view);
-        try {
-            PackageManager pm = getActivity().getPackageManager();
-            mIV.setImageDrawable(info.loadIcon(pm));
-            mNameView.setText(info.loadLabel(pm));
-            mVersionView.setText(pm.getPackageInfo(info.packageName, 0).versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        mMsgView.setText(getString(R.string.uninstalling));
+        AndroidSystem.uninstallPackage(getActivity(), info.packageName);
     }
 
     @Override
@@ -124,22 +116,20 @@ public class AppDialog extends SingleDialogFragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v.equals(mCloseView)){
-            dismiss();
-        }else if (v.equals(mDeleteView)){
-            UninstallDialog.newInstance(info).show(getActivity().getSupportFragmentManager(), UninstallDialog.TAG);
-            dismiss();
-        }else if (v.equals(mOpenView)){
-            if (callback != null) callback.onOpen();
-            dismiss();
+        if (v.equals(mOptView)){
+            if (isEnd) dismiss();
         }
     }
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
-    }
+    public final class InnerBroadcast extends BroadcastReceiver{
 
-    public interface Callback{
-        void onOpen();
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int code = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1);
+            boolean success = code == PackageInstaller.STATUS_SUCCESS;
+            mMsgView.setText(getString(success ? R.string.uninstalled : R.string.uninstall_failed));
+            mOptView.setText(getString(R.string.close));
+            isEnd = true;
+        }
     }
 }

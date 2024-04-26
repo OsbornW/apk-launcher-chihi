@@ -1,19 +1,23 @@
 package com.soya.launcher.utils;
 
 import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
 import android.app.role.RoleManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.LauncherApps;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageInstaller;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.AssetManager;
@@ -51,6 +55,7 @@ import com.soya.launcher.bean.HomeItem;
 import com.soya.launcher.bean.Version;
 import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.Atts;
+import com.soya.launcher.enums.IntentAction;
 import com.soya.launcher.enums.Types;
 import com.soya.launcher.ui.activity.MainActivity;
 
@@ -521,17 +526,16 @@ public class AndroidSystem {
         return result;
     }
 
+    public static boolean isSystemApp(int flags){
+        return (flags & ApplicationInfo.FLAG_SYSTEM) != 0;
+    }
+
     public static List<ApplicationInfo> getUserApps(Context context){
         PackageManager pm = context.getPackageManager();
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
         List<ApplicationInfo> result = new ArrayList<>();
         for (ApplicationInfo packageInfo : packages) {
-            if ((packageInfo.flags & ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM) {
-
-            } else {
-
-            }
             Intent intent = getPackageNameIntent(context, packageInfo.packageName);
             if (intent != null && !packageInfo.packageName.equals(BuildConfig.APPLICATION_ID)) result.add(packageInfo);
         }
@@ -606,6 +610,24 @@ public class AndroidSystem {
             Method connect = clz.getMethod("connect", BluetoothDevice.class);
             success = (boolean) connect.invoke(clz.cast(profile), device);
             SystemClock.sleep(1000);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return success;
+        }
+    }
+
+    public static <T> boolean uninstallPackage(Context context, String packageName) {
+        boolean success = false;
+        try {
+            PackageManager packageManger = context.getPackageManager();
+            PackageInstaller packageInstaller = packageManger.getPackageInstaller();
+            PackageInstaller.SessionParams params = new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL);
+            params.setAppPackageName(packageName);
+            int sessionId = packageInstaller.createSession(params);
+            IntentSender sender = PendingIntent.getBroadcast(context, sessionId, new Intent(IntentAction.ACTION_DELETE_PACKAGE), PendingIntent.FLAG_MUTABLE).getIntentSender();
+            packageInstaller.uninstall(packageName, sender);
+            success = true;
         }catch (Exception e){
             e.printStackTrace();
         }finally {
