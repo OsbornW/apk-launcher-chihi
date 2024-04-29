@@ -166,6 +166,7 @@ public class KeyboardDialog extends SingleDialogFragment implements KeyboardAdap
                 break;
             case KeyItem.TYPE_SEARCH:
                 mTargetView.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                dismiss();
                 break;
             default:
                 mTargetView.append(text);

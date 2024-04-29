@@ -108,12 +108,11 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
     protected void initBefore(View view, LayoutInflater inflater) {
         super.initBefore(view, inflater);
         mDivSearch.setOnClickListener(this);
-        mEditView.setOnEditorActionListener(this);
         mEditView.addTextChangedListener(new TextWatcherAdapter(){
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s)) return;
-                mEditView.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                search();
             }
         });
     }
@@ -128,7 +127,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
         String word = getArguments().getString(Atts.WORD);
         if (!TextUtils.isEmpty(word)) {
             mEditView.setText(word);
-            mEditView.onEditorAction(EditorInfo.IME_ACTION_DONE);
+            search();
         }
     }
 
@@ -272,12 +271,7 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        String text = v.getText().toString();
-        if (call != null) call.cancel();
-        if (!TextUtils.isEmpty(text)) {
-            searchText = text;
-            replace();
-        }
+        search();
         return false;
     }
 
@@ -293,6 +287,15 @@ public class SearchFragment extends AbsFragment implements View.OnClickListener,
             case 2:
                 webClick((WebItem) bean);
                 break;
+        }
+    }
+
+    private void search(){
+        String text = mEditView.getText().toString();
+        if (call != null) call.cancel();
+        if (!TextUtils.isEmpty(text)) {
+            searchText = text;
+            replace();
         }
     }
 

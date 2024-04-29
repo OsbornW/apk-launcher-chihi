@@ -3,6 +3,7 @@ package com.soya.launcher.ui.dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,16 @@ public class WifiPassDialog extends SingleDialogFragment implements View.OnClick
         mCloseView.setOnClickListener(this);
         mConfirmView.setOnClickListener(this);
         mEditText.setOnClickListener(this);
+        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                String text = textView.getText().toString();
+                setRootGravity(Gravity.CENTER);
+                if (callback != null) callback.onConfirm(text);
+                dismiss();
+                return false;
+            }
+        });
     }
 
     @Override
