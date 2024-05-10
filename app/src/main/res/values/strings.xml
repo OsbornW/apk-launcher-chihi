@@ -160,4 +160,6 @@
     <string name="uninstalling">Uninstalling</string>
     <string name="uninstalled">Uninstall successful</string>
     <string name="uninstall_failed">Uninstall failed</string>
+    <string name="done">Done</string>
+    <string name="saved">Saved</string>
 </resources>

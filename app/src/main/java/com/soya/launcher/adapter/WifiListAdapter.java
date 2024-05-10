@@ -24,6 +24,7 @@ public class WifiListAdapter extends RecyclerView.Adapter<WifiListAdapter.Holder
     private LayoutInflater inflater;
     private List<WifiItem> dataList;
 
+    private String connectSSID;
     private Callback callback;
     private boolean useNext;
 
@@ -83,10 +84,19 @@ public class WifiListAdapter extends RecyclerView.Adapter<WifiListAdapter.Holder
         }
     }
 
+    public void setConnectSSID(String connectSSID) {
+        this.connectSSID = connectSSID;
+    }
+
+    public String getConnectSSID() {
+        return connectSSID;
+    }
+
     public class Holder extends RecyclerView.ViewHolder {
         private TextView mTitleView;
         private ImageView mLockView;
         private ImageView mSignalView;
+        private TextView mStatusView;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
@@ -97,12 +107,16 @@ public class WifiListAdapter extends RecyclerView.Adapter<WifiListAdapter.Holder
             mTitleView = itemView.findViewById(R.id.title);
             mLockView = itemView.findViewById(R.id.lock);
             mSignalView = itemView.findViewById(R.id.signal);
+            mStatusView = itemView.findViewById(R.id.status);
         }
 
         public void bind(WifiItem bean){
             ScanResult result = bean.getItem();
             boolean usePass = AndroidSystem.isUsePassWifi(result);
 
+            boolean isConnect = result.SSID.equals(connectSSID);
+            mStatusView.setText(bean.isSave() ? context.getString(R.string.saved) : "");
+            if (isConnect) mStatusView.setText(context.getString(R.string.connected));
             mTitleView.setText(result.SSID);
             mLockView.setVisibility(usePass ? View.VISIBLE : View.GONE);
             switch (WifiManager.calculateSignalLevel(bean.getItem().level, 5)){
@@ -119,13 +133,17 @@ public class WifiListAdapter extends RecyclerView.Adapter<WifiListAdapter.Holder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (callback != null) callback.onClick(result);
+                    if (callback != null) callback.onClick(bean);
                 }
             });
         }
     }
 
+    private String cleanSSID(String ssid){
+        return ssid.replaceFirst("^\"", "").replaceFirst("\"$", "");
+    }
+
     public interface Callback{
-        void onClick(ScanResult bean);
+        void onClick(WifiItem bean);
     }
 }

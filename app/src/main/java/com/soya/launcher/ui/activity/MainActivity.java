@@ -1,9 +1,12 @@
 package com.soya.launcher.ui.activity;
 
+import android.content.Intent;
+
 import androidx.fragment.app.Fragment;
 
 import com.soya.launcher.R;
 import com.soya.launcher.config.Config;
+import com.soya.launcher.enums.IntentAction;
 import com.soya.launcher.manager.PreferencesManager;
 import com.soya.launcher.ui.fragment.MainFragment;
 import com.soya.launcher.ui.fragment.WelcomeFragment;
@@ -33,6 +36,9 @@ public class MainActivity extends AbsActivity {
 
     @Override
     public void onBackPressed() {
-        if (canBackPressed) super.onBackPressed();
+        if (canBackPressed)
+            super.onBackPressed();
+        else
+            sendBroadcast(new Intent(IntentAction.ACTION_RESET_SELECT_HOME));
     }
 }

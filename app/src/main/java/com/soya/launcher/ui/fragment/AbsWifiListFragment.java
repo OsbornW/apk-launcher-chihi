@@ -197,6 +197,25 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                                     connectedTime = -1;
                                 }
                             }
+
+                            String old = mAdapter.getConnectSSID();
+                            String ssid = cleanSSID(info.getSSID());
+                            mAdapter.setConnectSSID(ssid);
+                            for (WifiItem item : mAdapter.getDataList()){
+                                if (item.getItem().SSID.equals(ssid)){
+                                    int index = mAdapter.getDataList().indexOf(item);
+                                    if (index != -1){
+                                        mAdapter.notifyItemChanged(index);
+                                    }
+                                }
+
+                                if (item.getItem().SSID.equals(old)){
+                                    int index = mAdapter.getDataList().indexOf(item);
+                                    if (index != -1){
+                                        mAdapter.notifyItemChanged(index);
+                                    }
+                                }
+                            }
                             syncWifi(info);
                         }
                     });
@@ -252,7 +271,8 @@ public abstract class AbsWifiListFragment extends AbsFragment{
     private WifiListAdapter.Callback newCallback(){
         return new WifiListAdapter.Callback() {
             @Override
-            public void onClick(ScanResult bean) {
+            public void onClick(WifiItem wifiItem) {
+                ScanResult bean = wifiItem.getItem();
                 boolean usePass = AndroidSystem.isUsePassWifi(bean);
 
                 List<WifiConfiguration> saves = mWifiManager.getConfiguredNetworks();
@@ -269,14 +289,18 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                     dialog.setCallback(new WifiSaveDialog.Callback() {
                         @Override
                         public void onClick(int type) {
+                            int index = mAdapter.getDataList().indexOf(wifiItem);
                             switch (type){
                                 case 0:
                                     connect(bean, item.networkId);
+                                    wifiItem.setSave(true);
                                     break;
                                 case -1:
                                     mWifiManager.removeNetwork(item.networkId);
+                                    wifiItem.setSave(false);
                                     break;
                             }
+                            if (index != -1) mAdapter.notifyItemChanged(index);
                         }
                     });
                     dialog.show(getChildFragmentManager(), WifiSaveDialog.TAG);
@@ -285,11 +309,17 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                     dialog.setCallback(new WifiPassDialog.Callback() {
                         @Override
                         public void onConfirm(String text) {
+                            wifiItem.setSave(true);
+                            int index = mAdapter.getDataList().indexOf(wifiItem);
+                            if (index != -1) mAdapter.notifyItemChanged(index);
                             connect(bean, text);
                         }
                     });
                     dialog.show(getChildFragmentManager(), WifiPassDialog.TAG);
                 }else {
+                    wifiItem.setSave(true);
+                    int index = mAdapter.getDataList().indexOf(wifiItem);
+                    if (index != -1) mAdapter.notifyItemChanged(index);
                     connect(bean, "");
                 }
             }
@@ -397,12 +427,12 @@ public abstract class AbsWifiListFragment extends AbsFragment{
         List<WifiConfiguration> saves = mWifiManager.getConfiguredNetworks();
 
         Map<String, WifiConfiguration> map = new HashMap<>();
-        for (WifiConfiguration item : saves) map.put(item.SSID, item);
+        for (WifiConfiguration item : saves) map.put(cleanSSID(item.SSID), item);
 
         for (ScanResult result : results) {
             if (!TextUtils.isEmpty(result.SSID)) {
                 WifiConfiguration item = map.get(result.SSID);
-                boolean isSave = item != null && item.BSSID.equals(result.BSSID);
+                boolean isSave = item != null;
                 list.add(new WifiItem(result, isSave));
             }
         }
