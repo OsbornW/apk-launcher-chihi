@@ -9,6 +9,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -96,9 +98,17 @@ public abstract class AbsWifiListFragment extends AbsFragment{
         return R.layout.fragment_wifi_list;
     }
 
+    private TextView tvConnectedName;
+    //private TextView tvConnectStatus;
+    private ImageView ivConectedSignal;
     @Override
     protected void init(View view, LayoutInflater inflater) {
         super.init(view, inflater);
+
+        tvConnectedName = view.findViewById(R.id.tv_connected_wifiname);
+        //tvConnectStatus = view.findViewById(R.id.tv_connected_status);
+        ivConectedSignal = view.findViewById(R.id.tv_connected_signal);
+
         mWifiEnableView = view.findViewById(R.id.wifi_enable);
         mContentGrid = view.findViewById(R.id.content);
         mWifiNameView = view.findViewById(R.id.wifi_name);
@@ -198,9 +208,9 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                                 }
                             }
 
-                            String old = mAdapter.getConnectSSID();
+                            String old = mAdapter.connectSSID;
                             String ssid = cleanSSID(info.getSSID());
-                            mAdapter.setConnectSSID(ssid);
+                            mAdapter.connectSSID = ssid;
                             for (WifiItem item : mAdapter.getDataList()){
                                 if (item.getItem().SSID.equals(ssid)){
                                     int index = mAdapter.getDataList().indexOf(item);
@@ -258,11 +268,40 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                 levelStr = getString(R.string.signal_strong);
         }
         boolean isConnected = !TextUtils.isEmpty(info.getSSID()) && info.getIpAddress() != 0;
-        mWifiNameView.setText(isConnected ? info.getSSID() : "-  -  -");
+        mWifiNameView.setText(isConnected ? getNoDoubleQuotationSSID(info.getSSID()) : "-  -  -");
         mIPView.setText(isConnected ? Formatter.formatIpAddress(info.getIpAddress()) : "-");
         mSignalView.setText(isConnected ? levelStr : "-");
         mNetwordConnectedView.setText(isConnected ? getString(R.string.connected) : "-");
+
+        tvConnectedName.setText(getNoDoubleQuotationSSID(info.getSSID()));
+
+        if (level==1||level==2) {
+            ivConectedSignal.setImageResource(R.drawable.baseline_wifi_1_bar_100);
+        }else if(level==3){
+            ivConectedSignal.setImageResource(R.drawable.baseline_wifi_2_bar_100);
+        }else {
+            ivConectedSignal.setImageResource(R.drawable.baseline_wifi_100);
+        }
+
     }
+
+    public String getNoDoubleQuotationSSID(String ssid) {
+
+        //获取Android版本号
+        int deviceVersion = Build.VERSION.SDK_INT;
+
+        if (deviceVersion >= 17) {
+
+            if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
+
+                ssid = ssid.substring(1, ssid.length() - 1);
+            }
+
+        }
+        return ssid;
+
+}
+
 
     private String cleanSSID(String ssid){
         return ssid.replaceFirst("^\"", "").replaceFirst("\"$", "");
