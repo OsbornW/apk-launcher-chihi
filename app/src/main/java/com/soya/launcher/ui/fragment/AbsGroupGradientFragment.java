@@ -15,6 +15,7 @@ public class AbsGroupGradientFragment extends AbsFragment {
 
     private View mManualView;
     private TextView mSkipView;
+    private TextView mSkipTipView;
 
     @Override
     protected int getWallpaperView() {
@@ -31,6 +32,7 @@ public class AbsGroupGradientFragment extends AbsFragment {
         super.init(view, inflater);
         mManualView = view.findViewById(R.id.manual);
         mSkipView = view.findViewById(R.id.skip);
+        mSkipTipView = view.findViewById(R.id.skip_tip);
     }
 
     @Override
@@ -64,7 +66,8 @@ public class AbsGroupGradientFragment extends AbsFragment {
     @Override
     protected void initBind(View view, LayoutInflater inflater) {
         super.initBind(view, inflater);
-        mSkipView.setText(isGuide() ? getString(R.string.skip) : getString(R.string.done));
+        mSkipView.setText(isGuide() ? getString(R.string.next) : getString(R.string.done));
+        mSkipTipView.setText(isGuide() ? getString(R.string.guide_group_gradient_tip_next) : getString(R.string.guide_group_gradient_tip_done));
     }
 
     protected boolean isGuide(){
