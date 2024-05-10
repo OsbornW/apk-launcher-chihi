@@ -154,11 +154,14 @@
     <string name="auto">自动</string>
     <string name="auto_calibration">水平校准</string>
     <string name="manual">手动校准</string>
-    <string name="guide_group_gradient_tip">更正已经完成。如果需要调整，请选择手动; 否则，请选择“跳过”</string>
+    <string name="guide_group_gradient_tip_next">更正已经完成。如果需要调整，请选择手动; 否则，请选择“跳过”</string>
+    <string name="guide_group_gradient_tip_done">更正已经完成。如果需要调整，请选择手动; 否则，请选择“完成”</string>
     <string name="manual_text">手动</string>
     <string name="skip">跳过</string>
     <string name="manual_gradient_tip">自动校正已关闭，您可以进入投影设置，选择“梯形校正”并将其切换回自动以供进一步使用。</string>
     <string name="uninstalling">卸载中</string>
     <string name="uninstalled">卸载成功</string>
     <string name="uninstall_failed">卸载失败</string>
+    <string name="done">完成</string>
+    <string name="saved">已保存</string>
 </resources>

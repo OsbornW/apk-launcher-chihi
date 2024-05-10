@@ -109,6 +109,28 @@
                             android:layout_width="@dimen/fragment_main_opt_icon_width"
                             android:layout_height="@dimen/fragment_main_opt_icon_height"/>
                         <ImageView
+                            android:id="@+id/gradient"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:foreground="@drawable/ripple_style_1"
+                            android:src="@drawable/baseline_screenshot_monitor_100"
+                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
+                            android:padding="@dimen/fragment_main_opt_icon_padding"
+                            android:layout_width="@dimen/fragment_main_opt_icon_width"
+                            android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                        <ImageView
+                            android:id="@+id/hdmi"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:foreground="@drawable/ripple_style_1"
+                            android:src="@drawable/baseline_settings_input_hdmi_100"
+                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
+                            android:padding="@dimen/fragment_main_opt_icon_padding"
+                            android:layout_width="@dimen/fragment_main_opt_icon_width"
+                            android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                        <ImageView
                             android:id="@+id/weather"
                             android:visibility="gone"
                             android:clickable="true"

@@ -121,6 +121,7 @@
         <activity android:name="com.soya.launcher.ui.activity.BluetoothActivity" />
         <activity android:name="com.soya.launcher.ui.activity.RemoteControlActivity" />
         <activity android:name="com.soya.launcher.ui.activity.ChooseGradientActivity" />
+        <activity android:name="com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity" />
 
         <provider
             android:authorities="${applicationId}.provider"

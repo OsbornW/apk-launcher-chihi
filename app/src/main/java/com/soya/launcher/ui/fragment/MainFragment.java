@@ -74,6 +74,7 @@ import com.soya.launcher.ui.activity.AboutActivity;
 import com.soya.launcher.ui.activity.AppsActivity;
 import com.soya.launcher.ui.activity.ChooseGradientActivity;
 import com.soya.launcher.ui.activity.GradientActivity;
+import com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity;
 import com.soya.launcher.ui.activity.LoginActivity;
 import com.soya.launcher.ui.activity.ScaleScreenActivity;
 import com.soya.launcher.ui.activity.SearchActivity;
@@ -133,6 +134,8 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private View mHelpView;
     private TextView mTestView;
     private RecyclerView mNotifyRecycler;
+    private View mGradientView;
+    private View mHdmiView;
 
     private NotifyAdapter mNotifyAdapter;
     private Handler uiHandler;
@@ -158,6 +161,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
     private AppListAdapter mAppListAdapter;
     private StoreAdapter mStoreAdapter;
     private long requestTime = System.currentTimeMillis();
+    private boolean isExpanded;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -191,13 +195,14 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
 
         IntentFilter filter1 = new IntentFilter();
         filter1.addAction(IntentAction.ACTION_UPDATE_WALLPAPER);
+        filter1.addAction(IntentAction.ACTION_RESET_SELECT_HOME);
         filter1.addAction(Intent.ACTION_SCREEN_ON);
         filter1.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        filter.addAction(UsbManager.ACTION_USB_ACCESSORY_ATTACHED);
-        filter.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED);
-        filter.addAction("android.hardware.usb.action.USB_STATE");
+        filter1.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+        filter1.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+        filter1.addAction(UsbManager.ACTION_USB_ACCESSORY_ATTACHED);
+        filter1.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED);
+        filter1.addAction("android.hardware.usb.action.USB_STATE");
         getActivity().registerReceiver(wallpaperReceiver, filter1);
     }
 
@@ -272,6 +277,8 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mHelpView = view.findViewById(R.id.help);
         mTestView = view.findViewById(R.id.test);
         mNotifyRecycler = view.findViewById(R.id.notify_recycler);
+        mHdmiView = view.findViewById(R.id.hdmi);
+        mGradientView = view.findViewById(R.id.gradient);
 
         mHorizontalContentGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
         mHeaderGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
@@ -284,6 +291,8 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mHMainContentAdapter = new MainContentAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newContentCallback());
         mVMainContentAdapter = new MainContentAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newContentCallback());
         mAppListAdapter = new AppListAdapter(getActivity(), getLayoutInflater(), new CopyOnWriteArrayList<>(), R.layout.holder_app, newAppListCallback());
+        mHdmiView.setVisibility(Config.COMPANY == 0 ? View.VISIBLE : View.GONE);
+        mGradientView.setVisibility(Config.COMPANY == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -297,6 +306,8 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
         mWifiView.setOnClickListener(this);
         mLoginView.setOnClickListener(this);
         mHelpView.setOnClickListener(this);
+        mHdmiView.setOnClickListener(this);
+        mGradientView.setOnClickListener(this);
     }
 
     @Override
@@ -544,6 +555,7 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        isExpanded = verticalOffset != 0;
         float value = 1f - Math.abs(verticalOffset / 2f) / maxVerticalOffset;
         mHeaderGrid.setScaleX(value);
         mHeaderGrid.setScaleY(value);
@@ -572,6 +584,10 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }else if (v.equals(mHelpView)){
             startActivity(new Intent(getActivity(), AboutActivity.class));
+        }else if (v.equals(mHdmiView)){
+            AndroidSystem.openProjectorHDMI(getActivity());
+        }else if (v.equals(mGradientView)){
+            startActivity(new Intent(getActivity(), HomeGuideGroupGradientActivity.class));
         }
     }
 
@@ -1030,6 +1046,9 @@ public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetCh
                 case UsbManager.ACTION_USB_DEVICE_ATTACHED:
                     break;
                 case UsbManager.ACTION_USB_DEVICE_DETACHED:
+                    break;
+                case IntentAction.ACTION_RESET_SELECT_HOME:
+                    if (isExpanded) requestFocus(mHeaderGrid);
                     break;
             }
         }
