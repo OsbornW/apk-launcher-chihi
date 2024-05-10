@@ -47,7 +47,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public abstract class AbsWifiListFragment extends AbsFragment{
+public abstract class AbsWifiListFragment extends AbsFragment {
     private final ExecutorService exec = Executors.newCachedThreadPool();
 
     private View mWifiEnableView;
@@ -71,6 +71,9 @@ public abstract class AbsWifiListFragment extends AbsFragment{
     private Handler uiHandler;
     private ScanResult mTarget;
     private long connectedTime = -1;
+    private TextView tvConnectedName;
+    //private TextView tvConnectStatus;
+    private ImageView ivConectedSignal;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,9 +101,6 @@ public abstract class AbsWifiListFragment extends AbsFragment{
         return R.layout.fragment_wifi_list;
     }
 
-    private TextView tvConnectedName;
-    //private TextView tvConnectStatus;
-    private ImageView ivConectedSignal;
     @Override
     protected void init(View view, LayoutInflater inflater) {
         super.init(view, inflater);
@@ -125,9 +125,10 @@ public abstract class AbsWifiListFragment extends AbsFragment{
         mAdapter.replace(fillterWifi(mWifiManager.getScanResults()));
         mOffView.setVisibility(mWifiManager.isWifiEnabled() ? View.GONE : View.VISIBLE);
         mContentGrid.setVisibility(mWifiManager.isWifiEnabled() ? View.VISIBLE : View.GONE);
-        if (mWifiManager.isWifiEnabled()) mProgressBar.setVisibility(mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        if (mWifiManager.isWifiEnabled())
+            mProgressBar.setVisibility(mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
 
-        if (useNext()){
+        if (useNext()) {
             mWifiEnableView.setNextFocusLeftId(R.id.next);
             mWifiEnableView.setNextFocusRightId(R.id.next);
         }
@@ -173,21 +174,21 @@ public abstract class AbsWifiListFragment extends AbsFragment{
             @Override
             public void run() {
                 int time = 0;
-                while (isAdded()){
+                while (isAdded()) {
                     final WifiInfo info = mWifiManager.getConnectionInfo();
                     uiHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             if (!isAdded()) return;
 
-                            if (mTarget != null && connectedTime != -1 && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - connectedTime) >= 30){
+                            if (mTarget != null && connectedTime != -1 && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - connectedTime) >= 30) {
                                 toastFail();
                                 closeDialog();
                                 mTarget = null;
                                 connectedTime = -1;
                             }
 
-                            if (!TextUtils.isEmpty(info.getSSID()) && info.getIpAddress() != 0 && !info.getSSID().equals("<unknown ssid>")){
+                            if (!TextUtils.isEmpty(info.getSSID()) && info.getIpAddress() != 0 && !info.getSSID().equals("<unknown ssid>")) {
                                 /*if (mTarget != null && connectedTime != -1 && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - connectedTime) >= 8 && !mTarget.SSID.equals(cleanSSID(info.getSSID()))){
                                     toastFail();
                                     closeDialog();
@@ -195,13 +196,13 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                                     connectedTime = -1;
                                 }*/
 
-                                if (mTarget != null && connectedTime != -1 && mTarget.SSID.equals(cleanSSID(info.getSSID()))){
+                                if (mTarget != null && connectedTime != -1 && mTarget.SSID.equals(cleanSSID(info.getSSID()))) {
                                     closeDialog();
                                     mTarget = null;
                                     connectedTime = -1;
                                 }
 
-                                if (mTarget == null && connectedTime == -1){
+                                if (mTarget == null && connectedTime == -1) {
                                     closeDialog();
                                     mTarget = null;
                                     connectedTime = -1;
@@ -211,17 +212,17 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                             String old = mAdapter.connectSSID;
                             String ssid = cleanSSID(info.getSSID());
                             mAdapter.connectSSID = ssid;
-                            for (WifiItem item : mAdapter.getDataList()){
-                                if (item.getItem().SSID.equals(ssid)){
+                            for (WifiItem item : mAdapter.getDataList()) {
+                                if (item.getItem().SSID.equals(ssid)) {
                                     int index = mAdapter.getDataList().indexOf(item);
-                                    if (index != -1){
+                                    if (index != -1) {
                                         mAdapter.notifyItemChanged(index);
                                     }
                                 }
 
-                                if (item.getItem().SSID.equals(old)){
+                                if (item.getItem().SSID.equals(old)) {
                                     int index = mAdapter.getDataList().indexOf(item);
-                                    if (index != -1){
+                                    if (index != -1) {
                                         mAdapter.notifyItemChanged(index);
                                     }
                                 }
@@ -229,7 +230,7 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                             syncWifi(info);
                         }
                     });
-                    if (time ++ % 5 == 0) mWifiManager.startScan();
+                    if (time++ % 5 == 0) mWifiManager.startScan();
                     SystemClock.sleep(1000);
                 }
             }
@@ -247,16 +248,16 @@ public abstract class AbsWifiListFragment extends AbsFragment{
         return R.id.wallpaper;
     }
 
-    private void toastFail(){
+    private void toastFail() {
         if (!isAdded()) return;
         ToastDialog dialog = ToastDialog.newInstance(getString(R.string.unable_to_wifi, mTarget.SSID), ToastDialog.MODE_CONFIRM);
         dialog.show(getChildFragmentManager(), ToastDialog.TAG);
     }
 
-    private void syncWifi(WifiInfo info){
+    private void syncWifi(WifiInfo info) {
         int level = WifiManager.calculateSignalLevel(info.getRssi(), 5);
         String levelStr = getString(R.string.signal_low);
-        switch (level){
+        switch (level) {
             case 1:
             case 2:
                 levelStr = getString(R.string.signal_low);
@@ -275,14 +276,13 @@ public abstract class AbsWifiListFragment extends AbsFragment{
 
         tvConnectedName.setText(getNoDoubleQuotationSSID(info.getSSID()));
 
-        if (level==1||level==2) {
+        if (level == 1 || level == 2) {
             ivConectedSignal.setImageResource(R.drawable.baseline_wifi_1_bar_100);
-        }else if(level==3){
+        } else if (level == 3) {
             ivConectedSignal.setImageResource(R.drawable.baseline_wifi_2_bar_100);
-        }else {
+        } else {
             ivConectedSignal.setImageResource(R.drawable.baseline_wifi_100);
         }
-
     }
 
     public String getNoDoubleQuotationSSID(String ssid) {
@@ -296,18 +296,15 @@ public abstract class AbsWifiListFragment extends AbsFragment{
 
                 ssid = ssid.substring(1, ssid.length() - 1);
             }
-
         }
         return ssid;
+    }
 
-}
-
-
-    private String cleanSSID(String ssid){
+    private String cleanSSID(String ssid) {
         return ssid.replaceFirst("^\"", "").replaceFirst("\"$", "");
     }
 
-    private WifiListAdapter.Callback newCallback(){
+    private WifiListAdapter.Callback newCallback() {
         return new WifiListAdapter.Callback() {
             @Override
             public void onClick(WifiItem wifiItem) {
@@ -323,13 +320,13 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                 WifiConfiguration item = map.get(bean.SSID);
                 boolean isSave = item != null;
 
-                if (isSave){
+                if (isSave) {
                     WifiSaveDialog dialog = WifiSaveDialog.newInstance(bean.SSID);
                     dialog.setCallback(new WifiSaveDialog.Callback() {
                         @Override
                         public void onClick(int type) {
                             int index = mAdapter.getDataList().indexOf(wifiItem);
-                            switch (type){
+                            switch (type) {
                                 case 0:
                                     connect(bean, item.networkId);
                                     wifiItem.setSave(true);
@@ -343,7 +340,7 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                         }
                     });
                     dialog.show(getChildFragmentManager(), WifiSaveDialog.TAG);
-                }else if (usePass){
+                } else if (usePass) {
                     WifiPassDialog dialog = WifiPassDialog.newInstance();
                     dialog.setCallback(new WifiPassDialog.Callback() {
                         @Override
@@ -355,7 +352,7 @@ public abstract class AbsWifiListFragment extends AbsFragment{
                         }
                     });
                     dialog.show(getChildFragmentManager(), WifiPassDialog.TAG);
-                }else {
+                } else {
                     wifiItem.setSave(true);
                     int index = mAdapter.getDataList().indexOf(wifiItem);
                     if (index != -1) mAdapter.notifyItemChanged(index);
@@ -365,26 +362,26 @@ public abstract class AbsWifiListFragment extends AbsFragment{
         };
     }
 
-    private void showDialog(){
+    private void showDialog() {
         mLoopProgress.setVisibility(View.VISIBLE);
         Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.loop_translate);
         mLoopProgress.startAnimation(animation);
         //mDialog.show(getChildFragmentManager(), ProgressDialog.TAG);
     }
 
-    private void closeDialog(){
+    private void closeDialog() {
         mLoopProgress.setVisibility(View.GONE);
         if (mLoopProgress.getAnimation() != null) mLoopProgress.getAnimation().cancel();
         //if (mDialog.isAdded() && mDialog.isVisible()) mDialog.dismiss();
     }
 
-    private void connect(ScanResult bean, int networkId){
+    private void connect(ScanResult bean, int networkId) {
         target(bean);
         mWifiManager.enableNetwork(networkId, true);
         showDialog();
     }
 
-    private void connect(ScanResult bean, String password){
+    private void connect(ScanResult bean, String password) {
         target(bean);
         WifiConfiguration configuration = newWifiConfiguration(bean, password);
         int id = mWifiManager.addNetwork(configuration);
@@ -392,29 +389,16 @@ public abstract class AbsWifiListFragment extends AbsFragment{
         showDialog();
     }
 
-    private void target(ScanResult bean){
+    private void target(ScanResult bean) {
         mTarget = bean;
         connectedTime = System.currentTimeMillis();
     }
 
-    protected boolean useNext(){
+    protected boolean useNext() {
         return true;
     }
 
-    private class WifiReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()){
-                case WifiManager.SCAN_RESULTS_AVAILABLE_ACTION:
-                    availableAction(intent);
-                    break;
-                case WifiManager.WIFI_STATE_CHANGED_ACTION:
-                    break;
-            }
-        }
-    }
-
-    private void availableAction(Intent intent){
+    private void availableAction(Intent intent) {
         boolean success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
         List<ScanResult> results = mWifiManager.getScanResults();
         List<WifiItem> items = fillterWifi(results);
@@ -427,17 +411,17 @@ public abstract class AbsWifiListFragment extends AbsFragment{
         for (WifiItem result : items) resultSet.put(result.getItem().SSID, result);
         for (WifiItem item : mAdapter.getDataList()) sourceSet.put(item.getItem().SSID, item);
 
-        for (Map.Entry<String, WifiItem> entry : resultSet.entrySet()){
+        for (Map.Entry<String, WifiItem> entry : resultSet.entrySet()) {
             if (!sourceSet.containsKey(entry.getKey())) adds.add(entry.getValue());
         }
 
-        for (Map.Entry<String, WifiItem> entry : sourceSet.entrySet()){
+        for (Map.Entry<String, WifiItem> entry : sourceSet.entrySet()) {
             if (!resultSet.containsKey(entry.getKey())) {
                 removes.add(entry.getValue());
             }
         }
 
-        for (Map.Entry<String, WifiItem> entry : resultSet.entrySet()){
+        for (Map.Entry<String, WifiItem> entry : resultSet.entrySet()) {
             if (sourceSet.containsKey(entry.getKey())) {
                 sourceSet.get(entry.getKey()).setItem(entry.getValue().getItem());
             }
@@ -445,10 +429,10 @@ public abstract class AbsWifiListFragment extends AbsFragment{
 
         List<WifiItem> a = new ArrayList<>();
         List<WifiItem> b = new ArrayList<>();
-        for (WifiItem item : adds){
-            if (WifiManager.calculateSignalLevel(item.getItem().level, 5) >= 4){
+        for (WifiItem item : adds) {
+            if (WifiManager.calculateSignalLevel(item.getItem().level, 5) >= 4) {
                 a.add(item);
-            }else {
+            } else {
                 b.add(item);
             }
         }
@@ -461,7 +445,7 @@ public abstract class AbsWifiListFragment extends AbsFragment{
     }
 
     @SuppressLint("MissingPermission")
-    private List<WifiItem> fillterWifi(List<ScanResult> results){
+    private List<WifiItem> fillterWifi(List<ScanResult> results) {
         List<WifiItem> list = new ArrayList<>();
         List<WifiConfiguration> saves = mWifiManager.getConfiguredNetworks();
 
@@ -484,20 +468,33 @@ public abstract class AbsWifiListFragment extends AbsFragment{
         return list;
     }
 
-    private WifiConfiguration newWifiConfiguration(ScanResult result, String password){
+    private WifiConfiguration newWifiConfiguration(ScanResult result, String password) {
         WifiConfiguration configuration = new WifiConfiguration();
 
         if (AndroidSystem.isUsePassWifi(result)) {
             configuration.SSID = "\"" + result.SSID + "\"";
             configuration.preSharedKey = "\"" + password + "\"";
-        } else{
+        } else {
             configuration.SSID = "\"" + result.SSID + "\"";
             configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
         }
         return configuration;
     }
 
-    public void showNext(boolean show){
+    public void showNext(boolean show) {
         mNextView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private class WifiReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case WifiManager.SCAN_RESULTS_AVAILABLE_ACTION:
+                    availableAction(intent);
+                    break;
+                case WifiManager.WIFI_STATE_CHANGED_ACTION:
+                    break;
+            }
+        }
     }
 }
