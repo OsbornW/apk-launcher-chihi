@@ -63,7 +63,17 @@ class WifiListAdapter(
 
     fun add(position: Int, list: MutableList<WifiItem>) {
 
+        /*list.forEachIndexed { index, item ->
+            val result = item.item
+            val isConnect = result.SSID == connectSSID
+            if(isConnect){
+                list.remove(item)
+            }
+        }*/
+
         dataList.addAll(position, list)
+        notifyItemRangeInserted(position, list.size)
+
         dataList.forEachIndexed { index, item ->
             val result = item.item
             val isConnect = result.SSID == connectSSID
@@ -71,8 +81,8 @@ class WifiListAdapter(
                 dataList.remove(item)
             }
         }
-
-        notifyItemRangeInserted(position, list.size)
+        Thread.sleep(200)
+        notifyDataSetChanged()
     }
 
     fun remove(list: List<WifiItem>) {

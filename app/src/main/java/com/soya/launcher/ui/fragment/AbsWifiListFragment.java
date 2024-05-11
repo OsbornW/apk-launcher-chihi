@@ -456,7 +456,7 @@ public abstract class AbsWifiListFragment extends AbsFragment{
         mAdapter.remove(removes);
         mAdapter.add(0, a);
         mAdapter.add(mAdapter.getItemCount(), b);
-        mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
+        //mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
         mProgressBar.setVisibility(mAdapter.getItemCount() == 0 && mOffView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
     }
 
