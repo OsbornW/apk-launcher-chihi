@@ -16,7 +16,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.soya.launcher.App;
-import com.soya.launcher.bean.GlideApp;
 
 import java.io.File;
 
@@ -28,7 +27,7 @@ public class GlideUtils {
     }
 
     public static void bind(Context context, ImageView view, Object load, DiskCacheStrategy strategy){
-        GlideApp.with(App.getInstance())
+        Glide.with(App.getInstance())
                 .load(load)
                 .diskCacheStrategy(strategy)
                 .transition(DrawableTransitionOptions.with(new DrawableCrossFadeFactory.Builder(250).setCrossFadeEnabled(true).build()))

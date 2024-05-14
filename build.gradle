@@ -6,7 +6,10 @@ import java.nio.charset.StandardCharsets
 plugins {
     id 'com.android.application' version '8.1.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.9.24' apply false
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20' apply false
 }
+
+apply from: 'version.gradle'
 
 gradle.buildFinished {
     project('app') {
@@ -14,14 +17,14 @@ gradle.buildFinished {
             Gson gson = new Gson()
 
             def buildField = it.android.defaultConfig
-            Map<String, String> data = new HashMap<>();
-            data.put("packageName", buildField.applicationId);
-            data.put("versionName", buildField.versionName);
-            data.put("version", buildField.versionCode);
-            data.put("appId", buildField.manifestPlaceholders.appId);
-            data.put("channel", buildField.manifestPlaceholders.channel);
-            data.put("chihi_type", buildField.manifestPlaceholders.chihi_type);
-            data.put("model", buildField.manifestPlaceholders.model);
+            Map<String, String> data = new HashMap<>()
+            data.put("packageName", buildField.applicationId)
+            data.put("versionName", buildField.versionName)
+            data.put("version", buildField.versionCode)
+            data.put("appId", buildField.manifestPlaceholders.appId)
+            data.put("channel", buildField.manifestPlaceholders.channel)
+            data.put("chihi_type", buildField.manifestPlaceholders.chihi_type)
+            data.put("model", buildField.manifestPlaceholders.model)
 
             android.applicationVariants.all { variant ->
                 if (variant.buildType.name == 'release') {
@@ -34,19 +37,19 @@ gradle.buildFinished {
 
                     FileOutputStream fos = new FileOutputStream(dstFile)
                     def json = gson.toJson(data)
-                    fos.write(json.getBytes(StandardCharsets.UTF_8));
-                    fos.close();
+                    fos.write(json.getBytes(StandardCharsets.UTF_8))
+                    fos.close()
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace()
         }
     }
 }
 
 def createPath(file) {
     if (!file.exists()) {
-        file.mkdirs();
+        file.mkdirs()
     }
 }
 

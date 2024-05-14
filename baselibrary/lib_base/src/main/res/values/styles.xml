@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base_Theme_AppCompat_Empty" />
+    <style name="bottom_tab_title_active">
+        <item name="android:textSize">@dimen/qb_px_12</item>
+    </style>
+
+
+    <style name="SwitchButtonStyle_1"  >
+        <item name="android:layout_width">@dimen/qb_px_40</item>
+        <item name="android:layout_height">@dimen/qb_px_22</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="kswThumbDrawable">@drawable/ios_thumb_selector2</item>
+        <item name="kswBackDrawable">@drawable/ios_back_drawable_white_2</item>
+        <item name="kswAnimationDuration">300</item>
+        <item name="kswThumbRangeRatio">2.2</item>
+        <item name="kswThumbWidth">@dimen/qb_px_20</item>
+        <item name="kswThumbHeight">@dimen/qb_px_20</item>
+
+    </style>
+
+
+    <!-- 自定义验证码输入框-->
+    <declare-styleable name="VerificationCodeView">
+        <!--输入框的数量-->
+        <attr name="vcv_et_number" format="integer" />
+        <!--输入类型-->
+        <attr name="vcv_et_inputType">
+            <enum name="number" value="0" />
+            <enum name="numberPassword" value="1" />
+            <enum name="text" value="2" />
+            <enum name="textPassword" value="3" />
+        </attr>
+        <!--输入框的宽度-->
+        <attr name="vcv_et_width" format="dimension|reference" />
+        <!--输入框文字颜色-->
+        <attr name="vcv_et_text_color" format="color|reference" />
+        <!--输入框文字大小-->
+        <attr name="vcv_et_text_size" format="dimension|reference" />
+        <!--输入框背景-->
+        <attr name="vcv_et_bg" format="reference" />
+        <!--光标样式-->
+        <attr name="vcv_et_cursor" format="reference" />
+        <!--是否隐藏光标-->
+        <attr name="vcv_et_cursor_visible" format="boolean" />
+        <!--输入框间距，不输入则代表平分-->
+        <attr name="vcv_et_spacing" format="dimension|reference" />
+
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_func"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/qb_px_22"
+    android:drawableTop="@drawable/icon_photo"
+    android:drawablePadding="@dimen/qb_px_8"
+    android:gravity="center"
+    android:text="照片"
+    android:textColor="@color/color_FF333333"
+    android:textSize="@dimen/qb_px_12"
+    >
+
+
+</TextView>

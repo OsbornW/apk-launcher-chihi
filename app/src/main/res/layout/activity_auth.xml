@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.AuthActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/qb_px_24"
+        android:text="系统激活"
+        android:layout_marginTop="@dimen/qb_px_25"
+        android:layout_marginLeft="@dimen/qb_px_25"
+        />
+
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:id="@+id/ll_active"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/qb_px_22"
+            android:text="请输入激活码"
+            />
+        <EditText
+            android:lines="1"
+            android:maxLines="1"
+            android:gravity="center"
+            android:textSize="@dimen/qb_px_26"
+            android:textStyle="bold"
+            android:id="@+id/et_active_code"
+            android:layout_marginVertical="@dimen/qb_px_20"
+            android:layout_width="@dimen/qb_px_350"
+            android:layout_height="@dimen/qb_px_50"
+            />
+
+        <TextView
+            android:layout_marginBottom="@dimen/qb_px_30"
+            android:layout_gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/qb_px_16"
+            android:text="请输入激活码来激活软件"
+            />
+
+        <com.hjq.shape.view.ShapeTextView
+            android:gravity="center"
+            android:id="@+id/tv_active"
+            android:focusable="true"
+            app:shape_radius="@dimen/qb_px_8"
+            android:focusableInTouchMode="true"
+            android:layout_width="@dimen/qb_px_330"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/qb_px_16"
+            android:text="立即激活"
+            app:shape_solidColor="@color/color_3D4661"
+            app:shape_solidFocusedColor="@color/color_3391F5"
+            app:shape_textColor="@color/color_495B87"
+            app:shape_textFocusedColor="@color/white"
+            android:paddingVertical="@dimen/qb_px_10"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+</layout>

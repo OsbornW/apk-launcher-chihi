@@ -5,13 +5,13 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:background="@drawable/light_item_2"
-    android:layout_margin="@dimen/holder_keyboard_root_margin"
+    android:layout_margin="@dimen/qb_px_2"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/holder_keyboard_root_height">
+    android:layout_height="@dimen/qb_px_45">
     <TextView
         android:id="@+id/text"
-        android:textSize="@dimen/holder_keyboard_text_text_size"
-        android:padding="@dimen/holder_keyboard_text_padding"
+        android:textSize="@dimen/qb_px_18"
+        android:padding="@dimen/qb_px_2"
         android:textColor="@color/text_selector_color_1"
         android:textStyle="bold"
         android:layout_gravity="center"
@@ -20,6 +20,6 @@
     <ImageView
         android:id="@+id/icon"
         android:layout_gravity="center"
-        android:layout_width="@dimen/holder_keyboard_icon_width"
-        android:layout_height="@dimen/holder_keyboard_icon_height"/>
+        android:layout_width="@dimen/qb_px_16"
+        android:layout_height="@dimen/qb_px_16"/>
 </FrameLayout>

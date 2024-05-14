@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlinx-serialization'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.shudong.lib_base'
+    compileSdk rootProject.compileSdk
+
+    defaultConfig {
+        minSdk rootProject.minSdk
+        targetSdk rootProject.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        kapt {
+            arguments {
+                //arg("AROUTER_MODULE_NAME", project.getName())
+                arg("room.schemaLocation",
+                        "$projectDir/schemas".toString())
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+}
+
+dependencies {
+    api project(path: ':baselibrary:lib_depend')
+    api project(path: ':baselibrary:lib_dimen')
+    api project(path: ':baselibrary:lib_res')
+    api project(path: ':baselibrary:lib_net')
+    //api project(path: ':baselibrary:lib_umeng')
+    api project(path: ':baselibrary:wheel_picker')
+    //api project(path: ':baselibrary:lib_bdmap')
+    kapt "androidx.room:room-compiler:$room_ktx"
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/qb_px_10"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_44"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/rl_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_44">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/qb_px_17"
+            android:src="@drawable/icon_back_titlebar" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxEms="8"
+            android:maxLines="1"
+            android:textColor="@color/color_FF333333"
+            android:textSize="@dimen/qb_px_15"
+            android:textStyle="bold"
+            tools:text="标题标题标题标" />
+
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/qb_px_15"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxEms="4"
+            android:maxLines="1"
+            android:textColor="@color/color_020A1A"
+            android:textSize="@dimen/qb_px_14"
+            tools:text="标题标题标题标题标题标题标题" />
+
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,708 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "f5b5ccade47850827d0588ed31b13582",
+    "entities": [
+      {
+        "tableName": "device_info",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`device_name` TEXT NOT NULL, `device_model` TEXT NOT NULL, `device_mac` TEXT NOT NULL, `brush_head_start_time` TEXT NOT NULL, `device_pic_name` TEXT NOT NULL, `device_bind_id` TEXT NOT NULL, `device_firmware_model` TEXT NOT NULL, `device_user_id` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "deviceName",
+            "columnName": "device_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceModel",
+            "columnName": "device_model",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceMac",
+            "columnName": "device_mac",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushHeadStartTime",
+            "columnName": "brush_head_start_time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "devicePicName",
+            "columnName": "device_pic_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceBindId",
+            "columnName": "device_bind_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceFirmwareModel",
+            "columnName": "device_firmware_model",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceUserId",
+            "columnName": "device_user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "device_setting",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tongue_clean_status` INTEGER NOT NULL, `mouthwash_status` INTEGER NOT NULL, `floss_status` INTEGER NOT NULL, `device_mac` TEXT NOT NULL, `user_id` TEXT NOT NULL, `cus_scheme` INTEGER NOT NULL, `plan_duration` INTEGER NOT NULL, `strength_child` INTEGER NOT NULL, `morning_brush_duration` INTEGER NOT NULL, `morning_brush_strength` INTEGER NOT NULL, `morning_brush_mode` INTEGER NOT NULL, `night_brush_duration` INTEGER NOT NULL, `night_brush_strength` INTEGER NOT NULL, `night_brush_mode` INTEGER NOT NULL, `brush_start_area` INTEGER NOT NULL, `morning_evening_theme` INTEGER NOT NULL, `sensitive_area` INTEGER NOT NULL, `sensitive_area_left_up` INTEGER NOT NULL, `sensitive_area_right_up` INTEGER NOT NULL, `sensitive_area_right_down` INTEGER NOT NULL, `sensitive_area_left_down` INTEGER NOT NULL, `first_gear_strength` INTEGER NOT NULL, `second_gear_strength` INTEGER NOT NULL, `third_gear_strength` INTEGER NOT NULL, `fourth_gear_strength` INTEGER NOT NULL, `last_used_mode` INTEGER NOT NULL, `tongue_care_status` INTEGER NOT NULL, `brush_cycle` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "tongueCleanStatus",
+            "columnName": "tongue_clean_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mouthwashStatus",
+            "columnName": "mouthwash_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "flossStatus",
+            "columnName": "floss_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceMac",
+            "columnName": "device_mac",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cusScheme",
+            "columnName": "cus_scheme",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "planDuration",
+            "columnName": "plan_duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "strengthChild",
+            "columnName": "strength_child",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "morningPlanDuration",
+            "columnName": "morning_brush_duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "morningBrushStrength",
+            "columnName": "morning_brush_strength",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "morningBrushMode",
+            "columnName": "morning_brush_mode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nightBrushDuration",
+            "columnName": "night_brush_duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nightBrushStrength",
+            "columnName": "night_brush_strength",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nightBrushMode",
+            "columnName": "night_brush_mode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushStartArea",
+            "columnName": "brush_start_area",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "morningEveningTheme",
+            "columnName": "morning_evening_theme",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sensitiveArea",
+            "columnName": "sensitive_area",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sensitiveAreaLeftUp",
+            "columnName": "sensitive_area_left_up",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sensitiveAreaRightUp",
+            "columnName": "sensitive_area_right_up",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sensitiveAreaRightDown",
+            "columnName": "sensitive_area_right_down",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sensitiveAreaLeftDown",
+            "columnName": "sensitive_area_left_down",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstGearStrength",
+            "columnName": "first_gear_strength",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "secondGearStrength",
+            "columnName": "second_gear_strength",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "thirdGearStrength",
+            "columnName": "third_gear_strength",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fourthGearStrength",
+            "columnName": "fourth_gear_strength",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUsedMode",
+            "columnName": "last_used_mode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tongueCareStatus",
+            "columnName": "tongue_care_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushCycle",
+            "columnName": "brush_cycle",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "brush_record",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`device_mac` TEXT NOT NULL, `device_model` TEXT NOT NULL, `device_name` TEXT NOT NULL, `firmware_model` TEXT NOT NULL, `user_id` TEXT NOT NULL, `actual_brush_duration` INTEGER NOT NULL, `brush_mode` INTEGER NOT NULL, `brush_plan_duration` INTEGER NOT NULL, `coverage_total` INTEGER NOT NULL, `uniformity_total` INTEGER NOT NULL, `brush_duration_left_up` INTEGER NOT NULL, `brush_duration_right_up` INTEGER NOT NULL, `brush_duration_right_down` INTEGER NOT NULL, `brush_duration_left_down` INTEGER NOT NULL, `pressure_duration_left_up` INTEGER NOT NULL, `pressure_duration_right_up` INTEGER NOT NULL, `pressure_duration_right_down` INTEGER NOT NULL, `pressure_duration_left_down` INTEGER NOT NULL, `pressure_duration_total` INTEGER NOT NULL, `pressure_count` INTEGER NOT NULL, `coverage_left_up` INTEGER NOT NULL, `coverage_right_up` INTEGER NOT NULL, `coverage_right_down` INTEGER NOT NULL, `coverage_left_down` INTEGER NOT NULL, `is_upload` INTEGER NOT NULL, `record_id` TEXT NOT NULL, `is_tongue_clean` INTEGER NOT NULL, `is_floss` INTEGER NOT NULL, `is_mouse_wash` INTEGER NOT NULL, `is_online_brush` INTEGER NOT NULL, `brush_score` INTEGER NOT NULL, `brush_sync_time` INTEGER NOT NULL, `brush_sync_time_str` TEXT NOT NULL, `newest_electricity` INTEGER NOT NULL, `cus_scheme` INTEGER NOT NULL, `duration_score` INTEGER NOT NULL, `coverage_score` INTEGER NOT NULL, `uniformity_score` INTEGER NOT NULL, `pressure_score` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "deviceMac",
+            "columnName": "device_mac",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceModel",
+            "columnName": "device_model",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceName",
+            "columnName": "device_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firmwareModel",
+            "columnName": "firmware_model",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "actualBrushDuration",
+            "columnName": "actual_brush_duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushMode",
+            "columnName": "brush_mode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushPlanDuration",
+            "columnName": "brush_plan_duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverageTotal",
+            "columnName": "coverage_total",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uniformityTotal",
+            "columnName": "uniformity_total",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushDurationLeftUp",
+            "columnName": "brush_duration_left_up",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushDurationRightUp",
+            "columnName": "brush_duration_right_up",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushDurationRightDown",
+            "columnName": "brush_duration_right_down",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushDurationLeftDown",
+            "columnName": "brush_duration_left_down",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pressureDurationLeftUp",
+            "columnName": "pressure_duration_left_up",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pressureDurationRightUp",
+            "columnName": "pressure_duration_right_up",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pressureDurationRightDown",
+            "columnName": "pressure_duration_right_down",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pressureDurationLeftDown",
+            "columnName": "pressure_duration_left_down",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pressureDurationTotal",
+            "columnName": "pressure_duration_total",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pressureCount",
+            "columnName": "pressure_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverageLeftUp",
+            "columnName": "coverage_left_up",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverageRightUp",
+            "columnName": "coverage_right_up",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverageRightDown",
+            "columnName": "coverage_right_down",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverageLeftDown",
+            "columnName": "coverage_left_down",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isUpload",
+            "columnName": "is_upload",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordId",
+            "columnName": "record_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isTongueClean",
+            "columnName": "is_tongue_clean",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFloss",
+            "columnName": "is_floss",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isMouseWash",
+            "columnName": "is_mouse_wash",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isOnlineBrush",
+            "columnName": "is_online_brush",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushScore",
+            "columnName": "brush_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushSyncTime",
+            "columnName": "brush_sync_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushSyncTimeStr",
+            "columnName": "brush_sync_time_str",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newestElectricity",
+            "columnName": "newest_electricity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cusScheme",
+            "columnName": "cus_scheme",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationScore",
+            "columnName": "duration_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverageScore",
+            "columnName": "coverage_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uniformityScore",
+            "columnName": "uniformity_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pressureScore",
+            "columnName": "pressure_score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "device_week_report",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` TEXT NOT NULL, `device_mac` TEXT NOT NULL, `device_model` TEXT NOT NULL, `device_name` TEXT NOT NULL, `report_url` TEXT NOT NULL, `report_id` TEXT NOT NULL, `record_time` TEXT NOT NULL, `record_start_time` TEXT NOT NULL, `record_end_time` TEXT NOT NULL, `brush_avg_score` REAL NOT NULL, `read_status` INTEGER NOT NULL, `sync_status` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceMac",
+            "columnName": "device_mac",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceModel",
+            "columnName": "device_model",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceName",
+            "columnName": "device_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reportUrl",
+            "columnName": "report_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reportId",
+            "columnName": "report_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordTime",
+            "columnName": "record_time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordStartTime",
+            "columnName": "record_start_time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordEndTime",
+            "columnName": "record_end_time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brushAvgScore",
+            "columnName": "brush_avg_score",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "readStatus",
+            "columnName": "read_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "sync_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "device_notification",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` TEXT NOT NULL, `device_mac` TEXT NOT NULL, `device_name` TEXT NOT NULL, `device_model` TEXT NOT NULL, `firmware_model` TEXT NOT NULL, `bind_id` TEXT NOT NULL, `use_days` TEXT NOT NULL, `notify_id` TEXT NOT NULL, `record_time` TEXT NOT NULL, `notification_title` TEXT NOT NULL, `notification_content` TEXT NOT NULL, `read_status` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceMac",
+            "columnName": "device_mac",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceName",
+            "columnName": "device_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deviceModel",
+            "columnName": "device_model",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firmwareModel",
+            "columnName": "firmware_model",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bindId",
+            "columnName": "bind_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "useDays",
+            "columnName": "use_days",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notifyId",
+            "columnName": "notify_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordTime",
+            "columnName": "record_time",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notificationTitle",
+            "columnName": "notification_title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notificationContent",
+            "columnName": "notification_content",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "readStatus",
+            "columnName": "read_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f5b5ccade47850827d0588ed31b13582')"
+    ]
+  }
+}

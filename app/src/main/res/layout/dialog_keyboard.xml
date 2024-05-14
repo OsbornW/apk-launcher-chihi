@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
-        android:layout_margin="@dimen/dialog_keyboard_root_margin"
+        android:layout_margin="@dimen/qb_px_10"
         app:cardCornerRadius="@dimen/dialog_app_card_corner_radius"
         app:cardBackgroundColor="@color/solid_style_12"
         android:layout_gravity="bottom|center_horizontal"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
-            android:layout_margin="@dimen/dialog_keyboard_recycler"
+            android:layout_margin="@dimen/qb_px_10"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

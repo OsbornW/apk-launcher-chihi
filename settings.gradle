@@ -7,6 +7,11 @@ pluginManagement {
         mavenLocal()
         maven { url "https://jitpack.io" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
+        maven { url 'https://repo1.maven.org/maven2/' }
     }
 }
 dependencyResolutionManagement {
@@ -14,12 +19,28 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
         jcenter()
         mavenLocal()
         maven { url "https://jitpack.io" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
+        maven { url 'https://repo1.maven.org/maven2/' }
     }
 }
 
 rootProject.name = "TV Launcher"
 include ':app'
+
+include ':baselibrary:lib_dimen'
+include ':baselibrary:lib_base'
+include ':baselibrary:lib_depend'
+include ':baselibrary:lib_res'
+include ':baselibrary:wheel_common'
+include ':baselibrary:wheel_picker'
+include ':baselibrary:wheel_view'
+include ':baselibrary:lib_net'
+

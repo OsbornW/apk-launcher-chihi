@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/rl_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/icon_404" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/qb_px_24"
+            android:text="@string/refresh_retry"
+            android:textColor="@color/color_FF999999"
+            android:textSize="@dimen/qb_px_14" />
+
+        <com.hjq.shape.view.ShapeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/qb_px_28"
+            android:paddingHorizontal="@dimen/qb_px_40"
+            android:paddingVertical="@dimen/qb_px_11"
+            android:text="@string/again_loadding"
+            android:textColor="@color/color_FF333333"
+            android:textSize="@dimen/qb_px_15"
+            app:shape_radius="@dimen/qb_px_20"
+            app:shape_strokeColor="@color/color_FF333333"
+            app:shape_strokeWidth="0.5dp"
+            />
+
+    </LinearLayout>
+    </RelativeLayout>
+</layout>

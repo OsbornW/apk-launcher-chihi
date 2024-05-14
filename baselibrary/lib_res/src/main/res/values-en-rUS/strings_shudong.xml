@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--====================MainActivity======================-->
+    <string name="main_tab_txt_01">Square</string>
+    <string name="main_tab_txt_02">Addressbook</string>
+    <string name="main_tab_txt_03">Message</string>
+    <string name="main_tab_txt_04">Me</string>
+
+</resources>
