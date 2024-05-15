@@ -35,7 +35,7 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
     override fun init(inflater: LayoutInflater, view: View) {
         super.init(inflater, view)
         mRecyclerView = view.findViewById(R.id.recycler)
-        mAdapter = KeyboardAdapter(activity, inflater, ArrayList())
+        mAdapter = KeyboardAdapter(requireContext(), inflater, ArrayList())
     }
 
     override fun initBefore(inflater: LayoutInflater, view: View) {
@@ -122,7 +122,7 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
                 mAdapter!!.replace(ens, KeyboardAdapter.TYPE_ENG)
             }
 
-            KeyItem.TYPE_UPCAST -> mAdapter!!.setUPCase(!mAdapter!!.isUPCase)
+            KeyItem.TYPE_UPCAST -> mAdapter!!.setUPCase(!mAdapter!!.isUPCaseKey)
             KeyItem.TYPE_DEL -> del()
             KeyItem.TYPE_SEARCH -> {
                 mTargetView!!.onEditorAction(EditorInfo.IME_ACTION_DONE)

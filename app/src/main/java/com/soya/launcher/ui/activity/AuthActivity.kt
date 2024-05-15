@@ -76,9 +76,15 @@ class AuthActivity : BaseVMActivity<ActivityAuthBinding, BaseViewModel>() {
             inputCompleted {
                 mBind.llActive.post {
                    // mBind.etActiveCode.clearFocus()
-                    mBind.tvActive.requestFocus()
-                    Thread.sleep(500)
-                    mBind.tvActive.performClick()
+                    it.yes {
+                        mBind.tvActive.requestFocus()
+                        Thread.sleep(500)
+                        mBind.tvActive.performClick()
+                    }.otherwise {
+                        ToastUtils.show("输入不能为空")
+                    }
+
+
                 }
             }
         }.show(supportFragmentManager, KeyboardDialog.TAG)

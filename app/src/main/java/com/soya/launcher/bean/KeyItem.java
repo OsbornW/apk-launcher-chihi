@@ -9,11 +9,11 @@ public class KeyItem {
     public static final int TYPE_SPACE = -4;
     public static final int TYPE_SEARCH = -5;
 
-    private int type;
-    private String name;
-    private int icon;
-    private int spanSize;
-    private boolean useIcon;
+    private final int type;
+    private final String name;
+    private final int icon;
+    private final int spanSize;
+    private final boolean useIcon;
 
     public KeyItem(int type, String name, int icon, int spanSize, boolean useIcon){
         this.type = type;
@@ -41,5 +41,17 @@ public class KeyItem {
 
     public int getSpanSize() {
         return spanSize;
+    }
+
+
+    @Override
+    public String toString() {
+        return "KeyItem{" +
+                "type=" + type +
+                ", name='" + name + '\'' +
+                ", icon=" + icon +
+                ", spanSize=" + spanSize +
+                ", useIcon=" + useIcon +
+                '}';
     }
 }

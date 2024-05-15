@@ -16,11 +16,11 @@ import com.soya.launcher.R
 import com.soya.launcher.bean.KeyItem
 import java.util.Locale
 
-class KeyboardAdapter(
+class KeyboardNumAdapter(
     private val context: Context,
     private val inflater: LayoutInflater,
     private val dataList: MutableList<KeyItem>
-) : RecyclerView.Adapter<KeyboardAdapter.Holder>() {
+) : RecyclerView.Adapter<KeyboardNumAdapter.Holder>() {
     private var callback: Callback? = null
     var type = TYPE_ENG
         private set
@@ -36,7 +36,7 @@ class KeyboardAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder(inflater.inflate(R.layout.holder_keyboard, parent, false))
+        return Holder(inflater.inflate(R.layout.holder_keyboard_num, parent, false))
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
