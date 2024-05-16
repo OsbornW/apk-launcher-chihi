@@ -123,6 +123,7 @@
     <string name="ip_address">IP address</string>
     <string name="signal_strength">Signal strength</string>
     <string name="connected">Connected</string>
+    <string name="connecting">Connecting</string>
     <string name="blu_connected_fail">Bluetooth disconnected</string>
     <string name="blu_connected_success">Bluetooth connected</string>
     <string name="set_the_screen_trimming">Set screen zoom</string>

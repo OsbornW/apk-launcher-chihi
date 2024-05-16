@@ -1,499 +1,582 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.text.TextUtils;
-import android.text.format.Formatter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.wifi.ScanResult
+import android.net.wifi.WifiConfiguration
+import android.net.wifi.WifiInfo
+import android.net.wifi.WifiManager
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.SystemClock
+import android.text.TextUtils
+import android.text.format.Formatter
+import android.view.LayoutInflater
+import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import android.widget.Switch
+import android.widget.TextView
+import androidx.leanback.widget.VerticalGridView
+import com.drake.brv.utils.addModels
+import com.drake.brv.utils.linear
+import com.drake.brv.utils.models
+import com.drake.brv.utils.mutable
+import com.drake.brv.utils.setup
+import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.stringValue
+import com.shudong.lib_base.ext.yes
+import com.soya.launcher.R
+import com.soya.launcher.adapter.WifiListAdapter
+import com.soya.launcher.bean.WifiItem
+import com.soya.launcher.ui.dialog.ProgressDialog
+import com.soya.launcher.ui.dialog.ToastDialog
+import com.soya.launcher.ui.dialog.WifiPassDialog
+import com.soya.launcher.ui.dialog.WifiSaveDialog
+import com.soya.launcher.utils.AndroidSystem
+import com.soya.launcher.view.MyFrameLayout
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.leanback.widget.VerticalGridView;
 
-import com.soya.launcher.R;
-import com.soya.launcher.adapter.WifiListAdapter;
-import com.soya.launcher.bean.WifiItem;
-import com.soya.launcher.ui.dialog.ProgressDialog;
-import com.soya.launcher.ui.dialog.ToastDialog;
-import com.soya.launcher.ui.dialog.WifiPassDialog;
-import com.soya.launcher.ui.dialog.WifiSaveDialog;
-import com.soya.launcher.utils.AndroidSystem;
+abstract class AbsWifiListFragment : AbsFragment() {
+    private val exec = Executors.newCachedThreadPool()
+    private var mWifiEnableView: View? = null
+    // 未保存和连接的WiFi列表
+    private var mContentGrid: VerticalGridView? = null
+    // 已保存的WiFi列表
+    private var rvSavedWifi: VerticalGridView? = null
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+    // 当前已连接的WiFi View
+    private var fl_connected: MyFrameLayout? = null
 
-public abstract class AbsWifiListFragment extends AbsFragment {
-    private final ExecutorService exec = Executors.newCachedThreadPool();
+    // 左侧面板 WiFi名字
+    private var mWifiNameView: TextView? = null
+    private var mNetwordConnectedView: TextView? = null
+    private var mIPView: TextView? = null
+    private var mSignalView: TextView? = null
+    private var mWifiSwitch: Switch? = null
+    private var mOffView: View? = null
+    private var mProgressBar: View? = null
+    private var mNextView: View? = null
+    private var mLoopProgress: View? = null
+    private var mWifiManager: WifiManager? = null
+    private var mAdapter: WifiListAdapter? = null
+    private var receiver: WifiReceiver? = null
+    private var mDialog: ProgressDialog? = null
+    private var uiHandler: Handler? = null
+    private var mTarget: ScanResult? = null
+    private var connectedTime: Long = -1
 
-    private View mWifiEnableView;
-    private VerticalGridView mContentGrid;
-    private TextView mWifiNameView;
-    private TextView mNetwordConnectedView;
-    private TextView mIPView;
-    private TextView mSignalView;
-    private Switch mWifiSwitch;
-    private View mOffView;
-    private View mProgressBar;
-    private View mNextView;
-    private View mLoopProgress;
+    //当前连接的WiFi名称
+    private var tvConnectedName: TextView? = null
 
-    private WifiManager mWifiManager;
+    // 当前WiFi连接状态
+    private var tvConnectStatus:TextView?=null
 
-    private WifiListAdapter mAdapter;
-    private WifiReceiver receiver;
-
-    private ProgressDialog mDialog;
-    private Handler uiHandler;
-    private ScanResult mTarget;
-    private long connectedTime = -1;
-    private TextView tvConnectedName;
-    //private TextView tvConnectStatus;
-    private ImageView ivConectedSignal;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mWifiManager = getActivity().getSystemService(WifiManager.class);
-        mDialog = ProgressDialog.newInstance();
-        uiHandler = new Handler();
-
-        receiver = new WifiReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        getActivity().registerReceiver(receiver, intentFilter);
+    //当前连接WiFi信号值
+    private var ivConectedSignal: ImageView? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mWifiManager = activity!!.getSystemService(WifiManager::class.java)
+        mDialog = ProgressDialog.newInstance()
+        uiHandler = Handler()
+        receiver = WifiReceiver()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)
+        activity!!.registerReceiver(receiver, intentFilter)
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        exec.shutdownNow();
-        getActivity().unregisterReceiver(receiver);
+    override fun onDestroy() {
+        super.onDestroy()
+        exec.shutdownNow()
+        activity!!.unregisterReceiver(receiver)
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_wifi_list;
-    }
-
-    @Override
-    protected void init(View view, LayoutInflater inflater) {
-        super.init(view, inflater);
-
-        tvConnectedName = view.findViewById(R.id.tv_connected_wifiname);
-        //tvConnectStatus = view.findViewById(R.id.tv_connected_status);
-        ivConectedSignal = view.findViewById(R.id.tv_connected_signal);
-
-        mWifiEnableView = view.findViewById(R.id.wifi_enable);
-        mContentGrid = view.findViewById(R.id.content);
-        mWifiNameView = view.findViewById(R.id.wifi_name);
-        mNetwordConnectedView = view.findViewById(R.id.netword_connected_mes);
-        mIPView = view.findViewById(R.id.ip);
-        mSignalView = view.findViewById(R.id.signal);
-        mWifiSwitch = view.findViewById(R.id.switch_item);
-        mOffView = view.findViewById(R.id.off);
-        mProgressBar = view.findViewById(R.id.progressBar);
-        mNextView = view.findViewById(R.id.next);
-        mLoopProgress = view.findViewById(R.id.loop);
-
-        mAdapter = new WifiListAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), useNext(), newCallback());
-        mAdapter.replace(fillterWifi(mWifiManager.getScanResults()));
-        mOffView.setVisibility(mWifiManager.isWifiEnabled() ? View.GONE : View.VISIBLE);
-        mContentGrid.setVisibility(mWifiManager.isWifiEnabled() ? View.VISIBLE : View.GONE);
-        if (mWifiManager.isWifiEnabled())
-            mProgressBar.setVisibility(mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
-
-        if (useNext()) {
-            mWifiEnableView.setNextFocusLeftId(R.id.next);
-            mWifiEnableView.setNextFocusRightId(R.id.next);
-        }
-    }
-
-    @Override
-    protected void initBefore(View view, LayoutInflater inflater) {
-        super.initBefore(view, inflater);
-        mWifiEnableView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isEnable = !mWifiManager.isWifiEnabled();
-                mWifiManager.setWifiEnabled(isEnable);
-                mWifiSwitch.setChecked(isEnable);
-                mOffView.setVisibility(isEnable ? View.GONE : View.VISIBLE);
-                mProgressBar.setVisibility(isEnable && mAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
-                mContentGrid.setVisibility(isEnable ? View.VISIBLE : View.GONE);
-            }
-        });
-
-        mNextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, ChooseWallpaperFragment.newInstance()).addToBackStack(null).commit();
-            }
-        });
-
-        mDialog.setCallback(new ProgressDialog.Callback() {
-            @Override
-            public void onDismiss() {
-                connectedTime = -1;
-            }
-        });
-    }
-
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        mContentGrid.setAdapter(mAdapter);
-        mWifiSwitch.setChecked(mWifiManager.isWifiEnabled());
-
-        exec.execute(new Runnable() {
-            @Override
-            public void run() {
-                int time = 0;
-                while (isAdded()) {
-                    final WifiInfo info = mWifiManager.getConnectionInfo();
-                    uiHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!isAdded()) return;
-
-                            if (mTarget != null && connectedTime != -1 && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - connectedTime) >= 30) {
-                                toastFail();
-                                closeDialog();
-                                mTarget = null;
-                                connectedTime = -1;
-                            }
-
-                            if (!TextUtils.isEmpty(info.getSSID()) && info.getIpAddress() != 0 && !info.getSSID().equals("<unknown ssid>")) {
-                                /*if (mTarget != null && connectedTime != -1 && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - connectedTime) >= 8 && !mTarget.SSID.equals(cleanSSID(info.getSSID()))){
-                                    toastFail();
-                                    closeDialog();
-                                    mTarget = null;
-                                    connectedTime = -1;
-                                }*/
-
-                                if (mTarget != null && connectedTime != -1 && mTarget.SSID.equals(cleanSSID(info.getSSID()))) {
-                                    closeDialog();
-                                    mTarget = null;
-                                    connectedTime = -1;
-                                }
-
-                                if (mTarget == null && connectedTime == -1) {
-                                    closeDialog();
-                                    mTarget = null;
-                                    connectedTime = -1;
-                                }
-                            }
-
-                            String old = mAdapter.connectSSID;
-                            String ssid = cleanSSID(info.getSSID());
-                            mAdapter.connectSSID = ssid;
-                            for (WifiItem item : mAdapter.getDataList()) {
-                                if (item.getItem().SSID.equals(ssid)) {
-                                    int index = mAdapter.getDataList().indexOf(item);
-                                    if (index != -1) {
-                                        mAdapter.notifyItemChanged(index);
-                                    }
-                                }
-
-                                if (item.getItem().SSID.equals(old)) {
-                                    int index = mAdapter.getDataList().indexOf(item);
-                                    if (index != -1) {
-                                        mAdapter.notifyItemChanged(index);
-                                    }
-                                }
-                            }
-                            syncWifi(info);
-                        }
-                    });
-                    if (time++ % 5 == 0) mWifiManager.startScan();
-                    SystemClock.sleep(1000);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        requestFocus(mWifiEnableView);
-    }
-
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
-    }
-
-    private void toastFail() {
-        if (!isAdded()) return;
-        ToastDialog dialog = ToastDialog.newInstance(getString(R.string.unable_to_wifi, mTarget.SSID), ToastDialog.MODE_CONFIRM);
-        dialog.show(getChildFragmentManager(), ToastDialog.TAG);
-    }
-
-    private void syncWifi(WifiInfo info) {
-        int level = WifiManager.calculateSignalLevel(info.getRssi(), 5);
-        String levelStr = getString(R.string.signal_low);
-        switch (level) {
-            case 1:
-            case 2:
-                levelStr = getString(R.string.signal_low);
-                break;
-            case 3:
-                levelStr = getString(R.string.signal_middle);
-                break;
-            default:
-                levelStr = getString(R.string.signal_strong);
-        }
-        boolean isConnected = !TextUtils.isEmpty(info.getSSID()) && info.getIpAddress() != 0;
-        mWifiNameView.setText(isConnected ? getNoDoubleQuotationSSID(info.getSSID()) : "-  -  -");
-        mIPView.setText(isConnected ? Formatter.formatIpAddress(info.getIpAddress()) : "-");
-        mSignalView.setText(isConnected ? levelStr : "-");
-        mNetwordConnectedView.setText(isConnected ? getString(R.string.connected) : "-");
-
-        tvConnectedName.setText(getNoDoubleQuotationSSID(info.getSSID()));
-
-        if (level == 1 || level == 2) {
-            ivConectedSignal.setImageResource(R.drawable.baseline_wifi_1_bar_100);
-        } else if (level == 3) {
-            ivConectedSignal.setImageResource(R.drawable.baseline_wifi_2_bar_100);
-        } else {
-            ivConectedSignal.setImageResource(R.drawable.baseline_wifi_100);
-        }
-    }
-
-    public String getNoDoubleQuotationSSID(String ssid) {
-
-        //获取Android版本号
-        int deviceVersion = Build.VERSION.SDK_INT;
-
-        if (deviceVersion >= 17) {
-
-            if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
-
-                ssid = ssid.substring(1, ssid.length() - 1);
-            }
-        }
-        return ssid;
-    }
-
-    private String cleanSSID(String ssid) {
-        return ssid.replaceFirst("^\"", "").replaceFirst("\"$", "");
-    }
-
-    private WifiListAdapter.Callback newCallback() {
-        return new WifiListAdapter.Callback() {
-            @Override
-            public void onClick(WifiItem wifiItem) {
-                ScanResult bean = wifiItem.getItem();
-                boolean usePass = AndroidSystem.isUsePassWifi(bean);
-
-                List<WifiConfiguration> saves = mWifiManager.getConfiguredNetworks();
-                Map<String, WifiConfiguration> map = new HashMap<>();
-                for (WifiConfiguration item : saves) {
-                    String ssd = cleanSSID(item.SSID);
-                    map.put(ssd, item);
-                }
-                WifiConfiguration item = map.get(bean.SSID);
-                boolean isSave = item != null;
-
-                if (isSave) {
-                    WifiSaveDialog dialog = WifiSaveDialog.newInstance(bean.SSID);
-                    dialog.setCallback(new WifiSaveDialog.Callback() {
-                        @Override
-                        public void onClick(int type) {
-                            int index = mAdapter.getDataList().indexOf(wifiItem);
-                            switch (type) {
-                                case 0:
-                                    connect(bean, item.networkId);
-                                    wifiItem.setSave(true);
-                                    break;
-                                case -1:
-                                    mWifiManager.removeNetwork(item.networkId);
-                                    wifiItem.setSave(false);
-                                    break;
-                            }
-                            if (index != -1) mAdapter.notifyItemChanged(index);
-                        }
-                    });
-                    dialog.show(getChildFragmentManager(), WifiSaveDialog.TAG);
-                } else if (usePass) {
-                    WifiPassDialog dialog = WifiPassDialog.newInstance();
-                    dialog.setCallback(new WifiPassDialog.Callback() {
-                        @Override
-                        public void onConfirm(String text) {
-                            wifiItem.setSave(true);
-                            int index = mAdapter.getDataList().indexOf(wifiItem);
-                            if (index != -1) mAdapter.notifyItemChanged(index);
-                            connect(bean, text);
-                        }
-                    });
-                    dialog.show(getChildFragmentManager(), WifiPassDialog.TAG);
-                } else {
-                    wifiItem.setSave(true);
-                    int index = mAdapter.getDataList().indexOf(wifiItem);
-                    if (index != -1) mAdapter.notifyItemChanged(index);
-                    connect(bean, "");
-                }
-            }
-        };
-    }
-
-    private void showDialog() {
-        mLoopProgress.setVisibility(View.VISIBLE);
-        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.loop_translate);
-        mLoopProgress.startAnimation(animation);
-        //mDialog.show(getChildFragmentManager(), ProgressDialog.TAG);
-    }
-
-    private void closeDialog() {
-        mLoopProgress.setVisibility(View.GONE);
-        if (mLoopProgress.getAnimation() != null) mLoopProgress.getAnimation().cancel();
-        //if (mDialog.isAdded() && mDialog.isVisible()) mDialog.dismiss();
-    }
-
-    private void connect(ScanResult bean, int networkId) {
-        target(bean);
-        mWifiManager.enableNetwork(networkId, true);
-        showDialog();
-    }
-
-    private void connect(ScanResult bean, String password) {
-        target(bean);
-        WifiConfiguration configuration = newWifiConfiguration(bean, password);
-        int id = mWifiManager.addNetwork(configuration);
-        mWifiManager.enableNetwork(id, true);
-        showDialog();
-    }
-
-    private void target(ScanResult bean) {
-        mTarget = bean;
-        connectedTime = System.currentTimeMillis();
-    }
-
-    protected boolean useNext() {
-        return true;
-    }
-
-    private void availableAction(Intent intent) {
-        boolean success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
-        List<ScanResult> results = mWifiManager.getScanResults();
-        List<WifiItem> items = fillterWifi(results);
-
-        List<WifiItem> adds = new ArrayList<>();
-        List<WifiItem> removes = new ArrayList<>();
-
-        Map<String, WifiItem> resultSet = new HashMap<>();
-        Map<String, WifiItem> sourceSet = new HashMap<>();
-        for (WifiItem result : items) resultSet.put(result.getItem().SSID, result);
-        for (WifiItem item : mAdapter.getDataList()) sourceSet.put(item.getItem().SSID, item);
-
-        for (Map.Entry<String, WifiItem> entry : resultSet.entrySet()) {
-            if (!sourceSet.containsKey(entry.getKey())) adds.add(entry.getValue());
-        }
-
-        for (Map.Entry<String, WifiItem> entry : sourceSet.entrySet()) {
-            if (!resultSet.containsKey(entry.getKey())) {
-                removes.add(entry.getValue());
-            }
-        }
-
-        for (Map.Entry<String, WifiItem> entry : resultSet.entrySet()) {
-            if (sourceSet.containsKey(entry.getKey())) {
-                sourceSet.get(entry.getKey()).setItem(entry.getValue().getItem());
-            }
-        }
-
-        List<WifiItem> a = new ArrayList<>();
-        List<WifiItem> b = new ArrayList<>();
-        for (WifiItem item : adds) {
-            if (WifiManager.calculateSignalLevel(item.getItem().level, 5) >= 4) {
-                a.add(item);
-            } else {
-                b.add(item);
-            }
-        }
-
-        mAdapter.remove(removes);
-        mAdapter.add(0, a);
-        mAdapter.add(mAdapter.getItemCount(), b);
-        //mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
-        mProgressBar.setVisibility(mAdapter.getItemCount() == 0 && mOffView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_wifi_list
     }
 
     @SuppressLint("MissingPermission")
-    private List<WifiItem> fillterWifi(List<ScanResult> results) {
-        List<WifiItem> list = new ArrayList<>();
-        List<WifiConfiguration> saves = mWifiManager.getConfiguredNetworks();
+    override fun init(view: View, inflater: LayoutInflater) {
+        super.init(view, inflater)
+        tvConnectedName = view.findViewById(R.id.tv_connected_wifiname)
+        tvConnectStatus = view.findViewById(R.id.tv_connected_status)
+        ivConectedSignal = view.findViewById(R.id.tv_connected_signal)
+        mWifiEnableView = view.findViewById(R.id.wifi_enable)
+        mContentGrid = view.findViewById(R.id.content)
+        rvSavedWifi = view.findViewById(R.id.rv_saved_wifi)
+        fl_connected = view.findViewById(R.id.wifi_connected)
+        mWifiNameView = view.findViewById(R.id.wifi_name)
+        mNetwordConnectedView = view.findViewById(R.id.netword_connected_mes)
+        mIPView = view.findViewById(R.id.ip)
+        mSignalView = view.findViewById(R.id.signal)
+        mWifiSwitch = view.findViewById(R.id.switch_item)
+        mOffView = view.findViewById(R.id.off)
+        mProgressBar = view.findViewById(R.id.progressBar)
+        mNextView = view.findViewById(R.id.next)
+        mLoopProgress = view.findViewById(R.id.loop)
+        mAdapter =
+            WifiListAdapter(activity!!, inflater, CopyOnWriteArrayList(), useNext(), newCallback())
+        mAdapter!!.replace(fillterWifi(mWifiManager!!.scanResults))
+        mOffView?.visibility = if (mWifiManager!!.isWifiEnabled) View.GONE else View.VISIBLE
 
-        Map<String, WifiConfiguration> map = new HashMap<>();
-        for (WifiConfiguration item : saves) map.put(cleanSSID(item.SSID), item);
 
-        for (ScanResult result : results) {
-            if (!TextUtils.isEmpty(result.SSID)) {
-                WifiConfiguration item = map.get(result.SSID);
-                boolean isSave = item != null;
-                list.add(new WifiItem(result, isSave));
+        mContentGrid?.visibility = if (mWifiManager!!.isWifiEnabled) View.VISIBLE else View.GONE
+        rvSavedWifi?.visibility = if (mWifiManager!!.isWifiEnabled) View.VISIBLE else View.GONE
+        fl_connected?.visibility = if (mWifiManager!!.isWifiEnabled) View.VISIBLE else View.GONE
+
+
+        // 已保存WiFi列表item 点击回调
+        var myCallback: WifiListAdapter.Callback= newCallback()
+
+        /**
+         * 已保存WiFi列表 控件初始化和数据绑定
+         */
+        rvSavedWifi?.linear()?.setup {
+
+
+            addType<WifiItem>(R.layout.holder_wifi)
+            onBind {
+
+                /*控件初始化开始*/
+                val tvWifiName = findView<TextView>(R.id.title)
+                val tvConnectStatus = findView<TextView>(R.id.status)
+                val ivSignal = findView<ImageView>(R.id.signal)
+                val ivLock = findView<ImageView>(R.id.lock)
+                //val flRoot = findView<MyFrameLayout>(R.id.fl_root)
+                /*控件初始化结束*/
+
+                // 获取当前Item
+                val bean = _data as WifiItem
+                val result = bean.item
+                //是否无需密码的免费WiFi
+                val usePass = AndroidSystem.isUsePassWifi(result)
+                //设置连接状态
+                tvConnectStatus.text = if (bean.isSave) context.getString(R.string.saved) else ""
+                //设置WiFi名字
+                tvWifiName.text = result.SSID
+                // WiFi是否需要密码
+                ivLock.visibility = if (usePass) View.VISIBLE else View.GONE
+                //设置WiFi信号状态
+                when (WifiManager.calculateSignalLevel(bean.item.level, 5)) {
+                    1, 2 -> ivSignal.setImageResource(R.drawable.baseline_wifi_1_bar_100)
+                    3 -> ivSignal.setImageResource(R.drawable.baseline_wifi_2_bar_100)
+                    else -> ivSignal.setImageResource(R.drawable.baseline_wifi_100)
+                }
+
+                //设置Item回调
+                itemView.setOnClickListener {
+                    myCallback.onClick(bean)
+                }
+
             }
+        }?.models = arrayListOf()
+
+
+        //列表加载进度条是否可见
+         (mWifiManager?.isWifiEnabled?:true).yes {
+             mProgressBar?.setVisibility(
+                 if (mAdapter!!.itemCount == 0) View.VISIBLE
+                 else View.GONE)
+         }
+
+        if (useNext()) {
+            mWifiEnableView?.nextFocusLeftId = R.id.next
+            mWifiEnableView?.nextFocusRightId = R.id.next
         }
-        Collections.sort(list, new Comparator<WifiItem>() {
-            @Override
-            public int compare(WifiItem o1, WifiItem o2) {
-                return WifiManager.calculateSignalLevel(o1.getItem().level, 5) > WifiManager.calculateSignalLevel(o2.getItem().level, 5) ? -1 : 1;
-            }
-        });
-        return list;
     }
 
-    private WifiConfiguration newWifiConfiguration(ScanResult result, String password) {
-        WifiConfiguration configuration = new WifiConfiguration();
+    override fun initBefore(view: View, inflater: LayoutInflater) {
+        super.initBefore(view, inflater)
+        mWifiEnableView!!.setOnClickListener {
+            val isEnable = !mWifiManager!!.isWifiEnabled
+            mWifiManager!!.setWifiEnabled(isEnable)
+            mWifiSwitch!!.isChecked = isEnable
+            mOffView!!.visibility = if (isEnable) View.GONE else View.VISIBLE
 
-        if (AndroidSystem.isUsePassWifi(result)) {
-            configuration.SSID = "\"" + result.SSID + "\"";
-            configuration.preSharedKey = "\"" + password + "\"";
+
+            mProgressBar!!.visibility =
+                if (isEnable && mAdapter!!.itemCount == 0) View.VISIBLE else View.GONE
+            mContentGrid!!.visibility = if (isEnable) View.VISIBLE else View.GONE
+
+        }
+        mNextView!!.setOnClickListener {
+            activity!!.supportFragmentManager.beginTransaction()
+                .replace(R.id.main_browse_fragment, ChooseWallpaperFragment.newInstance())
+                .addToBackStack(null).commit()
+        }
+        mDialog!!.setCallback { connectedTime = -1 }
+    }
+
+    override fun initBind(view: View, inflater: LayoutInflater) {
+        super.initBind(view, inflater)
+        mContentGrid!!.setAdapter(mAdapter)
+        mWifiSwitch!!.isChecked = mWifiManager!!.isWifiEnabled
+        exec.execute(Runnable {
+            var time = 0
+            while (isAdded) {
+                val info = mWifiManager!!.connectionInfo
+                uiHandler!!.post(Runnable {
+                    if (!isAdded) return@Runnable
+                    if (mTarget != null && connectedTime != -1L && TimeUnit.MILLISECONDS.toSeconds(
+                            System.currentTimeMillis() - connectedTime
+                        ) >= 30
+                    ) {
+                        toastFail()
+                        closeDialog()
+                        mTarget = null
+                        connectedTime = -1
+                    }
+                    if (!TextUtils.isEmpty(info.ssid) && info.ipAddress != 0 && info.ssid != "<unknown ssid>") {
+
+                        if (mTarget != null && connectedTime != -1L && mTarget!!.SSID == cleanSSID(
+                                info.ssid
+                            )
+                        ) {
+                            closeDialog()
+                            mTarget = null
+                            connectedTime = -1
+                        }
+                        if (mTarget == null && connectedTime == -1L) {
+                            closeDialog()
+                            mTarget = null
+                            connectedTime = -1
+                        }
+                    }
+                    val old = mAdapter!!.connectSSID
+                    val ssid = cleanSSID(info.ssid)
+                    (ssid.contains("ssid")).no{
+                        mAdapter!!.connectSSID = ssid
+                    }
+
+                    for (item in mAdapter!!.getDataList()) {
+                        if (item.item.SSID == ssid) {
+                            val index = mAdapter!!.getDataList().indexOf(item)
+                            if (index != -1) {
+                                mAdapter!!.notifyItemChanged(index)
+                            }
+                        }
+                        if (item.item.SSID == old) {
+                            val index = mAdapter!!.getDataList().indexOf(item)
+                            if (index != -1) {
+                                mAdapter!!.notifyItemChanged(index)
+                            }
+                        }
+                    }
+                    syncWifi(info)
+                })
+                if (time++ % 5 == 0) mWifiManager!!.startScan()
+                SystemClock.sleep(1000)
+            }
+        })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requestFocus(mWifiEnableView)
+    }
+
+    override fun getWallpaperView(): Int {
+        return R.id.wallpaper
+    }
+
+    private fun toastFail() {
+        if (!isAdded) return
+        val dialog = ToastDialog.newInstance(
+            getString(R.string.unable_to_wifi, mTarget!!.SSID),
+            ToastDialog.MODE_CONFIRM
+        )
+        dialog.show(getChildFragmentManager(), ToastDialog.TAG)
+    }
+
+    private fun syncWifi(info: WifiInfo) {
+        val level = WifiManager.calculateSignalLevel(info.rssi, 5)
+        var levelStr = getString(R.string.signal_low)
+        levelStr = when (level) {
+            1, 2 -> getString(R.string.signal_low)
+            3 -> getString(R.string.signal_middle)
+            else -> getString(R.string.signal_strong)
+        }
+        val isConnected = !TextUtils.isEmpty(info.ssid) && info.ipAddress != 0
+        mWifiNameView!!.text =  getNoDoubleQuotationSSID(info.ssid)
+        mIPView!!.text = Formatter.formatIpAddress(info.ipAddress)
+        mSignalView!!.text = if (isConnected) levelStr else "-"
+        mNetwordConnectedView?.text = if (isConnected) getString(R.string.connected) else R.string.connecting.stringValue()
+        tvConnectStatus?.text = if (isConnected) getString(R.string.connected) else R.string.connecting.stringValue()
+
+        tvConnectedName!!.text = getNoDoubleQuotationSSID(info.ssid)
+
+        /**
+         * 已保存列表中的WiFi连接成功后，从已保存列表中进行移除
+         * */
+        isConnected.yes {
+            ((rvSavedWifi?.mutable as MutableList<WifiItem>).size>0).yes {
+                for (i in (rvSavedWifi?.mutable as MutableList<WifiItem>).size - 1 downTo 0) {
+
+                    if((rvSavedWifi?.mutable as MutableList<WifiItem>)[i].item.SSID==mAdapter!!.connectSSID){
+                        (rvSavedWifi?.mutable as MutableList<WifiItem>).removeAt(i)
+                        rvSavedWifi?.adapter?.notifyDataSetChanged()
+
+                        fl_connected?.post {
+                            fl_connected?.requestFocus()
+
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // 信号状态更新
+        if (level == 1 || level == 2) {
+            ivConectedSignal!!.setImageResource(R.drawable.baseline_wifi_1_bar_100)
+        } else if (level == 3) {
+            ivConectedSignal!!.setImageResource(R.drawable.baseline_wifi_2_bar_100)
         } else {
-            configuration.SSID = "\"" + result.SSID + "\"";
-            configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+            ivConectedSignal!!.setImageResource(R.drawable.baseline_wifi_100)
         }
-        return configuration;
     }
 
-    public void showNext(boolean show) {
-        mNextView.setVisibility(show ? View.VISIBLE : View.GONE);
+    /**
+     * 系统返回的WiFi名字会出现携带双引号，需进行转义替换
+     * 获取无双引号的WiFi name
+     */
+    fun getNoDoubleQuotationSSID(ssid: String): String {
+
+        //获取Android版本号
+        var ssid = ssid
+        val deviceVersion = Build.VERSION.SDK_INT
+        if (deviceVersion >= 17) {
+            if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
+                ssid = ssid.substring(1, ssid.length - 1)
+            }
+        }
+        return ssid
     }
 
-    private class WifiReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case WifiManager.SCAN_RESULTS_AVAILABLE_ACTION:
-                    availableAction(intent);
-                    break;
-                case WifiManager.WIFI_STATE_CHANGED_ACTION:
-                    break;
+    private fun cleanSSID(ssid: String): String {
+        return ssid.replaceFirst("^\"".toRegex(), "").replaceFirst("\"$".toRegex(), "")
+    }
+
+
+    /**
+     * WiFi列表点击事件处理
+     */
+    private fun newCallback(): WifiListAdapter.Callback {
+        return object : WifiListAdapter.Callback {
+            @SuppressLint("MissingPermission")
+            override fun onClick(wifiItem: WifiItem?) {
+                val bean = wifiItem!!.item
+                val usePass = AndroidSystem.isUsePassWifi(bean)
+                val saves = mWifiManager!!.configuredNetworks
+                val map: MutableMap<String, WifiConfiguration> = HashMap()
+                for (item in saves) {
+                    val ssd = cleanSSID(item.SSID)
+                    map[ssd] = item
+                }
+                val item = map[bean.SSID]
+                val isSave = item != null
+                if (isSave) {
+                    val dialog = WifiSaveDialog.newInstance(bean.SSID)
+                    dialog.setCallback { type ->
+                        val index = mAdapter!!.getDataList().indexOf(wifiItem)
+                        when (type) {
+                            0 -> {
+                                connect(bean, item!!.networkId)
+                                wifiItem.isSave = true
+                            }
+
+                            -1 -> {
+                                mWifiManager!!.removeNetwork(item!!.networkId)
+                                wifiItem.isSave = false
+                            }
+                        }
+                        if (index != -1) mAdapter!!.notifyItemChanged(index)
+                    }
+                    dialog.show(getChildFragmentManager(), WifiSaveDialog.TAG)
+                } else if (usePass) {
+                    val dialog = WifiPassDialog.newInstance()
+                    dialog.setCallback { text ->
+                        wifiItem.isSave = true
+                        val index = mAdapter!!.getDataList().indexOf(wifiItem)
+                        if (index != -1) mAdapter!!.notifyItemChanged(index)
+                        connect(bean, text)
+                    }
+                    dialog.show(getChildFragmentManager(), WifiPassDialog.TAG)
+                } else {
+                    wifiItem.isSave = true
+                    val index = mAdapter!!.getDataList().indexOf(wifiItem)
+                    if (index != -1) mAdapter!!.notifyItemChanged(index)
+                    connect(bean, "")
+                }
+            }
+        }
+    }
+
+    private fun showDialog() {
+        mLoopProgress!!.visibility = View.VISIBLE
+        val animation = AnimationUtils.loadAnimation(activity, R.anim.loop_translate)
+        mLoopProgress!!.startAnimation(animation)
+        //mDialog.show(getChildFragmentManager(), ProgressDialog.TAG);
+    }
+
+    private fun closeDialog() {
+        mLoopProgress!!.visibility = View.GONE
+        if (mLoopProgress!!.animation != null) mLoopProgress!!.animation.cancel()
+        //if (mDialog.isAdded() && mDialog.isVisible()) mDialog.dismiss();
+    }
+
+    private fun connect(bean: ScanResult, networkId: Int) {
+        target(bean)
+        mWifiManager!!.enableNetwork(networkId, true)
+        showDialog()
+    }
+
+    private fun connect(bean: ScanResult, password: String) {
+        target(bean)
+        val configuration = newWifiConfiguration(bean, password)
+        val id = mWifiManager!!.addNetwork(configuration)
+        mWifiManager!!.enableNetwork(id, true)
+        showDialog()
+    }
+
+    private fun target(bean: ScanResult) {
+        mTarget = bean
+        connectedTime = System.currentTimeMillis()
+    }
+
+    protected open fun useNext(): Boolean {
+        return true
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun availableAction(intent: Intent) {
+        val success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
+        val results = mWifiManager!!.scanResults
+        val items = fillterWifi(results)
+        val adds: MutableList<WifiItem> = ArrayList()
+        val removes: MutableList<WifiItem> = ArrayList()
+        val resultSet: MutableMap<String, WifiItem> = HashMap()
+        val sourceSet: MutableMap<String, WifiItem> = HashMap()
+        for (result in items) resultSet[result.item.SSID] = result
+        for (item in mAdapter!!.getDataList()) sourceSet[item.item.SSID] = item
+        for ((key, value) in resultSet) {
+            if (!sourceSet.containsKey(key)) adds.add(value)
+        }
+        for ((key, value) in sourceSet) {
+            if (!resultSet.containsKey(key)) {
+                removes.add(value)
+            }
+        }
+        for ((key, value) in resultSet) {
+            if (sourceSet.containsKey(key)) {
+                sourceSet[key]!!.item = value.item
+            }
+        }
+        val strongSignalList: MutableList<WifiItem> = arrayListOf()
+        val weakSignalList: MutableList<WifiItem> = arrayListOf()
+        for (item in adds) {
+            if (WifiManager.calculateSignalLevel(item.item.level, 5) >= 4) {
+                strongSignalList.add(item)
+            } else {
+                weakSignalList.add(item)
+            }
+        }
+        c.clear()
+        c.addAll(strongSignalList)
+        c.addAll(weakSignalList)
+
+        c.forEachIndexed { index, item ->
+
+            if(item.isSave&&item.item.SSID!=mAdapter!!.connectSSID){
+                d.add(item)
+            }
+        }
+
+        val e = d.distinctBy { it.item.SSID }
+        val cur = rvSavedWifi?.mutable as MutableList<WifiItem>
+
+
+        val filteredList = e.filterNot { it in cur }
+
+
+        if(filteredList.isNotEmpty()){
+
+            rvSavedWifi?.addModels(filteredList)
+
+
+            for (i in (rvSavedWifi?.mutable as MutableList<WifiItem>).size - 1 downTo 0) {
+
+                if((rvSavedWifi?.mutable as MutableList<WifiItem>)[i].item.SSID==mAdapter!!.connectSSID){
+                    (rvSavedWifi?.mutable as MutableList<WifiItem>).removeAt(i)
+                    rvSavedWifi?.adapter?.notifyItemRemoved(i)
+
+                }
+            }
+
+        }
+
+        mAdapter!!.remove(removes)
+        mAdapter!!.add(mAdapter!!.itemCount, c)
+        mProgressBar!!.visibility =
+            if (mAdapter!!.itemCount == 0 && mOffView!!.visibility == View.GONE) View.VISIBLE else View.GONE
+    }
+
+    private var c:MutableList<WifiItem> = arrayListOf()
+    private var d:MutableList<WifiItem> = arrayListOf()
+
+    @SuppressLint("MissingPermission")
+    private fun fillterWifi(results: MutableList<ScanResult>): MutableList<WifiItem> {
+        val list: MutableList<WifiItem> = ArrayList()
+        val saves = mWifiManager!!.configuredNetworks
+        val map: MutableMap<String, WifiConfiguration> = HashMap()
+        for (item in saves) map[cleanSSID(item.SSID)] = item
+        for (result in results) {
+            if (!TextUtils.isEmpty(result.SSID)) {
+                val item = map[result.SSID]
+                val isSave = item != null
+                list.add(WifiItem(result, isSave))
+            }
+        }
+        list.sortWith { o1, o2 ->
+            if (WifiManager.calculateSignalLevel(
+                    o1.item.level,
+                    5
+                ) > WifiManager.calculateSignalLevel(o2.item.level, 5)
+            ) -1 else 1
+        }
+        return list
+    }
+
+    private fun newWifiConfiguration(result: ScanResult, password: String): WifiConfiguration {
+        val configuration = WifiConfiguration()
+        if (AndroidSystem.isUsePassWifi(result)) {
+            configuration.SSID = "\"" + result.SSID + "\""
+            configuration.preSharedKey = "\"" + password + "\""
+        } else {
+            configuration.SSID = "\"" + result.SSID + "\""
+            configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE)
+        }
+        return configuration
+    }
+
+    fun showNext(show: Boolean) {
+        mNextView!!.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    private inner class WifiReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
+                WifiManager.SCAN_RESULTS_AVAILABLE_ACTION -> availableAction(intent)
+                WifiManager.WIFI_STATE_CHANGED_ACTION -> {}
             }
         }
     }

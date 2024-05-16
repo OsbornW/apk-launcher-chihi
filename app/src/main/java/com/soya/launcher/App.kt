@@ -171,15 +171,15 @@ class App : Application() {
             private set
         private val exec = Executors.newCachedThreadPool()
         @JvmField
-        val MOVIE_MAP: Map<Long, List<Movice>> = ConcurrentHashMap()
+        val MOVIE_MAP: MutableMap<Long, List<Movice>> = ConcurrentHashMap()
         @JvmField
-        val MOVIE_IMAGE: Map<String, Any> = ConcurrentHashMap()
+        val MOVIE_IMAGE: MutableMap<String, Any> = ConcurrentHashMap()
         @JvmField
         val WEATHER = CacheWeather()
         @JvmField
         val WALLPAPERS: MutableList<Wallpaper> = ArrayList()
         @JvmField
-        val APP_STORE_ITEMS: List<AppItem> = CopyOnWriteArrayList()
+        val APP_STORE_ITEMS: MutableList<AppItem> = CopyOnWriteArrayList()
         @JvmField
         val APP_SEARCH_STORE_ITEMS: List<AppItem> = CopyOnWriteArrayList()
         @JvmField

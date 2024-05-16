@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:clickable="true"
     android:focusable="true"
+    android:id="@+id/fl_root"
     android:focusableInTouchMode="true"
     android:background="@drawable/ripple_style_2"
     android:paddingLeft="@dimen/holder_language_root_padding_left"

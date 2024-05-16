@@ -26,4 +26,12 @@ public class WifiItem {
     public void setSave(boolean save) {
         isSave = save;
     }
+
+    @Override
+    public String toString() {
+        return "WifiItem{" +
+                "item=" + item +
+                ", isSave=" + isSave +
+                '}';
+    }
 }

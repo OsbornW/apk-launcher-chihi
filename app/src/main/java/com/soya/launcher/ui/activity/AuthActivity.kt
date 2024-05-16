@@ -12,11 +12,14 @@ import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.margin
+import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.BuildConfig
+import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.databinding.ActivityAuthBinding
 import com.soya.launcher.ui.dialog.KeyboardDialog
 import com.soya.launcher.utils.AutoSeparateTextWatcher
@@ -78,7 +81,7 @@ class AuthActivity : BaseVMActivity<ActivityAuthBinding, BaseViewModel>() {
                    // mBind.etActiveCode.clearFocus()
                     it.yes {
                         mBind.tvActive.requestFocus()
-                        Thread.sleep(500)
+                        //Thread.sleep(500)
                         mBind.tvActive.performClick()
                     }.otherwise {
                         ToastUtils.show("输入不能为空")
@@ -115,7 +118,7 @@ class AuthActivity : BaseVMActivity<ActivityAuthBinding, BaseViewModel>() {
             val uniqueID = DeviceUtils.getUniqueDeviceId().subSequence(0,DeviceUtils.getUniqueDeviceId().length-1)
             //激活码
             val activeCode = mBind.etActiveCode.text.toString().replace('-',' ').toTrim()
-            val versionValue = 1001
+            val versionValue = 1003
             // 渠道ID
             val chanelId = BuildConfig.CHANNEL
 
@@ -156,27 +159,74 @@ class AuthActivity : BaseVMActivity<ActivityAuthBinding, BaseViewModel>() {
                 .execute(object : StringCallback() {
                     override fun onSuccess(s: String?, call: Call?, response: Response?) {
                         //上传成功
-                        Thread.sleep(3000)
-                        showLoadingViewDismiss()
-                        ToastUtils.show("恭喜您激活成功")
+                        //Thread.sleep(3000)
                         lifecycleScope.launch {
+                            delay(2000)
+                            showLoadingViewDismiss()
+                            val authBean = s?.jsonToBean<AuthBean>()
+                            (authBean?.status==200).yes {
+                                authBean?.code?.let {
+                                    "开始判断msg===".d("zy1996")
+                                    it.getResult(authBean.msg)
+                                }
+
+                            }.otherwise {
+                                ToastUtils.show("激活失败")
+                            }
+                        }
+
+
+
+                        //ToastUtils.show("恭喜您激活成功")
+
+                        /*lifecycleScope.launch {
                             delay(2000)
                             startKtxActivity<MainActivity>()
                             finish()
-                        }
+                        }*/
 
-                        Log.d("zy1996", "请求成功${s}====${response.toString()}")
 
                     }
 
                     override fun onError(call: Call?, response: Response?, e: Exception?) {
                         showLoadingViewDismiss()
                         ToastUtils.show("激活失败")
-                        Log.d("zy1996", "请求失败，原因：${e.toString()}====${response.toString()}")
+                        //Log.d("zy1996", "请求失败，原因：${e.toString()}====${response.toString()}")
 
                     }
                 })
 
         }
+    }
+
+    private fun Long.getResult(msg: String?) {
+        (msg==null).no {
+            ToastUtils.show(msg)
+        }.otherwise {
+            when(this){
+                10000L->ToastUtils.show("恭喜您激活成功")
+                10001L->ToastUtils.show("缺少桌面 ID")
+                10002L->ToastUtils.show("桌面 ID 格式不正确")
+                10003L->ToastUtils.show("缺少激活码")
+                10004L->ToastUtils.show("激活码格式不正确")
+                10005L->ToastUtils.show("缺少客户端时间戳的值")
+                10006L->ToastUtils.show("客户端时间戳和实际时间戳相差太大")
+                10007L->ToastUtils.show("缺少渠道号")
+                10008L->ToastUtils.show("渠道号格式不正确")
+                10009L->ToastUtils.show("缺少子渠道号")
+                10010L->ToastUtils.show("子渠道号格式不正确")
+                10011L->ToastUtils.show("缺少 API 版本值")
+                10012L->ToastUtils.show("API 版本值不合法")
+                10013L->ToastUtils.show("缺少签名字段")
+                10014L->ToastUtils.show("签名字段值未通过验证")
+                10015L->ToastUtils.show("激活码在我们数据库中不存在")
+                10016L->ToastUtils.show("激活码可使用的 IP 数已超过指定数量")
+                10017L->ToastUtils.show("新绑定时，桌面 ID 字段已经在数据库中重复存在")
+                10018L->ToastUtils.show("当前桌面 ID 和之前此卡号绑定的桌面 ID 不相同")
+                10019L->ToastUtils.show("此激活码已经在其它设备上绑定过，一个激活码不可以同时绑定多个设备")
+                10020L->ToastUtils.show("错误码：10020")
+            }
+        }
+
     }
 }

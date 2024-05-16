@@ -15,7 +15,8 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/qb_px_70">
         <TextView
             android:text="@string/set_netword_title"
             android:textSize="@dimen/fragment_set_language_text_text_size"
@@ -106,6 +107,11 @@
                             android:layout_height="wrap_content"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </FrameLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
@@ -199,20 +205,40 @@
                                 android:layout_height="@dimen/holder_wifi_signal_height"/>
                         </androidx.appcompat.widget.LinearLayoutCompat>
                     </com.soya.launcher.view.MyFrameLayout>
+
+
+                    <androidx.leanback.widget.VerticalGridView
+                        android:id="@+id/rv_saved_wifi"
+                        app:focusOutFront="true"
+                        app:focusOutEnd="true"
+                        android:clipToOutline="false"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.leanback.widget.VerticalGridView
+                        android:id="@+id/content"
+                        app:focusOutFront="true"
+                        app:focusOutEnd="true"
+                        android:clipToOutline="false"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
                     <FrameLayout
+                        android:layout_centerInParent="true"
                         android:layout_gravity="center"
-                        android:layout_width="@dimen/holder_language_root_width"
-                        android:layout_height="@dimen/fragment_set_language_content_height">
-                        <androidx.leanback.widget.VerticalGridView
-                            android:id="@+id/content"
-                            app:focusOutFront="true"
-                            app:focusOutEnd="true"
-                            android:clipToOutline="false"
-                            android:clipChildren="false"
-                            android:clipToPadding="false"
-                            android:layout_centerHorizontal="true"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
                         <ImageView
                             android:id="@+id/off"
                             android:visibility="gone"
@@ -228,23 +254,30 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </FrameLayout>
-                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </RelativeLayout>
+
+
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
-        <TextView
-            android:id="@+id/next"
-            android:layout_marginTop="@dimen/fragment_wifi_list_next_margin_top"
-            android:textSize="@dimen/fragment_set_date_next_text_size"
-            android:textColor="@color/text_color_style_1"
-            android:layout_gravity="center_horizontal|bottom"
-            android:text="@string/next"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
-            android:clickable="true"
-            android:background="@drawable/ripple_style_3"
-            android:layout_width="@dimen/fragment_set_date_next_width"
-            android:layout_height="@dimen/fragment_set_date_next_height"/>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:layout_marginRight="@dimen/qb_px_30"
+        android:layout_marginBottom="@dimen/qb_px_30"
+        android:id="@+id/next"
+        android:textSize="@dimen/fragment_set_date_next_text_size"
+        android:textColor="@color/text_color_style_1"
+        android:layout_gravity="right|bottom"
+        android:text="@string/next"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/ripple_style_3"
+        android:layout_width="@dimen/fragment_set_date_next_width"
+        android:layout_height="@dimen/fragment_set_date_next_height"/>
+
 </FrameLayout>

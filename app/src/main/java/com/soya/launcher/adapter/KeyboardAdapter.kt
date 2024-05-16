@@ -59,7 +59,6 @@ class KeyboardAdapter(
     fun replace(list: List<KeyItem>?, type: Int) {
         dataList.clear()
         dataList.addAll(list!!)
-        "当前的datalist是=====$dataList".d("zy1996")
         notifyDataSetChanged()
         this.type = type
     }

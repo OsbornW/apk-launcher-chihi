@@ -1,1056 +1,1178 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.bluetooth.BluetoothAdapter;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
-import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbManager;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.os.storage.StorageManager;
-import android.os.storage.StorageVolume;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.bluetooth.BluetoothAdapter
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.ApplicationInfo
+import android.hardware.usb.UsbManager
+import android.os.Bundle
+import android.os.Handler
+import android.os.SystemClock
+import android.os.storage.StorageManager
+import android.text.TextUtils
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.FocusHighlight
+import androidx.leanback.widget.FocusHighlightHelper
+import androidx.leanback.widget.HorizontalGridView
+import androidx.leanback.widget.ItemBridgeAdapter
+import androidx.leanback.widget.VerticalGridView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
+import com.google.gson.Gson
+import com.google.gson.stream.JsonReader
+import com.open.system.ASystemProperties
+import com.open.system.SystemUtils
+import com.shudong.lib_base.ext.no
+import com.soya.launcher.App
+import com.soya.launcher.BuildConfig
+import com.soya.launcher.R
+import com.soya.launcher.adapter.AppListAdapter
+import com.soya.launcher.adapter.MainContentAdapter
+import com.soya.launcher.adapter.MainHeaderAdapter
+import com.soya.launcher.adapter.NotifyAdapter
+import com.soya.launcher.adapter.SettingAdapter
+import com.soya.launcher.adapter.StoreAdapter
+import com.soya.launcher.bean.AppItem
+import com.soya.launcher.bean.AppPackage
+import com.soya.launcher.bean.Movice
+import com.soya.launcher.bean.MyRunnable
+import com.soya.launcher.bean.Notify
+import com.soya.launcher.bean.Projector
+import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.bean.TypeItem
+import com.soya.launcher.bean.WeatherData
+import com.soya.launcher.config.Config
+import com.soya.launcher.decoration.HSlideMarginDecoration
+import com.soya.launcher.enums.Atts
+import com.soya.launcher.enums.IntentAction
+import com.soya.launcher.enums.Tools
+import com.soya.launcher.enums.Types
+import com.soya.launcher.http.AppServiceRequest
+import com.soya.launcher.http.HttpRequest
+import com.soya.launcher.http.ServiceRequest
+import com.soya.launcher.http.response.AppListResponse
+import com.soya.launcher.http.response.HomeResponse
+import com.soya.launcher.http.response.VersionResponse
+import com.soya.launcher.manager.FilePathMangaer
+import com.soya.launcher.manager.PreferencesManager
+import com.soya.launcher.ui.activity.AboutActivity
+import com.soya.launcher.ui.activity.AppsActivity
+import com.soya.launcher.ui.activity.ChooseGradientActivity
+import com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity
+import com.soya.launcher.ui.activity.LoginActivity
+import com.soya.launcher.ui.activity.ScaleScreenActivity
+import com.soya.launcher.ui.activity.SearchActivity
+import com.soya.launcher.ui.activity.SettingActivity
+import com.soya.launcher.ui.activity.WeatherActivity
+import com.soya.launcher.ui.activity.WifiListActivity
+import com.soya.launcher.ui.dialog.AppDialog
+import com.soya.launcher.ui.dialog.ToastDialog
+import com.soya.launcher.utils.AndroidSystem
+import com.soya.launcher.utils.AppUtils
+import com.soya.launcher.utils.FileUtils
+import com.soya.launcher.utils.PreferencesUtils
+import retrofit2.Call
+import java.io.File
+import java.io.FileReader
+import java.nio.charset.StandardCharsets
+import java.util.Arrays
+import java.util.Calendar
+import java.util.UUID
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.leanback.widget.ArrayObjectAdapter;
-import androidx.leanback.widget.FocusHighlight;
-import androidx.leanback.widget.FocusHighlightHelper;
-import androidx.leanback.widget.HorizontalGridView;
-import androidx.leanback.widget.ItemBridgeAdapter;
-import androidx.leanback.widget.VerticalGridView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import com.open.system.SystemUtils;
-import com.soya.launcher.App;
-import com.soya.launcher.BuildConfig;
-import com.soya.launcher.R;
-import com.soya.launcher.adapter.AppListAdapter;
-import com.soya.launcher.adapter.MainContentAdapter;
-import com.soya.launcher.adapter.MainHeaderAdapter;
-import com.soya.launcher.adapter.NotifyAdapter;
-import com.soya.launcher.adapter.SettingAdapter;
-import com.soya.launcher.adapter.StoreAdapter;
-import com.soya.launcher.bean.AppItem;
-import com.soya.launcher.bean.AppPackage;
-import com.soya.launcher.bean.HomeItem;
-import com.soya.launcher.bean.Movice;
-import com.soya.launcher.bean.MyRunnable;
-import com.soya.launcher.bean.Notify;
-import com.soya.launcher.bean.Projector;
-import com.soya.launcher.bean.SettingItem;
-import com.soya.launcher.bean.TypeItem;
-import com.soya.launcher.bean.Version;
-import com.soya.launcher.bean.WeatherData;
-import com.soya.launcher.config.Config;
-import com.soya.launcher.decoration.HSlideMarginDecoration;
-import com.soya.launcher.enums.Atts;
-import com.soya.launcher.enums.IntentAction;
-import com.soya.launcher.enums.Tools;
-import com.soya.launcher.enums.Types;
-import com.soya.launcher.http.AppServiceRequest;
-import com.soya.launcher.http.HttpRequest;
-import com.soya.launcher.http.ServiceRequest;
-import com.soya.launcher.http.response.AppListResponse;
-import com.soya.launcher.http.response.HomeResponse;
-import com.soya.launcher.http.response.VersionResponse;
-import com.soya.launcher.manager.FilePathMangaer;
-import com.soya.launcher.manager.PreferencesManager;
-import com.soya.launcher.ui.activity.AboutActivity;
-import com.soya.launcher.ui.activity.AppsActivity;
-import com.soya.launcher.ui.activity.ChooseGradientActivity;
-import com.soya.launcher.ui.activity.GradientActivity;
-import com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity;
-import com.soya.launcher.ui.activity.LoginActivity;
-import com.soya.launcher.ui.activity.ScaleScreenActivity;
-import com.soya.launcher.ui.activity.SearchActivity;
-import com.soya.launcher.ui.activity.SettingActivity;
-import com.soya.launcher.ui.activity.WeatherActivity;
-import com.soya.launcher.ui.activity.WifiListActivity;
-import com.soya.launcher.ui.dialog.AppDialog;
-import com.soya.launcher.ui.dialog.ToastDialog;
-import com.soya.launcher.utils.AndroidSystem;
-import com.soya.launcher.utils.AppUtils;
-import com.soya.launcher.utils.FileUtils;
-import com.soya.launcher.utils.PreferencesUtils;
-
-import java.io.File;
-import java.io.FileReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import retrofit2.Call;
-
-public class MainFragment extends AbsFragment implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
-    private boolean IS_TEST = false;
-    public static MainFragment newInstance() {
-        
-        Bundle args = new Bundle();
-        
-        MainFragment fragment = new MainFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    private final int MAX_WEATHER_TIME = 90 * 1000;
-    private final List<ApplicationInfo> useApps = new ArrayList<>();
-    private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    private final ExecutorService exec = Executors.newCachedThreadPool();
-    private HorizontalGridView mHeaderGrid;
-    private HorizontalGridView mHorizontalContentGrid;
-    private VerticalGridView mVerticalContentGrid;
-    private AppBarLayout mAppBarLayout;
-    private View mRootView;
-    private View mSettingView;
-    private ImageView mWeatherView;
-    private View mSearchView;
-    private ImageView mWifiView;
-    private View mLoginView;
-    private TextView mTimeView;
-    private TextView mSegmentView;
-    private View mHelpView;
-    private TextView mTestView;
-    private RecyclerView mNotifyRecycler;
-    private View mGradientView;
-    private View mHdmiView;
-
-    private NotifyAdapter mNotifyAdapter;
-    private Handler uiHandler;
-    private String uuid;
-    private Call call;
-    private Call homeCall;
-    private boolean isReqHome = false;
-    private InnerReceiver receiver;
-    private WallpaperReceiver wallpaperReceiver;
-    private float maxVerticalOffset;
-    private final List<TypeItem> items = new ArrayList<>();
-    private final List<TypeItem> targetMenus = new ArrayList<>();
-    private MyRunnable timeRunnable;
-    private boolean isConnectFirst = false;
-    private boolean isFullAll = false;
-    private boolean isNetworkAvailable;
-    private long lastWeatherTime = -1;
-    private long lastCheckPushTime = System.currentTimeMillis();
-    private boolean isFullStoreNow = false;
-    private MainHeaderAdapter mMainHeaderAdapter;
-    private MainContentAdapter mHMainContentAdapter;
-    private MainContentAdapter mVMainContentAdapter;
-    private AppListAdapter mAppListAdapter;
-    private StoreAdapter mStoreAdapter;
-    private long requestTime = System.currentTimeMillis();
-    private boolean isExpanded;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        maxVerticalOffset = getResources().getDimension(R.dimen.until_collapsed_height);
-        uiHandler = new Handler();
-        receiver = new InnerReceiver();
-        wallpaperReceiver = new WallpaperReceiver();
-        useApps.addAll(AndroidSystem.getUserApps2(getActivity()));
-
-        items.addAll(Arrays.asList(new TypeItem[]{
-                new TypeItem(getString(R.string.app_store), R.drawable.store, 0, Types.TYPE_APP_STORE, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW),
-                new TypeItem(getString(R.string.apps), R.drawable.app_list, 0, Types.TYPE_MY_APPS, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW),
-        }));
-
-        if (Config.COMPANY == 0){
-            items.add(new TypeItem(getString(R.string.pojector), R.drawable.projector, 0, Types.TYPE_PROJECTOR, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW));
+class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+    private val IS_TEST = false
+    private val MAX_WEATHER_TIME = 90 * 1000
+    private val useApps: MutableList<ApplicationInfo> = ArrayList()
+    private val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+    private val exec = Executors.newCachedThreadPool()
+    private var mHeaderGrid: HorizontalGridView? = null
+    private var mHorizontalContentGrid: HorizontalGridView? = null
+    private var mVerticalContentGrid: VerticalGridView? = null
+    private var mAppBarLayout: AppBarLayout? = null
+    private var mRootView: View? = null
+    private var mSettingView: View? = null
+    private var mWeatherView: ImageView? = null
+    private var mSearchView: View? = null
+    private var mWifiView: ImageView? = null
+    private var mLoginView: View? = null
+    private var mTimeView: TextView? = null
+    private var mSegmentView: TextView? = null
+    private var mHelpView: View? = null
+    private var mTestView: TextView? = null
+    private var mNotifyRecycler: RecyclerView? = null
+    private var mGradientView: View? = null
+    private var mHdmiView: View? = null
+    private var mNotifyAdapter: NotifyAdapter? = null
+    private var uiHandler: Handler? = null
+    private var uuid: String? = null
+    private val call: Call<*>? = null
+    private var homeCall: Call<*>? = null
+    private var isReqHome = false
+    private var receiver: InnerReceiver? = null
+    private var wallpaperReceiver: WallpaperReceiver? = null
+    private var maxVerticalOffset = 0f
+    private val items: MutableList<TypeItem> = ArrayList()
+    private val targetMenus: MutableList<TypeItem> = ArrayList()
+    private var timeRunnable: MyRunnable? = null
+    private var isConnectFirst = false
+    private var isFullAll = false
+    private var isNetworkAvailable = false
+    private var lastWeatherTime: Long = -1
+    private val lastCheckPushTime = System.currentTimeMillis()
+    private val isFullStoreNow = false
+    private var mMainHeaderAdapter: MainHeaderAdapter? = null
+    private var mHMainContentAdapter: MainContentAdapter? = null
+    private var mVMainContentAdapter: MainContentAdapter? = null
+    private var mAppListAdapter: AppListAdapter? = null
+    private var mStoreAdapter: StoreAdapter? = null
+    private var requestTime = System.currentTimeMillis()
+    private var isExpanded = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        maxVerticalOffset = resources.getDimension(R.dimen.until_collapsed_height)
+        uiHandler = Handler()
+        receiver = InnerReceiver()
+        wallpaperReceiver = WallpaperReceiver()
+        useApps.addAll(AndroidSystem.getUserApps2(activity))
+        items.addAll(
+            Arrays.asList(
+                *arrayOf(
+                    TypeItem(
+                        getString(R.string.app_store),
+                        R.drawable.store,
+                        0,
+                        Types.TYPE_APP_STORE,
+                        TypeItem.TYPE_ICON_IMAGE_RES,
+                        TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                    ),
+                    TypeItem(
+                        getString(R.string.apps),
+                        R.drawable.app_list,
+                        0,
+                        Types.TYPE_MY_APPS,
+                        TypeItem.TYPE_ICON_IMAGE_RES,
+                        TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                    )
+                )
+            )
+        )
+        if (Config.COMPANY == 0) {
+            items.add(
+                TypeItem(
+                    getString(R.string.pojector),
+                    R.drawable.projector,
+                    0,
+                    Types.TYPE_PROJECTOR,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                )
+            )
         }
-
-        if (Config.COMPANY == 4){
-            items.add(new TypeItem(getString(R.string.tool), R.drawable.tool, 0, Types.TYPE_TOOL, TypeItem.TYPE_ICON_IMAGE_RES, TypeItem.TYPE_LAYOUT_STYLE_UNKNOW));
+        if (Config.COMPANY == 4) {
+            items.add(
+                TypeItem(
+                    getString(R.string.tool),
+                    R.drawable.tool,
+                    0,
+                    Types.TYPE_TOOL,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                )
+            )
         }
-
-        IntentFilter filter = new IntentFilter();
-
-        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
-        filter.addDataScheme("package");
-        getActivity().registerReceiver(receiver, filter);
-
-        IntentFilter filter1 = new IntentFilter();
-        filter1.addAction(IntentAction.ACTION_UPDATE_WALLPAPER);
-        filter1.addAction(IntentAction.ACTION_RESET_SELECT_HOME);
-        filter1.addAction(Intent.ACTION_SCREEN_ON);
-        filter1.addAction(Intent.ACTION_SCREEN_OFF);
-        filter1.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-        filter1.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        filter1.addAction(UsbManager.ACTION_USB_ACCESSORY_ATTACHED);
-        filter1.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED);
-        filter1.addAction("android.hardware.usb.action.USB_STATE");
-        getActivity().registerReceiver(wallpaperReceiver, filter1);
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_PACKAGE_ADDED)
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
+        filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
+        filter.addDataScheme("package")
+        activity!!.registerReceiver(receiver, filter)
+        val filter1 = IntentFilter()
+        filter1.addAction(IntentAction.ACTION_UPDATE_WALLPAPER)
+        filter1.addAction(IntentAction.ACTION_RESET_SELECT_HOME)
+        filter1.addAction(Intent.ACTION_SCREEN_ON)
+        filter1.addAction(Intent.ACTION_SCREEN_OFF)
+        filter1.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED)
+        filter1.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED)
+        filter1.addAction(UsbManager.ACTION_USB_ACCESSORY_ATTACHED)
+        filter1.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED)
+        filter1.addAction("android.hardware.usb.action.USB_STATE")
+        activity!!.registerReceiver(wallpaperReceiver, filter1)
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (call != null) call.cancel();
-        if (homeCall != null) homeCall.cancel();
-        getActivity().unregisterReceiver(receiver);
-        getActivity().unregisterReceiver(wallpaperReceiver);
-        exec.shutdownNow();
+    override fun onDestroy() {
+        super.onDestroy()
+        call?.cancel()
+        if (homeCall != null) homeCall!!.cancel()
+        activity!!.unregisterReceiver(receiver)
+        activity!!.unregisterReceiver(wallpaperReceiver)
+        exec.shutdownNow()
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        stopLoopTime();
+    override fun onPause() {
+        super.onPause()
+        stopLoopTime()
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        stopLoopTime();
+    override fun onStop() {
+        super.onStop()
+        stopLoopTime()
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        syncWeather();
-        syncTime();
-        syncNotify();
-        startLoopTime();
+    override fun onResume() {
+        super.onResume()
+        syncWeather()
+        syncTime()
+        syncNotify()
+        startLoopTime()
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        syncWeather();
-        syncTime();
-        syncNotify();
-        startLoopTime();
+    override fun onStart() {
+        super.onStart()
+        syncWeather()
+        syncTime()
+        syncNotify()
+        startLoopTime()
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_main;
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_main
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        requestFocus(mHeaderGrid, 350);
-        checkVersion();
-        uidPull();
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requestFocus(mHeaderGrid, 350)
+        checkVersion()
+        uidPull()
     }
 
-    @Override
-    protected void init(View view, LayoutInflater inflater){
-        super.init(view, inflater);
-        mHeaderGrid = view.findViewById(R.id.header);
-        mHorizontalContentGrid = view.findViewById(R.id.horizontal_content);
-        mVerticalContentGrid = view.findViewById(R.id.vertical_content);
-        mAppBarLayout = view.findViewById(R.id.app_bar);
-        mRootView = view.findViewById(R.id.root);
-        mSettingView = view.findViewById(R.id.setting);
-        mWeatherView = view.findViewById(R.id.weather);
-        mSearchView = view.findViewById(R.id.search);
-        mWifiView = view.findViewById(R.id.wifi);
-        mLoginView = view.findViewById(R.id.login);
-        mSegmentView = view.findViewById(R.id.loop_segment);
-        mTimeView = view.findViewById(R.id.loop_time);
-        mHelpView = view.findViewById(R.id.help);
-        mTestView = view.findViewById(R.id.test);
-        mNotifyRecycler = view.findViewById(R.id.notify_recycler);
-        mHdmiView = view.findViewById(R.id.hdmi);
-        mGradientView = view.findViewById(R.id.gradient);
-
-        mHorizontalContentGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
-        mHeaderGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
-
-        mHeaderGrid.setPivotY(maxVerticalOffset);
-        mTestView.setText("CHIHI Test Version: "+BuildConfig.VERSION_NAME);
-        mStoreAdapter = new StoreAdapter(getActivity(), getLayoutInflater(), new CopyOnWriteArrayList<>(), newStoreClickCallback());
-        mNotifyAdapter = new NotifyAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), Config.COMPANY == 3 ? R.layout.holder_notify : R.layout.holder_notify_2);
-        mMainHeaderAdapter = new MainHeaderAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newHeaderCallback());
-        mHMainContentAdapter = new MainContentAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newContentCallback());
-        mVMainContentAdapter = new MainContentAdapter(getActivity(), inflater, new CopyOnWriteArrayList<>(), newContentCallback());
-        mAppListAdapter = new AppListAdapter(getActivity(), getLayoutInflater(), new CopyOnWriteArrayList<>(), R.layout.holder_app, newAppListCallback());
-        mHdmiView.setVisibility(Config.COMPANY == 0 ? View.VISIBLE : View.GONE);
-        mGradientView.setVisibility(Config.COMPANY == 0 ? View.VISIBLE : View.GONE);
+    override fun init(view: View, inflater: LayoutInflater) {
+        super.init(view, inflater)
+        mHeaderGrid = view.findViewById(R.id.header)
+        mHorizontalContentGrid = view.findViewById(R.id.horizontal_content)
+        mVerticalContentGrid = view.findViewById(R.id.vertical_content)
+        mAppBarLayout = view.findViewById(R.id.app_bar)
+        mRootView = view.findViewById(R.id.root)
+        mSettingView = view.findViewById(R.id.setting)
+        mWeatherView = view.findViewById(R.id.weather)
+        mSearchView = view.findViewById(R.id.search)
+        mWifiView = view.findViewById(R.id.wifi)
+        mLoginView = view.findViewById(R.id.login)
+        mSegmentView = view.findViewById(R.id.loop_segment)
+        mTimeView = view.findViewById(R.id.loop_time)
+        mHelpView = view.findViewById(R.id.help)
+        mTestView = view.findViewById(R.id.test)
+        mNotifyRecycler = view.findViewById(R.id.notify_recycler)
+        mHdmiView = view.findViewById(R.id.hdmi)
+        mGradientView = view.findViewById(R.id.gradient)
+        mHorizontalContentGrid?.addItemDecoration(
+            HSlideMarginDecoration(
+                resources.getDimension(R.dimen.margin_decoration_max),
+                resources.getDimension(R.dimen.margin_decoration_min)
+            )
+        )
+        mHeaderGrid?.addItemDecoration(
+            HSlideMarginDecoration(
+                resources.getDimension(R.dimen.margin_decoration_max),
+                resources.getDimension(R.dimen.margin_decoration_min)
+            )
+        )
+        mHeaderGrid?.pivotY = maxVerticalOffset
+        mTestView?.text = "CHIHI Test Version: " + BuildConfig.VERSION_NAME
+        mStoreAdapter = StoreAdapter(
+            activity,
+            getLayoutInflater(),
+            CopyOnWriteArrayList(),
+            newStoreClickCallback()
+        )
+        mNotifyAdapter = NotifyAdapter(
+            activity,
+            inflater,
+            CopyOnWriteArrayList(),
+            if (Config.COMPANY == 3) R.layout.holder_notify else R.layout.holder_notify_2
+        )
+        mMainHeaderAdapter =
+            MainHeaderAdapter(activity, inflater, CopyOnWriteArrayList(), newHeaderCallback())
+        mHMainContentAdapter =
+            MainContentAdapter(activity, inflater, CopyOnWriteArrayList(), newContentCallback())
+        mVMainContentAdapter =
+            MainContentAdapter(activity, inflater, CopyOnWriteArrayList(), newContentCallback())
+        mAppListAdapter = AppListAdapter(
+            activity,
+            getLayoutInflater(),
+            CopyOnWriteArrayList(),
+            R.layout.holder_app,
+            newAppListCallback()
+        )
+        mHdmiView?.visibility = if (Config.COMPANY == 0) View.VISIBLE else View.GONE
+        mGradientView?.visibility = if (Config.COMPANY == 0) View.VISIBLE else View.GONE
     }
 
-    @Override
-    protected void initBefore(View view, LayoutInflater inflater) {
-        super.initBefore(view, inflater);
-        mAppBarLayout.addOnOffsetChangedListener(this);
-
-        mSettingView.setOnClickListener(this);
-        mWeatherView.setOnClickListener(this);
-        mSearchView.setOnClickListener(this);
-        mWifiView.setOnClickListener(this);
-        mLoginView.setOnClickListener(this);
-        mHelpView.setOnClickListener(this);
-        mHdmiView.setOnClickListener(this);
-        mGradientView.setOnClickListener(this);
+    override fun initBefore(view: View, inflater: LayoutInflater) {
+        super.initBefore(view, inflater)
+        mAppBarLayout!!.addOnOffsetChangedListener(this)
+        mSettingView!!.setOnClickListener(this)
+        mWeatherView!!.setOnClickListener(this)
+        mSearchView!!.setOnClickListener(this)
+        mWifiView!!.setOnClickListener(this)
+        mLoginView!!.setOnClickListener(this)
+        mHelpView!!.setOnClickListener(this)
+        mHdmiView!!.setOnClickListener(this)
+        mGradientView!!.setOnClickListener(this)
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater){
-        super.initBind(view, inflater);
-
-        fillLocal();
-        fillHeader();
-        mNotifyRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-        mNotifyRecycler.setAdapter(mNotifyAdapter);
+    override fun initBind(view: View, inflater: LayoutInflater) {
+        super.initBind(view, inflater)
+        fillLocal()
+        fillHeader()
+        mNotifyRecycler!!.setLayoutManager(
+            LinearLayoutManager(
+                activity,
+                RecyclerView.HORIZONTAL,
+                false
+            )
+        )
+        mNotifyRecycler!!.setAdapter(mNotifyAdapter)
     }
 
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
+    override fun getWallpaperView(): Int {
+        return R.id.wallpaper
     }
 
-    private void uidPull(){
+    private fun uidPull() {
         //if (!IS_TEST) HttpRequest.uidPull(AppInfo.newInfo(getActivity()));
     }
 
-    private void setHeader(List<TypeItem> items){
-        targetMenus.clear();
-        targetMenus.addAll(items);
-        mHeaderGrid.setAdapter(mMainHeaderAdapter);
-        mMainHeaderAdapter.replace(items);
-        mHeaderGrid.setSelectedPosition(0);
+    private fun setHeader(items: List<TypeItem>) {
+        targetMenus.clear()
+        targetMenus.addAll(items)
+        mHeaderGrid!!.setAdapter(mMainHeaderAdapter)
+        mMainHeaderAdapter!!.replace(items)
+        mHeaderGrid!!.selectedPosition = 0
     }
 
-    private void setMoviceContent(List<Movice> list, int direction, int columns, int layoutId){
-        switch (direction){
-            case 1:
-                mHorizontalContentGrid.setAdapter(mHMainContentAdapter);
-                mHMainContentAdapter.setLayoutId(layoutId);
-                mVerticalContentGrid.setVisibility(View.GONE);
-                mHorizontalContentGrid.setVisibility(View.VISIBLE);
-                mHMainContentAdapter.replace(list);
-                break;
-            case 0:
-                if (list.size() > columns * 2){
-                    list = list.subList(0, columns * 2);
+    private fun setMoviceContent(list: List<Movice?>, direction: Int, columns: Int, layoutId: Int) {
+        var list = list
+        when (direction) {
+            1 -> {
+                mHorizontalContentGrid!!.setAdapter(mHMainContentAdapter)
+                mHMainContentAdapter!!.setLayoutId(layoutId)
+                mVerticalContentGrid!!.visibility = View.GONE
+                mHorizontalContentGrid!!.visibility = View.VISIBLE
+                mHMainContentAdapter!!.replace(list)
+            }
+
+            0 -> {
+                if (list.size > columns * 2) {
+                    list = list.subList(0, columns * 2)
                 }
-                mVerticalContentGrid.setAdapter(mVMainContentAdapter);
-                mVMainContentAdapter.setLayoutId(layoutId);
-                mVerticalContentGrid.setVisibility(View.VISIBLE);
-                mHorizontalContentGrid.setVisibility(View.GONE);
-                mVerticalContentGrid.setNumColumns(columns);
-                mVerticalContentGrid.setVerticalSpacing((int) getResources().getDimension(R.dimen.main_page_vertical_spacing));
-                mVMainContentAdapter.replace(list);
-                break;
+                mVerticalContentGrid!!.setAdapter(mVMainContentAdapter)
+                mVMainContentAdapter!!.setLayoutId(layoutId)
+                mVerticalContentGrid!!.visibility = View.VISIBLE
+                mHorizontalContentGrid!!.visibility = View.GONE
+                mVerticalContentGrid!!.setNumColumns(columns)
+                mVerticalContentGrid!!.setVerticalSpacing(
+                    resources.getDimension(R.dimen.main_page_vertical_spacing).toInt()
+                )
+                mVMainContentAdapter!!.replace(list)
+            }
         }
     }
 
-    private void stopLoopTime(){
-        if (timeRunnable != null) timeRunnable.interrupt();
-        timeRunnable = null;
+    private fun stopLoopTime() {
+        if (timeRunnable != null) timeRunnable!!.interrupt()
+        timeRunnable = null
     }
 
-    private void startLoopTime() {
-        if (timeRunnable != null) return;
-        timeRunnable = new MyRunnable() {
-            @Override
-            public void run() {
-                while (!isInterrupt()){
-                    SystemClock.sleep(2000);
-                    syncNotify();
-                    if (lastWeatherTime <= 0 || TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastWeatherTime) > MAX_WEATHER_TIME){
-                        HttpRequest.getCityWeather(newWeatherCallback(), PreferencesManager.getCityName());
-                        lastWeatherTime = System.currentTimeMillis();
+    private fun startLoopTime() {
+        if (timeRunnable != null) return
+        timeRunnable = object : MyRunnable() {
+            override fun run() {
+                while (!isInterrupt) {
+                    SystemClock.sleep(2000)
+                    syncNotify()
+                    if (lastWeatherTime <= 0 || TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastWeatherTime) > MAX_WEATHER_TIME) {
+                        HttpRequest.getCityWeather(
+                            newWeatherCallback(),
+                            PreferencesManager.getCityName()
+                        )
+                        lastWeatherTime = System.currentTimeMillis()
                     }
-
-                    if (TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - requestTime) >= 25){
-                        requestTime = System.currentTimeMillis();
-                        requestHome();
+                    if (TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - requestTime) >= 25) {
+                        requestTime = System.currentTimeMillis()
+                        requestHome()
                     }
                 }
             }
-        };
-        exec.execute(timeRunnable);
+        }
+        exec.execute(timeRunnable)
     }
 
-    private void syncNotify(){
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (!isAdded()) return;
-                syncTime();
-                boolean old = isNetworkAvailable;
-                isNetworkAvailable = AndroidSystem.isNetworkAvailable(getActivity());
-                if (isNetworkAvailable != old && isNetworkAvailable) {
-                    uidPull();
-                    requestHome();
+    private fun syncNotify() {
+        uiHandler!!.post(Runnable {
+            if (!isAdded) return@Runnable
+            syncTime()
+            val old = isNetworkAvailable
+            isNetworkAvailable = AndroidSystem.isNetworkAvailable(activity)
+            if (isNetworkAvailable != old && isNetworkAvailable) {
+                uidPull()
+                requestHome()
+            }
+            if (AndroidSystem.isEthernetConnected(activity)) {
+                mWifiView!!.setImageResource(R.drawable.baseline_lan_100)
+            } else {
+                mWifiView!!.setImageResource(if (isNetworkAvailable) R.drawable.baseline_wifi_100 else R.drawable.baseline_wifi_off_100)
+            }
+            if (Config.COMPANY == 3) {
+                val notifies: MutableList<Notify> = ArrayList()
+                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
+                val deviceHashMap =
+                    (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
+                for (i in 0 until deviceHashMap.size) {
+                    notifies.add(Notify(R.drawable.baseline_usb_100))
                 }
-                if (AndroidSystem.isEthernetConnected(getActivity())){
-                    mWifiView.setImageResource(R.drawable.baseline_lan_100);
-                }else {
-                    mWifiView.setImageResource(isNetworkAvailable ? R.drawable.baseline_wifi_100 : R.drawable.baseline_wifi_off_100);
+                if (SystemUtils.isApEnable(activity)) notifies.add(Notify(R.drawable.baseline_wifi_tethering_100_2))
+                val storageManager = activity!!.getSystemService(
+                    StorageManager::class.java
+                )
+                for (volume in storageManager.storageVolumes) {
+                    if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
                 }
+                mNotifyAdapter!!.replace(notifies)
+            }
+        })
+    }
 
-                if (Config.COMPANY == 3){
-                    List<Notify> notifies = new ArrayList<>();
-                    if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) notifies.add(new Notify(R.drawable.baseline_bluetooth_100));
-                    HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) getActivity().getSystemService(Context.USB_SERVICE)).getDeviceList();
-                    for (int i = 0; i < deviceHashMap.size(); i++){
-                        notifies.add(new Notify(R.drawable.baseline_usb_100));
+    private fun newWeatherCallback(): ServiceRequest.Callback<WeatherData> {
+        return object : ServiceRequest.Callback<WeatherData> {
+            override fun onCallback(call: Call<*>, status: Int, result: WeatherData) {
+                if (!isAdded) return
+                if (call.isCanceled || result == null || result.days == null || result.days.size == 0) return
+                App.WEATHER.setWeather(result)
+                syncWeather()
+            }
+        }
+    }
+
+    private fun syncWeather() {
+        uiHandler!!.post(Runnable {
+            if (App.WEATHER.weather == null || !isAdded) return@Runnable
+            val result = App.WEATHER.weather
+            mWeatherView!!.setImageBitmap(
+                AndroidSystem.getImageForAssets(
+                    activity, FilePathMangaer.getWeatherIcon(
+                        result.days[0].icon
+                    )
+                )
+            )
+        })
+    }
+
+    private fun syncTime() {
+        val is24 = AppUtils.is24Display(activity)
+        val calendar = Calendar.getInstance()
+        val h = calendar[if (is24) Calendar.HOUR_OF_DAY else Calendar.HOUR]
+        val m = calendar[Calendar.MINUTE]
+        val time = getString(R.string.hour_minute_second, h, m)
+        val segment = if (calendar[Calendar.AM_PM] == 0) "AM" else "PM"
+        mSegmentView!!.visibility = if (is24) View.GONE else View.VISIBLE
+        mSegmentView!!.text = segment
+        mTimeView!!.text = time
+    }
+
+    private fun setAppContent(list: List<ApplicationInfo>) {
+        mAppListAdapter!!.replace(list)
+        mHorizontalContentGrid!!.setAdapter(mAppListAdapter)
+        mVerticalContentGrid!!.visibility = View.GONE
+        mHorizontalContentGrid!!.visibility = View.VISIBLE
+    }
+
+    private fun setProjectorContent() {
+        val arrayObjectAdapter = ArrayObjectAdapter(
+            SettingAdapter(
+                activity,
+                getLayoutInflater(),
+                newProjectorCallback(),
+                R.layout.holder_setting_3
+            )
+        )
+        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
+        FocusHighlightHelper.setupBrowseItemFocusHighlight(
+            itemBridgeAdapter,
+            FocusHighlight.ZOOM_FACTOR_MEDIUM,
+            false
+        )
+        mHorizontalContentGrid!!.setAdapter(itemBridgeAdapter)
+        mVerticalContentGrid!!.visibility = View.GONE
+        mHorizontalContentGrid!!.visibility = View.VISIBLE
+        val list: MutableList<SettingItem?> = ArrayList()
+        list.add(
+            SettingItem(
+                Projector.TYPE_PROJECTOR_MODE,
+                getString(R.string.project_mode),
+                R.drawable.baseline_model_training_100
+            )
+        )
+        list.add(
+            SettingItem(
+                Projector.TYPE_SETTING,
+                getString(R.string.project_crop),
+                R.drawable.baseline_crop_100
+            )
+        )
+        list.add(
+            SettingItem(
+                Projector.TYPE_SCREEN,
+                getString(R.string.project_gradient),
+                R.drawable.baseline_screenshot_monitor_100
+            )
+        )
+        list.add(
+            SettingItem(
+                Projector.TYPE_HDMI,
+                getString(R.string.project_hdmi),
+                R.drawable.baseline_settings_input_hdmi_100
+            )
+        )
+        arrayObjectAdapter.addAll(0, list)
+    }
+
+    private fun setToolContent() {
+        val arrayObjectAdapter = ArrayObjectAdapter(
+            SettingAdapter(
+                activity,
+                getLayoutInflater(),
+                newToolCallback(),
+                R.layout.holder_setting_3
+            )
+        )
+        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
+        FocusHighlightHelper.setupBrowseItemFocusHighlight(
+            itemBridgeAdapter,
+            FocusHighlight.ZOOM_FACTOR_MEDIUM,
+            false
+        )
+        mHorizontalContentGrid!!.setAdapter(itemBridgeAdapter)
+        mVerticalContentGrid!!.visibility = View.GONE
+        mHorizontalContentGrid!!.visibility = View.VISIBLE
+        val list: MutableList<SettingItem?> = ArrayList()
+        list.add(
+            SettingItem(
+                Tools.TYPE_HDMI,
+                getString(R.string.project_hdmi),
+                R.drawable.baseline_settings_input_hdmi_100
+            )
+        )
+        list.add(
+            SettingItem(
+                Tools.TYPE_FILE,
+                getString(R.string.file_management),
+                R.drawable.baseline_sd_storage_100_3
+            )
+        )
+        arrayObjectAdapter.addAll(0, list)
+    }
+
+    private fun newProjectorCallback(): SettingAdapter.Callback {
+        return object : SettingAdapter.Callback {
+            override fun onSelect(selected: Boolean, bean: SettingItem) {
+                if (selected) setExpanded(false)
+            }
+
+            override fun onClick(bean: SettingItem) {
+                when (bean.type) {
+                    Projector.TYPE_SETTING -> {
+                        startActivity(Intent(activity, ScaleScreenActivity::class.java))
                     }
-                    if (SystemUtils.isApEnable(getActivity())) notifies.add(new Notify(R.drawable.baseline_wifi_tethering_100_2));
-                    StorageManager storageManager = getActivity().getSystemService(StorageManager.class);
-                    for (StorageVolume volume : storageManager.getStorageVolumes()){
-                        if (!volume.isEmulated()) notifies.add(new Notify(R.drawable.baseline_sd_storage_100));
+
+                    Projector.TYPE_PROJECTOR_MODE -> {
+                        val success = AndroidSystem.openProjectorMode(activity)
+                        if (!success) toastInstall()
                     }
-                    mNotifyAdapter.replace(notifies);
+
+                    Projector.TYPE_HDMI -> {
+                        val success = AndroidSystem.openProjectorHDMI(activity)
+                        if (!success) toastInstall()
+                    }
+
+                    Projector.TYPE_SCREEN -> {
+                        startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                    }
                 }
             }
-        });
+        }
     }
 
-    private ServiceRequest.Callback<WeatherData> newWeatherCallback(){
-        return new ServiceRequest.Callback<WeatherData>() {
-            @Override
-            public void onCallback(Call call, int status, WeatherData result) {
-                if (!isAdded()) return;
-                if (call.isCanceled() || result == null || result.getDays() == null || result.getDays().length == 0) return;
-                App.WEATHER.setWeather(result);
-                syncWeather();
-            }
-        };
-    }
-
-    private void syncWeather(){
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (App.WEATHER.getWeather() == null || !isAdded()) return;
-                WeatherData result = App.WEATHER.getWeather();
-                mWeatherView.setImageBitmap(AndroidSystem.getImageForAssets(getActivity(), FilePathMangaer.getWeatherIcon(result.getDays()[0].getIcon())));
-            }
-        });
-    }
-
-    private void syncTime(){
-        boolean is24 = AppUtils.is24Display(getActivity());
-        Calendar calendar = Calendar.getInstance();
-        int h = calendar.get(is24 ? Calendar.HOUR_OF_DAY : Calendar.HOUR);
-        int m = calendar.get(Calendar.MINUTE);
-        String time = getString(R.string.hour_minute_second, h, m);
-        String segment = calendar.get(Calendar.AM_PM) == 0 ? "AM" : "PM";
-        mSegmentView.setVisibility(is24 ? View.GONE : View.VISIBLE);
-        mSegmentView.setText(segment);
-        mTimeView.setText(time);
-    }
-
-    private void setAppContent(List<ApplicationInfo> list){
-        mAppListAdapter.replace(list);
-        mHorizontalContentGrid.setAdapter(mAppListAdapter);
-        mVerticalContentGrid.setVisibility(View.GONE);
-        mHorizontalContentGrid.setVisibility(View.VISIBLE);
-    }
-
-    private void setProjectorContent(){
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new SettingAdapter(getActivity(), getLayoutInflater(), newProjectorCallback(), R.layout.holder_setting_3));
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-        mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
-        mVerticalContentGrid.setVisibility(View.GONE);
-        mHorizontalContentGrid.setVisibility(View.VISIBLE);
-
-        List<SettingItem> list = new ArrayList<>();
-        list.add(new SettingItem(Projector.TYPE_PROJECTOR_MODE, getString(R.string.project_mode), R.drawable.baseline_model_training_100));
-        list.add(new SettingItem(Projector.TYPE_SETTING, getString(R.string.project_crop), R.drawable.baseline_crop_100));
-        list.add(new SettingItem(Projector.TYPE_SCREEN, getString(R.string.project_gradient), R.drawable.baseline_screenshot_monitor_100));
-        list.add(new SettingItem(Projector.TYPE_HDMI, getString(R.string.project_hdmi), R.drawable.baseline_settings_input_hdmi_100));
-
-        arrayObjectAdapter.addAll(0, list);
-    }
-
-    private void setToolContent(){
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new SettingAdapter(getActivity(), getLayoutInflater(), newToolCallback(), R.layout.holder_setting_3));
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-        mHorizontalContentGrid.setAdapter(itemBridgeAdapter);
-        mVerticalContentGrid.setVisibility(View.GONE);
-        mHorizontalContentGrid.setVisibility(View.VISIBLE);
-
-        List<SettingItem> list = new ArrayList<>();
-        list.add(new SettingItem(Tools.TYPE_HDMI, getString(R.string.project_hdmi), R.drawable.baseline_settings_input_hdmi_100));
-        list.add(new SettingItem(Tools.TYPE_FILE, getString(R.string.file_management), R.drawable.baseline_sd_storage_100_3));
-
-        arrayObjectAdapter.addAll(0, list);
-    }
-
-    private SettingAdapter.Callback newProjectorCallback(){
-        return new SettingAdapter.Callback() {
-            @Override
-            public void onSelect(boolean selected, SettingItem bean) {
-                if (selected) setExpanded(false);
+    private fun newToolCallback(): SettingAdapter.Callback {
+        return object : SettingAdapter.Callback {
+            override fun onSelect(selected: Boolean, bean: SettingItem) {
+                if (selected) setExpanded(false)
             }
 
-            @Override
-            public void onClick(SettingItem bean) {
-                switch (bean.getType()){
-                    case Projector.TYPE_SETTING:{
-                        startActivity(new Intent(getActivity(), ScaleScreenActivity.class));
-                    }
-                        break;
-                    case Projector.TYPE_PROJECTOR_MODE:{
-                        boolean success = AndroidSystem.openProjectorMode(getActivity());
-                        if (!success) toastInstall();
-                    }
-                        break;
-                    case Projector.TYPE_HDMI:{
-                        boolean success = AndroidSystem.openProjectorHDMI(getActivity());
-                        if (!success) toastInstall();
-                    }
-                        break;
-                    case Projector.TYPE_SCREEN:{
-                        startActivity(new Intent(getActivity(), ChooseGradientActivity.class));
-                    }
-                        break;
+            override fun onClick(bean: SettingItem) {
+                when (bean.type) {
+                    Tools.TYPE_HDMI -> AndroidSystem.openPackageName(
+                        activity,
+                        "com.mediatek.wwtv.tvcenter"
+                    )
+
+                    Tools.TYPE_FILE -> AndroidSystem.openPackageName(
+                        activity,
+                        "com.conocx.fileexplorer"
+                    )
                 }
             }
-        };
+        }
     }
 
-    private SettingAdapter.Callback newToolCallback(){
-        return new SettingAdapter.Callback() {
-            @Override
-            public void onSelect(boolean selected, SettingItem bean) {
-                if (selected) setExpanded(false);
-            }
-
-            @Override
-            public void onClick(SettingItem bean) {
-                switch (bean.getType()){
-                    case Tools.TYPE_HDMI:
-                       AndroidSystem.openPackageName(getActivity(), "com.mediatek.wwtv.tvcenter");
-                        break;
-                    case Tools.TYPE_FILE:
-                        AndroidSystem.openPackageName(getActivity(), "com.conocx.fileexplorer");
-                        break;
-                }
-            }
-        };
+    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+        isExpanded = verticalOffset != 0
+        val value = (1f - abs((verticalOffset / 2f).toDouble()) / maxVerticalOffset).toFloat()
+        mHeaderGrid!!.scaleX = value
+        mHeaderGrid!!.scaleY = value
     }
 
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        isExpanded = verticalOffset != 0;
-        float value = 1f - Math.abs(verticalOffset / 2f) / maxVerticalOffset;
-        mHeaderGrid.setScaleX(value);
-        mHeaderGrid.setScaleY(value);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.equals(mSettingView)){
-            if (Config.COMPANY == 4){
-                AndroidSystem.openSystemSetting(getActivity());
-            }else {
-                startActivity(new Intent(getActivity(), SettingActivity.class));
+    override fun onClick(v: View) {
+        if (v == mSettingView) {
+            if (Config.COMPANY == 4) {
+                AndroidSystem.openSystemSetting(activity)
+            } else {
+                startActivity(Intent(activity, SettingActivity::class.java))
             }
             //AndroidSystem.openSystemSetting(getActivity());
-        }else if (v.equals(mWeatherView)){
-            startActivity(new Intent(getActivity(), WeatherActivity.class));
-        }else if (v.equals(mSearchView)){
-            startActivity(new Intent(getActivity(), SearchActivity.class));
-        }else if (v.equals(mWifiView)){
+        } else if (v == mWeatherView) {
+            startActivity(Intent(activity, WeatherActivity::class.java))
+        } else if (v == mSearchView) {
+            startActivity(Intent(activity, SearchActivity::class.java))
+        } else if (v == mWifiView) {
             if (Config.COMPANY == 3 || Config.COMPANY == 4) {
-                AndroidSystem.openWifiSetting(getActivity());
-            }else {
-                startActivity(new Intent(getActivity(), WifiListActivity.class));
+                AndroidSystem.openWifiSetting(activity)
+            } else {
+                startActivity(Intent(activity, WifiListActivity::class.java))
             }
-        }else if (v.equals(mLoginView)){
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-        }else if (v.equals(mHelpView)){
-            startActivity(new Intent(getActivity(), AboutActivity.class));
-        }else if (v.equals(mHdmiView)){
-            AndroidSystem.openProjectorHDMI(getActivity());
-        }else if (v.equals(mGradientView)){
-            startActivity(new Intent(getActivity(), HomeGuideGroupGradientActivity.class));
+        } else if (v == mLoginView) {
+            startActivity(Intent(activity, LoginActivity::class.java))
+        } else if (v == mHelpView) {
+            startActivity(Intent(activity, AboutActivity::class.java))
+        } else if (v == mHdmiView) {
+            AndroidSystem.openProjectorHDMI(activity)
+        } else if (v == mGradientView) {
+            //startActivity(Intent(activity, HomeGuideGroupGradientActivity::class.java))
+            /*
+            * 判断是否打开了自动校准，否则先打开自动校准
+            * 然后跳转SDK自动校准页面
+            * */
+            // 是否处于自动校准
+            var isAutoCalibration =
+                ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
+            isAutoCalibration.no {
+                // 没有打开自动校准
+                //开启自动校准
+                ASystemProperties.set("persist.vendor.gsensor.enable", "1")
+            }
+
+            //跳转自动校准页面
+            AndroidSystem.openActivityName(
+                requireContext(),
+                "com.hxdevicetest",
+                "com.hxdevicetest.CheckGsensorActivity"
+            )
+
         }
     }
 
-    private void work(final String flag, final TypeItem bean){
-        uiHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (flag.equals(uuid)){
-                    selectWork(bean);
-                }
+    private fun work(flag: String, bean: TypeItem) {
+        uiHandler!!.postDelayed({
+            if (flag == uuid) {
+                selectWork(bean)
             }
-        }, 220);
+        }, 220)
     }
 
-    private void selectWork(TypeItem bean){
-        switch (bean.getType()){
-            case Types.TYPE_MY_APPS:{
-                fillApps(false, true);
+    private fun selectWork(bean: TypeItem) {
+        when (bean.type) {
+            Types.TYPE_MY_APPS -> {
+                fillApps(false, true)
             }
-            break;
-            case Types.TYPE_APP_STORE:{
-                fillAppStore();
+
+            Types.TYPE_APP_STORE -> {
+                fillAppStore()
             }
-            break;
-            case Types.TYPE_PROJECTOR:{
-                setProjectorContent();
+
+            Types.TYPE_PROJECTOR -> {
+                setProjectorContent()
             }
-            break;
-            case Types.TYPE_TOOL:{
-                setToolContent();
+
+            Types.TYPE_TOOL -> {
+                setToolContent()
             }
-            break;
-            default:
-                switchMovice(bean);
+
+            else -> switchMovice(bean)
         }
     }
 
-    private void fillLocal(){
+    private fun fillLocal() {
         try {
-            HomeResponse.Inner data = new Gson().fromJson(new FileReader(FilePathMangaer.getMoviePath(getActivity())+"/data/movie.json"), HomeResponse.Inner.class);
-            for (HomeItem home : data.getMovies()){
-                for (Movice movice : home.getDatas()){
-                    App.MOVIE_IMAGE.put(movice.getUrl(), FilePathMangaer.getMoviePath(getActivity())+"/"+movice.getImageUrl());
+            val data = Gson().fromJson(
+                FileReader(
+                    FilePathMangaer.getMoviePath(
+                        activity
+                    ) + "/data/movie.json"
+                ), HomeResponse.Inner::class.java
+            )
+            for (home in data.getMovies()) {
+                for (movice in home.datas) {
+                    App.MOVIE_IMAGE.put(
+                        movice.url, FilePathMangaer.getMoviePath(
+                            activity
+                        ) + "/" + movice.imageUrl
+                    )
                 }
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
         }
     }
 
-    private MainHeaderAdapter.Callback newHeaderCallback(){
-        return new MainHeaderAdapter.Callback() {
-            @Override
-            public void onClick(TypeItem bean) {
-                switch (bean.getType()){
-                    case Types.TYPE_MOVICE:{
-                        AppPackage[] packages = new Gson().fromJson(bean.getData(), AppPackage[].class);
-                        boolean success = AndroidSystem.jumpPlayer(getActivity(), packages, null);
-                        if (!success){
-                            toastInstallPKApp(bean.getName(), packages);
+    private fun newHeaderCallback(): MainHeaderAdapter.Callback {
+        return object : MainHeaderAdapter.Callback {
+            override fun onClick(bean: TypeItem) {
+                when (bean.type) {
+                    Types.TYPE_MOVICE -> {
+                        val packages = Gson().fromJson(bean.data, Array<AppPackage>::class.java)
+                        val success = AndroidSystem.jumpPlayer(activity, packages, null)
+                        if (!success) {
+                            toastInstallPKApp(bean.name, packages)
                         }
                     }
-                        break;
-                    case Types.TYPE_APP_STORE:
-                        boolean success = AndroidSystem.jumpAppStore(getActivity());
-                        if (!success) toastInstall();
-                        break;
-                    case Types.TYPE_MY_APPS:{
-                        Intent intent = new Intent(getActivity(), AppsActivity.class);
-                        intent.putExtra(Atts.TYPE, bean.getType());
-                        startActivity(intent);
+
+                    Types.TYPE_APP_STORE -> {
+                        val success = AndroidSystem.jumpAppStore(activity)
+                        if (!success) toastInstall()
                     }
-                        break;
+
+                    Types.TYPE_MY_APPS -> {
+                        val intent = Intent(activity, AppsActivity::class.java)
+                        intent.putExtra(Atts.TYPE, bean.type)
+                        startActivity(intent)
+                    }
                 }
             }
 
-            @Override
-            public void onSelect(boolean selected, TypeItem bean) {
-                Log.e("TAG", "onSelect: "+bean.getType());
-                if (selected){
-                    setExpanded(true);
+            override fun onSelect(selected: Boolean, bean: TypeItem) {
+                Log.e("TAG", "onSelect: " + bean.type)
+                if (selected) {
+                    setExpanded(true)
                     try {
-                        if (call != null) call.cancel();
-                        uuid = UUID.randomUUID().toString();
-                        work(uuid, bean);
-                    }catch (Exception e){
-                        e.printStackTrace();
+                        call?.cancel()
+                        uuid = UUID.randomUUID().toString()
+                        work(uuid!!, bean)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
             }
-        };
-    }
-
-    private void toastInstall(){
-        toast(getString(R.string.place_install_app), ToastDialog.MODE_DEFAULT, null);
-    }
-
-    private void toastInstallApp(String name, ToastDialog.Callback callback){
-        toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback);
-    }
-
-    private void toast(String title, int mode, ToastDialog.Callback callback){
-        ToastDialog dialog = ToastDialog.newInstance(title, mode);
-        dialog.setCallback(callback);
-        dialog.show(getChildFragmentManager(), ToastDialog.TAG);
-    }
-
-    private void fillMovice(TypeItem bean){
-        int layoutId = R.layout.holder_content;
-        int columns = 1;
-        switch (bean.getLayoutType()){
-            case 1:
-                columns = 0;
-                layoutId = R.layout.holder_content;
-                break;
-            case 0:
-                columns = 4;
-                layoutId = R.layout.holder_content_4;
-                break;
         }
-        fillMovice(bean.getId(), bean.getLayoutType(), columns, layoutId);
     }
 
-    private void fillMovice(long id, int dirction, int columns, int layoutId){
-        setMoviceContent(App.MOVIE_MAP.get(id), dirction, columns, layoutId);
-        requestHome();
+    private fun toastInstall() {
+        toast(getString(R.string.place_install_app), ToastDialog.MODE_DEFAULT, null)
     }
 
-    private void requestHome(){
-        if (isReqHome || isConnectFirst) return;
-        isReqHome = true;
-        homeCall = HttpRequest.getHomeContents(newMoviceListCallback());
+    private fun toastInstallApp(name: String, callback: ToastDialog.Callback) {
+        toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback)
     }
 
+    private fun toast(title: String, mode: Int, callback: ToastDialog.Callback?) {
+        val dialog = ToastDialog.newInstance(title, mode)
+        dialog.setCallback(callback)
+        dialog.show(getChildFragmentManager(), ToastDialog.TAG)
+    }
 
-    private void fillApps(boolean replace, boolean isAttach){
-        if (replace){
-            useApps.clear();
-            List<ApplicationInfo> infos = AndroidSystem.getUserApps2(getActivity());
-            if (infos.size() > 8){
-                infos = infos.subList(0, 8);
+    private fun fillMovice(bean: TypeItem) {
+        var layoutId = R.layout.holder_content
+        var columns = 1
+        when (bean.layoutType) {
+            1 -> {
+                columns = 0
+                layoutId = R.layout.holder_content
             }
-            useApps.addAll(infos);
+
+            0 -> {
+                columns = 4
+                layoutId = R.layout.holder_content_4
+            }
         }
-        if (isAttach) setAppContent(useApps);
+        fillMovice(bean.id, bean.layoutType, columns, layoutId)
     }
 
-    private void fillAppStore(){
-        if (App.APP_STORE_ITEMS.isEmpty()){
-            List<AppItem> emptys = new ArrayList<>();
+    private fun fillMovice(id: Long, dirction: Int, columns: Int, layoutId: Int) {
+        setMoviceContent(App.MOVIE_MAP[id]!!, dirction, columns, layoutId)
+        requestHome()
+    }
+
+    private fun requestHome() {
+        if (isReqHome || isConnectFirst) return
+        isReqHome = true
+        homeCall = HttpRequest.getHomeContents(newMoviceListCallback())
+    }
+
+    private fun fillApps(replace: Boolean, isAttach: Boolean) {
+        if (replace) {
+            useApps.clear()
+            var infos = AndroidSystem.getUserApps2(activity)
+            if (infos.size > 8) {
+                infos = infos.subList(0, 8)
+            }
+            useApps.addAll(infos)
+        }
+        if (isAttach) setAppContent(useApps)
+    }
+
+    private fun fillAppStore() {
+        if (App.APP_STORE_ITEMS.isEmpty()) {
+            val emptys: MutableList<AppItem> = ArrayList()
             try {
-                AppItem[] apps = new Gson().fromJson(new FileReader(FilePathMangaer.getMoviePath(getActivity())+"/data/app.json"), AppItem[].class);
+                val apps = Gson().fromJson(
+                    FileReader(
+                        FilePathMangaer.getMoviePath(
+                            activity
+                        ) + "/data/app.json"
+                    ), Array<AppItem>::class.java
+                )
                 if (apps != null) {
-                    for (AppItem item : apps) item.setLocalIcon(FilePathMangaer.getMoviePath(getActivity())+"/"+item.getLocalIcon());
-                    emptys.addAll(Arrays.asList(apps));
+                    for (item in apps) item.localIcon = FilePathMangaer.getMoviePath(
+                        activity
+                    ) + "/" + item.localIcon
+                    emptys.addAll(Arrays.asList(*apps))
                 }
-                App.APP_STORE_ITEMS.addAll(Arrays.asList(apps));
-            }catch (Exception e){
-                e.printStackTrace();
-            }finally {
+                App.APP_STORE_ITEMS.addAll(Arrays.asList(*apps))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
                 if (emptys.isEmpty()) {
-                    for (int i = 0; i < 10; i++) emptys.add(new AppItem());
+                    for (i in 0..9) emptys.add(AppItem())
                 }
-                setStoreContent(emptys);
-                if (!isFullAll && false){
-                    HttpRequest.getAppList(new AppServiceRequest.Callback<AppListResponse>() {
-                        @Override
-                        public void onCallback(Call call, int status, AppListResponse result) {
-                            isFullAll = false;
-                            if (!isAdded() || call.isCanceled() || result == null || result.getResult() == null || result.getResult().getAppList() == null || result.getResult().getAppList().isEmpty()) return;
-                            if (mHeaderGrid.getSelectedPosition() == -1 || mHeaderGrid.getSelectedPosition() > targetMenus.size() - 1 || targetMenus.get(mHeaderGrid.getSelectedPosition()).getType() != Types.TYPE_APP_STORE) return;
-
-                            App.APP_STORE_ITEMS.addAll(result.getResult().getAppList());
-                            setStoreContent(App.APP_STORE_ITEMS);
+                setStoreContent(emptys)
+                if (!isFullAll && false) {
+                    HttpRequest.getAppList(object : AppServiceRequest.Callback<AppListResponse> {
+                        override fun onCallback(
+                            call: Call<*>,
+                            status: Int,
+                            result: AppListResponse
+                        ) {
+                            isFullAll = false
+                            if (!isAdded || call.isCanceled || result == null || result.result == null || result.result.appList == null || result.result.appList.isEmpty()) return
+                            if (mHeaderGrid!!.selectedPosition == -1 || mHeaderGrid!!.selectedPosition > targetMenus.size - 1 || targetMenus[mHeaderGrid!!.selectedPosition].type != Types.TYPE_APP_STORE) return
+                            App.APP_STORE_ITEMS.addAll(result.result.appList)
+                            setStoreContent(App.APP_STORE_ITEMS)
                         }
-                    }, Config.USER_ID, null, "hot", null, 1, 20);
+                    }, Config.USER_ID, null, "hot", null, 1, 20)
                 }
             }
-        }else {
-            setStoreContent(App.APP_STORE_ITEMS);
+        } else {
+            setStoreContent(App.APP_STORE_ITEMS)
         }
-        isFullAll = true;
+        isFullAll = true
     }
 
-    private void setStoreContent(List<AppItem> list){
-        mStoreAdapter.replace(list);
-        mHorizontalContentGrid.setAdapter(mStoreAdapter);
-        mVerticalContentGrid.setVisibility(View.GONE);
-        mHorizontalContentGrid.setVisibility(View.VISIBLE);
+    private fun setStoreContent(list: List<AppItem>) {
+        mStoreAdapter!!.replace(list)
+        mHorizontalContentGrid!!.setAdapter(mStoreAdapter)
+        mVerticalContentGrid!!.visibility = View.GONE
+        mHorizontalContentGrid!!.visibility = View.VISIBLE
     }
 
-    private void local(String filePath, int direction, int columns, int layoutId){
-        String[] files = AndroidSystem.getAssetsFileNames(getActivity(), filePath);
-        List<Movice> list = new ArrayList<>(files.length);
-        for (String item : files){
-            list.add(new Movice(Types.TYPE_UNKNOW, null, filePath + "/" + item, Movice.PIC_ASSETS));
+    private fun local(filePath: String, direction: Int, columns: Int, layoutId: Int) {
+        val files = AndroidSystem.getAssetsFileNames(activity, filePath)
+        val list: MutableList<Movice?> = ArrayList(files.size)
+        for (item in files) {
+            list.add(Movice(Types.TYPE_UNKNOW, null, "$filePath/$item", Movice.PIC_ASSETS))
         }
-
-        setMoviceContent(list, direction, columns, layoutId);
+        setMoviceContent(list, direction, columns, layoutId)
     }
 
-    private void fillHeader(){
+    private fun fillHeader() {
         try {
-            String path = FilePathMangaer.getJsonPath(getActivity()) + "/Home.json";
-            if (new File(path).exists()){
-                HomeResponse result = new Gson().fromJson(new JsonReader(new FileReader(path)), HomeResponse.class);
-                List<TypeItem> header = fillData(result);
-                header.addAll(items);
-                setHeader(header);
-            }else {
-                setDefault();
+            val path = FilePathMangaer.getJsonPath(activity) + "/Home.json"
+            if (File(path).exists()) {
+                val result = Gson().fromJson<HomeResponse>(
+                    JsonReader(FileReader(path)),
+                    HomeResponse::class.java
+                )
+                val header = fillData(result)
+                header.addAll(items)
+                setHeader(header)
+            } else {
+                setDefault()
             }
-        }catch (Exception e){
-            setDefault();
+        } catch (e: Exception) {
+            setDefault()
         }
     }
 
-    private void setDefault(){
+    private fun setDefault() {
         try {
-            HomeResponse.Inner data = new Gson().fromJson(new FileReader(FilePathMangaer.getMoviePath(getActivity())+"/data/movie.json"), HomeResponse.Inner.class);
-            HomeResponse response = new HomeResponse();
-            response.data = data;
-            List<TypeItem> header = fillData(response, TypeItem.TYPE_ICON_IMAGE_URL, 1);
-            for (TypeItem item : header){
-                item.setIcon(FilePathMangaer.getMoviePath(getActivity())+"/"+item.getIcon());
+            val data = Gson().fromJson(
+                FileReader(
+                    FilePathMangaer.getMoviePath(
+                        activity
+                    ) + "/data/movie.json"
+                ), HomeResponse.Inner::class.java
+            )
+            val response = HomeResponse()
+            response.data = data
+            val header = fillData(response, TypeItem.TYPE_ICON_IMAGE_URL, 1)
+            for (item in header) {
+                item.icon = FilePathMangaer.getMoviePath(activity) + "/" + item.icon
             }
-            header.addAll(items);
-            setHeader(header);
-        }catch (Exception e){
-            e.printStackTrace();
+            header.addAll(items)
+            setHeader(header)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    private List<TypeItem> fillData(HomeResponse result){
-        return fillData(result, TypeItem.TYPE_ICON_IMAGE_URL, 0);
-    }
-
-    private List<TypeItem> fillData(HomeResponse result, int iconType, int imageType){
-        List<HomeItem> homeItems = result.getData().getMovies();
-        List<TypeItem> menus = new ArrayList<>();
-        Gson gson = new Gson();
-        for (HomeItem bean : homeItems){
-            List<Movice> movices = new ArrayList<>(bean.getDatas().length);
-            for (Movice movice : bean.getDatas()){
-                movice.setPicType(Movice.PIC_NETWORD);
-                movice.setAppName(bean.getName());
-                movice.setAppPackage(bean.getPackageNames());
+    private fun fillData(
+        result: HomeResponse,
+        iconType: Int = TypeItem.TYPE_ICON_IMAGE_URL,
+        imageType: Int = 0
+    ): MutableList<TypeItem> {
+        val homeItems = result.getData().getMovies()
+        val menus: MutableList<TypeItem> = ArrayList()
+        val gson = Gson()
+        for (bean in homeItems) {
+            val movices: MutableList<Movice> = ArrayList(bean.datas.size)
+            for (movice in bean.datas) {
+                movice.picType = Movice.PIC_NETWORD
+                movice.appName = bean.name
+                movice.appPackage = bean.packageNames
                 if (imageType == 1) {
-                    String path = FilePathMangaer.getMoviePath(getActivity())+"/"+movice.getImageUrl();
-                    movice.setImageUrl(path);
-                    movice.setLocal(true);
+                    val path = FilePathMangaer.getMoviePath(activity) + "/" + movice.imageUrl
+                    movice.imageUrl = path
+                    movice.isLocal = true
                 }
-                movices.add(movice);
+                movices.add(movice)
             }
-            TypeItem item = new TypeItem(bean.getName(), bean.getIcon(), UUID.randomUUID().getLeastSignificantBits(), Types.TYPE_MOVICE, iconType, bean.getType());
-            item.setData(gson.toJson(bean.getPackageNames()));
-            App.MOVIE_MAP.put(item.getId(), movices);
-            menus.add(item);
+            val item = TypeItem(
+                bean.name,
+                bean.icon,
+                UUID.randomUUID().leastSignificantBits,
+                Types.TYPE_MOVICE,
+                iconType,
+                bean.type
+            )
+            item.data = gson.toJson(bean.packageNames)
+            App.MOVIE_MAP.put(item.id, movices)
+            menus.add(item)
         }
-        return menus;
+        return menus
     }
 
-    private StoreAdapter.Callback newStoreClickCallback(){
-        return new StoreAdapter.Callback() {
-            @Override
-            public void onSelect(boolean selected, AppItem bean) {
-                if (selected) setExpanded(false);
+    private fun newStoreClickCallback(): StoreAdapter.Callback {
+        return object : StoreAdapter.Callback {
+            override fun onSelect(selected: Boolean, bean: AppItem) {
+                if (selected) setExpanded(false)
             }
 
-            @Override
-            public void onClick(AppItem bean) {
-                if (!TextUtils.isEmpty(bean.getAppDownLink())) AndroidSystem.jumpAppStore(getActivity(), new Gson().toJson(bean), null);
+            override fun onClick(bean: AppItem) {
+                if (!TextUtils.isEmpty(bean.appDownLink)) AndroidSystem.jumpAppStore(
+                    activity,
+                    Gson().toJson(bean),
+                    null
+                )
             }
-        };
+        }
     }
 
-    private MainContentAdapter.Callback newContentCallback(){
-        return new MainContentAdapter.Callback() {
-            @Override
-            public void onClick(Movice bean) {
-                boolean skip = false;
-                if (bean.getAppPackage() != null){
-                    for (AppPackage appPackage : bean.getAppPackage()){
-                        if (App.SKIP_PAKS.contains(appPackage.getPackageName())){
-                            skip = true;
-                            break;
+    private fun newContentCallback(): MainContentAdapter.Callback {
+        return object : MainContentAdapter.Callback {
+            override fun onClick(bean: Movice) {
+                var skip = false
+                if (bean.appPackage != null) {
+                    for (appPackage in bean.appPackage) {
+                        if (App.SKIP_PAKS.contains(appPackage.packageName)) {
+                            skip = true
+                            break
                         }
                     }
                 }
-
-                boolean success = false;
-
-                if (skip){
-                    success = AndroidSystem.jumpVideoApp(getActivity(), bean.getAppPackage(), null);
-                }else {
-                    success = AndroidSystem.jumpVideoApp(getActivity(), bean.getAppPackage(), bean.getUrl());
+                var success = false
+                success = if (skip) {
+                    AndroidSystem.jumpVideoApp(activity, bean.appPackage, null)
+                } else {
+                    AndroidSystem.jumpVideoApp(activity, bean.appPackage, bean.url)
                 }
-
                 if (!success) {
-                    toastInstallPKApp(bean.getAppName(), bean.getAppPackage());
+                    toastInstallPKApp(bean.appName, bean.appPackage)
                 }
             }
 
-            @Override
-            public void onFouces(boolean hasFocus, Movice bean) {
-                if (hasFocus){
-                    setExpanded(false);
+            override fun onFouces(hasFocus: Boolean, bean: Movice) {
+                if (hasFocus) {
+                    setExpanded(false)
                 }
             }
-        };
+        }
     }
 
-    private void toastInstallPKApp(String name, AppPackage[] packages){
-        toastInstallApp(name, new ToastDialog.Callback() {
-            @Override
-            public void onClick(int type) {
-                if (type == 1){
-                    String[] pns = new String[packages.length];
-                    for (int i = 0; i < pns.length; i++){
-                        pns[i] = packages[i].getPackageName();
-                    }
-                    AndroidSystem.jumpAppStore(getActivity(), null, pns);
+    private fun toastInstallPKApp(name: String, packages: Array<AppPackage>) {
+        toastInstallApp(name) { type ->
+            if (type == 1) {
+                val pns = arrayOfNulls<String>(packages.size)
+                for (i in pns.indices) {
+                    pns[i] = packages[i].packageName
                 }
+                AndroidSystem.jumpAppStore(activity, null, pns)
             }
-        });
+        }
     }
 
-    private ServiceRequest.Callback<HomeResponse> newMoviceListCallback(){
-        return new ServiceRequest.Callback<HomeResponse>() {
-            @Override
-            public void onCallback(Call call, int status, HomeResponse result) {
+    private fun newMoviceListCallback(): ServiceRequest.Callback<HomeResponse> {
+        return object : ServiceRequest.Callback<HomeResponse> {
+            override fun onCallback(call: Call<*>, status: Int, result: HomeResponse) {
                 try {
-                    if (!isAdded() || call.isCanceled() || result == null) return;
-
-                    if (result.data == null || result.data.getMovies() == null || result.data.getMovies().isEmpty()){
-                        isConnectFirst = true;
-                        return;
+                    if (!isAdded || call.isCanceled || result == null) return
+                    if (result.data == null || result.data.getMovies() == null || result.data.getMovies()
+                            .isEmpty()
+                    ) {
+                        isConnectFirst = true
+                        return
                     }
-
-                    PreferencesUtils.setProperty(Atts.LAST_UPDATE_HOME_TIME, System.currentTimeMillis());
-                    FileUtils.writeFile(new Gson().toJson(result).getBytes(StandardCharsets.UTF_8), FilePathMangaer.getJsonPath(getActivity()), "Home.json");
-
-                    List<TypeItem> header = fillData(result);
-                    header.addAll(items);
-
-                    setHeader(header);
-
-                    isConnectFirst = true;
-                    if (result.getData().getReg_id() != null) PreferencesUtils.setProperty(Atts.RECENTLY_MODIFIED, result.getData().getReg_id());
-                    TypeItem item = header.get(0);
-                    fillMovice(item);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    isReqHome = false;
+                    PreferencesUtils.setProperty(
+                        Atts.LAST_UPDATE_HOME_TIME,
+                        System.currentTimeMillis()
+                    )
+                    FileUtils.writeFile(
+                        Gson().toJson(result).toByteArray(StandardCharsets.UTF_8),
+                        FilePathMangaer.getJsonPath(
+                            activity
+                        ),
+                        "Home.json"
+                    )
+                    val header = fillData(result)
+                    header.addAll(items)
+                    setHeader(header)
+                    isConnectFirst = true
+                    if (result.getData().reg_id != null) PreferencesUtils.setProperty(
+                        Atts.RECENTLY_MODIFIED,
+                        result.getData().reg_id
+                    )
+                    val item = header[0]
+                    fillMovice(item)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    isReqHome = false
                 }
-            }
-        };
-    }
-
-    private void switchMovice(TypeItem bean){
-        fillMovice(bean);
-    }
-
-    private AppListAdapter.Callback newAppListCallback(){
-        return new AppListAdapter.Callback() {
-
-            @Override
-            public void onSelect(boolean selected) {
-                if (selected) setExpanded(false);
-            }
-
-            @Override
-            public void onClick(ApplicationInfo bean) {
-                openApp(bean);
-            }
-
-            @Override
-            public void onMenuClick(ApplicationInfo bean) {
-                appMenu(bean);
-            }
-        };
-    }
-
-    private void openApp(ApplicationInfo bean){
-        AndroidSystem.openPackageName(getActivity(), bean.packageName);
-    }
-
-    private void appMenu(ApplicationInfo bean){
-        AppDialog dialog = AppDialog.newInstance(bean);
-        dialog.setCallback(new AppDialog.Callback() {
-            @Override
-            public void onOpen() {
-                AndroidSystem.openPackageName(getActivity(), bean.packageName);
-            }
-        });
-        dialog.show(getChildFragmentManager(), AppDialog.TAG);
-    }
-
-    private void setExpanded(boolean isExpanded){
-        mAppBarLayout.setExpanded(isExpanded);
-    }
-
-    private List<Movice> getPlaceholdings(){
-        List<Movice> movices = new ArrayList<>();
-        for (int i = 0; i < 20; i++){
-            movices.add(new Movice(Types.TYPE_UNKNOW, null, "", Movice.PIC_PLACEHOLDING));
-        }
-        return movices;
-    }
-
-    private void setSpanSizeLookup(GridLayoutManager lm, GridLayoutManager.SpanSizeLookup spanSizeLookup){
-        lm.setSpanSizeLookup(spanSizeLookup);
-    }
-
-    private void checkVersion(){
-        HttpRequest.checkVersion(new ServiceRequest.Callback<VersionResponse>() {
-            @Override
-            public void onCallback(Call call, int status, VersionResponse result) {
-                if (!isAdded() || call.isCanceled() || result == null || result.getData() == null) return;
-                Version version = result.getData();
-                if (version.getVersion() > BuildConfig.VERSION_CODE && Config.CHANNEL.equals(version.getChannel())) {
-                    PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, (int) version.getVersion());
-                    AndroidSystem.jumpUpgrade(getActivity(), version);
-                }
-            }
-        });
-    }
-
-    public class InnerReceiver extends BroadcastReceiver{
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()){
-                case IntentAction.ACTION_UPDATE_WALLPAPER:
-                    updateWallpaper();
-                    break;
-                case Intent.ACTION_PACKAGE_ADDED:
-                case Intent.ACTION_PACKAGE_REMOVED:
-                case Intent.ACTION_PACKAGE_REPLACED:
-                    fillApps(true, mHeaderGrid.getSelectedPosition() != -1 && targetMenus.get(mHeaderGrid.getSelectedPosition()).getType() == Types.TYPE_MY_APPS);
-                    break;
             }
         }
     }
 
-    public class WallpaperReceiver extends BroadcastReceiver{
+    private fun switchMovice(bean: TypeItem) {
+        fillMovice(bean)
+    }
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()){
-                case IntentAction.ACTION_UPDATE_WALLPAPER:
-                    updateWallpaper();
-                    break;
-                case UsbManager.ACTION_USB_DEVICE_ATTACHED:
-                    break;
-                case UsbManager.ACTION_USB_DEVICE_DETACHED:
-                    break;
-                case IntentAction.ACTION_RESET_SELECT_HOME:
-                    if (isExpanded) requestFocus(mHeaderGrid);
-                    break;
+    private fun newAppListCallback(): AppListAdapter.Callback {
+        return object : AppListAdapter.Callback {
+            override fun onSelect(selected: Boolean) {
+                if (selected) setExpanded(false)
             }
+
+            override fun onClick(bean: ApplicationInfo) {
+                openApp(bean)
+            }
+
+            override fun onMenuClick(bean: ApplicationInfo) {
+                appMenu(bean)
+            }
+        }
+    }
+
+    private fun openApp(bean: ApplicationInfo) {
+        AndroidSystem.openPackageName(activity, bean.packageName)
+    }
+
+    private fun appMenu(bean: ApplicationInfo) {
+        val dialog = AppDialog.newInstance(bean)
+        dialog.setCallback { AndroidSystem.openPackageName(activity, bean.packageName) }
+        dialog.show(getChildFragmentManager(), AppDialog.TAG)
+    }
+
+    private fun setExpanded(isExpanded: Boolean) {
+        mAppBarLayout!!.setExpanded(isExpanded)
+    }
+
+    private val placeholdings: List<Movice>
+        private get() {
+            val movices: MutableList<Movice> = ArrayList()
+            for (i in 0..19) {
+                movices.add(Movice(Types.TYPE_UNKNOW, null, "", Movice.PIC_PLACEHOLDING))
+            }
+            return movices
+        }
+
+    private fun setSpanSizeLookup(lm: GridLayoutManager, spanSizeLookup: SpanSizeLookup) {
+        lm.spanSizeLookup = spanSizeLookup
+    }
+
+    private fun checkVersion() {
+        HttpRequest.checkVersion(object : ServiceRequest.Callback<VersionResponse> {
+            override fun onCallback(call: Call<*>, status: Int, result: VersionResponse) {
+                if (!isAdded || call.isCanceled || result == null || result.data == null) return
+                val version = result.data
+                if (version.version > BuildConfig.VERSION_CODE && Config.CHANNEL == version.channel) {
+                    PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, version.version.toInt())
+                    AndroidSystem.jumpUpgrade(activity, version)
+                }
+            }
+        })
+    }
+
+    inner class InnerReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
+                IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
+                Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> fillApps(
+                    true,
+                    mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
+                )
+            }
+        }
+    }
+
+    inner class WallpaperReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
+                IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
+                UsbManager.ACTION_USB_DEVICE_ATTACHED -> {}
+                UsbManager.ACTION_USB_DEVICE_DETACHED -> {}
+                IntentAction.ACTION_RESET_SELECT_HOME -> if (isExpanded) requestFocus(mHeaderGrid)
+            }
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): MainFragment {
+            val args = Bundle()
+            val fragment = MainFragment()
+            fragment.setArguments(args)
+            return fragment
         }
     }
 }
