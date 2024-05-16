@@ -339,6 +339,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         )
         mHdmiView?.visibility = if (Config.COMPANY == 0) View.VISIBLE else View.GONE
         mGradientView?.visibility = if (Config.COMPANY == 0) View.VISIBLE else View.GONE
+
+
     }
 
     override fun initBefore(view: View, inflater: LayoutInflater) {
@@ -381,7 +383,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         targetMenus.addAll(items)
         mHeaderGrid!!.setAdapter(mMainHeaderAdapter)
         mMainHeaderAdapter!!.replace(items)
-        mHeaderGrid!!.selectedPosition = 0
+        mHeaderGrid?.post {
+            mHeaderGrid?.requestFocus()
+            mHeaderGrid!!.selectedPosition = 0
+        }
+
     }
 
     private fun setMoviceContent(list: MutableList<Movice?>?, direction: Int, columns: Int, layoutId: Int) {

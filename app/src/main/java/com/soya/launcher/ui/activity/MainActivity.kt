@@ -41,13 +41,15 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
 
          (Config.COMPANY == 0).yes {
              AppCacheBase.isActive.yes {
-                 return if (PreferencesManager.isGuide() == 0 && Config.COMPANY == 0) {
+                 /*return if (PreferencesManager.isGuide() == 0 && Config.COMPANY == 0) {
                      canBackPressed = true
                      WelcomeFragment.newInstance()
                  } else {
                      canBackPressed = false
                      newInstance()
-                 }
+                 }*/
+                 canBackPressed = false
+                 return newInstance()
              }.otherwise {
                  return AuthFragment.newInstance()
              }
