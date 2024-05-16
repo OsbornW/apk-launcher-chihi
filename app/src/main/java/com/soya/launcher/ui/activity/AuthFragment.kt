@@ -1,7 +1,9 @@
 package com.soya.launcher.ui.activity
 
 import android.util.Log
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.blankj.utilcode.util.DeviceUtils
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
@@ -206,10 +208,14 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
             when(this){
                 10000L-> {
                     AppCacheBase.isActive = true
-                    ToastUtils.show("恭喜您激活成功")
+                    showLoadingViewDismiss()
+                    //ToastUtils.show("恭喜您激活成功")
                     lifecycleScope.launch {
-                        delay(1000)
-                        sendLiveEventData(ACTIVE_SUCCESS, true)
+                        delay(500)
+                        //repeatOnLifecycle(Lifecycle.State.RESUMED){
+                            sendLiveEventData(ACTIVE_SUCCESS, true)
+                       // }
+
                     }
 
                 }

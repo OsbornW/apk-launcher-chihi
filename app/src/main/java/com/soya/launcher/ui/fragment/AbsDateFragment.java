@@ -71,6 +71,10 @@ public abstract class AbsDateFragment extends AbsFragment implements View.OnClic
         mNextView = view.findViewById(R.id.next);
         mSlideGrid = view.findViewById(R.id.slide);
         mTitleView = view.findViewById(R.id.title);
+
+        mSlideGrid.post(() -> {
+            mSlideGrid.requestFocus();
+        });
     }
 
     @Override
