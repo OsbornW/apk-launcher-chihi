@@ -37,6 +37,9 @@ public abstract class AbsLanguageFragment extends AbsFragment implements View.On
         mContentGrid = view.findViewById(R.id.content);
         mNextView = view.findViewById(R.id.next);
         setContent(view, inflater);
+        mContentGrid.post(() -> {
+            mContentGrid.requestFocus();
+        });
     }
 
     @Override

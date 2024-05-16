@@ -3,12 +3,11 @@ package com.soya.launcher.ui.activity
 import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.DeviceUtils
-import com.blankj.utilcode.util.EncryptUtils
-import com.blankj.utilcode.util.ScreenUtils
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
-import com.shudong.lib_base.base.BaseVMActivity
+import com.shudong.lib_base.base.BaseVMFragment
 import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
@@ -16,11 +15,12 @@ import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.margin
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
-import com.shudong.lib_base.ext.startKtxActivity
+import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.yes
+import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.bean.AuthBean
-import com.soya.launcher.databinding.ActivityAuthBinding
+import com.soya.launcher.databinding.FragmentAuthBinding
 import com.soya.launcher.ui.dialog.KeyboardDialog
 import com.soya.launcher.utils.AutoSeparateTextWatcher
 import com.soya.launcher.utils.md5
@@ -36,7 +36,7 @@ import okhttp3.Response
 import org.json.JSONObject
 
 
-class AuthActivity : BaseVMActivity<ActivityAuthBinding, BaseViewModel>() {
+class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
 
 
     override fun initView() {
@@ -90,7 +90,7 @@ class AuthActivity : BaseVMActivity<ActivityAuthBinding, BaseViewModel>() {
 
                 }
             }
-        }.show(supportFragmentManager, KeyboardDialog.TAG)
+        }.show(childFragmentManager, KeyboardDialog.TAG)
     }
     override fun initClick() {
 
@@ -131,7 +131,7 @@ class AuthActivity : BaseVMActivity<ActivityAuthBinding, BaseViewModel>() {
             val toBeEncryptedString = "$chanelId$childChanel$versionValue$activeCode$uniqueID$time$pwd"
             // 对字符串进行MD5加密
             val md5String = toBeEncryptedString.md5()
-            Log.d("zy1996", "加密前：$toBeEncryptedString===加密后的MD5是：${md5String}")
+            //Log.d("zy1996", "加密前：$toBeEncryptedString===加密后的MD5是：${md5String}")
 
 
             val params = mapOf(
@@ -161,7 +161,7 @@ class AuthActivity : BaseVMActivity<ActivityAuthBinding, BaseViewModel>() {
                         //上传成功
                         //Thread.sleep(3000)
                         lifecycleScope.launch {
-                            delay(2000)
+                            delay(1000)
                             showLoadingViewDismiss()
                             val authBean = s?.jsonToBean<AuthBean>()
                             (authBean?.status==200).yes {
@@ -204,7 +204,15 @@ class AuthActivity : BaseVMActivity<ActivityAuthBinding, BaseViewModel>() {
             ToastUtils.show(msg)
         }.otherwise {
             when(this){
-                10000L->ToastUtils.show("恭喜您激活成功")
+                10000L-> {
+                    AppCacheBase.isActive = true
+                    ToastUtils.show("恭喜您激活成功")
+                    lifecycleScope.launch {
+                        delay(1000)
+                        sendLiveEventData(ACTIVE_SUCCESS, true)
+                    }
+
+                }
                 10001L->ToastUtils.show("缺少桌面 ID")
                 10002L->ToastUtils.show("桌面 ID 格式不正确")
                 10003L->ToastUtils.show("缺少激活码")
@@ -225,8 +233,14 @@ class AuthActivity : BaseVMActivity<ActivityAuthBinding, BaseViewModel>() {
                 10018L->ToastUtils.show("当前桌面 ID 和之前此卡号绑定的桌面 ID 不相同")
                 10019L->ToastUtils.show("此激活码已经在其它设备上绑定过，一个激活码不可以同时绑定多个设备")
                 10020L->ToastUtils.show("错误码：10020")
+                else -> {}
             }
         }
 
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = AuthFragment()
     }
 }
