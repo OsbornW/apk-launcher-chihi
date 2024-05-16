@@ -14,7 +14,7 @@ public class BallPulseIndicator extends Indicator {
     public static final float SCALE=1.0f;
 
     //scale x ,y
-    private float[] scaleFloats=new float[]{SCALE,
+    private final float[] scaleFloats=new float[]{SCALE,
             SCALE,
             SCALE};
 

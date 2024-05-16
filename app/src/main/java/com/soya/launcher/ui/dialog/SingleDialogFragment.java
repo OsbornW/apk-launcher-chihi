@@ -46,11 +46,11 @@ public abstract class SingleDialogFragment extends DialogFragment {
         return view;
     }
 
-    protected void init(LayoutInflater inflater, View view){};
+    protected void init(LayoutInflater inflater, View view){}
 
     protected void initBefore(LayoutInflater inflater, View view){}
 
-    protected void initBind(LayoutInflater inflater, View view){};
+    protected void initBind(LayoutInflater inflater, View view){}
 
     @Override
     public void onResume() {
@@ -87,7 +87,7 @@ public abstract class SingleDialogFragment extends DialogFragment {
 
     protected View[] getClickViews(){
         return null;
-    };
+    }
 
     protected void setVisible(View view, boolean show){
         view.setVisibility(show ? View.VISIBLE : View.GONE);

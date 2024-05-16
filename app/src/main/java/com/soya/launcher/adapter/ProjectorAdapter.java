@@ -14,11 +14,11 @@ import com.soya.launcher.callback.SelectedCallback;
 import com.soya.launcher.view.MyFrameLayout;
 
 public class ProjectorAdapter extends Presenter {
-    private Context context;
-    private LayoutInflater inflater;
+    private final Context context;
+    private final LayoutInflater inflater;
 
-    private Callback callback;
-    private int layoutId;
+    private final Callback callback;
+    private final int layoutId;
 
     public ProjectorAdapter(Context context, LayoutInflater inflater, int layoutId, Callback callback){
         this.context = context;
@@ -44,8 +44,8 @@ public class ProjectorAdapter extends Presenter {
     }
 
     public class Holder extends ViewHolder {
-        private ImageView mIV;
-        private MyFrameLayout mRootView;
+        private final ImageView mIV;
+        private final MyFrameLayout mRootView;
         public Holder(View view) {
             super(view);
             mIV = view.findViewById(R.id.image);

@@ -58,11 +58,7 @@ public class BluetoothDeviceCriteria {
             return false;
         }
 
-        if (!isMatchingDeviceClass(device.getBluetoothClass().getDeviceClass())) {
-            return false;
-        }
-
-        return true;
+        return isMatchingDeviceClass(device.getBluetoothClass().getDeviceClass());
     }
 
     public boolean isMatchingMacAddress(String mac) {

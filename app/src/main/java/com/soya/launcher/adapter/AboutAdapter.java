@@ -17,8 +17,8 @@ import com.soya.launcher.view.MyFrameLayout;
 
 public class AboutAdapter extends Presenter {
 
-    private Context context;
-    private LayoutInflater inflater;
+    private final Context context;
+    private final LayoutInflater inflater;
 
     private Callback callback;
 
@@ -45,10 +45,10 @@ public class AboutAdapter extends Presenter {
     }
 
     public class Holder extends ViewHolder {
-        private MyFrameLayout mRootView;
-        private ImageView mIconView;
-        private TextView mTitleView;
-        private TextView mDescView;
+        private final MyFrameLayout mRootView;
+        private final ImageView mIconView;
+        private final TextView mTitleView;
+        private final TextView mDescView;
 
 
         public Holder(View view) {

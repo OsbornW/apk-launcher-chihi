@@ -14,10 +14,10 @@ import com.soya.launcher.bean.City;
 
 public class CityAdapter extends Presenter {
 
-    private Context context;
-    private LayoutInflater inflater;
-    private int layoutId;
-    private Callback callback;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final int layoutId;
+    private final Callback callback;
 
     public CityAdapter(Context context, LayoutInflater inflater, int layoutId, Callback callback){
         this.context = context;
@@ -44,8 +44,8 @@ public class CityAdapter extends Presenter {
     }
 
     public class Holder extends ViewHolder {
-        private TextView mTitleView;
-        private TextView mDesView;
+        private final TextView mTitleView;
+        private final TextView mDesView;
 
         public Holder(View view) {
             super(view);

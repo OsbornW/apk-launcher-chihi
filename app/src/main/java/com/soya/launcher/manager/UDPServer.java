@@ -36,8 +36,6 @@ public class UDPServer extends MyRunnable {
                 if (callback != null) callback.callback(data, clientAddress, clientPort);
             }catch (Exception e){
                 e.printStackTrace();
-            }finally {
-
             }
         }
         destory();

@@ -15,12 +15,12 @@ import com.soya.launcher.callback.SelectedCallback;
 import com.soya.launcher.view.MyFrameLayout;
 
 public class SettingAdapter extends Presenter {
-    private Context context;
-    private LayoutInflater inflater;
+    private final Context context;
+    private final LayoutInflater inflater;
 
     private Callback callback;
 
-    private int layoutId;
+    private final int layoutId;
 
     public SettingAdapter(Context context, LayoutInflater inflater, Callback callback, int layoutId){
         this.context = context;
@@ -47,9 +47,9 @@ public class SettingAdapter extends Presenter {
     }
 
     public class Holder extends ViewHolder {
-        private MyFrameLayout mRootView;
-        private ImageView mIV;
-        private TextView mTitleView;
+        private final MyFrameLayout mRootView;
+        private final ImageView mIV;
+        private final TextView mTitleView;
         public Holder(View view) {
             super(view);
             mRootView = (MyFrameLayout) view;

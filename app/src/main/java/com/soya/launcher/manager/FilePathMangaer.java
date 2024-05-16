@@ -16,7 +16,7 @@ public class FilePathMangaer {
     }
 
     public static final String getWeatherIcon(String fileName){
-        return "weather/"+fileName+".png";
+        return "weather/"+fileName+".webp";
     }
 
     public static final String getAppUpgradePath(Context context){

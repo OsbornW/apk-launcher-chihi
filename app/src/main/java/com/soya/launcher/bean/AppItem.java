@@ -15,8 +15,8 @@ public class AppItem {
     private String mes;
     private int status = STATU_IDLE;
 
-    private int iconType = ICON_TYPE_NETWORD;
-    private int id = -1;
+    private final int iconType = ICON_TYPE_NETWORD;
+    private final int id = -1;
     private String appName;
     private String appIcon;
     private String appState;

@@ -6,7 +6,7 @@ public class Notify {
     public static final int TYPE_USB = 2;
 
     private int type;
-    private int icon;
+    private final int icon;
 
     public Notify(int icon){
         this.icon = icon;

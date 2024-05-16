@@ -14,9 +14,9 @@ import com.soya.launcher.bean.Ads;
 import java.util.List;
 
 public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.Holder> {
-    private Context context;
-    private LayoutInflater inflater;
-    private List<Ads> dataList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<Ads> dataList;
 
     public BannerAdapter(Context context, LayoutInflater inflater, List<Ads> dataList){
         this.context = context;

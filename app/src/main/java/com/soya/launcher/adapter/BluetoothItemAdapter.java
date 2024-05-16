@@ -19,11 +19,11 @@ import java.util.List;
 
 public class BluetoothItemAdapter extends RecyclerView.Adapter<BluetoothItemAdapter.Holder> {
 
-    private Context context;
-    private LayoutInflater inflater;
-    private List<BluetoothItem> dataList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<BluetoothItem> dataList;
 
-    private Callback callback;
+    private final Callback callback;
 
     public BluetoothItemAdapter(Context context, LayoutInflater inflater, List<BluetoothItem> dataList, Callback callback){
         this.context = context;
@@ -87,9 +87,9 @@ public class BluetoothItemAdapter extends RecyclerView.Adapter<BluetoothItemAdap
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private TextView mTitleView;
-        private TextView mDescView;
-        private ImageView mCheckView;
+        private final TextView mTitleView;
+        private final TextView mDescView;
+        private final ImageView mCheckView;
 
         public Holder(@NonNull View itemView) {
             super(itemView);

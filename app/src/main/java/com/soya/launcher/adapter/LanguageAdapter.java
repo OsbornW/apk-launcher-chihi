@@ -15,10 +15,10 @@ import com.soya.launcher.bean.Language;
 import java.util.List;
 
 public class LanguageAdapter extends Presenter {
-    private Context context;
-    private LayoutInflater inflater;
+    private final Context context;
+    private final LayoutInflater inflater;
     private Callback callback;
-    private List<Language> dataList;
+    private final List<Language> dataList;
     private int select;
 
     public LanguageAdapter(Context context, LayoutInflater inflater, List<Language> dataList){
@@ -53,9 +53,9 @@ public class LanguageAdapter extends Presenter {
     }
 
     public class Holder extends ViewHolder {
-        private TextView mTitleView;
-        private TextView mDescView;
-        private ImageView mCheckView;
+        private final TextView mTitleView;
+        private final TextView mDescView;
+        private final ImageView mCheckView;
 
         public Holder(View view) {
             super(view);

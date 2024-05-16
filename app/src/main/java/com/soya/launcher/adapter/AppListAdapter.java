@@ -26,12 +26,12 @@ import com.soya.launcher.view.MyFrameLayout;
 import java.util.List;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.Holder> {
-    private Context context;
-    private LayoutInflater inflater;
-    private List<ApplicationInfo> dataList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<ApplicationInfo> dataList;
     private Callback callback;
 
-    private int layoutId;
+    private final int layoutId;
 
     public AppListAdapter(Context context, LayoutInflater inflater, List<ApplicationInfo> dataList, int layoutId, Callback callback){
         this.context = context;
@@ -64,11 +64,11 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.Holder> 
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private ImageView mIV;
-        private ImageView mIVSmall;
-        private TextView mTitle;
-        private MyFrameLayout mRootView;
-        private AppLayout mAppLayout;
+        private final ImageView mIV;
+        private final ImageView mIVSmall;
+        private final TextView mTitle;
+        private final MyFrameLayout mRootView;
+        private final AppLayout mAppLayout;
 
         public Holder(View view) {
             super(view);

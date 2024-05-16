@@ -2,9 +2,9 @@ package com.soya.launcher.bean;
 
 public class WebItem {
     private int type = 0;
-    private String name;
-    private int icon;
-    private String link;
+    private final String name;
+    private final int icon;
+    private final String link;
 
     public WebItem(int type, String name, int icon, String link){
         this.type = type;

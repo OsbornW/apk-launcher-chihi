@@ -22,7 +22,7 @@ class ImageTextView : ShapeTextView {
 
     fun setImageInView(round: Int, res: Int) {
         val drawable: Drawable = res.converDrawable()
-        drawable!!.setBounds(0, 0, drawable.intrinsicWidth, drawable.minimumHeight)
+        drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.minimumHeight)
         when (round) {
             LEFT -> setCompoundDrawables(drawable, null, null, null)
             RIGHT -> setCompoundDrawables(null, null, drawable, null)

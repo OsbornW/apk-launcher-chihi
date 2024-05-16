@@ -12,10 +12,10 @@ public class TypeItem implements Serializable {
 
     private int iconType = TYPE_ICON_IMAGE_RES;
     private int layoutType = TYPE_LAYOUT_STYLE_UNKNOW;
-    private String name;
+    private final String name;
     private Object icon;
-    private long id;
-    private int type;
+    private final long id;
+    private final int type;
     private String data;
 
     public TypeItem(String name, Object icon, long id, int type, int iconType, int layoutType){

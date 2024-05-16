@@ -13,8 +13,8 @@ import com.soya.launcher.bean.WebItem;
 import com.soya.launcher.utils.GlideUtils;
 
 public class WebAdapter extends Presenter {
-    private Context context;
-    private LayoutInflater inflater;
+    private final Context context;
+    private final LayoutInflater inflater;
 
     private Callback callback;
 
@@ -42,7 +42,7 @@ public class WebAdapter extends Presenter {
     }
 
     public class Holder extends ViewHolder {
-        private ImageView mImageView;
+        private final ImageView mImageView;
 
         public Holder(View view) {
             super(view);

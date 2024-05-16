@@ -3,7 +3,7 @@
     {
       "type": 1,
       "name": "Netflix",
-      "icon": "netflix/icon.png",
+      "icon": "netflix/icon.webp",
       "packageNames": [
         {
           "packageName": "com.netflix.mediaclient",
@@ -25,31 +25,31 @@
         },
         {
           "url": "http://www.netflix.com/watch/80234448",
-          "imageUrl": "netflix/2.jpg"
+          "imageUrl": "netflix/2.webp"
         },
         {
           "url": "http://www.netflix.com/watch/81594921",
-          "imageUrl": "netflix/3.jpg"
+          "imageUrl": "netflix/3.webp"
         },
         {
           "url": "http://www.netflix.com/watch/80033394",
-          "imageUrl": "netflix/4.jpg"
+          "imageUrl": "netflix/4.webp"
         },
         {
           "url": "http://www.netflix.com/watch/70251895",
-          "imageUrl": "netflix/5.jpg"
+          "imageUrl": "netflix/5.webp"
         },
         {
           "url": "http://www.netflix.com/watch/81659034",
-          "imageUrl": "netflix/6.jpg"
+          "imageUrl": "netflix/6.webp"
         },
         {
           "url": "http://www.netflix.com/watch/81636855",
-          "imageUrl": "netflix/7.jpg"
+          "imageUrl": "netflix/7.webp"
         },
         {
           "url": "http://www.netflix.com/watch/81161626",
-          "imageUrl": "netflix/8.jpg"
+          "imageUrl": "netflix/8.webp"
         },
         {
           "url": "http://www.netflix.com/watch/80227207",
@@ -57,7 +57,7 @@
         },
         {
           "url": "http://www.netflix.com/watch/81446739",
-          "imageUrl": "netflix/10.jpg"
+          "imageUrl": "netflix/10.webp"
         },
         {
           "url": "http://www.netflix.com/watch/81640914",
@@ -65,19 +65,19 @@
         },
         {
           "url": "http://www.netflix.com/watch/81721676",
-          "imageUrl": "netflix/12.jpg"
+          "imageUrl": "netflix/12.webp"
         },
         {
           "url": "http://www.netflix.com/watch/80230399",
-          "imageUrl": "netflix/13.jpg"
+          "imageUrl": "netflix/13.webp"
         },
         {
           "url": "http://www.netflix.com/watch/80017035",
-          "imageUrl": "netflix/14.jpg"
+          "imageUrl": "netflix/14.webp"
         },
         {
           "url": "http://www.netflix.com/watch/81001887",
-          "imageUrl": "netflix/15.jpg"
+          "imageUrl": "netflix/15.webp"
         },
         {
           "url": "http://www.netflix.com/watch/81489050",
@@ -89,15 +89,15 @@
         },
         {
           "url": "http://www.netflix.com/watch/80149259",
-          "imageUrl": "netflix/18.jpg"
+          "imageUrl": "netflix/18.webp"
         },
         {
           "url": "http://www.netflix.com/watch/81194641",
-          "imageUrl": "netflix/19.jpg"
+          "imageUrl": "netflix/19.webp"
         },
         {
           "url": "http://www.netflix.com/watch/80119233",
-          "imageUrl": "netflix/20.jpg"
+          "imageUrl": "netflix/20.webp"
         },
         {
           "url": "http://www.netflix.com/watch/525209",
@@ -108,7 +108,7 @@
     {
       "type": 1,
       "name": "Max",
-      "icon": "max/icon.png",
+      "icon": "max/icon.webp",
       "packageNames": [
         {
           "packageName": "com.hbo.hbonow",
@@ -122,126 +122,126 @@
       "datas": [
         {
           "url": "https://play.max.com//movie/cc485a30-b9ee-463c-93f7-af3717ae9f0d",
-          "imageUrl": "max/1.jpeg"
+          "imageUrl": "max/1.webp"
         },
         {
           "url": "https://play.max.com//movie/bbdd8ac3-8311-434b-9a07-7f64753a8492",
-          "imageUrl": "max/2.jpeg"
+          "imageUrl": "max/2.webp"
         },
         {
           "url": "https://play.max.com//movie/a28ea804-60e9-4a73-b711-e56a75032185",
-          "imageUrl": "max/3.jpeg"
+          "imageUrl": "max/3.webp"
         },
         {
           "url": "https://play.max.com//movie/0b1f5774-f261-4987-b3fe-baa6ba75e258",
-          "imageUrl": "max/4.jpeg"
+          "imageUrl": "max/4.webp"
         },
         {
           "url": "https://play.max.com//movie/3dc32393-9f18-406d-8982-6ce9cf9da927",
-          "imageUrl": "max/5.jpeg"
+          "imageUrl": "max/5.webp"
         },
         {
           "url": "https://play.max.com//movie/f1c6ef16-40b2-4ef5-89ed-547decd9e620",
-          "imageUrl": "max/6.jpeg"
+          "imageUrl": "max/6.webp"
         },
         {
           "url": "https://play.max.com//movie/29ac0f3b-e558-40d5-9675-06abefb1d273",
-          "imageUrl": "max/7.jpeg"
+          "imageUrl": "max/7.webp"
         },
         {
           "url": "https://play.max.com//standalone/326564e5-54b0-4805-afdf-e166ec877a5a",
-          "imageUrl": "max/8.jpeg"
+          "imageUrl": "max/8.webp"
         },
         {
           "url": "https://play.max.com//movie/51b8ab9b-6da7-455f-bdd7-05b552d9d41c",
-          "imageUrl": "max/9.jpeg"
+          "imageUrl": "max/9.webp"
         },
         {
           "url": "https://play.max.com//movie/34d875d0-936a-4515-a6c4-087c1a6cb04f",
-          "imageUrl": "max/10.jpeg"
+          "imageUrl": "max/10.webp"
         },
         {
           "url": "https://play.max.com//movie/c765fc85-416f-49de-a66e-7efd90cc3faa",
-          "imageUrl": "max/11.jpeg"
+          "imageUrl": "max/11.webp"
         },
         {
           "url": "https://play.max.com//movie/c9999e42-f214-407e-807d-43dcf101301d",
-          "imageUrl": "max/12.jpeg"
+          "imageUrl": "max/12.webp"
         },
         {
           "url": "https://play.max.com//movie/1791aafa-5f63-4ed5-8afc-eb75fc1b4138",
-          "imageUrl": "max/13.jpeg"
+          "imageUrl": "max/13.webp"
         },
         {
           "url": "https://play.max.com//movie/53e6ae54-7d78-4243-a34d-f33cde179f6a",
-          "imageUrl": "max/14.jpeg"
+          "imageUrl": "max/14.webp"
         },
         {
           "url": "https://play.max.com//movie/36c42beb-3b81-4c81-b950-efaa0d08affe",
-          "imageUrl": "max/15.jpeg"
+          "imageUrl": "max/15.webp"
         },
         {
           "url": "https://play.max.com//movie/62dc67da-380f-43cb-8f1c-3750b01043b9",
-          "imageUrl": "max/16.jpeg"
+          "imageUrl": "max/16.webp"
         },
         {
           "url": "https://play.max.com//movie/640f9818-41b3-49d4-b130-e8297bf93343",
-          "imageUrl": "max/17.jpeg"
+          "imageUrl": "max/17.webp"
         },
         {
           "url": "https://play.max.com//movie/2db04370-2b7a-41c7-93ff-42aa5a6cd3c5",
-          "imageUrl": "max/18.jpeg"
+          "imageUrl": "max/18.webp"
         },
         {
           "url": "https://play.max.com//movie/cc2c1671-ee46-4686-b81e-af59607182a2",
-          "imageUrl": "max/19.jpeg"
+          "imageUrl": "max/19.webp"
         },
         {
           "url": "https://play.max.com//movie/960eaa30-dfa5-492f-93bc-2a554fd47205",
-          "imageUrl": "max/20.jpeg"
+          "imageUrl": "max/20.webp"
         },
         {
           "url": "https://play.max.com//movie/482de592-6794-4428-a94d-332e37b96ca3",
-          "imageUrl": "max/21.jpeg"
+          "imageUrl": "max/21.webp"
         },
         {
           "url": "https://play.max.com//movie/6edba37d-cb8c-4104-8ae0-1e2eebccae8e",
-          "imageUrl": "max/22.jpeg"
+          "imageUrl": "max/22.webp"
         },
         {
           "url": "https://play.max.com//movie/e9c8828b-4ffa-43ed-97ff-becbf93a7b4d",
-          "imageUrl": "max/23.jpeg"
+          "imageUrl": "max/23.webp"
         },
         {
           "url": "https://play.max.com//movie/335f5fd4-79db-44e6-82dd-fd799f9f38dd",
-          "imageUrl": "max/24.jpeg"
+          "imageUrl": "max/24.webp"
         },
         {
           "url": "https://play.max.com//movie/7b5168e8-da4e-4b49-bd29-091bc899ef2b",
-          "imageUrl": "max/25.jpeg"
+          "imageUrl": "max/25.webp"
         },
         {
           "url": "https://play.max.com//movie/63dc1bcb-9dbc-4be1-bcef-a0f79a2063e8",
-          "imageUrl": "max/26.jpeg"
+          "imageUrl": "max/26.webp"
         },
         {
           "url": "https://play.max.com//movie/8ad837cc-341e-48ca-bbad-b52cfd8a4239",
-          "imageUrl": "max/27.jpeg"
+          "imageUrl": "max/27.webp"
         },
         {
           "url": "https://play.max.com//movie/9888b9af-121c-4616-bb9e-61e9f873f6f6",
-          "imageUrl": "max/28.jpeg"
+          "imageUrl": "max/28.webp"
         },
         {
           "url": "https://play.max.com//movie/60124636-9041-4cc9-a2d0-05e288070224",
-          "imageUrl": "max/29.jpeg"
+          "imageUrl": "max/29.webp"
         }
       ]
     },
     {
       "type": 0,
       "name": "Youtube",
-      "icon": "youtube/icon.png",
+      "icon": "youtube/icon.webp",
       "packageNames": [
         {
           "packageName": "com.google.android.youtube.tv",
@@ -290,7 +290,7 @@
     {
       "type": 0,
       "name": "Disney+",
-      "icon": "disney/icon.png",
+      "icon": "disney/icon.webp",
       "packageNames": [
         {
           "packageName": "com.disney.disneyplus",
@@ -300,106 +300,106 @@
       "datas": [
         {
           "url": "https://www.disneyplus.com/movies/spider-man-far-from-home/3PtrmOKmcLb4",
-          "imageUrl": "disney/1.jpg"
+          "imageUrl": "disney/1.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/tim-burtons-the-nightmare-before-christmas/5GjwOj5Rkpz2",
-          "imageUrl": "disney/2.jpg"
+          "imageUrl": "disney/2.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/free-guy/3qBd6ESjzQOm",
-          "imageUrl": "disney/3.jpg"
+          "imageUrl": "disney/3.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/deadpool/3Kh13Lrb0Pnv",
-          "imageUrl": "disney/4.jpg"
+          "imageUrl": "disney/4.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/deadpool-2/LSuXSQ3S5mxU",
-          "imageUrl": "disney/5.jpg"
+          "imageUrl": "disney/5.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/captain-america-the-first-avenger/6xvB6xZ4r95O",
-          "imageUrl": "disney/6.jpg"
+          "imageUrl": "disney/6.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/the-amazing-spider-man/1XUNbIGBs7TO",
-          "imageUrl": "disney/7.jpg"
+          "imageUrl": "disney/7.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/the-amazing-spider-man-2/4h3EaB5DYH6g",
-          "imageUrl": "disney/8.jpg"
+          "imageUrl": "disney/8.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/captain-marvel/38xJGlLAQy9a",
-          "imageUrl": "disney/9.jpg"
+          "imageUrl": "disney/9.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/black-panther/1GuXuYPj99Ke",
-          "imageUrl": "disney/10.jpg"
+          "imageUrl": "disney/10.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/avatar/2YOnkRN4LwZZ",
-          "imageUrl": "disney/11.jpg"
+          "imageUrl": "disney/11.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/cinderella/VJPw3bEy9iHj",
-          "imageUrl": "disney/12.jpg"
+          "imageUrl": "disney/12.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/captain-america-the-winter-soldier/TVme5whcowSy",
-          "imageUrl": "disney/13.jpg"
+          "imageUrl": "disney/13.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/marvel-studios-avengers-endgame/aRbVJUb2h2Rf",
-          "imageUrl": "disney/14.jpg"
+          "imageUrl": "disney/14.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/marvel-studios-the-avengers/2h6PcHFDbsPy",
-          "imageUrl": "disney/15.jpg"
+          "imageUrl": "disney/15.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/frozen/4uKGzAJi3ROz",
-          "imageUrl": "disney/16.jpg"
+          "imageUrl": "disney/16.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/iron-man-2/lXjCr9QmGGQJ",
-          "imageUrl": "disney/17.jpg"
+          "imageUrl": "disney/17.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/big-hero-6/4AozFbXy3sPw",
-          "imageUrl": "disney/18.jpg"
+          "imageUrl": "disney/18.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/zootopia/1QOxldhm1sKg",
-          "imageUrl": "disney/19.jpg"
+          "imageUrl": "disney/19.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/wreck-it-ralph/QAy54qHICSSA",
-          "imageUrl": "disney/20.jpg"
+          "imageUrl": "disney/20.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/frozen-sing-along/1JffnkWmY6mD",
-          "imageUrl": "disney/21.jpg"
+          "imageUrl": "disney/21.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/venom/1w4uv4K4arER",
-          "imageUrl": "disney/22.jpg"
+          "imageUrl": "disney/22.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/cars/41KYquQjLwge",
-          "imageUrl": "disney/23.jpg"
+          "imageUrl": "disney/23.webp"
         },
         {
           "url": "https://www.disneyplus.com/movies/haunted-mansion/50AXhtr7tyPE",
-          "imageUrl": "disney/24.jpg"
+          "imageUrl": "disney/24.webp"
         }
       ]
     },
     {
       "type": 0,
       "name": "Hulu",
-      "icon": "hulu/icon.png",
+      "icon": "hulu/icon.webp",
       "packageNames": [
         {
           "packageName": "com.hulu.plus",
@@ -413,114 +413,114 @@
       "datas": [
         {
           "url": "https://www.hulu.com//movie/kandahar-0cc11bc3-62aa-43f3-9875-7e996c17bb2a",
-          "imageUrl": "hulu/1.jpg"
+          "imageUrl": "hulu/1.webp"
         },
         {
           "url": "https://www.hulu.com//movie/home-alone-45e4a68f-d9df-45f7-8e81-01b4ca5524e9",
-          "imageUrl": "hulu/2.jpg"
+          "imageUrl": "hulu/2.webp"
         },
         {
           "url": "https://www.hulu.com//movie/john-wick-chapter-4-2481bffb-52e9-447e-960c-06c94872c7dd",
-          "imageUrl": "hulu/3.jpg"
+          "imageUrl": "hulu/3.webp"
         },
         {
           "url": "https://www.hulu.com//movie/elf-34fdd2c6-dd92-4440-ae64-4c820e476978",
-          "imageUrl": "hulu/4.jpg"
+          "imageUrl": "hulu/4.webp"
         },
         {
           "url": "https://www.hulu.com//movie/the-holiday-7af0553f-ae86-49b9-b6a0-d034ad842b49",
-          "imageUrl": "hulu/5.jpg"
+          "imageUrl": "hulu/5.webp"
         },
         {
           "url": "https://www.hulu.com//movie/central-intelligence-151c0290-d714-41cf-9eab-b6ca9b96134a",
-          "imageUrl": "hulu/6.jpg"
+          "imageUrl": "hulu/6.webp"
         },
         {
           "url": "https://www.hulu.com//movie/the-polar-express-cfaafa9b-a8e0-4d0a-88bd-c3fecfbf695b",
-          "imageUrl": "hulu/7.jpg"
+          "imageUrl": "hulu/7.webp"
         },
         {
           "url": "https://www.hulu.com//movie/plane-bce216bd-6477-47d2-9328-95d434c3b8af",
-          "imageUrl": "hulu/8.jpg"
+          "imageUrl": "hulu/8.webp"
         },
         {
           "url": "https://www.hulu.com//movie/bone-tomahawk-33141423-0614-40b8-897d-75a4496689c5",
-          "imageUrl": "hulu/9.jpg"
+          "imageUrl": "hulu/9.webp"
         },
         {
           "url": "https://www.hulu.com//movie/quiz-lady-7eddb1d7-1ff3-474a-9db7-8d708fc1308a",
-          "imageUrl": "hulu/10.jpg"
+          "imageUrl": "hulu/10.webp"
         },
         {
           "url": "https://www.hulu.com//movie/the-equalizer-374cc3bc-c190-44fc-95a5-6d4bc2438e9b",
-          "imageUrl": "hulu/11.jpg"
+          "imageUrl": "hulu/11.webp"
         },
         {
           "url": "https://www.hulu.com//movie/national-lampoons-christmas-vacation-4b13df4b-d045-4998-8069-377704214c13",
-          "imageUrl": "hulu/12.jpg"
+          "imageUrl": "hulu/12.webp"
         },
         {
           "url": "https://www.hulu.com//movie/a-haunting-in-venice-5f072dc6-d44e-48e3-be24-b6db3b67df6b",
-          "imageUrl": "hulu/13.jpg"
+          "imageUrl": "hulu/13.webp"
         },
         {
           "url": "https://www.hulu.com//movie/spider-man-no-way-home-295fb45a-c8bb-477e-816f-b0706b4d9984",
-          "imageUrl": "hulu/14.jpg"
+          "imageUrl": "hulu/14.webp"
         },
         {
           "url": "https://www.hulu.com//movie/the-family-stone-8c10a451-623d-4290-9c0b-8ba42a406869",
-          "imageUrl": "hulu/15.jpg"
+          "imageUrl": "hulu/15.webp"
         },
         {
           "url": "https://www.hulu.com//movie/night-at-the-museum-29c89abf-b956-4893-add2-804ce0dbe5d7",
-          "imageUrl": "hulu/16.jpg"
+          "imageUrl": "hulu/16.webp"
         },
         {
           "url": "https://www.hulu.com//movie/fools-paradise-2b83ba58-aaa1-4bfa-b152-58b2190b6659",
-          "imageUrl": "hulu/17.jpg"
+          "imageUrl": "hulu/17.webp"
         },
         {
           "url": "https://www.hulu.com//movie/deck-the-halls-f925b2d0-af4e-45b5-9a05-3ac8b9a94977",
-          "imageUrl": "hulu/18.jpg"
+          "imageUrl": "hulu/18.webp"
         },
         {
           "url": "https://www.hulu.com//movie/get-hard-443ef0e3-0b4e-438e-be87-9a5635149e60",
-          "imageUrl": "hulu/19.jpg"
+          "imageUrl": "hulu/19.webp"
         },
         {
           "url": "https://www.hulu.com//movie/adam-sandlers-eight-crazy-nights-dc4db4af-ab04-4be6-a0f6-d2c11bdc9491",
-          "imageUrl": "hulu/20.jpg"
+          "imageUrl": "hulu/20.webp"
         },
         {
           "url": "https://www.hulu.com//movie/operation-fortune-9fab9dc6-4bd4-4e18-8423-6e57c9712b34",
-          "imageUrl": "hulu/21.jpg"
+          "imageUrl": "hulu/21.webp"
         },
         {
           "url": "https://www.hulu.com//movie/space-jam-c5fb9852-d248-4dc4-83b1-d39036b912ec",
-          "imageUrl": "hulu/22.jpg"
+          "imageUrl": "hulu/22.webp"
         },
         {
           "url": "https://www.hulu.com//movie/bad-boys-for-life-08cad73e-d18b-436e-8aac-5dc79f98de2c",
-          "imageUrl": "hulu/23.jpg"
+          "imageUrl": "hulu/23.webp"
         },
         {
           "url": "https://www.hulu.com//movie/space-jam-a-new-legacy-452447d6-2bf5-48e1-8784-c07a74769d6a",
-          "imageUrl": "hulu/24.jpg"
+          "imageUrl": "hulu/24.webp"
         },
         {
           "url": "https://www.hulu.com//movie/mary-fa154a8e-9645-4105-afb8-30e02e8ec8f2",
-          "imageUrl": "hulu/25.jpg"
+          "imageUrl": "hulu/25.webp"
         },
         {
           "url": "https://www.hulu.com//movie/spy-dd30cd05-14ed-4466-929c-8537f2897425",
-          "imageUrl": "hulu/26.jpg"
+          "imageUrl": "hulu/26.webp"
         }
       ]
     },
     {
       "type": 0,
       "name": "Prime video",
-      "icon": "prime_video/icon.png",
+      "icon": "prime_video/icon.webp",
       "packageNames": [
         {
           "packageName": "com.amazon.amazonvideo.livingroom",
@@ -538,67 +538,67 @@
       "datas": [
         {
           "url": "https://www.amazon.com//gp/video/detail/B0B75P564X/ref\u003datv_hm_fre_c_zof7gF_brws_12_1",
-          "imageUrl": "prime_video/1.jpg"
+          "imageUrl": "prime_video/1.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B074W41KTJ/ref\u003datv_hm_fre_c_HBYzrH_brws_2_1",
-          "imageUrl": "prime_video/2.jpg"
+          "imageUrl": "prime_video/2.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B07JGJFXBF/ref\u003datv_hm_fre_c_HBYzrH_brws_2_3",
-          "imageUrl": "prime_video/3.jpg"
+          "imageUrl": "prime_video/3.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0B6C6MZL1/ref\u003datv_mv_hom_c_OB8ac942_brws_2_1?jic\u003d8%7CEgRzdm9k",
-          "imageUrl": "prime_video/4.jpg"
+          "imageUrl": "prime_video/4.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B00BR3SOXO/ref\u003datv_hm_fre_c_HBYzrH_brws_2_4",
-          "imageUrl": "prime_video/5.jpg"
+          "imageUrl": "prime_video/5.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0B8SND299/ref\u003datv_hm_fre_c_HBYzrH_brws_2_5",
-          "imageUrl": "prime_video/6.jpg"
+          "imageUrl": "prime_video/6.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0B8MZG11W/ref\u003datv_hm_fre_c_HBYzrH_brws_2_6",
-          "imageUrl": "prime_video/7.jpg"
+          "imageUrl": "prime_video/7.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0B6P2986X/ref\u003datv_hm_fre_c_HBYzrH_brws_2_7",
-          "imageUrl": "prime_video/8.jpg"
+          "imageUrl": "prime_video/8.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B08P2GG9V7/ref\u003datv_hm_fre_c_HBYzrH_brws_2_8",
-          "imageUrl": "prime_video/9.jpg"
+          "imageUrl": "prime_video/9.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0B79WN6GP/ref\u003datv_hm_fre_c_HBYzrH_brws_2_9",
-          "imageUrl": "prime_video/10.jpg"
+          "imageUrl": "prime_video/10.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B00C3LIB9G/ref\u003datv_hm_fre_c_PqBHeq_brws_3_1",
-          "imageUrl": "prime_video/11.jpg"
+          "imageUrl": "prime_video/11.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B00BRL457A/ref\u003datv_hm_fre_c_PqBHeq_brws_3_2",
-          "imageUrl": "prime_video/12.jpg"
+          "imageUrl": "prime_video/12.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B00BZAZT8C/ref\u003datv_hm_fre_c_PqBHeq_brws_3_3",
-          "imageUrl": "prime_video/13.jpg"
+          "imageUrl": "prime_video/13.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B00CTSY78W/ref\u003datv_hm_fre_c_PqBHeq_brws_3_6",
-          "imageUrl": "prime_video/14.jpg"
+          "imageUrl": "prime_video/14.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B00BRAFZIE/ref\u003datv_hm_fre_c_PqBHeq_brws_3_5",
-          "imageUrl": "prime_video/15.jpg"
+          "imageUrl": "prime_video/15.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0CGP5SF31/ref\u003datv_mv_hom_c_OB5d7664_brws_2_1?jic\u003d8%7CEgRzdm9k",
-          "imageUrl": "prime_video/16.jpg"
+          "imageUrl": "prime_video/16.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B00JM04HSU/ref\u003datv_hm_fre_c_PqBHeq_brws_3_7",
@@ -606,31 +606,31 @@
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B07J4X2TBZ/ref\u003datv_mv_hom_c_OB5d7664_brws_2_5?jic\u003d8%7CEgRzdm9k",
-          "imageUrl": "prime_video/18.jpg"
+          "imageUrl": "prime_video/18.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0B6S6VCN9/ref\u003datv_hm_fre_c_PqBHeq_brws_3_4",
-          "imageUrl": "prime_video/19.jpg"
+          "imageUrl": "prime_video/19.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0B6DL8VTB/ref\u003datv_hm_fre_c_PqBHeq_brws_3_8",
-          "imageUrl": "prime_video/20.jpg"
+          "imageUrl": "prime_video/20.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0CHJJQPR2/ref\u003datv_hm_fre_c_PqBHeq_brws_3_9",
-          "imageUrl": "prime_video/21.jpg"
+          "imageUrl": "prime_video/21.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0CHB4SVRJ/ref\u003datv_hm_fre_c_rVC5eJ_brws_4_1",
-          "imageUrl": "prime_video/22.jpg"
+          "imageUrl": "prime_video/22.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B0B8PF5445/ref\u003datv_hm_fre_c_rVC5eJ_brws_4_2",
-          "imageUrl": "prime_video/23.jpg"
+          "imageUrl": "prime_video/23.webp"
         },
         {
           "url": "https://www.amazon.com//gp/video/detail/B07VPB43XK/ref\u003datv_hm_fre_c_rVC5eJ_brws_4_3",
-          "imageUrl": "prime_video/24.jpg"
+          "imageUrl": "prime_video/24.webp"
         }
       ]
     }

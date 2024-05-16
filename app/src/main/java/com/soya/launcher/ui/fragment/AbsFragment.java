@@ -38,7 +38,8 @@ public abstract class AbsFragment extends Fragment {
             mWallpaperView = view.findViewById(getWallpaperView());
             setWallpaper(mWallpaperView);
         }
-    };
+    }
+
     protected void initBefore(View view, LayoutInflater inflater){}
 
     protected void initBind(View view, LayoutInflater inflater){}

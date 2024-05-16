@@ -4,7 +4,7 @@ import java.sql.Time;
 import java.util.TimeZone;
 
 public class SimpleTimeZone {
-    private TimeZone zone;
+    private final TimeZone zone;
     private final String name;
     private final String desc;
 

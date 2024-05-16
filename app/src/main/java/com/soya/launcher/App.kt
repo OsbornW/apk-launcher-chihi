@@ -171,7 +171,7 @@ class App : Application() {
             private set
         private val exec = Executors.newCachedThreadPool()
         @JvmField
-        val MOVIE_MAP: MutableMap<Long, List<Movice>> = ConcurrentHashMap()
+        val MOVIE_MAP: MutableMap<Long, MutableList<Movice?>> = ConcurrentHashMap()
         @JvmField
         val MOVIE_IMAGE: MutableMap<String, Any> = ConcurrentHashMap()
         @JvmField

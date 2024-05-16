@@ -14,9 +14,9 @@ import com.soya.launcher.utils.AndroidSystem;
 import com.soya.launcher.utils.GlideUtils;
 
 public class RecommendAdapter extends Presenter {
-    private Context context;
-    private LayoutInflater inflater;
-    private Callback callback;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final Callback callback;
 
     public RecommendAdapter(Context context, LayoutInflater inflater, Callback callback){
         this.context = context;
@@ -42,7 +42,7 @@ public class RecommendAdapter extends Presenter {
     }
 
     public class Holder extends ViewHolder {
-        private ImageView mIV;
+        private final ImageView mIV;
 
         public Holder(View view) {
             super(view);

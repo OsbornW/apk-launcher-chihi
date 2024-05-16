@@ -23,16 +23,20 @@ import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.NetworkUtils
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.open.system.ASystemProperties
 import com.open.system.SystemUtils
+import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
@@ -59,6 +63,7 @@ import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
+import com.soya.launcher.http.HttpRequest.checkVersion
 import com.soya.launcher.http.ServiceRequest
 import com.soya.launcher.http.response.AppListResponse
 import com.soya.launcher.http.response.HomeResponse
@@ -81,6 +86,9 @@ import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import java.io.File
 import java.io.FileReader
@@ -147,7 +155,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         uiHandler = Handler()
         receiver = InnerReceiver()
         wallpaperReceiver = WallpaperReceiver()
-        useApps.addAll(AndroidSystem.getUserApps2(activity))
+        useApps.addAll(AndroidSystem.getUserApps2(requireContext()))
         items.addAll(
             Arrays.asList(
                 *arrayOf(
@@ -255,8 +263,20 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requestFocus(mHeaderGrid, 350)
-        checkVersion()
-        uidPull()
+
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).yes {
+                    withContext(Dispatchers.Main) {
+                        checkVersion()
+                    }
+                }
+            }
+        }
+
+
+        //uidPull()
     }
 
     override fun init(view: View, inflater: LayoutInflater) {
@@ -340,7 +360,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         fillHeader()
         mNotifyRecycler!!.setLayoutManager(
             LinearLayoutManager(
-                activity,
+                requireContext(),
                 RecyclerView.HORIZONTAL,
                 false
             )
@@ -364,7 +384,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mHeaderGrid!!.selectedPosition = 0
     }
 
-    private fun setMoviceContent(list: List<Movice?>, direction: Int, columns: Int, layoutId: Int) {
+    private fun setMoviceContent(list: MutableList<Movice?>?, direction: Int, columns: Int, layoutId: Int) {
         var list = list
         when (direction) {
             1 -> {
@@ -376,8 +396,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
 
             0 -> {
-                if (list.size > columns * 2) {
-                    list = list.subList(0, columns * 2)
+                if (list?.size?:0 > columns * 2) {
+                    list = list?.subList(0, columns * 2)
                 }
                 mVerticalContentGrid!!.setAdapter(mVMainContentAdapter)
                 mVMainContentAdapter!!.setLayoutId(layoutId)
@@ -458,7 +478,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun newWeatherCallback(): ServiceRequest.Callback<WeatherData> {
         return object : ServiceRequest.Callback<WeatherData> {
-            override fun onCallback(call: Call<*>, status: Int, result: WeatherData) {
+            override fun onCallback(call: Call<*>, status: Int, result: WeatherData?) {
                 if (!isAdded) return
                 if (call.isCanceled || result == null || result.days == null || result.days.size == 0) return
                 App.WEATHER.setWeather(result)
@@ -473,7 +493,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             val result = App.WEATHER.weather
             mWeatherView!!.setImageBitmap(
                 AndroidSystem.getImageForAssets(
-                    activity, FilePathMangaer.getWeatherIcon(
+                    requireContext(), FilePathMangaer.getWeatherIcon(
                         result.days[0].icon
                     )
                 )
@@ -729,7 +749,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             val data = Gson().fromJson(
                 FileReader(
                     FilePathMangaer.getMoviePath(
-                        activity
+                        requireContext()
                     ) + "/data/movie.json"
                 ), HomeResponse.Inner::class.java
             )
@@ -737,7 +757,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 for (movice in home.datas) {
                     App.MOVIE_IMAGE.put(
                         movice.url, FilePathMangaer.getMoviePath(
-                            activity
+                            requireContext()
                         ) + "/" + movice.imageUrl
                     )
                 }
@@ -821,7 +841,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun fillMovice(id: Long, dirction: Int, columns: Int, layoutId: Int) {
-        setMoviceContent(App.MOVIE_MAP[id]!!, dirction, columns, layoutId)
+        setMoviceContent(App.MOVIE_MAP[id], dirction, columns, layoutId)
         requestHome()
     }
 
@@ -873,7 +893,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         override fun onCallback(
                             call: Call<*>,
                             status: Int,
-                            result: AppListResponse
+                            result: AppListResponse?
                         ) {
                             isFullAll = false
                             if (!isAdded || call.isCanceled || result == null || result.result == null || result.result.appList == null || result.result.appList.isEmpty()) return
@@ -908,7 +928,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun fillHeader() {
         try {
-            val path = FilePathMangaer.getJsonPath(activity) + "/Home.json"
+            val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeResponse>(
                     JsonReader(FileReader(path)),
@@ -938,7 +958,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             response.data = data
             val header = fillData(response, TypeItem.TYPE_ICON_IMAGE_URL, 1)
             for (item in header) {
-                item.icon = FilePathMangaer.getMoviePath(activity) + "/" + item.icon
+                item.icon = FilePathMangaer.getMoviePath(requireContext()) + "/" + item.icon
             }
             header.addAll(items)
             setHeader(header)
@@ -956,7 +976,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         val menus: MutableList<TypeItem> = ArrayList()
         val gson = Gson()
         for (bean in homeItems) {
-            val movices: MutableList<Movice> = ArrayList(bean.datas.size)
+            val movices: MutableList<Movice?> = ArrayList(bean.datas.size)
             for (movice in bean.datas) {
                 movice.picType = Movice.PIC_NETWORD
                 movice.appName = bean.name
@@ -1044,7 +1064,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun newMoviceListCallback(): ServiceRequest.Callback<HomeResponse> {
         return object : ServiceRequest.Callback<HomeResponse> {
-            override fun onCallback(call: Call<*>, status: Int, result: HomeResponse) {
+            override fun onCallback(call: Call<*>, status: Int, result: HomeResponse?) {
                 try {
                     if (!isAdded || call.isCanceled || result == null) return
                     if (result.data == null || result.data.getMovies() == null || result.data.getMovies()
@@ -1131,8 +1151,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun checkVersion() {
-        HttpRequest.checkVersion(object : ServiceRequest.Callback<VersionResponse> {
-            override fun onCallback(call: Call<*>, status: Int, result: VersionResponse) {
+        checkVersion(object : ServiceRequest.Callback<VersionResponse> {
+            override fun onCallback(call: Call<*>, status: Int, result: VersionResponse?) {
                 if (!isAdded || call.isCanceled || result == null || result.data == null) return
                 val version = result.data
                 if (version.version > BuildConfig.VERSION_CODE && Config.CHANNEL == version.channel) {

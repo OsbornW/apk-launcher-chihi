@@ -218,8 +218,9 @@ public class WeatherFragment extends AbsFragment implements View.OnClickListener
         mRangeView.setText(String.format("%.0f℉ ~ %.0f℉", item.getTempmin(), item.getTempmax()));
         mTargetIconView.setImageBitmap(AndroidSystem.getImageForAssets(getActivity(), FilePathMangaer.getWeatherIcon(item.getIcon())));
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        if (item.getHours() != null && item.getHours().length != 0) {
-            for (Weatherhour weatherhour : item.getHours()){
+        if (item.getHours() != null) {
+            item.getHours();
+            for (Weatherhour weatherhour : item.getHours()) {
                 String[] split = weatherhour.getDatetime().split(":");
                 if (hour == Integer.valueOf(split[0])) {
                     mCurrentTempView.setText(String.format("%.0f℉", weatherhour.getTemp()));

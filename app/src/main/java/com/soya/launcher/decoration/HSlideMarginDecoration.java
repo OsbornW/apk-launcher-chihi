@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class HSlideMarginDecoration extends RecyclerView.ItemDecoration {
-    private float maxMargin;
-    private float minMargin;
+    private final float maxMargin;
+    private final float minMargin;
     public HSlideMarginDecoration(float maxMargin, float minMargin){
         this.maxMargin = maxMargin;
         this.minMargin = minMargin;

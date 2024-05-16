@@ -19,9 +19,9 @@ import com.soya.launcher.utils.AndroidSystem;
 import java.util.List;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.Holder> {
-    private Context context;
-    private LayoutInflater inflater;
-    private List<Weather> dataList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<Weather> dataList;
 
     public WeatherAdapter(Context context, LayoutInflater inflater, List<Weather> dataList){
         this.context = context;
@@ -52,9 +52,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.Holder> 
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private TextView mDateView;
-        private ImageView mIconView;
-        private TextView mRangeView;
+        private final TextView mDateView;
+        private final ImageView mIconView;
+        private final TextView mRangeView;
 
         public Holder(@NonNull View itemView) {
             super(itemView);

@@ -25,11 +25,11 @@ import java.util.List;
 
 public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Holder> {
 
-    private Context context;
-    private LayoutInflater inflater;
+    private final Context context;
+    private final LayoutInflater inflater;
     private Callback callback;
 
-    private List<DivSearch> dataList;
+    private final List<DivSearch> dataList;
 
     public FullSearchAdapter(Context context, LayoutInflater inflater, List<DivSearch> dataList, Callback callback){
         this.context = context;
@@ -71,10 +71,10 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private HorizontalGridView mContentGrid;
-        private TextView mTitleView;
-        private View mNoneView;
-        private View mProgressView;
+        private final HorizontalGridView mContentGrid;
+        private final TextView mTitleView;
+        private final View mNoneView;
+        private final View mProgressView;
 
         public Holder(View view) {
             super(view);

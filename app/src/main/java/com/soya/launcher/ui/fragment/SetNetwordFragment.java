@@ -17,6 +17,7 @@ import com.soya.launcher.bean.SettingItem;
 import com.soya.launcher.utils.AndroidSystem;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class SetNetwordFragment extends AbsFragment implements View.OnClickListener {
 
@@ -64,9 +65,7 @@ public class SetNetwordFragment extends AbsFragment implements View.OnClickListe
         mContentGrid.setAdapter(itemBridgeAdapter);
         mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem[]{
-                new SettingItem(1, getString(R.string.network), R.drawable.baseline_wifi_100),
-        }));
+        arrayObjectAdapter.addAll(0, Collections.singletonList(new SettingItem(1, getString(R.string.network), R.drawable.baseline_wifi_100)));
         mContentGrid.setSelectedPosition(0);
     }
 

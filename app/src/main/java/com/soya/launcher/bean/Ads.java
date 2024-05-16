@@ -3,7 +3,7 @@ package com.soya.launcher.bean;
 public class Ads {
 
     private int spanSize = 1;
-    private int picture;
+    private final int picture;
 
     public Ads(int spanSize, int picture){
         this.spanSize = spanSize;

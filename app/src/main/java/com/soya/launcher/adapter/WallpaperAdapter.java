@@ -16,9 +16,9 @@ import com.soya.launcher.view.MyFrameLayout;
 
 public class WallpaperAdapter extends Presenter {
 
-    private Context context;
-    private LayoutInflater inflater;
-    private Callback callback;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final Callback callback;
 
     public WallpaperAdapter(Context context, LayoutInflater inflater, Callback callback){
         this.context = context;
@@ -45,9 +45,9 @@ public class WallpaperAdapter extends Presenter {
 
     public class Holder extends ViewHolder {
 
-        private MyFrameLayout mRootView;
-        private ImageView mIV;
-        private View mCheckView;
+        private final MyFrameLayout mRootView;
+        private final ImageView mIV;
+        private final View mCheckView;
 
         public Holder(View view) {
             super(view);

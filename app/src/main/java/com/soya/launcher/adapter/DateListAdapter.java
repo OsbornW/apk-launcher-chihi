@@ -17,11 +17,11 @@ import java.util.List;
 
 public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.Holder> {
 
-    private Context context;
-    private LayoutInflater inflater;
-    private List<DateItem> dataList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<DateItem> dataList;
 
-    private Callback callback;
+    private final Callback callback;
 
     public DateListAdapter(Context context, LayoutInflater inflater, List<DateItem> dataList, Callback callback){
         this.context = context;
@@ -47,9 +47,9 @@ public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.Holder
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private TextView mTitleView;
-        private TextView mDescView;
-        private Switch mSwitch;
+        private final TextView mTitleView;
+        private final TextView mDescView;
+        private final Switch mSwitch;
 
         public Holder(View view) {
             super(view);
@@ -65,7 +65,7 @@ public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.Holder
             mSwitch.setChecked(bean.isSwitch());
             mSwitch.setVisibility(bean.isUseSwitch() ? View.VISIBLE : View.GONE);
             mDescView.setVisibility(bean.isUseSwitch() ? View.GONE : View.VISIBLE);
-            mTitleView.setEnabled(dataList.get(0).isSwitch() && (index == 1 || index == 2) ? false : true);
+            mTitleView.setEnabled(!dataList.get(0).isSwitch() || (index != 1 && index != 2));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

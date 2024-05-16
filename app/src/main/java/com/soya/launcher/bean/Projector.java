@@ -7,8 +7,8 @@ public class Projector {
     public static final int TYPE_PROJECTOR_MODE = 3;
     public static final int TYPE_AUTO_MODE = 4;
 
-    private int type;
-    private int icon;
+    private final int type;
+    private final int icon;
 
     public Projector(int type, int icon){
         this.type = type;

@@ -25,12 +25,12 @@ import com.soya.launcher.view.MyCardView;
 import java.util.List;
 
 public class MainHeaderAdapter extends RecyclerView.Adapter<MainHeaderAdapter.Holder> {
-    private Context context;
-    private LayoutInflater inflater;
-    private int selectItem = -1;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final int selectItem = -1;
 
-    private Callback callback;
-    private List<TypeItem> items;
+    private final Callback callback;
+    private final List<TypeItem> items;
 
     public MainHeaderAdapter(Context context, LayoutInflater inflater, List<TypeItem> items,  Callback callback){
         this.context = context;
@@ -62,9 +62,9 @@ public class MainHeaderAdapter extends RecyclerView.Adapter<MainHeaderAdapter.Ho
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private ImageView mIV;
-        private TextView mTitleView;
-        private MyCardView mCardView;
+        private final ImageView mIV;
+        private final TextView mTitleView;
+        private final MyCardView mCardView;
 
 
         public Holder(View view) {

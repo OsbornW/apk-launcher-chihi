@@ -3,9 +3,9 @@ package com.soya.launcher.bean;
 import java.util.Locale;
 
 public class Language {
-    private String name;
-    private String desc;
-    private Locale language;
+    private final String name;
+    private final String desc;
+    private final Locale language;
 
     public Language(String name, String desc, Locale language){
         this.name = name;

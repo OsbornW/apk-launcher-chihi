@@ -1,6 +1,7 @@
 package com.soya.launcher.bean;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Movice implements Serializable {
     public static final int PIC_ASSETS = 0;
@@ -8,11 +9,11 @@ public class Movice implements Serializable {
     public static final int PIC_PLACEHOLDING = 2;
 
     private boolean isLocal;
-    private int type;
+    private final int type;
     private Object imageUrl;
     private String picture;
-    private String url;
-    private String title;
+    private final String url;
+    private final String title;
     private String appName;
     private AppPackage[] appPackage;
     private int picType = PIC_ASSETS;
@@ -83,5 +84,20 @@ public class Movice implements Serializable {
 
     public boolean isLocal() {
         return isLocal;
+    }
+
+    @Override
+    public String toString() {
+        return "Movice{" +
+                "isLocal=" + isLocal +
+                ", type=" + type +
+                ", imageUrl=" + imageUrl +
+                ", picture='" + picture + '\'' +
+                ", url='" + url + '\'' +
+                ", title='" + title + '\'' +
+                ", appName='" + appName + '\'' +
+                ", appPackage=" + Arrays.toString(appPackage) +
+                ", picType=" + picType +
+                '}';
     }
 }

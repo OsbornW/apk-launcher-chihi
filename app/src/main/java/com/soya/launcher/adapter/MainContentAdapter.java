@@ -29,11 +29,11 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.Holder> {
-    private Context context;
-    private LayoutInflater inflater;
-    private List<Movice> dataList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<Movice> dataList;
 
-    private Callback callback;
+    private final Callback callback;
     private int layoutId;
 
     public MainContentAdapter(Context context, LayoutInflater inflater, List<Movice> dataList, Callback callback){
@@ -71,8 +71,8 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private MyFrameLayout mCardView;
-        private ImageView mIV;
+        private final MyFrameLayout mCardView;
+        private final ImageView mIV;
         public Holder(View view) {
             super(view);
             view.setNextFocusUpId(R.id.header);
@@ -84,6 +84,7 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
             View root = itemView.getRootView();
             switch (item.getPicType()){
                 case Movice.PIC_ASSETS:
+                    Log.d("zy1996", "bind: 当前要显示的本地图片是------"+item.getImageUrl());
                     GlideUtils.bind(context, mIV, FileUtils.readAssets(context, (String) item.getImageUrl()));
                     break;
                 case Movice.PIC_NETWORD:

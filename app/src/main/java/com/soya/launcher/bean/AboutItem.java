@@ -1,9 +1,9 @@
 package com.soya.launcher.bean;
 
 public class AboutItem {
-    private int type;
-    private int icon;
-    private String title;
+    private final int type;
+    private final int icon;
+    private final String title;
     private String description;
 
     public AboutItem(int type, int icon, String title, String description){

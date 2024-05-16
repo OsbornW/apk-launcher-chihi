@@ -163,7 +163,7 @@ public class ScaleScreenFragment extends AbsFragment implements KeyEventFrameLay
 
     private void reloadSettingsByRes() {
         String res = ASystemProperties.get("sys.fb.size", "");
-        String propList[] = {"persist.display.keystone_ltx",
+        String[] propList = {"persist.display.keystone_ltx",
                 "persist.display.keystone_lty",
                 "persist.display.keystone_lbx",
                 "persist.display.keystone_lby",

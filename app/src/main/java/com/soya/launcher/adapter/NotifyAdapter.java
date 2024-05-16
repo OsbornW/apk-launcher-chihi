@@ -17,10 +17,10 @@ import java.util.List;
 
 public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.Holder> {
 
-    private Context context;
-    private List<Notify> dataList;
-    private LayoutInflater inflater;
-    private int layoutId;
+    private final Context context;
+    private final List<Notify> dataList;
+    private final LayoutInflater inflater;
+    private final int layoutId;
 
     public NotifyAdapter(Context context, LayoutInflater inflater, List<Notify> dataList, int layoutId){
         this.context = context;
@@ -52,7 +52,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyAdapter.Holder> {
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private ImageView mIV;
+        private final ImageView mIV;
         public Holder(@NonNull View itemView) {
             super(itemView);
             mIV = itemView.findViewById(R.id.image);

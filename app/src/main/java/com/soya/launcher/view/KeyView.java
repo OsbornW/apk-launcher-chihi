@@ -19,6 +19,6 @@ public class KeyView extends AppCompatImageView {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return event.getKeyCode() == 21 ? true : super.onKeyDown(keyCode, event);
+        return event.getKeyCode() == 21 || super.onKeyDown(keyCode, event);
     }
 }

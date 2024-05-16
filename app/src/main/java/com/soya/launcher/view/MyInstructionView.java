@@ -20,13 +20,13 @@ public abstract class MyInstructionView extends FrameLayout {
 
     protected abstract int getLayoutId();
 
-    private TextView mLRText;
-    private TextView mTBText;
+    private final TextView mLRText;
+    private final TextView mTBText;
 
-    private ImageView mL;
-    private ImageView mR;
-    private ImageView mT;
-    private ImageView mB;
+    private final ImageView mL;
+    private final ImageView mR;
+    private final ImageView mT;
+    private final ImageView mB;
 
     public MyInstructionView(@NonNull Context context) {
         this(context, null);

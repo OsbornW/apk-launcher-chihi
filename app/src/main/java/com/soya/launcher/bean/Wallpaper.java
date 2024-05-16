@@ -1,8 +1,8 @@
 package com.soya.launcher.bean;
 
 public class Wallpaper {
-    private int id;
-    private int picture;
+    private final int id;
+    private final int picture;
 
     public Wallpaper(int id, int picture){
         this.id = id;

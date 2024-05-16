@@ -3,9 +3,9 @@ package com.soya.launcher.bean;
 import java.util.List;
 
 public class DivSearch<T> {
-    private int type;
-    private String title;
-    private List<T> list;
+    private final int type;
+    private final String title;
+    private final List<T> list;
     private int state;
 
     public DivSearch(int type, String title, List<T> list, int state){

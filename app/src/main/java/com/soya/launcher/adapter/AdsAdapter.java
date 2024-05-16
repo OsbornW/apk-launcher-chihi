@@ -19,10 +19,10 @@ import java.util.Map;
 public class AdsAdapter extends RecyclerView.Adapter<AdsAdapter.Holder> {
     public static final int TYPE_MIN = 0;
     public static final int TYPE_MAX = 1;
-    private Context context;
-    private LayoutInflater inflater;
-    private List<Ads> dataList;
-    private Map<Integer, Integer> layoutMap;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<Ads> dataList;
+    private final Map<Integer, Integer> layoutMap;
 
     public AdsAdapter(Context context, LayoutInflater inflater, List<Ads> dataList, Map<Integer, Integer> layoutMap){
         this.context = context;
@@ -53,7 +53,7 @@ public class AdsAdapter extends RecyclerView.Adapter<AdsAdapter.Holder> {
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private ImageView mImagView;
+        private final ImageView mImagView;
         public Holder(@NonNull View itemView) {
             super(itemView);
             mImagView = itemView.findViewById(R.id.image);

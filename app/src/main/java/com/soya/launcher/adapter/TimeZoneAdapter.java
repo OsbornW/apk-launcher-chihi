@@ -20,9 +20,9 @@ import java.util.TimeZone;
 
 public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.Holder> {
 
-    private Context context;
-    private LayoutInflater inflater;
-    private List<SimpleTimeZone> dataList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<SimpleTimeZone> dataList;
 
     private TimeZone select;
     private Callback callback;
@@ -61,9 +61,9 @@ public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.Holder
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private TextView mTitleView;
-        private TextView mDescView;
-        private ImageView mCheckView;
+        private final TextView mTitleView;
+        private final TextView mDescView;
+        private final ImageView mCheckView;
 
         public Holder(View view) {
             super(view);
@@ -73,7 +73,7 @@ public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.Holder
         }
 
         public void bind(SimpleTimeZone bean){
-            boolean isSelect = select == null ? false : bean.getZone().getID().equals(select.getID());
+            boolean isSelect = select != null && bean.getZone().getID().equals(select.getID());
             mTitleView.setText(bean.getName());
             mDescView.setText(bean.getDesc());
             mCheckView.setVisibility(isSelect ? View.VISIBLE : View.GONE);

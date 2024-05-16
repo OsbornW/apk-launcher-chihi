@@ -32,6 +32,7 @@ import com.soya.launcher.utils.AppUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -51,13 +52,11 @@ public abstract class AbsDateFragment extends AbsFragment implements View.OnClic
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean is24 = AppUtils.is24Display(getActivity());
-        itemList.addAll(Arrays.asList(new DateItem[]{
-                new DateItem(0, getString(R.string.auto_time_title), isAutoTime() ? getString(R.string.open) : getString(R.string.close), isAutoTime(), true),
+        itemList.addAll(Arrays.asList(new DateItem(0, getString(R.string.auto_time_title), isAutoTime() ? getString(R.string.open) : getString(R.string.close), isAutoTime(), true),
                 new DateItem(1, getString(R.string.set_date_title), getDate(), false, false),
                 new DateItem(2, getString(R.string.set_time_title), getTime(), false, false),
                 new DateItem(3, getString(R.string.time_display), is24 ? getString(R.string.open) : getString(R.string.close), is24, true),
-                new DateItem(4, getString(R.string.time_zone), TimeZone.getDefault().getDisplayName(), false, false),
-        }));
+                new DateItem(4, getString(R.string.time_zone), TimeZone.getDefault().getDisplayName(), false, false)));
     }
 
     @Override
@@ -94,9 +93,7 @@ public abstract class AbsDateFragment extends AbsFragment implements View.OnClic
         mContentGrid.setAdapter(itemBridgeAdapter);
         mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem[]{
-                new SettingItem(1, getString(R.string.network), R.drawable.baseline_wifi_100),
-        }));
+        arrayObjectAdapter.addAll(0, Collections.singletonList(new SettingItem(1, getString(R.string.network), R.drawable.baseline_wifi_100)));
     }
 
     private void setSlide(View view, LayoutInflater inflater){

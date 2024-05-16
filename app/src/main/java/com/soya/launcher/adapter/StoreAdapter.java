@@ -24,11 +24,11 @@ import java.util.List;
 
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.Holder> {
 
-    private Context context;
-    private LayoutInflater inflater;
-    private List<AppItem> dataList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<AppItem> dataList;
 
-    private Callback callback;
+    private final Callback callback;
 
     public StoreAdapter(Context context, LayoutInflater inflater, List<AppItem> dataList, Callback callback){
         this.context = context;
@@ -60,10 +60,10 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.Holder> {
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private MyFrameLayout mRootView;
-        private ImageView mIV;
-        private TextView mTitleView;
-        private TextView mMesView;
+        private final MyFrameLayout mRootView;
+        private final ImageView mIV;
+        private final TextView mTitleView;
+        private final TextView mMesView;
 
         public Holder(View view) {
             super(view);

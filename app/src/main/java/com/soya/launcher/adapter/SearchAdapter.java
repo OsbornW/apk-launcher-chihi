@@ -16,9 +16,9 @@ import com.soya.launcher.utils.GlideUtils;
 
 public class SearchAdapter extends Presenter {
 
-    private Context context;
-    private LayoutInflater inflater;
-    private Callback callback;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final Callback callback;
 
     public SearchAdapter(Context context, LayoutInflater inflater, Callback callback){
         this.context = context;
@@ -44,8 +44,8 @@ public class SearchAdapter extends Presenter {
     }
 
     public class Holder extends ViewHolder {
-        private ImageView mIV;
-        private TextView mTitleView;
+        private final ImageView mIV;
+        private final TextView mTitleView;
 
         public Holder(View view) {
             super(view);

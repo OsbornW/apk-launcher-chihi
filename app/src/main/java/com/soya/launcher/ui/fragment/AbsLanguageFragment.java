@@ -125,7 +125,7 @@ public abstract class AbsLanguageFragment extends AbsFragment implements View.On
         mNextView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    protected void onNext(){};
+    protected void onNext(){}
 
-    protected void onSelectLanguage(Language bean){};
+    protected void onSelectLanguage(Language bean){}
 }

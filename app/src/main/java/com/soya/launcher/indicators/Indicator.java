@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public abstract class Indicator extends Drawable implements Animatable {
 
-    private HashMap<ValueAnimator,ValueAnimator.AnimatorUpdateListener> mUpdateListeners=new HashMap<>();
+    private final HashMap<ValueAnimator,ValueAnimator.AnimatorUpdateListener> mUpdateListeners=new HashMap<>();
 
     private ArrayList<ValueAnimator> mAnimators;
     private int alpha = 255;
@@ -28,7 +28,7 @@ public abstract class Indicator extends Drawable implements Animatable {
 
     private boolean mHasAnimators;
 
-    private Paint mPaint=new Paint();
+    private final Paint mPaint=new Paint();
 
     public Indicator(){
         mPaint.setColor(Color.WHITE);

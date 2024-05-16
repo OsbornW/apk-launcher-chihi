@@ -15,11 +15,11 @@ import java.util.List;
 
 public class DateSelectAdapter extends RecyclerView.Adapter<DateSelectAdapter.Holder> {
 
-    private Context context;
-    private LayoutInflater inflater;
-    private List<Integer> dataList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<Integer> dataList;
 
-    private Callback callback;
+    private final Callback callback;
     private Integer select;
 
     public DateSelectAdapter(Context context, LayoutInflater inflater, List<Integer> dataList, Callback callback){
@@ -65,7 +65,7 @@ public class DateSelectAdapter extends RecyclerView.Adapter<DateSelectAdapter.Ho
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private TextView mTitleView;
+        private final TextView mTitleView;
 
         public Holder(View view) {
             super(view);

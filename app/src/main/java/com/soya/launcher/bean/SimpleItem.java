@@ -1,9 +1,9 @@
 package com.soya.launcher.bean;
 
 public class SimpleItem {
-    private int type;
-    private String title;
-    private String desc;
+    private final int type;
+    private final String title;
+    private final String desc;
 
     public SimpleItem(int type, String title, String desc){
         this.type = type;

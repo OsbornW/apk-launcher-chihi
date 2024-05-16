@@ -12,6 +12,7 @@ import android.os.SystemClock;
 import com.soya.launcher.bean.MyRunnable;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -81,15 +82,17 @@ public class BluetoothScannerUtils {
     }
 
     public static class Listener{
-        public void onStartScan(BluetoothAdapter adapter){};
-        public void onFound(BluetoothAdapter adapter, List<BluetoothDevice> devices){};
-        public void onRemove(BluetoothAdapter adapter, List<BluetoothDevice> devices){};
+        public void onStartScan(BluetoothAdapter adapter){}
+
+        public void onFound(BluetoothAdapter adapter, List<BluetoothDevice> devices){}
+
+        public void onRemove(BluetoothAdapter adapter, List<BluetoothDevice> devices){}
     }
 
     public static final class Inner{
-        private Context context;
-        private Receiver receiver;
-        private Listener listener;
+        private final Context context;
+        private final Receiver receiver;
+        private final Listener listener;
         private BluetoothProfile profile;
 
         public Inner(Context context, Receiver receiver, Listener listener){
@@ -115,7 +118,7 @@ public class BluetoothScannerUtils {
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     for (Map.Entry<Context, Inner> entry : MAP.entrySet()){
-                        entry.getValue().listener.onFound(BLUETOOTH_ADAPTER, Arrays.asList(device));
+                        entry.getValue().listener.onFound(BLUETOOTH_ADAPTER, Collections.singletonList(device));
                     }
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:

@@ -130,33 +130,45 @@ public class ServiceRequest {
 
 
     public <T> void asyncRequest(Call<ResponseBody> call, Class<T> tClass, Callback<T> callback, String tag){
-        call.enqueue(new retrofit2.Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                T data = null;
-                try {
-                    String json = new String(response.body() != null ? response.body().bytes() : response.errorBody().bytes());
-                    Log.e(tag, tag+": "+json);
-                    data = GSON.fromJson(json, tClass);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    byCallback(call, callback, data, false);
-                }
-            }
+        Log.d("zy1996", "byCallback: callback是空的吗3==="+(callback==null));
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                byCallback(call, callback, null, true);
-                t.printStackTrace();
-            }
-        });
+        if(call!=null){
+            call.enqueue(new retrofit2.Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    T data = null;
+                    try {
+                        String json = new String(response.body() != null ? response.body().bytes() : response.errorBody().bytes());
+                        Log.e(tag, tag+": "+json);
+                        data = GSON.fromJson(json, tClass);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }finally {
+                        byCallback(call, callback, data, false);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    Log.d("zy1996", "byCallback: callback是空的吗2==="+(callback==null));
+
+                    byCallback(call, callback, null, true);
+                    t.printStackTrace();
+                }
+            });
+        }
+
     }
 
     private static <T> void byCallback(Call<ResponseBody> call, Callback<T> callback, T data, boolean isNetError){
+        Log.d("zy1996", "byCallback: callback是空的吗==="+(callback==null)+"===="+(call==null));
         if (callback != null){
             if (isNetError){
-                callback.onCallback(call, ServiceStatus.STATE_NET_WORK_ERROR, null);
+                if(call!=null){
+                    callback.onCallback(call, ServiceStatus.STATE_NET_WORK_ERROR, null);
+
+                }
             }else {
                 if (data == null){
                     callback.onCallback(call, ServiceStatus.STATE_SERVICE_ERROR, null);
