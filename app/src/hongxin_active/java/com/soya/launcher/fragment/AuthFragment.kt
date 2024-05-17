@@ -1,9 +1,6 @@
-package com.soya.launcher.ui.activity
+package com.soya.launcher.fragment
 
-import android.util.Log
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.blankj.utilcode.util.DeviceUtils
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
@@ -80,7 +77,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
 
             inputCompleted {
                 mBind.llActive.post {
-                   // mBind.etActiveCode.clearFocus()
+                    // mBind.etActiveCode.clearFocus()
                     it.yes {
                         mBind.tvActive.requestFocus()
                         //Thread.sleep(500)
@@ -104,7 +101,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
         mBind.etActiveCode.setOnFocusChangeListener { view, b ->
 
             b.yes {
-               showKB()
+                showKB()
             }
         }
         mBind.tvActive.setOnFocusChangeListener { view, b ->
@@ -213,8 +210,8 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                     lifecycleScope.launch {
                         delay(500)
                         //repeatOnLifecycle(Lifecycle.State.RESUMED){
-                            sendLiveEventData(ACTIVE_SUCCESS, true)
-                       // }
+                        sendLiveEventData(ACTIVE_SUCCESS, true)
+                        // }
 
                     }
 

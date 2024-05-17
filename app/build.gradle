@@ -7,6 +7,180 @@ plugins {
 }
 
 android {
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            java.srcDirs = ['src/main/java']
+        }
+        hongxin_active {
+            java.srcDirs = ['src/hongxin_active/java']
+        }
+        hongxin_projector {
+            java.srcDirs = ['src/hongxin_projector/java']
+        }
+
+        no_sys_sign {
+            java.srcDirs = ['src/no_sys_sign/java']
+        }
+
+        aiboyou_projector {
+            java.srcDirs = ['src/aiboyou_projector/java']
+        }
+
+        aiboyou_tv {
+            java.srcDirs = ['src/aiboyou_tv/java']
+        }
+
+        x98k_tv {
+            java.srcDirs = ['src/x98k_tv/java']
+        }
+
+    }
+
+    signingConfigs {
+        hongxin{
+            storeFile file("platform_H713.keystore")
+            storePassword "android"
+            keyAlias "platform"
+            keyPassword "android"
+        }
+
+        x98k{
+            storeFile file("platform_X98K.keystore")
+            storePassword "android"
+            keyAlias "platform"
+            keyPassword "android"
+        }
+
+        p_9255{
+            storeFile file("platform_9255.keystore")
+            keyAlias = 'androiddebugkey'
+            storePassword 'android'
+            keyPassword 'android'
+        }
+
+        p_710_701 {
+            storeFile file("platform_H710_701.jks")
+            storePassword 'platform'
+            keyAlias 'platform'
+            keyPassword 'platform'
+        }
+
+    }
+
+
+    flavorDimensions.add("chihi")
+
+    productFlavors {
+
+        //宏信(投影仪)
+        hongxin_projector {
+            applicationId "com.soya.launcher.hongxinprojector"
+            dimension "chihi"
+            signingConfig signingConfigs.hongxin
+            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            //buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"0"'
+            buildConfigField "String", "CHANNEL", '"LA27001"'
+            buildConfigField "String", "CHIHI_TYPE", '"H700"'
+            buildConfigField "String", "MODEL", '"cupid"'
+        }
+
+        // 爱泊优(投影仪)
+        aiboyou_projector {
+            applicationId "com.soya.launcher.aiboyouprojector"
+            dimension "chihi"
+            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            //buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"1"'
+            buildConfigField "String", "CHANNEL", '"LA22001"'
+            buildConfigField "String", "CHIHI_TYPE", '"PROJECTOR_001"'
+            buildConfigField "String", "MODEL", '"001"'
+        }
+
+        //爱泊优(TV)
+        aiboyou_tv {
+            applicationId "com.soya.launcher.aiboyoutv"
+            dimension "chihi"
+            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            //buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"2"'
+            buildConfigField "String", "CHANNEL", '"LA22001"'
+            buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
+            buildConfigField "String", "MODEL", '"001"'
+        }
+
+        // X98K (TV)
+        x98k_tv {
+            applicationId "com.soya.launcher.x98ktv"
+            dimension "chihi"
+            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            signingConfig signingConfigs.x98k
+            // 自定义buildConfig.java中的变量供代码中使用
+            //buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"4"'
+            buildConfigField "String", "CHANNEL", '"LA23001"'
+            buildConfigField "String", "CHIHI_TYPE", '"X98K"'
+            buildConfigField "String", "MODEL", '"001"'
+        }
+
+        //宏信激活暂用(投影仪)
+        hongxin_active {
+            applicationId "com.soya.launcher.hongxin_active"
+            dimension "chihi"
+            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            signingConfig signingConfigs.hongxin
+            // 自定义buildConfig.java中的变量供代码中使用
+            //buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"5"'
+            buildConfigField "String", "CHANNEL", '"LA27001"'
+            buildConfigField "String", "CHIHI_TYPE", '"H700"'
+            buildConfigField "String", "MODEL", '"cupid"'
+        }
+
+        no_sys_sign{
+            applicationId "com.soya.launcher.nosyssign"
+            dimension "chihi"
+            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            //buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"2"'
+            buildConfigField "String", "CHANNEL", '"LA22001"'
+            buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
+            buildConfigField "String", "MODEL", '"001"'
+            signingConfig signingConfigs.hongxin
+            manifestPlaceholders = [share_uid:""]
+        }
+
+    }
+
+
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            //清理多余的图片资源或raw中没有用到的资源等，一般会和混淆同时使用(和混淆都可以起到一定程度apk瘦身的作用)
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
+        //打包应用
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${defaultConfig.manifestPlaceholders.channel}.apk"
+            }
+        }
+    }
+
+
     namespace 'com.soya.launcher'
     compileSdk 34
 
@@ -17,59 +191,14 @@ android {
         versionCode 53
         versionName "1.53"
 
-        // 宏信
-        manifestPlaceholders = [
-                company   : "0",
-                user_id   : "62",
-                appId     : "launcher",
-                channel   : "LA27001",
-                chihi_type: "H700",
-                model     : "cupid"
-        ]
-
-        /*
-        // 爱泊优 投影仪
-        manifestPlaceholders = [
-                company   : "1",
-                user_id   : "62",
-                appId     : "launcher",
-                channel   : "LA22001",
-                chihi_type: "PROJECTOR_001",
-                model     : "001"
-        ]
-         */
-
-        /*
-        // 爱泊优 TV
-        manifestPlaceholders = [
-                company   : "2",
-                user_id   : "62",
-                appId     : "launcher",
-                channel   : "LA22001",
-                chihi_type: "TV_001",
-                model     : "001"
-        ]
-         */
-
-        // X98K TV
-        /*manifestPlaceholders = [
-                company   : "4",
-                user_id   : "62",
-                appId     : "launcher",
-                channel   : "LA23001",
-                chihi_type: "X98K",
-                model     : "001"
-        ]*/
-
-        // 构建自定义配置字段
-        buildConfigField "String", "COMPANY", "\"${manifestPlaceholders.company}\""
-        buildConfigField "String", "USER_ID", "\"${manifestPlaceholders.user_id}\""
-        buildConfigField "String", "APP_ID", "\"${manifestPlaceholders.appId}\""
-        buildConfigField "String", "CHANNEL", "\"${manifestPlaceholders.channel}\""
-        buildConfigField "String", "CHIHI_TYPE", "\"${manifestPlaceholders.chihi_type}\""
-        buildConfigField "String", "MODEL", "\"${manifestPlaceholders.model}\""
+        buildConfigField "String", "BASE_URL", '"https://99soya.shop/"'
+        buildConfigField "String", "APP_ID", '"launcher"'
+        buildConfigField "String", "USER_ID", '"62"'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [share_uid:"android.uid.system"]
+
 
         ndk {
             abiFilters 'armeabi-v7a'
@@ -79,63 +208,7 @@ android {
 
     }
 
-    buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
 
-        debug {
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-
-        //打包应用
-        android.applicationVariants.all { variant ->
-            variant.outputs.all {
-                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${defaultConfig.manifestPlaceholders.channel}.apk"
-            }
-        }
-    }
-    signingConfigs {
-
-        /*debug{
-            storeFile file("platform_9255.keystore")
-            keyAlias = 'androiddebugkey'
-            storePassword 'android'
-            keyPassword 'android'
-        }*/
-
-        debug{
-            storeFile file("platform_H713.keystore")
-            storePassword "android"
-            keyAlias "platform"
-            keyPassword "android"
-        }
-
-        release{
-            storeFile file("platform_H713.keystore")
-            storePassword "android"
-            keyAlias "platform"
-            keyPassword "android"
-        }
-
-       /* debug {
-           storeFile file("platform_H710_701.jks")
-           storePassword 'platform'
-           keyAlias 'platform'
-           keyPassword 'platform'
-       }*/
-
-        /*debug {
-            storeFile file("platform.keystore")
-            storePassword 'platform'
-            keyAlias 'platform'
-            keyPassword 'platform'
-        }*/
-    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

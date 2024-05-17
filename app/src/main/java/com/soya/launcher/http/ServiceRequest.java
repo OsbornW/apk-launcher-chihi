@@ -130,7 +130,6 @@ public class ServiceRequest {
 
 
     public <T> void asyncRequest(Call<ResponseBody> call, Class<T> tClass, Callback<T> callback, String tag){
-        Log.d("zy1996", "byCallback: callback是空的吗3==="+(callback==null));
 
         if(call!=null){
             call.enqueue(new retrofit2.Callback<ResponseBody>() {
@@ -151,8 +150,6 @@ public class ServiceRequest {
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                    Log.d("zy1996", "byCallback: callback是空的吗2==="+(callback==null));
-
                     byCallback(call, callback, null, true);
                     t.printStackTrace();
                 }
@@ -162,7 +159,6 @@ public class ServiceRequest {
     }
 
     private static <T> void byCallback(Call<ResponseBody> call, Callback<T> callback, T data, boolean isNetError){
-        Log.d("zy1996", "byCallback: callback是空的吗==="+(callback==null)+"===="+(call==null));
         if (callback != null){
             if (isNetError){
                 if(call!=null){

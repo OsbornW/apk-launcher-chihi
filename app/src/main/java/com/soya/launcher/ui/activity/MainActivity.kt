@@ -5,14 +5,18 @@ import androidx.fragment.app.Fragment
 import com.shudong.lib_base.base.BaseVMActivity
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
+import com.shudong.lib_base.ext.IS_MAIN_CANBACK
+import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
+import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.ActivityMainBinding
 import com.soya.launcher.enums.IntentAction
+import com.soya.launcher.ext.switchFragment
 import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.ui.fragment.MainFragment.Companion.newInstance
 import com.soya.launcher.ui.fragment.WelcomeFragment
@@ -29,7 +33,16 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
         this.obseverLiveEvent<Boolean>(ACTIVE_SUCCESS){
             commit()
         }
+
+        this.obseverLiveEvent<Boolean>(IS_MAIN_CANBACK){
+            it.yes {
+                canBackPressed = true
+            }.otherwise {
+                canBackPressed = false
+            }
+        }
     }
+
 
     private fun commit() {
         supportFragmentManager.beginTransaction()
@@ -37,34 +50,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
             .commitAllowingStateLoss()
     }
 
-     fun getFragment(): Fragment {
-
-         (Config.COMPANY == 0).yes {
-             AppCacheBase.isActive.yes {
-                 /*return if (PreferencesManager.isGuide() == 0 && Config.COMPANY == 0) {
-                     canBackPressed = true
-                     WelcomeFragment.newInstance()
-                 } else {
-                     canBackPressed = false
-                     newInstance()
-                 }*/
-                 canBackPressed = false
-                 return newInstance()
-             }.otherwise {
-                 return AuthFragment.newInstance()
-             }
-         }.otherwise {
-             return if (PreferencesManager.isGuide() == 0 && Config.COMPANY == 0) {
-                 canBackPressed = true
-                 WelcomeFragment.newInstance()
-             } else {
-                 canBackPressed = false
-                 newInstance()
-             }
-         }
-
-
-    }
+     fun getFragment(): Fragment  = switchFragment()
 
     override fun onBackPressed() {
         if (canBackPressed) super.onBackPressed() else sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))

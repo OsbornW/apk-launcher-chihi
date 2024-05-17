@@ -21,3 +21,4 @@ inline fun <reified T> LifecycleOwner.obseverLiveEvent(
 
 
 const val ACTIVE_SUCCESS = "ACTIVE_SUCCESS"
+const val IS_MAIN_CANBACK = "IS_MAIN_CANBACK"

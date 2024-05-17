@@ -1,5 +1,7 @@
 package com.soya.launcher.http;
 
+import com.soya.launcher.BuildConfig;
+
 public class Url {
     public static final String YOUTUBE_PLAY = "https://www.youtube.com/watch?v=%s";
     public static final String NETFLIX_PLAY = "http://www.netflix.com/watch/%s";
@@ -7,7 +9,7 @@ public class Url {
     public static final String HULU_PLAY = "https://www.hulu.com/%s";
     public static final String MAX_PLAY = "https://play.max.com/%s";
     public static final String PRIME_VIDEO_PLAY = "https://www.amazon.com/%s";
-    public static final String BASE_URL = "https://99soya.shop/";
+    public static final String BASE_URL = BuildConfig.BASE_URL;
     public static final String APP_STORE_BASE_URL = "https://appzones.info/";
     public static final String UID_BASE_URL = "http://launcher.swifttvs.com/";
     public static final String MOVICE_LIST = "wheateapi/getallvideodata";
