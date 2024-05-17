@@ -189,7 +189,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
 
                     override fun onError(call: Call?, response: Response?, e: Exception?) {
                         showLoadingViewDismiss()
-                        ToastUtils.show("激活失败")
+                        ToastUtils.show("Failed, please try again!")
                         //Log.d("zy1996", "请求失败，原因：${e.toString()}====${response.toString()}")
 
                     }
@@ -206,7 +206,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                 10000L-> {
                     AppCacheBase.isActive = true
                     showLoadingViewDismiss()
-                    //ToastUtils.show("恭喜您激活成功")
+                    ToastUtils.show("Success")
                     lifecycleScope.launch {
                         delay(500)
                         //repeatOnLifecycle(Lifecycle.State.RESUMED){
@@ -216,7 +216,19 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                     }
 
                 }
-                10001L->ToastUtils.show("缺少桌面 ID")
+
+                10004L->ToastUtils.show("Invalid PIN, please try again! ")
+
+                else -> {
+                    ToastUtils.show("Failed, please try again!")
+                }
+            }
+        }
+
+    }
+
+    /*
+    * 10001L->ToastUtils.show("缺少桌面 ID")
                 10002L->ToastUtils.show("桌面 ID 格式不正确")
                 10003L->ToastUtils.show("缺少激活码")
                 10004L->ToastUtils.show("激活码格式不正确")
@@ -236,11 +248,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                 10018L->ToastUtils.show("当前桌面 ID 和之前此卡号绑定的桌面 ID 不相同")
                 10019L->ToastUtils.show("此激活码已经在其它设备上绑定过，一个激活码不可以同时绑定多个设备")
                 10020L->ToastUtils.show("错误码：10020")
-                else -> {}
-            }
-        }
-
-    }
+    * */
 
     companion object {
         @JvmStatic

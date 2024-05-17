@@ -63,7 +63,7 @@ class CusKeyboard private constructor(val setup: (CusKeyboard.() -> Unit)? = nul
     override fun initBind(inflater: LayoutInflater, view: View) {
         super.initBind(inflater, view)
         mAdapter!!.replace(nums, KeyboardNumAdapter.TYPE_NUM)
-        mRecyclerView!!.setLayoutManager(GridLayoutManager(activity, 4))
+        mRecyclerView!!.setLayoutManager(GridLayoutManager(activity, 12))
         mRecyclerView!!.setAdapter(mAdapter)
     }
 
@@ -98,9 +98,9 @@ class CusKeyboard private constructor(val setup: (CusKeyboard.() -> Unit)? = nul
         array = "z x c v b n m .".split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for (item in array) ens.add(KeyItem(KeyItem.TYPE_ENG, item, -1, 1, false))
         ens.add(KeyItem(KeyItem.TYPE_DEL, "", R.drawable.baseline_backspace_100, 1, true))
-        ens.add(KeyItem(KeyItem.TYPE_SWITCH, "?123", -1, 2, false))
+        ens.add(KeyItem(KeyItem.TYPE_SWITCH, "?123", -1, 1, false))
         //ens.add(KeyItem(KeyItem.TYPE_SPACE, " ", -1, 6, false))
-        ens.add(KeyItem(KeyItem.TYPE_SEARCH, "DONE", -1, 2, true))
+        ens.add(KeyItem(KeyItem.TYPE_SEARCH, "DONE", -1, 1, true))
     }
 
     private fun fillNums() {

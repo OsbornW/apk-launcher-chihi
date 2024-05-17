@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/qb_px_24"
-        android:text="系统激活"
+        android:text="System activation"
         android:layout_marginTop="@dimen/qb_px_25"
         android:layout_marginLeft="@dimen/qb_px_25"
         />
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/qb_px_22"
-            android:text="请输入激活码"
+            android:text="Please input the PIN"
             />
         <EditText
             android:maxLength="9"
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/qb_px_16"
-            android:text="请输入激活码来激活软件"
+            android:text="Please input the PIN to active the app"
             />
 
         <com.hjq.shape.view.ShapeTextView
@@ -66,7 +66,7 @@
             android:layout_width="@dimen/qb_px_330"
             android:layout_height="wrap_content"
             android:textSize="@dimen/qb_px_16"
-            android:text="立即激活"
+            android:text="Activate Now"
             app:shape_solidColor="@color/color_3D4661"
             app:shape_solidFocusedColor="@color/color_3391F5"
             app:shape_textColor="@color/color_495B87"

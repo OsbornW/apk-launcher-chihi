@@ -131,8 +131,9 @@ android {
         //宏信激活暂用(投影仪)
         hongxin_active {
             applicationId "com.soya.launcher.hongxin_active"
+            minSdk 22
             dimension "chihi"
-            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            manifestPlaceholders = [share_uid:""]
             signingConfig signingConfigs.hongxin
             // 自定义buildConfig.java中的变量供代码中使用
             //buildConfigField "String", "BASE_URL", '""'
@@ -175,7 +176,8 @@ android {
         //打包应用
         android.applicationVariants.all { variant ->
             variant.outputs.all {
-                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${defaultConfig.manifestPlaceholders.channel}.apk"
+                //outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${defaultConfig.manifestPlaceholders.channel}.apk"
+                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${variant.productFlavors[0].name}.apk"
             }
         }
     }
