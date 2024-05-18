@@ -13,11 +13,13 @@ android {
             jniLibs.srcDirs = ['libs']
             java.srcDirs = ['src/main/java']
         }
+
         hongxin_active {
             java.srcDirs = ['src/hongxin_active/java']
         }
-        hongxin_projector {
-            java.srcDirs = ['src/hongxin_projector/java']
+
+        hongxin_713M {
+            java.srcDirs = ['src/hongxin_713M/java']
         }
 
         no_sys_sign {
@@ -35,25 +37,24 @@ android {
         x98k_tv {
             java.srcDirs = ['src/x98k_tv/java']
         }
-
     }
 
     signingConfigs {
-        hongxin{
+        hongxin {
             storeFile file("platform_H713.keystore")
             storePassword "android"
             keyAlias "platform"
             keyPassword "android"
         }
 
-        x98k{
+        x98k {
             storeFile file("platform_X98K.keystore")
             storePassword "android"
             keyAlias "platform"
             keyPassword "android"
         }
 
-        p_9255{
+        p_9255 {
             storeFile file("platform_9255.keystore")
             keyAlias = 'androiddebugkey'
             storePassword 'android'
@@ -66,26 +67,26 @@ android {
             keyAlias 'platform'
             keyPassword 'platform'
         }
-
     }
-
 
     flavorDimensions.add("chihi")
 
     productFlavors {
 
-        //宏信(投影仪)
-        hongxin_projector {
+        //宏信(投影仪) 713M
+        hongxin_713M {
             applicationId "com.soya.launcher.hongxinprojector"
             dimension "chihi"
             signingConfig signingConfigs.hongxin
             //manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             //buildConfigField "String", "BASE_URL", '""'
+	    //buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
+            buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"LA27001"'
-            buildConfigField "String", "CHIHI_TYPE", '"H700"'
-            buildConfigField "String", "MODEL", '"cupid"'
+            buildConfigField "String", "CHIHI_TYPE", '"H713M"'
+            buildConfigField "String", "MODEL", '"713M"'
         }
 
         // 爱泊优(投影仪)
@@ -94,8 +95,10 @@ android {
             dimension "chihi"
             //manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-            //buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"1"'
+            buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"LA22001"'
             buildConfigField "String", "CHIHI_TYPE", '"PROJECTOR_001"'
             buildConfigField "String", "MODEL", '"001"'
@@ -107,8 +110,10 @@ android {
             dimension "chihi"
             //manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-            //buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"2"'
+            buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"LA22001"'
             buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
             buildConfigField "String", "MODEL", '"001"'
@@ -121,8 +126,10 @@ android {
             //manifestPlaceholders = [share_uid:"android.uid.system"]
             signingConfig signingConfigs.x98k
             // 自定义buildConfig.java中的变量供代码中使用
-            //buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"4"'
+            buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"LA23001"'
             buildConfigField "String", "CHIHI_TYPE", '"X98K"'
             buildConfigField "String", "MODEL", '"001"'
@@ -133,33 +140,34 @@ android {
             applicationId "com.soya.launcher.hongxin_active"
             minSdk 22
             dimension "chihi"
-            manifestPlaceholders = [share_uid:""]
+            manifestPlaceholders = [share_uid: ""]
             signingConfig signingConfigs.hongxin
             // 自定义buildConfig.java中的变量供代码中使用
-            //buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"5"'
+            buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"LA27001"'
             buildConfigField "String", "CHIHI_TYPE", '"H700"'
             buildConfigField "String", "MODEL", '"cupid"'
         }
 
-        no_sys_sign{
+        no_sys_sign {
             applicationId "com.soya.launcher.nosyssign"
             dimension "chihi"
             //manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-            //buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"2"'
+            buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"LA22001"'
             buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
             buildConfigField "String", "MODEL", '"001"'
             signingConfig signingConfigs.hongxin
-            manifestPlaceholders = [share_uid:""]
+            manifestPlaceholders = [share_uid: ""]
         }
-
     }
-
-
 
     buildTypes {
         release {
@@ -176,13 +184,15 @@ android {
         //打包应用
         android.applicationVariants.all { variant ->
             variant.outputs.all {
-                //outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${defaultConfig.manifestPlaceholders.channel}.apk"
-                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${variant.productFlavors[0].name}.apk"
+                // 获取 MODEL 值
+                def model = defaultConfig.buildConfigFields.get("MODEL")?.value
+                println "Model: $model"
+
+                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${model}.apk"
             }
         }
     }
-
-
+    
     namespace 'com.soya.launcher'
     compileSdk 34
 
@@ -194,23 +204,20 @@ android {
         versionName "1.53"
 
         buildConfigField "String", "BASE_URL", '"https://99soya.shop/"'
+        buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
         buildConfigField "String", "APP_ID", '"launcher"'
         buildConfigField "String", "USER_ID", '"62"'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        manifestPlaceholders = [share_uid:"android.uid.system"]
-
+        manifestPlaceholders = [share_uid:""]
 
         ndk {
             abiFilters 'armeabi-v7a'
             //abiFilters 'armeabi-v7a','arm64-v8a'
             //abiFilters 'armeabi-v7a','x86','x86_64'
         }
-
     }
-
-
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -234,8 +241,6 @@ android {
 
 dependencies {
     implementation files('libs/hslib-r0.0.2-release-LA22001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
-    //implementation files('libs/hslib-r0.0.2-release-LA23001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
-    //implementation files('libs/hslib-r0.0.2-release-LA27001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
 
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -263,4 +268,24 @@ dependencies {
 
 def getTime() {
     return new Date().format("yyyyMMdd_HHmm", TimeZone.getDefault())
+}
+
+def static String getBuildConfigFieldValue(def variant, def fiedName) {
+    def properties = variant.productFlavors[0].properties
+    def name = properties.get("name")
+    if (name != variant.flavorName) {
+        return ""
+    }
+    def configs = properties.get("buildConfigFields")
+    def address = null
+    for (Map.Entry<String, Object> item : configs) {
+        def key = item.key
+        if (key == fiedName) {
+            address = item.value
+        }
+    }
+    if (address == null) return ""
+    def field = address.getClass().getDeclaredField("value")
+    field.setAccessible(true)
+    return field.get(address)
 }

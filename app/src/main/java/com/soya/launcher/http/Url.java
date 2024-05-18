@@ -10,7 +10,7 @@ public class Url {
     public static final String MAX_PLAY = "https://play.max.com/%s";
     public static final String PRIME_VIDEO_PLAY = "https://www.amazon.com/%s";
     public static final String BASE_URL = BuildConfig.BASE_URL;
-    public static final String APP_STORE_BASE_URL = "https://appzones.info/";
+    public static final String APP_STORE_BASE_URL = BuildConfig.APP_STORE_BASE_URL;
     public static final String UID_BASE_URL = "http://launcher.swifttvs.com/";
     public static final String MOVICE_LIST = "wheateapi/getallvideodata";
     public static final String BASE_RECOMMEND_LIST = "https://www.googleapis.com/";

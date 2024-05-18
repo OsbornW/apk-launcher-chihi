@@ -9,7 +9,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.AuthFragment">
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +17,6 @@
         android:layout_marginTop="@dimen/qb_px_25"
         android:layout_marginLeft="@dimen/qb_px_25"
         />
-
 
     <LinearLayout
         android:layout_centerHorizontal="true"

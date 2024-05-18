@@ -14,26 +14,24 @@ apply from: 'version.gradle'
 gradle.buildFinished {
     project('app') {
         try {
-            Gson gson = new Gson()
-
-            def buildField = it.android.defaultConfig
-            Map<String, String> data = new HashMap<>()
-            data.put("packageName", buildField.applicationId)
-            data.put("versionName", buildField.versionName)
-            data.put("version", buildField.versionCode)
-            data.put("appId", buildField.manifestPlaceholders.appId)
-            data.put("channel", buildField.manifestPlaceholders.channel)
-            data.put("chihi_type", buildField.manifestPlaceholders.chihi_type)
-            data.put("model", buildField.manifestPlaceholders.model)
-
             android.applicationVariants.all { variant ->
                 if (variant.buildType.name == 'release') {
-                    def fileName = "readme.json"
+                    Gson gson = new Gson()
 
-                    def projectDir = project.rootDir
-                    def buildPath = new File(projectDir, "app/" + variant.buildType.name)
+                    def buildField = it.android.defaultConfig
+                    Map<String, String> data = new HashMap<>()
+                    data.put("packageName", buildField.applicationId)
+                    data.put("versionName", buildField.versionName)
+                    data.put("version", buildField.versionCode)
+                    data.put("appId", getBuildConfigFieldValue(variant, "APP_ID")[1..-2])
+                    data.put("channel", getBuildConfigFieldValue(variant, "CHANNEL")[1..-2])
+                    data.put("chihi_type", getBuildConfigFieldValue(variant, "CHIHI_TYPE")[1..-2])
+                    data.put("model", getBuildConfigFieldValue(variant, "MODEL")[1..-2])
+
+                    def projectDir = getApkOutputDir()
+                    def buildPath = new File(projectDir, variant.flavorName + "\\" + variant.buildType.name)
                     createPath(buildPath)
-                    def dstFile = new File(buildPath, "/" + fileName)
+                    def dstFile = new File(buildPath, "readme.json")
 
                     FileOutputStream fos = new FileOutputStream(dstFile)
                     def json = gson.toJson(data)
@@ -51,5 +49,29 @@ def createPath(file) {
     if (!file.exists()) {
         file.mkdirs()
     }
+}
+
+def getApkOutputDir() {
+    return "${project.rootProject.projectDir}\\app\\build\\outputs\\apk"
+}
+
+def static String getBuildConfigFieldValue(def variant, def fiedName) {
+    def properties = variant.productFlavors[0].properties
+    def name = properties.get("name")
+    if (name != variant.flavorName) {
+        return ""
+    }
+    def configs = properties.get("buildConfigFields")
+    def address = null
+    for (Map.Entry<String, Object> item : configs) {
+        def key = item.key
+        if (key == fiedName) {
+            address = item.value
+        }
+    }
+    if (address == null) return ""
+    def field = address.getClass().getDeclaredField("value")
+    field.setAccessible(true)
+    return field.get(address)
 }
 
