@@ -38,6 +38,9 @@ class ChooseGradientFragment : AbsFragment() {
     override fun initBind(view: View, inflater: LayoutInflater) {
         super.initBind(view, inflater)
         setContent()
+
+        setCurMode(true)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,26 +111,31 @@ class ChooseGradientFragment : AbsFragment() {
                     Projector.TYPE_AUTO_MODE -> {
                         var isEnalbe =
                             ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
-                        isEnalbe = !isEnalbe
-                        ASystemProperties.set(
-                            "persist.vendor.gsensor.enable",
-                            if (isEnalbe) "1" else "0"
-                        )
-                        dataList[0]!!.setName(
-                            if (isEnalbe) getString(R.string.auto) else getString(
-                                R.string.close
-                            )
-                        )
-                        dataList[1]!!.setName(
-                            if (isEnalbe) getString(R.string.auto_calibration) else getString(
-                                R.string.manual
-                            )
-                        )
-                        itemBridgeAdapter!!.notifyDataSetChanged()
+
+                        setCurMode(!isEnalbe)
+
                     }
                 }
             }
         }
+    }
+
+    private fun setCurMode(isEnalbe: Boolean) {
+        ASystemProperties.set(
+            "persist.vendor.gsensor.enable",
+            if (isEnalbe) "1" else "0"
+        )
+        dataList[0]!!.setName(
+            if (isEnalbe) getString(R.string.auto) else getString(
+                R.string.close
+            )
+        )
+        dataList[1]!!.setName(
+            if (isEnalbe) getString(R.string.auto_calibration) else getString(
+                R.string.manual
+            )
+        )
+        itemBridgeAdapter!!.notifyDataSetChanged()
     }
 
     companion object {

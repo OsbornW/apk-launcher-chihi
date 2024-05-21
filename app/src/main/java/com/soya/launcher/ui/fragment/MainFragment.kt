@@ -697,25 +697,29 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             AndroidSystem.openProjectorHDMI(activity)
         } else if (v == mGradientView) {
             //startActivity(Intent(activity, HomeGuideGroupGradientActivity::class.java))
+
+            startActivity(Intent(activity, ChooseGradientActivity::class.java))
+
+
             /*
             * 判断是否打开了自动校准，否则先打开自动校准
             * 然后跳转SDK自动校准页面
             * */
             // 是否处于自动校准
-            var isAutoCalibration =
+          /*  var isAutoCalibration =
                 ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
             isAutoCalibration.no {
                 // 没有打开自动校准
                 //开启自动校准
                 ASystemProperties.set("persist.vendor.gsensor.enable", "1")
-            }
+            }*/
 
             //跳转自动校准页面
-            AndroidSystem.openActivityName(
+           /* AndroidSystem.openActivityName(
                 requireContext(),
                 "com.hxdevicetest",
                 "com.hxdevicetest.CheckGsensorActivity"
-            )
+            )*/
 
         }
     }

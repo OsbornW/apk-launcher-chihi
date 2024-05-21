@@ -78,7 +78,7 @@ android {
             applicationId "com.soya.launcher"
             dimension "chihi"
             signingConfig signingConfigs.hongxin
-            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
 	        // buildConfigField "String", "APP_STORE_BASE_URL", '""'
@@ -270,7 +270,7 @@ def getTime() {
     return new Date().format("yyyyMMdd_HHmm", TimeZone.getDefault())
 }
 
-def static String getBuildConfigFieldValue(def variant, def fiedName) {
+static String getBuildConfigFieldValue(def variant, def fiedName) {
     def properties = variant.productFlavors[0].properties
     def name = properties.get("name")
     if (name != variant.flavorName) {

@@ -45,6 +45,13 @@ class WifiListAdapter(
     }
 
     fun replace(results: MutableList<WifiItem>) {
+
+        for (i in (results).size - 1 downTo 0) {
+            if(results[i].isSave||results[i].item.SSID==connectSSID){
+                (results).removeAt(i)
+            }
+        }
+
         dataList.clear()
         dataList.addAll(results)
         dataList.forEachIndexed { index, item ->
@@ -106,8 +113,13 @@ class WifiListAdapter(
             val result = bean.item
             val usePass = AndroidSystem.isUsePassWifi(result)
             val isConnect = result.SSID == connectSSID
-            mStatusView.text = if (bean.isSave) context.getString(R.string.saved) else ""
-            if (isConnect) mStatusView.text = context.getString(R.string.connected)
+            //mStatusView.text = if (bean.isSave) context.getString(R.string.saved) else ""
+
+            if (bean.isSave||isConnect){
+                dataList.remove(bean)
+                notifyDataSetChanged()
+            }
+            //if (isConnect) mStatusView.text = context.getString(R.string.connected)
             mTitleView.text = result.SSID
             mLockView.visibility = if (usePass) View.VISIBLE else View.GONE
             when (WifiManager.calculateSignalLevel(bean.item.level, 5)) {

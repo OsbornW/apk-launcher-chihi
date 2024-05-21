@@ -107,7 +107,14 @@
                             android:layout_height="wrap_content"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </FrameLayout>
+
                 <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -197,7 +204,7 @@
                                 android:layout_width="@dimen/holder_wifi_signal_width"
                                 android:layout_height="@dimen/holder_wifi_signal_height"/>
                             <ImageView
-                                android:id="@+id/lock"
+                                android:id="@+id/iv_ock"
                                 android:src="@drawable/baseline_lock_100"
                                 android:padding="@dimen/holder_wifi_signal_padding"
                                 android:layout_gravity="center_vertical"
@@ -211,12 +218,10 @@
                         android:id="@+id/rv_saved_wifi"
                         app:focusOutFront="true"
                         app:focusOutEnd="true"
-                        android:clipToOutline="false"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
                         android:layout_centerHorizontal="true"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        />
 
                     <androidx.leanback.widget.VerticalGridView
                         android:id="@+id/content"
@@ -227,25 +232,29 @@
                         android:clipToPadding="false"
                         android:layout_centerHorizontal="true"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
 
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+
+
+                </LinearLayout>
+
                     <FrameLayout
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/qb_px_150"
+                        android:layout_centerHorizontal="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/off"
-                            android:visibility="gone"
                             android:scaleType="center"
                             android:src="@drawable/baseline_wifi_off_100_white"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
                         <ProgressBar
                             android:id="@+id/progressBar"
                             android:visibility="gone"

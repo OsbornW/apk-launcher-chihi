@@ -1,80 +1,73 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
+import com.open.system.ASystemProperties
+import com.shudong.lib_base.ext.d
+import com.soya.launcher.R
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.open.system.ASystemProperties;
-import com.soya.launcher.R;
-
-public class AbsGroupGradientFragment extends AbsFragment {
-
-    private View mManualView;
-    private TextView mSkipView;
-    private TextView mSkipTipView;
-
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
+open class AbsGroupGradientFragment : AbsFragment() {
+    private var mManualView: View? = null
+    private var mSkipView: TextView? = null
+    private var mSkipTipView: TextView? = null
+    private var root:FrameLayout?=null
+    override fun getWallpaperView(): Int {
+        return R.id.wallpaper
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_guide_group_gradient;
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_guide_group_gradient
     }
 
-    @Override
-    protected void init(View view, LayoutInflater inflater) {
-        super.init(view, inflater);
-        mManualView = view.findViewById(R.id.manual);
-        mSkipView = view.findViewById(R.id.skip);
-        mSkipTipView = view.findViewById(R.id.skip_tip);
+    override fun init(view: View, inflater: LayoutInflater) {
+        super.init(view, inflater)
+        mManualView = view.findViewById(R.id.manual)
+        mSkipView = view.findViewById(R.id.skip)
+        mSkipTipView = view.findViewById(R.id.skip_tip)
+        root = view.findViewById(R.id.root)
+        mManualView?.setOnKeyListener { view, i, keyEvent ->
+            "当前按下的键盘是=====${keyEvent.keyCode}".d("zy1996")
+
+            false
+        }
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        requestFocus(mManualView);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requestFocus(mManualView)
     }
 
-    @Override
-    protected void initBefore(View view, LayoutInflater inflater) {
-        super.initBefore(view, inflater);
-        mManualView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setEnable(false);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GradientFragment.newInstance()).addToBackStack(null).commit();
+    override fun initBefore(view: View, inflater: LayoutInflater) {
+        super.initBefore(view, inflater)
+        mManualView!!.setOnClickListener {
+            setEnable(false)
+            activity!!.supportFragmentManager.beginTransaction()
+                .replace(R.id.main_browse_fragment, GradientFragment.newInstance())
+                .addToBackStack(null).commit()
+        }
+        mSkipView!!.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                if (isGuide) activity!!.supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_browse_fragment, GuideDateFragment.newInstance())
+                    .addToBackStack(null).commit() else activity!!.finish()
             }
-        });
-
-        mSkipView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isGuide())
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GuideDateFragment.newInstance()).addToBackStack(null).commit();
-                else
-                    getActivity().finish();
-            }
-        });
+        })
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        mSkipView.setText(isGuide() ? getString(R.string.next) : getString(R.string.done));
-        mSkipTipView.setText(isGuide() ? getString(R.string.guide_group_gradient_tip_next) : getString(R.string.guide_group_gradient_tip_done));
+    override fun initBind(view: View, inflater: LayoutInflater) {
+        super.initBind(view, inflater)
+        mSkipView!!.text = if (isGuide) getString(R.string.next) else getString(R.string.done)
+        mSkipTipView!!.text =
+            if (isGuide) getString(R.string.guide_group_gradient_tip_next) else getString(R.string.guide_group_gradient_tip_done)
     }
 
-    protected boolean isGuide(){
-        return true;
-    }
+    protected open val isGuide: Boolean
+        protected get() = true
 
-    private void setEnable(boolean isEnalbe){
-        ASystemProperties.set("persist.vendor.gsensor.enable", isEnalbe ? "1" : "0");
+    private fun setEnable(isEnalbe: Boolean) {
+        ASystemProperties.set("persist.vendor.gsensor.enable", if (isEnalbe) "1" else "0")
     }
 }
