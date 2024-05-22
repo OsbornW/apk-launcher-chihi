@@ -40,7 +40,7 @@ class WifiListAdapter(
         return dataList.size
     }
 
-    fun getDataList(): List<WifiItem> {
+    fun getDataList(): MutableList<WifiItem> {
         return dataList
     }
 
@@ -115,10 +115,10 @@ class WifiListAdapter(
             val isConnect = result.SSID == connectSSID
             //mStatusView.text = if (bean.isSave) context.getString(R.string.saved) else ""
 
-            if (bean.isSave||isConnect){
+            /*if (bean.isSave||isConnect){
                 dataList.remove(bean)
                 notifyDataSetChanged()
-            }
+            }*/
             //if (isConnect) mStatusView.text = context.getString(R.string.connected)
             mTitleView.text = result.SSID
             mLockView.visibility = if (usePass) View.VISIBLE else View.GONE

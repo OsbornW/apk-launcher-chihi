@@ -171,9 +171,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            //debuggable  true
+            minifyEnabled false
             //清理多余的图片资源或raw中没有用到的资源等，一般会和混淆同时使用(和混淆都可以起到一定程度apk瘦身的作用)
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
@@ -185,10 +186,9 @@ android {
         android.applicationVariants.all { variant ->
             variant.outputs.all {
                 // 获取 MODEL 值
-                def model = defaultConfig.buildConfigFields.get("MODEL")?.value
-                println "Model: $model"
+                def model = getBuildConfigFieldValue(variant,"MODEL")
 
-                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${model}.apk"
+                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${model[1..-2]}.apk"
             }
         }
     }
@@ -200,8 +200,8 @@ android {
         applicationId "com.soya.launcher"
         minSdk 24
         targetSdk 33
-        versionCode 53
-        versionName "1.53"
+        versionCode 55
+        versionName "1.6"
 
         buildConfigField "String", "BASE_URL", '"https://99soya.shop/"'
         buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
