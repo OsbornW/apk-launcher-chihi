@@ -165,4 +165,7 @@
     <string name="uninstall_failed">卸载失败</string>
     <string name="done">完成</string>
     <string name="saved">已保存</string>
+
+    <string name="disconnect">断开连接</string>
+
 </resources>

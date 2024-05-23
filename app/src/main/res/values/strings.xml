@@ -164,4 +164,6 @@
     <string name="uninstall_failed">Uninstall failed</string>
     <string name="done">Done</string>
     <string name="saved">Saved</string>
+
+    <string name="disconnect">Disconnect</string>
 </resources>

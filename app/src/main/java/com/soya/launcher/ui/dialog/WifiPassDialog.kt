@@ -1,143 +1,160 @@
-package com.soya.launcher.ui.dialog;
+package com.soya.launcher.ui.dialog
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
+import com.soya.launcher.R
+import com.soya.launcher.ui.dialog.KeyboardDialog.Companion.newInstance
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.soya.launcher.R;
-
-public class WifiPassDialog extends SingleDialogFragment implements View.OnClickListener {
-    public static final String TAG = "WifiPassDialog";
-    public static WifiPassDialog newInstance() {
-
-        Bundle args = new Bundle();
-
-        WifiPassDialog fragment = new WifiPassDialog();
-        fragment.setArguments(args);
-        return fragment;
+class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
+    var wifiName = ""
+    private var mEditText: TextView? = null
+    private var mCloseView: View? = null
+    private var mCleanView: View? = null
+    private var mConfirmView: View? = null
+    private var mRootView: View? = null
+    private var mBlur: ImageView? = null
+    private var callback: Callback? = null
+    override fun getLayout(): Int {
+        return R.layout.dialog_wifi_pass
     }
 
-    private TextView mEditText;
-    private View mCloseView;
-    private View mCleanView;
-    private View mConfirmView;
-    private View mRootView;
-    private ImageView mBlur;
+    override fun init(inflater: LayoutInflater, view: View) {
+        super.init(inflater, view)
+        mEditText = view.findViewById(R.id.edit_pass)
+        mCleanView = view.findViewById(R.id.clean)
+        mCloseView = view.findViewById(R.id.close)
+        mConfirmView = view.findViewById(R.id.confirm)
+        mRootView = view.findViewById(R.id.root)
+        mBlur = view.findViewById(R.id.blur)
+        wifiName = arguments?.getString("wifiname").toString()
 
-    private Callback callback;
+        if (wifiName == "WIFI-5G") {
+            mEditText!!.text = "chen888888a"
+        } else if (wifiName == "WIFI") {
+            mEditText!!.text = "chen888888a"
+        } else if (wifiName == "wuyun") {
+            mEditText!!.text = "Boss888888"
+        } else if (wifiName == "wuyun-5G") {
+            mEditText!!.text = "Boss888888"
+        }
 
-    @Override
-    protected int getLayout() {
-        return R.layout.dialog_wifi_pass;
     }
 
-    @Override
-    protected void init(LayoutInflater inflater, View view) {
-        super.init(inflater, view);
-        mEditText = view.findViewById(R.id.edit_pass);
-        mCleanView = view.findViewById(R.id.clean);
-        mCloseView = view.findViewById(R.id.close);
-        mConfirmView = view.findViewById(R.id.confirm);
-        mRootView = view.findViewById(R.id.root);
-        mBlur = view.findViewById(R.id.blur);
-    }
-
-    @Override
-    protected void initBefore(LayoutInflater inflater, View view) {
-        super.initBefore(inflater, view);
-        mCleanView.setOnClickListener(this);
-        mCloseView.setOnClickListener(this);
-        mConfirmView.setOnClickListener(this);
-        mEditText.setOnClickListener(this);
-        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                String text = textView.getText().toString();
-                setRootGravity(Gravity.CENTER);
-                if (callback != null) callback.onConfirm(text);
-                dismiss();
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mEditText.requestFocus();
-        blur(mRootView, mBlur);
-    }
-
-    @Override
-    protected int getGravity() {
-        return Gravity.CENTER;
-    }
-
-    @Override
-    public boolean isMaterial() {
-        return false;
-    }
-
-    protected int[] getWidthAndHeight() {
-        return new int[]{
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        };
-    }
-
-    @Override
-    protected float getDimAmount() {
-        return 0;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.equals(mCloseView)){
-            dismiss();
-        }else if (v.equals(mCleanView)){
-            mEditText.setText("");
-        }else if (v.equals(mConfirmView)){
-            String text = mEditText.getText().toString();
-            if (callback != null && !TextUtils.isEmpty(text)) {
-                callback.onConfirm(text);
-                dismiss();
-            }
-        }else if (v.equals(mEditText)){
-            KeyboardDialog dialog = KeyboardDialog.newInstance();
-            dialog.setTargetView(mEditText);
-            dialog.setCallback(new KeyboardDialog.Callback() {
-                @Override
-                public void onClose() {
-                    setRootGravity(Gravity.CENTER);
-                }
-            });
-            setRootGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-            dialog.show(getChildFragmentManager(), KeyboardDialog.TAG);
+    override fun initBefore(inflater: LayoutInflater, view: View) {
+        super.initBefore(inflater, view)
+        mCleanView!!.setOnClickListener(this)
+        mCloseView!!.setOnClickListener(this)
+        mConfirmView!!.setOnClickListener(this)
+        mEditText!!.setOnClickListener(this)
+        mEditText!!.setOnEditorActionListener { textView, i, keyEvent ->
+            val text = textView.text.toString()
+            setRootGravity(Gravity.CENTER)
+            if (callback != null) callback!!.onConfirm(text)
+            dismiss()
+            false
         }
     }
 
-    public void setRootGravity(int gravity){
-        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mRootView.getLayoutParams();
-        lp.gravity = gravity;
-        mRootView.setLayoutParams(lp);
-        blur(mRootView, mBlur);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mEditText!!.requestFocus()
+        blur(mRootView, mBlur)
     }
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
+    override fun getGravity(): Int {
+        return Gravity.CENTER
     }
 
-    public interface Callback{
-        void onConfirm(String text);
+    override fun isMaterial(): Boolean {
+        return false
+    }
+
+    override fun getWidthAndHeight(): IntArray {
+        return intArrayOf(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
+
+    override fun getDimAmount(): Float {
+        return 0f
+    }
+
+    override fun onClick(v: View) {
+        if (v == mCloseView) {
+            dismiss()
+        } else if (v == mCleanView) {
+            mEditText!!.text = ""
+        } else if (v == mConfirmView) {
+            val text = mEditText!!.text.toString()
+            if (callback != null && !TextUtils.isEmpty(text)) {
+                callback!!.onConfirm(text)
+                dismiss()
+            }
+        } else if (v == mEditText) {
+            val dialog = newInstance()
+            dialog.setTargetView(mEditText)
+            dialog.setCallback(object : KeyboardDialog.Callback {
+                override fun onClose() {
+                    setRootGravity(Gravity.CENTER)
+                }
+            })
+            setRootGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL)
+            dialog.show(getChildFragmentManager(), KeyboardDialog.TAG)
+        }
+    }
+
+    fun setRootGravity(gravity: Int) {
+        val lp = mRootView!!.layoutParams as FrameLayout.LayoutParams
+        lp.gravity = gravity
+        mRootView!!.layoutParams = lp
+        blur(mRootView, mBlur)
+    }
+
+    fun setCallback(callback: Callback?) {
+        this.callback = callback
+    }
+
+    fun setDefaultPwd(wifiName: String?) {
+        if (wifiName == null) {
+            Log.d("zy1996", "setDefaultPwd: wifiname失控的")
+        }
+        if (mEditText == null) {
+            Log.d("zy1996", "setDefaultPwd: mEdittext失控的")
+        }
+        if (wifiName != null && mEditText != null) {
+            if (wifiName == "WIFI-5G") {
+                mEditText!!.text = "chen888888a"
+            } else if (wifiName == "WIFI") {
+                mEditText!!.text = "chen888888a"
+            } else if (wifiName == "wuyun") {
+                mEditText!!.text = "Boss888888"
+            } else if (wifiName == "wuyun-5G") {
+                mEditText!!.text = "Boss888888"
+            }
+        }
+    }
+
+    interface Callback {
+        fun onConfirm(text: String)
+    }
+
+    companion object {
+        const val TAG = "WifiPassDialog"
+        fun newInstance(wifiName: String?): WifiPassDialog {
+            val args = Bundle()
+            args.putString("wifiname",wifiName)
+            val fragment = WifiPassDialog()
+            fragment.setArguments(args)
+            return fragment
+        }
     }
 }

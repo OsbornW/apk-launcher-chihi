@@ -22,6 +22,14 @@ open class AbsGroupGradientFragment : AbsFragment() {
         return R.layout.fragment_guide_group_gradient
     }
 
+    private fun setCurMode(isEnalbe: Boolean) {
+        ASystemProperties.set(
+            "persist.vendor.gsensor.enable",
+            if (isEnalbe) "1" else "0"
+        )
+
+    }
+
     override fun init(view: View, inflater: LayoutInflater) {
         super.init(view, inflater)
         mManualView = view.findViewById(R.id.manual)
@@ -29,10 +37,11 @@ open class AbsGroupGradientFragment : AbsFragment() {
         mSkipTipView = view.findViewById(R.id.skip_tip)
         root = view.findViewById(R.id.root)
         mManualView?.setOnKeyListener { view, i, keyEvent ->
-            "当前按下的键盘是=====${keyEvent.keyCode}".d("zy1996")
 
             false
         }
+
+        setCurMode(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

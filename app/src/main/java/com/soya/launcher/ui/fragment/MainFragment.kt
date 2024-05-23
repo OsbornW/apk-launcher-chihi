@@ -34,8 +34,12 @@ import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.open.system.ASystemProperties
 import com.open.system.SystemUtils
+import com.shudong.lib_base.BaseWebActivity.Companion.INTENT_JUMP_TYPE
+import com.shudong.lib_base.BaseWebActivity.Companion.INTENT_WEB_TITLE
+import com.shudong.lib_base.BaseWebActivity.Companion.INTENT_WEB_URL
 import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
@@ -86,6 +90,7 @@ import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
+import com.thumbsupec.lib_base.web.WebUrl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -698,7 +703,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         } else if (v == mGradientView) {
             //startActivity(Intent(activity, HomeGuideGroupGradientActivity::class.java))
 
-            startActivity(Intent(activity, ChooseGradientActivity::class.java))
+           // startActivity(Intent(activity, ChooseGradientActivity::class.java))
+
+            startKtxActivity<HomeGuideGroupGradientActivity>()
 
 
             /*
