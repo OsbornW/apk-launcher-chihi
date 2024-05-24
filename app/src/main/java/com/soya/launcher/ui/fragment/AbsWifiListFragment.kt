@@ -18,22 +18,16 @@ import android.text.format.Formatter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.leanback.widget.VerticalGridView
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import b.d
-import com.drake.brv.utils.addModels
-import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.ext.clickNoRepeat
-import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
@@ -48,8 +42,6 @@ import com.soya.launcher.ui.dialog.WifiPassDialog
 import com.soya.launcher.ui.dialog.WifiSaveDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.view.MyFrameLayout
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -154,7 +146,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
         fl_connected?.let {
             it.clickNoRepeat {
                 val info = mWifiManager!!.connectionInfo
-                val dialog = WifiSaveDialog.newInstance(info.ssid,R.string.disconnect.stringValue())
+                val dialog = WifiSaveDialog.newInstance(info.ssid,R.string.disconnect_net.stringValue())
                 dialog.setCallback(object :WifiSaveDialog.Callback{
                     override fun onClick(type: Int) {
                         when (type) {

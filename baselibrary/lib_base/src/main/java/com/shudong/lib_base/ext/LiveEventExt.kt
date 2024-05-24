@@ -7,6 +7,10 @@ inline fun <reified T> sendLiveEventData(key: String, data: T) {
     LiveEventBus.get(key, T::class.java).post(data)
 }
 
+inline fun <reified T> sendLiveEventDataDelay(key: String, data: T, delayTime:Long = 0) {
+    LiveEventBus.get(key, T::class.java).postDelay(data,delayTime)
+}
+
 
 inline fun <reified T> LifecycleOwner.obseverLiveEvent(
     key: String,

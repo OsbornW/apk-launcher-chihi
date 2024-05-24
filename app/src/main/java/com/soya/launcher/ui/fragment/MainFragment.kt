@@ -388,10 +388,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         targetMenus.addAll(items)
         mHeaderGrid!!.setAdapter(mMainHeaderAdapter)
         mMainHeaderAdapter!!.replace(items)
-        mHeaderGrid?.post {
+        /*mHeaderGrid?.post {
             mHeaderGrid?.requestFocus()
             mHeaderGrid!!.selectedPosition = 0
-        }
+        }*/
 
     }
 

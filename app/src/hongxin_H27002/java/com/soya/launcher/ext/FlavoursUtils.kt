@@ -14,7 +14,7 @@ fun switchFragment() = run {
 
     AppCacheBase.isActive.yes {
 
-        sendLiveEventData(IS_MAIN_CANBACK, false)
+        sendLiveEventDataDelay(IS_MAIN_CANBACK, false，1000)
         MainFragment.newInstance()
 
     }.otherwise {

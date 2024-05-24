@@ -9,10 +9,10 @@ import com.soya.launcher.ui.fragment.WelcomeFragment
 fun switchFragment() = run{
 
          if (PreferencesManager.isGuide() == 0 ) {
-             sendLiveEventData(IS_MAIN_CANBACK,true)
+             sendLiveEventDataDelay(IS_MAIN_CANBACK,true,1000)
             WelcomeFragment.newInstance()
         } else {
-             sendLiveEventData(IS_MAIN_CANBACK,false)
+             sendLiveEventDataDelay(IS_MAIN_CANBACK,false,1000)
             MainFragment.newInstance()
         }
 

@@ -1,6 +1,7 @@
 package com.soya.launcher.ui.activity
 
 import android.content.Intent
+import android.util.Log
 import androidx.fragment.app.Fragment
 import com.shudong.lib_base.base.BaseVMActivity
 import com.shudong.lib_base.base.BaseViewModel
@@ -35,6 +36,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
         }
 
         this.obseverLiveEvent<Boolean>(IS_MAIN_CANBACK){
+            Log.d("zy1996", "switchFragment: 收到false了====")
             it.yes {
                 canBackPressed = true
             }.otherwise {
@@ -53,6 +55,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
      fun getFragment(): Fragment  = switchFragment()
 
     override fun onBackPressed() {
-        if (canBackPressed) super.onBackPressed() else sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
+        Log.d("zy1996", "onBackPressed: 是否可以返回？"+canBackPressed)
+        if (canBackPressed) {
+            super.onBackPressed()
+        } else {
+            sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
+        }
     }
 }

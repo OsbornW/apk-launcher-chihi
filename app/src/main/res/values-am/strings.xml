@@ -4,7 +4,6 @@
     <!-- Project -->
     <string name="search">搜索</string>
     <string name="setting">设置</string>
-
     <string name="wifi">WIFI</string>
     <string name="bluetooth">蓝牙</string>
     <string name="language">语言</string>
@@ -27,7 +26,6 @@
     <string name="update">更新</string>
     <string name="tool">工具</string>
     <string name="file_management">文件管理</string>
-
     <string name="monday">一</string>
     <string name="tuesday">二</string>
     <string name="wednesday">三</string>
@@ -35,7 +33,6 @@
     <string name="friday">五</string>
     <string name="saturday">六</string>
     <string name="sunday">日</string>
-
     <string name="network">网络</string>
     <string name="keyboard">键盘</string>
     <string name="place_waiting">请稍等</string>
@@ -46,7 +43,6 @@
     <string name="close">关闭</string>
     <string name="version">版本: </string>
     <string name="wallpaper">壁纸</string>
-
     <string name="upgrade">升级</string>
     <string name="storage">存储空间</string>
     <string name="android_tv_os_version">Android 系统版本</string>
@@ -71,7 +67,6 @@
     <string name="choose_wallpaper">选择默认壁纸</string>
     <string name="click_to_setting">点击确定进行设定</string>
     <string name="or_skip">或跳过执行</string>
-
     <string name="hulu">Hulu</string>
     <string name="max">Max</string>
     <string name="prime_video">Prime video</string>
@@ -141,7 +136,6 @@
     <string name="sound">声音</string>
     <string name="remote_control">遥控器</string>
     <string name="device_id">设备ID</string>
-    
     <string name="waiting">等待中</string>
     <string name="download_fail_mask">下载失败</string>
     <string name="install_failed">安装失败</string>
@@ -165,7 +159,6 @@
     <string name="uninstall_failed">卸载失败</string>
     <string name="done">完成</string>
     <string name="saved">已保存</string>
-
     <string name="disconnect_net">断开连接</string>
 
 </resources>

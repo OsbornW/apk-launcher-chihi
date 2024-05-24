@@ -8,7 +8,7 @@ import com.soya.launcher.ui.fragment.WelcomeFragment
 
 fun switchFragment() = run {
 
-    sendLiveEventData(IS_MAIN_CANBACK, false)
+    sendLiveEventDataDelay(IS_MAIN_CANBACK, false，1000)
     MainFragment.newInstance()
 
 

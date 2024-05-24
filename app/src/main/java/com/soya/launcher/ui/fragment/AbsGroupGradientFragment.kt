@@ -7,6 +7,9 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import com.open.system.ASystemProperties
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.stringValue
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 
 open class AbsGroupGradientFragment : AbsFragment() {
@@ -41,7 +44,9 @@ open class AbsGroupGradientFragment : AbsFragment() {
             false
         }
 
-        setCurMode(true)
+            setCurMode(true)
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,7 +57,10 @@ open class AbsGroupGradientFragment : AbsFragment() {
     override fun initBefore(view: View, inflater: LayoutInflater) {
         super.initBefore(view, inflater)
         mManualView!!.setOnClickListener {
-            setEnable(false)
+            //setEnable(false)
+            //val isEnalbe = ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
+                setCurMode(false)
+
             activity!!.supportFragmentManager.beginTransaction()
                 .replace(R.id.main_browse_fragment, GradientFragment.newInstance())
                 .addToBackStack(null).commit()
