@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
+import com.soya.launcher.utils.DeviceUuidFactory;
 import com.google.gson.Gson;
 import com.soya.launcher.App;
 import com.soya.launcher.BuildConfig;
@@ -101,11 +102,13 @@ public class ServiceRequest {
         Map<String, String> map = new HashMap<>();
         map.put("appId", Config.APPID);
         map.put("channel", Config.CHANNEL);
-        map.put("model", Config.MODEL);
         map.put("chihi_type", Config.CHIHI_TYPE);
         map.put("version", String.valueOf(BuildConfig.VERSION_CODE));
         map.put("sdk", String.valueOf(Build.VERSION.SDK_INT));
-        map.put("uid", String.valueOf(AndroidSystem.getDeviceId(App.getInstance())));
+        map.put("uid", String.valueOf(DeviceUuidFactory.getUUID(App.getInstance())));
+        map.put("model", Build.MODEL);
+        map.put("brand", Build.BRAND);
+        map.put("product", Build.PRODUCT);
         Call<ResponseBody> call = request.checkVersion(map);
         asyncRequest(call, VersionResponse.class, callback, "checkVersion");
         return call;
