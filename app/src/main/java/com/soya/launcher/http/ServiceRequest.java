@@ -105,7 +105,7 @@ public class ServiceRequest {
         map.put("chihi_type", Config.CHIHI_TYPE);
         map.put("version", String.valueOf(BuildConfig.VERSION_CODE));
         map.put("sdk", String.valueOf(Build.VERSION.SDK_INT));
-        map.put("uid", String.valueOf(DeviceUuidFactory.getUUID(App.getInstance())));
+        map.put("uuid", String.valueOf(DeviceUuidFactory.getUUID(App.getInstance())));
         map.put("model", Build.MODEL);
         map.put("brand", Build.BRAND);
         map.put("product", Build.PRODUCT);

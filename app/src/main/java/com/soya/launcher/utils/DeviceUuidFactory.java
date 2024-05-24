@@ -14,9 +14,6 @@ import java.util.UUID;
 
 /**
  * 产生uuid, 用以作为设备唯一标识
- *
- * @author krasa
- * <p>
  * permission needed: android.permission.WRITE_EXTERNAL_STORAGE
  */
 public class DeviceUuidFactory {
@@ -58,6 +55,7 @@ public class DeviceUuidFactory {
                 return null;
             }
         }
+
         return deviceUUID;
     }
 
