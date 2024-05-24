@@ -409,9 +409,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
         items?.let {
             it.forEach {wifiItem->
-                "开始执行1====${wifiItem.item.SSID}=====${info.ssid}".d("zy1996")
                 if(wifiItem.item.SSID==getNoDoubleQuotationSSID(info.ssid)){
-                    "是否找到了相同的WIFI====${wifiItem.item.SSID}".d("zy1996")
                     isNeedPwd = AndroidSystem.isUsePassWifi(wifiItem.item)
                 }
             }
@@ -715,7 +713,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
             filteredList.forEach {
                 it.isSave.yes {
-                    "当前过滤后的 集合是=====${it.item.SSID}".d("zy1996")
+                    //"当前过滤后的 集合是=====${it.item.SSID}".d("zy1996")
                 }
 
             }
@@ -884,9 +882,10 @@ abstract class AbsWifiListFragment : AbsFragment() {
           }*/
 
 
+            val newList = c.distinctBy { it.item.SSID }.toMutableList()
 
             mAdapter!!.remove(removes)
-            mAdapter!!.add(mAdapter!!.itemCount, c)
+            mAdapter!!.add(mAdapter!!.itemCount, newList)
 
             mAdapter?.let {
                 it.getDataList().forEach {

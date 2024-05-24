@@ -200,8 +200,8 @@ android {
         applicationId "com.soya.launcher"
         minSdk 24
         targetSdk 33
-        versionCode 55
-        versionName "1.6"
+        versionCode 56
+        versionName "1.7"
 
         buildConfigField "String", "BASE_URL", '"https://99soya.shop/"'
         buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'

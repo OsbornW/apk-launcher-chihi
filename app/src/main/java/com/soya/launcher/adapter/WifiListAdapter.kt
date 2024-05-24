@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.shudong.lib_base.ext.d
 import com.soya.launcher.R
 import com.soya.launcher.bean.WifiItem
 import com.soya.launcher.utils.AndroidSystem
@@ -46,20 +47,33 @@ class WifiListAdapter(
 
     fun replace(results: MutableList<WifiItem>) {
 
+        dataList.forEach {
+            for (i in (results).size - 1 downTo 0) {
+                if(it.item.SSID==results[i].item.SSID){
+                    (results).removeAt(i)
+                }
+            }
+        }
         for (i in (results).size - 1 downTo 0) {
             if(results[i].isSave||results[i].item.SSID==connectSSID){
                 (results).removeAt(i)
             }
         }
 
+        val newList = results.distinctBy { it.item.SSID }.toMutableList()
+
         dataList.clear()
-        dataList.addAll(results)
+        dataList.addAll(newList)
         dataList.forEachIndexed { index, item ->
             val result = item.item
             val isConnect = result.SSID == connectSSID
             if(isConnect||item.isSave){
                 dataList.remove(item)
             }
+        }
+
+        dataList.forEach {
+            "首次添加的WIFI数据是=====${it.item.SSID}".d("zy1996")
         }
 
         notifyDataSetChanged()
