@@ -3,6 +3,7 @@ package com.soya.launcher.ui.fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,19 +141,22 @@ public class AboutFragment extends AbsFragment implements View.OnClickListener {
         if (v.equals(mUpgradeView)){
             ProgressDialog dialog = ProgressDialog.newInstance();
             dialog.show(getChildFragmentManager(), ProgressDialog.TAG);
-            call = HttpRequest.checkVersion(new ServiceRequest.Callback<VersionResponse>() {
-                @Override
-                public void onCallback(Call call, int status, VersionResponse response) {
-                    dialog.dismiss();
-                    if (!isAdded() || call.isCanceled() || response == null || response.getData() == null) return;
-                    Version result = response.getData();
-                    if (result.getVersion() > BuildConfig.VERSION_CODE && Config.CHANNEL.equals(result.getChannel())) {
-                        PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, (int) result.getVersion());
-                        AndroidSystem.jumpUpgrade(getActivity(), result);
-                    } else {
-                        ToastDialog toastDialog = ToastDialog.newInstance(getString(R.string.already_latest_version), ToastDialog.MODE_CONFIRM);
-                        toastDialog.show(getChildFragmentManager(), ToastDialog.TAG);
-                    }
+            call = HttpRequest.checkVersion((call, status, response) -> {
+                dialog.dismiss();
+                if (!isAdded() || call.isCanceled() || response == null || response.getData() == null){
+
+                    ToastDialog toastDialog = ToastDialog.newInstance(getString(R.string.already_latest_version), ToastDialog.MODE_CONFIRM);
+                    toastDialog.show(getChildFragmentManager(), ToastDialog.TAG);
+                    return;
+                }
+                Version result = response.getData();
+                if (result.getVersion() > BuildConfig.VERSION_CODE && Config.CHANNEL.equals(result.getChannel())) {
+                    PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, (int) result.getVersion());
+                    AndroidSystem.jumpUpgrade(getActivity(), result);
+                } else {
+
+                    ToastDialog toastDialog = ToastDialog.newInstance(getString(R.string.already_latest_version), ToastDialog.MODE_CONFIRM);
+                    toastDialog.show(getChildFragmentManager(), ToastDialog.TAG);
                 }
             });
         }
