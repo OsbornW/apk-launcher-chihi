@@ -395,7 +395,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     }
 
-    private fun setMoviceContent(list: MutableList<Movice?>?, direction: Int, columns: Int, layoutId: Int) {
+    private fun setMoviceContent(
+        list: MutableList<Movice?>?,
+        direction: Int,
+        columns: Int,
+        layoutId: Int
+    ) {
         var list = list
         when (direction) {
             1 -> {
@@ -407,7 +412,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
 
             0 -> {
-                if (list?.size?:0 > columns * 2) {
+                if (list?.size ?: 0 > columns * 2) {
                     list = list?.subList(0, columns * 2)
                 }
                 mVerticalContentGrid!!.setAdapter(mVMainContentAdapter)
@@ -415,9 +420,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 mVerticalContentGrid!!.visibility = View.VISIBLE
                 mHorizontalContentGrid!!.visibility = View.GONE
                 mVerticalContentGrid!!.setNumColumns(columns)
-                mVerticalContentGrid!!.setVerticalSpacing(
-                    resources.getDimension(R.dimen.main_page_vertical_spacing).toInt()
-                )
+                activity?.let {
+                    mVerticalContentGrid!!.setVerticalSpacing(
+                        it.resources.getDimension(R.dimen.main_page_vertical_spacing).toInt()
+                    )
+                }
+
                 mVMainContentAdapter!!.replace(list)
             }
         }
@@ -703,7 +711,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         } else if (v == mGradientView) {
             //startActivity(Intent(activity, HomeGuideGroupGradientActivity::class.java))
 
-           // startActivity(Intent(activity, ChooseGradientActivity::class.java))
+            // startActivity(Intent(activity, ChooseGradientActivity::class.java))
 
             startKtxActivity<HomeGuideGroupGradientActivity>()
 
@@ -713,20 +721,20 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             * 然后跳转SDK自动校准页面
             * */
             // 是否处于自动校准
-          /*  var isAutoCalibration =
-                ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
-            isAutoCalibration.no {
-                // 没有打开自动校准
-                //开启自动校准
-                ASystemProperties.set("persist.vendor.gsensor.enable", "1")
-            }*/
+            /*  var isAutoCalibration =
+                  ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
+              isAutoCalibration.no {
+                  // 没有打开自动校准
+                  //开启自动校准
+                  ASystemProperties.set("persist.vendor.gsensor.enable", "1")
+              }*/
 
             //跳转自动校准页面
-           /* AndroidSystem.openActivityName(
-                requireContext(),
-                "com.hxdevicetest",
-                "com.hxdevicetest.CheckGsensorActivity"
-            )*/
+            /* AndroidSystem.openActivityName(
+                 requireContext(),
+                 "com.hxdevicetest",
+                 "com.hxdevicetest.CheckGsensorActivity"
+             )*/
 
         }
     }
