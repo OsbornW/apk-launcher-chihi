@@ -2,6 +2,7 @@ package com.soya.launcher.ui.activity
 
 import android.content.Intent
 import android.util.Log
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import com.shudong.lib_base.base.BaseVMActivity
 import com.shudong.lib_base.base.BaseViewModel
@@ -25,6 +26,9 @@ import com.soya.launcher.ui.fragment.WelcomeFragment
 class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     private var canBackPressed = true
 
+    override fun initBeforeContent() {
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+    }
 
     override fun initView() {
         commit()
@@ -57,9 +61,10 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     override fun onBackPressed() {
         Log.d("zy1996", "onBackPressed: 是否可以返回？"+canBackPressed)
         if (canBackPressed) {
-            super.onBackPressed()
+
         } else {
             sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
         }
+        super.onBackPressed()
     }
 }
