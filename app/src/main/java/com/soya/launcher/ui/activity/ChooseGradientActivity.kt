@@ -1,23 +1,25 @@
-package com.soya.launcher.ui.activity;
+package com.soya.launcher.ui.activity
 
-import androidx.fragment.app.Fragment;
+import android.view.KeyEvent
+import androidx.fragment.app.Fragment
+import com.jeremyliao.liveeventbus.LiveEventBus
+import com.shudong.lib_base.ext.FOCUS_BACK
+import com.shudong.lib_base.ext.sendLiveEventData
+import com.soya.launcher.R
+import com.soya.launcher.ui.fragment.ChooseGradientFragment.Companion.newInstance
 
-import com.soya.launcher.R;
-import com.soya.launcher.ui.fragment.ChooseGradientFragment;
-
-public class ChooseGradientActivity extends AbsActivity{
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_main;
+class ChooseGradientActivity : AbsActivity() {
+    override fun getLayoutId(): Int {
+        return R.layout.activity_main
     }
 
-    @Override
-    public int getContainerId() {
-        return R.id.main_browse_fragment;
+    override fun getContainerId(): Int {
+        return R.id.main_browse_fragment
     }
 
-    @Override
-    public Fragment getFragment() {
-        return ChooseGradientFragment.newInstance();
+    override fun getFragment(): Fragment {
+        return newInstance()
     }
+
+
 }

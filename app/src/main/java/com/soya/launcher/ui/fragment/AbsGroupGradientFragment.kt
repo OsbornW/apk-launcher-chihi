@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.open.system.ASystemProperties
+import com.shudong.lib_base.ext.FOCUS_BACK
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.stringValue
 import com.shudong.lib_base.ext.yes
@@ -17,6 +20,7 @@ open class AbsGroupGradientFragment : AbsFragment() {
     private var mSkipView: TextView? = null
     private var mSkipTipView: TextView? = null
     private var root:FrameLayout?=null
+    lateinit var flContainer:FrameLayout
     override fun getWallpaperView(): Int {
         return R.id.wallpaper
     }
@@ -31,6 +35,10 @@ open class AbsGroupGradientFragment : AbsFragment() {
             if (isEnalbe) "1" else "0"
         )
 
+        val isEnalbe = ASystemProperties.getInt("persist.vendor.gsensor.enable", 0)
+
+        "设置之后的值是=====${isEnalbe}".d("zy1996")
+
     }
 
     override fun init(view: View, inflater: LayoutInflater) {
@@ -39,12 +47,21 @@ open class AbsGroupGradientFragment : AbsFragment() {
         mSkipView = view.findViewById(R.id.skip)
         mSkipTipView = view.findViewById(R.id.skip_tip)
         root = view.findViewById(R.id.root)
+        flContainer = view.findViewById(R.id.fl_container)
         mManualView?.setOnKeyListener { view, i, keyEvent ->
 
             false
         }
 
             setCurMode(true)
+
+        this.obseverLiveEvent<Boolean>(FOCUS_BACK){
+            (flContainer.isVisible).yes {
+                flContainer.isVisible = false
+            }.otherwise {
+                activity!!.finish()
+            }
+        }
 
 
     }
@@ -61,8 +78,9 @@ open class AbsGroupGradientFragment : AbsFragment() {
             //val isEnalbe = ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
                 setCurMode(false)
 
+            flContainer.isVisible = true
             activity!!.supportFragmentManager.beginTransaction()
-                .replace(R.id.main_browse_fragment, GradientFragment.newInstance())
+                .replace(R.id.fl_container, GradientFragment.newInstance())
                 .addToBackStack(null).commit()
         }
         mSkipView!!.setOnClickListener(object : View.OnClickListener {
