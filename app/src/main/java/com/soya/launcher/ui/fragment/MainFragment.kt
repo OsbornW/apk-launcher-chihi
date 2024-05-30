@@ -90,6 +90,7 @@ import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
+import com.thumbsupec.lib_base.toast.ToastUtils
 import com.thumbsupec.lib_base.web.WebUrl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -840,7 +841,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun toastInstallApp(name: String, callback: ToastDialog.Callback) {
         "当前的APP名字是=====$name".d("zy1996")
-        toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback)
+        if(name==null||name==""){
+            ToastUtils.show("当前APP名字是空的")
+        }else{
+            toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback)
+
+        }
     }
 
     private fun toast(title: String, mode: Int, callback: ToastDialog.Callback?) {
