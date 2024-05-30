@@ -839,6 +839,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun toastInstallApp(name: String, callback: ToastDialog.Callback) {
+        "当前的APP名字是=====$name".d("zy1996")
         toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback)
     }
 

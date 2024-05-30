@@ -61,10 +61,10 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     override fun onBackPressed() {
         Log.d("zy1996", "onBackPressed: 是否可以返回？"+canBackPressed)
         if (canBackPressed) {
-
+            super.onBackPressed()
         } else {
             sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
         }
-        super.onBackPressed()
+
     }
 }

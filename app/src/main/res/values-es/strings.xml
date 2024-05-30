@@ -126,7 +126,7 @@
     <string name="use_website_search">Buscar con el sitio web</string>
     <string name="app_list">Aplicaciones</string>
     <string name="no_data">No se encontraron datos</string>
-    <string name="place_install">Por favor, instale% s</string>
+    <string name="place_install">Por favor, instale %s</string>
     <string name="set_bluetooth_connected">Configurar conexión Bluetooth</string>
     <string name="searching">En búsqueda</string>
     <string name="pairing_mark">Emparejando% s</string>

@@ -26,4 +26,3 @@ inline fun <reified T> LifecycleOwner.obseverLiveEvent(
 
 const val ACTIVE_SUCCESS = "ACTIVE_SUCCESS"
 const val IS_MAIN_CANBACK = "IS_MAIN_CANBACK"
-const val FOCUS_BACK = "FOCUS_BACK"

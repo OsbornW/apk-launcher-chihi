@@ -5,22 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.core.view.isVisible
 import com.open.system.ASystemProperties
-import com.shudong.lib_base.ext.FOCUS_BACK
-import com.shudong.lib_base.ext.d
-import com.shudong.lib_base.ext.obseverLiveEvent
-import com.shudong.lib_base.ext.otherwise
-import com.shudong.lib_base.ext.stringValue
-import com.shudong.lib_base.ext.yes
+import com.shudong.lib_base.ext.startKtxActivity
 import com.soya.launcher.R
+import com.soya.launcher.ui.activity.GradientActivity
 
 open class AbsGroupGradientFragment : AbsFragment() {
     private var mManualView: View? = null
     private var mSkipView: TextView? = null
     private var mSkipTipView: TextView? = null
-    private var root:FrameLayout?=null
-    lateinit var flContainer:FrameLayout
+    private var root: FrameLayout? = null
     override fun getWallpaperView(): Int {
         return R.id.wallpaper
     }
@@ -37,7 +31,6 @@ open class AbsGroupGradientFragment : AbsFragment() {
 
         val isEnalbe = ASystemProperties.getInt("persist.vendor.gsensor.enable", 0)
 
-        "设置之后的值是=====${isEnalbe}".d("zy1996")
 
     }
 
@@ -47,22 +40,10 @@ open class AbsGroupGradientFragment : AbsFragment() {
         mSkipView = view.findViewById(R.id.skip)
         mSkipTipView = view.findViewById(R.id.skip_tip)
         root = view.findViewById(R.id.root)
-        flContainer = view.findViewById(R.id.fl_container)
         mManualView?.setOnKeyListener { view, i, keyEvent ->
-
             false
         }
-
-            setCurMode(true)
-
-        this.obseverLiveEvent<Boolean>(FOCUS_BACK){
-            (flContainer.isVisible).yes {
-                flContainer.isVisible = false
-            }.otherwise {
-                activity!!.finish()
-            }
-        }
-
+        setCurMode(true)
 
     }
 
@@ -74,14 +55,8 @@ open class AbsGroupGradientFragment : AbsFragment() {
     override fun initBefore(view: View, inflater: LayoutInflater) {
         super.initBefore(view, inflater)
         mManualView!!.setOnClickListener {
-            //setEnable(false)
-            //val isEnalbe = ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
-                setCurMode(false)
-
-            flContainer.isVisible = true
-            activity!!.supportFragmentManager.beginTransaction()
-                .replace(R.id.fl_container, GradientFragment.newInstance())
-                .addToBackStack(null).commit()
+            setCurMode(false)
+            startKtxActivity<GradientActivity>()
         }
         mSkipView!!.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {

@@ -1,435 +1,389 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import com.softwinner.keystone.KeystoneCorrection
+import com.softwinner.keystone.KeystoneCorrectionManager
+import com.soya.launcher.R
+import com.soya.launcher.view.KeyEventFrameLayout
+import com.soya.launcher.view.KeyEventFrameLayout.KeyEventCallback
+import java.util.concurrent.TimeUnit
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.softwinner.keystone.KeystoneCorrection;
-import com.softwinner.keystone.KeystoneCorrectionManager;
-import com.soya.launcher.R;
-import com.soya.launcher.view.KeyEventFrameLayout;
-
-import java.util.concurrent.TimeUnit;
-
-public abstract class AbsGradientFragment extends AbsFragment implements View.OnClickListener, KeyEventFrameLayout.KeyEventCallback {
-
-    private static final int DIR_X = 0;
-    private static final int DIR_Y = 1;
-
-    private static final String KEYSTONE_LBX = "persist.display.keystone_lbx";
-    private static final String KEYSTONE_LBY = "persist.display.keystone_lby";
-    private static final String KEYSTONE_RBX = "persist.display.keystone_rbx";
-    private static final String KEYSTONE_RBY = "persist.display.keystone_rby";
-    private static final String KEYSTONE_LTX = "persist.display.keystone_ltx";
-    private static final String KEYSTONE_LTY = "persist.display.keystone_lty";
-    private static final String KEYSTONE_RTX = "persist.display.keystone_rtx";
-    private static final String KEYSTONE_RTY = "persist.display.keystone_rty";
-
-    public static final int TYPE_LT = 0;
-    public static final int TYPE_LB = 1;
-    public static final int TYPE_RB = 2;
-    public static final int TYPE_RT = 3;
-
-    private float x;
-    private float y;
-
-    private float centerX;
-    private float centerY;
-    private float detialX;
-    private float detialY;
-    private KeyEventFrameLayout mRootView;
-    private KeystoneCorrectionManager keystone;
-    private View mSurfaceView;
-    private View mContentView;
-    private View mLT;
-    private View mRT;
-    private View mLB;
-    private View mRB;
-    private View mLongTipView;
-    private TextView mLRTextView;
-    private TextView mTBTextView;
-
-    private View mLTA;
-    private View mLBA;
-    private View mRTA;
-    private View mRBA;
-
-    private View mLT_LR;
-    private View mLT_TB;
-    private View mLB_LR;
-    private View mLB_TB;
-    private View mRT_LR;
-    private View mRT_TB;
-    private View mRB_LR;
-    private View mRB_TB;
-    private ImageView mDirLR;
-    private ImageView mDirTB;
-
-    private final int MAX_LOOP = 4;
-    private final int MAX_PROGRESS = 100;
-    private int type = TYPE_LT;
-    private int index = 0;
-    private long time = -1;
-    private boolean isOut = false;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        keystone = new KeystoneCorrectionManager();
+abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEventCallback {
+    private var x = 0f
+    private var y = 0f
+    private var centerX = 0f
+    private var centerY = 0f
+    private var detialX = 0f
+    private var detialY = 0f
+    private var mRootView: KeyEventFrameLayout? = null
+    private var keystone: KeystoneCorrectionManager? = null
+    private var mSurfaceView: View? = null
+    private var mContentView: View? = null
+    private var mLT: View? = null
+    private var mRT: View? = null
+    private var mLB: View? = null
+    private var mRB: View? = null
+    private var mLongTipView: View? = null
+    private var mLRTextView: TextView? = null
+    private var mTBTextView: TextView? = null
+    private var mLTA: View? = null
+    private var mLBA: View? = null
+    private var mRTA: View? = null
+    private var mRBA: View? = null
+    private var mLT_LR: View? = null
+    private var mLT_TB: View? = null
+    private var mLB_LR: View? = null
+    private var mLB_TB: View? = null
+    private var mRT_LR: View? = null
+    private var mRT_TB: View? = null
+    private var mRB_LR: View? = null
+    private var mRB_TB: View? = null
+    private var mDirLR: ImageView? = null
+    private var mDirTB: ImageView? = null
+    private val MAX_LOOP = 4
+    private val MAX_PROGRESS = 100
+    private var type = TYPE_LT
+    private var index = 0
+    private var time: Long = -1
+    private var isOut = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        keystone = KeystoneCorrectionManager()
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_gradient;
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_gradient
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        time = -1;
-        isOut = false;
-        mRootView.post(new Runnable() {
-            @Override
-            public void run() {
-                syncDetial();
-                setDefaultXY(type);
+    override fun onStart() {
+        super.onStart()
+        time = -1
+        isOut = false
+        mRootView!!.post {
+            syncDetial()
+            setDefaultXY(type)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        time = -1
+        isOut = true
+    }
+
+    override fun init(view: View, inflater: LayoutInflater) {
+        super.init(view, inflater)
+        mRootView = view.findViewById(R.id.root)
+        mSurfaceView = view.findViewById(R.id.surface)
+        mContentView = view.findViewById(R.id.content)
+        mLT = view.findViewById(R.id.lt)
+        mRT = view.findViewById(R.id.rt)
+        mLB = view.findViewById(R.id.lb)
+        mRB = view.findViewById(R.id.rb)
+        mLTA = view.findViewById(R.id.lt_anchors)
+        mLBA = view.findViewById(R.id.lb_anchors)
+        mRTA = view.findViewById(R.id.rt_anchors)
+        mRBA = view.findViewById(R.id.rb_anchors)
+        mLT_LR = view.findViewById(R.id.lt_lr)
+        mLT_TB = view.findViewById(R.id.lt_tb)
+        mLB_LR = view.findViewById(R.id.lb_lr)
+        mLB_TB = view.findViewById(R.id.lb_tb)
+        mRT_LR = view.findViewById(R.id.rt_lr)
+        mRT_TB = view.findViewById(R.id.rt_tb)
+        mRB_LR = view.findViewById(R.id.rb_lr)
+        mRB_TB = view.findViewById(R.id.rb_tb)
+        mLongTipView = view.findViewById(R.id.long_click_tip)
+        mTBTextView = view.findViewById(R.id.tb_text)
+        mLRTextView = view.findViewById(R.id.lr_text)
+        mDirLR = view.findViewById(R.id.dir_lr)
+        mDirTB = view.findViewById(R.id.dir_tb)
+
+
+    }
+
+    override fun initBefore(view: View, inflater: LayoutInflater) {
+        super.initBefore(view, inflater)
+        mRootView!!.setKeyEventCallback(this)
+    }
+
+    override fun initBind(view: View, inflater: LayoutInflater) {
+        super.initBind(view, inflater)
+        mLongTipView!!.visibility = if (useLongClick()) View.VISIBLE else View.GONE
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requestFocus(mContentView)
+    }
+
+    override fun onClick(v: View) {}
+    override fun getWallpaperView(): Int {
+        return R.id.wallpaper
+    }
+
+    override fun onKeyDown(event: KeyEvent) {
+        if (mRootView!!.measuredWidth == 0 || mRootView!!.measuredHeight == 0) return
+        if (centerX == 0f || centerY == 0f) {
+            syncDetial()
+        }
+        val keyCode = event.keyCode
+        val action = event.action
+        when (keyCode) {
+            KeyEvent.KEYCODE_DPAD_UP -> if (action == 0) {
+                if (type == TYPE_LT || type == TYPE_RT) {
+                    y -= detialY
+                } else {
+                    y += detialY
+                }
+                if (y < 0) y = 0f
+                if (y > centerY) y = centerY
+                setValue(type, DIR_Y, y)
             }
-        });
-    }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        time = -1;
-        isOut = true;
-    }
-
-    @Override
-    protected void init(View view, LayoutInflater inflater) {
-        super.init(view, inflater);
-        mRootView = view.findViewById(R.id.root);
-        mSurfaceView = view.findViewById(R.id.surface);
-        mContentView = view.findViewById(R.id.content);
-        mLT = view.findViewById(R.id.lt);
-        mRT = view.findViewById(R.id.rt);
-        mLB = view.findViewById(R.id.lb);
-        mRB = view.findViewById(R.id.rb);
-        mLTA = view.findViewById(R.id.lt_anchors);
-        mLBA = view.findViewById(R.id.lb_anchors);
-        mRTA = view.findViewById(R.id.rt_anchors);
-        mRBA = view.findViewById(R.id.rb_anchors);
-        mLT_LR = view.findViewById(R.id.lt_lr);
-        mLT_TB = view.findViewById(R.id.lt_tb);
-        mLB_LR = view.findViewById(R.id.lb_lr);
-        mLB_TB = view.findViewById(R.id.lb_tb);
-        mRT_LR = view.findViewById(R.id.rt_lr);
-        mRT_TB = view.findViewById(R.id.rt_tb);
-        mRB_LR = view.findViewById(R.id.rb_lr);
-        mRB_TB = view.findViewById(R.id.rb_tb);
-        mLongTipView = view.findViewById(R.id.long_click_tip);
-        mTBTextView = view.findViewById(R.id.tb_text);
-        mLRTextView = view.findViewById(R.id.lr_text);
-        mDirLR = view.findViewById(R.id.dir_lr);
-        mDirTB = view.findViewById(R.id.dir_tb);
-    }
-
-    @Override
-    protected void initBefore(View view, LayoutInflater inflater) {
-        super.initBefore(view, inflater);
-        mRootView.setKeyEventCallback(this);
-    }
-
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        mLongTipView.setVisibility(useLongClick() ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        requestFocus(mContentView);
-    }
-
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
-    }
-
-    @Override
-    public void onKeyDown(KeyEvent event) {
-        if (mRootView.getMeasuredWidth() == 0 || mRootView.getMeasuredHeight() == 0) return;
-        if (centerX == 0 || centerY == 0){
-            syncDetial();
-        }
-
-        int keyCode = event.getKeyCode();
-        int action = event.getAction();
-        switch (keyCode){
-            case KeyEvent.KEYCODE_DPAD_UP:
-               if (action == 0){
-                   if (type == TYPE_LT || type == TYPE_RT){
-                       y -= detialY;
-                   }else {
-                       y += detialY;
-                   }
-
-                   if (y < 0) y = 0;
-                   if (y > centerY) y = centerY;
-
-                   setValue(type, DIR_Y, y);
-               }
-                break;
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-                if (action == 0){
-                    if (type == TYPE_LT || type == TYPE_RT){
-                        y += detialY;
-                    }else {
-                        y -= detialY;
-                    }
-
-                    if (y > centerY) y = centerY;
-                    if (y < 0) y = 0;
-
-                    setValue(type, DIR_Y, y);
+            KeyEvent.KEYCODE_DPAD_DOWN -> if (action == 0) {
+                if (type == TYPE_LT || type == TYPE_RT) {
+                    y += detialY
+                } else {
+                    y -= detialY
                 }
-                break;
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                if (action == 0){
-                    if (type == TYPE_LT || type == TYPE_LB){
-                        x -= detialX;
-                    }else {
-                        x += detialX;
-                    }
+                if (y > centerY) y = centerY
+                if (y < 0) y = 0f
+                setValue(type, DIR_Y, y)
+            }
 
-                    if (x < 0) x = 0;
-                    if (x > centerX) x = centerX;
-
-                    setValue(type, DIR_X, x);
+            KeyEvent.KEYCODE_DPAD_LEFT -> if (action == 0) {
+                if (type == TYPE_LT || type == TYPE_LB) {
+                    x -= detialX
+                } else {
+                    x += detialX
                 }
-                break;
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-                if (action == 0){
-                    if (type == TYPE_LT || type == TYPE_LB){
-                        x += detialX;
-                    }else {
-                        x -= detialX;
-                    }
+                if (x < 0) x = 0f
+                if (x > centerX) x = centerX
+                setValue(type, DIR_X, x)
+            }
 
-                    if (x > centerX) x = centerX;
-                    if (x < 0) x = 0;
-
-                    setValue(type, DIR_X, x);
+            KeyEvent.KEYCODE_DPAD_RIGHT -> if (action == 0) {
+                if (type == TYPE_LT || type == TYPE_LB) {
+                    x += detialX
+                } else {
+                    x -= detialX
                 }
-                break;
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-                if (event.getAction() == 0){
-                    if (time == -1) time = System.currentTimeMillis();
-                    if (TimeUnit.MILLISECONDS.toMillis(System.currentTimeMillis() - time) >= 2000 && !isOut && useLongClick()){
-                        isOut = true;
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GuideDateFragment.newInstance()).addToBackStack(null).commit();
-                    }
-                }else if (event.getAction() == 1 && !isOut) {
-                    time = -1;
-                    type = ++index % MAX_LOOP;
-                    setDefaultXY(type);
+                if (x > centerX) x = centerX
+                if (x < 0) x = 0f
+                setValue(type, DIR_X, x)
+            }
+
+            KeyEvent.KEYCODE_DPAD_CENTER -> if (event.action == 0) {
+                if (time == -1L) time = System.currentTimeMillis()
+                if (TimeUnit.MILLISECONDS.toMillis(System.currentTimeMillis() - time) >= 2000 && !isOut && useLongClick()) {
+                    isOut = true
+                    activity!!.supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_browse_fragment, GuideDateFragment.newInstance())
+                        .addToBackStack(null).commit()
                 }
-                break;
-            case KeyEvent.KEYCODE_MENU:
-                reset();
-                break;
+            } else if (event.action == 1 && !isOut) {
+                time = -1
+                type = ++index % MAX_LOOP
+                setDefaultXY(type)
+            }
+
+            KeyEvent.KEYCODE_MENU -> reset()
         }
     }
 
-    private void syncDetial(){
-        centerX = (float) (mRootView.getMeasuredWidth() / 2);
-        centerY = (float) (mRootView.getMeasuredHeight() / 2);
-        detialX = centerX / MAX_PROGRESS;
-        detialY = centerY / MAX_PROGRESS;
+    private fun syncDetial() {
+        centerX = (mRootView!!.measuredWidth / 2).toFloat()
+        centerY = (mRootView!!.measuredHeight / 2).toFloat()
+        detialX = centerX / MAX_PROGRESS
+        detialY = centerY / MAX_PROGRESS
     }
 
-    private void setInstructionVisible(boolean lt, boolean rt, boolean lb, boolean rb){
-        mLTA.setVisibility(lt ? View.VISIBLE : View.GONE);
-        mRTA.setVisibility(rt ? View.VISIBLE : View.GONE);
-        mLBA.setVisibility(lb ? View.VISIBLE : View.GONE);
-        mRBA.setVisibility(rb ? View.VISIBLE : View.GONE);
-
-        mLT_LR.setVisibility(lt ? View.VISIBLE : View.GONE);
-        mLT_TB.setVisibility(lt ? View.VISIBLE : View.GONE);
-
-        mRT_LR.setVisibility(rt ? View.VISIBLE : View.GONE);
-        mRT_TB.setVisibility(rt ? View.VISIBLE : View.GONE);
-
-        mLB_LR.setVisibility(lb ? View.VISIBLE : View.GONE);
-        mLB_TB.setVisibility(lb ? View.VISIBLE : View.GONE);
-
-        mRB_LR.setVisibility(rb ? View.VISIBLE : View.GONE);
-        mRB_TB.setVisibility(rb ? View.VISIBLE : View.GONE);
+    private fun setInstructionVisible(lt: Boolean, rt: Boolean, lb: Boolean, rb: Boolean) {
+        mLTA!!.visibility = if (lt) View.VISIBLE else View.GONE
+        mRTA!!.visibility = if (rt) View.VISIBLE else View.GONE
+        mLBA!!.visibility = if (lb) View.VISIBLE else View.GONE
+        mRBA!!.visibility = if (rb) View.VISIBLE else View.GONE
+        mLT_LR!!.visibility = if (lt) View.VISIBLE else View.GONE
+        mLT_TB!!.visibility = if (lt) View.VISIBLE else View.GONE
+        mRT_LR!!.visibility = if (rt) View.VISIBLE else View.GONE
+        mRT_TB!!.visibility = if (rt) View.VISIBLE else View.GONE
+        mLB_LR!!.visibility = if (lb) View.VISIBLE else View.GONE
+        mLB_TB!!.visibility = if (lb) View.VISIBLE else View.GONE
+        mRB_LR!!.visibility = if (rb) View.VISIBLE else View.GONE
+        mRB_TB!!.visibility = if (rb) View.VISIBLE else View.GONE
     }
 
-    private void setDefaultXY(int type) {
-        switch (type){
-            case TYPE_LT:
-                setInstructionVisible(true, false, false, false);
-                x = getValue(KEYSTONE_LTX, 0);
-                y = getValue(KEYSTONE_LTY, 0);
-                break;
-            case TYPE_LB:
-                setInstructionVisible(false, false, true, false);
-                x = getValue(KEYSTONE_LBX, 0);
-                y = getValue(KEYSTONE_LBY, 0);
-                break;
-            case TYPE_RT:
-                setInstructionVisible(false, true, false, false);
-                x = getValue(KEYSTONE_RTX, 0);
-                y = getValue(KEYSTONE_RTY, 0);
-                break;
-            case TYPE_RB:
-                setInstructionVisible(false, false, false, true);
-                x = getValue(KEYSTONE_RBX, 0);
-                y = getValue(KEYSTONE_RBY, 0);
-                break;
+    private fun setDefaultXY(type: Int) {
+        when (type) {
+            TYPE_LT -> {
+                setInstructionVisible(true, false, false, false)
+                x = getValue(KEYSTONE_LTX, 0f)
+                y = getValue(KEYSTONE_LTY, 0f)
+            }
+
+            TYPE_LB -> {
+                setInstructionVisible(false, false, true, false)
+                x = getValue(KEYSTONE_LBX, 0f)
+                y = getValue(KEYSTONE_LBY, 0f)
+            }
+
+            TYPE_RT -> {
+                setInstructionVisible(false, true, false, false)
+                x = getValue(KEYSTONE_RTX, 0f)
+                y = getValue(KEYSTONE_RTY, 0f)
+            }
+
+            TYPE_RB -> {
+                setInstructionVisible(false, false, false, true)
+                x = getValue(KEYSTONE_RBX, 0f)
+                y = getValue(KEYSTONE_RBY, 0f)
+            }
         }
+        val xP = (x / centerX * 100).toInt()
+        val yP = (y / centerY * 100).toInt()
+        when (type) {
+            TYPE_LT -> {
+                mLRTextView!!.text = xP.toString()
+                mTBTextView!!.text = yP.toString()
+            }
 
-        int xP = (int) (x / centerX * 100);
-        int yP = (int) (y / centerY * 100);
+            TYPE_LB -> {
+                mTBTextView!!.text = xP.toString()
+                mLRTextView!!.text = yP.toString()
+            }
 
-        switch (type){
-            case TYPE_LT:
-                mLRTextView.setText(String.valueOf(xP));
-                mTBTextView.setText(String.valueOf(yP));
-                break;
-            case TYPE_LB:
-                mTBTextView.setText(String.valueOf(xP));
-                mLRTextView.setText(String.valueOf(yP));
-                break;
-            case TYPE_RT:
-                mLRTextView.setText(String.valueOf(xP));
-                mTBTextView.setText(String.valueOf(yP));
-                break;
-            case TYPE_RB:
-                mTBTextView.setText(String.valueOf(xP));
-                mLRTextView.setText(String.valueOf(yP));
-                break;
+            TYPE_RT -> {
+                mLRTextView!!.text = xP.toString()
+                mTBTextView!!.text = yP.toString()
+            }
+
+            TYPE_RB -> {
+                mTBTextView!!.text = xP.toString()
+                mLRTextView!!.text = yP.toString()
+            }
         }
-
-        switchDir(type);
+        switchDir(type)
     }
 
-    private void switchDir(int type){
-        switch (type){
-            case TYPE_LT:
-                mDirLR.setRotation(180);
-                mDirTB.setRotation(270);
-                break;
-            case TYPE_LB:
-                mDirLR.setRotation(90);
-                mDirTB.setRotation(180);
-                break;
-            case TYPE_RT:
-                mDirLR.setRotation(360);
-                mDirTB.setRotation(270);
-                break;
-            case TYPE_RB:
-                mDirLR.setRotation(90);
-                mDirTB.setRotation(360);
-                break;
-        }
-    }
+    private fun switchDir(type: Int) {
+        when (type) {
+            TYPE_LT -> {
+                mDirLR!!.rotation = 180f
+                mDirTB!!.rotation = 270f
+            }
 
-    private void setValue(int type, int direction, float value){
-        if (value < 0) return;
-        float ltx = type == TYPE_LT && direction == DIR_X ? value : getValue(KEYSTONE_LTX, 0);
-        float lty = type == TYPE_LT && direction == DIR_Y ? value : getValue(KEYSTONE_LTY, 0);
+            TYPE_LB -> {
+                mDirLR!!.rotation = 90f
+                mDirTB!!.rotation = 180f
+            }
 
-        float lbx = type == TYPE_LB && direction == DIR_X ? value : getValue(KEYSTONE_LBX, 0);
-        float lby = type == TYPE_LB && direction == DIR_Y ? value : getValue(KEYSTONE_LBY, 0);
+            TYPE_RT -> {
+                mDirLR!!.rotation = 360f
+                mDirTB!!.rotation = 270f
+            }
 
-        float rtx = type == TYPE_RT && direction == DIR_X ? value : getValue(KEYSTONE_RTX, 0);
-        float rty = type == TYPE_RT && direction == DIR_Y ? value : getValue(KEYSTONE_RTY, 0);
-
-        float rbx = type == TYPE_RB && direction == DIR_X ? value : getValue(KEYSTONE_RBX, 0);
-        float rby = type == TYPE_RB && direction == DIR_Y ? value : getValue(KEYSTONE_RBY, 0);
-
-        KeystoneCorrection correction = new KeystoneCorrection(lbx, lby, ltx, lty, rbx, rby, rtx, rty);
-        boolean success = keystone.setKeystoneCorrection(correction);
-        mSurfaceView.invalidate();
-
-        switch (type){
-            case TYPE_LT:
-                mLRTextView.setText(String.valueOf((int) (ltx / centerX * 100)));
-                mTBTextView.setText(String.valueOf((int) (lty / centerY * 100)));
-                break;
-            case TYPE_LB:
-                mTBTextView.setText(String.valueOf((int) (lbx / centerX * 100)));
-                mLRTextView.setText(String.valueOf((int) (lby / centerY * 100)));
-                break;
-            case TYPE_RT:
-                mLRTextView.setText(String.valueOf((int) (rtx / centerX * 100)));
-                mTBTextView.setText(String.valueOf((int) (rty / centerY * 100)));
-                break;
-            case TYPE_RB:
-                mTBTextView.setText(String.valueOf((int) (rbx / centerX * 100)));
-                mLRTextView.setText(String.valueOf((int) (rby / centerY * 100)));
-                break;
+            TYPE_RB -> {
+                mDirLR!!.rotation = 90f
+                mDirTB!!.rotation = 360f
+            }
         }
     }
 
-    private void reset(){
-        x = 0;
-        y = 0;
-        KeystoneCorrection correction = new KeystoneCorrection(0, 0, 0, 0, 0, 0, 0, 0);
-        keystone.setKeystoneCorrection(correction);
-        mSurfaceView.invalidate();
+    private fun setValue(type: Int, direction: Int, value: Float) {
+        if (value < 0) return
+        val ltx = if (type == TYPE_LT && direction == DIR_X) value else getValue(KEYSTONE_LTX, 0f)
+        val lty = if (type == TYPE_LT && direction == DIR_Y) value else getValue(KEYSTONE_LTY, 0f)
+        val lbx = if (type == TYPE_LB && direction == DIR_X) value else getValue(KEYSTONE_LBX, 0f)
+        val lby = if (type == TYPE_LB && direction == DIR_Y) value else getValue(KEYSTONE_LBY, 0f)
+        val rtx = if (type == TYPE_RT && direction == DIR_X) value else getValue(KEYSTONE_RTX, 0f)
+        val rty = if (type == TYPE_RT && direction == DIR_Y) value else getValue(KEYSTONE_RTY, 0f)
+        val rbx = if (type == TYPE_RB && direction == DIR_X) value else getValue(KEYSTONE_RBX, 0f)
+        val rby = if (type == TYPE_RB && direction == DIR_Y) value else getValue(KEYSTONE_RBY, 0f)
+        val correction = KeystoneCorrection(
+            lbx.toDouble(),
+            lby.toDouble(),
+            ltx.toDouble(),
+            lty.toDouble(),
+            rbx.toDouble(),
+            rby.toDouble(),
+            rtx.toDouble(),
+            rty.toDouble()
+        )
+        val success = keystone!!.setKeystoneCorrection(correction)
+        mSurfaceView!!.invalidate()
+        when (type) {
+            TYPE_LT -> {
+                mLRTextView!!.text = (ltx / centerX * 100).toInt().toString()
+                mTBTextView!!.text = (lty / centerY * 100).toInt().toString()
+            }
 
-        mLRTextView.setText(String.valueOf(0));
-        mTBTextView.setText(String.valueOf(0));
-    }
+            TYPE_LB -> {
+                mTBTextView!!.text = (lbx / centerX * 100).toInt().toString()
+                mLRTextView!!.text = (lby / centerY * 100).toInt().toString()
+            }
 
-    private float getValue(String key, float def){
-        KeystoneCorrection correction = keystone.getKeystoneCorrection();
-        double value = def;
-        switch (key){
-            case KEYSTONE_LBX:
-                value = correction.leftBottomX;
-                break;
-            case KEYSTONE_LBY:
-                value = correction.leftBottomY;
-                break;
-            case KEYSTONE_LTX:
-                value = correction.leftTopX;
-                break;
-            case KEYSTONE_LTY:
-                value = correction.leftTopY;
-                break;
-            case KEYSTONE_RBX:
-                value = correction.rightBottomX;
-                break;
-            case KEYSTONE_RBY:
-                value = correction.rightBottomY;
-                break;
-            case KEYSTONE_RTX:
-                value = correction.rightTopX;
-                break;
-            case KEYSTONE_RTY:
-                value = correction.rightTopY;
-                break;
+            TYPE_RT -> {
+                mLRTextView!!.text = (rtx / centerX * 100).toInt().toString()
+                mTBTextView!!.text = (rty / centerY * 100).toInt().toString()
+            }
+
+            TYPE_RB -> {
+                mTBTextView!!.text = (rbx / centerX * 100).toInt().toString()
+                mLRTextView!!.text = (rby / centerY * 100).toInt().toString()
+            }
         }
-        return (float) value;
     }
 
-    protected boolean useLongClick(){
-        return true;
+    private fun reset() {
+        x = 0f
+        y = 0f
+        val correction = KeystoneCorrection(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        keystone!!.setKeystoneCorrection(correction)
+        mSurfaceView!!.invalidate()
+        mLRTextView!!.text = 0.toString()
+        mTBTextView!!.text = 0.toString()
+    }
+
+    private fun getValue(key: String, def: Float): Float {
+        val correction = keystone!!.keystoneCorrection
+        var value = def.toDouble()
+        when (key) {
+            KEYSTONE_LBX -> value = correction.leftBottomX
+            KEYSTONE_LBY -> value = correction.leftBottomY
+            KEYSTONE_LTX -> value = correction.leftTopX
+            KEYSTONE_LTY -> value = correction.leftTopY
+            KEYSTONE_RBX -> value = correction.rightBottomX
+            KEYSTONE_RBY -> value = correction.rightBottomY
+            KEYSTONE_RTX -> value = correction.rightTopX
+            KEYSTONE_RTY -> value = correction.rightTopY
+        }
+        return value.toFloat()
+    }
+
+    protected open fun useLongClick(): Boolean {
+        return true
+    }
+
+    companion object {
+        private const val DIR_X = 0
+        private const val DIR_Y = 1
+        private const val KEYSTONE_LBX = "persist.display.keystone_lbx"
+        private const val KEYSTONE_LBY = "persist.display.keystone_lby"
+        private const val KEYSTONE_RBX = "persist.display.keystone_rbx"
+        private const val KEYSTONE_RBY = "persist.display.keystone_rby"
+        private const val KEYSTONE_LTX = "persist.display.keystone_ltx"
+        private const val KEYSTONE_LTY = "persist.display.keystone_lty"
+        private const val KEYSTONE_RTX = "persist.display.keystone_rtx"
+        private const val KEYSTONE_RTY = "persist.display.keystone_rty"
+        const val TYPE_LT = 0
+        const val TYPE_LB = 1
+        const val TYPE_RB = 2
+        const val TYPE_RT = 3
     }
 }
