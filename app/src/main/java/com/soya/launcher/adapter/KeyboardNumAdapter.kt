@@ -2,6 +2,7 @@ package com.soya.launcher.adapter
 
 import android.content.Context
 import android.content.res.Resources
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.bean.KeyItem
 import java.util.Locale
@@ -99,16 +102,36 @@ class KeyboardNumAdapter(
                 icon =
                     if (isUPCaseKey) R.drawable.baseline_up_case_100 else R.drawable.baseline_lower_cast_100
             }
-            val drawable = context.resources.getDrawable(icon, Resources.getSystem().newTheme())
+            val drawable = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M).yes {
+                context.resources.getDrawable(icon, Resources.getSystem().newTheme())
+            }.otherwise {
+                context.resources.getDrawable(icon)
+            }
             DrawableCompat.setTint(
                 drawable,
-                if (mIconView.isSelected) context.resources.getColor(
-                    R.color.ico_style_3,
-                    Resources.getSystem().newTheme()
-                ) else context.resources.getColor(
-                    R.color.ico_style_1,
-                    Resources.getSystem().newTheme()
-                )
+                if (mIconView.isSelected){
+                    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M).yes {
+                        context.resources.getColor(
+                            R.color.ico_style_3,
+                            Resources.getSystem().newTheme()
+                        )
+                    }.otherwise {
+                        context.resources.getColor(
+                            R.color.ico_style_3
+                        )
+                    }
+                }  else{
+                    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M).yes {
+                        context.resources.getColor(
+                            R.color.ico_style_1,
+                            Resources.getSystem().newTheme()
+                        )
+                    }.otherwise {
+                        context.resources.getColor(
+                            R.color.ico_style_1
+                        )
+                    }
+                }
             )
             mIconView.setImageDrawable(drawable)
         }
