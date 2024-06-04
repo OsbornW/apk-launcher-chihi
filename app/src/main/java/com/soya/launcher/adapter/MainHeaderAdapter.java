@@ -1,6 +1,5 @@
 package com.soya.launcher.adapter;
 
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
