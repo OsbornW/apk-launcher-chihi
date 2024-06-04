@@ -16,7 +16,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
@@ -303,7 +305,26 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mTestView = view.findViewById(R.id.test)
         mNotifyRecycler = view.findViewById(R.id.notify_recycler)
         mHdmiView = view.findViewById(R.id.hdmi)
+        val rlSetting = view.findViewById<RelativeLayout>(R.id.rl_setting)
+        val rlWifi = view.findViewById<RelativeLayout>(R.id.rl_wifi)
         mGradientView = view.findViewById(R.id.gradient)
+
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M){
+            mNotifyRecycler?.isVisible = false
+            mSettingView?.let {
+                it.setOnFocusChangeListener { view, b ->
+                    rlSetting.isVisible = b
+                }
+            }
+
+            mWifiView?.let {
+                it.setOnFocusChangeListener { view, b ->
+                    rlWifi.isVisible = b
+                }
+            }
+
+        }
+
         mHorizontalContentGrid?.addItemDecoration(
             HSlideMarginDecoration(
                 resources.getDimension(R.dimen.margin_decoration_max),
@@ -969,6 +990,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 val header = fillData(result)
                 header.addAll(items)
                 setHeader(header)
+                if(BuildConfig.FLAVOR=="hongxin_H27002"){
+                    requestFocus(mHeaderGrid,500)
+                }
             } else {
                 setDefault()
             }
@@ -994,6 +1018,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
             header.addAll(items)
             setHeader(header)
+            if(BuildConfig.FLAVOR=="hongxin_H27002"){
+                requestFocus(mHeaderGrid,500)
+            }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -1126,6 +1154,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     )
                     val item = header[0]
                     fillMovice(item)
+                    if(BuildConfig.FLAVOR=="hongxin_H27002"){
+                        requestFocus(mHeaderGrid,500)
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 } finally {

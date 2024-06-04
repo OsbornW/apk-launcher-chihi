@@ -91,7 +91,11 @@ abstract class AbsWifiListFragment : AbsFragment() {
     private var ivConectedSignal: ImageView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mWifiManager = activity!!.getSystemService(WifiManager::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mWifiManager = activity!!.getSystemService(WifiManager::class.java)
+        }else{
+            mWifiManager = context!!.getSystemService(Context.WIFI_SERVICE) as WifiManager?
+        }
         mDialog = ProgressDialog.newInstance()
         uiHandler = Handler()
         receiver = WifiReceiver()
@@ -897,12 +901,14 @@ abstract class AbsWifiListFragment : AbsFragment() {
     @SuppressLint("MissingPermission")
     private fun fillterWifi(results: MutableList<ScanResult>): MutableList<WifiItem> {
         val list: MutableList<WifiItem> = mutableListOf()
-        val saves = mWifiManager!!.configuredNetworks
-        saves.forEach {
+        val saves = mWifiManager?.configuredNetworks
+        saves?.forEach {
             //"当前的已保存的WIFI数据是===${it.SSID}".d("zy1996")
         }
         val map: MutableMap<String, WifiConfiguration> = HashMap()
-        for (item in saves) map[cleanSSID(item.SSID)] = item
+        if (saves != null) {
+            for (item in saves) map[cleanSSID(item.SSID)] = item
+        }
         for (result in results) {
             if (!TextUtils.isEmpty(result.SSID)) {
                 val item = map[result.SSID]

@@ -97,17 +97,40 @@
                             android:background="@drawable/rect_solid_8dp_1"
                             android:layout_width="@dimen/fragment_main_opt_cut_width"
                             android:layout_height="@dimen/fragment_main_opt_cut_height"/>
+
+                        <RelativeLayout
+                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+
+
+                        <com.hjq.shape.layout.ShapeRelativeLayout
+                            android:id="@+id/rl_setting"
+                            android:visibility="gone"
+                            android:layout_width="@dimen/qb_px_40"
+                            android:layout_height="@dimen/qb_px_40"
+                            app:shape_solidColor="@color/black"
+                            app:shape="oval"/>
+
+
+
                         <com.soya.launcher.view.KeyView
+                            android:layout_centerInParent="true"
                             android:id="@+id/setting"
                             android:clickable="true"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:foreground="@drawable/ripple_style_1"
                             android:src="@drawable/baseline_settings_100"
-                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
                             android:padding="@dimen/fragment_main_opt_icon_padding"
-                            android:layout_width="@dimen/fragment_main_opt_icon_width"
-                            android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                            android:layout_width="@dimen/qb_px_40"
+                            android:layout_height="@dimen/qb_px_40"/>
+
+                        </RelativeLayout>
+
+
                         <ImageView
                             android:id="@+id/gradient"
                             android:clickable="true"
@@ -218,6 +241,23 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+
+
+                        <com.hjq.shape.layout.ShapeRelativeLayout
+                            android:id="@+id/rl_wifi"
+                            android:visibility="gone"
+                            android:layout_width="@dimen/qb_px_40"
+                            android:layout_height="@dimen/qb_px_40"
+                            app:shape_solidColor="@color/black"
+                            app:shape="oval"/>
+
                         <ImageView
                             android:id="@+id/wifi"
                             android:layout_gravity="center_vertical"
@@ -226,10 +266,11 @@
                             android:focusableInTouchMode="true"
                             android:foreground="@drawable/ripple_style_1"
                             android:src="@drawable/baseline_wifi_100"
-                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
                             android:padding="@dimen/fragment_main_opt_icon_padding"
-                            android:layout_width="@dimen/fragment_main_opt_icon_width"
-                            android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                            android:layout_width="@dimen/qb_px_40"
+                            android:layout_height="@dimen/qb_px_40"/>
+                        </RelativeLayout>
+
                     </LinearLayout>
                 </FrameLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>

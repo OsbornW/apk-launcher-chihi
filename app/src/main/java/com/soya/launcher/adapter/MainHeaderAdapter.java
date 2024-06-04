@@ -1,6 +1,9 @@
 package com.soya.launcher.adapter;
 
+
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.Presenter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.TypeItem;
 import com.soya.launcher.callback.SelectedCallback;
@@ -77,7 +80,13 @@ public class MainHeaderAdapter extends RecyclerView.Adapter<MainHeaderAdapter.Ho
         public void bind(TypeItem item){
             View root = itemView.getRootView();
             mTitleView.setBackgroundResource(R.drawable.light_item);
-            mTitleView.setTextColor(context.getColorStateList(R.color.text_selector_color_1));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mTitleView.setTextColor(context.getColorStateList(R.color.text_selector_color_1));
+            }else {
+                ColorStateList colorStateList = ResourcesCompat.getColorStateList(context.getResources(), R.color.text_selector_color_1, null);
+                mTitleView.setTextColor(colorStateList);
+
+            }
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

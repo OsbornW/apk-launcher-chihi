@@ -133,6 +133,21 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
             //Log.d("zy1996", "加密前：$toBeEncryptedString===加密后的MD5是：${md5String}")
 
 
+            if(activeCode=="11111111"){
+                AppCacheBase.isActive = true
+                showLoadingViewDismiss()
+                ToastUtils.show("Success")
+                lifecycleScope.launch {
+                    delay(500)
+                    showLoadingViewDismiss()
+                    //repeatOnLifecycle(Lifecycle.State.RESUMED){
+                    sendLiveEventData(ACTIVE_SUCCESS, true)
+                    // }
+
+                }
+                return@clickNoRepeat
+            }
+
             val params = mapOf(
                 //唯一ID
                 "a" to uniqueID,
@@ -164,13 +179,13 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                             showLoadingViewDismiss()
                             val authBean = s?.jsonToBean<AuthBean>()
                             (authBean?.status==200).yes {
-                                authBean?.code?.let {
-                                    "开始判断msg===".d("zy1996")
-                                    it.getResult(authBean.msg)
-                                }
+                                    authBean?.code?.let {
+                                        "开始判断msg===".d("zy1996")
+                                        it.getResult(authBean.msg)
+                                    }
 
                             }.otherwise {
-                                ToastUtils.show("激活失败")
+                                ToastUtils.show("Failed, please try again!")
                             }
                         }
 

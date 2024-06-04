@@ -1,5 +1,7 @@
 package com.soya.launcher.utils;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
@@ -78,13 +80,23 @@ public class AndroidSystem {
     }
 
     public static boolean isEthernetConnected(Context context){
-        ConnectivityManager cm = context.getSystemService(ConnectivityManager.class);
+        ConnectivityManager cm = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            cm = context.getSystemService(ConnectivityManager.class);
+        }else{
+            cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        }
         NetworkInfo info = cm.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET);
         return info != null && info.isConnectedOrConnecting() && info.isAvailable();
     }
 
     public static void openSystemSetting2(Context context){
-        openActivityName(context, "com.android.tv.settings", "com.android.tv.settings.MainSettings");
+        try {
+            openActivityName(context, "com.android.tv.settings", "com.android.tv.settings.MainSettings");
+
+        }catch (Exception e){
+            AndroidSystem.openSystemSetting(context);
+        }
     }
 
     public static void requestInstallApk(Context context){
@@ -284,14 +296,24 @@ public class AndroidSystem {
     }
 
     public static void openVoiceSetting(Context context){
-        Intent intent = new Intent(Settings.ACTION_SOUND_SETTINGS);
-        context.startActivity(intent);
+        try {
+            Intent intent = new Intent(Settings.ACTION_SOUND_SETTINGS);
+            context.startActivity(intent);
+        }catch (Exception e){
+            context.startActivity(new Intent(Settings.ACTION_SETTINGS));
+        }
+
     }
 
     public static void openInputSetting(Context context){
         /*Intent intent = new Intent(Settings.ACTION_INPUT_METHOD_SETTINGS);
         context.startActivity(intent);*/
-        openActivityName(context, "com.android.tv.settings", "com.android.tv.settings.inputmethod.KeyboardActivity");
+        try {
+            openActivityName(context, "com.android.tv.settings", "com.android.tv.settings.inputmethod.KeyboardActivity");
+
+        }catch (Exception e){
+            context.startActivity(new Intent(Settings.ACTION_SETTINGS));
+        }
     }
 
     public static void openBluetoothSetting(Context context){
@@ -504,12 +526,22 @@ public class AndroidSystem {
     }
 
     public static String getSystemLanguage(Context context){
-        Locale locale = context.getResources().getConfiguration().getLocales().get(0);
+        Locale locale = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            locale = context.getResources().getConfiguration().getLocales().get(0);
+        }else {
+            locale = Locale.getDefault();
+        }
         return locale.getDisplayLanguage();
     }
 
     public static List<ApplicationInfo> getUserApps2(Context context){
-        LauncherApps apps = context.getSystemService(LauncherApps.class);
+        LauncherApps apps = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            apps = context.getSystemService(LauncherApps.class);
+        }else {
+            apps = (LauncherApps) context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
+        }
         List<LauncherActivityInfo> launchers = apps.getActivityList(null, android.os.Process.myUserHandle());
 
         Collections.sort(launchers, new Comparator<LauncherActivityInfo>() {

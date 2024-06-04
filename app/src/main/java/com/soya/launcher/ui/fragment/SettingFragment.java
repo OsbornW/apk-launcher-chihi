@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,9 +41,9 @@ import java.util.Arrays;
 public class SettingFragment extends AbsFragment {
 
     public static SettingFragment newInstance() {
-        
+
         Bundle args = new Bundle();
-        
+
         SettingFragment fragment = new SettingFragment();
         fragment.setArguments(args);
         return fragment;
@@ -103,7 +104,7 @@ public class SettingFragment extends AbsFragment {
         return R.id.wallpaper;
     }
 
-    private void initLauncher(){
+    private void initLauncher() {
         launcher = PermissionHandler.createPermissionsWithIntent(this, new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -112,14 +113,14 @@ public class SettingFragment extends AbsFragment {
         });
     }
 
-    private void setContent(View view, LayoutInflater inflater){
+    private void setContent(View view, LayoutInflater inflater) {
         ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new SettingAdapter(getActivity(), inflater, newCallback(), R.layout.holder_setting));
         ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
         FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_LARGE, false);
         mContentGrid.setAdapter(itemBridgeAdapter);
         mContentGrid.setNumColumns(4);
 
-        if (Config.COMPANY == 0){
+        if (Config.COMPANY == 0) {
             arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
                     new SettingItem(10, getString(R.string.bluetooth), R.drawable.baseline_bluetooth_100),
                     new SettingItem(2, getString(R.string.pojector), R.drawable.baseline_cast_connected_100),
@@ -128,7 +129,7 @@ public class SettingFragment extends AbsFragment {
                     new SettingItem(4, getString(R.string.date), R.drawable.baseline_calendar_month_100),
                     new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)));
-        }else if (Config.COMPANY == 1){
+        } else if (Config.COMPANY == 1) {
             arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
                     new SettingItem(2, getString(R.string.pojector), R.drawable.baseline_cast_connected_100),
                     new SettingItem(1, getString(R.string.wallpaper), R.drawable.baseline_wallpaper_100),
@@ -137,7 +138,7 @@ public class SettingFragment extends AbsFragment {
                     new SettingItem(5, getString(R.string.bluetooth), R.drawable.baseline_bluetooth_100),
                     new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)));
-        }else if (Config.COMPANY == 2){
+        } else if (Config.COMPANY == 2) {
             arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
                     new SettingItem(8, getString(R.string.sound), R.drawable.baseline_settings_voice_100),
                     new SettingItem(1, getString(R.string.wallpaper), R.drawable.baseline_wallpaper_100),
@@ -146,7 +147,7 @@ public class SettingFragment extends AbsFragment {
                     new SettingItem(5, getString(R.string.bluetooth), R.drawable.baseline_bluetooth_100),
                     new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
                     new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)));
-        }else {
+        } else {
             arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
                     new SettingItem(8, getString(R.string.sound), R.drawable.baseline_settings_voice_100),
                     new SettingItem(1, getString(R.string.wallpaper), R.drawable.baseline_wallpaper_100),
@@ -158,7 +159,7 @@ public class SettingFragment extends AbsFragment {
         }
     }
 
-    public SettingAdapter.Callback newCallback(){
+    public SettingAdapter.Callback newCallback() {
         return new SettingAdapter.Callback() {
             @Override
             public void onSelect(boolean selected, SettingItem bean) {
@@ -167,11 +168,11 @@ public class SettingFragment extends AbsFragment {
 
             @Override
             public void onClick(SettingItem bean) {
-                switch (bean.getType()){
+                switch (bean.getType()) {
                     case 0:
-                        if (Config.COMPANY == 3){
+                        if (Config.COMPANY == 3) {
                             AndroidSystem.openWifiSetting(getActivity());
-                        }else {
+                        } else {
                             startActivity(new Intent(getActivity(), WifiListActivity.class));
                         }
                         break;
@@ -179,9 +180,9 @@ public class SettingFragment extends AbsFragment {
                         startActivity(new Intent(getActivity(), WallpaperActivity.class));
                         break;
                     case 2:
-                        if (Config.COMPANY == 0){
+                        if (Config.COMPANY == 0) {
                             startActivity(new Intent(getActivity(), ProjectorActivity.class));
-                        }else if (Config.COMPANY == 1){
+                        } else if (Config.COMPANY == 1) {
                             AndroidSystem.openActivityName(getActivity(), "com.qf.keystone.AllActivity");
                         }
                         break;
@@ -192,9 +193,9 @@ public class SettingFragment extends AbsFragment {
                         startActivity(new Intent(getActivity(), SetDateActivity.class));
                         break;
                     case 5:
-                        if (Config.COMPANY == 1 || Config.COMPANY == 2){
+                        if (Config.COMPANY == 1 || Config.COMPANY == 2) {
                             AndroidSystem.openBluetoothSetting2(getActivity());
-                        }else if (Config.COMPANY == 3){
+                        } else if (Config.COMPANY == 3) {
                             AndroidSystem.openBluetoothSetting3(getActivity());
                         }
                         //startActivity(new Intent(getActivity(), BluetoothActivity.class));
@@ -203,9 +204,9 @@ public class SettingFragment extends AbsFragment {
                         startActivity(new Intent(getActivity(), AboutActivity.class));
                         break;
                     case 7:
-                        if (Config.COMPANY == 0 || Config.COMPANY == 1){
+                        if (Config.COMPANY == 0 || Config.COMPANY == 1) {
                             AndroidSystem.openSystemSetting(getActivity());
-                        }else {
+                        } else {
                             AndroidSystem.openSystemSetting2(getActivity());
                         }
                         break;
@@ -228,7 +229,7 @@ public class SettingFragment extends AbsFragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()){
+            switch (intent.getAction()) {
                 case IntentAction.ACTION_UPDATE_WALLPAPER:
                     updateWallpaper();
                     break;
