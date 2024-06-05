@@ -5,10 +5,11 @@ import com.shudong.lib_base.ext.sendLiveEventData
 import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.ui.fragment.WelcomeFragment
+import com.shudong.lib_base.ext.sendLiveEventDataDelay
 
 fun switchFragment() = run {
 
-    sendLiveEventDataDelay(IS_MAIN_CANBACK, false,1000)
+    sendLiveEventDataDelay(IS_MAIN_CANBACK, false, 1000)
     MainFragment.newInstance()
 
 }
