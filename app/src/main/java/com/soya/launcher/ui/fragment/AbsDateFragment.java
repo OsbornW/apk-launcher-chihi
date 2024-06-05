@@ -1,6 +1,8 @@
 package com.soya.launcher.ui.fragment;
 
 import android.app.AlarmManager;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -142,7 +144,13 @@ public abstract class AbsDateFragment extends AbsFragment implements View.OnClic
         dialog.setCallback(new TimeZoneDialog.Callback() {
             @Override
             public void onClick(SimpleTimeZone bean) {
-                AlarmManager alarmManager = getActivity().getSystemService(AlarmManager.class);
+                AlarmManager alarmManager = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    alarmManager = getActivity().getSystemService(AlarmManager.class);
+                }else {
+                    alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                }
+
                 alarmManager.setTimeZone(bean.getZone().getID());
                 item.setDescription(bean.getDesc());
                 itemList.get(1).setDescription(getDate());
