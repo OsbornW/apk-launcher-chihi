@@ -34,8 +34,8 @@ android {
             java.srcDirs = ['src/aiboyou_tv/java']
         }
 
-        x98k_tv {
-            java.srcDirs = ['src/x98k_tv/java']
+        yxt_X98K {
+            java.srcDirs = ['src/yxt_x98k/java']
         }
     }
 
@@ -47,8 +47,8 @@ android {
             keyPassword "android"
         }
 
-        x98k {
-            storeFile file("platform_X98K.keystore")
+        yxt {
+            storeFile file("platform_X98K_301.keystore")
             storePassword "android"
             keyAlias "platform"
             keyPassword "android"
@@ -81,7 +81,7 @@ android {
             manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
-	        // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+	    // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"LA27001"'
@@ -93,7 +93,7 @@ android {
         aiboyou_projector {
             applicationId "com.soya.launcher.aiboyouprojector"
             dimension "chihi"
-            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            // manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
@@ -108,7 +108,7 @@ android {
         aiboyou_tv {
             applicationId "com.soya.launcher.aiboyoutv"
             dimension "chihi"
-            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            // manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
@@ -120,19 +120,19 @@ android {
         }
 
         // X98K (TV)
-        x98k_tv {
-            applicationId "com.soya.launcher.x98ktv"
+        yxt_X98K {
+            applicationId "com.soya.launcher"
             dimension "chihi"
-            //manifestPlaceholders = [share_uid:"android.uid.system"]
-            signingConfig signingConfigs.x98k
+            // manifestPlaceholders = [share_uid:"android.uid.system"]
+            signingConfig signingConfigs.yxt
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
-            buildConfigField "String", "COMPANY", '"4"'
+            buildConfigField "String", "COMPANY", '"3"'
             buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"LA23001"'
             buildConfigField "String", "CHIHI_TYPE", '"X98K"'
-            buildConfigField "String", "MODEL", '"001"'
+            buildConfigField "String", "MODEL", '"X98K"'
         }
 
         //激活码项目
@@ -147,15 +147,15 @@ android {
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"5"'
             buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LA27001"'
-            buildConfigField "String", "CHIHI_TYPE", '"H700"'
-            buildConfigField "String", "MODEL", '"cupid"'
+            buildConfigField "String", "CHANNEL", '"LA27002"'
+            buildConfigField "String", "CHIHI_TYPE", '"H27002"'
+            buildConfigField "String", "MODEL", '"H27002"'
         }
 
         no_sys_sign {
             applicationId "com.soya.launcher.nosyssign"
             dimension "chihi"
-            //manifestPlaceholders = [share_uid:"android.uid.system"]
+            // manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
@@ -186,9 +186,10 @@ android {
         android.applicationVariants.all { variant ->
             variant.outputs.all {
                 // 获取 MODEL 值
-                def model = getBuildConfigFieldValue(variant,"MODEL")
+                def value = getBuildConfigFieldValue(variant, "MODEL")
+                println "Model: $value"
 
-                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${model[1..-2]}.apk"
+                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${value[1..-2]}.apk"
             }
         }
     }
@@ -270,7 +271,7 @@ def getTime() {
     return new Date().format("yyyyMMdd_HHmm", TimeZone.getDefault())
 }
 
-static String getBuildConfigFieldValue(def variant, def fiedName) {
+def static String getBuildConfigFieldValue(def variant, def fiedName) {
     def properties = variant.productFlavors[0].properties
     def name = properties.get("name")
     if (name != variant.flavorName) {
