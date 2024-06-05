@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.soya.launcher.App;
+import com.soya.launcher.GlideApp;
 
 import java.io.File;
 
@@ -27,7 +28,7 @@ public class GlideUtils {
     }
 
     public static void bind(Context context, ImageView view, Object load, DiskCacheStrategy strategy){
-        Glide.with(App.getInstance())
+        GlideApp.with(App.getInstance())
                 .load(load)
                 .diskCacheStrategy(strategy)
                 .transition(DrawableTransitionOptions.with(new DrawableCrossFadeFactory.Builder(250).setCrossFadeEnabled(true).build()))
@@ -35,7 +36,7 @@ public class GlideUtils {
     }
 
     public static void bind(Context context, ImageView view, Object load, int duration){
-        Glide.with(App.getInstance())
+        GlideApp.with(App.getInstance())
                 .load(load)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .transition(DrawableTransitionOptions.with(new DrawableCrossFadeFactory.Builder(duration).setCrossFadeEnabled(true).build()))
@@ -43,7 +44,7 @@ public class GlideUtils {
     }
 
     public static void bindCrop(Context context, ImageView view, Object load){
-        Glide.with(App.getInstance())
+        GlideApp.with(App.getInstance())
                 .load(load)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
@@ -56,7 +57,7 @@ public class GlideUtils {
     }
 
     public static void bindBlur(Context context, ImageView view, Object load, Drawable placeholder, int radius, int sampling){
-        Glide.with(App.getInstance())
+        GlideApp.with(App.getInstance())
                 .load(load)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(placeholder)
@@ -66,7 +67,7 @@ public class GlideUtils {
     }
 
     public static void bindBlurCross(Context context, ImageView view, Object load, int duration){
-        Glide.with(App.getInstance())
+        GlideApp.with(App.getInstance())
                 .load(load)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .apply(RequestOptions.bitmapTransform(new BlurTransformation(25,8)))
@@ -75,7 +76,7 @@ public class GlideUtils {
     }
 
     public static void download(Context context, Object url, DownloadListener listener) {
-        Glide.with(context).downloadOnly().load(url).diskCacheStrategy(DiskCacheStrategy.DATA).addListener(new RequestListener<File>() {
+        GlideApp.with(context).downloadOnly().load(url).diskCacheStrategy(DiskCacheStrategy.DATA).addListener(new RequestListener<File>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<File> target, boolean isFirstResource) {
                 if (listener != null) listener.onCallback(null);

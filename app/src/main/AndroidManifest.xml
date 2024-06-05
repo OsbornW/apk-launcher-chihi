@@ -67,13 +67,7 @@
         android:theme="@style/Theme.MyTv"
         android:usesCleartextTraffic="true">
 
-        <meta-data
-            android:name="com.soya.launcher.bean.MyGlide"
-            android:value="AppGlideModule" />
-
-        <meta-data
-            android:name="com.soya.launcher.OkHttpGlideModule"
-            android:value="AppGlideModule" />
+      
 
         <activity
             android:name=".ui.activity.MainActivity"
