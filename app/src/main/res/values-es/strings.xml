@@ -114,7 +114,7 @@
     <string name="signal_middle">Bueno</string>
     <string name="signal_strong">Extremadamente fuerte</string>
     <string name="tip">Consejos</string>
-    <string name="unable_to_wifi">No se puede conectar a% s</string>
+    <string name="unable_to_wifi">No se puede conectar a %s</string>
     <string name="connected_to_net">Conexión a Internet</string>
     <string name="ip_address">Dirección IP</string>
     <string name="signal_strength">Intensidad de la señal</string>

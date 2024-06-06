@@ -8,4 +8,6 @@ public interface Types {
     int TYPE_WALLPAPER = 7;
     int TYPE_MOVICE = 10;
     int TYPE_TOOL = 11;
+    int TYPE_GOOGLE_PLAY = 12;
+    int TYPE_MEDIA_CENTER = 13;
 }

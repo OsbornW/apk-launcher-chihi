@@ -114,7 +114,7 @@
     <string name="signal_middle">hea</string>
     <string name="signal_strong">Äärmiselt tugev</string>
     <string name="tip">viip</string>
-    <string name="unable_to_wifi">% s- ga ühendumine nurjus</string>
+    <string name="unable_to_wifi">%s- ga ühendumine nurjus</string>
     <string name="connected_to_net">Ühendus Internetiga</string>
     <string name="ip_address">IP aadress</string>
     <string name="signal_strength">signaali intensiivsus</string>

@@ -171,7 +171,7 @@ android {
 
     buildTypes {
         release {
-            //debuggable  true
+            debuggable  true
             minifyEnabled false
             //清理多余的图片资源或raw中没有用到的资源等，一般会和混淆同时使用(和混淆都可以起到一定程度apk瘦身的作用)
             shrinkResources false
@@ -188,12 +188,14 @@ android {
                 // 获取 MODEL 值
                 def value = getBuildConfigFieldValue(variant, "MODEL")
                 println "Model: $value"
+                def versionName = variant.versionName
 
-                outputFileName = "Launcher_${defaultConfig.versionName}_${getTime()}_${value[1..-2]}.apk"
+
+                outputFileName = "Launcher_${versionName}_${getTime()}_${value[1..-2]}.apk"
             }
         }
     }
-    
+
     namespace 'com.soya.launcher'
     compileSdk 34
 
@@ -201,8 +203,8 @@ android {
         applicationId "com.soya.launcher"
         minSdk 24
         targetSdk 33
-        versionCode 56
-        versionName "1.7"
+        versionCode 57
+        versionName "1.57"
 
         buildConfigField "String", "BASE_URL", '"https://99soya.shop/"'
         buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
@@ -273,7 +275,7 @@ def getTime() {
     return new Date().format("yyyyMMdd_HHmm", TimeZone.getDefault())
 }
 
-def static String getBuildConfigFieldValue(def variant, def fiedName) {
+static String getBuildConfigFieldValue(def variant, def fiedName) {
     def properties = variant.productFlavors[0].properties
     def name = properties.get("name")
     if (name != variant.flavorName) {

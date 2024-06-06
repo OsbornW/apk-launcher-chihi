@@ -11,9 +11,11 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.shudong.lib_base.ext.d
 import com.soya.launcher.R
 import com.soya.launcher.adapter.KeyboardAdapter
 import com.soya.launcher.bean.KeyItem
+import com.soya.launcher.utils.toTrim
 
 class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
     private var mRecyclerView: RecyclerView? = null
@@ -129,13 +131,27 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
                 dismiss()
             }
 
-            else -> mTargetView!!.append(text)
+            else -> {
+                mTargetView!!.append(text.toTrim())
+                mTargetView?.text = mTargetView?.text?.toString()?.toTrim()
+
+            }
         }
     }
 
     private fun del() {
-        val len = mTargetView!!.text.length
-        if (len != 0) mTargetView!!.text = mTargetView!!.text.subSequence(0, len - 1)
+
+        mTargetView?.text = mTargetView?.text?.toString()?.toTrim()
+
+        val len = mTargetView?.text?.length
+        if (len != 0) {
+            val str = mTargetView?.text?.toString()?.toTrim()
+            val len1 = (mTargetView?.text?.toString()?.toTrim()?.length?:0).minus(1)
+            val finalStr = str?.subSequence(0, len1)
+           // "设置之后,长文字是====${str}===${finalStr}===$len1".d("zy1997")
+            mTargetView?.text = finalStr
+
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

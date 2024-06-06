@@ -34,13 +34,9 @@ import com.blankj.utilcode.util.NetworkUtils
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
-import com.open.system.ASystemProperties
 import com.open.system.SystemUtils
-import com.shudong.lib_base.BaseWebActivity.Companion.INTENT_JUMP_TYPE
-import com.shudong.lib_base.BaseWebActivity.Companion.INTENT_WEB_TITLE
-import com.shudong.lib_base.BaseWebActivity.Companion.INTENT_WEB_URL
 import com.shudong.lib_base.ext.d
-import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
@@ -93,7 +89,6 @@ import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.thumbsupec.lib_base.toast.ToastUtils
-import com.thumbsupec.lib_base.web.WebUrl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -186,6 +181,25 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 )
             )
         )
+
+        if (Config.COMPANY==5){
+
+        }else{
+            items.addAll(
+                Arrays.asList(
+                    *arrayOf(
+                        TypeItem(
+                            getString(R.string.apps),
+                            R.drawable.app_list,
+                            0,
+                            Types.TYPE_MY_APPS,
+                            TypeItem.TYPE_ICON_IMAGE_RES,
+                            TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                        )
+                    )
+                )
+            )
+        }
         if (Config.COMPANY == 0) {
             items.add(
                 TypeItem(
@@ -821,10 +835,26 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 when (bean.type) {
                     Types.TYPE_MOVICE -> {
                         val packages = Gson().fromJson(bean.data, Array<AppPackage>::class.java)
-                        val success = AndroidSystem.jumpPlayer(activity, packages, null)
-                        if (!success) {
-                            toastInstallPKApp(bean.name, packages)
+
+                        packages[0].packageName.contains("youtube").yes {
+                            if(Config.COMPANY==5){
+                                AndroidSystem.openPackageName(activity,"com.google.android.apps.youtube.creator")
+                            }else{
+                                val success = AndroidSystem.jumpPlayer(activity, packages, null)
+                                if (!success) {
+                                    toastInstallPKApp(bean.name, packages)
+                                } else {
+
+                                }
+                            }
+                        }.otherwise {
+                            val success = AndroidSystem.jumpPlayer(activity, packages, null)
+                            if (!success) {
+                                toastInstallPKApp(bean.name, packages)
+                            }
                         }
+
+
                     }
 
                     Types.TYPE_APP_STORE -> {
@@ -836,6 +866,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         val intent = Intent(activity, AppsActivity::class.java)
                         intent.putExtra(Atts.TYPE, bean.type)
                         startActivity(intent)
+                    }
+                    Types.TYPE_GOOGLE_PLAY -> {
+                         AndroidSystem.openPackageName(activity,"com.android.vending")
+                    }
+                    Types.TYPE_MEDIA_CENTER -> {
+                        AndroidSystem.openPackageName(activity,"com.explorer")
+
                     }
                 }
             }
@@ -989,6 +1026,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 )
                 val header = fillData(result)
                 header.addAll(items)
+                addProduct5TypeItem(header)
+
                 setHeader(header)
                 if(BuildConfig.FLAVOR=="hongxin_H27002"){
                     requestFocus(mHeaderGrid,500)
@@ -998,6 +1037,36 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
         } catch (e: Exception) {
             setDefault()
+        }
+    }
+
+    fun addProduct5TypeItem(header: MutableList<TypeItem>) {
+        if(Config.COMPANY==5){
+            //getString(R.string.apps)
+            header.add(0,TypeItem(
+                getString(R.string.apps),
+                R.drawable.app_list,
+                0,
+                Types.TYPE_MY_APPS,
+                TypeItem.TYPE_ICON_IMAGE_RES,
+                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+            ))
+            header.add(1,TypeItem(
+                "Google Play",
+                R.drawable.icon_googleplay,
+                0,
+                Types.TYPE_GOOGLE_PLAY,
+                TypeItem.TYPE_ICON_IMAGE_RES,
+                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+            ))
+            header.add(2,TypeItem(
+                "Media Center",
+                R.drawable.icon_media_center,
+                0,
+                Types.TYPE_MEDIA_CENTER,
+                TypeItem.TYPE_ICON_IMAGE_RES,
+                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+            ))
         }
     }
 
@@ -1017,6 +1086,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 item.icon = FilePathMangaer.getMoviePath(requireContext()) + "/" + item.icon
             }
             header.addAll(items)
+           addProduct5TypeItem(header)
             setHeader(header)
             if(BuildConfig.FLAVOR=="hongxin_H27002"){
                 requestFocus(mHeaderGrid,500)
@@ -1058,7 +1128,19 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             )
             item.data = gson.toJson(bean.packageNames)
             App.MOVIE_MAP.put(item.id, movices)
-            menus.add(item)
+            if(Config.COMPANY==5){
+                when(item.name){
+                    "Max","Disney+","Hulu"->{
+
+                    }
+                    else->{
+                        menus.add(item)
+                    }
+                }
+            }else{
+                menus.add(item)
+            }
+
         }
         return menus
     }
@@ -1146,6 +1228,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     )
                     val header = fillData(result)
                     header.addAll(items)
+
+                   addProduct5TypeItem(header)
+
                     setHeader(header)
                     isConnectFirst = true
                     if (result.getData().reg_id != null) PreferencesUtils.setProperty(
