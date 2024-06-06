@@ -170,14 +170,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         TypeItem.TYPE_ICON_IMAGE_RES,
                         TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
                     ),
-                    TypeItem(
-                        getString(R.string.apps),
-                        R.drawable.app_list,
-                        0,
-                        Types.TYPE_MY_APPS,
-                        TypeItem.TYPE_ICON_IMAGE_RES,
-                        TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                    )
+
                 )
             )
         )
