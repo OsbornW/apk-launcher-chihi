@@ -1123,7 +1123,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             App.MOVIE_MAP.put(item.id, movices)
             if(Config.COMPANY==5){
                 when(item.name){
-                    "Max","Disney+","Hulu"->{
+                    "Max","Disney+","Hulu","Google play","media center"->{
 
                     }
                     else->{
