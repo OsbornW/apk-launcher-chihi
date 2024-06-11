@@ -70,7 +70,7 @@ class App : Application() {
             WALLPAPERS.add(Wallpaper(5, R.drawable.wallpaper_25))
         }
         com.hs.App.init(this)
-        AndroidSystem.setEnableBluetooth(this, true)
+        //AndroidSystem.setEnableBluetooth(this, true)
         timeRemote()
         if (PreferencesManager.getLastVersionCode() != BuildConfig.VERSION_CODE) {
             try {
