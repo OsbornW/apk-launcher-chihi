@@ -48,8 +48,7 @@ android {
         }
 
         yxt {
-            //storeFile file("platform_X98K_301.keystore")
-            storeFile file("yxt_android_10.keystore")
+            storeFile file("yxt_X98K_10.keystore")
             storePassword "android"
             keyAlias "platform"
             keyPassword "android"
