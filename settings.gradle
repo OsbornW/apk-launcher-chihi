@@ -32,7 +32,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TV Launcher"
+rootProject.name = "TVBox_713"
 include ':app'
 
 include ':baselibrary:lib_dimen'
