@@ -70,7 +70,7 @@ class App : Application() {
             WALLPAPERS.add(Wallpaper(5, R.drawable.wallpaper_25))
         }
         com.hs.App.init(this)
-        AndroidSystem.setEnableBluetooth(this, true)
+        //AndroidSystem.setEnableBluetooth(this, true)
         timeRemote()
         if (PreferencesManager.getLastVersionCode() != BuildConfig.VERSION_CODE) {
             try {
@@ -118,7 +118,7 @@ class App : Application() {
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
         filter.addAction(IntentAction.ACTION_NOT_SHOW_REMOTE_DIALOG)
         filter.addAction(IntentAction.ACTION_SHOW_REMOTE_DIALOG)
-        registerReceiver(receiver, filter)
+       // registerReceiver(receiver, filter)
     }
 
     inner class InnerReceiver : BroadcastReceiver() {
