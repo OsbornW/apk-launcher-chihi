@@ -123,7 +123,7 @@ android {
         yxt_X98K {
             applicationId "com.soya.launcher"
             dimension "chihi"
-            manifestPlaceholders = [share_uid:"android.uid.system"]
+           // manifestPlaceholders = [share_uid:"android.uid.system"]
             signingConfig signingConfigs.yxt
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
@@ -154,7 +154,7 @@ android {
 
         no_sys_sign {
             applicationId "com.soya.launcher.nosyssign"
-            dimension "chihi"
+             dimension "chihi"
             // manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
@@ -261,7 +261,7 @@ dependencies {
     implementation "com.github.bumptech.glide:okhttp3-integration:4.16.0"
     //这个是让注解生效的
     kapt 'com.github.bumptech.glide:compiler:4.16.0'
-    implementation 'androidx.core:core-ktx:+'
+    //implementation 'androidx.core:core-ktx:+'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.activity:activity:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

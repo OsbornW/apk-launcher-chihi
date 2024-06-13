@@ -58,7 +58,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
 
      fun getFragment(): Fragment  = switchFragment()
 
-    override fun onBackPressed() {
+    override fun  onBackPressed() {
         Log.d("zy1996", "onBackPressed: 是否可以返回？"+canBackPressed)
         if (canBackPressed) {
             super.onBackPressed()

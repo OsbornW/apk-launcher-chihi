@@ -34,8 +34,7 @@ import java.lang.reflect.ParameterizedType
 import java.util.*
 
 /**
- *
- * @ProjectName:  Ispruz_android
+      * @ProjectName:  Ispruz_android
  * @Desc:
  * @Author:  zengyue
  * @Date:  2022/11/2 17:31

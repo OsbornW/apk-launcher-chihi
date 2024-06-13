@@ -118,7 +118,9 @@ class App : Application() {
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
         filter.addAction(IntentAction.ACTION_NOT_SHOW_REMOTE_DIALOG)
         filter.addAction(IntentAction.ACTION_SHOW_REMOTE_DIALOG)
-       // registerReceiver(receiver, filter)
+        if (Config.COMPANY!=3){
+            registerReceiver(receiver, filter)
+        }
     }
 
     inner class InnerReceiver : BroadcastReceiver() {
