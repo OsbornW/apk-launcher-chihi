@@ -49,7 +49,7 @@
                         android:layout_height="match_parent"/>
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:paddingTop="@dimen/qb_px_25"
-                        android:paddingBottom="@dimen/qb_px_25"
+                        android:paddingBottom="@dimen/qb_px_15"
                         android:orientation="vertical"
                         android:background="@drawable/rect_solid_8dp_alpha_2"
                         android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                             android:textSize="@dimen/qb_px_24"
                             android:layout_marginLeft="@dimen/fragment_wifi_list_wifi_name_margin_left"
                             android:layout_marginRight="@dimen/fragment_wifi_list_wifi_name_margin_right"
-                            android:layout_marginBottom="@dimen/qb_px_30"
+                            android:layout_marginBottom="@dimen/qb_px_25"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                         <TextView
@@ -92,7 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                         <TextView
-                            android:layout_marginTop="@dimen/qb_px_30"
+                            android:layout_marginTop="@dimen/qb_px_23"
                             android:layout_marginLeft="@dimen/fragment_wifi_list_wifi_name_margin_left"
                             android:text="@string/signal_strength"
                             android:textSize="@dimen/qb_px_16"
@@ -100,7 +100,7 @@
                             android:layout_height="wrap_content"/>
                         <TextView
                             android:id="@+id/signal"
-                            android:textSize="@dimen/fragment_wifi_list_wifi_mes_text_size_2"
+                            android:textSize="@dimen/qb_px_15"
                             android:layout_marginLeft="@dimen/fragment_wifi_list_wifi_name_margin_left"
                             android:text="-"
                             android:layout_width="wrap_content"

@@ -16,7 +16,7 @@ import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.X509TrustManager
 
 @GlideModule
-class OkHttpGlideModule : AppGlideModule() {
+class  OkHttpGlideModule : AppGlideModule() {
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         val builder = OkHttpClient.Builder()
         builder.sslSocketFactory(sSLSocketFactory, trustManager)
