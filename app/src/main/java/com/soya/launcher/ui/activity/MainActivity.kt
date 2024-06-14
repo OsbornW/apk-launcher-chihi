@@ -1,7 +1,11 @@
 package com.soya.launcher.ui.activity
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.util.Log
+import android.view.KeyEvent
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import com.shudong.lib_base.base.BaseVMActivity
@@ -26,12 +30,32 @@ import com.soya.launcher.ui.fragment.WelcomeFragment
 class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     private var canBackPressed = true
 
+
+    private val homeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == Intent.ACTION_CLOSE_SYSTEM_DIALOGS) {
+                val reason = intent.getStringExtra("reason")
+                if (reason == "homekey") {
+                    Log.d("zy1997", "Home key pressed")
+                    // 处理 Home 键按下的逻辑
+                    sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
+                }
+            }
+        }
+    }
+
     override fun initBeforeContent() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
     override fun initView() {
+        registerReceiver(homeReceiver, IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
         commit()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(homeReceiver)
     }
 
     override fun initObserver() {
@@ -56,10 +80,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
             .commitAllowingStateLoss()
     }
 
-     fun getFragment(): Fragment  = switchFragment()
+
+
+    fun getFragment(): Fragment  = switchFragment()
 
     override fun onBackPressed() {
-        Log.d("zy1996", "onBackPressed: 是否可以返回？"+canBackPressed)
         if (canBackPressed) {
             super.onBackPressed()
         } else {

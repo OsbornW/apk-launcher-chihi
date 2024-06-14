@@ -36,6 +36,7 @@ import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.open.system.SystemUtils
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
@@ -1322,7 +1323,17 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
                 UsbManager.ACTION_USB_DEVICE_ATTACHED -> {}
                 UsbManager.ACTION_USB_DEVICE_DETACHED -> {}
-                IntentAction.ACTION_RESET_SELECT_HOME -> if (isExpanded) requestFocus(mHeaderGrid)
+                IntentAction.ACTION_RESET_SELECT_HOME -> {
+                    if (isExpanded) {
+                        requestFocus(mHeaderGrid)
+                        mHeaderGrid?.scrollToPosition(0)
+                    }else{
+                        ( mHeaderGrid?.isFocused)?.no {
+                            requestFocus(mHeaderGrid)
+                        }
+                        mHeaderGrid?.scrollToPosition(0)
+                    }
+                }
             }
         }
     }
