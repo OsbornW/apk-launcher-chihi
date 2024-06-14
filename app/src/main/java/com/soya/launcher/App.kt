@@ -7,11 +7,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
 import com.lzy.okgo.OkGo
 import com.shudong.lib_base.ContextManager
 import com.shudong.lib_base.ext.MvvmHelper
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.CacheWeather
 import com.soya.launcher.bean.Movice
@@ -42,6 +45,10 @@ class App : Application() {
     private var mSuccessDialog: RemoteDialog? = null
     private var remoteRunnable: MyRunnable? = null
     private var lastRemoteTime: Long = -1
+
+
+    private val handler = Handler(Looper.getMainLooper())
+    private val interval: Long = 3000 // 定时任务间隔（毫秒）
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -90,15 +97,46 @@ class App : Application() {
 
         initMultiLanguage(this)
 
+        // 启动定时任务
+        handler.post(runnable)
+
+    }
+
+
+    private val runnable = object : Runnable {
+        override fun run() {
+            // 执行定时任务
+            performTask()
+            // 重新安排下一个任务
+            handler.postDelayed(this, interval)
+        }
+    }
+
+
+    private fun performTask() {
+        // 定时任务逻辑
+        println("Task executed at ${System.currentTimeMillis()}")
+        ((System.currentTimeMillis() - lastRemoteTime)>=3000).yes {
+            lastRemoteTime = System.currentTimeMillis()
+            if (mFailDialog!!.isShowing) mFailDialog!!.dismiss()
+            if (mSuccessDialog!!.isShowing) mSuccessDialog!!.dismiss()
+        }
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        // 停止定时任务
+        handler.removeCallbacks(runnable)
     }
 
     private fun timeRemote() {
+
         if (remoteRunnable != null) remoteRunnable!!.interrupt()
         remoteRunnable = object : MyRunnable() {
             override fun run() {
                 while (!isInterrupt) {
                     if (lastRemoteTime == -1L) continue
-                    if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastRemoteTime) >= 5) {
+                    if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastRemoteTime) >= 3) {
                         lastRemoteTime = System.currentTimeMillis()
                         if (mFailDialog!!.isShowing) mFailDialog!!.dismiss()
                         if (mSuccessDialog!!.isShowing) mSuccessDialog!!.dismiss()

@@ -1,11 +1,13 @@
 package com.soya.launcher.ui.fragment;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -223,7 +225,7 @@ public class SettingFragment extends AbsFragment {
                         AndroidSystem.openInputSetting(getActivity());
                         break;
                     case 10:
-                        AndroidSystem.openBluetoothSetting2(getActivity());
+                        AndroidSystem.openBluetoothSetting3(getActivity());
                         //startActivity(new Intent(getActivity(), RemoteControlActivity.class));
                         break;
                 }
