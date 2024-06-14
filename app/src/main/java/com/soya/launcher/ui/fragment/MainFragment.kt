@@ -1070,7 +1070,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             ))
             header.add(2,TypeItem(
                 "Media Center",
-                R.drawable.icon_media_center,
+                R.drawable.media,
                 0,
                 Types.TYPE_MEDIA_CENTER,
                 TypeItem.TYPE_ICON_IMAGE_RES,
