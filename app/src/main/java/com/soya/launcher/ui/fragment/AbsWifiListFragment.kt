@@ -23,7 +23,10 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.leanback.widget.VerticalGridView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.NetworkUtils
+import com.chihi.m98_701_android.ext.repeatWithDelay
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
@@ -42,6 +45,7 @@ import com.soya.launcher.ui.dialog.WifiPassDialog
 import com.soya.launcher.ui.dialog.WifiSaveDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.view.MyFrameLayout
+import kotlinx.coroutines.launch
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -103,7 +107,22 @@ abstract class AbsWifiListFragment : AbsFragment() {
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
         intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)
         activity!!.registerReceiver(receiver, intentFilter)
+
+        lifecycleScope.launch {
+            repeatWithDelay(Int.MAX_VALUE,1800){
+                val netType = NetworkUtils.getNetworkType()
+                (netType==NetworkUtils.NetworkType.NETWORK_ETHERNET).yes {
+                    //以太网
+                    isEthrnet = true
+                }.otherwise {
+                    //wifi
+                    isEthrnet = false
+                }
+
+            }
+        }
     }
+    var isEthrnet = false
 
     override fun onDestroy() {
         super.onDestroy()
@@ -309,7 +328,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
                         mTarget = null
                         connectedTime = -1
                     }
-                    if (!TextUtils.isEmpty(info.ssid) && info.ipAddress != 0 && info.ssid != "<unknown ssid>") {
+                    if (!TextUtils.isEmpty(info.ssid) && info.ipAddress != 0 && info.ssid != "<unknown ssid>"&& info.ssid != "0x") {
 
                         if (mTarget != null && connectedTime != -1L && mTarget!!.SSID == cleanSSID(
                                 info.ssid
@@ -392,7 +411,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
         tvConnectStatus?.text =
             if (isConnected) getString(R.string.connected) else R.string.connecting.stringValue()
 
-        (info.ssid.contains("unknown")).yes {
+        (info.ssid.contains("unknown")||info.ssid.contains("0x")).yes {
             mWifiNameView?.text = ""
             fl_connected?.isVisible = false
         }.otherwise {
