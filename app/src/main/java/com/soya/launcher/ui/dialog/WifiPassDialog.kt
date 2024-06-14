@@ -10,8 +10,11 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.soya.launcher.R
 import com.soya.launcher.ui.dialog.KeyboardDialog.Companion.newInstance
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
     var wifiName = ""
@@ -44,6 +47,19 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
             mEditText!!.text = "Boss888888"
         } else if (wifiName == "wuyun-5G") {
             mEditText!!.text = "Boss888888"
+        }
+
+        lifecycleScope.launch {
+            delay(600)
+            val dialog = newInstance()
+            dialog.setTargetView(mEditText)
+            dialog.setCallback(object : KeyboardDialog.Callback {
+                override fun onClose() {
+                    setRootGravity(Gravity.CENTER)
+                }
+            })
+            setRootGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL)
+            dialog.show(getChildFragmentManager(), KeyboardDialog.TAG)
         }
 
     }

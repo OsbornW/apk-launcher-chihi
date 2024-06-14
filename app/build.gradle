@@ -81,7 +81,7 @@ android {
             manifestPlaceholders = [share_uid:"android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
-	    // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+	        // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"LA27001"'
