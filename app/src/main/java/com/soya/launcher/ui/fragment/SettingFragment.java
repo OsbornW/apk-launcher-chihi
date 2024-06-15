@@ -225,7 +225,7 @@ public class SettingFragment extends AbsFragment {
                         AndroidSystem.openInputSetting(getActivity());
                         break;
                     case 10:
-                        AndroidSystem.openBluetoothSetting3(getActivity());
+                        AndroidSystem.openBluetoothSetting4(getActivity());
                         //startActivity(new Intent(getActivity(), RemoteControlActivity.class));
                         break;
                 }
