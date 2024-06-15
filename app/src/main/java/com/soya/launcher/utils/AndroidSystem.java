@@ -328,6 +328,11 @@ public class AndroidSystem {
         openActivityName(context, "com.android.tv.settings", "com.android.tv.settings.bluetooth.DevicePickerActivity");
     }
 
+    public static void openBluetoothSetting4(Context context){
+        openActivityName(context, "com.android.tv.settings",
+                "com.android.tv.settings.bluetooth.BluetoothActivity");
+    }
+
 
     public static boolean openLocalSetting(Context context){
         Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
