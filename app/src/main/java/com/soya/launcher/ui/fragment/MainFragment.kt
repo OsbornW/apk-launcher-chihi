@@ -507,7 +507,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
             if (Config.COMPANY == 3) {
                 val notifies: MutableList<Notify> = ArrayList()
-                 //if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
+                // if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
                 val deviceHashMap =
                     (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
                 for (i in 0 until deviceHashMap.size) {
@@ -829,24 +829,39 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 when (bean.type) {
                     Types.TYPE_MOVICE -> {
                         val packages = Gson().fromJson(bean.data, Array<AppPackage>::class.java)
+                        when{
+                            packages[0].packageName.contains("Prime Video") ->{
+                                if(Config.COMPANY==5){
+                                    AndroidSystem.openPackageName(activity,"com.amazon.avod.thirdpartyclient")
+                                }else{
+                                    val success = AndroidSystem.jumpPlayer(activity, packages, null)
+                                    if (!success) {
+                                        toastInstallPKApp(bean.name, packages)
+                                    } else {
 
-                        packages[0].packageName.contains("youtube").yes {
-                            if(Config.COMPANY==5){
-                                AndroidSystem.openPackageName(activity,"com.google.android.apps.youtube.creator")
-                            }else{
+                                    }
+                                }
+                            }
+                            packages[0].packageName.contains("youtube")->{
+                                if(Config.COMPANY==5){
+                                    AndroidSystem.openPackageName(activity,"com.google.android.apps.youtube.creator")
+                                }else{
+                                    val success = AndroidSystem.jumpPlayer(activity, packages, null)
+                                    if (!success) {
+                                        toastInstallPKApp(bean.name, packages)
+                                    } else {
+
+                                    }
+                                }
+                            }
+                            else->{
                                 val success = AndroidSystem.jumpPlayer(activity, packages, null)
                                 if (!success) {
                                     toastInstallPKApp(bean.name, packages)
-                                } else {
-
                                 }
                             }
-                        }.otherwise {
-                            val success = AndroidSystem.jumpPlayer(activity, packages, null)
-                            if (!success) {
-                                toastInstallPKApp(bean.name, packages)
-                            }
                         }
+
 
 
                     }
@@ -1047,7 +1062,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             ))
             header.add(1,TypeItem(
                 "Google Play",
-                R.drawable.icon_googleplay,
+                R.drawable.iocn,
                 0,
                 Types.TYPE_GOOGLE_PLAY,
                 TypeItem.TYPE_ICON_IMAGE_RES,
@@ -1055,7 +1070,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             ))
             header.add(2,TypeItem(
                 "Media Center",
-                R.drawable.icon_media_center,
+                R.drawable.media,
                 0,
                 Types.TYPE_MEDIA_CENTER,
                 TypeItem.TYPE_ICON_IMAGE_RES,

@@ -6,10 +6,10 @@
     <string name="setting">set up</string>
     <string name="wifi">WIFI</string>
     <string name="bluetooth">Bluetooth</string>
-    <string name="language">language</string>
-    <string name="date">time</string>
+    <string name="language">Language</string>
+    <string name="date">Time</string>
     <string name="system">system</string>
-    <string name="about">about</string>
+    <string name="about">About</string>
     <string name="account">account</string>
     <string name="recommend_for_you">Recommended for you (% d)</string>
     <string name="apps">Software List</string>
@@ -22,7 +22,7 @@
     <string name="calendar_format">%02d / %02d / %02d</string>
     <string name="date_des">Week% s% 02d Month% 02d Day</string>
     <string name="place_install_app">Please install relevant apps</string>
-    <string name="pojector">projector</string>
+    <string name="pojector">Projector</string>
     <string name="update">update</string>
     <string name="tool">tool</string>
     <string name="file_management">file management</string>
@@ -33,7 +33,7 @@
     <string name="friday">five</string>
     <string name="saturday">six</string>
     <string name="sunday">day</string>
-    <string name="network">network</string>
+    <string name="network">Network</string>
     <string name="keyboard">keyboard</string>
     <string name="place_waiting">Please wait a moment</string>
     <string name="password">password</string>
@@ -42,7 +42,7 @@
     <string name="uninstall">uninstall</string>
     <string name="close">Close</string>
     <string name="version">Version:</string>
-    <string name="wallpaper">wallpaper</string>
+    <string name="wallpaper">Wallpaper</string>
     <string name="upgrade">upgrade</string>
     <string name="storage">storage space </string>
     <string name="android_tv_os_version">Android system version</string>
@@ -70,7 +70,7 @@
     <string name="hulu">Hulu</string>
     <string name="max">Max</string>
     <string name="prime_video">Prime video</string>
-    <string name="more">more</string>
+    <string name="more">More</string>
     <string name="left">Left</string>
     <string name="right">right</string>
     <string name="up">upper</string>
@@ -95,10 +95,10 @@
     <string name="set_time_title">Set time</string>
     <string name="set_netword_title">Set up system network connection</string>
     <string name="remote_control_connect">Bluetooth remote control pairing</string>
-    <string name="project_crop">Screen trimming</string>
-    <string name="project_gradient">Trapezoidal alignment</string>
+    <string name="project_crop">Screen Percent</string>
+    <string name="project_gradient">Trapezoidal Alignment</string>
     <string name="project_hdmi">HDMI</string>
-    <string name="project_mode">Projection mode</string>
+    <string name="project_mode">Projection Mode</string>
     <string name="long_ok_next_action">Long press the * OK key * to proceed to the next step</string>
     <string name="click_ok_changer_dir">Selecting points</string>
     <string name="click_menu_reset">Reset</string>
