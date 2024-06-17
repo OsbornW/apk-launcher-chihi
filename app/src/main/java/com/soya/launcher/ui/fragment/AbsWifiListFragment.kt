@@ -26,7 +26,6 @@ import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.NetworkUtils
-import com.chihi.m98_701_android.ext.repeatWithDelay
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
@@ -46,6 +45,7 @@ import com.soya.launcher.ui.dialog.WifiSaveDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.view.MyFrameLayout
 import kotlinx.coroutines.launch
+import repeatWithDelay
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
