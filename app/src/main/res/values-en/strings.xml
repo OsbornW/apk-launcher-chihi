@@ -59,11 +59,11 @@
     <string name="install">install</string>
     <string name="retry">retry </string>
     <string name="focus_guide">Please adjust the focus of the projector until the image is clear</string>
-    <string name="next">Next step</string>
+    <string name="next">Next Step</string>
     <string name="set_language">Set system default language</string>
     <string name="set_date">Set the current system time</string>
     <string name="set_gradient">Set projector gradient</string>
-    <string name="confirm">confirm</string>
+    <string name="confirm">Confirm</string>
     <string name="choose_wallpaper">Select default wallpaper</string>
     <string name="click_to_setting">Click OK to set</string>
     <string name="or_skip">Or skip execution</string>
@@ -96,7 +96,7 @@
     <string name="set_netword_title">Set up system network connection</string>
     <string name="remote_control_connect">Bluetooth remote control pairing</string>
     <string name="project_crop">Screen Percent</string>
-    <string name="project_gradient">Trapezoidal Alignment</string>
+    <string name="project_gradient">Keystone Correction</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Projection Mode</string>
     <string name="long_ok_next_action">Long press the * OK key * to proceed to the next step</string>
@@ -105,7 +105,7 @@
     <string name="vertical_dir">vertical direction</string>
     <string name="horizontal_dir">horizontal direction</string>
     <string name="edit_wifi_pass">Enter WIFI password</string>
-    <string name="clean">clean up</string>
+    <string name="clean">Clean up</string>
     <string name="connect_netword">Connect to the network</string>
     <string name="connect">Connect</string>
     <string name="unsave">Cancel Save</string>
