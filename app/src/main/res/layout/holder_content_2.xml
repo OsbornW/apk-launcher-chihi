@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"/>
         <ImageView
             android:id="@+id/image"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:layout_width="@dimen/holder_content_2_image_width"
             android:layout_height="@dimen/holder_content_2_image_height"/>
     </com.soya.launcher.view.MyCardView>

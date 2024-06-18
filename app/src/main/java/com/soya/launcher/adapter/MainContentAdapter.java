@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.leanback.widget.Presenter;
@@ -73,11 +74,13 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
     public class Holder extends RecyclerView.ViewHolder {
         private final MyFrameLayout mCardView;
         private final ImageView mIV;
+        private final TextView tvName;
         public Holder(View view) {
             super(view);
             view.setNextFocusUpId(R.id.header);
             mIV = view.findViewById(R.id.image);
             mCardView = (MyFrameLayout) view;
+            tvName = view.findViewById(R.id.tv_name);
         }
 
         public void bind(Movice item){
@@ -89,10 +92,14 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
                     break;
                 case Movice.PIC_NETWORD:
                     Object image = item.getImageUrl();
+                    if(tvName!=null){
+                        tvName.setText(item.getId());
+                    }
                     if (!item.isLocal() && !TextUtils.isEmpty(item.getUrl()) && App.MOVIE_IMAGE.containsKey(item.getUrl())){
                         Object obj = App.MOVIE_IMAGE.get(item.getUrl());
                         if (obj != null) image = obj;
                     }
+
                     GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image);
                     break;
                 default:

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
 import android.view.KeyEvent
+import android.view.KeyEvent.KEYCODE_AVR_POWER
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import com.shudong.lib_base.base.BaseVMActivity
@@ -36,13 +37,32 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
             if (intent.action == Intent.ACTION_CLOSE_SYSTEM_DIALOGS) {
                 val reason = intent.getStringExtra("reason")
                 if (reason == "homekey") {
-                    Log.d("zy1997", "Home key pressed")
                     // 处理 Home 键按下的逻辑
                     sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
                 }
             }
         }
     }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_HOME||keyCode==KEYCODE_AVR_POWER) {
+            // 在这里处理 Home 按键按下事件
+            // 如果需要特殊处理，需要使用 System UI 相关权限
+            // 处理 Home 键按下的逻辑
+            sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+   /* override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_HOME) {
+            // 在这里处理 Home 按键抬起事件
+            // 如果需要特殊处理，需要使用 System UI 相关权限
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
+    }*/
 
     override fun initBeforeContent() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)

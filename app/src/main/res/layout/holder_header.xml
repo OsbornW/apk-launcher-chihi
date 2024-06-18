@@ -13,8 +13,8 @@
     android:layout_gravity="center"
     android:clickable="true"
     android:layout_margin="@dimen/holder_header_root_margin"
-    android:layout_width="@dimen/holder_header_image_width"
-    android:layout_height="@dimen/holder_header_image_height">
+    android:layout_width="@dimen/qb_px_200"
+    android:layout_height="@dimen/qb_px_140">
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/image"
         android:scaleType="centerCrop"

@@ -15,6 +15,7 @@ public class Movice implements Serializable {
     private final String url;
     private final String title;
     private String appName;
+    private String id;
     private AppPackage[] appPackage;
     private int picType = PIC_ASSETS;
 
@@ -28,6 +29,14 @@ public class Movice implements Serializable {
         this.url = url;
         this.imageUrl = imageUrl;
         this.picType = picType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setAppPackage(AppPackage[] appPackage) {

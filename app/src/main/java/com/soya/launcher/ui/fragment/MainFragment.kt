@@ -36,6 +36,7 @@ import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.open.system.SystemUtils
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
@@ -441,7 +442,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 mHMainContentAdapter!!.replace(list)
             }
 
-            0 -> {
+            0,2 -> {
                 if (list?.size ?: 0 > columns * 2) {
                     list = list?.subList(0, columns * 2)
                 }
@@ -458,6 +459,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
                 mVMainContentAdapter!!.replace(list)
             }
+
         }
     }
 
@@ -935,6 +937,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 columns = 4
                 layoutId = R.layout.holder_content_4
             }
+            2->{
+                columns = 4
+                layoutId = R.layout.holder_content_6
+            }
         }
         fillMovice(bean.id, bean.layoutType, columns, layoutId)
     }
@@ -1247,6 +1253,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         result.getData().reg_id
                     )
                     val item = header[0]
+                    "当前的名字和类型${item.name}====${item.type}".d("zy1998")
                     fillMovice(item)
                     if(BuildConfig.FLAVOR=="hongxin_H27002"){
                         requestFocus(mHeaderGrid,500)
