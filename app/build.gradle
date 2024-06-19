@@ -118,9 +118,9 @@ android {
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LA27001"'
-            buildConfigField "String", "CHIHI_TYPE", '"H713M"'
-            buildConfigField "String", "MODEL", '"713M"'
+            buildConfigField "String", "CHANNEL", '"RK3326M"'
+            buildConfigField "String", "CHIHI_TYPE", '"3326M"'
+            buildConfigField "String", "MODEL", '"3326M"'
         }
 
         hongxin_713RK_G {
@@ -135,9 +135,9 @@ android {
             buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.keencloud.work/"'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LG27001"'
-            buildConfigField "String", "CHIHI_TYPE", '"H713G"'
-            buildConfigField "String", "MODEL", '"713G"'
+            buildConfigField "String", "CHANNEL", '"RK3326G"'
+            buildConfigField "String", "CHIHI_TYPE", '"3326G"'
+            buildConfigField "String", "MODEL", '"3326G"'
         }
 
         //宏信(GAME) 713G
