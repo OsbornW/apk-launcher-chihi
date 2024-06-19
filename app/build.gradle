@@ -30,7 +30,7 @@ android {
             java.srcDirs = ['src/hongxin_713G/java']
         }
 
-        hongxin_713G {
+        hongxin_713RK_G {
             java.srcDirs = ['src/hongxin_713RK_G/java']
         }
 
