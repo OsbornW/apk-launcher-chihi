@@ -30,6 +30,10 @@ android {
             java.srcDirs = ['src/hongxin_713G/java']
         }
 
+        hongxin_713G {
+            java.srcDirs = ['src/hongxin_713RK_G/java']
+        }
+
         no_sys_sign {
             java.srcDirs = ['src/no_sys_sign/java']
         }
@@ -117,6 +121,23 @@ android {
             buildConfigField "String", "CHANNEL", '"LA27001"'
             buildConfigField "String", "CHIHI_TYPE", '"H713M"'
             buildConfigField "String", "MODEL", '"713M"'
+        }
+
+        hongxin_713RK_G {
+            applicationId "com.chihihx.launcher_game"
+            dimension "chihi"
+            signingConfig signingConfigs.hongxin_rk3326
+            versionCode 56
+            versionName "1.57"
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            buildConfigField "String", "BASE_URL", '"https://la.keencloud.work/"'
+            buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.keencloud.work/"'
+            buildConfigField "String", "COMPANY", '"0"'
+            buildConfigField "String", "APP_ID", '"launcher"'
+            buildConfigField "String", "CHANNEL", '"LG27001"'
+            buildConfigField "String", "CHIHI_TYPE", '"H713G"'
+            buildConfigField "String", "MODEL", '"713G"'
         }
 
         //宏信(GAME) 713G
