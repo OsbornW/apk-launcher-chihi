@@ -519,6 +519,10 @@ public class AndroidSystem {
     }
 
     public static boolean openProjectorHDMI(Context context){
+        if(BuildConfig.FLAVOR=="hongxin_713RK"){
+            return openActivityNames(context, new String[]{"com.android.rockchip.camera2", "com.android.rockchip.camera2.RockchipCamera2"});
+
+        }
         return openActivityNames(context, new String[]{"com.allwinner.hdmi.TVInputSetupActivity", "com.softwinner.awlivetv.MainActivity"});
     }
 

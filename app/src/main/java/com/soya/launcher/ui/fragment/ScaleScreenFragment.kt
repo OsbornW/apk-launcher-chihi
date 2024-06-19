@@ -1,402 +1,455 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context
+import android.content.res.Resources
+import android.graphics.Point
+import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.graphics.drawable.DrawableCompat
+import com.open.system.ASystemProperties
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.yes
+import com.softwinner.keystone.KeystoneCorrection
+import com.softwinner.keystone.KeystoneCorrectionManager
+import com.soya.launcher.R
+import com.soya.launcher.ext.isRK3326
+import com.soya.launcher.rk3326.KeystoneVertex
+import com.soya.launcher.view.KeyEventFrameLayout
+import com.soya.launcher.view.KeyEventFrameLayout.KeyEventCallback
+import java.util.Arrays
 
-import androidx.core.graphics.drawable.DrawableCompat;
+class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
+    private val keystone = KeystoneCorrectionManager()
+    private var mRootView: KeyEventFrameLayout? = null
+    private var mSurfaceView: View? = null
 
-import com.open.system.ASystemProperties;
-import com.softwinner.keystone.KeystoneCorrection;
-import com.softwinner.keystone.KeystoneCorrectionManager;
-import com.soya.launcher.R;
-import com.soya.launcher.view.KeyEventFrameLayout;
+    private var screenWidth = 0
+    private var screenHeigh = 0
 
-import java.util.Arrays;
+    private var pressKeyState = upKey
 
-public class ScaleScreenFragment extends AbsFragment implements KeyEventFrameLayout.KeyEventCallback {
+    private var mDirL: ImageView? = null
+    private var mDirR: ImageView? = null
+    private var mDirT: ImageView? = null
+    private var mDirB: ImageView? = null
 
-    public static ScaleScreenFragment newInstance() {
-        
-        Bundle args = new Bundle();
-        
-        ScaleScreenFragment fragment = new ScaleScreenFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-    private static final String TAG = "ScaleScreenFragment";
-    private static final String KEYSTONE_LBX = "persist.display.keystone_lbx";
-    private static final String KEYSTONE_LBY = "persist.display.keystone_lby";
-    private static final String KEYSTONE_RBX = "persist.display.keystone_rbx";
-    private static final String KEYSTONE_RBY = "persist.display.keystone_rby";
-    private static final String KEYSTONE_LTX = "persist.display.keystone_ltx";
-    private static final String KEYSTONE_LTY = "persist.display.keystone_lty";
-    private static final String KEYSTONE_RTX = "persist.display.keystone_rtx";
-    private static final String KEYSTONE_RTY = "persist.display.keystone_rty";
+    private var AX = 0
+    private var AY = 0 //A translate
 
-    private final KeystoneCorrectionManager keystone = new KeystoneCorrectionManager();
-    private KeyEventFrameLayout mRootView;
-    private View mSurfaceView;
+    private var BX = 0
+    private var BY = 0 //B translate
 
-    private int screenWidth= 0;
-    private int screenHeigh= 0;
+    private var CX = 0
+    private var CY = 0 //C translate
 
-    private static final int upKey = 0;
-    private static final int downKey = 1;
-    private static final int leftKey = 2;
-    private static final int rightKey = 3;
-    private static final int menuKey = 4;
-    private int pressKeyState = upKey;
+    private var DX = 0
+    private var DY = 0 //D translate
+    var mHwOffsetA: Point? = null
+    var mHwOffsetB: Point? = null
+    var mHwOffsetC: Point? = null
+    var mHwOffsetD: Point? = null
 
-    private ImageView mDirL;
-    private ImageView mDirR;
-    private ImageView mDirT;
-    private ImageView mDirB;
+    var unitX: Double = 0.0
+    var unitY: Double = 0.0
+    private var mWindowManager: WindowManager? = null
+    private var screenXaxis = 0
+    private var screenYaxis = 0
+    private var mScaleTextView: TextView? = null
 
-    private int AX;
-    private int AY;       //A translate
-
-    private int BX;
-    private int BY;       //B translate
-
-    private int CX;
-    private int CY;       //C translate
-
-    private int DX;
-    private int DY;       //D translate
-    Point mHwOffsetA, mHwOffsetB, mHwOffsetC, mHwOffsetD;
-
-    double unitX;
-    double unitY;
-    private WindowManager mWindowManager;
-    private int screenXaxis= 0;
-    private int screenYaxis= 0;
-    private TextView mScaleTextView;
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_scale_screen;
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_scale_screen
     }
 
-    @Override
-    protected void init(View view, LayoutInflater inflater) {
-        super.init(view, inflater);
-        mRootView = view.findViewById(R.id.root);
-        mSurfaceView = view.findViewById(R.id.surface);
-        mDirB = view.findViewById(R.id.dir_b);
-        mDirL = view.findViewById(R.id.dir_l);
-        mDirT = view.findViewById(R.id.dir_t);
-        mDirR = view.findViewById(R.id.dir_r);
-        mScaleTextView = view.findViewById(R.id.tb_text);
+    override fun init(view: View, inflater: LayoutInflater) {
+        super.init(view, inflater)
+        mRootView = view.findViewById(R.id.root)
+        mSurfaceView = view.findViewById(R.id.surface)
+        mDirB = view.findViewById(R.id.dir_b)
+        mDirL = view.findViewById(R.id.dir_l)
+        mDirT = view.findViewById(R.id.dir_t)
+        mDirR = view.findViewById(R.id.dir_r)
+        mScaleTextView = view.findViewById(R.id.tb_text)
     }
 
-    @Override
-    protected void initBefore(View view, LayoutInflater inflater) {
-        super.initBefore(view, inflater);
-        mRootView.setKeyEventCallback(this);
+    override fun initBefore(view: View, inflater: LayoutInflater) {
+        super.initBefore(view, inflater)
+        mRootView!!.setKeyEventCallback(this)
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        mWindowManager = (WindowManager) getActivity().getSystemService (Context.WINDOW_SERVICE);
-        screenWidth = mWindowManager.getDefaultDisplay().getWidth();
-        screenHeigh = mWindowManager.getDefaultDisplay().getHeight();
-        unitX = screenWidth / 250.0;
-        unitY = screenHeigh / 250.0;
-        screenXaxis = screenWidth;
-        screenYaxis = 0;
+    override fun initBind(view: View, inflater: LayoutInflater) {
+        super.initBind(view, inflater)
+        mWindowManager = activity!!.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        screenWidth = mWindowManager!!.defaultDisplay.width
+        screenHeigh = mWindowManager!!.defaultDisplay.height
+        unitX = screenWidth / 250.0
+        unitY = screenHeigh / 250.0
+        screenXaxis = screenWidth
+        screenYaxis = 0
 
-        getHwOffset();
-        loadSettings();
+        hwOffset
+        loadSettings()
     }
 
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
+    override fun getWallpaperView(): Int {
+        return R.id.wallpaper
     }
 
-    private void getHwOffset() {
-        mHwOffsetA = new Point();
-        mHwOffsetB = new Point();
-        mHwOffsetC = new Point();
-        mHwOffsetD = new Point();
+    private val hwOffset: Unit
+        get() {
+            mHwOffsetA = Point()
+            mHwOffsetB = Point()
+            mHwOffsetC = Point()
+            mHwOffsetD = Point()
 
-        String res = ASystemProperties.get("sys.fb.size", "");
-        if (res.length() <= 0) {
-            mHwOffsetA.set(0, 0);
-            mHwOffsetB.set(0, 0);
-            mHwOffsetC.set(0, 0);
-            mHwOffsetD.set(0, 0);
-            return;
+            val res = ASystemProperties.get("sys.fb.size", "")
+            if (res.length <= 0) {
+                mHwOffsetA!![0] = 0
+                mHwOffsetB!![0] = 0
+                mHwOffsetC!![0] = 0
+                mHwOffsetD!![0] = 0
+                return
+            }
+
+            var propVal = ASystemProperties.get("persist.display.keystone_ltx.$res", "0")
+            mHwOffsetA!!.x = (propVal.toDouble() / unitX).toInt()
+            propVal = ASystemProperties.get("persist.display.keystone_lty.$res", "0")
+            mHwOffsetA!!.y = (propVal.toDouble() / unitY).toInt()
+
+            propVal = ASystemProperties.get("persist.display.keystone_lbx.$res", "0")
+            mHwOffsetB!!.x = (propVal.toDouble() / unitX).toInt()
+            propVal = ASystemProperties.get("persist.display.keystone_lby.$res", "0")
+            mHwOffsetB!!.y = (propVal.toDouble() / unitY).toInt()
+
+            propVal = ASystemProperties.get("persist.display.keystone_rbx.$res", "0")
+            mHwOffsetC!!.x = (propVal.toDouble() / unitX).toInt()
+            propVal = ASystemProperties.get("persist.display.keystone_rby.$res", "0")
+            mHwOffsetC!!.y = (propVal.toDouble() / unitY).toInt()
+
+            propVal = ASystemProperties.get("persist.display.keystone_rtx.$res", "0")
+            mHwOffsetD!!.x = (propVal.toDouble() / unitX).toInt()
+            propVal = ASystemProperties.get("persist.display.keystone_rty.$res", "0")
+            mHwOffsetD!!.y = (propVal.toDouble() / unitY).toInt()
         }
 
-        String propVal = ASystemProperties.get("persist.display.keystone_ltx." + res, "0");
-        mHwOffsetA.x = (int)(Double.parseDouble(propVal) / unitX);
-        propVal = ASystemProperties.get("persist.display.keystone_lty." + res, "0");
-        mHwOffsetA.y = (int)(Double.parseDouble(propVal) / unitY);
+    private fun reloadSettingsByRes() {
+        val res = ASystemProperties.get("sys.fb.size", "")
+        val propList = arrayOf(
+            "persist.display.keystone_ltx",
+            "persist.display.keystone_lty",
+            "persist.display.keystone_lbx",
+            "persist.display.keystone_lby",
+            "persist.display.keystone_rbx",
+            "persist.display.keystone_rby",
+            "persist.display.keystone_rtx",
+            "persist.display.keystone_rty"
+        )
 
-        propVal = ASystemProperties.get("persist.display.keystone_lbx." + res, "0");
-        mHwOffsetB.x = (int)(Double.parseDouble(propVal) / unitX);
-        propVal = ASystemProperties.get("persist.display.keystone_lby." + res, "0");
-        mHwOffsetB.y = (int)(Double.parseDouble(propVal) / unitY);
-
-        propVal = ASystemProperties.get("persist.display.keystone_rbx." + res, "0");
-        mHwOffsetC.x = (int)(Double.parseDouble(propVal) / unitX);
-        propVal = ASystemProperties.get("persist.display.keystone_rby." + res, "0");
-        mHwOffsetC.y = (int)(Double.parseDouble(propVal) / unitY);
-
-        propVal = ASystemProperties.get("persist.display.keystone_rtx." + res, "0");
-        mHwOffsetD.x = (int)(Double.parseDouble(propVal) / unitX);
-        propVal = ASystemProperties.get("persist.display.keystone_rty." + res, "0");
-        mHwOffsetD.y = (int)(Double.parseDouble(propVal) / unitY);
-    }
-
-    private void reloadSettingsByRes() {
-        String res = ASystemProperties.get("sys.fb.size", "");
-        String[] propList = {"persist.display.keystone_ltx",
-                "persist.display.keystone_lty",
-                "persist.display.keystone_lbx",
-                "persist.display.keystone_lby",
-                "persist.display.keystone_rbx",
-                "persist.display.keystone_rby",
-                "persist.display.keystone_rtx",
-                "persist.display.keystone_rty"};
-
-        for (String propName : propList) {
-            String propVal = ASystemProperties.get(propName + "." + res, "0");
-            ASystemProperties.set(propName, propVal);
-            Log.i(TAG, "Set [" + propName + "] to " + propVal);
+        for (propName in propList) {
+            val propVal = ASystemProperties.get("$propName.$res", "0")
+            ASystemProperties.set(propName, propVal)
+            Log.i(TAG, "Set [$propName] to $propVal")
         }
 
-        loadSettings();
+        loadSettings()
     }
 
-    private void loadSettings() {
-        String propVal = ASystemProperties.get("persist.display.keystone_ltx", "0");
-        AX = (int)(Double.parseDouble(propVal) / unitX);
-        propVal = ASystemProperties.get("persist.display.keystone_lty", "0");
-        AY = (int)(Double.parseDouble(propVal) / unitY / 2);
+    private fun loadSettings() {
+        var propVal = ASystemProperties.get("persist.display.keystone_ltx", "0")
+        AX = (propVal.toDouble() / unitX).toInt()
+        propVal = ASystemProperties.get("persist.display.keystone_lty", "0")
+        AY = (propVal.toDouble() / unitY / 2).toInt()
 
-        propVal = ASystemProperties.get("persist.display.keystone_lbx", "0");
-        BX = (int)(Double.parseDouble(propVal) / unitX);
-        propVal = ASystemProperties.get("persist.display.keystone_lby", "0");
-        BY = (int)(Double.parseDouble(propVal) / unitY / 2);
+        propVal = ASystemProperties.get("persist.display.keystone_lbx", "0")
+        BX = (propVal.toDouble() / unitX).toInt()
+        propVal = ASystemProperties.get("persist.display.keystone_lby", "0")
+        BY = (propVal.toDouble() / unitY / 2).toInt()
 
-        propVal = ASystemProperties.get("persist.display.keystone_rbx", "0");
-        CX = (int)(Double.parseDouble(propVal) / unitX);
-        propVal = ASystemProperties.get("persist.display.keystone_rby", "0");
-        CY = (int)(Double.parseDouble(propVal) / unitY / 2);
+        propVal = ASystemProperties.get("persist.display.keystone_rbx", "0")
+        CX = (propVal.toDouble() / unitX).toInt()
+        propVal = ASystemProperties.get("persist.display.keystone_rby", "0")
+        CY = (propVal.toDouble() / unitY / 2).toInt()
 
-        propVal = ASystemProperties.get("persist.display.keystone_rtx", "0");
-        DX = (int)(Double.parseDouble(propVal) / unitX);
-        propVal = ASystemProperties.get("persist.display.keystone_rty", "0");
-        DY = (int)(Double.parseDouble(propVal) / unitY / 2);
+        propVal = ASystemProperties.get("persist.display.keystone_rtx", "0")
+        DX = (propVal.toDouble() / unitX).toInt()
+        propVal = ASystemProperties.get("persist.display.keystone_rty", "0")
+        DY = (propVal.toDouble() / unitY / 2).toInt()
 
-        syncScale();
+        syncScale()
     }
 
-    private void reset(){
-        AX = 0;
-        AY = 0;
-        BX = 0;
-        BY = 0;
-        CX = 0;
-        CY = 0;
-        DX = 0;
-        DY = 0;
-        KeystoneCorrection correction = new KeystoneCorrection(0, 0, 0, 0, 0, 0, 0, 0);
-        keystone.setKeystoneCorrection(correction);
-        mSurfaceView.invalidate();
-        syncScale();
+    private fun reset() {
+        AX = 0
+        AY = 0
+        BX = 0
+        BY = 0
+        CX = 0
+        CY = 0
+        DX = 0
+        DY = 0
+        isRK3326().yes {
+            kv.getAllKeystoneVertex()
+            kv.vTopLeft.x = 0
+            kv.vTopLeft.y = 0
+            kv.vTopRight.x = 0
+            kv.vTopRight.y = 0
+            kv.vBottomLeft.x = 0
+            kv.vBottomLeft.y = 0
+            kv.vBottomRight.x = 0
+            kv.vBottomRight.y = 0
+            kv.updateAllKeystoneVertex()
+        }.otherwise {
+            val correction = KeystoneCorrection(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            keystone.setKeystoneCorrection(correction)
+        }
+        mSurfaceView!!.invalidate()
+        syncScale()
     }
 
-    @Override
-    public void onKeyDown(KeyEvent event) {
-        int keyCode = event.getKeyCode();
-        int action = event.getAction();
+    override fun onKeyDown(event: KeyEvent) {
+        val keyCode = event.keyCode
+        val action = event.action
 
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP && action == 0) {
-            if (AX > mHwOffsetA.x && AX <= 50 + mHwOffsetA.x) {
-                AX--;
+            if (AX > mHwOffsetA!!.x && AX <= 50 + mHwOffsetA!!.x) {
+                AX--
             }
-            if (BX > mHwOffsetB.x && BX <= 50 + mHwOffsetB.x) {
-                BX--;
+            if (BX > mHwOffsetB!!.x && BX <= 50 + mHwOffsetB!!.x) {
+                BX--
             }
-            if (CX > mHwOffsetC.x && CX <= 50 + mHwOffsetC.x) {
-                CX--;
+            if (CX > mHwOffsetC!!.x && CX <= 50 + mHwOffsetC!!.x) {
+                CX--
             }
-            if (DX > mHwOffsetD.x && DX <= 50 + mHwOffsetD.x) {
-                DX--;
-            }
-
-            if (AY > mHwOffsetA.y && AY <= 50 + mHwOffsetA.y) {
-                AY--;
-            }
-            if (BY > mHwOffsetB.y && BY <= 50 + mHwOffsetB.y) {
-                BY--;
-            }
-            if (CY > mHwOffsetC.y && CY <= 50 + mHwOffsetC.y) {
-                CY--;
-            }
-            if (DY > mHwOffsetD.y && DY <= 50 + mHwOffsetD.y) {
-                DY--;
+            if (DX > mHwOffsetD!!.x && DX <= 50 + mHwOffsetD!!.x) {
+                DX--
             }
 
-            pressKeyState = upKey;
-            setDirImage(keyCode, true);
-            setValue();
+            if (AY > mHwOffsetA!!.y && AY <= 50 + mHwOffsetA!!.y) {
+                AY--
+            }
+            if (BY > mHwOffsetB!!.y && BY <= 50 + mHwOffsetB!!.y) {
+                BY--
+            }
+            if (CY > mHwOffsetC!!.y && CY <= 50 + mHwOffsetC!!.y) {
+                CY--
+            }
+            if (DY > mHwOffsetD!!.y && DY <= 50 + mHwOffsetD!!.y) {
+                DY--
+            }
+
+            pressKeyState = upKey
+            setDirImage(keyCode, true)
+            setValue()
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && action == 0) {
-            if (AX >= mHwOffsetA.x && AX < 50 + mHwOffsetA.x) {
-                AX++;
+            if (AX >= mHwOffsetA!!.x && AX < 50 + mHwOffsetA!!.x) {
+                AX++
             }
-            if (BX >= mHwOffsetB.x && BX < 50 + mHwOffsetB.x) {
-                BX++;
+            if (BX >= mHwOffsetB!!.x && BX < 50 + mHwOffsetB!!.x) {
+                BX++
             }
-            if (CX >= mHwOffsetC.x && CX < 50 + mHwOffsetC.x) {
-                CX++;
+            if (CX >= mHwOffsetC!!.x && CX < 50 + mHwOffsetC!!.x) {
+                CX++
             }
-            if (DX >= mHwOffsetD.x && DX < 50 + mHwOffsetD.x) {
-                DX++;
-            }
-
-            if (AY >= mHwOffsetA.y && AY < 50 + mHwOffsetA.y) {
-                AY++;
-            }
-            if (BY >= mHwOffsetB.y && BY < 50 + mHwOffsetB.y) {
-                BY++;
-            }
-            if (CY >= mHwOffsetC.y && CY < 50 + mHwOffsetC.y) {
-                CY++;
-            }
-            if (DY >= mHwOffsetD.y && DY < 50 + mHwOffsetD.y) {
-                DY++;
+            if (DX >= mHwOffsetD!!.x && DX < 50 + mHwOffsetD!!.x) {
+                DX++
             }
 
-            pressKeyState = downKey;
-            setValue();
-            setDirImage(keyCode, true);
+            if (AY >= mHwOffsetA!!.y && AY < 50 + mHwOffsetA!!.y) {
+                AY++
+            }
+            if (BY >= mHwOffsetB!!.y && BY < 50 + mHwOffsetB!!.y) {
+                BY++
+            }
+            if (CY >= mHwOffsetC!!.y && CY < 50 + mHwOffsetC!!.y) {
+                CY++
+            }
+            if (DY >= mHwOffsetD!!.y && DY < 50 + mHwOffsetD!!.y) {
+                DY++
+            }
+
+            pressKeyState = downKey
+            setValue()
+            setDirImage(keyCode, true)
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT && action == 0) {
-            if (AX > mHwOffsetA.x && AX <= 50 + mHwOffsetA.x) {
-                AX--;
+            if (AX > mHwOffsetA!!.x && AX <= 50 + mHwOffsetA!!.x) {
+                AX--
             }
-            if (BX > mHwOffsetB.x && BX <= 50 + mHwOffsetB.x) {
-                BX--;
+            if (BX > mHwOffsetB!!.x && BX <= 50 + mHwOffsetB!!.x) {
+                BX--
             }
-            if (CX > mHwOffsetC.x && CX <= 50 + mHwOffsetC.x) {
-                CX--;
+            if (CX > mHwOffsetC!!.x && CX <= 50 + mHwOffsetC!!.x) {
+                CX--
             }
-            if (DX > mHwOffsetD.x && DX <= 50 + mHwOffsetD.x) {
-                DX--;
+            if (DX > mHwOffsetD!!.x && DX <= 50 + mHwOffsetD!!.x) {
+                DX--
             }
 
-            if (AY > mHwOffsetA.y && AY <= 50 + mHwOffsetA.y) {
-                AY--;
+            if (AY > mHwOffsetA!!.y && AY <= 50 + mHwOffsetA!!.y) {
+                AY--
             }
-            if (BY > mHwOffsetB.y && BY <= 50 + mHwOffsetB.y) {
-                BY--;
+            if (BY > mHwOffsetB!!.y && BY <= 50 + mHwOffsetB!!.y) {
+                BY--
             }
-            if (CY > mHwOffsetC.y && CY <= 50 + mHwOffsetC.y) {
-                CY--;
+            if (CY > mHwOffsetC!!.y && CY <= 50 + mHwOffsetC!!.y) {
+                CY--
             }
-            if (DY > mHwOffsetD.y && DY <= 50 + mHwOffsetD.y) {
-                DY--;
+            if (DY > mHwOffsetD!!.y && DY <= 50 + mHwOffsetD!!.y) {
+                DY--
             }
-            pressKeyState = leftKey;
-            setValue();
-            setDirImage(keyCode, true);
+            pressKeyState = leftKey
+            setValue()
+            setDirImage(keyCode, true)
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && action == 0) {
-            if (AX >= mHwOffsetA.x && AX < 50 + mHwOffsetA.x) {
-                AX++;
+            if (AX >= mHwOffsetA!!.x && AX < 50 + mHwOffsetA!!.x) {
+                AX++
             }
-            if (BX >= mHwOffsetB.x && BX < 50 + mHwOffsetB.x) {
-                BX++;
+            if (BX >= mHwOffsetB!!.x && BX < 50 + mHwOffsetB!!.x) {
+                BX++
             }
-            if (CX >= mHwOffsetC.x && CX < 50 + mHwOffsetC.x) {
-                CX++;
+            if (CX >= mHwOffsetC!!.x && CX < 50 + mHwOffsetC!!.x) {
+                CX++
             }
-            if (DX >= mHwOffsetD.x && DX < 50 + mHwOffsetD.x) {
-                DX++;
+            if (DX >= mHwOffsetD!!.x && DX < 50 + mHwOffsetD!!.x) {
+                DX++
             }
 
-            if (AY >= mHwOffsetA.y && AY < 50 + mHwOffsetA.y) {
-                AY++;
+            if (AY >= mHwOffsetA!!.y && AY < 50 + mHwOffsetA!!.y) {
+                AY++
             }
-            if (BY >= mHwOffsetB.y && BY < 50 + mHwOffsetB.y) {
-                BY++;
+            if (BY >= mHwOffsetB!!.y && BY < 50 + mHwOffsetB!!.y) {
+                BY++
             }
-            if (CY >= mHwOffsetC.y && CY < 50 + mHwOffsetC.y) {
-                CY++;
+            if (CY >= mHwOffsetC!!.y && CY < 50 + mHwOffsetC!!.y) {
+                CY++
             }
-            if (DY >= mHwOffsetD.y && DY < 50 + mHwOffsetD.y) {
-                DY++;
+            if (DY >= mHwOffsetD!!.y && DY < 50 + mHwOffsetD!!.y) {
+                DY++
             }
-            pressKeyState = rightKey;
-            setValue();
-            setDirImage(keyCode, true);
-        } else if(keyCode == KeyEvent.KEYCODE_MENU){
-            pressKeyState = menuKey;
-            reset();
+            pressKeyState = rightKey
+            setValue()
+            setDirImage(keyCode, true)
+        } else if (keyCode == KeyEvent.KEYCODE_MENU) {
+            pressKeyState = menuKey
+            reset()
         }
-        if (action == 1) resetIcon();
+        if (action == 1) resetIcon()
     }
 
-    private void setDirImage(int code, boolean isSelect){
-        Drawable drawable = getResources().getDrawable(R.drawable.baseline_arrow_left_100, Resources.getSystem().newTheme());
-        DrawableCompat.setTint(drawable, isSelect ? getResources().getColor(R.color.ico_style_3, Resources.getSystem().newTheme()) : getResources().getColor(R.color.ico_style_1, Resources.getSystem().newTheme()));
+    private fun setDirImage(code: Int, isSelect: Boolean) {
+        val drawable = resources.getDrawable(
+            R.drawable.baseline_arrow_left_100,
+            Resources.getSystem().newTheme()
+        )
+        DrawableCompat.setTint(
+            drawable,
+            if (isSelect) resources.getColor(
+                R.color.ico_style_3,
+                Resources.getSystem().newTheme()
+            ) else resources.getColor(R.color.ico_style_1, Resources.getSystem().newTheme())
+        )
 
-        switch (code){
-            case KeyEvent.KEYCODE_DPAD_UP:
-                mDirT.setImageDrawable(drawable);
-                break;
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-                mDirB.setImageDrawable(drawable);
-                break;
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                mDirL.setImageDrawable(drawable);
-                break;
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-                mDirR.setImageDrawable(drawable);
-                break;
+        when (code) {
+            KeyEvent.KEYCODE_DPAD_UP -> mDirT!!.setImageDrawable(drawable)
+            KeyEvent.KEYCODE_DPAD_DOWN -> mDirB!!.setImageDrawable(drawable)
+            KeyEvent.KEYCODE_DPAD_LEFT -> mDirL!!.setImageDrawable(drawable)
+            KeyEvent.KEYCODE_DPAD_RIGHT -> mDirR!!.setImageDrawable(drawable)
         }
     }
 
-    private void resetIcon(){
-        boolean isSelect = false;
-        Drawable drawable = getResources().getDrawable(R.drawable.baseline_arrow_left_100, Resources.getSystem().newTheme());
-        DrawableCompat.setTint(drawable, isSelect ? getResources().getColor(R.color.ico_style_3, Resources.getSystem().newTheme()) : getResources().getColor(R.color.ico_style_1, Resources.getSystem().newTheme()));
+    private fun resetIcon() {
+        val isSelect = false
+        val drawable = resources.getDrawable(
+            R.drawable.baseline_arrow_left_100,
+            Resources.getSystem().newTheme()
+        )
+        DrawableCompat.setTint(
+            drawable,
+            if (isSelect) resources.getColor(
+                R.color.ico_style_3,
+                Resources.getSystem().newTheme()
+            ) else resources.getColor(R.color.ico_style_1, Resources.getSystem().newTheme())
+        )
 
-        mDirB.setImageDrawable(drawable);
-        mDirT.setImageDrawable(drawable);
-        mDirL.setImageDrawable(drawable);
-        mDirR.setImageDrawable(drawable);
+        mDirB!!.setImageDrawable(drawable)
+        mDirT!!.setImageDrawable(drawable)
+        mDirL!!.setImageDrawable(drawable)
+        mDirR!!.setImageDrawable(drawable)
     }
 
-    private void setValue(){
-        KeystoneCorrection kc = new KeystoneCorrection((double)(unitX * BX ),(double)(unitY * BY * 2),
-                (double)(unitX * AX ),(double)(unitY * AY * 2),
-                (double)( unitX * CX),(double)(unitY * CY * 2),
-                (double)(unitX * DX),(double)(unitY * DY * 2)
+    private val kv = KeystoneVertex()
 
-        );
+    private fun setValue() {
 
-        keystone.setKeystoneCorrection(kc);
-        mSurfaceView.invalidate();
-        syncScale();
+        isRK3326().yes {
+            kv.getAllKeystoneVertex()
+            kv.vTopLeft.x = (unitX * AX).toInt()
+            kv.vTopLeft.y = (unitY * AY * 2).toInt()
+            kv.vTopRight.x = (unitX * DX).toInt()
+            kv.vTopRight.y = (unitY * DY * 2).toInt()
+            kv.vBottomLeft.x = (unitX * BX).toInt()
+            kv.vBottomLeft.y = (unitY * BY * 2).toInt()
+            kv.vBottomRight.x = (unitX * CX).toInt()
+            kv.vBottomRight.y = (unitY * CY * 2).toInt()
+            kv.updateAllKeystoneVertex()
+        }.otherwise {
+            val kc = KeystoneCorrection(
+                (unitX * BX), (unitY * BY * 2),
+                (unitX * AX), (unitY * AY * 2),
+                (unitX * CX), (unitY * CY * 2),
+                (unitX * DX), (unitY * DY * 2)
+            )
+            keystone.setKeystoneCorrection(kc)
+        }
+
+
+        mSurfaceView!!.invalidate()
+        syncScale()
     }
 
-    private void syncScale(){
-        double[] doubles = {AX, AY, BX, BY, CX, CY, DX, DY};
-        Arrays.sort(doubles);
-        mScaleTextView.setText(String.valueOf((int) doubles[0]));
+    private fun syncScale() {
+        val doubles = doubleArrayOf(
+            AX.toDouble(),
+            AY.toDouble(),
+            BX.toDouble(),
+            BY.toDouble(),
+            CX.toDouble(),
+            CY.toDouble(),
+            DX.toDouble(),
+            DY.toDouble()
+        )
+        Arrays.sort(doubles)
+        mScaleTextView!!.text = doubles[0].toInt().toString()
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): ScaleScreenFragment {
+            val args = Bundle()
+
+            val fragment = ScaleScreenFragment()
+            fragment.arguments = args
+            return fragment
+        }
+
+        private const val TAG = "ScaleScreenFragment"
+        private const val KEYSTONE_LBX = "persist.display.keystone_lbx"
+        private const val KEYSTONE_LBY = "persist.display.keystone_lby"
+        private const val KEYSTONE_RBX = "persist.display.keystone_rbx"
+        private const val KEYSTONE_RBY = "persist.display.keystone_rby"
+        private const val KEYSTONE_LTX = "persist.display.keystone_ltx"
+        private const val KEYSTONE_LTY = "persist.display.keystone_lty"
+        private const val KEYSTONE_RTX = "persist.display.keystone_rtx"
+        private const val KEYSTONE_RTY = "persist.display.keystone_rty"
+
+        private const val upKey = 0
+        private const val downKey = 1
+        private const val leftKey = 2
+        private const val rightKey = 3
+        private const val menuKey = 4
     }
 }

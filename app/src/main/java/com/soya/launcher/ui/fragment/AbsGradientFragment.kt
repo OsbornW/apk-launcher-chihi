@@ -1,15 +1,18 @@
 package com.soya.launcher.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.yes
 import com.softwinner.keystone.KeystoneCorrection
 import com.softwinner.keystone.KeystoneCorrectionManager
 import com.soya.launcher.R
+import com.soya.launcher.ext.isRK3326
+import com.soya.launcher.rk3326.KeystoneVertex
 import com.soya.launcher.view.KeyEventFrameLayout
 import com.soya.launcher.view.KeyEventFrameLayout.KeyEventCallback
 import java.util.concurrent.TimeUnit
@@ -295,8 +298,12 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
         }
     }
 
+    private val kv = KeystoneVertex()
+
+
     private fun setValue(type: Int, direction: Int, value: Float) {
         if (value < 0) return
+
         val ltx = if (type == TYPE_LT && direction == DIR_X) value else getValue(KEYSTONE_LTX, 0f)
         val lty = if (type == TYPE_LT && direction == DIR_Y) value else getValue(KEYSTONE_LTY, 0f)
         val lbx = if (type == TYPE_LB && direction == DIR_X) value else getValue(KEYSTONE_LBX, 0f)
@@ -305,17 +312,32 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
         val rty = if (type == TYPE_RT && direction == DIR_Y) value else getValue(KEYSTONE_RTY, 0f)
         val rbx = if (type == TYPE_RB && direction == DIR_X) value else getValue(KEYSTONE_RBX, 0f)
         val rby = if (type == TYPE_RB && direction == DIR_Y) value else getValue(KEYSTONE_RBY, 0f)
-        val correction = KeystoneCorrection(
-            lbx.toDouble(),
-            lby.toDouble(),
-            ltx.toDouble(),
-            lty.toDouble(),
-            rbx.toDouble(),
-            rby.toDouble(),
-            rtx.toDouble(),
-            rty.toDouble()
-        )
-        val success = keystone!!.setKeystoneCorrection(correction)
+
+        isRK3326().yes {
+            kv.getAllKeystoneVertex()
+            kv.vTopLeft.x = ltx.toInt()
+            kv.vTopLeft.y = lty.toInt()
+            kv.vTopRight.x = rtx.toInt()
+            kv.vTopRight.y = rty.toInt()
+            kv.vBottomLeft.x = lbx.toInt()
+            kv.vBottomLeft.y = lby.toInt()
+            kv.vBottomRight.x = rbx.toInt()
+            kv.vBottomRight.y = rby.toInt()
+            kv.updateAllKeystoneVertex()
+        }.otherwise {
+            val correction = KeystoneCorrection(
+                lbx.toDouble(),
+                lby.toDouble(),
+                ltx.toDouble(),
+                lty.toDouble(),
+                rbx.toDouble(),
+                rby.toDouble(),
+                rtx.toDouble(),
+                rty.toDouble()
+            )
+            val success = keystone!!.setKeystoneCorrection(correction)
+        }
+
         mSurfaceView!!.invalidate()
         when (type) {
             TYPE_LT -> {
@@ -343,26 +365,55 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
     private fun reset() {
         x = 0f
         y = 0f
-        val correction = KeystoneCorrection(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-        keystone!!.setKeystoneCorrection(correction)
+        isRK3326().yes {
+            kv.getAllKeystoneVertex()
+            kv.vTopLeft.x = 0
+            kv.vTopLeft.y = 0
+            kv.vTopRight.x = 0
+            kv.vTopRight.y = 0
+            kv.vBottomLeft.x = 0
+            kv.vBottomLeft.y = 0
+            kv.vBottomRight.x = 0
+            kv.vBottomRight.y = 0
+            kv.updateAllKeystoneVertex()
+        }.otherwise {
+            val correction = KeystoneCorrection(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            keystone!!.setKeystoneCorrection(correction)
+        }
+
         mSurfaceView!!.invalidate()
         mLRTextView!!.text = 0.toString()
         mTBTextView!!.text = 0.toString()
     }
 
     private fun getValue(key: String, def: Float): Float {
-        val correction = keystone!!.keystoneCorrection
         var value = def.toDouble()
-        when (key) {
-            KEYSTONE_LBX -> value = correction.leftBottomX
-            KEYSTONE_LBY -> value = correction.leftBottomY
-            KEYSTONE_LTX -> value = correction.leftTopX
-            KEYSTONE_LTY -> value = correction.leftTopY
-            KEYSTONE_RBX -> value = correction.rightBottomX
-            KEYSTONE_RBY -> value = correction.rightBottomY
-            KEYSTONE_RTX -> value = correction.rightTopX
-            KEYSTONE_RTY -> value = correction.rightTopY
+        isRK3326().yes {
+            kv.getAllKeystoneVertex()
+            when (key) {
+                KEYSTONE_LBX -> value = kv.vBottomLeft.x.toDouble()
+                KEYSTONE_LBY -> value = kv.vBottomLeft.y.toDouble()
+                KEYSTONE_LTX -> value = kv.vTopLeft.x.toDouble()
+                KEYSTONE_LTY -> value = kv.vTopLeft.y.toDouble()
+                KEYSTONE_RBX -> value = kv.vBottomRight.x.toDouble()
+                KEYSTONE_RBY -> value = kv.vBottomRight.y.toDouble()
+                KEYSTONE_RTX -> value = kv.vTopRight.x.toDouble()
+                KEYSTONE_RTY -> value = kv.vTopRight.y.toDouble()
+            }
+        }.otherwise {
+            val correction = keystone!!.keystoneCorrection
+            when (key) {
+                KEYSTONE_LBX -> value = correction.leftBottomX
+                KEYSTONE_LBY -> value = correction.leftBottomY
+                KEYSTONE_LTX -> value = correction.leftTopX
+                KEYSTONE_LTY -> value = correction.leftTopY
+                KEYSTONE_RBX -> value = correction.rightBottomX
+                KEYSTONE_RBY -> value = correction.rightBottomY
+                KEYSTONE_RTX -> value = correction.rightTopX
+                KEYSTONE_RTY -> value = correction.rightTopY
+            }
         }
+
         return value.toFloat()
     }
 
@@ -381,6 +432,12 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
         private const val KEYSTONE_LTY = "persist.display.keystone_lty"
         private const val KEYSTONE_RTX = "persist.display.keystone_rtx"
         private const val KEYSTONE_RTY = "persist.display.keystone_rty"
+
+        const val KEYSTONE_RK3326_TOP_LEFT = "persist.sys.keystone.lt"
+        const val KEYSTONE_RK3326_TOP_RIGHT = "persist.sys.keystone.rt"
+        const val KEYSTONE_RK3326_BOTTOM_LEFT = "persist.sys.keystone.lb"
+        const val KEYSTONE_RK3326_BOTTOM_RIGHT = "persist.sys.keystone.rb"
+
         const val TYPE_LT = 0
         const val TYPE_LB = 1
         const val TYPE_RB = 2

@@ -22,6 +22,10 @@ android {
             java.srcDirs = ['src/hongxin_713M/java']
         }
 
+        hongxin_713RK {
+            java.srcDirs = ['src/hongxin_713RK/java']
+        }
+
         hongxin_713G {
             java.srcDirs = ['src/hongxin_713G/java']
         }
@@ -46,6 +50,13 @@ android {
     signingConfigs {
         hongxin {
             storeFile file("platform_H713.keystore")
+            storePassword "android"
+            keyAlias "platform"
+            keyPassword "android"
+        }
+
+        hongxin_rk3326 {
+            storeFile file("platform_rk3326.keystore")
             storePassword "android"
             keyAlias "platform"
             keyPassword "android"
@@ -82,6 +93,21 @@ android {
             applicationId "com.soya.launcher"
             dimension "chihi"
             signingConfig signingConfigs.hongxin
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"0"'
+            buildConfigField "String", "APP_ID", '"launcher"'
+            buildConfigField "String", "CHANNEL", '"LA27001"'
+            buildConfigField "String", "CHIHI_TYPE", '"H713M"'
+            buildConfigField "String", "MODEL", '"713M"'
+        }
+
+        hongxin_713RK {
+            applicationId "com.soya.launcher"
+            dimension "chihi"
+            signingConfig signingConfigs.hongxin_rk3326
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
