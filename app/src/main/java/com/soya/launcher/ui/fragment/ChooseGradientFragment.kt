@@ -13,6 +13,7 @@ import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
 import com.open.system.ASystemProperties
 import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.adapter.SettingAdapter
@@ -117,7 +118,15 @@ class ChooseGradientFragment : AbsFragment() {
                             }
 
                         } else {
-                            startActivity(Intent(activity, GradientActivity::class.java))
+                            isRK3326().yes {
+                                AndroidSystem.openActivityName(
+                                    activity,
+                                    "com.lei.hxkeystone",
+                                    "com.lei.hxkeystone.FourPoint"
+                                )
+                            }.otherwise {
+                                startKtxActivity<GradientActivity>()
+                            }
                         }
                     }
 

@@ -69,6 +69,7 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isUDisk
 import com.soya.launcher.http.AppServiceRequest
@@ -634,7 +635,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     val bean  = _data as SettingItem
                     when (bean.type) {
                         Projector.TYPE_SETTING -> {
-                            startActivity(Intent(activity, ScaleScreenActivity::class.java))
+                            isRK3326().yes {
+                                AndroidSystem.openActivityName(
+                                    activity,
+                                    "com.lei.hxkeystone",
+                                    "com.lei.hxkeystone.ScaleActivity"
+                                )
+                            }.otherwise {
+                                startActivity(Intent(activity, ScaleScreenActivity::class.java))
+                            }
                         }
 
                         Projector.TYPE_PROJECTOR_MODE -> {
@@ -738,7 +747,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             override fun onClick(bean: SettingItem) {
                 when (bean.type) {
                     Projector.TYPE_SETTING -> {
-                        startActivity(Intent(activity, ScaleScreenActivity::class.java))
+                        isRK3326().yes {
+                            AndroidSystem.openActivityName(
+                                activity,
+                                "com.lei.hxkeystone",
+                                "com.lei.hxkeystone.ScaleActivity"
+                            )
+                        }.otherwise {
+                            startActivity(Intent(activity, ScaleScreenActivity::class.java))
+                        }
                     }
 
                     Projector.TYPE_PROJECTOR_MODE -> {

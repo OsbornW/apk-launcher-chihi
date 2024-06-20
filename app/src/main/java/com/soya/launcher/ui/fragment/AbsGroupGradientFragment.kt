@@ -1,14 +1,20 @@
 package com.soya.launcher.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.open.system.ASystemProperties
+import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
+import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ui.activity.GradientActivity
+import com.soya.launcher.ui.activity.ScaleScreenActivity
+import com.soya.launcher.utils.AndroidSystem
 
 open class AbsGroupGradientFragment : AbsFragment() {
     private var mManualView: View? = null
@@ -56,7 +62,18 @@ open class AbsGroupGradientFragment : AbsFragment() {
         super.initBefore(view, inflater)
         mManualView!!.setOnClickListener {
             setCurMode(false)
-            startKtxActivity<GradientActivity>()
+
+            isRK3326().yes {
+                AndroidSystem.openActivityName(
+                    activity,
+                    "com.lei.hxkeystone",
+                    "com.lei.hxkeystone.FourPoint"
+                )
+            }.otherwise {
+                startKtxActivity<GradientActivity>()
+            }
+
+
         }
         mSkipView!!.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
