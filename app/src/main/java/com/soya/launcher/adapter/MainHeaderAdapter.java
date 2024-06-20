@@ -111,11 +111,11 @@ public class MainHeaderAdapter extends RecyclerView.Adapter<MainHeaderAdapter.Ho
                 }
             });
 
-            if(item.getLayoutType()==2||item.getLayoutType()==-1){
+            /*if(item.getLayoutType()==2){
                 mIV.setScaleType(ImageView.ScaleType.FIT_XY);
             }else {
                 mIV.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            }
+            }*/
 
             switch (item.getIconType()){
                 case TypeItem.TYPE_ICON_IMAGE_RES:
