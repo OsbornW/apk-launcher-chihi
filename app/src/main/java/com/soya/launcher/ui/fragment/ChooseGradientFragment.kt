@@ -12,10 +12,13 @@ import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
 import com.open.system.ASystemProperties
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ui.activity.GradientActivity
 import com.soya.launcher.utils.AndroidSystem
 
@@ -98,11 +101,21 @@ class ChooseGradientFragment : AbsFragment() {
                         val isEnalbe =
                             ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
                         if (isEnalbe) {
-                            AndroidSystem.openActivityName(
-                                activity,
-                                "com.hxdevicetest",
-                                "com.hxdevicetest.CheckGsensorActivity"
-                            )
+                            isRK3326().yes {
+                                AndroidSystem.openActivityName(
+                                    activity,
+                                    "com.lei.hxkeystone",
+                                    "com.lei.hxkeystone.CheckGsensorActivity"
+                                )
+
+                            }.otherwise {
+                                AndroidSystem.openActivityName(
+                                    activity,
+                                    "com.hxdevicetest",
+                                    "com.hxdevicetest.CheckGsensorActivity"
+                                )
+                            }
+
                         } else {
                             startActivity(Intent(activity, GradientActivity::class.java))
                         }
