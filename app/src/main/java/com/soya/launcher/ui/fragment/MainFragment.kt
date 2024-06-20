@@ -1,5 +1,6 @@
 package com.soya.launcher.ui.fragment
 
+import TFiskExt
 import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -65,6 +66,7 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.isUDisk
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.HttpRequest.checkVersion
@@ -509,7 +511,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
             if (Config.COMPANY == 3) {
                 val notifies: MutableList<Notify> = ArrayList()
-                // if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
+                 if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
                 val deviceHashMap =
                     (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
                 for (i in 0 until deviceHashMap.size) {
@@ -520,12 +522,16 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     StorageManager::class.java
                 )
                 for (volume in storageManager.storageVolumes) {
-                    if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
+                        if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
                 }
                 mNotifyAdapter!!.replace(notifies)
+                val a = requireActivity().isUDisk()
+             
             }
         })
     }
+
+
 
     private fun newWeatherCallback(): ServiceRequest.Callback<WeatherData> {
         return object : ServiceRequest.Callback<WeatherData> {

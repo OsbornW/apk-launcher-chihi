@@ -192,7 +192,7 @@ android {
         yxt_X98K {
             applicationId "com.soya.launcher"
             dimension "chihi"
-            // manifestPlaceholders = [share_uid:"android.uid.system"]
+            manifestPlaceholders = [share_uid:"android.uid.system"]
             signingConfig signingConfigs.yxt
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
