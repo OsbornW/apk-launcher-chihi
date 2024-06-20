@@ -110,21 +110,23 @@ public class MainHeaderAdapter extends RecyclerView.Adapter<MainHeaderAdapter.Ho
                     if (callback != null) callback.onSelect(selected, item);
                 }
             });
-            Log.e("zy1998", "bind: 当前的类型是===${}"+item.getIconType()+"====="+item.getLayoutType());
+
+            if(item.getLayoutType()==2||item.getLayoutType()==-1){
+                mIV.setScaleType(ImageView.ScaleType.FIT_XY);
+            }else {
+                mIV.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            }
 
             switch (item.getIconType()){
                 case TypeItem.TYPE_ICON_IMAGE_RES:
+
                     mIV.setImageResource((Integer) item.getIcon());
                     break;
                 case TypeItem.TYPE_ICON_ASSETS:
+
                     GlideUtils.bind(context, mIV, FileUtils.readAssets(context, (String) item.getIcon()));
                     break;
                 default:
-                    if(item.getLayoutType()==2){
-                        mIV.setScaleType(ImageView.ScaleType.FIT_XY);
-                    }else {
-                        mIV.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    }
                     GlideUtils.bind(context, mIV, item.getIcon());
             }
             mTitleView.setText(item.getName());

@@ -31,12 +31,16 @@ import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.NetworkUtils
+import com.drake.brv.utils.addModels
+import com.drake.brv.utils.grid
+import com.drake.brv.utils.setup
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.open.system.SystemUtils
+import com.shudong.lib_base.ext.animScale
+import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
-import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
@@ -92,6 +96,7 @@ import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
+import com.soya.launcher.view.MyFrameLayout
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -589,6 +594,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun setProjectorContent() {
+        //dasdas
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
                 activity,
@@ -603,9 +609,57 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             FocusHighlight.ZOOM_FACTOR_MEDIUM,
             false
         )
-        mHorizontalContentGrid!!.setAdapter(itemBridgeAdapter)
-        mVerticalContentGrid!!.visibility = View.GONE
-        mHorizontalContentGrid!!.visibility = View.VISIBLE
+        mVerticalContentGrid!!.setNumColumns(4)
+        mVerticalContentGrid!!.setup {
+            addType<SettingItem>(R.layout.holder_setting_3)
+            onBind {
+                val mIV = findView<ImageView>(R.id.image)
+                val mTitleView = findView<TextView>(R.id.title)
+
+                val bean = _data as SettingItem
+                mIV.setImageResource(bean.ico)
+                mTitleView.text = bean.name
+
+                itemView.setOnFocusChangeListener { view, b ->
+                    view.animScale(b,1.15f)
+                    b.yes {
+                        mTitleView.isSelected = true
+                    }.otherwise {
+                        mTitleView.isSelected = false
+                    }
+                    if (b) setExpanded(false)
+                }
+
+                itemView.clickNoRepeat {
+                    val bean  = _data as SettingItem
+                    when (bean.type) {
+                        Projector.TYPE_SETTING -> {
+                            startActivity(Intent(activity, ScaleScreenActivity::class.java))
+                        }
+
+                        Projector.TYPE_PROJECTOR_MODE -> {
+                            val success = AndroidSystem.openProjectorMode(activity)
+                            if (!success) toastInstall()
+                        }
+
+                        Projector.TYPE_HDMI -> {
+                            val success = AndroidSystem.openProjectorHDMI(activity)
+                            if (!success) toastInstall()
+                        }
+
+                        Projector.TYPE_SCREEN -> {
+                            startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                        }
+                    }
+                }
+
+            }
+        }.models = arrayListOf()
+
+
+       // mHorizontalContentGrid!!.setAdapter(itemBridgeAdapter)
+        mVerticalContentGrid!!.visibility = View.VISIBLE
+        mHorizontalContentGrid!!.visibility = View.GONE
         val list: MutableList<SettingItem?> = ArrayList()
         list.add(
             SettingItem(
@@ -635,7 +689,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 R.drawable.baseline_settings_input_hdmi_100
             )
         )
-        arrayObjectAdapter.addAll(0, list)
+        //arrayObjectAdapter.addAll(0, list)
+        mVerticalContentGrid!!.addModels(list)
     }
 
     private fun setToolContent() {
