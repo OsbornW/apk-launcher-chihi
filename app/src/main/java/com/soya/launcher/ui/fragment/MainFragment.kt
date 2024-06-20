@@ -1,6 +1,5 @@
 package com.soya.launcher.ui.fragment
 
-import TFiskExt
 import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -66,6 +65,7 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isUDisk
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
@@ -514,18 +514,29 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                  if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
                 val deviceHashMap =
                     (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
-                for (i in 0 until deviceHashMap.size) {
+
+                val isInsertUDisk = requireActivity().isUDisk()
+                isInsertUDisk.yes {
                     notifies.add(Notify(R.drawable.baseline_usb_100))
                 }
+
+                /*for (i in 0 until deviceHashMap.size) {
+                    notifies.add(Notify(R.drawable.baseline_usb_100))
+                }*/
                 if (SystemUtils.isApEnable(activity)) notifies.add(Notify(R.drawable.baseline_wifi_tethering_100_2))
                 val storageManager = activity!!.getSystemService(
                     StorageManager::class.java
                 )
-                for (volume in storageManager.storageVolumes) {
-                        if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
+
+                val isInsertSDCard = requireActivity().isSDCard()
+                isInsertSDCard.yes {
+                    notifies.add(Notify(R.drawable.baseline_sd_storage_100))
                 }
+               /* for (volume in storageManager.storageVolumes) {
+                        if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
+                }*/
                 mNotifyAdapter!!.replace(notifies)
-                val a = requireActivity().isUDisk()
+
              
             }
         })

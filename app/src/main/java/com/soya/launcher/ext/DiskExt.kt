@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.hardware.usb.UsbConstants
 import android.hardware.usb.UsbManager
+import com.soya.launcher.utils.SDCardUtil
 
 fun Activity.isUDisk() = run{
     var isExistUDisk = false
@@ -12,7 +13,7 @@ fun Activity.isUDisk() = run{
     if (deviceHashMap.size > 0) {
 
         deviceHashMap.values.forEach {
-            if (it.getInterfaceCount() > 0) {
+            if (it.interfaceCount > 0) {
                 val usbInterface = it.getInterface(0)
                 when (usbInterface.interfaceClass) {
                     UsbConstants.USB_CLASS_MASS_STORAGE -> {
@@ -30,11 +31,20 @@ fun Activity.isUDisk() = run{
         }
         isExistUDisk
 
-
-        //mBind.rlUdisk.visibility = View.VISIBLE
     } else {
         isExistUDisk = false
         isExistUDisk
 
     }
+}
+
+fun Activity.isSDCard() = run{
+    val pair = SDCardUtil.getStora(this)
+
+    var isContainSD = false
+    isContainSD = pair.first
+
+    isContainSD
+
+
 }
