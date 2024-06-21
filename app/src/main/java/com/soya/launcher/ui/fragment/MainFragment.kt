@@ -39,6 +39,7 @@ import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.open.system.SystemUtils
 import com.shudong.lib_base.ext.animScale
+import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.no
@@ -630,7 +631,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
                 activity,
-                getLayoutInflater(),
+                LayoutInflater.from(appContext),
                 newProjectorCallback(),
                 R.layout.holder_setting_3
             )
@@ -704,28 +705,28 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         list.add(
             SettingItem(
                 Projector.TYPE_PROJECTOR_MODE,
-                getString(R.string.project_mode),
+                appContext.getString(R.string.project_mode),
                 R.drawable.baseline_model_training_100
             )
         )
         list.add(
             SettingItem(
                 Projector.TYPE_SETTING,
-                getString(R.string.project_crop),
+                appContext.getString(R.string.project_crop),
                 R.drawable.baseline_crop_100
             )
         )
         list.add(
             SettingItem(
                 Projector.TYPE_SCREEN,
-                getString(R.string.project_gradient),
+                appContext.getString(R.string.project_gradient),
                 R.drawable.baseline_screenshot_monitor_100
             )
         )
         list.add(
             SettingItem(
                 Projector.TYPE_HDMI,
-                getString(R.string.project_hdmi),
+                appContext.getString(R.string.project_hdmi),
                 R.drawable.baseline_settings_input_hdmi_100
             )
         )
@@ -1067,7 +1068,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun fillMovice(id: Long, dirction: Int, columns: Int, layoutId: Int) {
         setMoviceContent(App.MOVIE_MAP[id], dirction, columns, layoutId)
-        requestHome()
+        //requestHome()
     }
 
     private fun requestHome() {
