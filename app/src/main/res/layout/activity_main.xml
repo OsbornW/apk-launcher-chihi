@@ -2,12 +2,28 @@
 <layout>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_browse_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     tools:context=".ui.activity.MainActivity"
     tools:deviceIds="tv"
-    tools:ignore="MergeRootFrame" />
+    tools:ignore="MergeRootFrame" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/iv_bg"
+        android:scaleType="fitXY"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_browse_fragment"
+        />
+
+
+</FrameLayout>
+
+
 
 </layout>

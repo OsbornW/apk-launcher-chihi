@@ -8,19 +8,18 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_AVR_POWER
 import android.view.WindowManager
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import com.blankj.utilcode.util.DeviceUtils
+import androidx.lifecycle.lifecycleScope
 import com.shudong.lib_base.base.BaseVMActivity
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.d
-import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
-import com.shudong.lib_base.global.AppCacheBase
-import com.soya.launcher.BuildConfig
+import com.soya.launcher.App
 import com.soya.launcher.R
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.ActivityMainBinding
@@ -28,8 +27,11 @@ import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.ext.switchFragment
 import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.rk3326.ReflectUtils
-import com.soya.launcher.ui.fragment.MainFragment.Companion.newInstance
-import com.soya.launcher.ui.fragment.WelcomeFragment
+import com.soya.launcher.utils.GlideUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     private var canBackPressed = true
@@ -72,11 +74,36 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     }
 
     override fun initView() {
-        registerReceiver(homeReceiver, IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
-        commit()
-        val model = ReflectUtils.getProperty("persist.vendor.launcher.platform","")
-        "当前设备型号是====$model".d("zy1998")
+        lifecycleScope.launch {
+            withContext(Dispatchers.Main) {
+                // Simulate a long running task
+                setBG(mBind.ivBg)
+            }
+
+            withContext(Dispatchers.Main) {
+                // Simulate a long running task
+                registerReceiver(homeReceiver, IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+                commit()
+            }
+        }
+
+        //val model = ReflectUtils.getProperty("persist.vendor.launcher.platform","")
+        //"当前设备型号是====$model".d("zy1998")
     }
+
+
+
+     fun setBG(view: ImageView?) {
+        var id = if (Config.COMPANY == 0) R.drawable.wallpaper_22 else R.drawable.wallpaper_1
+        for (wallpaper in App.WALLPAPERS) {
+            if (wallpaper.id == PreferencesManager.getWallpaper()) {
+                id = wallpaper.picture
+                break
+            }
+        }
+        GlideUtils.bindBlur(this, view, id)
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
