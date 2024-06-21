@@ -510,11 +510,42 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 uidPull()
                 requestHome()
             }
-            if (AndroidSystem.isEthernetConnected(activity)) {
+
+
+            lifecycleScope.launch {
+
+                val netType = NetworkUtils.getNetworkType()
+                when (netType) {
+                    NetworkUtils.NetworkType.NETWORK_ETHERNET -> {
+                        mWifiView!!.setImageResource(R.drawable.baseline_lan_100)
+                    }
+                    else->{
+                        withContext(Dispatchers.IO) {
+                            (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).yes {
+                                // 达大厦
+                                withContext(Dispatchers.Main) {
+                                    mWifiView!!.setImageResource(R.drawable.baseline_wifi_100)
+                                }
+                            }.otherwise {
+                                withContext(Dispatchers.Main) {
+                                    mWifiView!!.setImageResource( R.drawable.baseline_wifi_off_100)
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+
+            /*if (AndroidSystem.isEthernetConnected(activity)) {
                 mWifiView!!.setImageResource(R.drawable.baseline_lan_100)
             } else {
                 mWifiView!!.setImageResource(if (isNetworkAvailable) R.drawable.baseline_wifi_100 else R.drawable.baseline_wifi_off_100)
-            }
+            }*/
             if (Config.COMPANY == 3) {
                 val notifies: MutableList<Notify> = ArrayList()
                  if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
