@@ -59,6 +59,7 @@ import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.IntentAction;
 import com.soya.launcher.enums.Types;
+import com.soya.launcher.ext.DeviceExtKt;
 import com.soya.launcher.ui.activity.MainActivity;
 
 import java.io.File;
@@ -391,16 +392,26 @@ public class AndroidSystem {
                     ActivityInfo info = resolveInfo.activityInfo;
                     Intent intent = getPackageNameIntent(context, info.packageName);
                     if (TextUtils.isEmpty(url)){
+                        //Log.d("zy1998", "jumpPlayer: 我要打开的包名是1==="+resolveInfo.activityInfo.packageName);
                         openPackageName(context, resolveInfo.activityInfo.packageName);
                     }else {
                         if (TextUtils.isEmpty(pk.getActivityName())){
                             if (intent != null){
-                                intent.setAction(Intent.ACTION_VIEW);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.setData(Uri.parse(url));
-                                context.startActivity(intent);
+                                //Log.d("zy1998", "jumpPlayer: 我要打开的包名是3==="+url+"===="+Uri.parse(url).getPath());
+
+                                if(DeviceExtKt.isRK3326()){
+                                    openPackageName(context, resolveInfo.activityInfo.packageName);
+                                }else {
+                                    intent.setAction(Intent.ACTION_VIEW);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.setData(Uri.parse(url));
+                                    context.startActivity(intent);
+                                }
+
                             }
                         }else {
+                            //Log.d("zy1998", "jumpPlayer: 我要打开的包名是2==="+intent.getComponent().getPackageName()+"===="+pk.getActivityName());
+
                             openPN(context, url, intent.getComponent().getPackageName(), pk.getActivityName());
                         }
                     }

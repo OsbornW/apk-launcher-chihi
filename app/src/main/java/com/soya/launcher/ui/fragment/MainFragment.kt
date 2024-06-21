@@ -1266,14 +1266,20 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             if(Config.COMPANY==5){
                 when(item.name){
                     "Max","Disney+","Hulu","Google play","media center"->{
-
                     }
                     else->{
                         menus.add(item)
                     }
                 }
             }else{
-                menus.add(item)
+                if(item.name=="Disney+"){
+                    isRK3326().no {
+                        menus.add(item)
+                    }
+                }else{
+                    menus.add(item)
+                }
+
             }
 
         }
