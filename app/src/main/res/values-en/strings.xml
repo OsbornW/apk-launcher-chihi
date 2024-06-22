@@ -160,5 +160,6 @@
     <string name="done">Completed</string>
     <string name="saved">Saved</string>
     <string name="disconnect_net">Disconnect</string>
+    <string name="ethernet">Ethernet is connected, WiFi is not available</string>
 
 </resources>

@@ -40,7 +40,7 @@
                     android:paddingRight="@dimen/dialog_wifi_pass_edit_pass_padding_right"
                     android:gravity="center"
                     android:textSize="@dimen/dialog_wifi_pass_edit_pass_text_size"
-                    android:inputType="textPassword"
+                    android:inputType="text"
                     android:imeOptions="actionDone"
                     android:focusable="true"
                     android:focusableInTouchMode="true"

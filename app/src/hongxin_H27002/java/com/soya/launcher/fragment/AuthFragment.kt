@@ -20,6 +20,7 @@ import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.databinding.FragmentAuthBinding
+import com.soya.launcher.ext.getWifiName
 import com.soya.launcher.ui.dialog.KeyboardDialog
 import com.soya.launcher.utils.AutoSeparateTextWatcher
 import com.soya.launcher.utils.md5
@@ -132,21 +133,28 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
             val md5String = toBeEncryptedString.md5()
             //Log.d("zy1996", "加密前：$toBeEncryptedString===加密后的MD5是：${md5String}")
 
+            AppCacheBase.activeCode = activeCode
 
-            if(activeCode=="11111111"){
-                AppCacheBase.isActive = true
-                showLoadingViewDismiss()
-                ToastUtils.show("Success")
-                lifecycleScope.launch {
-                    delay(500)
-                    showLoadingViewDismiss()
-                    //repeatOnLifecycle(Lifecycle.State.RESUMED){
-                    sendLiveEventData(ACTIVE_SUCCESS, true)
-                    // }
 
+            when(getWifiName()){
+                "WIFI-5G","WIFI","wuyun","wuyun-5G"->{
+                    if(activeCode=="11111111"){
+                        AppCacheBase.isActive = true
+                        showLoadingViewDismiss()
+                        ToastUtils.show("Success")
+                        lifecycleScope.launch {
+                            delay(500)
+                            showLoadingViewDismiss()
+                            //repeatOnLifecycle(Lifecycle.State.RESUMED){
+                            sendLiveEventData(ACTIVE_SUCCESS, true)
+                            // }
+
+                        }
+                        return@clickNoRepeat
+                    }
                 }
-                return@clickNoRepeat
             }
+
 
             val params = mapOf(
                 //唯一ID

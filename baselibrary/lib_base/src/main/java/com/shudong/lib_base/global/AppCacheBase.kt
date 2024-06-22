@@ -10,6 +10,7 @@ object AppCacheBase {
     var favoriteApps: MutableList<ApplicationInfo> by serialLazy(arrayListOf())
     var isAddLocalApp :Boolean by serialLazy(false)
     var isActive :Boolean by serialLazy(false)
+    var activeCode :String by serialLazy("")
 
 
 }

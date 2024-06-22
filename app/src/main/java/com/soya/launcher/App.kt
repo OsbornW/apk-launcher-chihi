@@ -37,6 +37,12 @@ import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.thumbsupec.lib_base.ext.language.initMultiLanguage
 import com.thumbsupec.lib_base.toast.ToastUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Arrays
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -80,6 +86,12 @@ class App : Application() {
             }
         }
     }
+
+    private val applicationScope =
+        CoroutineScope(SupervisorJob()
+                + Dispatchers.Main)
+
+
     private val interval: Long = 3000 // 定时任务间隔（毫秒）
     override fun onCreate() {
         super.onCreate()
@@ -111,7 +123,20 @@ class App : Application() {
         com.hs.App.init(this)
         //AndroidSystem.setEnableBluetooth(this, true)
         timeRemote()
-        if (PreferencesManager.getLastVersionCode() != BuildConfig.VERSION_CODE) {
+
+
+        applicationScope.launch(Dispatchers.IO) {
+            try {
+                FileUtils.copyAssets(assets, "movies", filesDir)
+                withContext(Dispatchers.Main) {
+                    PreferencesUtils.setProperty(Atts.LAST_VERSION_CODE, BuildConfig.VERSION_CODE)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+       /* if (PreferencesManager.getLastVersionCode() != BuildConfig.VERSION_CODE) {
             try {
                 FileUtils.copyAssets(assets, "movies", filesDir)
                 PreferencesUtils.setProperty(Atts.LAST_VERSION_CODE, BuildConfig.VERSION_CODE)
@@ -120,7 +145,7 @@ class App : Application() {
             } finally {
             }
         }
-
+*/
         MvvmHelper.init(this@App)
 
         ToastUtils.init(this@App)
@@ -159,6 +184,7 @@ class App : Application() {
         super.onTerminate()
         // 停止定时任务
         handler.removeCallbacks(runnable)
+        applicationScope.cancel() // 在应用终止时取消协程}
     }
 
     private fun timeRemote() {

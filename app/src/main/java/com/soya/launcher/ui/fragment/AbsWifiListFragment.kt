@@ -30,6 +30,7 @@ import com.drake.brv.utils.linear
 import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.ext.clickNoRepeat
+import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
@@ -38,12 +39,15 @@ import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.adapter.WifiListAdapter
 import com.soya.launcher.bean.WifiItem
+import com.soya.launcher.ext.isGreaterThanLollipop
 import com.soya.launcher.ui.dialog.ProgressDialog
 import com.soya.launcher.ui.dialog.ToastDialog
 import com.soya.launcher.ui.dialog.WifiPassDialog
 import com.soya.launcher.ui.dialog.WifiSaveDialog
 import com.soya.launcher.utils.AndroidSystem
+import com.soya.launcher.utils.toTrim
 import com.soya.launcher.view.MyFrameLayout
+import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.launch
 import repeatWithDelay
 import java.util.concurrent.CopyOnWriteArrayList
@@ -383,6 +387,10 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
     private fun toastFail() {
         if (!isAdded) return
+        val netType = NetworkUtils.getNetworkType()
+        if (netType==NetworkUtils.NetworkType.NETWORK_WIFI&&NetworkUtils.isConnected()) {
+            return
+        }
         val dialog = ToastDialog.newInstance(
             getString(R.string.unable_to_wifi, mTarget!!.SSID),
             ToastDialog.MODE_CONFIRM
@@ -503,6 +511,14 @@ abstract class AbsWifiListFragment : AbsFragment() {
         return object : WifiListAdapter.Callback {
             @SuppressLint("MissingPermission")
             override fun onClick(wifiItem: WifiItem?) {
+
+                val netType = NetworkUtils.getNetworkType()
+                (netType==NetworkUtils.NetworkType.NETWORK_ETHERNET).yes {
+                    //以太网
+                    ToastUtils.show(R.string.ethernet)
+                    return
+                }
+
                 val bean = wifiItem!!.item
                 val usePass = AndroidSystem.isUsePassWifi(bean)
                 val saves = mWifiManager!!.configuredNetworks
@@ -520,7 +536,12 @@ abstract class AbsWifiListFragment : AbsFragment() {
                             val index = mAdapter!!.getDataList().indexOf(wifiItem)
                             when (type) {
                                 0 -> {
-                                    connect(bean, item!!.networkId)
+                                    isGreaterThanLollipop().yes {
+                                        connect(bean, item!!.networkId)
+                                    }.otherwise {
+                                        context?.let { connectTo21_netId(it,bean, item!!.networkId) }
+                                    }
+
                                     wifiItem.isSave = true
                                 }
 
@@ -546,7 +567,13 @@ abstract class AbsWifiListFragment : AbsFragment() {
                                 mAdapter?.notifyItemRemoved(index)
                             }
                             //if (index != -1) mAdapter!!.notifyItemChanged(index)
-                            connect(bean, text)
+                            isGreaterThanLollipop().yes {
+                                connect(bean, text)
+                            }.otherwise {
+                                context?.let { connectTo_21(it,bean, text) }
+                            }
+                            //connect(bean, text)
+
                         }
 
                     })
@@ -555,7 +582,11 @@ abstract class AbsWifiListFragment : AbsFragment() {
                     wifiItem.isSave = true
                     val index = mAdapter!!.getDataList().indexOf(wifiItem)
                     if (index != -1) mAdapter!!.notifyItemChanged(index)
-                    connect(bean, "")
+                    isGreaterThanLollipop().yes {
+                        connect(bean, "")
+                    }.otherwise {
+                        context?.let { connectTo_21(it,bean, "") }
+                    }
                 }
             }
         }
@@ -565,6 +596,14 @@ abstract class AbsWifiListFragment : AbsFragment() {
         return object : WifiListAdapter.Callback {
             @SuppressLint("MissingPermission")
             override fun onClick(wifiItem: WifiItem?) {
+
+                val netType = NetworkUtils.getNetworkType()
+                (netType==NetworkUtils.NetworkType.NETWORK_ETHERNET).yes {
+                    //以太网
+                    ToastUtils.show(R.string.ethernet)
+                    return
+                }
+
                 val bean = wifiItem!!.item
                 val usePass = AndroidSystem.isUsePassWifi(bean)
                 val saves = mWifiManager!!.configuredNetworks
@@ -582,7 +621,11 @@ abstract class AbsWifiListFragment : AbsFragment() {
                             val index = rvSavedWifi?.mutable?.indexOf(wifiItem) ?: 0
                             when (type) {
                                 0 -> {
-                                    connect(bean, item!!.networkId)
+                                    isGreaterThanLollipop().yes {
+                                        connect(bean, item!!.networkId)
+                                    }.otherwise {
+                                        context?.let { connectTo21_netId(it,bean, item!!.networkId) }
+                                    }
                                     wifiItem.isSave = true
                                 }
 
@@ -614,7 +657,11 @@ abstract class AbsWifiListFragment : AbsFragment() {
                             wifiItem.isSave = true
                             val index = rvSavedWifi?.mutable?.indexOf(wifiItem) ?: 0
                             if (index != -1) rvSavedWifi?.adapter!!.notifyItemChanged(index)
-                            connect(bean, text)
+                            isGreaterThanLollipop().yes {
+                                connect(bean, text)
+                            }.otherwise {
+                                context?.let { connectTo_21(it,bean, text) }
+                            }
                         }
 
                     })
@@ -623,7 +670,11 @@ abstract class AbsWifiListFragment : AbsFragment() {
                     wifiItem.isSave = true
                     val index = rvSavedWifi?.mutable?.indexOf(wifiItem) ?: 0
                     if (index != -1) rvSavedWifi?.adapter!!.notifyItemChanged(index)
-                    connect(bean, "")
+                    isGreaterThanLollipop().yes {
+                        connect(bean, "")
+                    }.otherwise {
+                        context?.let { connectTo_21(it,bean, "") }
+                    }
                 }
             }
         }
@@ -648,9 +699,66 @@ abstract class AbsWifiListFragment : AbsFragment() {
         showDialog()
     }
 
-    private fun connect(bean: ScanResult, password: String) {
+
+    fun connectTo21_netId(context: Context, bean: ScanResult, networkId: Int) {
+
         target(bean)
-        val configuration = newWifiConfiguration(bean, password)
+
+        val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+        // 断开当前连接（如果已连接）
+        wifiManager.disconnect()
+
+        // 启用指定网络并连接
+        wifiManager.enableNetwork(networkId, true)
+        wifiManager.reconnect()
+
+        showDialog()
+
+    }
+
+
+
+    fun connectTo_21(context: Context, scanResult: ScanResult, password: String) {
+        "当前密码 的长度是$password====${password.length}".d("zy1998")
+        val pwd = password.toTrim()
+
+        target(scanResult)
+
+        val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+        // 断开当前连接（如果已连接）
+        wifiManager.disconnect()
+
+        // 创建 WifiConfiguration
+        val config = WifiConfiguration()
+        config.SSID = "\"${scanResult.SSID}\"" // SSID 需要用双引号括起来
+
+        if (pwd.isEmpty()) {
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE)
+        } else {
+            config.preSharedKey = "\"${pwd}\"" // 密码也需要用双引号括起来
+        }
+        //config.preSharedKey = "\"${pwd}\"" // 密码也需要用双引号括起来
+
+        // 添加网络并连接
+        val netId = wifiManager.addNetwork(config)
+        if (netId!= -1) {
+            wifiManager.enableNetwork(netId, true)
+            wifiManager.reconnect()
+        } else {
+            // 处理添加网络失败的情况
+            // ...
+            ToastUtils.show("网络添加失败")
+        }
+
+        showDialog()
+    }
+
+    private fun connect(bean: ScanResult, password: String) {
+        val pwd = password.toTrim()
+        target(bean)
+        val configuration = newWifiConfiguration(bean, pwd)
         val id = mWifiManager!!.addNetwork(configuration)
         mWifiManager!!.enableNetwork(id, true)
         showDialog()
@@ -758,36 +866,6 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
             }
 
-            //val aList = rvSavedWifi?.mutable as MutableList<WifiItem>
-
-            /* aList.forEach {
-            "当前集合中有哪些WIFI===${it.item.SSID}===".d("zy1996")
-        }*/
-
-            /*
-        (aList)?.let {
-            (repeat).forEach {wifiItem->
-                "当前是否包含这个WIFI===${wifiItem.item.SSID}===${it.contains(wifiItem)}".d("zy1996")
-
-                (it.contains(wifiItem)).no{
-                    wifiItem.isSave.yes {
-                        "当前即将要添加的已保存的WIFI数据是===${wifiItem.item.SSID}".d("zy1996")
-                        rvSavedWifi?.mutable?.add(wifiItem)
-                        rvSavedWifi?.adapter?.notifyItemInserted(rvSavedWifi?.mutable?.size ?: 0 - 1)
-                    }
-
-                }
-            }
-        }*/
-
-
-            /* filteredList.forEach {
-            it.isSave.yes {
-                "当前要添加的已保存WiFi是=====${it.item.SSID}".d("zy1996")
-                rvSavedWifi?.mutable?.add(it)
-                rvSavedWifi?.adapter?.notifyItemInserted(rvSavedWifi?.mutable?.size ?: 0 - 1)
-            }
-        }*/
 
             for (i in (rvSavedWifi?.mutable as MutableList<WifiItem>).size - 1 downTo 0) {
 
@@ -806,43 +884,6 @@ abstract class AbsWifiListFragment : AbsFragment() {
                 setRVSaveHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
             }
 
-
-            //val filteredList = e.filterNot { it in cur }
-
-
-            /* if (filteredList.isNotEmpty()) {
-
-            rvSavedWifi?.mutable?.forEach {
-                val bean = it as WifiItem
-
-
-            }
-
-
-            for (i in (rvSavedWifi?.mutable as MutableList<WifiItem>).size - 1 downTo 0) {
-
-                if ((rvSavedWifi?.mutable as MutableList<WifiItem>)[i].item.SSID == mAdapter!!.connectSSID
-                ) {
-                    (rvSavedWifi?.mutable as MutableList<WifiItem>).removeAt(i)
-                    rvSavedWifi?.adapter?.notifyItemRemoved(i)
-
-                }
-            }
-
-            (rvSavedWifi?.mutable as MutableList<WifiItem>).forEachIndexed { index, wifiItem ->
-                "当前已保存列表里面的是=====${wifiItem.item.SSID}===索引==$index".d("zy1996")
-            }
-
-            "当前已保存列表里面的大小是是=====${rvSavedWifi?.mutable?.size}===索引==".d("zy1996")
-
-
-            ((rvSavedWifi?.mutable as MutableList<WifiItem>).size > 2).yes {
-                setRVSaveHeight(com.shudong.lib_dimen.R.dimen.qb_px_120.dimenValue())
-            }.otherwise {
-                setRVSaveHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
-            }
-
-        }*/
 
             mAdapter?.let {
                 for (i in (it.getDataList()).size - 1 downTo 0) {
@@ -852,10 +893,15 @@ abstract class AbsWifiListFragment : AbsFragment() {
                     }
                     rvSavedWifi?.let { it1 ->
                         for (j in (it1.mutable).size - 1 downTo 0) {
-                            if ((it.getDataList())[i].item.SSID == ((it1.mutable)[j] as WifiItem).item.SSID) {
-                                (it.getDataList()).removeAt(i)
-                                mAdapter?.notifyItemRemoved(i)
+                            try {
+                                if ((it.getDataList())[i].item.SSID == ((it1.mutable)[j] as WifiItem).item.SSID) {
+                                    (it.getDataList()).removeAt(i)
+                                    mAdapter?.notifyItemRemoved(i)
+                                }
+                            }catch (e:ArrayIndexOutOfBoundsException){
+                                e.printStackTrace()
                             }
+
                         }
 
                     }

@@ -160,5 +160,7 @@
     <string name="done">Terminé</string>
     <string name="saved">Sauvegardé</string>
     <string name="disconnect_net">Déconnecter</string>
+    <string name="ethernet">Ethernet est connecté, impossible d\'utiliser le Wi-Fi.</string>
+
 
 </resources>

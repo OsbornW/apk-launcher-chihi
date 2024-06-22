@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.NetworkUtils
 import com.drake.brv.utils.addModels
 import com.drake.brv.utils.grid
@@ -37,6 +38,8 @@ import com.drake.brv.utils.setup
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.callback.StringCallback
 import com.open.system.SystemUtils
 import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
@@ -46,6 +49,7 @@ import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
+import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
@@ -98,11 +102,14 @@ import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
+import com.soya.launcher.utils.md5
 import com.soya.launcher.view.MyFrameLayout
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.Response
+import org.json.JSONObject
 import retrofit2.Call
 import java.io.File
 import java.io.FileReader
@@ -385,6 +392,53 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mHdmiView?.visibility = if (Config.COMPANY == 0) View.VISIBLE else View.GONE
         mGradientView?.visibility = if (Config.COMPANY == 0) View.VISIBLE else View.GONE
 
+        AppCacheBase.isActive.yes {
+            val uniqueID = DeviceUtils.getUniqueDeviceId().subSequence(0,DeviceUtils.getUniqueDeviceId().length-1)
+            //激活码
+            val activeCode = AppCacheBase.activeCode
+            val versionValue = 1003
+            // 渠道ID
+            val chanelId = BuildConfig.CHANNEL
+
+            val childChanel = "S10001"
+            // 时间戳
+            val time = System.currentTimeMillis()/1000
+            // 密码盐
+            val pwd = "TKPCpTVZUvrI"
+            // 待加密的字符串（(d+e+c+b+a+f+密码盐）
+            val toBeEncryptedString = "$chanelId$childChanel$versionValue$activeCode$uniqueID$time$pwd"
+            // 对字符串进行MD5加密
+            val md5String = toBeEncryptedString.md5()
+
+            val params = mapOf(
+                //唯一ID
+                "a" to uniqueID,
+                // 激活码
+                "b" to activeCode.toLong(),
+                // API 版本值
+                "c" to versionValue,
+                //渠道号
+                "d" to chanelId,
+                // 子渠道号
+                "e" to childChanel,
+                // 当前时间戳（秒）
+                "f" to time,
+                // 签名值  md5(d+e+c+b+a+f+密码盐)
+                "s" to md5String,
+            )
+            val jsonObject = JSONObject(params)
+
+            OkGo.post("https://api.freedestop.com/u/client")
+                .tag(this)
+                .upJson(jsonObject.toString())
+                .execute(object : StringCallback() {
+                    override fun onSuccess(t: String?, call: okhttp3.Call?, response: Response?) {
+
+                    }
+
+                })
+
+        }
 
     }
 

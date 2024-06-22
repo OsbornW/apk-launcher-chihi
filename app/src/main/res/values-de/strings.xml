@@ -160,5 +160,7 @@
     <string name="done">komplett</string>
     <string name="saved">Gespeichert</string>
     <string name="disconnect_net">Trennen</string>
+    <string name="ethernet">Ethernet ist verbunden, WLAN kann nicht verwendet werden</string>
+
 
 </resources>

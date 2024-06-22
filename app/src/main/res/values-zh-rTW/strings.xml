@@ -160,6 +160,7 @@
     <string name="done">完成</string>
     <string name="saved">已保存</string>
     <string name="disconnect_net">斷開連接</string>
-    <string name="ethernet">以太网已接入</string>
+    <string name="ethernet">以太网已连接，无法使用WiFi</string>
+
 
 </resources>

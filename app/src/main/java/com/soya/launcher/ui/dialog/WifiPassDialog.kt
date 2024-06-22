@@ -140,12 +140,6 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
     }
 
     fun setDefaultPwd(wifiName: String?) {
-        if (wifiName == null) {
-            Log.d("zy1996", "setDefaultPwd: wifiname失控的")
-        }
-        if (mEditText == null) {
-            Log.d("zy1996", "setDefaultPwd: mEdittext失控的")
-        }
         if (wifiName != null && mEditText != null) {
             if (wifiName == "WIFI-5G") {
                 mEditText!!.text = "chen888888a"

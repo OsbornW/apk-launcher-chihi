@@ -160,5 +160,7 @@
     <string name="done">完了</string>
     <string name="saved">保存済み</string>
     <string name="disconnect_net">接続解除</string>
+    <string name="ethernet">イーサネットが接続されているため、Wi- Fiを使用できません</string>
+
 
 </resources>
