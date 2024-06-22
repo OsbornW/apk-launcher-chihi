@@ -559,8 +559,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
 
                 /*for (i in 0 until deviceHashMap.size) {
-                    notifies.add(Notify(R.drawable.baseline_usb_100))
-                }*/
+                        notifies.add(Notify(R.drawable.baseline_usb_100))
+                 }*/
                 if (SystemUtils.isApEnable(activity)) notifies.add(Notify(R.drawable.baseline_wifi_tethering_100_2))
                 val storageManager = activity!!.getSystemService(
                     StorageManager::class.java

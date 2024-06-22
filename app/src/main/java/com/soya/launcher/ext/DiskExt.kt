@@ -23,7 +23,7 @@ fun Activity.isUDisk() = run{
                     }
 
                     else -> {
-                        isExistUDisk = true
+                        isExistUDisk = false
                         isExistUDisk
                     }
                 }
