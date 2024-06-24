@@ -45,6 +45,7 @@ import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
@@ -1006,10 +1007,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 when (bean.type) {
                     Types.TYPE_MOVICE -> {
                         val packages = Gson().fromJson(bean.data, Array<AppPackage>::class.java)
+                        "当前名字是====${packages.size}===${packages[0].packageName}".e("zy1998")
                         when{
-                            packages[0].packageName.contains("Prime Video") ->{
+                            packages[0].packageName.contains("com.amazon.amazonvideo.livingroom") ->{
+                                Log.d("111","111")
                                 if(Config.COMPANY==5){
-                                    AndroidSystem.openPackageName(activity,"com.amazon.avod.thirdpartyclient")
+                                    AndroidSystem.openActivityName(activity,"com.amazon.avod.thirdpartyclient","com.amazon.avod.thirdpartyclient.LauncherActivity")
+
                                 }else{
                                     val success = AndroidSystem.jumpPlayer(activity, packages, null)
                                     if (!success) {
@@ -1020,6 +1024,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 }
                             }
                             packages[0].packageName.contains("youtube")->{
+                                Log.d("2222","222222")
                                 if(Config.COMPANY==5){
                                     AndroidSystem.openPackageName(activity,"com.google.android.apps.youtube.creator")
                                 }else{
@@ -1035,6 +1040,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 val success = AndroidSystem.jumpPlayer(activity, packages, null)
                                 if (!success) {
                                     toastInstallPKApp(bean.name, packages)
+                                    Log.d("bean","bean"+bean.name+"packages"+packages)
                                 }
                             }
                         }

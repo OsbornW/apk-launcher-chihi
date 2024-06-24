@@ -34,7 +34,7 @@
     <string name="saturday">six</string>
     <string name="sunday">day</string>
     <string name="network">Network</string>
-    <string name="keyboard">keyboard</string>
+    <string name="keyboard">Keyboard</string>
     <string name="place_waiting">Please wait a moment</string>
     <string name="password">password</string>
     <string name="login">Login</string>
@@ -133,7 +133,7 @@
     <string name="pairing_fail">Unable to pair% s</string>
     <string name="pairing_success">Complete pairing% s</string>
     <string name="time_display">Using a 24-hour system</string>
-    <string name="sound">voice</string>
+    <string name="sound">Voice</string>
     <string name="remote_control">Remote control</string>
     <string name="device_id">Device ID</string>
     <string name="waiting">Waiting</string>
