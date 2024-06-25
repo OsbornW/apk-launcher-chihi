@@ -15,7 +15,7 @@
     <FrameLayout
         android:layout_marginLeft="@dimen/holder_content_4_root_margin_left"
         android:layout_marginRight="@dimen/holder_content_4_root_margin_right"
-        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginTop="@dimen/qb_px_25"
         android:layout_marginBottom="@dimen/holder_content_4_root_margin_bottom"
         android:foreground="@drawable/bg_app"
         android:clipChildren="false"

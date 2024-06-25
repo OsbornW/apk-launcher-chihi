@@ -275,26 +275,28 @@
                 </FrameLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
             <FrameLayout
+                android:id="@+id/fl_list"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:background="@drawable/rect_solid_8dp_alpha_1"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/fragment_main_div_content_height"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/fragment_main_div_content_margin_left"
                 android:layout_marginRight="@dimen/fragment_main_div_content_margin_right"
                 android:layout_marginTop="@dimen/fragment_main_div_content_margin_top">
                 <androidx.leanback.widget.HorizontalGridView
+                    android:layout_gravity="center"
                     android:id="@+id/horizontal_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <androidx.leanback.widget.VerticalGridView
+                    android:layout_gravity="center"
                     android:id="@+id/vertical_content"
                     app:focusOutFront="true"
                     android:clipToPadding="false"
                     android:clipChildren="false"
                     android:clipToOutline="false"
-                    android:padding="@dimen/fragment_main_vertical_content_padding"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="wrap_content"/>
             </FrameLayout>
         </com.google.android.material.appbar.AppBarLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

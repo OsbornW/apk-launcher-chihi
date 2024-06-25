@@ -1,155 +1,152 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInstaller;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.ApplicationInfo
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
+import androidx.leanback.widget.VerticalGridView
+import androidx.lifecycle.lifecycleScope
+import com.soya.launcher.R
+import com.soya.launcher.adapter.AppListAdapter
+import com.soya.launcher.ui.dialog.AppDialog
+import com.soya.launcher.utils.AndroidSystem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.leanback.widget.ArrayObjectAdapter;
-import androidx.leanback.widget.FocusHighlight;
-import androidx.leanback.widget.FocusHighlightHelper;
-import androidx.leanback.widget.ItemBridgeAdapter;
-import androidx.leanback.widget.VerticalGridView;
+class AppsFragment : AbsFragment() {
+    private var mContentGrid: VerticalGridView? = null
+    private var mTitleView: TextView? = null
 
-import com.open.system.SystemUtils;
-import com.soya.launcher.R;
-import com.soya.launcher.adapter.AppItemAdapter;
-import com.soya.launcher.adapter.AppListAdapter;
-import com.soya.launcher.config.Config;
-import com.soya.launcher.ui.dialog.AppDialog;
-import com.soya.launcher.utils.AndroidSystem;
+    private var receiver: InnerReceiver? = null
 
-import java.util.ArrayList;
-import java.util.List;
+    private var mAppItemAdapter: AppListAdapter? = null
 
-public class AppsFragment extends AbsFragment{
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    public static AppsFragment newInstance() {
-        
-        Bundle args = new Bundle();
-        
-        AppsFragment fragment = new AppsFragment();
-        fragment.setArguments(args);
-        return fragment;
+        lifecycleScope.launch {
+            receiver = InnerReceiver()
+            val filter = IntentFilter()
+            filter.addAction(Intent.ACTION_PACKAGE_ADDED)
+            filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
+            filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
+            filter.addDataScheme("package")
+            activity!!.registerReceiver(receiver, filter)
+        }
+
+
     }
 
-    private VerticalGridView mContentGrid;
-    private TextView mTitleView;
-
-    private InnerReceiver receiver;
-
-    private AppListAdapter mAppItemAdapter;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        receiver = new InnerReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
-        filter.addDataScheme("package");
-        getActivity().registerReceiver(receiver, filter);
+    override fun onDestroy() {
+        super.onDestroy()
+        activity!!.unregisterReceiver(receiver)
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getActivity().unregisterReceiver(receiver);
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_apps
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_apps;
+    override fun init(view: View, inflater: LayoutInflater) {
+        super.init(view, inflater)
+        mContentGrid = view.findViewById(R.id.content)
+        mTitleView = view.findViewById(R.id.title)
+
+        mTitleView?.text = getString(R.string.apps)
+        mAppItemAdapter = AppListAdapter(
+            activity,
+            layoutInflater,
+            ArrayList(),
+            R.layout.holder_app_2,
+            newAppListCallback()
+        )
     }
 
-    @Override
-    protected void init(View view, LayoutInflater inflater) {
-        super.init(view, inflater);
-        mContentGrid = view.findViewById(R.id.content);
-        mTitleView = view.findViewById(R.id.title);
-
-        mTitleView.setText(getString(R.string.apps));
-        mAppItemAdapter = new AppListAdapter(getActivity(), getLayoutInflater(), new ArrayList<>(), R.layout.holder_app_2, newAppListCallback());
+    override fun initBind(view: View, inflater: LayoutInflater) {
+        super.initBind(view, inflater)
+        mContentGrid!!.adapter = mAppItemAdapter
+        fillApps()
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        mContentGrid.setAdapter(mAppItemAdapter);
-        fillApps();
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requestFocus(mContentGrid)
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        requestFocus(mContentGrid);
+    override fun getWallpaperView(): Int {
+        return R.id.wallpaper
     }
 
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
+    private fun fillApps() {
+        lifecycleScope.launch {
+            var list:List<ApplicationInfo>
+            withContext(Dispatchers.IO){
+                 list = AndroidSystem.getUserApps(activity)
+            }
+            withContext(Dispatchers.Main){
+                setContent(list)
+            }
+        }
+        //setContent(AndroidSystem.getUserApps(activity))
     }
 
-    private void fillApps(){
-        setContent(AndroidSystem.getUserApps(getActivity()));
+    private fun setContent(list: List<ApplicationInfo>) {
+        mContentGrid!!.setNumColumns(4)
+        mAppItemAdapter!!.replace(list)
+        requestFocus(mContentGrid)
     }
 
-    private void setContent(List<ApplicationInfo> list){
-        mContentGrid.setNumColumns(4);
-        mAppItemAdapter.replace(list);
-        requestFocus(mContentGrid);
-    }
-
-    private AppListAdapter.Callback newAppListCallback(){
-        return new AppListAdapter.Callback() {
-
-            @Override
-            public void onSelect(boolean selected) {
+    private fun newAppListCallback(): AppListAdapter.Callback {
+        return object : AppListAdapter.Callback {
+            override fun onSelect(selected: Boolean) {
             }
 
-            @Override
-            public void onClick(ApplicationInfo bean) {
-                AndroidSystem.openPackageName(getActivity(), bean.packageName);
+            override fun onClick(bean: ApplicationInfo) {
+                AndroidSystem.openPackageName(activity, bean.packageName)
             }
 
-            @Override
-            public void onMenuClick(ApplicationInfo bean) {
-                menu(bean);
+            override fun onMenuClick(bean: ApplicationInfo) {
+                menu(bean)
             }
-        };
+        }
     }
 
-    private void menu(ApplicationInfo bean){
-        AppDialog dialog = AppDialog.newInstance(bean);
-        dialog.setCallback(new AppDialog.Callback() {
-            @Override
-            public void onOpen() {
-                AndroidSystem.openPackageName(getActivity(), bean.packageName);
-            }
-        });
-        dialog.show(getChildFragmentManager(), AppDialog.TAG);
+    private fun menu(bean: ApplicationInfo) {
+        val dialog = AppDialog.newInstance(bean)
+        dialog.setCallback {
+            AndroidSystem.openPackageName(
+                activity, bean.packageName
+            )
+        }
+        dialog.show(childFragmentManager, AppDialog.TAG)
     }
 
-    public class InnerReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()){
-                case Intent.ACTION_PACKAGE_ADDED:
-                case Intent.ACTION_PACKAGE_REMOVED:
-                case Intent.ACTION_PACKAGE_REPLACED:
-                    fillApps();
-                    break;
+    inner class InnerReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
+                Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> fillApps()
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("zy1998", "onResume: 开始启动4")
+    }
+
+    companion object {
+        fun newInstance(): AppsFragment {
+            val args = Bundle()
+
+            val fragment = AppsFragment()
+            fragment.arguments = args
+            return fragment
         }
     }
 }

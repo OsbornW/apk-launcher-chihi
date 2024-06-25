@@ -15,6 +15,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -25,7 +26,9 @@ import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,7 +48,9 @@ import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
@@ -107,6 +112,7 @@ import com.soya.launcher.utils.md5
 import com.soya.launcher.view.MyFrameLayout
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.Response
@@ -171,6 +177,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private var mStoreAdapter: StoreAdapter? = null
     private var requestTime = System.currentTimeMillis()
     private var isExpanded = false
+    lateinit var flList:FrameLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         maxVerticalOffset = resources.getDimension(R.dimen.until_collapsed_height)
@@ -253,6 +260,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         filter1.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED)
         filter1.addAction("android.hardware.usb.action.USB_STATE")
         activity!!.registerReceiver(wallpaperReceiver, filter1)
+
+        detectNetStaus()
     }
 
     override fun onDestroy() {
@@ -316,6 +325,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     override fun init(view: View, inflater: LayoutInflater) {
         super.init(view, inflater)
         mHeaderGrid = view.findViewById(R.id.header)
+        flList = view.findViewById(R.id.fl_list)
         mHorizontalContentGrid = view.findViewById(R.id.horizontal_content)
         mVerticalContentGrid = view.findViewById(R.id.vertical_content)
         mAppBarLayout = view.findViewById(R.id.app_bar)
@@ -497,6 +507,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         layoutId: Int
     ) {
         var list = list
+        if(list?.size?:0>4){
+            flList.height(com.shudong.lib_dimen.R.dimen.qb_px_270.dimenValue())
+        }else{
+            flList.height(com.shudong.lib_dimen.R.dimen.qb_px_250.dimenValue())
+
+        }
         when (direction) {
             1 -> {
                 mHorizontalContentGrid!!.setAdapter(mHMainContentAdapter)
@@ -556,6 +572,39 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         exec.execute(timeRunnable)
     }
 
+    private fun detectNetStaus() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) { // 当生命周期至少为 STARTED 时执行
+                while (true) {
+                        val netType = NetworkUtils.getNetworkType()
+                        when (netType) {
+                            NetworkUtils.NetworkType.NETWORK_ETHERNET -> {
+                                mWifiView!!.setImageResource(R.drawable.baseline_lan_100)
+                            }
+                            else->{
+                                withContext(Dispatchers.IO) {
+                                    (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).yes {
+                                        // 达大厦
+                                        withContext(Dispatchers.Main) {
+                                            mWifiView!!.setImageResource(R.drawable.baseline_wifi_100)
+                                        }
+                                    }.otherwise {
+                                        withContext(Dispatchers.Main) {
+                                            mWifiView!!.setImageResource( R.drawable.baseline_wifi_off_100)
+
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+
+                    delay(2000) // 每2秒更新一次
+                }
+            }
+        }
+    }
+
     private fun syncNotify() {
         uiHandler!!.post(Runnable {
             if (!isAdded) return@Runnable
@@ -567,34 +616,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 requestHome()
             }
 
-
-            lifecycleScope.launch {
-
-                val netType = NetworkUtils.getNetworkType()
-                when (netType) {
-                    NetworkUtils.NetworkType.NETWORK_ETHERNET -> {
-                        mWifiView!!.setImageResource(R.drawable.baseline_lan_100)
-                    }
-                    else->{
-                        withContext(Dispatchers.IO) {
-                            (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).yes {
-                                // 达大厦
-                                withContext(Dispatchers.Main) {
-                                    mWifiView!!.setImageResource(R.drawable.baseline_wifi_100)
-                                }
-                            }.otherwise {
-                                withContext(Dispatchers.Main) {
-                                    mWifiView!!.setImageResource( R.drawable.baseline_wifi_off_100)
-
-                                }
-
-                            }
-                        }
-                    }
-                }
-
-
-            }
 
 
             /*if (AndroidSystem.isEthernetConnected(activity)) {
@@ -1055,6 +1076,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     }
 
                     Types.TYPE_MY_APPS -> {
+                        "开始启动1".e("zy1998")
                         val intent = Intent(activity, AppsActivity::class.java)
                         intent.putExtra(Atts.TYPE, bean.type)
                         startActivity(intent)

@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/holder_setting_2_root_margin_left"
         android:layout_marginRight="@dimen/holder_setting_2_root_margin_right"
-        android:layout_marginTop="@dimen/holder_setting_2_root_margin_top"
+        android:layout_marginTop="@dimen/qb_px_35"
         android:layout_marginBottom="@dimen/holder_setting_2_root_margin_bottom"
         android:layout_width="@dimen/holder_setting_2_root_width"
         android:layout_height="@dimen/holder_setting_3_root_height">

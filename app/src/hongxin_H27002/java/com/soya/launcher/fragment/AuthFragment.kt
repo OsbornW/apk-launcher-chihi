@@ -137,7 +137,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
 
 
             when(getWifiName()){
-                "WIFI-5G","WIFI","wuyun","wuyun-5G"->{
+                "WIFI-5G","WIFI","wuyun","wuyun-5G","WIFI-test"->{
                     if(activeCode=="11111111"){
                         AppCacheBase.isActive = true
                         showLoadingViewDismiss()
