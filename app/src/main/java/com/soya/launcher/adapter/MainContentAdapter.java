@@ -75,12 +75,14 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
         private final MyFrameLayout mCardView;
         private final ImageView mIV;
         private final TextView tvName;
+        private final TextView tvLoadding;
         public Holder(View view) {
             super(view);
             view.setNextFocusUpId(R.id.header);
             mIV = view.findViewById(R.id.image);
             mCardView = (MyFrameLayout) view;
             tvName = view.findViewById(R.id.tv_name);
+            tvLoadding = view.findViewById(R.id.tv_loadding);
         }
 
         public void bind(Movice item){
@@ -101,6 +103,11 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
                     }
 
                     GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image);
+                    if(tvLoadding!=null){
+                        if(item.getId().isEmpty()){
+                            tvLoadding.setVisibility(View.GONE);
+                        }
+                    }
                     break;
                 default:
                     GlideUtils.bind(context, mIV, R.drawable.transparent);
