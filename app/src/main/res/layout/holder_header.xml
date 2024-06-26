@@ -2,7 +2,7 @@
 <com.soya.launcher.view.MyCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/holder_header_root_radius"
-    app:cardBackgroundColor="@color/solid_style_1"
+    app:cardBackgroundColor="@color/solid_style_2"
     app:cardUseCompatPadding="false"
     android:clipChildren="false"
     android:clipToOutline="false"
