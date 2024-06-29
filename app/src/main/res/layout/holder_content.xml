@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <com.soya.launcher.view.MyCardView
+
             app:cardCornerRadius="@dimen/holder_content_root_radius"
             app:cardBackgroundColor="@color/solid_style_2"
             app:cardElevation="0dp"
