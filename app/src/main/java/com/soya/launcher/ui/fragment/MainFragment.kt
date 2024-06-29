@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInstaller
 import android.hardware.usb.UsbManager
 import android.os.Bundle
 import android.os.Handler
@@ -20,6 +21,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.core.view.size
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
@@ -36,7 +38,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.NetworkUtils
 import com.drake.brv.utils.addModels
-import com.drake.brv.utils.grid
+import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
@@ -104,12 +106,12 @@ import com.soya.launcher.ui.activity.WeatherActivity
 import com.soya.launcher.ui.activity.WifiListActivity
 import com.soya.launcher.ui.dialog.AppDialog
 import com.soya.launcher.ui.dialog.ToastDialog
+import com.soya.launcher.ui.dialog.UninstallDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
-import com.soya.launcher.view.MyFrameLayout
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -178,6 +180,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private var requestTime = System.currentTimeMillis()
     private var isExpanded = false
     lateinit var flList:FrameLayout
+
+    private var mBroadcast: MyBroadcast? = null
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         maxVerticalOffset = resources.getDimension(R.dimen.until_collapsed_height)
@@ -243,6 +250,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 )
             )
         }
+
+        mBroadcast = MyBroadcast()
+        val filterm = IntentFilter()
+        filterm.addAction(IntentAction.ACTION_DELETE_PACKAGE)
+        activity!!.registerReceiver(mBroadcast, filterm)
+
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)
         filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
@@ -270,6 +283,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         if (homeCall != null) homeCall!!.cancel()
         activity!!.unregisterReceiver(receiver)
         activity!!.unregisterReceiver(wallpaperReceiver)
+        activity!!.unregisterReceiver(mBroadcast)
         exec.shutdownNow()
     }
 
@@ -1163,9 +1177,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         if (replace) {
             useApps.clear()
             var infos = AndroidSystem.getUserApps2(activity)
-            if (infos.size > 8) {
+            /*if (infos.size > 8) {
                 infos = infos.subList(0, 8)
-            }
+            }*/
             useApps.addAll(infos)
         }
         if (isAttach) setAppContent(useApps)
@@ -1536,14 +1550,89 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         })
     }
 
+    inner class MyBroadcast : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            /*val index = mHorizontalContentGrid?.selectedPosition?:0
+            fillApps(
+                true,
+                mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
+            )
+            mAppBarLayout!!.setExpanded(true)
+
+            mHorizontalContentGrid?.apply {
+                val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount?:0)) index else index - 1
+               postDelayed({
+                   requestFocus()
+
+                   scrollToPosition(newFocusPosition)
+                   layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
+               },500)
+
+            }
+
+            var code
+                    : Int = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
+            var success
+                    : Boolean = code == PackageInstaller.STATUS_SUCCESS
+
+            lifecycleScope.launch {
+                delay(800)
+                UninstallDialog.newInstance(null,success).show(requireActivity().supportFragmentManager, UninstallDialog.TAG);
+
+            }*/
+
+
+           /* success.yes {
+                ToastUtils.show("卸载成功")
+            }.otherwise {
+                ToastUtils.show("卸载失败")
+            }*/
+
+
+
+        }
+    }
+
     inner class InnerReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
-                Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> fillApps(
-                    true,
-                    mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
-                )
+                Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED ->{
+                    val index = mHorizontalContentGrid?.selectedPosition?:0
+                    fillApps(
+                        true,
+                        mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
+                    )
+                    mAppBarLayout!!.setExpanded(true)
+
+                    mHorizontalContentGrid?.apply {
+                        val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount?:0)) index else index - 1
+                        postDelayed({
+                            requestFocus()
+
+                            scrollToPosition(newFocusPosition)
+                            layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
+                        },500)
+
+                    }
+
+                    var code
+                            : Int = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
+                    var success
+                            : Boolean = code == PackageInstaller.STATUS_SUCCESS
+
+                    lifecycleScope.launch {
+                        delay(800)
+                        UninstallDialog.newInstance(null,true).show(requireActivity().supportFragmentManager, UninstallDialog.TAG)
+
+                    }
+                   /* success.yes {
+                        ToastUtils.show("卸载成功")
+                    }.otherwise {
+                        ToastUtils.show("卸载失败")
+                    }*/
+                }
+
             }
         }
     }

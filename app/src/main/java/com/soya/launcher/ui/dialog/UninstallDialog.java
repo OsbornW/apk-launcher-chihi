@@ -26,10 +26,11 @@ import com.soya.launcher.utils.AndroidSystem;
 
 public class UninstallDialog extends SingleDialogFragment implements View.OnClickListener {
     public static final String TAG = "UninstallDialog";
-    public static UninstallDialog newInstance(ApplicationInfo info) {
+    public static UninstallDialog newInstance(ApplicationInfo info,Boolean isSuccess) {
 
         Bundle args = new Bundle();
         args.putParcelable(Atts.BEAN, info);
+        args.putBoolean("issuccess",isSuccess);
         UninstallDialog fragment = new UninstallDialog();
         fragment.setArguments(args);
         return fragment;
@@ -41,23 +42,25 @@ public class UninstallDialog extends SingleDialogFragment implements View.OnClic
     private View mRootView;
 
     private ApplicationInfo info;
-    private InnerBroadcast mBroadcast;
+    private Boolean isSuccess;
+    //private InnerBroadcast mBroadcast;
     private boolean isEnd = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         info = getArguments().getParcelable(Atts.BEAN);
-        mBroadcast = new InnerBroadcast();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(IntentAction.ACTION_DELETE_PACKAGE);
-        getActivity().registerReceiver(mBroadcast, filter);
+        isSuccess = getArguments().getBoolean("issuccess");
+        //mBroadcast = new InnerBroadcast();
+        //IntentFilter filter = new IntentFilter();
+        //filter.addAction(IntentAction.ACTION_DELETE_PACKAGE);
+        //getActivity().registerReceiver(mBroadcast, filter);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getActivity().unregisterReceiver(mBroadcast);
+       // getActivity().unregisterReceiver(mBroadcast);
     }
 
     @Override
@@ -90,8 +93,15 @@ public class UninstallDialog extends SingleDialogFragment implements View.OnClic
     @Override
     protected void initBind(LayoutInflater inflater, View view) {
         super.initBind(inflater, view);
-        mMsgView.setText(getString(R.string.uninstalling));
-        AndroidSystem.uninstallPackage(getActivity(), info.packageName);
+        if(isSuccess){
+            mMsgView.setText(getString(R.string.uninstalled));
+        }else {
+            mMsgView.setText(getString(R.string.uninstall_failed));
+        }
+        mOptView.setText(getString(R.string.close));
+        isEnd = true;
+        //mMsgView.setText(getString(R.string.uninstalling));
+        //AndroidSystem.uninstallPackage(getActivity(), info.packageName);
     }
 
     @Override
@@ -121,15 +131,16 @@ public class UninstallDialog extends SingleDialogFragment implements View.OnClic
         }
     }
 
-    public final class InnerBroadcast extends BroadcastReceiver{
+/*    public final class InnerBroadcast extends BroadcastReceiver{
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d("zy2000", "onReceive: 安装部被卸载了哦");
             int code = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1);
             boolean success = code == PackageInstaller.STATUS_SUCCESS;
             mMsgView.setText(getString(success ? R.string.uninstalled : R.string.uninstall_failed));
             mOptView.setText(getString(R.string.close));
             isEnd = true;
         }
-    }
+    }*/
 }

@@ -127,7 +127,9 @@ public class AppDialog extends SingleDialogFragment implements View.OnClickListe
         if (v.equals(mCloseView)){
             dismiss();
         }else if (v.equals(mDeleteView)){
-            UninstallDialog.newInstance(info).show(getActivity().getSupportFragmentManager(), UninstallDialog.TAG);
+            //UninstallDialog.newInstance(info).show(getActivity().getSupportFragmentManager(), UninstallDialog.TAG);
+
+            AndroidSystem.uninstallPackage(getActivity(), info.packageName);
             dismiss();
         }else if (v.equals(mOpenView)){
             if (callback != null) callback.onOpen();
