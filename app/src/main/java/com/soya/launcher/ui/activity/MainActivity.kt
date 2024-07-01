@@ -132,6 +132,9 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
             .commitAllowingStateLoss()
     }
 
+    fun switchAuthFragment() {
+        switchFragment()
+    }
 
 
     fun getFragment(): Fragment  = switchFragment()

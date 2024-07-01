@@ -46,6 +46,7 @@ import com.google.gson.stream.JsonReader
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.open.system.SystemUtils
+import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
@@ -53,8 +54,10 @@ import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
+import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
@@ -69,6 +72,7 @@ import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.adapter.StoreAdapter
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AppPackage
+import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
 import com.soya.launcher.bean.Notify
@@ -99,6 +103,7 @@ import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.ChooseGradientActivity
 import com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity
 import com.soya.launcher.ui.activity.LoginActivity
+import com.soya.launcher.ui.activity.MainActivity
 import com.soya.launcher.ui.activity.ScaleScreenActivity
 import com.soya.launcher.ui.activity.SearchActivity
 import com.soya.launcher.ui.activity.SettingActivity
@@ -112,6 +117,7 @@ import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
+import com.soya.launcher.utils.showLoadingViewDismiss
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -457,12 +463,74 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 .tag(this)
                 .upJson(jsonObject.toString())
                 .execute(object : StringCallback() {
-                    override fun onSuccess(t: String?, call: okhttp3.Call?, response: Response?) {
+                    override fun onSuccess(s: String?, call: okhttp3.Call?, response: Response?) {
+                        lifecycleScope.launch {
+                            delay(1000)
+                            showLoadingViewDismiss()
+                            val authBean = s?.jsonToBean<AuthBean>()
+                            (authBean?.status==200).yes {
+                                authBean?.code?.let {
+                                    "开始判断msg===".d("zy1996")
+                                    it.getResult(authBean.msg)
+                                }
+
+                            }.otherwise {
+                                ToastUtils.show("Failed, please try again!")
+                                AppCacheBase.isActive = false
+                                (activity as MainActivity).switchAuthFragment()
+                            }
+                        }
+                    }
+
+                    override fun onError(call: okhttp3.Call?, response: Response?, e: Exception?) {
+                        showLoadingViewDismiss()
+                        ToastUtils.show("Failed, please try again!")
+                        AppCacheBase.isActive = false
+                        (activity as MainActivity).switchAuthFragment()
+
+                        //Log.d("zy1996", "请求失败，原因：${e.toString()}====${response.toString()}")
 
                     }
 
                 })
 
+        }
+
+    }
+
+    private fun Long.getResult(msg: String?) {
+        (msg==null).no {
+            ToastUtils.show(msg)
+            AppCacheBase.isActive = false
+            (activity as MainActivity).switchAuthFragment()
+        }.otherwise {
+            when(this){
+                10000L-> {
+                    AppCacheBase.isActive = true
+                    //showLoadingViewDismiss()
+                   /* ToastUtils.show("Success")
+                    lifecycleScope.launch {
+                        delay(500)
+                        //repeatOnLifecycle(Lifecycle.State.RESUMED){
+                        sendLiveEventData(ACTIVE_SUCCESS, true)
+                        // }
+
+                    }*/
+
+                }
+
+                10004L->{
+                    ToastUtils.show("Invalid PIN, please try again! ")
+                    AppCacheBase.isActive = false
+                    (activity as MainActivity).switchAuthFragment()
+                }
+
+                else -> {
+                    ToastUtils.show("Failed, please try again!")
+                    AppCacheBase.isActive = false
+                    (activity as MainActivity).switchAuthFragment()
+                }
+            }
         }
 
     }
