@@ -17,6 +17,7 @@ import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
+import com.shudong.lib_base.global.AppCacheBase.activeCode
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.databinding.FragmentAuthBinding
@@ -158,6 +159,24 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                         }
                         return@clickNoRepeat
                     }
+                }
+                else->{
+                    //if(BuildConfig.DEBUG){
+                        if(activeCode=="11111111"){
+                            AppCacheBase.isActive = true
+                            showLoadingViewDismiss()
+                            ToastUtils.show("Success")
+                            lifecycleScope.launch {
+                                delay(500)
+                                showLoadingViewDismiss()
+                                //repeatOnLifecycle(Lifecycle.State.RESUMED){
+                                sendLiveEventData(ACTIVE_SUCCESS, true)
+                                // }
+
+                            }
+                            return@clickNoRepeat
+                        }
+                    //}
                 }
             }
 

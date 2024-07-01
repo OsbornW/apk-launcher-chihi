@@ -56,6 +56,7 @@ import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.startKtxActivity
@@ -198,6 +199,20 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         receiver = InnerReceiver()
         wallpaperReceiver = WallpaperReceiver()
         useApps.addAll(AndroidSystem.getUserApps2(requireContext()))
+
+        this.obseverLiveEvent<Boolean>("refreshdefault"){
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).no {
+                        // 达大厦
+                        withContext(Dispatchers.Main) {
+                            setDefault()
+                        }
+                    }
+                }
+            }
+        }
+
         items.addAll(
             Arrays.asList(
                 *arrayOf(
@@ -1689,13 +1704,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     var success
                             : Boolean = code == PackageInstaller.STATUS_SUCCESS
                     // 假设 intent 是你要判断的 Intent 对象
-                    if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.action)){
-                        UninstallDialog.newInstance(null,false)
-                    }
 
                     lifecycleScope.launch {
-                        delay(800)
-                        UninstallDialog.newInstance(null,true).show(requireActivity().supportFragmentManager, UninstallDialog.TAG)
+                        if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.action)) {
+                            delay(800)
+                            UninstallDialog.newInstance(null, true)
+                                .show(requireActivity().supportFragmentManager, UninstallDialog.TAG)
+                        }
 
                     }
                    /* success.yes {

@@ -11,6 +11,7 @@ object AppCacheBase {
     var isAddLocalApp :Boolean by serialLazy(false)
     var isActive :Boolean by serialLazy(false)
     var activeCode :String by serialLazy("")
+    var isCopyed :Boolean by serialLazy(false)
 
 
 }

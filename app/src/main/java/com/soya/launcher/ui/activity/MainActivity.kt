@@ -137,6 +137,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     }
 
     fun switchAuthFragment() {
+        canBackPressed = true
         replaceFragment(AuthFragment.newInstance(),R.id.main_browse_fragment)
 
     }

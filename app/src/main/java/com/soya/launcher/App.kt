@@ -19,7 +19,10 @@ import com.shudong.lib_base.ContextManager
 import com.shudong.lib_base.ext.MvvmHelper
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.yes
+import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.CacheWeather
 import com.soya.launcher.bean.Movice
@@ -125,16 +128,22 @@ class App : Application() {
         timeRemote()
 
 
-        applicationScope.launch(Dispatchers.IO) {
-            try {
-                FileUtils.copyAssets(assets, "movies", filesDir)
-                withContext(Dispatchers.Main) {
-                    PreferencesUtils.setProperty(Atts.LAST_VERSION_CODE, BuildConfig.VERSION_CODE)
+        AppCacheBase.isCopyed.no {
+            applicationScope.launch(Dispatchers.IO) {
+                try {
+                    FileUtils.copyAssets(assets, "movies", filesDir)
+                    withContext(Dispatchers.Main) {
+                        PreferencesUtils.setProperty(Atts.LAST_VERSION_CODE, BuildConfig.VERSION_CODE)
+                    }
+                    "复制完成".d("zy2000")
+                    AppCacheBase.isCopyed = true
+                    //sendLiveEventData("refreshdefault",true)
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
+
 
        /* if (PreferencesManager.getLastVersionCode() != BuildConfig.VERSION_CODE) {
             try {
