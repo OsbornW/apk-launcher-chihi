@@ -49,6 +49,12 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
             etActiveCode.addTextChangedListener(textWatcher)
         }
 
+        mBind.etActiveCode.apply {
+            post {
+                requestFocus()
+            }
+        }
+
     }
 
     fun setToCenter(){

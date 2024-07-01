@@ -475,18 +475,18 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 }
 
                             }.otherwise {
-                                ToastUtils.show("Failed, please try again!")
-                                AppCacheBase.isActive = false
-                                (activity as MainActivity).switchAuthFragment()
+                                //ToastUtils.show("Failed, please try again!")
+                                //AppCacheBase.isActive = false
+                                //(activity as MainActivity).switchAuthFragment()
                             }
                         }
                     }
 
                     override fun onError(call: okhttp3.Call?, response: Response?, e: Exception?) {
-                        showLoadingViewDismiss()
-                        ToastUtils.show("Failed, please try again!")
-                        AppCacheBase.isActive = false
-                        (activity as MainActivity).switchAuthFragment()
+                        //showLoadingViewDismiss()
+                        //ToastUtils.show("Failed, please try again!")
+                        //AppCacheBase.isActive = false
+                        //(activity as MainActivity).switchAuthFragment()
 
                         //Log.d("zy1996", "请求失败，原因：${e.toString()}====${response.toString()}")
 

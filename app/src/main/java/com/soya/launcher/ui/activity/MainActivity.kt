@@ -16,15 +16,19 @@ import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
+import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.ActivityMainBinding
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.ext.switchFragment
+import com.soya.launcher.fragment.AuthFragment
 import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.rk3326.ReflectUtils
 import com.soya.launcher.utils.GlideUtils
@@ -133,7 +137,8 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     }
 
     fun switchAuthFragment() {
-        switchFragment()
+        replaceFragment(AuthFragment.newInstance(),R.id.main_browse_fragment)
+
     }
 
 
