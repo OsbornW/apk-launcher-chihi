@@ -38,8 +38,8 @@
     <string name="place_waiting">Please wait a moment</string>
     <string name="password">password</string>
     <string name="login">Login</string>
-    <string name="open">open</string>
-    <string name="uninstall">uninstall</string>
+    <string name="open">Open</string>
+    <string name="uninstall">Uninstall</string>
     <string name="close">Close</string>
     <string name="version">Version:</string>
     <string name="wallpaper">Wallpaper</string>

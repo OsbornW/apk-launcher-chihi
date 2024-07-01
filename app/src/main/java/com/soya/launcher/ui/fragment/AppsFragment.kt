@@ -60,7 +60,7 @@ class AppsFragment : AbsFragment() {
 
         mTitleView?.text = getString(R.string.apps)
         mAppItemAdapter = AppListAdapter(
-            activity,
+            requireContext(),
             layoutInflater,
             ArrayList(),
             R.layout.holder_app_2,
