@@ -1689,11 +1689,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     var success
                             : Boolean = code == PackageInstaller.STATUS_SUCCESS
                     // 假设 intent 是你要判断的 Intent 对象
-                    when (intent.action) {
-                        IntentAction.ACTION_UPDATE_WALLPAPER -> when (intent.getIntExtra(Atts.TYPE, 0)) {
-                            0 -> {}
-                            1 -> {}
-                        }
+                    if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.action)){
+                        UninstallDialog.newInstance(null,false)
                     }
 
                     lifecycleScope.launch {
