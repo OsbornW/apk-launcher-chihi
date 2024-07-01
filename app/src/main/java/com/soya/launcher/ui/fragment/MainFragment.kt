@@ -408,7 +408,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mVMainContentAdapter =
             MainContentAdapter(activity, inflater, CopyOnWriteArrayList(), newContentCallback())
         mAppListAdapter = AppListAdapter(
-            activity,
+            requireContext(),
             getLayoutInflater(),
             CopyOnWriteArrayList(),
             R.layout.holder_app,
@@ -1620,6 +1620,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             : Int = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
                     var success
                             : Boolean = code == PackageInstaller.STATUS_SUCCESS
+                    // 假设 intent 是你要判断的 Intent 对象
+                    when (intent.action) {
+                        IntentAction.ACTION_UPDATE_WALLPAPER -> when (intent.getIntExtra(Atts.TYPE, 0)) {
+                            0 -> {}
+                            1 -> {}
+                        }
+                    }
 
                     lifecycleScope.launch {
                         delay(800)
