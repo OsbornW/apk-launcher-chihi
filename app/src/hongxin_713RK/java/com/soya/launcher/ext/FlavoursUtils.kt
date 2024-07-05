@@ -8,16 +8,16 @@ import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.ui.fragment.WelcomeFragment
 
-fun switchFragment() = run{
+fun switchFragment() = run {
 
-         if (PreferencesManager.isGuide() == 0 ) {
-             sendLiveEventDataDelay(IS_MAIN_CANBACK,true,1000)
-            WelcomeFragment.newInstance()
-        } else {
-             Log.d("zy1996", "switchFragment: 发送false了====")
-             sendLiveEventDataDelay(IS_MAIN_CANBACK,false,1000)
-            MainFragment.newInstance()
-        }
+    if (PreferencesManager.isGuide() == 0) {
+        sendLiveEventDataDelay(IS_MAIN_CANBACK, true, 1000)
+        WelcomeFragment.newInstance()
+    } else {
+        Log.d("zy1996", "switchFragment: 发送false了====")
+        sendLiveEventDataDelay(IS_MAIN_CANBACK, false, 1000)
+        MainFragment.newInstance()
+    }
 
 
 }
