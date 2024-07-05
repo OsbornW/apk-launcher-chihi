@@ -324,7 +324,7 @@ class App : Application() {
         @JvmField
         val APP_STORE_ITEMS: MutableList<AppItem> = CopyOnWriteArrayList()
         @JvmField
-        val APP_SEARCH_STORE_ITEMS: List<AppItem> = CopyOnWriteArrayList()
+        val APP_SEARCH_STORE_ITEMS: MutableList<AppItem> = CopyOnWriteArrayList()
         @JvmField
         val SKIP_PAKS: Set<String> = HashSet(
             Arrays.asList(

@@ -27,8 +27,8 @@ import com.soya.launcher.R
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.ActivityMainBinding
 import com.soya.launcher.enums.IntentAction
+import com.soya.launcher.ext.jumpToAuth
 import com.soya.launcher.ext.switchFragment
-import com.soya.launcher.fragment.AuthFragment
 import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.rk3326.ReflectUtils
 import com.soya.launcher.utils.GlideUtils
@@ -37,7 +37,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
+class MainActivity : BaseVMActivity<ActivityMainBinding, BaseViewModel>() {
     private var canBackPressed = true
 
 
@@ -54,7 +54,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_HOME||keyCode==KEYCODE_AVR_POWER) {
+        if (keyCode == KeyEvent.KEYCODE_HOME || keyCode == KEYCODE_AVR_POWER) {
             // 在这里处理 Home 按键按下事件
             // 如果需要特殊处理，需要使用 System UI 相关权限
             // 处理 Home 键按下的逻辑
@@ -64,14 +64,14 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
         return super.onKeyDown(keyCode, event)
     }
 
-   /* override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_HOME) {
-            // 在这里处理 Home 按键抬起事件
-            // 如果需要特殊处理，需要使用 System UI 相关权限
-            return true
-        }
-        return super.onKeyUp(keyCode, event)
-    }*/
+    /* override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+         if (keyCode == KeyEvent.KEYCODE_HOME) {
+             // 在这里处理 Home 按键抬起事件
+             // 如果需要特殊处理，需要使用 System UI 相关权限
+             return true
+         }
+         return super.onKeyUp(keyCode, event)
+     }*/
 
     override fun initBeforeContent() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
@@ -96,8 +96,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     }
 
 
-
-     fun setBG(view: ImageView?) {
+    fun setBG(view: ImageView?) {
         var id = if (Config.COMPANY == 0) R.drawable.wallpaper_22 else R.drawable.wallpaper_1
         for (wallpaper in App.WALLPAPERS) {
             if (wallpaper.id == PreferencesManager.getWallpaper()) {
@@ -115,11 +114,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
     }
 
     override fun initObserver() {
-        this.obseverLiveEvent<Boolean>(ACTIVE_SUCCESS){
+        this.obseverLiveEvent<Boolean>(ACTIVE_SUCCESS) {
             commit()
         }
 
-        this.obseverLiveEvent<Boolean>(IS_MAIN_CANBACK){
+        this.obseverLiveEvent<Boolean>(IS_MAIN_CANBACK) {
             Log.d("zy1996", "switchFragment: 收到false了====")
             it.yes {
                 canBackPressed = true
@@ -138,12 +137,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding,BaseViewModel>() {
 
     fun switchAuthFragment() {
         canBackPressed = true
-        replaceFragment(AuthFragment.newInstance(),R.id.main_browse_fragment)
-
+        jumpToAuth()
     }
 
 
-    fun getFragment(): Fragment  = switchFragment()
+    fun getFragment(): Fragment = switchFragment()
 
     override fun onBackPressed() {
         if (canBackPressed) {

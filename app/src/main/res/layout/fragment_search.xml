@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.appbar.AppBarLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -82,7 +82,7 @@
                     android:id="@+id/recommend_title"
                     android:layout_marginLeft="@dimen/fragment_search_recommend_title_margin_left"
                     android:layout_marginTop="@dimen/fragment_search_recommend_title_margin_top"
-                    android:text="@string/recommend_for_you"
+                    tools:text="@string/recommend_for_you"
                     android:textColor="@color/text_color_style_1"
                     android:textSize="@dimen/fragment_search_recommend_title_text_size"
                     android:layout_width="wrap_content"

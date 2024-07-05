@@ -85,8 +85,8 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
         }
 
         public void bind(DivSearch bean){
-            mTitleView.setText(bean.getTitle());
-            switch (bean.getType()){
+            mTitleView.setText(bean.title);
+            switch (bean.type){
                 case 0:
                     mContentGrid.setVisibility(View.VISIBLE);
                     mNoneView.setVisibility(View.GONE);
@@ -94,11 +94,11 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
                     setAppContent(bean);
                     break;
                 case 1:
-                    if (bean.getState() == 0){
+                    if (bean.state == 0){
                         mContentGrid.setVisibility(View.GONE);
                         mProgressView.setVisibility(View.VISIBLE);
                         mNoneView.setVisibility(View.GONE);
-                    }else if (bean.getState() == 1){
+                    }else if (bean.state == 1){
                         mContentGrid.setVisibility(View.GONE);
                         mProgressView.setVisibility(View.GONE);
                         mNoneView.setVisibility(View.VISIBLE);
@@ -119,7 +119,7 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
         }
 
         private void setAppContent(DivSearch bean){
-            AppListAdapter adapter = new AppListAdapter(context, inflater, new ArrayList<>(bean.getList()), R.layout.holder_app_3, new AppListAdapter.Callback() {
+            AppListAdapter adapter = new AppListAdapter(context, inflater, new ArrayList<>(bean.list), R.layout.holder_app_3, new AppListAdapter.Callback() {
                 @Override
                 public void onSelect(boolean selected) {
 
@@ -127,7 +127,7 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
 
                 @Override
                 public void onClick(ApplicationInfo child) {
-                    if (callback != null) callback.onClick(bean.getType(), child);
+                    if (callback != null) callback.onClick(bean.type, child);
                 }
 
                 @Override
@@ -140,7 +140,7 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
         }
 
         private void setAppStore(DivSearch bean){
-            AppItemAdapter adapter = new AppItemAdapter(context, inflater, new ArrayList<>(bean.getList()), R.layout.holder_app_3, new AppItemAdapter.Callback() {
+            AppItemAdapter adapter = new AppItemAdapter(context, inflater, new ArrayList<>(bean.list), R.layout.holder_app_3, new AppItemAdapter.Callback() {
                 @Override
                 public void onSelect(boolean selected) {
 
@@ -148,7 +148,7 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
 
                 @Override
                 public void onClick(AppItem child) {
-                    if (callback != null) callback.onClick(bean.getType(), child);
+                    if (callback != null) callback.onClick(bean.type, child);
                 }
             });
             mContentGrid.setAdapter(adapter);
@@ -159,13 +159,13 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
             ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new WebAdapter(context, inflater, new WebAdapter.Callback() {
                 @Override
                 public void onClick(WebItem child) {
-                    if (callback != null) callback.onClick(bean.getType(), child);
+                    if (callback != null) callback.onClick(bean.type, child);
                 }
             }));
             ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
             FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
             mContentGrid.setAdapter(itemBridgeAdapter);
-            arrayObjectAdapter.addAll(0, bean.getList());
+            arrayObjectAdapter.addAll(0, bean.list);
             mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         }
     }

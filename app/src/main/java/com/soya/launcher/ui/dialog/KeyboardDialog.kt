@@ -12,9 +12,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.adapter.KeyboardAdapter
 import com.soya.launcher.bean.KeyItem
+import com.soya.launcher.ext.isAndroidAtMost5_1
 import com.soya.launcher.utils.toTrim
 
 class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
@@ -125,15 +128,30 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
             }
 
             KeyItem.TYPE_UPCAST -> mAdapter!!.setUPCase(!mAdapter!!.isUPCaseKey)
-            KeyItem.TYPE_DEL -> del()
+            KeyItem.TYPE_DEL -> {
+                "按下了删除==".d("zy2001")
+                del()
+            }
             KeyItem.TYPE_SEARCH -> {
+                "按下了搜索==".d("zy2001")
                 mTargetView!!.onEditorAction(EditorInfo.IME_ACTION_DONE)
                 dismiss()
             }
 
+            KeyItem.TYPE_SPACE->{
+                "按下了空格==".d("zy2001")
+                mTargetView!!.append(" ")
+            }
+
             else -> {
-                mTargetView!!.append(text.toTrim())
-                mTargetView?.text = mTargetView?.text?.toString()?.toTrim()
+                isAndroidAtMost5_1().yes {
+                    mTargetView!!.append(text.toTrim())
+                    mTargetView?.text = mTargetView?.text?.toString()?.toTrim()
+                }.otherwise {
+                    mTargetView!!.append(text)
+                    //mTargetView?.text = mTargetView?.text?.toString()
+                }
+
 
             }
         }
@@ -141,13 +159,23 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
 
     private fun del() {
 
-        mTargetView?.text = mTargetView?.text?.toString()?.toTrim()
+        isAndroidAtMost5_1().yes { mTargetView?.text = mTargetView?.text?.toString()?.toTrim() }
+
 
         val len = mTargetView?.text?.length
         if (len != 0) {
-            val str = mTargetView?.text?.toString()?.toTrim()
-            val len1 = (mTargetView?.text?.toString()?.toTrim()?.length?:0).minus(1)
-            val finalStr = str?.subSequence(0, len1)
+            var finalStr = ""
+            isAndroidAtMost5_1().yes {
+                val str = mTargetView?.text?.toString()?.toTrim()
+                val len1 = (mTargetView?.text?.toString()?.toTrim()?.length?:0).minus(1)
+                 finalStr = str?.subSequence(0, len1).toString()
+            }.otherwise {
+                val str = mTargetView?.text?.toString()
+                val len1 = (mTargetView?.text?.toString()?.length?:0).minus(1)
+                finalStr = str?.subSequence(0, len1).toString()
+            }
+
+
            // "设置之后,长文字是====${str}===${finalStr}===$len1".d("zy1997")
             mTargetView?.text = finalStr
 
