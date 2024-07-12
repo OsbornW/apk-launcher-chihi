@@ -19,10 +19,12 @@ import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
 import com.shudong.lib_base.global.AppCacheBase.activeCode
 import com.soya.launcher.BuildConfig
+import com.soya.launcher.R
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.databinding.FragmentAuthBinding
 import com.soya.launcher.ext.getWifiName
 import com.soya.launcher.ui.dialog.KeyboardDialog
+import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AutoSeparateTextWatcher
 import com.soya.launcher.utils.md5
 import com.soya.launcher.utils.showKeyboard
@@ -57,6 +59,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
         }
 
     }
+
 
     fun setToCenter(){
         mBind.llActive.post {
@@ -100,6 +103,20 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
         }.show(childFragmentManager, KeyboardDialog.TAG)
     }
     override fun initClick() {
+
+        mBind.rlSetting.apply {
+            clickNoRepeat {
+                AndroidSystem.openSystemSetting(activity)
+            }
+            setOnFocusChangeListener { view, b ->
+                b.yes {
+                    mBind.setting.setImageResource(R.drawable.icon_setting_focus)
+                }.otherwise {
+                    mBind.setting.setImageResource(R.drawable.icon_setting_normal)
+
+                }
+            }
+        }
 
         mBind.etActiveCode.clickNoRepeat {
             setToTopMargin()

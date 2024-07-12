@@ -74,6 +74,30 @@
 
     </LinearLayout>
 
+    <com.hjq.shape.layout.ShapeRelativeLayout
+        android:id="@+id/rl_setting"
+        android:layout_width="@dimen/qb_px_40"
+        android:layout_height="@dimen/qb_px_40"
+        android:layout_marginLeft="@dimen/qb_px_5"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/qb_px_20"
+        android:layout_marginTop="@dimen/qb_px_20"
+        app:shape="oval"
+        app:shape_solidFocusedColor="@color/white">
+
+        <ImageView
+            android:id="@+id/setting"
+            android:layout_width="@dimen/qb_px_40"
+            android:layout_height="@dimen/qb_px_40"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/qb_px_5"
+            android:src="@drawable/icon_setting_normal" />
+    </com.hjq.shape.layout.ShapeRelativeLayout>
+
+
 </RelativeLayout>
 
 </layout>

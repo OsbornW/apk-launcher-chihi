@@ -116,7 +116,7 @@
 
 
 
-                        <com.soya.launcher.view.KeyView
+                        <com.soya.launcher.view.ImageViewHouse
                             android:layout_centerInParent="true"
                             android:id="@+id/setting"
                             android:clickable="true"

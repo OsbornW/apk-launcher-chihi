@@ -21,7 +21,6 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.core.view.size
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
@@ -38,7 +37,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.NetworkUtils
 import com.drake.brv.utils.addModels
-import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
@@ -46,7 +44,6 @@ import com.google.gson.stream.JsonReader
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.open.system.SystemUtils
-import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
@@ -58,7 +55,6 @@ import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
-import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
@@ -119,6 +115,7 @@ import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
 import com.soya.launcher.utils.showLoadingViewDismiss
+import com.soya.launcher.view.ImageViewHouse
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -149,7 +146,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private var mVerticalContentGrid: VerticalGridView? = null
     private var mAppBarLayout: AppBarLayout? = null
     private var mRootView: View? = null
-    private var mSettingView: View? = null
+    private var mSettingView: ImageViewHouse? = null
     private var mWeatherView: ImageView? = null
     private var mSearchView: View? = null
     private var mWifiView: ImageView? = null

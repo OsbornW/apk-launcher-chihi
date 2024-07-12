@@ -6,7 +6,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/root"
         app:cardCornerRadius="@dimen/dialog_app_card_corner_radius"
-        app:cardBackgroundColor="@color/transparent"
+        app:cardBackgroundColor="#7A7675"
         app:cardElevation="@dimen/card_elevation"
         android:layout_gravity="center"
         android:layout_width="@dimen/dialog_app_carld_layout_width"
