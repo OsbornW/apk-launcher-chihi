@@ -3,11 +3,12 @@ package com.soya.launcher.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 
-class ImageViewHouse @JvmOverloads constructor(
+class MyFrameLayoutHouse @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : AppCompatImageView(context, attrs, defStyleAttr) {
+) : MyFrameLayout(context, attrs) {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event?.action == MotionEvent.ACTION_DOWN) {
@@ -16,5 +17,4 @@ class ImageViewHouse @JvmOverloads constructor(
         }
         return super.onTouchEvent(event)
     }
-
 }

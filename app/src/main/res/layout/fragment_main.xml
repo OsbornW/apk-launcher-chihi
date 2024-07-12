@@ -213,7 +213,7 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
-                        <LinearLayout
+                        <com.soya.launcher.view.LinearLayoutHouse
                             android:id="@+id/search"
                             android:clickable="true"
                             android:focusable="true"
@@ -240,7 +240,7 @@
                                 android:textColor="@color/text_color_style_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
-                        </LinearLayout>
+                        </com.soya.launcher.view.LinearLayoutHouse>
 
                         <RelativeLayout
                             android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
@@ -258,7 +258,7 @@
                             app:shape_solidColor="@color/black"
                             app:shape="oval"/>
 
-                        <ImageView
+                        <com.soya.launcher.view.ImageViewHouse
                             android:id="@+id/wifi"
                             android:layout_gravity="center_vertical"
                             android:clickable="true"

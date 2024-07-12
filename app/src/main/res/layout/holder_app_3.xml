@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.soya.launcher.view.AppLayout
+<com.soya.launcher.view.AppLayoutHouse
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
@@ -61,4 +61,4 @@
             </FrameLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.soya.launcher.view.MyCardView>
-</com.soya.launcher.view.AppLayout>
+</com.soya.launcher.view.AppLayoutHouse>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.soya.launcher.view.MyFrameLayout
+<com.soya.launcher.view.MyFrameLayoutHouse
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
@@ -45,4 +45,4 @@
                 android:layout_height="@dimen/holder_content_image_height"/>
         </com.soya.launcher.view.MyCardView>
     </FrameLayout>
-</com.soya.launcher.view.MyFrameLayout>
+</com.soya.launcher.view.MyFrameLayoutHouse>
