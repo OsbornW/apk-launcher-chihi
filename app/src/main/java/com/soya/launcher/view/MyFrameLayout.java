@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 
 import com.soya.launcher.callback.SelectedCallback;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MyFrameLayout extends FrameLayout {
     private SelectedCallback callback;
 
@@ -18,6 +20,10 @@ public class MyFrameLayout extends FrameLayout {
 
     public MyFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    public MyFrameLayout(@NotNull Context context, @org.jetbrains.annotations.Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context,attrs);
     }
 
     @Override
