@@ -116,6 +116,7 @@ import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
 import com.soya.launcher.utils.showLoadingViewDismiss
 import com.soya.launcher.view.ImageViewHouse
+import com.soya.launcher.view.NoDragVerticalGridView
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -143,7 +144,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private val exec = Executors.newCachedThreadPool()
     private var mHeaderGrid: HorizontalGridView? = null
     private var mHorizontalContentGrid: HorizontalGridView? = null
-    private var mVerticalContentGrid: VerticalGridView? = null
+    private var mVerticalContentGrid: NoDragVerticalGridView? = null
     private var mAppBarLayout: AppBarLayout? = null
     private var mRootView: View? = null
     private var mSettingView: ImageViewHouse? = null

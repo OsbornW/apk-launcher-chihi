@@ -288,7 +288,7 @@
                     android:id="@+id/horizontal_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
-                <androidx.leanback.widget.VerticalGridView
+                <com.soya.launcher.view.NoDragVerticalGridView
                     android:layout_gravity="center"
                     android:id="@+id/vertical_content"
                     app:focusOutFront="true"
