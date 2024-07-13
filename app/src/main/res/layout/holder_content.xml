@@ -9,7 +9,7 @@
     android:clipToPadding="false"
     android:clipChildren="false"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <com.soya.launcher.view.MyFrameLayout
         android:layout_marginLeft="@dimen/holder_content_root_margin_left"
         android:layout_marginRight="@dimen/holder_content_root_margin_right"
