@@ -104,12 +104,13 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
         mDivSearch!!.setOnClickListener(this)
         mEditView!!.addTextChangedListener(object : TextWatcherAdapter() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                Log.e("zengyue", "onTextChanged: $s")
                 if (TextUtils.isEmpty(s)) return
                 lifecycleScope.launch {
                     //delay(200)
-                    isRepeatExcute().no {
+
                         search()
-                    }
+
 
                 }
 
@@ -197,7 +198,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
 
             withContext(Dispatchers.IO) {
-                "开始网络请求1".e("zy2001")
+                "开始网络请求1==关键字：$searchText".e("zengyue")
                 call = HttpRequest.getAppList(object : AppServiceRequest.Callback<AppListResponse?> {
                     override fun onCallback(call: Call<*>?, status: Int, result: AppListResponse?) {
                         "网络请求成功".e("zy2001")
@@ -337,12 +338,15 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
     }
 
     private fun search() {
-        Log.e("zy2001", "search: 执行了搜索1")
+        Log.e("zengyue", "search: 执行了搜索1${mEditView?.text.toString()}")
         val text = mEditView!!.text.toString()
         if (call != null) call!!.cancel()
         if (!TextUtils.isEmpty(text)) {
             searchText = text
-            replace()
+            isRepeatExcute().no {
+                replace()
+            }
+
         }
     }
 

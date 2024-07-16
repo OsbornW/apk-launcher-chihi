@@ -2,6 +2,7 @@ package com.soya.launcher.http;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.soya.launcher.enums.ServiceStatus;
@@ -82,6 +83,8 @@ public class AppServiceRequest {
                 T data = null;
                 try {
                     String json = new String(response.body() != null ? response.body().bytes() : response.errorBody().bytes());
+                    Log.e("zengyue", "当前请求："+call.request().url());
+                    Log.e("zengyue", "当前响应："+json);
                     data = GSON.fromJson(json, tClass);
                 }catch (Exception e){
                     e.printStackTrace();

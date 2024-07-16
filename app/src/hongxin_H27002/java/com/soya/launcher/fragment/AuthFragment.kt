@@ -138,7 +138,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
         }
 
         mBind.tvActive.clickNoRepeat {
-            showLoadingView("激活中...")
+            showLoadingView("Activating...")
             val uniqueID = DeviceUtils.getUniqueDeviceId().subSequence(0,DeviceUtils.getUniqueDeviceId().length-1)
             //激活码
             val activeCode = mBind.etActiveCode.text.toString().replace('-',' ').toTrim()

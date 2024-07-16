@@ -52,6 +52,7 @@ import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
+import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
@@ -484,7 +485,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             (authBean?.status==200).yes {
                                 authBean?.code?.let {
                                     "开始判断msg===".d("zy1996")
-                                    it.getResult(authBean.msg)
+                                    //it.getResult(authBean.msg)
                                 }
 
                             }.otherwise {
@@ -1492,6 +1493,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         }
                     }
                 }
+
+                bean.appPackage.forEach {
+                   "当前的包名是：${it.packageName}".e("zengyue")
+                }
+
+
+
                 var success = false
                 success = if (skip) {
                     AndroidSystem.jumpVideoApp(activity, bean.appPackage, null)
@@ -1527,6 +1535,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         return object : ServiceRequest.Callback<HomeResponse> {
             override fun onCallback(call: Call<*>, status: Int, result: HomeResponse?) {
                 try {
+                    "当前返回的结果是：${call.request().url.toUrl()}".e("zengyue")
                     if (!isAdded || call.isCanceled || result == null) return
                     if (result.data == null || result.data.getMovies() == null || result.data.getMovies()
                             .isEmpty()

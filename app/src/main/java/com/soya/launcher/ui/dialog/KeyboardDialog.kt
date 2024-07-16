@@ -145,8 +145,8 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
 
             else -> {
                 isAndroidAtMost5_1().yes {
-                    mTargetView!!.append(text.toTrim())
-                    mTargetView?.text = mTargetView?.text?.toString()?.toTrim()
+                    //mTargetView!!.append(text.toTrim())
+                    mTargetView?.text = mTargetView?.text.toString().toTrim() + text.toTrim()
                 }.otherwise {
                     mTargetView!!.append(text)
                     //mTargetView?.text = mTargetView?.text?.toString()
