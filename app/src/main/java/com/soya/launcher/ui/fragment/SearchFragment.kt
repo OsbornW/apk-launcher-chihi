@@ -344,7 +344,9 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
         if (!TextUtils.isEmpty(text)) {
             searchText = text
             isRepeatExcute().no {
-                replace()
+                if(searchText?.endsWith(" ")==false) {
+                    replace()
+                }
             }
 
         }
