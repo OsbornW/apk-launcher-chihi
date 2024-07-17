@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.isRepeatExcute
+import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
@@ -43,6 +44,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.FormBody
 import retrofit2.Call
 import java.util.Locale
 
@@ -202,6 +204,19 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
                 call = HttpRequest.getAppList(object : AppServiceRequest.Callback<AppListResponse?> {
                     override fun onCallback(call: Call<*>?, status: Int, result: AppListResponse?) {
                         "网络请求成功".e("zy2001")
+                        val request = call?.request()
+                            // 打印请求方法和URL
+                        "Request: ${request?.method} ${request?.url}".e("zengyue1")
+                              // 打印 @FieldMap 参数信息
+                        if (request?.method == "POST") {
+                            val requestBody = request.body
+                            if (requestBody is FormBody) {
+                                for (i in 0 until requestBody.size) {
+                                    "${requestBody.name(i)}: ${requestBody.value(i)}".e("zengyue1")
+                                }
+                            }
+                        }
+                        "响应结果：${result?.jsonToString()}".e("zengyue1")
                         if (!isAdded || call?.isCanceled == true || store == null) return
                         if (result?.result == null || result.result.appList == null || result.result.appList.isEmpty()) {
                             store?.state = 1
@@ -345,6 +360,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
             searchText = text
             isRepeatExcute().no {
                 if(searchText?.endsWith(" ")==false) {
+                    println("chenhao"+ searchText!!.length)
                     replace()
                 }
             }

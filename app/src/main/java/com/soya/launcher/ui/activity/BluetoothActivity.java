@@ -9,6 +9,7 @@ public class BluetoothActivity extends AbsActivity{
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
+
     }
 
     @Override

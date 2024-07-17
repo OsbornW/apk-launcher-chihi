@@ -23,11 +23,15 @@ import androidx.leanback.widget.FocusHighlightHelper;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.VerticalGridView;
 
+import com.soya.launcher.BuildConfig;
+import com.soya.launcher.ConstantsKt;
 import com.soya.launcher.R;
 import com.soya.launcher.adapter.SettingAdapter;
 import com.soya.launcher.bean.SettingItem;
 import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.IntentAction;
+import com.soya.launcher.ext.AndroidExtKt;
+import com.soya.launcher.ext.FlavoursUtilsKt;
 import com.soya.launcher.handler.PermissionHandler;
 import com.soya.launcher.ui.activity.AboutActivity;
 import com.soya.launcher.ui.activity.LanguageActivity;
@@ -122,7 +126,7 @@ public class SettingFragment extends AbsFragment {
         mContentGrid.setAdapter(itemBridgeAdapter);
         mContentGrid.setNumColumns(4);
 
-        if (Config.COMPANY == 0) {
+        if (Config.COMPANY == 0||BuildConfig.FLAVOR==ConstantsKt.FLAVOUR_H6) {
             arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
                     new SettingItem(10, getString(R.string.bluetooth), R.drawable.baseline_bluetooth_100),
                     new SettingItem(2, getString(R.string.pojector), R.drawable.baseline_cast_connected_100),
@@ -225,7 +229,12 @@ public class SettingFragment extends AbsFragment {
                         AndroidSystem.openInputSetting(getActivity());
                         break;
                     case 10:
-                        AndroidSystem.openBluetoothSetting4(getActivity());
+                        if(BuildConfig.FLAVOR == ConstantsKt.FLAVOUR_H6){
+                            AndroidExtKt.openBluetoothSettings(getContext());
+                        }else {
+                            AndroidSystem.openBluetoothSetting4(getContext());
+                        }
+
                         //startActivity(new Intent(getActivity(), RemoteControlActivity.class));
                         break;
                 }

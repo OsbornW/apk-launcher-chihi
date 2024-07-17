@@ -1,5 +1,6 @@
 package com.soya.launcher.ui.activity
 
+import android.content.ActivityNotFoundException
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -7,22 +8,20 @@ import android.content.IntentFilter
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_AVR_POWER
+import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.shudong.lib_base.base.BaseVMActivity
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
-import com.shudong.lib_base.ext.d
-import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
-import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
-import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.ActivityMainBinding
@@ -30,12 +29,11 @@ import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.ext.jumpToAuth
 import com.soya.launcher.ext.switchFragment
 import com.soya.launcher.manager.PreferencesManager
-import com.soya.launcher.rk3326.ReflectUtils
 import com.soya.launcher.utils.GlideUtils
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 
 class MainActivity : BaseVMActivity<ActivityMainBinding, BaseViewModel>() {
     private var canBackPressed = true
@@ -52,6 +50,8 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseViewModel>() {
             }
         }
     }
+
+
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_HOME || keyCode == KEYCODE_AVR_POWER) {
@@ -139,6 +139,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseViewModel>() {
         canBackPressed = true
         jumpToAuth()
     }
+
 
 
     fun getFragment(): Fragment = switchFragment()

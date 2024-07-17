@@ -26,7 +26,6 @@ import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.ItemBridgeAdapter
-import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -52,7 +51,6 @@ import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
-import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
@@ -61,6 +59,7 @@ import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
+import com.soya.launcher.FLAVOUR_H6
 import com.soya.launcher.R
 import com.soya.launcher.adapter.AppListAdapter
 import com.soya.launcher.adapter.MainContentAdapter
@@ -246,7 +245,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 )
             )
         }
-        if (Config.COMPANY == 0) {
+        if (Config.COMPANY == 0|| BuildConfig.FLAVOR === FLAVOUR_H6) {
             items.add(
                 TypeItem(
                     getString(R.string.pojector),
@@ -434,8 +433,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             R.layout.holder_app,
             newAppListCallback()
         )
-        mHdmiView?.visibility = if (Config.COMPANY == 0) View.VISIBLE else View.GONE
-        mGradientView?.visibility = if (Config.COMPANY == 0) View.VISIBLE else View.GONE
+        mHdmiView?.visibility = if (Config.COMPANY == 0|| BuildConfig.FLAVOR === FLAVOUR_H6) View.VISIBLE else View.GONE
+        mGradientView?.visibility = if (Config.COMPANY == 0|| BuildConfig.FLAVOR === FLAVOUR_H6) View.VISIBLE else View.GONE
 
         AppCacheBase.isActive.yes {
             val uniqueID = DeviceUtils.getUniqueDeviceId().subSequence(0,DeviceUtils.getUniqueDeviceId().length-1)
@@ -485,7 +484,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             (authBean?.status==200).yes {
                                 authBean?.code?.let {
                                     "开始判断msg===".d("zy1996")
-                                    //it.getResult(authBean.msg)
+                                    it.getResult(authBean.msg)
                                 }
 
                             }.otherwise {

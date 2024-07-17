@@ -49,11 +49,23 @@ android {
         yxt_X98K {
             java.srcDirs = ['src/yxt_x98k/java']
         }
+
+        flavour_h6 {
+            java.srcDirs = ['src/flavour_h6/java']
+        }
     }
 
     signingConfigs {
         hongxin {
             storeFile file("platform_H713.keystore")
+            storePassword "android"
+            keyAlias "platform"
+            keyPassword "android"
+        }
+
+
+        flavour_h6 {
+            storeFile file("platform-H6.keystore")
             storePassword "android"
             keyAlias "platform"
             keyPassword "android"
@@ -221,6 +233,21 @@ android {
             buildConfigField "String", "MODEL", '"H27002"'
         }
 
+        flavour_h6 {
+            applicationId "com.soya.launcher"
+            dimension "chihi"
+            signingConfig signingConfigs.flavour_h6
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"9"'
+            buildConfigField "String", "APP_ID", '"launcher"'
+            buildConfigField "String", "CHANNEL", '"LAH6"'
+            buildConfigField "String", "CHIHI_TYPE", '"H6"'
+            buildConfigField "String", "MODEL", '"H6"'
+        }
+
         no_sys_sign {
             applicationId "com.soya.launcher.nosyssign"
             dimension "chihi"
@@ -276,7 +303,8 @@ android {
         versionName "1.57"
 
         buildConfigField "String", "BASE_URL", '"https://99soya.shop/"'
-        buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
+       buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
+        //buildConfigField "String", "APP_STORE_BASE_URL", '"http://192.168.1.188:9991/"'
         buildConfigField "String", "APP_ID", '"launcher"'
         buildConfigField "String", "USER_ID", '"62"'
 

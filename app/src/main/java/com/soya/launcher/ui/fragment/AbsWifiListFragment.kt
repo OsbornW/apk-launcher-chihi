@@ -32,6 +32,7 @@ import com.drake.brv.utils.setup
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.stringValue
@@ -981,12 +982,17 @@ abstract class AbsWifiListFragment : AbsFragment() {
                 list.add(WifiItem(result, isSave))
             }
         }
-        list.sortWith { o1, o2 ->
-            if (WifiManager.calculateSignalLevel(
-                    o1.item.level,
-                    5
-                ) > WifiManager.calculateSignalLevel(o2.item.level, 5)
-            ) -1 else 1
+        try {
+            list.sortWith { o1, o2 ->
+                if (WifiManager.calculateSignalLevel(
+                        o1.item.level,
+                        5
+                    ) > WifiManager.calculateSignalLevel(o2.item.level, 5)
+                ) -1 else 1
+            }
+        }catch (e:Exception){
+            "异常是====${e.message}".e("zengyue")
+            e.printStackTrace()
         }
         return list
     }
