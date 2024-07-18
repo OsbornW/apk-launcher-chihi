@@ -50,8 +50,8 @@ android {
             java.srcDirs = ['src/yxt_x98k/java']
         }
 
-        flavour_h6 {
-            java.srcDirs = ['src/flavour_h6/java']
+        H6 {
+            java.srcDirs = ['src/h6/java']
         }
     }
 
@@ -63,8 +63,7 @@ android {
             keyPassword "android"
         }
 
-
-        flavour_h6 {
+        h6 {
             storeFile file("platform-H6.keystore")
             storePassword "android"
             keyAlias "platform"
@@ -233,17 +232,17 @@ android {
             buildConfigField "String", "MODEL", '"H27002"'
         }
 
-        flavour_h6 {
+        H6 {
             applicationId "com.soya.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.flavour_h6
+            signingConfig signingConfigs.h6
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"9"'
             buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LAH6"'
+            buildConfigField "String", "CHANNEL", '"LA28001"'
             buildConfigField "String", "CHIHI_TYPE", '"H6"'
             buildConfigField "String", "MODEL", '"H6"'
         }
@@ -251,7 +250,7 @@ android {
         no_sys_sign {
             applicationId "com.soya.launcher.nosyssign"
             dimension "chihi"
-            // manifestPlaceholders = [share_uid:"android.uid.system"]
+            manifestPlaceholders = [share_uid: ""]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
@@ -261,7 +260,6 @@ android {
             buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
             buildConfigField "String", "MODEL", '"001"'
             signingConfig signingConfigs.hongxin
-            manifestPlaceholders = [share_uid: ""]
         }
     }
 
