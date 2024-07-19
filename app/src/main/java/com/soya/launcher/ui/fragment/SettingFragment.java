@@ -201,7 +201,7 @@ public class SettingFragment extends AbsFragment {
                         startActivity(new Intent(getActivity(), WallpaperActivity.class));
                         break;
                     case 2:
-                        if (Config.COMPANY == 0) {
+                        if (Config.COMPANY == 0||Config.COMPANY==9) {
                             startActivity(new Intent(getActivity(), ProjectorActivity.class));
                         } else if (Config.COMPANY == 1) {
                             AndroidSystem.openActivityName(getActivity(), "com.qf.keystone.AllActivity");
