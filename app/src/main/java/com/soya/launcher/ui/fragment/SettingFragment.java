@@ -126,7 +126,16 @@ public class SettingFragment extends AbsFragment {
         mContentGrid.setAdapter(itemBridgeAdapter);
         mContentGrid.setNumColumns(4);
 
-        if (Config.COMPANY == 0||BuildConfig.FLAVOR==ConstantsKt.FLAVOUR_H6) {
+        if (Config.COMPANY == 0) {
+            arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
+                    new SettingItem(10, getString(R.string.bluetooth), R.drawable.baseline_bluetooth_100),
+                    new SettingItem(2, getString(R.string.pojector), R.drawable.baseline_cast_connected_100),
+                    new SettingItem(1, getString(R.string.wallpaper), R.drawable.baseline_wallpaper_100),
+                    new SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
+                    new SettingItem(4, getString(R.string.date), R.drawable.baseline_calendar_month_100),
+                    new SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
+                    new SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)));
+        }else if (Config.COMPANY==9){
             arrayObjectAdapter.addAll(0, Arrays.asList(new SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
                     new SettingItem(10, getString(R.string.bluetooth), R.drawable.baseline_bluetooth_100),
                     new SettingItem(2, getString(R.string.pojector), R.drawable.baseline_cast_connected_100),
@@ -229,7 +238,7 @@ public class SettingFragment extends AbsFragment {
                         AndroidSystem.openInputSetting(getActivity());
                         break;
                     case 10:
-                        if(BuildConfig.FLAVOR == ConstantsKt.FLAVOUR_H6){
+                        if(Config.COMPANY==9){
                             AndroidExtKt.openBluetoothSettings(getContext());
                         }else {
                             AndroidSystem.openBluetoothSetting4(getContext());
