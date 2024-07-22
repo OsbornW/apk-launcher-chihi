@@ -2,6 +2,7 @@ package com.soya.launcher.fragment
 
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.DeviceUtils
+import com.blankj.utilcode.util.NetworkUtils
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.shudong.lib_base.base.BaseVMFragment
@@ -52,11 +53,17 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
             etActiveCode.addTextChangedListener(textWatcher)
         }
 
-        mBind.etActiveCode.apply {
-            post {
-                requestFocus()
+        if(NetworkUtils.isConnected()){
+            mBind.etActiveCode.apply {
+                post {
+                    requestFocus()
+                }
             }
+        }else{
+          mBind.rlSetting.requestFocus()
+          ToastUtils.show("The network is not connected, please set up the network")
         }
+
 
     }
 
