@@ -75,6 +75,7 @@
     </LinearLayout>
 
     <com.hjq.shape.layout.ShapeRelativeLayout
+        android:visibility="gone"
         android:id="@+id/rl_setting"
         android:layout_width="@dimen/qb_px_40"
         android:layout_height="@dimen/qb_px_40"

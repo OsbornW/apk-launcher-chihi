@@ -64,7 +64,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
         }else{
           mBind.rlSetting.requestFocus()
             startKtxActivity<NetActivity>()
-          ToastUtils.delayedShow("The network is not connected, please set up the network",1000)
+          //ToastUtils.delayedShow("The network is not connected, please set up the network",1000)
         }
 
 
@@ -107,7 +107,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                         //Thread.sleep(500)
                         //mBind.tvActive.performClick()
                     }.otherwise {
-                        ToastUtils.show("输入不能为空")
+                        ToastUtils.show("The input cannot be empty")//输入不能为空
                     }
 
 
@@ -151,6 +151,10 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
         }
 
         mBind.tvActive.clickNoRepeat {
+            if(!NetworkUtils.isConnected()){
+                startKtxActivity<NetActivity>()
+                return@clickNoRepeat
+            }
             showLoadingView("Activating...")
             val uniqueID = DeviceUtils.getUniqueDeviceId().subSequence(0,DeviceUtils.getUniqueDeviceId().length-1)
             //激活码

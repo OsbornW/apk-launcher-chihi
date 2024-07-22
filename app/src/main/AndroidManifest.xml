@@ -73,7 +73,7 @@
         android:theme="@style/Theme.MyTv"
         android:usesCleartextTraffic="true">
 
-      
+
 
         <activity
             android:name=".ui.activity.MainActivity"
@@ -122,6 +122,7 @@
         <activity android:name=".ui.activity.RemoteControlActivity" />
         <activity android:name=".ui.activity.ChooseGradientActivity" />
         <activity android:name=".ui.activity.HomeGuideGroupGradientActivity" />
+        <activity android:name=".ui.activity.NetActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
