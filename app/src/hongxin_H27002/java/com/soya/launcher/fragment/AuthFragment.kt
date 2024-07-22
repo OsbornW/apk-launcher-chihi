@@ -16,6 +16,7 @@ import com.shudong.lib_base.ext.margin
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.sendLiveEventData
+import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
 import com.shudong.lib_base.global.AppCacheBase.activeCode
@@ -24,6 +25,7 @@ import com.soya.launcher.R
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.databinding.FragmentAuthBinding
 import com.soya.launcher.ext.getWifiName
+import com.soya.launcher.ui.activity.NetActivity
 import com.soya.launcher.ui.dialog.KeyboardDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AutoSeparateTextWatcher
@@ -61,7 +63,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
             }
         }else{
           mBind.rlSetting.requestFocus()
-            AndroidSystem.openSystemSetting(activity)
+            startKtxActivity<NetActivity>()
           ToastUtils.delayedShow("The network is not connected, please set up the network",1000)
         }
 
