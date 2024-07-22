@@ -61,7 +61,8 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
             }
         }else{
           mBind.rlSetting.requestFocus()
-          ToastUtils.show("The network is not connected, please set up the network")
+            AndroidSystem.openSystemSetting(activity)
+          ToastUtils.delayedShow("The network is not connected, please set up the network",1000)
         }
 
 
@@ -97,9 +98,12 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                 mBind.llActive.post {
                     // mBind.etActiveCode.clearFocus()
                     it.yes {
-                        mBind.tvActive.requestFocus()
+                        mBind.tvActive.apply {
+                            post { requestFocus()
+                            performClick()}
+                        }
                         //Thread.sleep(500)
-                        mBind.tvActive.performClick()
+                        //mBind.tvActive.performClick()
                     }.otherwise {
                         ToastUtils.show("输入不能为空")
                     }
