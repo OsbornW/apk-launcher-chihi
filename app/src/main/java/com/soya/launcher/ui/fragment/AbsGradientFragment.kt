@@ -11,6 +11,7 @@ import com.shudong.lib_base.ext.yes
 import com.softwinner.keystone.KeystoneCorrection
 import com.softwinner.keystone.KeystoneCorrectionManager
 import com.soya.launcher.R
+import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.rk3326.KeystoneVertex
 import com.soya.launcher.view.KeyEventFrameLayout
@@ -313,30 +314,34 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
         val rbx = if (type == TYPE_RB && direction == DIR_X) value else getValue(KEYSTONE_RBX, 0f)
         val rby = if (type == TYPE_RB && direction == DIR_Y) value else getValue(KEYSTONE_RBY, 0f)
 
-        isRK3326().yes {
-            kv.getAllKeystoneVertex()
-            kv.vTopLeft.x = ltx.toInt()
-            kv.vTopLeft.y = lty.toInt()
-            kv.vTopRight.x = rtx.toInt()
-            kv.vTopRight.y = rty.toInt()
-            kv.vBottomLeft.x = lbx.toInt()
-            kv.vBottomLeft.y = lby.toInt()
-            kv.vBottomRight.x = rbx.toInt()
-            kv.vBottomRight.y = rby.toInt()
-            kv.updateAllKeystoneVertex()
-        }.otherwise {
-            val correction = KeystoneCorrection(
-                lbx.toDouble(),
-                lby.toDouble(),
-                ltx.toDouble(),
-                lty.toDouble(),
-                rbx.toDouble(),
-                rby.toDouble(),
-                rtx.toDouble(),
-                rty.toDouble()
-            )
-            val success = keystone!!.setKeystoneCorrection(correction)
+        when{
+            isRK3326()||isH6()->{
+                kv.getAllKeystoneVertex()
+                kv.vTopLeft.x = ltx.toInt()
+                kv.vTopLeft.y = lty.toInt()
+                kv.vTopRight.x = rtx.toInt()
+                kv.vTopRight.y = rty.toInt()
+                kv.vBottomLeft.x = lbx.toInt()
+                kv.vBottomLeft.y = lby.toInt()
+                kv.vBottomRight.x = rbx.toInt()
+                kv.vBottomRight.y = rby.toInt()
+                kv.updateAllKeystoneVertex()
+            }
+            else->{
+                val correction = KeystoneCorrection(
+                    lbx.toDouble(),
+                    lby.toDouble(),
+                    ltx.toDouble(),
+                    lty.toDouble(),
+                    rbx.toDouble(),
+                    rby.toDouble(),
+                    rtx.toDouble(),
+                    rty.toDouble()
+                )
+                val success = keystone!!.setKeystoneCorrection(correction)
+            }
         }
+
 
         mSurfaceView!!.invalidate()
         when (type) {

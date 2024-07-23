@@ -46,5 +46,18 @@ public class ReflectUtils {
         }
     }
 
+    public static boolean getPropertyBoolean(String key, boolean defaultValue) {
+        boolean value = defaultValue;
+        try {
+            Class<?> c = Class.forName("android.os.SystemProperties");
+            Method get = c.getMethod("getBoolean", String.class, int.class);
+            value = (boolean)(get.invoke(c, key, defaultValue));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            return value;
+        }
+    }
+
 
 }

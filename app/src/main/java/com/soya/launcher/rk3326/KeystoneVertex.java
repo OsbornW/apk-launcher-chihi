@@ -4,24 +4,13 @@ import android.util.Log;
 
 public class KeystoneVertex {
 
-    public static final String PROP_PROJECTION_TYPE = "persist.vendor.projection.type";
-    public static final String PROJECTION_TYPE_MIPI_480P = "mipi_480p";
-    public static final String PROJECTION_TYPE_MIPI_1080P = "mipi_1080p";
-    public static final String PROJECTION_TYPE_LVDS = "lvds";
-    public static final String PROJECTION_TYPE_LVDS_720P_SPI = "lvds_720p_spi";
 
     public static final String PROP_KEYSTONE_TOP_LEFT = "persist.sys.keystone.lt";
     public static final String PROP_KEYSTONE_TOP_RIGHT = "persist.sys.keystone.rt";
     public static final String PROP_KEYSTONE_BOTTOM_LEFT = "persist.sys.keystone.lb";
     public static final String PROP_KEYSTONE_BOTTOM_RIGHT = "persist.sys.keystone.rb";
-    public static final String PROP_KEYSTONE_MIRROR_X = "persist.sys.keystone.mirror_x";
-	public static final String PROP_KEYSTONE_MIRROR_Y = "persist.sys.keystone.mirror_y";
     public static final String PROP_KEYSTONE_UPDATE = "persist.sys.keystone.update";
 
-    public static final String PROP_PROJECTION_MODE = "persist.sys.projection.mode";
-
-    public static final String PROP_DISPLAY_WIDTH = "persist.sys.keystone.width";
-	public static final String PROP_DISPLAY_HEIGHT = "persist.sys.keystone.height";
 
     public Vertex vTopLeft;
     public Vertex vTopRight;

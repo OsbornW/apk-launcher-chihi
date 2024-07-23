@@ -18,7 +18,9 @@ import com.shudong.lib_base.ext.yes
 import com.softwinner.keystone.KeystoneCorrection
 import com.softwinner.keystone.KeystoneCorrectionManager
 import com.soya.launcher.R
+import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
+import com.soya.launcher.h6.H6Manager
 import com.soya.launcher.rk3326.KeystoneVertex
 import com.soya.launcher.view.KeyEventFrameLayout
 import com.soya.launcher.view.KeyEventFrameLayout.KeyEventCallback
@@ -192,21 +194,26 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
         CY = 0
         DX = 0
         DY = 0
-        isRK3326().yes {
-            kv.getAllKeystoneVertex()
-            kv.vTopLeft.x = 0
-            kv.vTopLeft.y = 0
-            kv.vTopRight.x = 0
-            kv.vTopRight.y = 0
-            kv.vBottomLeft.x = 0
-            kv.vBottomLeft.y = 0
-            kv.vBottomRight.x = 0
-            kv.vBottomRight.y = 0
-            kv.updateAllKeystoneVertex()
+        isH6().yes {
+            H6Manager.getInstance(requireContext())?.zoomValue = 100
         }.otherwise {
-            val correction = KeystoneCorrection(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-            keystone.setKeystoneCorrection(correction)
+            isRK3326().yes {
+                kv.getAllKeystoneVertex()
+                kv.vTopLeft.x = 0
+                kv.vTopLeft.y = 0
+                kv.vTopRight.x = 0
+                kv.vTopRight.y = 0
+                kv.vBottomLeft.x = 0
+                kv.vBottomLeft.y = 0
+                kv.vBottomRight.x = 0
+                kv.vBottomRight.y = 0
+                kv.updateAllKeystoneVertex()
+            }.otherwise {
+                val correction = KeystoneCorrection(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+                keystone.setKeystoneCorrection(correction)
+            }
         }
+
         mSurfaceView!!.invalidate()
         syncScale()
     }
@@ -244,7 +251,14 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
 
             pressKeyState = upKey
             setDirImage(keyCode, true)
-            setValue()
+            isH6().yes {
+                var zoom = H6Manager.getInstance(requireContext())?.zoomValue
+                H6Manager.getInstance(requireContext())?.zoomValue = (zoom?:0)+1
+                mSurfaceView!!.invalidate()
+                syncScale()
+            }.otherwise {
+                setValue()
+            }
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && action == 0) {
             if (AX >= mHwOffsetA!!.x && AX < 50 + mHwOffsetA!!.x) {
                 AX++
@@ -273,8 +287,15 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
             }
 
             pressKeyState = downKey
-            setValue()
             setDirImage(keyCode, true)
+            isH6().yes {
+                var zoom = H6Manager.getInstance(requireContext())?.zoomValue
+                H6Manager.getInstance(requireContext())?.zoomValue = (zoom?:0)-1
+                mSurfaceView!!.invalidate()
+                syncScale()
+            }.otherwise {
+                setValue()
+            }
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT && action == 0) {
             if (AX > mHwOffsetA!!.x && AX <= 50 + mHwOffsetA!!.x) {
                 AX--
@@ -302,8 +323,15 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
                 DY--
             }
             pressKeyState = leftKey
-            setValue()
             setDirImage(keyCode, true)
+            isH6().yes {
+                var zoom = H6Manager.getInstance(requireContext())?.zoomValue
+                H6Manager.getInstance(requireContext())?.zoomValue = (zoom?:0)+1
+                mSurfaceView!!.invalidate()
+                syncScale()
+            }.otherwise {
+                setValue()
+            }
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && action == 0) {
             if (AX >= mHwOffsetA!!.x && AX < 50 + mHwOffsetA!!.x) {
                 AX++
@@ -331,8 +359,15 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
                 DY++
             }
             pressKeyState = rightKey
-            setValue()
             setDirImage(keyCode, true)
+            isH6().yes {
+                var zoom = H6Manager.getInstance(requireContext())?.zoomValue
+                H6Manager.getInstance(requireContext())?.zoomValue = (zoom?:0)-1
+                mSurfaceView!!.invalidate()
+                syncScale()
+            }.otherwise {
+                setValue()
+            }
         } else if (keyCode == KeyEvent.KEYCODE_MENU) {
             pressKeyState = menuKey
             reset()
@@ -423,7 +458,15 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
             DY.toDouble()
         )
         Arrays.sort(doubles)
-        mScaleTextView!!.text = doubles[0].toInt().toString()
+        val num = H6Manager.getInstance(requireContext())?.zoomValue
+        isH6().yes {
+            if (num != null) {
+                mScaleTextView!!.text = num.toString()
+            }
+        }.otherwise {
+            mScaleTextView!!.text = doubles[0].toInt().toString()
+
+        }
     }
 
     companion object {
