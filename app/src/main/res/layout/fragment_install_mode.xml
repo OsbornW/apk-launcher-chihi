@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#202124"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_80"
+        android:background="#1B1C1E">
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/qb_px_30"
+            android:layout_marginBottom="@dimen/qb_px_30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="安装模式"
+            android:textColor="@color/white"
+            android:textSize="@dimen/qb_px_18"
+            />
+    </RelativeLayout>
+
+
+
+    <androidx.leanback.widget.VerticalGridView
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        app:focusOutFront="true"
+        app:focusOutEnd="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layout_below="@id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rv_apps"
+        />
+
+
+</LinearLayout>
+
+</layout>

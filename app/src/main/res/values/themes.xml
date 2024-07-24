@@ -13,4 +13,14 @@
         <item name="maxHeight">48dip</item>
         <item name="indicatorName">BallPulseIndicator</item>
     </style>
+
+    <style name="Theme.Chihi.LeanbackPreferences" parent="Theme.Leanback">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Leanback</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="colorPrimary">@color/default_background</item>
+        <item name="colorPrimaryDark">@color/default_background</item>
+    </style>
+
 </resources>

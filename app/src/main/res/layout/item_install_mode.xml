@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hjq.shape.layout.ShapeRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:shape_solidFocusedColor="#3B3C3F"
+    app:shape_solidColor="@color/transparent"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    android:clickable="true"
+    android:id="@+id/rl_app"
+    android:paddingHorizontal="@dimen/qb_px_25"
+    android:paddingVertical="@dimen/qb_px_14"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.hjq.shape.view.ShapeRadioButton
+        android:id="@+id/rb_mode"
+        android:paddingLeft="@dimen/qb_px_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="桌面正投"
+        app:shape_buttonCheckedDrawable="@drawable/rb_check"
+        app:shape_buttonDrawable="@drawable/rb_normal"
+        />
+
+</com.hjq.shape.layout.ShapeRelativeLayout>
