@@ -28,6 +28,9 @@ public class HomeItem implements Serializable {
     }
 
     public String getIconName() {
+        if (iconName == null||iconName.isEmpty()) {
+            return "icon_media_center";
+        }
         return iconName;
     }
 
