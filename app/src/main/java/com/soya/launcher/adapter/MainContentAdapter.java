@@ -1,6 +1,7 @@
 package com.soya.launcher.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,9 @@ import com.soya.launcher.App;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.Movice;
 import com.soya.launcher.callback.SelectedCallback;
+import com.soya.launcher.ext.GlideExtKt;
+import com.soya.launcher.h27002.H27002ExtKt;
+import com.soya.launcher.manager.FilePathMangaer;
 import com.soya.launcher.utils.AndroidSystem;
 import com.soya.launcher.utils.FileUtils;
 import com.soya.launcher.utils.GlideUtils;
@@ -53,7 +57,7 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(dataList.get(position));
+        holder.bind(dataList.get(position),position);
     }
 
     @Override
@@ -85,7 +89,7 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
             tvLoadding = view.findViewById(R.id.tv_loadding);
         }
 
-        public void bind(Movice item){
+        public void bind(Movice item,int position){
             View root = itemView.getRootView();
             switch (item.getPicType()){
                 case Movice.PIC_ASSETS:
@@ -102,7 +106,11 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
                         if (obj != null) image = obj;
                     }
 
-                    GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image);
+                    //String path = FilePathMangaer.getMoviePath(context) + "/" + item.getPlaceHolderList().get(position).path;
+                    //Drawable drawable = H27002ExtKt.getDrawableFromPath(context,path);
+
+                    Log.e("zengyue", "bind: 当前要加载的路径是"+ image );
+                    GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,H27002ExtKt.getDrawableByName(context,(String) item.getImageName()));
                     if(tvLoadding!=null){
                         if(item.getId().isEmpty()){
                             tvLoadding.setVisibility(View.GONE);

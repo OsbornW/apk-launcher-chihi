@@ -217,7 +217,7 @@ android {
 
         //激活码项目
         hongxin_H27002 {
-            applicationId "com.soya.launcher"
+            applicationId "com.soya.h27002"
             minSdk 22
             dimension "chihi"
             manifestPlaceholders = [share_uid: ""]

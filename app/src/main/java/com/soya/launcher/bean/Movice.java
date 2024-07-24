@@ -2,6 +2,7 @@ package com.soya.launcher.bean;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
 public class Movice implements Serializable {
     public static final int PIC_ASSETS = 0;
@@ -11,6 +12,7 @@ public class Movice implements Serializable {
     private boolean isLocal;
     private final int type;
     private Object imageUrl;
+    private Object imageName;
     private String picture;
     private final String url;
     private final String title;
@@ -18,6 +20,7 @@ public class Movice implements Serializable {
     private String id;
     private AppPackage[] appPackage;
     private int picType = PIC_ASSETS;
+    private List<PlaceHolderBean> placeHolderList;
 
     public Movice(int type, String url, String imageUrl, int picType){
         this(type, "", url, imageUrl, picType);
@@ -93,6 +96,22 @@ public class Movice implements Serializable {
 
     public boolean isLocal() {
         return isLocal;
+    }
+
+    public List<PlaceHolderBean> getPlaceHolderList() {
+        return placeHolderList;
+    }
+
+    public void setPlaceHolderList(List<PlaceHolderBean> placeHolderList) {
+        this.placeHolderList = placeHolderList;
+    }
+
+    public Object getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(Object imageName) {
+        this.imageName = imageName;
     }
 
     @Override

@@ -72,6 +72,7 @@ import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
 import com.soya.launcher.bean.Notify
+import com.soya.launcher.bean.PlaceHolderBean
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
@@ -86,6 +87,7 @@ import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isUDisk
+import com.soya.launcher.h27002.defaultResource
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.HttpRequest.checkVersion
@@ -489,7 +491,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             (authBean?.status==200).yes {
                                 authBean?.code?.let {
                                     "开始判断msg===".d("zy1996")
-                                    it.getResult(authBean.msg)
+                                    BuildConfig.DEBUG.no {
+                                        it.getResult(authBean.msg)
+                                    }
+
                                 }
 
                             }.otherwise {
@@ -1437,13 +1442,25 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 movice.picType = Movice.PIC_NETWORD
                 movice.appName = bean.name
                 movice.appPackage = bean.packageNames
+               // movice.imageName = "icon_media_center"
                 if (imageType == 1) {
                     val path = FilePathMangaer.getMoviePath(activity) + "/" + movice.imageUrl
                     movice.imageUrl = path
                     movice.isLocal = true
                 }
+               /* val result = requireContext().defaultResource()
+                result?.movies?.forEach {
+                    if(bean.name==it.name){
+                        val holderList = mutableListOf<PlaceHolderBean>()
+                        it.datas.forEach {
+                            holderList.add(PlaceHolderBean(it.imageUrl as String))
+                        }
+                        movice.placeHolderList = holderList
+                    }
+                }*/
                 movices.add(movice)
             }
+
             val item = TypeItem(
                 bean.name,
                 bean.icon,
@@ -1452,6 +1469,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 iconType,
                 bean.type
             )
+            item.iconName = bean.iconName
             item.data = gson.toJson(bean.packageNames)
             App.MOVIE_MAP.put(item.id, movices)
             if(Config.COMPANY==5){

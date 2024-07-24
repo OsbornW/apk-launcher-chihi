@@ -30,6 +30,8 @@ public class GlideUtils {
     public static void bind(Context context, ImageView view, Object load, DiskCacheStrategy strategy){
         GlideApp.with(App.getInstance())
                 .load(load)
+                .placeholder(0)  // 设置占位符
+                .error(0)        // 设置错误图片
                 .diskCacheStrategy(strategy)
                 .transition(DrawableTransitionOptions.with(new DrawableCrossFadeFactory.Builder(250).setCrossFadeEnabled(true).build()))
                 .into(view);
