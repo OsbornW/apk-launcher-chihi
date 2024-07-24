@@ -142,7 +142,7 @@ class ProjectorFragment : AbsFragment() {
                     }
 
                     Projector.TYPE_SCREEN -> {
-                        startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                        n  startActivity(Intent(activity, ChooseGradientActivity::class.java))
                     }
                 }
             }
