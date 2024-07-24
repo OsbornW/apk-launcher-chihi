@@ -113,7 +113,7 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
 
                     Log.e("zengyue", "bind: 当前要加载的路径是"+ image );
                     if(item.getImageName()==null||((String)item.getImageName()).isEmpty()){
-                        GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,H27002ExtKt.getDrawableByName(context,"icon_media_center"));
+                        GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,null);
                     }else {
                         GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,H27002ExtKt.getDrawableByName(context,(String) item.getImageName()));
 
