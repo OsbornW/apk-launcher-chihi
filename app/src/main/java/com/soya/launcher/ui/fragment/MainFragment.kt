@@ -624,6 +624,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 mHMainContentAdapter!!.setLayoutId(layoutId)
                 mVerticalContentGrid!!.visibility = View.GONE
                 mHorizontalContentGrid!!.visibility = View.VISIBLE
+                list?.forEach {
+                    "当前的数据${it?.imageUrl}".e("zengyue")
+                }
                 mHMainContentAdapter!!.replace(list)
             }
 
@@ -1448,17 +1451,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     movice.imageUrl = path
                     movice.isLocal = true
                 }
-               /* val result = requireContext().defaultResource()
-                result?.movies?.forEach {
-                    if(bean.name==it.name){
-                        val holderList = mutableListOf<PlaceHolderBean>()
-                        it.datas.forEach {
-                            holderList.add(PlaceHolderBean(it.imageUrl as String))
-                        }
-                        movice.placeHolderList = holderList
-                    }
-                }*/
+
                 movices.add(movice)
+            }
+            movices.forEach {
+                //"当前URL是====${it?.imageUrl}".e("zengyue")
             }
 
             val item = TypeItem(

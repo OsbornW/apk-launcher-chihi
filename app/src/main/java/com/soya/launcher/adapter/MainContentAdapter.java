@@ -102,15 +102,22 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
                         tvName.setText(item.getId());
                     }
                     if (!item.isLocal() && !TextUtils.isEmpty(item.getUrl()) && App.MOVIE_IMAGE.containsKey(item.getUrl())){
+                        Log.e("zengyue", "bind: Local=====进来了1=="+position);
                         Object obj = App.MOVIE_IMAGE.get(item.getUrl());
                         if (obj != null) image = obj;
+                        Log.e("zengyue", "bind: Local=====进来了2=="+image);
                     }
 
                     //String path = FilePathMangaer.getMoviePath(context) + "/" + item.getPlaceHolderList().get(position).path;
                     //Drawable drawable = H27002ExtKt.getDrawableFromPath(context,path);
 
                     Log.e("zengyue", "bind: 当前要加载的路径是"+ image );
-                    GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,H27002ExtKt.getDrawableByName(context,(String) item.getImageName()));
+                    if(item.getImageName()==null||((String)item.getImageName()).isEmpty()){
+                        GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,H27002ExtKt.getDrawableByName(context,"icon_media_center"));
+                    }else {
+                        GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,H27002ExtKt.getDrawableByName(context,(String) item.getImageName()));
+
+                    }
                     if(tvLoadding!=null){
                         if(item.getId().isEmpty()){
                             tvLoadding.setVisibility(View.GONE);

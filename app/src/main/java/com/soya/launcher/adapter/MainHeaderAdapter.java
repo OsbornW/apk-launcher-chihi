@@ -134,8 +134,13 @@ public class MainHeaderAdapter extends RecyclerView.Adapter<MainHeaderAdapter.Ho
                     GlideUtils.bind(context, mIV, FileUtils.readAssets(context, (String) item.getIcon()));
                     break;
                 default:
+                    if(item.getIconName()==null||item.getIconName().isEmpty()){
+                        GlideExtKt.bindImageView(mIV, item.getIcon(),null);
 
-                    GlideExtKt.bindImageView(mIV, item.getIcon(),H27002ExtKt.getDrawableByName(context,item.getIconName()));
+                    }else {
+                        GlideExtKt.bindImageView(mIV, item.getIcon(),H27002ExtKt.getDrawableByName(context,item.getIconName()));
+
+                    }
 
 
             }

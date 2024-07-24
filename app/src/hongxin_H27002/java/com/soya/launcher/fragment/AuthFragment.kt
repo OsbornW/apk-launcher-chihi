@@ -198,7 +198,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                 }
                 else->{
                     //if(BuildConfig.DEBUG){
-                        if(activeCode=="11111111"){
+                       /* if(activeCode=="11111111"){
                             AppCacheBase.isActive = true
                             showLoadingViewDismiss()
                             ToastUtils.show("Success")
@@ -211,7 +211,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
 
                             }
                             return@clickNoRepeat
-                        }
+                        }*/
                     //}
                 }
             }
