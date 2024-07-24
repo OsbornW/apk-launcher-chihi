@@ -12,7 +12,7 @@ public class Movice implements Serializable {
     private boolean isLocal;
     private final int type;
     private Object imageUrl;
-    private Object imageName;
+    private String imageName;
     private String picture;
     private final String url;
     private final String title;
@@ -107,10 +107,13 @@ public class Movice implements Serializable {
     }
 
     public Object getImageName() {
+        if (imageName == null||imageName.isEmpty()) {
+            return "icon_media_center";
+        }
         return imageName;
     }
 
-    public void setImageName(Object imageName) {
+    public void setImageName(String imageName) {
         this.imageName = imageName;
     }
 
