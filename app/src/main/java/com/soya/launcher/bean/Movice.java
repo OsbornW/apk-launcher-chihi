@@ -107,9 +107,9 @@ public class Movice implements Serializable {
     }
 
     public Object getImageName() {
-        if (imageName == null||imageName.isEmpty()) {
+       /* if (imageName == null||imageName.isEmpty()) {
             return "icon_media_center";
-        }
+        }*/
         return imageName;
     }
 
