@@ -15,6 +15,7 @@ import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import com.lzy.okgo.OkGo
+import com.lzy.okgo.interceptor.HttpLoggingInterceptor
 import com.shudong.lib_base.ContextManager
 import com.shudong.lib_base.ext.MvvmHelper
 import com.shudong.lib_base.ext.appContext
@@ -46,12 +47,14 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
 import java.util.Arrays
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import java.util.logging.Level
 
 class App : Application() {
     private var receiver: InnerReceiver? = null
@@ -100,7 +103,21 @@ class App : Application() {
         super.onCreate()
         instance = this
         OkGo.init(this)
-        OkGo.getInstance().setCertificates()
+
+        // 配置 OkGo
+        //val builder = OkHttpClient.Builder()
+
+        // 配置日志拦截器
+        val loggingInterceptor = HttpLoggingInterceptor("zengyue")
+        loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY) // 设置打印级别
+        loggingInterceptor.setColorLevel(Level.INFO) // 设置颜色级别
+        //builder.addInterceptor(loggingInterceptor) // 添加 OkGo 日志拦截器
+
+        OkGo.getInstance().addInterceptor(loggingInterceptor)
+            .setRetryCount(3) // 全局的超时重试次数
+            .setCertificates()
+
+        //OkGo.getInstance().setCertificates()
         HttpRequest.init(this)
         PreferencesUtils.init(this)
         if (TextUtils.isEmpty(PreferencesUtils.getString(Atts.UID, ""))) {

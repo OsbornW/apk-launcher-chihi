@@ -5,12 +5,14 @@ import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.NetworkUtils
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
+import com.lzy.okgo.request.BaseRequest
 import com.shudong.lib_base.base.BaseVMFragment
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.margin
 import com.shudong.lib_base.ext.no
@@ -234,12 +236,14 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
 
             val jsonObject = JSONObject(params)
 
+            "开始请求接口".e("zengyue")
             OkGo.post("https://api.freedestop.com/u/client")
                 .tag(this)
                 .upJson(jsonObject.toString())
                 .execute(object : StringCallback() {
                     override fun onSuccess(s: String?, call: Call?, response: Response?) {
                         //上传成功
+                        "请求成功".e("zengyue")
                         //Thread.sleep(3000)
                         lifecycleScope.launch {
                             delay(1000)
@@ -270,10 +274,21 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                     }
 
                     override fun onError(call: Call?, response: Response?, e: Exception?) {
+                        "请求失败".e("zengyue")
                         showLoadingViewDismiss()
                         ToastUtils.show("Failed, please try again!")
                         //Log.d("zy1996", "请求失败，原因：${e.toString()}====${response.toString()}")
 
+                    }
+
+                    override fun onBefore(request: BaseRequest<out BaseRequest<*>>?) {
+                        super.onBefore(request)
+                        "请求之前".e("zengyue")
+                    }
+
+                    override fun onAfter(t: String?, e: java.lang.Exception?) {
+                        super.onAfter(t, e)
+                        "请求之后".e("zengyue")
                     }
                 })
 
