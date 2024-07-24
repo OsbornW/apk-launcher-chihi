@@ -19,6 +19,7 @@ import com.soya.launcher.R
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.config.Config
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ui.activity.GradientActivity
 import com.soya.launcher.utils.AndroidSystem
@@ -87,7 +88,7 @@ class ChooseGradientFragment : AbsFragment() {
             SettingItem(
                 Projector.TYPE_SCREEN,
                 if (isEnalbe) getString(R.string.auto_calibration) else getString(R.string.manual),
-                R.drawable.baseline_screenshot_monitor_100
+                R.drawable.baseline_screenshot_monitor_100,
             )
         )
         arrayObjectAdapter.addAll(0, dataList)
@@ -126,7 +127,9 @@ class ChooseGradientFragment : AbsFragment() {
                                 )
                             }.otherwise {
                                 startKtxActivity<GradientActivity>()
+
                             }
+
                         }
                     }
 
