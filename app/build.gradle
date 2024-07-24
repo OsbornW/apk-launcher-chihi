@@ -363,6 +363,7 @@ dependencies {
     annotationProcessor 'me.laoyuyu.aria:compiler:3.8.16'
 
     api project(path: ':baselibrary:lib_base')
+    implementation 'androidx.leanback:leanback-preference:1.0.0'
 }
 
 def getTime() {

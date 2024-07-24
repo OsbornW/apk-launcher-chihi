@@ -82,6 +82,7 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isUDisk
@@ -98,6 +99,7 @@ import com.soya.launcher.ui.activity.AboutActivity
 import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.ChooseGradientActivity
 import com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity
+import com.soya.launcher.ui.activity.InstallModeActivity
 import com.soya.launcher.ui.activity.LoginActivity
 import com.soya.launcher.ui.activity.MainActivity
 import com.soya.launcher.ui.activity.ScaleScreenActivity
@@ -849,8 +851,17 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         }
 
                         Projector.TYPE_PROJECTOR_MODE -> {
-                            val success = AndroidSystem.openProjectorMode(activity)
-                            if (!success) toastInstall()
+                            startKtxActivity<InstallModeActivity>()
+                            when{
+                                isH6()->{
+                                    startKtxActivity<InstallModeActivity>()
+                                }
+                                else->{
+                                    val success = AndroidSystem.openProjectorMode(activity)
+                                    if (!success) toastInstall()
+                                }
+                            }
+
                         }
 
                         Projector.TYPE_HDMI -> {

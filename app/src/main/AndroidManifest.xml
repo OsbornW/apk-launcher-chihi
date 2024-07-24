@@ -123,6 +123,10 @@
         <activity android:name=".ui.activity.ChooseGradientActivity" />
         <activity android:name=".ui.activity.HomeGuideGroupGradientActivity" />
         <activity android:name=".ui.activity.NetActivity"/>
+        <activity
+            android:name=".ui.activity.InstallModeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Chihi.LeanbackPreferences" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
