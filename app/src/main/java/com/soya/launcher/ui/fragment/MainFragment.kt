@@ -209,26 +209,22 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
             }
         }
-       if (Config.COMPANY==5){
 
-       }else{
-           items.addAll(
-               Arrays.asList(
-                   *arrayOf(
-                       TypeItem(
-                           getString(R.string.app_store),
-                           R.drawable.store,
-                           0,
-                           Types.TYPE_APP_STORE,
-                           TypeItem.TYPE_ICON_IMAGE_RES,
-                           TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                       ),
+        items.addAll(
+            Arrays.asList(
+                *arrayOf(
+                    TypeItem(
+                        getString(R.string.app_store),
+                        R.drawable.store,
+                        0,
+                        Types.TYPE_APP_STORE,
+                        TypeItem.TYPE_ICON_IMAGE_RES,
+                        TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                    ),
 
-                       )
-               )
-           )
-       }
-
+                )
+            )
+        )
 
         if (Config.COMPANY==5){
 
@@ -1132,6 +1128,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 Log.d("111","111")
                                 if(Config.COMPANY==5){
                                     AndroidSystem.openActivityName(activity,"com.amazon.avod.thirdpartyclient","com.amazon.avod.thirdpartyclient.LauncherActivity")
+
                                 }else{
                                     val success = AndroidSystem.jumpPlayer(activity, packages, null)
                                     if (!success) {
