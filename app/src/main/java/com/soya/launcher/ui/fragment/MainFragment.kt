@@ -871,11 +871,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         }
 
                         Projector.TYPE_SCREEN -> {
-                            if (Config.COMPANY==9){
-                                startKtxActivity<GradientActivity>()
-                            }else{
-                                startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                            when{
+                                isH6()->{
+                                    startKtxActivity<GradientActivity>()
+                                }
+                                else->{
+                                    startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                                }
                             }
+
 
                         }
                     }
