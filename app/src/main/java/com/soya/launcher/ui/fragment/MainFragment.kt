@@ -1619,7 +1619,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
 
             override fun onClick(bean: ApplicationInfo) {
-                openApp(bean)
+                try {
+                    openApp(bean)
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
             }
 
             override fun onMenuClick(bean: ApplicationInfo) {
@@ -1740,14 +1744,14 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             : Boolean = code == PackageInstaller.STATUS_SUCCESS
                     // 假设 intent 是你要判断的 Intent 对象
 
-                    lifecycleScope.launch {
+           /*         lifecycleScope.launch {
                         if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.action)) {
                             delay(800)
                             UninstallDialog.newInstance(null, true)
                                 .show(requireActivity().supportFragmentManager, UninstallDialog.TAG)
                         }
 
-                    }
+                    }*/
                    /* success.yes {
                         ToastUtils.show("卸载成功")
                     }.otherwise {
