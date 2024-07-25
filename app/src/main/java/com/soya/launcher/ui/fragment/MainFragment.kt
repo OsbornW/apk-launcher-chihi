@@ -213,21 +213,25 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
         }
 
-        items.addAll(
-            Arrays.asList(
-                *arrayOf(
-                    TypeItem(
-                        getString(R.string.app_store),
-                        R.drawable.store,
-                        0,
-                        Types.TYPE_APP_STORE,
-                        TypeItem.TYPE_ICON_IMAGE_RES,
-                        TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                    ),
+        if (Config.COMPANY==5){
 
+        }else{
+            items.addAll(
+                Arrays.asList(
+                    *arrayOf(
+                        TypeItem(
+                            getString(R.string.app_store),
+                            R.drawable.store,
+                            0,
+                            Types.TYPE_APP_STORE,
+                            TypeItem.TYPE_ICON_IMAGE_RES,
+                            TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                        ),
+
+                        )
                 )
             )
-        )
+        }
 
         if (Config.COMPANY==5){
 
