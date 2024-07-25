@@ -12,13 +12,17 @@ import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
 import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.config.Config
+import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ui.activity.ChooseGradientActivity
+import com.soya.launcher.ui.activity.GradientActivity
 import com.soya.launcher.ui.activity.ScaleScreenActivity
 import com.soya.launcher.utils.AndroidSystem
 
@@ -142,7 +146,14 @@ class ProjectorFragment : AbsFragment() {
                     }
 
                     Projector.TYPE_SCREEN -> {
-                        startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                        when{
+                            isH6()->{
+                                startKtxActivity<GradientActivity>()
+                            }
+                            else->{
+                                startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                            }
+                        }
                     }
                 }
             }

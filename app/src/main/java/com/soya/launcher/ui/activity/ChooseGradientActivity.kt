@@ -11,17 +11,6 @@ import com.soya.launcher.ui.fragment.ChooseGradientFragment.Companion.newInstanc
 
 class ChooseGradientActivity : AbsActivity() {
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // 启动 GradientActivity
-        startKtxActivity<GradientActivity>()
-
-        // 如果需要结束当前 Activity，调用 finish()
-        finish()
-    }
-
-
     override fun getLayoutId(): Int {
         return R.layout.activity_main
     }
