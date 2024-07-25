@@ -1177,10 +1177,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 }
                             }
                             else->{
-                                val success = AndroidSystem.jumpPlayer(activity, packages, null)
-                                if (!success) {
-                                    toastInstallPKApp(bean.name, packages)
-                                    Log.d("bean","bean"+bean.name+"packages"+packages)
+                                try {
+                                    val success = AndroidSystem.jumpPlayer(activity, packages, null)
+                                    if (!success) {
+                                        toastInstallPKApp(bean.name, packages)
+                                        Log.d("bean","bean"+bean.name+"packages"+packages)
+                                    }
+                                }catch (e:Exception){
+                                    e.printStackTrace()
+                                    //ToastUtils.show("")
                                 }
                             }
                         }
