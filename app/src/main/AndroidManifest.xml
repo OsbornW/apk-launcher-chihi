@@ -94,7 +94,10 @@
         <activity android:name=".ui.activity.WeatherActivity" android:screenOrientation="landscape" />
         <activity android:name=".ui.activity.CityActivity" android:screenOrientation="landscape" android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".ui.activity.MoviceListActivity" android:screenOrientation="landscape" />
-        <activity android:name=".ui.activity.SearchActivity" android:screenOrientation="landscape" android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".ui.activity.SearchActivity" android:screenOrientation="landscape" android:windowSoftInputMode="adjustNothing"
+            android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
+
+            />
         <activity android:name=".ui.activity.SettingActivity" android:screenOrientation="landscape" />
         <activity android:name=".ui.activity.AppsActivity" android:screenOrientation="landscape"
             android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
@@ -161,6 +164,16 @@
                 <action android:name="android.intent.action.store.download.apk" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".ui.broascast.AppStateChangeReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>
