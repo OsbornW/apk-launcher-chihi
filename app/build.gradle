@@ -202,7 +202,7 @@ android {
 
         // X98K (TV)
         yxt_X98K {
-            applicationId "com.chihiyxt.launcher"// com.soya.launcher
+            applicationId "com.soya.launcher"
             dimension "chihi"
             manifestPlaceholders = [share_uid:"android.uid.system"]
             signingConfig signingConfigs.yxt
