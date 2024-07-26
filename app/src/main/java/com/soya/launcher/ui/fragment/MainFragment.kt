@@ -349,7 +349,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         syncTime()
         syncNotify()
         startLoopTime()
-
         var infos = AndroidSystem.getUserApps2(activity)
         if(infos.size!=useApps.size){
             val index = mHorizontalContentGrid?.selectedPosition?:0
@@ -370,6 +369,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
             }
         }
+        Log.d("ActivityLifecycle", "onResume")
+
     }
 
     override fun onStart() {
