@@ -213,7 +213,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
         }
 
-        this.obseverLiveEvent<Boolean>("isenable"){
+        /*this.obseverLiveEvent<Boolean>("isenable"){
             val index = mHorizontalContentGrid?.selectedPosition?:0
             fillApps(
                 true,
@@ -232,7 +232,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
             }
 
-        }
+        }*/
 
         if (Config.COMPANY==5){
 
@@ -349,6 +349,27 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         syncTime()
         syncNotify()
         startLoopTime()
+
+        var infos = AndroidSystem.getUserApps2(activity)
+        if(infos.size!=useApps.size){
+            val index = mHorizontalContentGrid?.selectedPosition?:0
+            fillApps(
+                true,
+                mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
+            )
+            mAppBarLayout!!.setExpanded(true)
+
+            mHorizontalContentGrid?.apply {
+                val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount?:0)) index else index - 1
+                postDelayed({
+                    requestFocus()
+
+                    scrollToPosition(newFocusPosition)
+                    layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
+                },500)
+
+            }
+        }
     }
 
     override fun onStart() {
