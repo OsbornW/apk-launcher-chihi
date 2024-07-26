@@ -9,6 +9,6 @@ fun isRK3326() = run {
 }
 
 fun isH6() = run {
-     BuildConfig.FLAVOR=="h6"
+     BuildConfig.FLAVOR=="H6"
 
 }

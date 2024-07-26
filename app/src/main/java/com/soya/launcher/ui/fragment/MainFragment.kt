@@ -98,6 +98,7 @@ import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.ui.activity.AboutActivity
 import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.ChooseGradientActivity
+import com.soya.launcher.ui.activity.GradientActivity
 import com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity
 import com.soya.launcher.ui.activity.InstallModeActivity
 import com.soya.launcher.ui.activity.LoginActivity
@@ -211,26 +212,26 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
             }
         }
-       if (Config.COMPANY==5){
 
-       }else{
-           items.addAll(
-               Arrays.asList(
-                   *arrayOf(
-                       TypeItem(
-                           getString(R.string.app_store),
-                           R.drawable.store,
-                           0,
-                           Types.TYPE_APP_STORE,
-                           TypeItem.TYPE_ICON_IMAGE_RES,
-                           TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                       ),
+        if (Config.COMPANY==5){
 
-                       )
-               )
-           )
-       }
+        }else{
+            items.addAll(
+                Arrays.asList(
+                    *arrayOf(
+                        TypeItem(
+                            getString(R.string.app_store),
+                            R.drawable.store,
+                            0,
+                            Types.TYPE_APP_STORE,
+                            TypeItem.TYPE_ICON_IMAGE_RES,
+                            TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                        ),
 
+                        )
+                )
+            )
+        }
 
         if (Config.COMPANY==5){
 
@@ -874,7 +875,16 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         }
 
                         Projector.TYPE_SCREEN -> {
-                            startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                            when{
+                                isH6()->{
+                                    startKtxActivity<GradientActivity>()
+                                }
+                                else->{
+                                    startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                                }
+                            }
+
+
                         }
                     }
                 }
@@ -1143,6 +1153,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 Log.d("111","111")
                                 if(Config.COMPANY==5){
                                     AndroidSystem.openActivityName(activity,"com.amazon.avod.thirdpartyclient","com.amazon.avod.thirdpartyclient.LauncherActivity")
+
                                 }else{
                                     val success = AndroidSystem.jumpPlayer(activity, packages, null)
                                     if (!success) {
@@ -1166,10 +1177,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 }
                             }
                             else->{
-                                val success = AndroidSystem.jumpPlayer(activity, packages, null)
-                                if (!success) {
-                                    toastInstallPKApp(bean.name, packages)
-                                    Log.d("bean","bean"+bean.name+"packages"+packages)
+                                try {
+                                    val success = AndroidSystem.jumpPlayer(activity, packages, null)
+                                    if (!success) {
+                                        toastInstallPKApp(bean.name, packages)
+                                        Log.d("bean","bean"+bean.name+"packages"+packages)
+                                    }
+                                }catch (e:Exception){
+                                    e.printStackTrace()
+                                    //ToastUtils.show("")
                                 }
                             }
                         }
