@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
 import com.softwinner.keystone.KeystoneCorrection
@@ -328,6 +329,7 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
                 kv.updateAllKeystoneVertex()
             }
             isH6()->{
+                "坐标：$ltx=====$lty".e("zengyue")
                 kv.getAllKeystoneVertexForH6()
                 kv.vTopLeft.x = ltx.toInt()
                 kv.vTopLeft.y = lty.toInt()
@@ -432,17 +434,32 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
                 KEYSTONE_RTY -> value = kv.vTopRight.y.toDouble()
             }
         }.otherwise {
-            val correction = keystone!!.keystoneCorrection
-            when (key) {
-                KEYSTONE_LBX -> value = correction.leftBottomX
-                KEYSTONE_LBY -> value = correction.leftBottomY
-                KEYSTONE_LTX -> value = correction.leftTopX
-                KEYSTONE_LTY -> value = correction.leftTopY
-                KEYSTONE_RBX -> value = correction.rightBottomX
-                KEYSTONE_RBY -> value = correction.rightBottomY
-                KEYSTONE_RTX -> value = correction.rightTopX
-                KEYSTONE_RTY -> value = correction.rightTopY
+            isH6().yes {
+                kv.getAllKeystoneVertexForH6()
+                when (key) {
+                    KEYSTONE_LBX -> value = kv.vBottomLeft.x.toDouble()
+                    KEYSTONE_LBY -> value = kv.vBottomLeft.y.toDouble()
+                    KEYSTONE_LTX -> value = kv.vTopLeft.x.toDouble()
+                    KEYSTONE_LTY -> value = kv.vTopLeft.y.toDouble()
+                    KEYSTONE_RBX -> value = kv.vBottomRight.x.toDouble()
+                    KEYSTONE_RBY -> value = kv.vBottomRight.y.toDouble()
+                    KEYSTONE_RTX -> value = kv.vTopRight.x.toDouble()
+                    KEYSTONE_RTY -> value = kv.vTopRight.y.toDouble()
+                }
+            }.otherwise {
+                val correction = keystone!!.keystoneCorrection
+                when (key) {
+                    KEYSTONE_LBX -> value = correction.leftBottomX
+                    KEYSTONE_LBY -> value = correction.leftBottomY
+                    KEYSTONE_LTX -> value = correction.leftTopX
+                    KEYSTONE_LTY -> value = correction.leftTopY
+                    KEYSTONE_RBX -> value = correction.rightBottomX
+                    KEYSTONE_RBY -> value = correction.rightBottomY
+                    KEYSTONE_RTX -> value = correction.rightTopX
+                    KEYSTONE_RTY -> value = correction.rightTopY
+                }
             }
+
         }
 
         return value.toFloat()
