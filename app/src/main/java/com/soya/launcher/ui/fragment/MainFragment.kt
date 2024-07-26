@@ -213,6 +213,27 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
         }
 
+        this.obseverLiveEvent<Boolean>("isenable"){
+            val index = mHorizontalContentGrid?.selectedPosition?:0
+            fillApps(
+                true,
+                mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
+            )
+            mAppBarLayout!!.setExpanded(true)
+
+            mHorizontalContentGrid?.apply {
+                val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount?:0)) index else index - 1
+                postDelayed({
+                    requestFocus()
+
+                    scrollToPosition(newFocusPosition)
+                    layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
+                },500)
+
+            }
+
+        }
+
         if (Config.COMPANY==5){
 
         }else{
@@ -1740,14 +1761,14 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             : Boolean = code == PackageInstaller.STATUS_SUCCESS
                     // 假设 intent 是你要判断的 Intent 对象
 
-                    lifecycleScope.launch {
+                    /*lifecycleScope.launch {
                         if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.action)) {
                             delay(800)
                             UninstallDialog.newInstance(null, true)
                                 .show(requireActivity().supportFragmentManager, UninstallDialog.TAG)
                         }
 
-                    }
+                    }*/
                    /* success.yes {
                         ToastUtils.show("卸载成功")
                     }.otherwise {
