@@ -22,6 +22,7 @@ import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ui.activity.ChooseGradientActivity
 import com.soya.launcher.ui.activity.GradientActivity
+import com.soya.launcher.ui.activity.InstallModeActivity
 import com.soya.launcher.ui.activity.ScaleScreenActivity
 import com.soya.launcher.utils.AndroidSystem
 
@@ -127,12 +128,20 @@ class ProjectorFragment : AbsFragment() {
                     }
 
                     Projector.TYPE_PROJECTOR_MODE -> {
-                        val success = AndroidSystem.openProjectorMode(activity)
-                        if (!success) Toast.makeText(
-                            activity,
-                            getString(R.string.place_install_app),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        when{
+                            isH6()->{
+                                startKtxActivity<InstallModeActivity>()
+                            }
+                            else->{
+                                val success = AndroidSystem.openProjectorMode(activity)
+                                if (!success) Toast.makeText(
+                                    activity,
+                                    getString(R.string.place_install_app),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
                     }
 
                     Projector.TYPE_HDMI -> {
