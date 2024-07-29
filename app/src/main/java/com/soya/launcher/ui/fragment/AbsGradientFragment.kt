@@ -315,7 +315,7 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
         val rby = if (type == TYPE_RB && direction == DIR_Y) value else getValue(KEYSTONE_RBY, 0f)
 
         when{
-            isRK3326()||isH6()->{
+            isRK3326()->{
                 kv.getAllKeystoneVertex()
                 kv.vTopLeft.x = ltx.toInt()
                 kv.vTopLeft.y = lty.toInt()
@@ -326,6 +326,18 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
                 kv.vBottomRight.x = rbx.toInt()
                 kv.vBottomRight.y = rby.toInt()
                 kv.updateAllKeystoneVertex()
+            }
+            isH6()->{
+                kv.getAllKeystoneVertexForH6()
+                kv.vTopLeft.x = ltx.toInt()
+                kv.vTopLeft.y = lty.toInt()
+                kv.vTopRight.x = rtx.toInt()
+                kv.vTopRight.y = rty.toInt()
+                kv.vBottomLeft.x = lbx.toInt()
+                kv.vBottomLeft.y = lby.toInt()
+                kv.vBottomRight.x = rbx.toInt()
+                kv.vBottomRight.y = rby.toInt()
+                kv.updateAllKeystoneVertexForH6()
             }
             else->{
                 val correction = KeystoneCorrection(
@@ -382,8 +394,22 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
             kv.vBottomRight.y = 0
             kv.updateAllKeystoneVertex()
         }.otherwise {
-            val correction = KeystoneCorrection(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
-            keystone!!.setKeystoneCorrection(correction)
+            isH6().yes {
+                kv.getAllKeystoneVertexForH6()
+                kv.vTopLeft.x = 0
+                kv.vTopLeft.y = 0
+                kv.vTopRight.x = 0
+                kv.vTopRight.y = 0
+                kv.vBottomLeft.x = 0
+                kv.vBottomLeft.y = 0
+                kv.vBottomRight.x = 0
+                kv.vBottomRight.y = 0
+                kv.updateAllKeystoneVertexForH6()
+            }.otherwise {
+                val correction = KeystoneCorrection(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+                keystone!!.setKeystoneCorrection(correction)
+            }
+
         }
 
         mSurfaceView!!.invalidate()

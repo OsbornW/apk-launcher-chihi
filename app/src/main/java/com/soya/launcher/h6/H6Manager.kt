@@ -1,8 +1,8 @@
 package com.soya.launcher.h6
 
 import android.content.Context
+import android.util.Log
 import android.view.Surface
-import com.soya.launcher.h6.H6Manager.Companion.writeFile_misc
 import com.soya.launcher.rk3326.ReflectUtils
 import java.io.File
 import java.io.FileOutputStream
@@ -797,6 +797,7 @@ class H6Manager {
          */
         set(type) {
             //System.out.println("yxp setScreenMirror:"+type);
+            Log.d("CHEN","TYPE"+type)
             ReflectUtils.setProperty("persist.sys.keystone.mirror", type.toString())
             writeFile_misc(type.toString())
         }
@@ -1343,7 +1344,26 @@ class H6Manager {
         //梯形相关功能
         fun writeFile_misc(buffer: String) {
             // delete old version
-            val file = File("/dev/block/bootdevice/by-name/misc") //if(!file.exists())t
+            val file = File("/dev/block/bootdevice/by-name/misc")
+            if (!file.exists()) {
+                // 文件不存在，执行创建或其他操作
+                try {
+                    val created = file.createNewFile()
+                    if (created) {
+                        // 文件成功创建
+                        println("File created successfully.")
+                    } else {
+                        // 文件创建失败
+                        println("Failed to create file.")
+                    }
+                } catch (e: IOException) {
+                    // 处理异常
+                    e.printStackTrace()
+                }
+            } else {
+                // 文件已存在，执行其他操作
+                println("File already exists.")
+            }
             var fos: FileOutputStream? = null
             val mirror_buffer = buffer.toByteArray()
 
@@ -1351,12 +1371,12 @@ class H6Manager {
                 file.createNewFile()
                 fos = FileOutputStream(file)
                 fos.write(mirror_buffer, 0, mirror_buffer.size)
-                fos.flush()
+                fos?.flush()
             } catch (e: IOException) {
                 e.printStackTrace()
             } finally {
                 try {
-                    fos!!.close()
+                    fos?.close()
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }

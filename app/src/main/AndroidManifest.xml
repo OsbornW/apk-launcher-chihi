@@ -165,9 +165,11 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".ui.broascast.AppStateChangeReceiver"
+        <receiver android:name=".ui.broadcast.AppStateChangeReceiver"
             android:exported="true">
             <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
                 <action android:name="android.intent.action.PACKAGE_CHANGED" />
                 <data android:scheme="package" />
             </intent-filter>
