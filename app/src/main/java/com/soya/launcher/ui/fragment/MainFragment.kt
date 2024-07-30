@@ -1103,8 +1103,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             //startActivity(Intent(activity, HomeGuideGroupGradientActivity::class.java))
 
             // startActivity(Intent(activity, ChooseGradientActivity::class.java))
+            when{
+                isH6()->{
+                    startKtxActivity<GradientActivity>()
+                }
+                else->{
+                    startKtxActivity<HomeGuideGroupGradientActivity>()
+                }
+            }
 
-            startKtxActivity<HomeGuideGroupGradientActivity>()
 
 
             /*

@@ -292,6 +292,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/vertical_content"
                     app:focusOutFront="true"
+                    android:layout_marginLeft="@dimen/qb_px_10"
                     android:clipToPadding="false"
                     android:clipChildren="false"
                     android:clipToOutline="false"
