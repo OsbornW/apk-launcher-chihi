@@ -100,7 +100,6 @@ import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.ui.activity.AboutActivity
 import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.ChooseGradientActivity
-import com.soya.launcher.ui.activity.GradientActivity
 import com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity
 import com.soya.launcher.ui.activity.InstallModeActivity
 import com.soya.launcher.ui.activity.LoginActivity
@@ -883,15 +882,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         }
 
                         Projector.TYPE_SCREEN -> {
-                            when{
-                                isH6()->{
-                                    startKtxActivity<GradientActivity>()
-                                }
-                                else->{
-                                    startActivity(Intent(activity, ChooseGradientActivity::class.java))
-                                }
-                            }
-
+                            startActivity(Intent(activity, ChooseGradientActivity::class.java))
                         }
                     }
                 }
@@ -1004,7 +995,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
                     Projector.TYPE_SCREEN -> {
                         startActivity(Intent(activity, ChooseGradientActivity::class.java))
-
                     }
                 }
             }

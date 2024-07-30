@@ -1351,13 +1351,12 @@ class H6Manager {
                 file.createNewFile()
                 fos = FileOutputStream(file)
                 fos.write(mirror_buffer, 0, mirror_buffer.size)
-                fos?.flush()
+                fos.flush()
             } catch (e: IOException) {
                 e.printStackTrace()
             } finally {
                 try {
-                    fos?.close()
-
+                    fos!!.close()
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }

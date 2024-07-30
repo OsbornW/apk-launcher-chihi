@@ -290,9 +290,14 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
             setDirImage(keyCode, true)
             isH6().yes {
                 var zoom = H6Manager.getInstance(requireContext())?.zoomValue
-                H6Manager.getInstance(requireContext())?.zoomValue = (zoom?:0)-1
-                mSurfaceView!!.invalidate()
-                syncScale()
+                if (zoom != null) {
+                    if(zoom>(H6Manager.getInstance(requireContext())?.zoomMinValue)?:0){
+                        H6Manager.getInstance(requireContext())?.zoomValue = zoom -1
+                        mSurfaceView!!.invalidate()
+                        syncScale()
+                    }
+                }
+
             }.otherwise {
                 setValue()
             }
