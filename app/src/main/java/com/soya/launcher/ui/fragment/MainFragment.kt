@@ -72,7 +72,6 @@ import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
 import com.soya.launcher.bean.Notify
-import com.soya.launcher.bean.PlaceHolderBean
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
@@ -87,7 +86,6 @@ import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isUDisk
-import com.soya.launcher.h27002.defaultResource
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.HttpRequest.checkVersion
@@ -100,6 +98,7 @@ import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.ui.activity.AboutActivity
 import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.ChooseGradientActivity
+import com.soya.launcher.ui.activity.GradientActivity
 import com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity
 import com.soya.launcher.ui.activity.InstallModeActivity
 import com.soya.launcher.ui.activity.LoginActivity
@@ -228,11 +227,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                            TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
                        ),
 
-                       )
-               )
-           )
-       }
-
+                        )
+                )
+            )
+        }
 
         if (Config.COMPANY==5){
 
@@ -329,6 +327,28 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         syncTime()
         syncNotify()
         startLoopTime()
+        var infos = AndroidSystem.getUserApps2(activity)
+        if(infos.size!=useApps.size){
+            val index = mHorizontalContentGrid?.selectedPosition?:0
+            fillApps(
+                true,
+                mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
+            )
+            mAppBarLayout!!.setExpanded(true)
+
+            mHorizontalContentGrid?.apply {
+                val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount?:0)) index else index - 1
+                postDelayed({
+                    requestFocus()
+
+                    scrollToPosition(newFocusPosition)
+                    layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
+                },500)
+
+            }
+        }
+        Log.d("ActivityLifecycle", "onResume")
+
     }
 
     override fun onStart() {
@@ -491,10 +511,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             (authBean?.status==200).yes {
                                 authBean?.code?.let {
                                     "开始判断msg===".d("zy1996")
-                                    BuildConfig.DEBUG.no {
-                                        it.getResult(authBean.msg)
-                                    }
-
+                                    it.getResult(authBean.msg)
                                 }
 
                             }.otherwise {
@@ -624,9 +641,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 mHMainContentAdapter!!.setLayoutId(layoutId)
                 mVerticalContentGrid!!.visibility = View.GONE
                 mHorizontalContentGrid!!.visibility = View.VISIBLE
-                list?.forEach {
-                    "当前的数据${it?.imageUrl}".e("zengyue")
-                }
                 mHMainContentAdapter!!.replace(list)
             }
 
@@ -882,7 +896,16 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         }
 
                         Projector.TYPE_SCREEN -> {
-                            startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                            when{
+                                isH6()->{
+                                    startKtxActivity<GradientActivity>()
+                                }
+                                else->{
+                                    startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                                }
+                            }
+
+
                         }
                     }
                 }
@@ -1058,8 +1081,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             //startActivity(Intent(activity, HomeGuideGroupGradientActivity::class.java))
 
             // startActivity(Intent(activity, ChooseGradientActivity::class.java))
+            when{
+                isH6()->{
+                    startKtxActivity<GradientActivity>()
+                }
+                else->{
+                    startKtxActivity<HomeGuideGroupGradientActivity>()
+                }
+            }
 
-            startKtxActivity<HomeGuideGroupGradientActivity>()
 
 
             /*
@@ -1151,6 +1181,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 Log.d("111","111")
                                 if(Config.COMPANY==5){
                                     AndroidSystem.openActivityName(activity,"com.amazon.avod.thirdpartyclient","com.amazon.avod.thirdpartyclient.LauncherActivity")
+
                                 }else{
                                     val success = AndroidSystem.jumpPlayer(activity, packages, null)
                                     if (!success) {
@@ -1184,7 +1215,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                     e.printStackTrace()
                                     //ToastUtils.show("")
                                 }
-
                             }
                         }
 
@@ -1451,19 +1481,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 movice.picType = Movice.PIC_NETWORD
                 movice.appName = bean.name
                 movice.appPackage = bean.packageNames
-               // movice.imageName = "icon_media_center"
                 if (imageType == 1) {
                     val path = FilePathMangaer.getMoviePath(activity) + "/" + movice.imageUrl
                     movice.imageUrl = path
                     movice.isLocal = true
                 }
-
                 movices.add(movice)
             }
-            movices.forEach {
-                //"当前URL是====${it?.imageUrl}".e("zengyue")
-            }
-
             val item = TypeItem(
                 bean.name,
                 bean.icon,
@@ -1472,7 +1496,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 iconType,
                 bean.type
             )
-            item.iconName = bean.iconName
             item.data = gson.toJson(bean.packageNames)
             App.MOVIE_MAP.put(item.id, movices)
             if(Config.COMPANY==5){
@@ -1750,7 +1773,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             : Boolean = code == PackageInstaller.STATUS_SUCCESS
                     // 假设 intent 是你要判断的 Intent 对象
 
-                   /* lifecycleScope.launch {
+                    /*lifecycleScope.launch {
                         if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.action)) {
                             delay(800)
                             UninstallDialog.newInstance(null, true)
