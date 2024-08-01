@@ -132,6 +132,11 @@
             android:exported="false"
             android:theme="@style/Theme.Chihi.LeanbackPreferences" />
 
+        <activity
+            android:name=".ui.activity.UpdateAppsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Chihi.LeanbackPreferences" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

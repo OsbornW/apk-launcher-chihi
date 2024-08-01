@@ -21,6 +21,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
@@ -51,6 +52,7 @@ import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
+import com.shudong.lib_base.ext.net.lifecycle
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
@@ -85,6 +87,7 @@ import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
+import com.soya.launcher.ext.isShowUpdate
 import com.soya.launcher.ext.isUDisk
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
@@ -110,7 +113,6 @@ import com.soya.launcher.ui.activity.WeatherActivity
 import com.soya.launcher.ui.activity.WifiListActivity
 import com.soya.launcher.ui.dialog.AppDialog
 import com.soya.launcher.ui.dialog.ToastDialog
-import com.soya.launcher.ui.dialog.UninstallDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.FileUtils
@@ -119,6 +121,8 @@ import com.soya.launcher.utils.md5
 import com.soya.launcher.utils.showLoadingViewDismiss
 import com.soya.launcher.view.ImageViewHouse
 import com.soya.launcher.view.NoDragVerticalGridView
+import com.soya.launcher.net.viewmodel.HomeViewModel
+import com.soya.launcher.ui.activity.UpdateAppsActivity
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -186,10 +190,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private var mStoreAdapter: StoreAdapter? = null
     private var requestTime = System.currentTimeMillis()
     private var isExpanded = false
-    lateinit var flList:FrameLayout
+    lateinit var flList: FrameLayout
 
     private var mBroadcast: MyBroadcast? = null
 
+    private val mViewModel: HomeViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -200,7 +205,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         wallpaperReceiver = WallpaperReceiver()
         useApps.addAll(AndroidSystem.getUserApps2(requireContext()))
 
-        this.obseverLiveEvent<Boolean>("refreshdefault"){
+        this.obseverLiveEvent<Boolean>("refreshdefault") {
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                     (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).no {
@@ -234,9 +239,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
         }*/
 
-        if (Config.COMPANY==5){
+        if (Config.COMPANY == 5) {
 
-        }else{
+        } else {
             items.addAll(
                 Arrays.asList(
                     *arrayOf(
@@ -254,9 +259,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             )
         }
 
-        if (Config.COMPANY==5){
+        if (Config.COMPANY == 5) {
 
-        }else{
+        } else {
             items.addAll(
                 Arrays.asList(
                     *arrayOf(
@@ -272,7 +277,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 )
             )
         }
-        if (Config.COMPANY == 0|| Config.COMPANY == 9) {
+        if (Config.COMPANY == 0 || Config.COMPANY == 9) {
             items.add(
                 TypeItem(
                     getString(R.string.pojector),
@@ -321,6 +326,38 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         activity!!.registerReceiver(wallpaperReceiver, filter1)
 
         detectNetStaus()
+
+
+
+        startRepeatingTask()
+
+    }
+
+    private fun startRepeatingTask() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
+                while (true) {
+                    delay(3000) // 每两秒执行一次
+                    // 执行实际的任务
+                    isShowUpdate().yes { performTask() }
+
+
+                }
+            }
+        }
+    }
+
+    private fun performTask() {
+        mViewModel.reqUpdateInfo().lifecycle(this@MainFragment,
+            errorCallback = {throwanle->
+                "当前错误${throwanle.message}".e("zengyue")
+            },
+            isShowError = false,
+            callback = {
+                "成功了：$this".e("zengyue")
+                startKtxActivity<UpdateAppsActivity>()
+            }
+        )
     }
 
     override fun onDestroy() {
@@ -350,8 +387,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         syncNotify()
         startLoopTime()
         var infos = AndroidSystem.getUserApps2(activity)
-        if(infos.size!=useApps.size){
-            val index = mHorizontalContentGrid?.selectedPosition?:0
+        if (infos.size != useApps.size) {
+            val index = mHorizontalContentGrid?.selectedPosition ?: 0
             fillApps(
                 true,
                 mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
@@ -359,13 +396,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             mAppBarLayout!!.setExpanded(true)
 
             mHorizontalContentGrid?.apply {
-                val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount?:0)) index else index - 1
+                val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount
+                        ?: 0)
+                ) index else index - 1
                 postDelayed({
                     requestFocus()
 
                     scrollToPosition(newFocusPosition)
                     layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
-                },500)
+                }, 500)
 
             }
         }
@@ -427,7 +466,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         val rlWifi = view.findViewById<RelativeLayout>(R.id.rl_wifi)
         mGradientView = view.findViewById(R.id.gradient)
 
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M){
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
             mNotifyRecycler?.isVisible = false
             mSettingView?.let {
                 it.setOnFocusChangeListener { view, b ->
@@ -482,11 +521,14 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             R.layout.holder_app,
             newAppListCallback()
         )
-        mHdmiView?.visibility = if (Config.COMPANY == 0|| Config.COMPANY == 9) View.VISIBLE else View.GONE
-        mGradientView?.visibility = if (Config.COMPANY == 0|| Config.COMPANY == 9) View.VISIBLE else View.GONE
+        mHdmiView?.visibility =
+            if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
+        mGradientView?.visibility =
+            if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
 
         AppCacheBase.isActive.yes {
-            val uniqueID = DeviceUtils.getUniqueDeviceId().subSequence(0,DeviceUtils.getUniqueDeviceId().length-1)
+            val uniqueID = DeviceUtils.getUniqueDeviceId()
+                .subSequence(0, DeviceUtils.getUniqueDeviceId().length - 1)
             //激活码
             val activeCode = AppCacheBase.activeCode
             val versionValue = 1003
@@ -495,11 +537,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
             val childChanel = "S10001"
             // 时间戳
-            val time = System.currentTimeMillis()/1000
+            val time = System.currentTimeMillis() / 1000
             // 密码盐
             val pwd = "TKPCpTVZUvrI"
             // 待加密的字符串（(d+e+c+b+a+f+密码盐）
-            val toBeEncryptedString = "$chanelId$childChanel$versionValue$activeCode$uniqueID$time$pwd"
+            val toBeEncryptedString =
+                "$chanelId$childChanel$versionValue$activeCode$uniqueID$time$pwd"
             // 对字符串进行MD5加密
             val md5String = toBeEncryptedString.md5()
 
@@ -530,10 +573,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             delay(1000)
                             showLoadingViewDismiss()
                             val authBean = s?.jsonToBean<AuthBean>()
-                            (authBean?.status==200).yes {
+                            (authBean?.status == 200).yes {
                                 authBean?.code?.let {
                                     "开始判断msg===".d("zy1996")
-                                    it.getResult(authBean.msg)
+                                    BuildConfig.DEBUG.no {
+                                        it.getResult(authBean.msg)
+                                    }
+
                                 }
 
                             }.otherwise {
@@ -561,27 +607,27 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun Long.getResult(msg: String?) {
-        (msg==null).no {
+        (msg == null).no {
             ToastUtils.show(msg)
             AppCacheBase.isActive = false
             (activity as MainActivity).switchAuthFragment()
         }.otherwise {
-            when(this){
-                10000L-> {
+            when (this) {
+                10000L -> {
                     AppCacheBase.isActive = true
                     //showLoadingViewDismiss()
-                   /* ToastUtils.show("Success")
-                    lifecycleScope.launch {
-                        delay(500)
-                        //repeatOnLifecycle(Lifecycle.State.RESUMED){
-                        sendLiveEventData(ACTIVE_SUCCESS, true)
-                        // }
+                    /* ToastUtils.show("Success")
+                     lifecycleScope.launch {
+                         delay(500)
+                         //repeatOnLifecycle(Lifecycle.State.RESUMED){
+                         sendLiveEventData(ACTIVE_SUCCESS, true)
+                         // }
 
-                    }*/
+                     }*/
 
                 }
 
-                10004L->{
+                10004L -> {
                     ToastUtils.show("Invalid PIN, please try again! ")
                     AppCacheBase.isActive = false
                     (activity as MainActivity).switchAuthFragment()
@@ -651,9 +697,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         layoutId: Int
     ) {
         var list = list
-        if(list?.size?:0>4){
+        if (list?.size ?: 0 > 4) {
             flList.height(com.shudong.lib_dimen.R.dimen.qb_px_270.dimenValue())
-        }else{
+        } else {
             flList.height(com.shudong.lib_dimen.R.dimen.qb_px_250.dimenValue())
 
         }
@@ -666,7 +712,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 mHMainContentAdapter!!.replace(list)
             }
 
-            0,2 -> {
+            0, 2 -> {
                 if (list?.size ?: 0 > columns * 2) {
                     list = list?.subList(0, columns * 2)
                 }
@@ -720,28 +766,29 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) { // 当生命周期至少为 STARTED 时执行
                 while (true) {
-                        val netType = NetworkUtils.getNetworkType()
-                        when (netType) {
-                            NetworkUtils.NetworkType.NETWORK_ETHERNET -> {
-                                mWifiView!!.setImageResource(R.drawable.baseline_lan_100)
-                            }
-                            else->{
-                                withContext(Dispatchers.IO) {
-                                    (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).yes {
-                                        // 达大厦
-                                        withContext(Dispatchers.Main) {
-                                            mWifiView!!.setImageResource(R.drawable.baseline_wifi_100)
-                                        }
-                                    }.otherwise {
-                                        withContext(Dispatchers.Main) {
-                                            mWifiView!!.setImageResource( R.drawable.baseline_wifi_off_100)
+                    val netType = NetworkUtils.getNetworkType()
+                    when (netType) {
+                        NetworkUtils.NetworkType.NETWORK_ETHERNET -> {
+                            mWifiView!!.setImageResource(R.drawable.baseline_lan_100)
+                        }
 
-                                        }
+                        else -> {
+                            withContext(Dispatchers.IO) {
+                                (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).yes {
+                                    // 达大厦
+                                    withContext(Dispatchers.Main) {
+                                        mWifiView!!.setImageResource(R.drawable.baseline_wifi_100)
+                                    }
+                                }.otherwise {
+                                    withContext(Dispatchers.Main) {
+                                        mWifiView!!.setImageResource(R.drawable.baseline_wifi_off_100)
 
                                     }
+
                                 }
                             }
                         }
+                    }
 
                     delay(2000) // 每2秒更新一次
                 }
@@ -761,7 +808,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
 
 
-
             /*if (AndroidSystem.isEthernetConnected(activity)) {
                 mWifiView!!.setImageResource(R.drawable.baseline_lan_100)
             } else {
@@ -769,7 +815,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }*/
             if (Config.COMPANY == 3) {
                 val notifies: MutableList<Notify> = ArrayList()
-                 if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
+                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
                 val deviceHashMap =
                     (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
 
@@ -790,16 +836,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 isInsertSDCard.yes {
                     notifies.add(Notify(R.drawable.baseline_sd_storage_100))
                 }
-               /* for (volume in storageManager.storageVolumes) {
-                        if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
-                }*/
+                /* for (volume in storageManager.storageVolumes) {
+                         if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
+                 }*/
                 mNotifyAdapter!!.replace(notifies)
 
-             
+
             }
         })
     }
-
 
 
     private fun newWeatherCallback(): ServiceRequest.Callback<WeatherData> {
@@ -874,7 +919,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 mTitleView.text = bean.name
 
                 itemView.setOnFocusChangeListener { view, b ->
-                    view.animScale(b,1.15f)
+                    view.animScale(b, 1.15f)
                     b.yes {
                         mTitleView.isSelected = true
                     }.otherwise {
@@ -884,7 +929,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
 
                 itemView.clickNoRepeat {
-                    val bean  = _data as SettingItem
+                    val bean = _data as SettingItem
                     when (bean.type) {
                         Projector.TYPE_SETTING -> {
                             isRK3326().yes {
@@ -900,11 +945,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
                         Projector.TYPE_PROJECTOR_MODE -> {
                             startKtxActivity<InstallModeActivity>()
-                            when{
-                                isH6()->{
+                            when {
+                                isH6() -> {
                                     startKtxActivity<InstallModeActivity>()
                                 }
-                                else->{
+
+                                else -> {
                                     val success = AndroidSystem.openProjectorMode(activity)
                                     if (!success) toastInstall()
                                 }
@@ -918,12 +964,18 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         }
 
                         Projector.TYPE_SCREEN -> {
-                            when{
-                                isH6()->{
+                            when {
+                                isH6() -> {
                                     startKtxActivity<GradientActivity>()
                                 }
-                                else->{
-                                    startActivity(Intent(activity, ChooseGradientActivity::class.java))
+
+                                else -> {
+                                    startActivity(
+                                        Intent(
+                                            activity,
+                                            ChooseGradientActivity::class.java
+                                        )
+                                    )
                                 }
                             }
 
@@ -936,7 +988,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }.models = arrayListOf()
 
 
-       // mHorizontalContentGrid!!.setAdapter(itemBridgeAdapter)
+        // mHorizontalContentGrid!!.setAdapter(itemBridgeAdapter)
         mVerticalContentGrid!!.visibility = View.VISIBLE
         mHorizontalContentGrid!!.visibility = View.GONE
         val list: MutableList<SettingItem?> = ArrayList()
@@ -1103,15 +1155,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             //startActivity(Intent(activity, HomeGuideGroupGradientActivity::class.java))
 
             // startActivity(Intent(activity, ChooseGradientActivity::class.java))
-            when{
-                isH6()->{
+            when {
+                isH6() -> {
                     startKtxActivity<GradientActivity>()
                 }
-                else->{
+
+                else -> {
                     startKtxActivity<HomeGuideGroupGradientActivity>()
                 }
             }
-
 
 
             /*
@@ -1198,13 +1250,17 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     Types.TYPE_MOVICE -> {
                         val packages = Gson().fromJson(bean.data, Array<AppPackage>::class.java)
                         "当前名字是====${packages.size}===${packages[0].packageName}".e("zy1998")
-                        when{
-                            packages[0].packageName.contains("com.amazon.amazonvideo.livingroom") ->{
-                                Log.d("111","111")
-                                if(Config.COMPANY==5){
-                                    AndroidSystem.openActivityName(activity,"com.amazon.avod.thirdpartyclient","com.amazon.avod.thirdpartyclient.LauncherActivity")
+                        when {
+                            packages[0].packageName.contains("com.amazon.amazonvideo.livingroom") -> {
+                                Log.d("111", "111")
+                                if (Config.COMPANY == 5) {
+                                    AndroidSystem.openActivityName(
+                                        activity,
+                                        "com.amazon.avod.thirdpartyclient",
+                                        "com.amazon.avod.thirdpartyclient.LauncherActivity"
+                                    )
 
-                                }else{
+                                } else {
                                     val success = AndroidSystem.jumpPlayer(activity, packages, null)
                                     if (!success) {
                                         toastInstallPKApp(bean.name, packages)
@@ -1213,11 +1269,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                     }
                                 }
                             }
-                            packages[0].packageName.contains("youtube")->{
-                                Log.d("2222","222222")
-                                if(Config.COMPANY==5){
-                                    AndroidSystem.openPackageName(activity,"com.google.android.apps.youtube.creator")
-                                }else{
+
+                            packages[0].packageName.contains("youtube") -> {
+                                Log.d("2222", "222222")
+                                if (Config.COMPANY == 5) {
+                                    AndroidSystem.openPackageName(
+                                        activity,
+                                        "com.google.android.apps.youtube.creator"
+                                    )
+                                } else {
                                     val success = AndroidSystem.jumpPlayer(activity, packages, null)
                                     if (!success) {
                                         toastInstallPKApp(bean.name, packages)
@@ -1226,20 +1286,20 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                     }
                                 }
                             }
-                            else->{
+
+                            else -> {
                                 try {
                                     val success = AndroidSystem.jumpPlayer(activity, packages, null)
                                     if (!success) {
                                         toastInstallPKApp(bean.name, packages)
-                                        Log.d("bean","bean"+bean.name+"packages"+packages)
+                                        Log.d("bean", "bean" + bean.name + "packages" + packages)
                                     }
-                                }catch (e:Exception){
+                                } catch (e: Exception) {
                                     e.printStackTrace()
                                     //ToastUtils.show("")
                                 }
                             }
                         }
-
 
 
                     }
@@ -1255,11 +1315,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         intent.putExtra(Atts.TYPE, bean.type)
                         startActivity(intent)
                     }
+
                     Types.TYPE_GOOGLE_PLAY -> {
-                         AndroidSystem.openPackageName(activity,"com.android.vending")
+                        AndroidSystem.openPackageName(activity, "com.android.vending")
                     }
+
                     Types.TYPE_MEDIA_CENTER -> {
-                        AndroidSystem.openPackageName(activity,"com.explorer")
+                        AndroidSystem.openPackageName(activity, "com.explorer")
 
                     }
                 }
@@ -1287,9 +1349,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun toastInstallApp(name: String, callback: ToastDialog.Callback) {
         "当前的APP名字是=====$name".d("zy1996")
-        if(name==null||name==""){
+        if (name == null || name == "") {
             ToastUtils.show("当前APP名字是空的")
-        }else{
+        } else {
             toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback)
 
         }
@@ -1314,7 +1376,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 columns = 4
                 layoutId = R.layout.holder_content_4
             }
-            2->{
+
+            2 -> {
                 columns = 4
                 layoutId = R.layout.holder_content_6
             }
@@ -1421,8 +1484,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 addProduct5TypeItem(header)
 
                 setHeader(header)
-                if(BuildConfig.FLAVOR=="hongxin_H27002"){
-                    requestFocus(mHeaderGrid,500)
+                if (BuildConfig.FLAVOR == "hongxin_H27002") {
+                    requestFocus(mHeaderGrid, 500)
                 }
             } else {
                 setDefault()
@@ -1433,32 +1496,38 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     fun addProduct5TypeItem(header: MutableList<TypeItem>) {
-        if(Config.COMPANY==5){
+        if (Config.COMPANY == 5) {
             //getString(R.string.apps)
-            header.add(0,TypeItem(
-                getString(R.string.apps),
-                R.drawable.app_list,
-                0,
-                Types.TYPE_MY_APPS,
-                TypeItem.TYPE_ICON_IMAGE_RES,
-                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-            ))
-            header.add(1,TypeItem(
-                "Google Play",
-                R.drawable.iocn,
-                0,
-                Types.TYPE_GOOGLE_PLAY,
-                TypeItem.TYPE_ICON_IMAGE_RES,
-                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-            ))
-            header.add(2,TypeItem(
-                "Media Center",
-                R.drawable.media,
-                0,
-                Types.TYPE_MEDIA_CENTER,
-                TypeItem.TYPE_ICON_IMAGE_RES,
-                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-            ))
+            header.add(
+                0, TypeItem(
+                    getString(R.string.apps),
+                    R.drawable.app_list,
+                    0,
+                    Types.TYPE_MY_APPS,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                )
+            )
+            header.add(
+                1, TypeItem(
+                    "Google Play",
+                    R.drawable.iocn,
+                    0,
+                    Types.TYPE_GOOGLE_PLAY,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                )
+            )
+            header.add(
+                2, TypeItem(
+                    "Media Center",
+                    R.drawable.media,
+                    0,
+                    Types.TYPE_MEDIA_CENTER,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                )
+            )
         }
     }
 
@@ -1478,10 +1547,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 item.icon = FilePathMangaer.getMoviePath(requireContext()) + "/" + item.icon
             }
             header.addAll(items)
-           addProduct5TypeItem(header)
+            addProduct5TypeItem(header)
             setHeader(header)
-            if(BuildConfig.FLAVOR=="hongxin_H27002"){
-                requestFocus(mHeaderGrid,500)
+            if (BuildConfig.FLAVOR == "hongxin_H27002") {
+                requestFocus(mHeaderGrid, 500)
             }
 
         } catch (e: Exception) {
@@ -1520,20 +1589,21 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             )
             item.data = gson.toJson(bean.packageNames)
             App.MOVIE_MAP.put(item.id, movices)
-            if(Config.COMPANY==5){
-                when(item.name){
-                    "Max","Disney+","Hulu","Google play","media center"->{
+            if (Config.COMPANY == 5) {
+                when (item.name) {
+                    "Max", "Disney+", "Hulu", "Google play", "media center" -> {
                     }
-                    else->{
+
+                    else -> {
                         menus.add(item)
                     }
                 }
-            }else{
-                if(item.name=="Disney+"){
+            } else {
+                if (item.name == "Disney+") {
                     isRK3326().no {
                         menus.add(item)
                     }
-                }else{
+                } else {
                     menus.add(item)
                 }
 
@@ -1573,9 +1643,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
 
                 bean.appPackage.forEach {
-                   "当前的包名是：${it.packageName}".e("zengyue")
+                    "当前的包名是：${it.packageName}".e("zengyue")
                 }
-
 
 
                 var success = false
@@ -1635,7 +1704,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     val header = fillData(result)
                     header.addAll(items)
 
-                   addProduct5TypeItem(header)
+                    addProduct5TypeItem(header)
 
                     setHeader(header)
                     isConnectFirst = true
@@ -1646,8 +1715,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     val item = header[0]
                     "当前的名字和类型${item.name}====${item.type}".d("zy1998")
                     fillMovice(item)
-                    if(BuildConfig.FLAVOR=="hongxin_H27002"){
-                        requestFocus(mHeaderGrid,500)
+                    if (BuildConfig.FLAVOR == "hongxin_H27002") {
+                        requestFocus(mHeaderGrid, 500)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -1750,12 +1819,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }*/
 
 
-           /* success.yes {
-                ToastUtils.show("卸载成功")
-            }.otherwise {
-                ToastUtils.show("卸载失败")
-            }*/
-
+            /* success.yes {
+                 ToastUtils.show("卸载成功")
+             }.otherwise {
+                 ToastUtils.show("卸载失败")
+             }*/
 
 
         }
@@ -1765,8 +1833,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
-                Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED ->{
-                    val index = mHorizontalContentGrid?.selectedPosition?:0
+                Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> {
+                    val index = mHorizontalContentGrid?.selectedPosition ?: 0
                     fillApps(
                         true,
                         mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
@@ -1774,13 +1842,16 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     mAppBarLayout!!.setExpanded(true)
 
                     mHorizontalContentGrid?.apply {
-                        val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount?:0)) index else index - 1
+                        val newFocusPosition =
+                            if (index < (mHorizontalContentGrid?.adapter?.itemCount
+                                    ?: 0)
+                            ) index else index - 1
                         postDelayed({
                             requestFocus()
 
                             scrollToPosition(newFocusPosition)
                             layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
-                        },500)
+                        }, 500)
 
                     }
 
@@ -1798,11 +1869,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         }
 
                     }*/
-                   /* success.yes {
-                        ToastUtils.show("卸载成功")
-                    }.otherwise {
-                        ToastUtils.show("卸载失败")
-                    }*/
+                    /* success.yes {
+                         ToastUtils.show("卸载成功")
+                     }.otherwise {
+                         ToastUtils.show("卸载失败")
+                     }*/
                 }
 
             }
@@ -1819,8 +1890,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     if (isExpanded) {
                         requestFocus(mHeaderGrid)
                         mHeaderGrid?.scrollToPosition(0)
-                    }else{
-                        ( mHeaderGrid?.isFocused)?.no {
+                    } else {
+                        (mHeaderGrid?.isFocused)?.no {
                             requestFocus(mHeaderGrid)
                         }
                         mHeaderGrid?.scrollToPosition(0)

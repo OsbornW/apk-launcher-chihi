@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
-data class ResultEntity(val code: Int, val message: String?, val data: JsonElement?) :
+data class ResultEntity(val code: Int, val msg: String?, val data: JsonElement?) :
     IResponseData<JsonElement> {
 
 
@@ -12,7 +12,7 @@ data class ResultEntity(val code: Int, val message: String?, val data: JsonEleme
 
     override fun getRequestCode() = code
 
-    override fun getRequestMessage() = message?:"网络错误"
+    override fun getRequestMessage() = msg?:"网络错误"
 
 
 }
