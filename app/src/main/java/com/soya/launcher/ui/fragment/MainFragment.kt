@@ -52,6 +52,7 @@ import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
+import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
@@ -78,6 +79,7 @@ import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.bean.WeatherData
+import com.soya.launcher.cache.AppCache
 import com.soya.launcher.config.Config
 import com.soya.launcher.decoration.HSlideMarginDecoration
 import com.soya.launcher.enums.Atts
@@ -327,8 +329,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
         detectNetStaus()
 
-
-
         startRepeatingTask()
 
     }
@@ -338,6 +338,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
                     delay(3000) // 每两秒执行一次
+                    "开始3秒轮询一次：$this".e("zengyue")
                     // 执行实际的任务
                     isShowUpdate().yes { performTask() }
 
@@ -355,6 +356,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             isShowError = false,
             callback = {
                 "成功了：$this".e("zengyue")
+                AppCache.updateInfo = this.jsonToString()
                 startKtxActivity<UpdateAppsActivity>()
             }
         )

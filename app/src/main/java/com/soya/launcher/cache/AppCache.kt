@@ -6,5 +6,6 @@ object AppCache {
     // (day,week)
     var updateInteval:String by serial(default = "day")
     var lastTipTime:Long by serial(default = 0L)
+    var updateInfo:String by serial()
 
 }

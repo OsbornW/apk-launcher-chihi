@@ -17,6 +17,7 @@ import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.colorValue
 import com.shudong.lib_base.ext.downloadApk
 import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.bean.UpdateAppsDTO
@@ -102,31 +103,8 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
 
         }
 
-        val list = mutableListOf<UpdateAppsDTO>()
-        val dto = UpdateAppsDTO(
-            "com.netflix.mediaclient",
-            "Netflix",
-            "1.21",
-            "2024年7月23日",
-            "https://xfile.f3tcp.cc/apks/Netflix.apk"
-        )
-        val dto1 = UpdateAppsDTO(
-            "com.disney.disneyplus",
-            "Youtube",
-            "1.0",
-            "2024年7月28日",
-            "https://xfile.f3tcp.cc/apks/Disney.apk"
-        )
-        val dto2 = UpdateAppsDTO(
-            "com.example.3",
-            "Prime Video",
-            "1.5",
-            "2024年7月31日",
-            "https://download.appzones.info/apk/Disney.apk"
-        )
-        list.add(dto)
-        list.add(dto1)
-        //list.add(dto2)
+        val list = AppCache.updateInfo.jsonToBean<MutableList<UpdateAppsDTO>>()
+
         mBind.rvApps.addModels(list)
 
 
