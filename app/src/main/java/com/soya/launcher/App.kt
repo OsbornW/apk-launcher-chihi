@@ -39,6 +39,7 @@ import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.net.di.homeModules
 import com.thumbsupec.lib_base.ext.language.initMultiLanguage
 import com.thumbsupec.lib_base.toast.ToastUtils
+import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.di.netModules
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -101,6 +102,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        AppCacheNet.baseUrl = BuildConfig.BASE_URL
 
         startKoin {
             androidContext(this@App)

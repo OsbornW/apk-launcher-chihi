@@ -1,8 +1,7 @@
 package com.thumbsupec.lib_net.di
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
+import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.http.MyX509
 import com.thumbsupec.lib_net.http.SSL
 import com.thumbsupec.lib_net.http.convert.SerializationConverterFactory
@@ -11,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import retrofit2.http.Url
 import java.util.concurrent.TimeUnit
 
 /**
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
  * @PACKAGE_NAME:  com.thumbsupec.lib_net.di
  */
 const val BASE_URL = "http://api.ispruz.com/"
-const val BASE_URL_LOCAL = "http://192.168.1.188:9991/"
+//const val BASE_URL_LOCAL = "http://192.168.1.188:9991/"
 const val HEADERURL = ""
 
 private const val TIME_OUT = 8L
@@ -54,7 +54,7 @@ val alternateRetrofitModule = module {
     single {
         Retrofit.Builder()
             .client(get())
-            .baseUrl(BASE_URL_LOCAL)  // 备用域名
+            .baseUrl(AppCacheNet.baseUrl)  // 备用域名
             .addConverterFactory(SerializationConverterFactory.create())
             .build()
     }
