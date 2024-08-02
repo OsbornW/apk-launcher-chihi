@@ -86,6 +86,7 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.getUpdateList
 import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
@@ -166,6 +167,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private var mTestView: TextView? = null
     private var mNotifyRecycler: RecyclerView? = null
     private var mGradientView: View? = null
+    private var rlAD: RelativeLayout? = null
     private var mHdmiView: View? = null
     private var mNotifyAdapter: NotifyAdapter? = null
     private var uiHandler: Handler? = null
@@ -338,7 +340,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
                     delay(3000) // 每两秒执行一次
-                    "开始3秒轮询一次：$this".e("zengyue")
+                    "开始3秒轮询一次：$this".e("zengyue1")
                     // 执行实际的任务
                     isShowUpdate().yes { performTask() }
 
@@ -349,15 +351,22 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun performTask() {
+        "开始请求：".e("zengyue")
         mViewModel.reqUpdateInfo().lifecycle(this@MainFragment,
             errorCallback = {throwanle->
                 "当前错误${throwanle.message}".e("zengyue")
             },
             isShowError = false,
             callback = {
-                "成功了：$this".e("zengyue")
+
                 AppCache.updateInfo = this.jsonToString()
-                startKtxActivity<UpdateAppsActivity>()
+                val isHasUpdate = getUpdateList()
+                "成功了：$isHasUpdate".e("zengyue")
+                isHasUpdate.yes {  startKtxActivity<UpdateAppsActivity>() }.otherwise {
+                    AppCache.updateInteval = "hour"
+                    AppCache.lastTipTime = System.currentTimeMillis()
+                }
+
             }
         )
     }
@@ -467,6 +476,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         val rlSetting = view.findViewById<RelativeLayout>(R.id.rl_setting)
         val rlWifi = view.findViewById<RelativeLayout>(R.id.rl_wifi)
         mGradientView = view.findViewById(R.id.gradient)
+        rlAD = view.findViewById(R.id.rl_ad)
 
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
             mNotifyRecycler?.isVisible = false
@@ -1129,6 +1139,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mHeaderGrid!!.scaleY = value
     }
 
+    //var adController:Controller?=null
     override fun onClick(v: View) {
         if (v == mSettingView) {
             if (Config.COMPANY == 4) {
@@ -1136,6 +1147,16 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             } else {
                 startActivity(Intent(activity, SettingActivity::class.java))
             }
+           /* Ad.get().setEnableLog(true)
+            if(adController==null){
+                adController = Ad.get().begin(requireContext())
+                    .container(rlAD)
+                    .lifecycleOwner(this)
+                    .start();
+            }else{
+                adController?.start(rlAD)
+            }*/
+
             //AndroidSystem.openSystemSetting(getActivity());
         } else if (v == mWeatherView) {
             startActivity(Intent(activity, WeatherActivity::class.java))

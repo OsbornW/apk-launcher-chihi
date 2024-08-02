@@ -388,8 +388,8 @@ class FlikerProgressBar @JvmOverloads constructor(
         progress = 0f
         isFinish = false
         isStop = false
-        progressColor = loadingColor
-        progressText = ""
+       // progressColor = loadingColor
+        //progressText = ""
         flickerLeft = -flikerBitmap!!.width.toFloat()
         initPgBimap()
     }

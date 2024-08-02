@@ -1,25 +1,32 @@
 package com.soya.launcher.bean
 
+import com.soya.launcher.ext.formatTimeyyyyMMddHHmm
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 
 @Serializable
 data class UpdateAppsDTO(
-    @SerialName("packageName")
-    val packageName: String,
     @SerialName("appName")
     val appName: String,
-    @SerialName("version")
-    val version: String,
     @SerialName("createAt")
     val createAt: String,
+    @SerialName("packageName")
+    val packageName: String,
     @SerialName("url")
     val url: String,
+    @SerialName("version")
+    val version: String,
+    @SerialName("versionCode")
+    val versionCode: Int,
 
     // 是否已安装
     var isInstalled:Boolean = false,
-)
+){
+    fun getFormatDate()=run{
+        createAt.formatTimeyyyyMMddHHmm()
+    }
+}
 
 /**
  * {

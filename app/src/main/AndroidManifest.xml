@@ -62,6 +62,7 @@
     <application
         android:name=".App"
         android:allowBackup="true"
+        tools:replace="android:allowBackup"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -72,6 +73,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTv"
         android:usesCleartextTraffic="true">
+
+        <!-- 自定义元数据 -->
+        <meta-data
+            android:name="tcl_app_key"
+            android:value="your key" />
+
+        <meta-data
+            android:name="partner_name"
+            android:value="xxxx" />
 
 
 

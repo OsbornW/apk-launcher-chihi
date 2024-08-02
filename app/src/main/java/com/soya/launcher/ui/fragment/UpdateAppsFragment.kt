@@ -18,6 +18,7 @@ import com.shudong.lib_base.ext.colorValue
 import com.shudong.lib_base.ext.downloadApk
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.jsonToBean
+import com.shudong.lib_base.ext.jsonToTypeBean
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.bean.UpdateAppsDTO
@@ -47,7 +48,7 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                     val tvVersionInfo = findView<TextView>(R.id.tv_version_info)
                     val pbUpdate = findView<FlikerProgressBar>(R.id.pb_update)
                     tvAppName.text = dto.appName
-                    tvAppDate.text = dto.createAt
+                    tvAppDate.text = dto.getFormatDate()
                     ivAppIcon.setImageDrawable(dto.packageName.getAppIcon())
                     tvVersionInfo.text = "${dto.packageName.getAppVersionName()}--->${dto.version}"
                     //pbUpdate.setProgressText(dto.status)
@@ -72,6 +73,7 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                                 llRoot.isClickable = true
                                 pbUpdate.setTextColor(com.shudong.lib_res.R.color.red.colorValue())
                                 pbUpdate.setProgressText("下载失败")
+                                pbUpdate.reset()
                                 "当前的错误是$it".e("zengyue")
                             },
                             downloadComplete = { _, destPath ->
@@ -80,16 +82,10 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                                     val isAllInstalled =
                                         (mBind.rvApps.mutable as MutableList<UpdateAppsDTO>).all { it.isInstalled }
                                     isAllInstalled.yes {
-                                        /*var isBtnFocus = false
-                                        if(mBind.tvNextTime.isFocused||mBind.tvCancle.isFocused){
-                                            isBtnFocus = true
-                                        }*/
                                         mBind.tvNextTime.isVisible = false
                                         mBind.tvCancle.isVisible = false
                                         mBind.tvOk.isVisible = true
-                                        //if(isBtnFocus){
                                         mBind.tvOk.post { mBind.tvOk.requestFocus() }
-                                        // }
 
                                     }
                                 }
@@ -103,7 +99,7 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
 
         }
 
-        val list = AppCache.updateInfo.jsonToBean<MutableList<UpdateAppsDTO>>()
+        val list = AppCache.updateInfo.jsonToTypeBean<MutableList<UpdateAppsDTO>>()
 
         mBind.rvApps.addModels(list)
 

@@ -1,6 +1,8 @@
 package com.shudong.lib_base.ext
 
 import com.blankj.utilcode.util.GsonUtils
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
 /**
  *
@@ -42,3 +44,8 @@ fun <E,F> String.toMap(): MutableMap<E,F> =
  */
 inline fun<reified T:Any> String.jsonToBean(): T = GsonUtils.fromJson(this,T::class.java)
 inline fun<reified T:Any> T.jsonToString() =  GsonUtils.toJson(this)
+
+inline fun<reified T:Any> String.jsonToTypeBean(): T = run{
+    val listType: Type = object : TypeToken<T>() {}.type
+    GsonUtils.fromJson(this,listType)
+}

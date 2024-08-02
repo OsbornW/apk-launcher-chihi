@@ -3,7 +3,16 @@ package com.soya.launcher.ext
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.jsonToBean
+import com.shudong.lib_base.ext.jsonToString
+import com.shudong.lib_base.ext.jsonToTypeBean
+import com.soya.launcher.bean.UpdateAppsDTO
+import com.soya.launcher.cache.AppCache
+import com.soya.launcher.utils.AndroidSystem
 
 /**
  * 扩展函数，根据包名获取应用的图标。
@@ -49,6 +58,30 @@ fun String.getAppVersionName(): String? {
         // 如果包名无法找到，返回 null
         null
     }
+}
+
+
+fun getUpdateList():Boolean{
+    val updateApps = AppCache.updateInfo.jsonToTypeBean<MutableList<UpdateAppsDTO>>()
+    var localApps = AndroidSystem.getUserApps2(appContext).toMutableList()
+
+    // 3. 创建包名到版本号的映射
+    val versionCodeMap = mutableMapOf<String, Int>()
+    for (app in localApps) {
+        try {
+            val packageInfo = appContext.packageManager.getPackageInfo(app.packageName, 0)
+            versionCodeMap[app.packageName] = packageInfo.versionCode
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+    // 4. 筛选 updateApps 列表，移除版本号相同的 UpdateAppsDTO
+    val filteredUpdateApps = updateApps.filterNot { dto ->
+        "当前Code：${versionCodeMap[dto.packageName]}====${dto.versionCode}".e("zengyue1")
+        versionCodeMap[dto.packageName] == dto.versionCode
+    }.toMutableList()
+    AppCache.updateInfo = filteredUpdateApps.jsonToString()
+    return filteredUpdateApps.isNotEmpty()
 }
 
 
