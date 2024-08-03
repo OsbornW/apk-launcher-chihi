@@ -12,8 +12,10 @@ public class Url {
     public static final String BASE_URL = BuildConfig.BASE_URL;
     public static final String APP_STORE_BASE_URL = BuildConfig.APP_STORE_BASE_URL;
     public static final String UID_BASE_URL = "http://launcher.swifttvs.com/";
+   // public static final String UID_BASE_URL = "http://192.168.1.188:9991/";
     public static final String MOVICE_LIST = "wheateapi/getallvideodata";
     public static final String BASE_RECOMMEND_LIST = "https://www.googleapis.com/";
+   // public static final String BASE_RECOMMEND_LIST = "http://192.168.1.188:9991/";
     public static final String RECOMMEND_LIST = "youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&key=AIzaSyCaXBz_x3Euwc_a_xUykF1jhg1nNcSuzH0&maxResults=20";
 
     public static final String SEARCH_LIST = "youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&key=AIzaSyCaXBz_x3Euwc_a_xUykF1jhg1nNcSuzH0&maxResults=512";

@@ -69,10 +69,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class AndroidSystem {
     public static boolean isSdCardAvaiable(Context context){
@@ -555,11 +558,11 @@ public class AndroidSystem {
         return locale.getDisplayLanguage();
     }
 
-    public static List<ApplicationInfo> getUserApps2(Context context){
+    public static List<ApplicationInfo> getUserApps2(Context context) {
         LauncherApps apps = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             apps = context.getSystemService(LauncherApps.class);
-        }else {
+        } else {
             apps = (LauncherApps) context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         }
         List<LauncherActivityInfo> launchers = apps.getActivityList(null, android.os.Process.myUserHandle());
@@ -572,8 +575,18 @@ public class AndroidSystem {
         });
 
         List<ApplicationInfo> result = new ArrayList<>();
-        for (LauncherActivityInfo launcher : launchers){
-            if (!launcher.getApplicationInfo().packageName.equals(BuildConfig.APPLICATION_ID)) result.add(launcher.getApplicationInfo());
+
+        // 定义要隐藏的应用包名列表
+        Set<String> hiddenPackageNames = new HashSet<>(Arrays.asList(
+                "com.android.vending",
+                "com.explorer"
+        ));
+
+        for (LauncherActivityInfo launcher : launchers) {
+            String packageName = launcher.getApplicationInfo().packageName;
+            if (!packageName.equals(BuildConfig.APPLICATION_ID) && !hiddenPackageNames.contains(packageName)) {
+                result.add(launcher.getApplicationInfo());
+            }
         }
         return result;
     }
@@ -582,15 +595,26 @@ public class AndroidSystem {
         return (flags & ApplicationInfo.FLAG_SYSTEM) != 0;
     }
 
-    public static List<ApplicationInfo> getUserApps(Context context){
+    public static List<ApplicationInfo> getUserApps(Context context) {
         PackageManager pm = context.getPackageManager();
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
         List<ApplicationInfo> result = new ArrayList<>();
+
+        // 定义要隐藏的应用包名列表
+        Set<String> hiddenPackageNames = new HashSet<>(Arrays.asList(
+                "com.android.vending",
+                "com.explorer"
+
+        ));
+
         for (ApplicationInfo packageInfo : packages) {
             Intent intent = getPackageNameIntent(context, packageInfo.packageName);
-            if (intent != null && !packageInfo.packageName.equals(BuildConfig.APPLICATION_ID)) result.add(packageInfo);
+            if (intent != null && !packageInfo.packageName.equals(BuildConfig.APPLICATION_ID) && !hiddenPackageNames.contains(packageInfo.packageName)) {
+                result.add(packageInfo);
+            }
         }
+
         Collections.sort(result, new Comparator<ApplicationInfo>() {
             @Override
             public int compare(ApplicationInfo o1, ApplicationInfo o2) {
@@ -599,15 +623,17 @@ public class AndroidSystem {
                     PackageInfo info1 = pm.getPackageInfo(o1.packageName, 0);
                     PackageInfo info2 = pm.getPackageInfo(o2.packageName, 0);
                     value = (int) (info2.firstInstallTime - info1.firstInstallTime);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
-                }finally {
+                } finally {
                     return value;
                 }
             }
         });
         return result;
     }
+
+
 
     public static void setSystemLanguage(Context context, Locale locale){
         SystemUtils.updateLocale(locale);

@@ -72,7 +72,6 @@ import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
 import com.soya.launcher.bean.Notify
-import com.soya.launcher.bean.PlaceHolderBean
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
@@ -87,7 +86,6 @@ import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isUDisk
-import com.soya.launcher.h27002.defaultResource
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.HttpRequest.checkVersion
@@ -214,42 +212,20 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
             }
         }
+       if (Config.COMPANY==5){
 
-        /*this.obseverLiveEvent<Boolean>("isenable"){
-            val index = mHorizontalContentGrid?.selectedPosition?:0
-            fillApps(
-                true,
-                mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
-            )
-            mAppBarLayout!!.setExpanded(true)
-
-            mHorizontalContentGrid?.apply {
-                val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount?:0)) index else index - 1
-                postDelayed({
-                    requestFocus()
-
-                    scrollToPosition(newFocusPosition)
-                    layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
-                },500)
-
-            }
-
-        }*/
-
-        if (Config.COMPANY==5){
-
-        }else{
-            items.addAll(
-                Arrays.asList(
-                    *arrayOf(
-                        TypeItem(
-                            getString(R.string.app_store),
-                            R.drawable.store,
-                            0,
-                            Types.TYPE_APP_STORE,
-                            TypeItem.TYPE_ICON_IMAGE_RES,
-                            TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                        ),
+       }else{
+           items.addAll(
+               Arrays.asList(
+                   *arrayOf(
+                       TypeItem(
+                           getString(R.string.app_store),
+                           R.drawable.store,
+                           0,
+                           Types.TYPE_APP_STORE,
+                           TypeItem.TYPE_ICON_IMAGE_RES,
+                           TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                       ),
 
                         )
                 )
@@ -535,10 +511,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             (authBean?.status==200).yes {
                                 authBean?.code?.let {
                                     "开始判断msg===".d("zy1996")
-                                    BuildConfig.DEBUG.no {
-                                        it.getResult(authBean.msg)
-                                    }
-
+                                    it.getResult(authBean.msg)
                                 }
 
                             }.otherwise {
@@ -1108,8 +1081,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             //startActivity(Intent(activity, HomeGuideGroupGradientActivity::class.java))
 
             // startActivity(Intent(activity, ChooseGradientActivity::class.java))
+            when{
+                isH6()->{
+                    startKtxActivity<GradientActivity>()
+                }
+                else->{
+                    startKtxActivity<HomeGuideGroupGradientActivity>()
+                }
+            }
 
-            startKtxActivity<HomeGuideGroupGradientActivity>()
 
 
             /*
@@ -1516,7 +1496,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 iconType,
                 bean.type
             )
-            item.iconName = bean.iconName
             item.data = gson.toJson(bean.packageNames)
             App.MOVIE_MAP.put(item.id, movices)
             if(Config.COMPANY==5){
