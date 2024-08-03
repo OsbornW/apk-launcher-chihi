@@ -9,6 +9,7 @@ import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.sendLiveEventDataDelay
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
+import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
 import com.soya.launcher.fragment.AuthFragment
 import com.soya.launcher.manager.PreferencesManager
@@ -17,14 +18,20 @@ import com.soya.launcher.ui.fragment.WelcomeFragment
 
 fun switchFragment() = run {
 
-    AppCacheBase.isActive.yes {
-
+    BuildConfig.DEBUG.yes {
         sendLiveEventDataDelay(IS_MAIN_CANBACK, false, 1000)
         MainFragment.newInstance()
-
     }.otherwise {
-        AuthFragment.newInstance()
+        AppCacheBase.isActive.yes {
+
+            sendLiveEventDataDelay(IS_MAIN_CANBACK, false, 1000)
+            MainFragment.newInstance()
+
+        }.otherwise {
+            AuthFragment.newInstance()
+        }
     }
+
 
 }
 

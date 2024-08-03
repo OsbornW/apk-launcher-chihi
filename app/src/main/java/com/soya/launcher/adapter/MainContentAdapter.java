@@ -17,6 +17,9 @@ import androidx.leanback.widget.Presenter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.shudong.lib_base.ext.LiveEventExtKt;
+import com.shudong.lib_base.global.AppCacheBase;
 import com.soya.launcher.App;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.Movice;
@@ -31,6 +34,7 @@ import com.soya.launcher.view.MyFrameLayout;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.Holder> {
@@ -112,12 +116,27 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
                     //Drawable drawable = H27002ExtKt.getDrawableFromPath(context,path);
 
                     Log.e("zengyue", "bind: 当前要加载的路径是"+ image );
-                    if(item.getImageName()==null||((String)item.getImageName()).isEmpty()){
+                    /*if(item.getImageName()==null||((String)item.getImageName()).isEmpty()){
                         GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,null);
                     }else {
                         GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,H27002ExtKt.getDrawableByName(context,(String) item.getImageName()));
 
+                    }*/
+
+                    Drawable cachedDrawable = AppCacheBase.INSTANCE.getDrawableCache().get((String) image);
+                    if (cachedDrawable != null) {
+                        // 使用缓存的 Drawable
+                        Log.e("zengyue", "bind: 走的缓存Movice===");
+                        mIV.setImageDrawable(cachedDrawable);
+                    } else {
+                        // 从网络加载
+                        Log.e("zengyue", "bind: 走的网络Movice===");
+                        mIV.setImageDrawable(H27002ExtKt.getDrawableByName(context,(String) item.getImageName()));
+                        AppCacheBase.INSTANCE.getDrawableCache().put((String) image, mIV.getDrawable());
+                        //LiveEventBus.get("loadnet", String.class).post((String)image);
+
                     }
+
                     if(tvLoadding!=null){
                         if(item.getId().isEmpty()){
                             tvLoadding.setVisibility(View.GONE);

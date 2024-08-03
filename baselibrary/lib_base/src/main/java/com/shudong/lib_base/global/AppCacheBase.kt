@@ -1,6 +1,7 @@
 package com.shudong.lib_base.global
 
 import android.content.pm.ApplicationInfo
+import android.graphics.drawable.Drawable
 import com.drake.serialize.serialize.serialLazy
 
 
@@ -12,6 +13,7 @@ object AppCacheBase {
     var isActive :Boolean by serialLazy(false)
     var activeCode :String by serialLazy("")
     var isCopyed :Boolean by serialLazy(false)
+    val drawableCache = mutableMapOf<String, Drawable>()
 
 
 }
