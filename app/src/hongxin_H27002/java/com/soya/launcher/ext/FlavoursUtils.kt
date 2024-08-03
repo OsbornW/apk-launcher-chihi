@@ -17,6 +17,7 @@ import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.ui.fragment.WelcomeFragment
 
 fun switchFragment() = run {
+/*
     BuildConfig.DEBUG.yes {
         sendLiveEventDataDelay(IS_MAIN_CANBACK, false, 1000)
         MainFragment.newInstance()
@@ -29,7 +30,13 @@ fun switchFragment() = run {
         }.otherwise {
             AuthFragment.newInstance()
         }
+    }*/
+    AppCacheBase.isActive.yes {
+        sendLiveEventDataDelay(IS_MAIN_CANBACK, false, 1000)
+        MainFragment.newInstance()
 
+    }.otherwise {
+        AuthFragment.newInstance()
     }
 
 }
