@@ -49,6 +49,7 @@ import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.downloadPic
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
@@ -223,29 +224,29 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
             }
         }
-       if (Config.COMPANY==5){
+        if (Config.COMPANY == 5) {
 
-       }else{
-           items.addAll(
-               Arrays.asList(
-                   *arrayOf(
-                       TypeItem(
-                           getString(R.string.app_store),
-                           R.drawable.store,
-                           0,
-                           Types.TYPE_APP_STORE,
-                           TypeItem.TYPE_ICON_IMAGE_RES,
-                           TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                       ),
+        } else {
+            items.addAll(
+                Arrays.asList(
+                    *arrayOf(
+                        TypeItem(
+                            getString(R.string.app_store),
+                            R.drawable.store,
+                            0,
+                            Types.TYPE_APP_STORE,
+                            TypeItem.TYPE_ICON_IMAGE_RES,
+                            TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                        ),
 
                         )
                 )
             )
         }
 
-        if (Config.COMPANY==5){
+        if (Config.COMPANY == 5) {
 
-        }else{
+        } else {
             items.addAll(
                 Arrays.asList(
                     *arrayOf(
@@ -261,7 +262,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 )
             )
         }
-        if (Config.COMPANY == 0|| Config.COMPANY == 9) {
+        if (Config.COMPANY == 0 || Config.COMPANY == 9) {
             items.add(
                 TypeItem(
                     getString(R.string.pojector),
@@ -313,6 +314,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
         startRepeatingTask()
 
+
     }
 
     private fun startRepeatingTask() {
@@ -324,16 +326,59 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     // 执行实际的任务
                     isShowUpdate().yes { performTask() }
 
+                    checkPicDownload()
+
 
                 }
             }
         }
     }
 
+    var isPicDownload = false
+    private fun startPicTask() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
+                while (true) {
+                    //"开始3秒轮询一次：$this".e("zengyue1")
+                    checkPicDownload()
+                    delay(15000) // 每两秒执行一次
+
+
+                }
+            }
+        }
+    }
+
+    private fun checkPicDownload() {
+        val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
+        if (File(path).exists()) {
+            val result = Gson().fromJson<HomeResponse>(
+                JsonReader(FileReader(path)),
+                HomeResponse::class.java
+            )
+
+            result.data.movies.forEach {
+                it.datas.forEach {
+                    val destPath = "${appContext.filesDir.absolutePath}/${it.imageName}.jpg"
+                    if (!File(destPath).exists()) {
+                        (it.imageUrl as String).downloadPic(lifecycleScope, destPath,
+                            downloadComplete = { _, path ->
+                                "下载成功了：$path".e("zengyue")
+                                AppCacheBase.filePathCache[it.imageUrl as String] = File(path)
+                            }
+                        )
+                    }
+
+                }
+            }
+
+        }
+    }
+
     private fun performTask() {
         "开始请求：".e("zengyue")
         mViewModel.reqUpdateInfo().lifecycle(this@MainFragment,
-            errorCallback = {throwanle->
+            errorCallback = { throwanle ->
                 "当前错误${throwanle.message}".e("zengyue")
             },
             isShowError = false,
@@ -342,7 +387,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 AppCache.updateInfo = this.jsonToString()
                 val isHasUpdate = getUpdateList()
                 "成功了：$isHasUpdate".e("zengyue")
-                isHasUpdate.yes {  startKtxActivity<UpdateAppsActivity>() }.otherwise {
+                isHasUpdate.yes { startKtxActivity<UpdateAppsActivity>() }.otherwise {
                     AppCache.updateInteval = "hour"
                     AppCache.lastTipTime = System.currentTimeMillis()
                 }
@@ -1130,15 +1175,15 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             //requireActivity().initializeAd(rlAD!!,this)
             //requireActivity().startAd()
 
-           /* Ad.get().setEnableLog(true)
-            if(adController==null){
-                adController = Ad.get().begin(requireContext())
-                    .container(rlAD)
-                    .lifecycleOwner(this)
-                    .start();
-            }else{
-                adController?.start(rlAD)
-            }*/
+            /* Ad.get().setEnableLog(true)
+             if(adController==null){
+                 adController = Ad.get().begin(requireContext())
+                     .container(rlAD)
+                     .lifecycleOwner(this)
+                     .start();
+             }else{
+                 adController?.start(rlAD)
+             }*/
 
             //AndroidSystem.openSystemSetting(getActivity());
         } else if (v == mWeatherView) {
@@ -1707,6 +1752,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         ),
                         "Home.json"
                     )
+                    if(!isPicDownload){
+                        startPicTask()
+                        isPicDownload = true
+                    }
+
                     val header = fillData(result)
                     header.addAll(items)
 
@@ -1746,7 +1796,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             override fun onClick(bean: ApplicationInfo) {
                 try {
                     openApp(bean)
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
 

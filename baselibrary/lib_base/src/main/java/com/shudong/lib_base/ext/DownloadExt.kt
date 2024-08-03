@@ -119,5 +119,24 @@ suspend fun String.silentInstall(): Boolean {
 }
 
 
+fun String.downloadPic(
+    scope: CoroutineScope,
+    path: String,
+    downloadError: ((error: String) -> Unit)? = null,
+    downloadComplete: ((str: String,destPath:String) -> Unit)? = null,
+) =
+    scope.launch {
+
+        RxHttp.get(this@downloadPic)
+            .toDownloadFlow(path) {
+                //it为Progress对象
+               // process.invoke(it.progress)
+            }.catch {
+                downloadError?.invoke(it.message ?: "")
+            }.collect {
+                downloadComplete?.invoke(it,path)
+            }
+    }
+
 
 

@@ -34,6 +34,7 @@ import com.soya.launcher.view.MyFrameLayout;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -123,16 +124,17 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
 
                     }*/
 
-                    Drawable cachedDrawable = AppCacheBase.INSTANCE.getDrawableCache().get((String) image);
-                    if (cachedDrawable != null) {
+                    File cacheFile = AppCacheBase.INSTANCE.getFilePathCache().get((String) image);
+                    if (cacheFile != null) {
                         // 使用缓存的 Drawable
                         Log.e("zengyue", "bind: 走的缓存Movice===");
-                        mIV.setImageDrawable(cachedDrawable);
+                        //mIV.setImageDrawable(cachedDrawable);
+                        GlideUtils.bind(context, mIV, cacheFile);
                     } else {
                         // 从网络加载
                         Log.e("zengyue", "bind: 走的网络Movice===");
                         mIV.setImageDrawable(H27002ExtKt.getDrawableByName(context,(String) item.getImageName()));
-                        AppCacheBase.INSTANCE.getDrawableCache().put((String) image, mIV.getDrawable());
+                        //AppCacheBase.INSTANCE.getDrawableCache().put((String) image, mIV.getDrawable());
                         //LiveEventBus.get("loadnet", String.class).post((String)image);
 
                     }
