@@ -1,6 +1,8 @@
 package com.thumbsupec.lib_net.di
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.http.MyX509
 import com.thumbsupec.lib_net.http.SSL
@@ -67,12 +69,13 @@ val httpClientModule = module {
             .addInterceptor(AuthorizationInterceptor())
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
-            .sslSocketFactory(SSL(MyX509()), MyX509())
+            //.sslSocketFactory(SSL(MyX509()), MyX509())
             .hostnameVerifier { _, _ -> true }
             .readTimeout(TIME_OUT, TimeUnit.SECONDS).also {
                 it.addInterceptor(httpLoggingInterceptor)
             }.build()
     }
 }
+
 
 val netModules = listOf(mainRetrofitModule, alternateRetrofitModule, httpClientModule)

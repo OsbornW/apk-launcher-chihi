@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.chihihx.launcher_game",
+  "variantName": "hongxin_713GRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 56,
+      "versionName": "1.57",
+      "outputFile": "Launcher_1.57_20240730_1749_713G.apk"
+    }
+  ],
+  "elementType": "File"
+}
