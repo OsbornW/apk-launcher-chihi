@@ -17,11 +17,10 @@ import android.util.Log
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor
 import com.shudong.lib_base.ContextManager
+import com.shudong.lib_base.base.viewmodel.baseModules
 import com.shudong.lib_base.ext.MvvmHelper
-import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.no
-import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.bean.AppItem
@@ -29,18 +28,20 @@ import com.soya.launcher.bean.CacheWeather
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
 import com.soya.launcher.bean.Wallpaper
+import com.soya.launcher.cache.AppCache
 import com.soya.launcher.config.Config
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.http.HttpRequest
-import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.ui.dialog.RemoteDialog
-import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.BluetoothScannerUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
+import com.soya.launcher.net.di.homeModules
 import com.thumbsupec.lib_base.ext.language.initMultiLanguage
 import com.thumbsupec.lib_base.toast.ToastUtils
+import com.thumbsupec.lib_net.AppCacheNet
+import com.thumbsupec.lib_net.di.netModules
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -48,6 +49,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
 import java.util.Arrays
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -102,6 +105,19 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        AppCacheNet.baseUrl = BuildConfig.BASE_URL
+
+        startKoin {
+            androidContext(this@App)
+            modules(netModules)
+            //modules(appLoginModule)
+            modules(baseModules)
+            modules(homeModules)
+        }
+        AppCache.lastTipTime = 0L
+        AppCache.updateInteval
+
         OkGo.init(this)
 
         // 配置 OkGo

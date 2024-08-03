@@ -13,3 +13,7 @@ fun switchFragment() = run {
 
 
 }
+
+fun FragmentActivity.jumpToAuth(){
+
+}

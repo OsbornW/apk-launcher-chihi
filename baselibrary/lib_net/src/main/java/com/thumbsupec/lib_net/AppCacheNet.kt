@@ -1,5 +1,6 @@
 package com.thumbsupec.lib_net
 
+import com.drake.serialize.serialize.serial
 import com.drake.serialize.serialize.serialLazy
 
 /**
@@ -13,5 +14,6 @@ import com.drake.serialize.serialize.serialLazy
 object AppCacheNet {
     // APP Token
     var token: String? by serialLazy()
+    var baseUrl: String? by serial("")
 
 }

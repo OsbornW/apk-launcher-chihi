@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<com.hjq.shape.layout.ShapeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    app:shape_solidColor="@color/white"
+    android:orientation="vertical"
+    app:shape_radius="@dimen/qb_px_12"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_60"
+        >
+        <TextView
+            android:textStyle="bold"
+           android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/qb_px_30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="可用更新"
+            android:textColor="@color/black"
+            android:textSize="@dimen/qb_px_18"
+            />
+    </RelativeLayout>
+
+
+
+    <androidx.leanback.widget.VerticalGridView
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        app:focusOutFront="true"
+        app:focusOutEnd="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layout_below="@id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/rv_apps"
+        />
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:layout_marginBottom="@dimen/qb_px_10"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.hjq.shape.view.ShapeTextView
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            app:shape_strokeFocusedColor="@color/color_669966"
+            android:textSize="@dimen/qb_px_12"
+            app:shape_strokeWidth="0.5dp"
+            android:id="@+id/tv_next_time"
+            android:layout_width="@dimen/qb_px_80"
+            android:layout_height="@dimen/qb_px_35"
+            android:gravity="center"
+            app:shape_radius="@dimen/qb_px_8"
+            android:text="暂不提示"
+            android:textColor="@color/black"
+            app:shape_solidColor="#F2F2F7"
+            />
+
+        <com.hjq.shape.view.ShapeTextView
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            app:shape_strokeFocusedColor="@color/color_669966"
+            android:textSize="@dimen/qb_px_12"
+            android:layout_marginLeft="@dimen/qb_px_50"
+            app:shape_strokeWidth="0.5dp"
+            android:id="@+id/tv_cancle"
+            android:layout_width="@dimen/qb_px_80"
+            android:layout_height="@dimen/qb_px_35"
+            android:gravity="center"
+            app:shape_radius="@dimen/qb_px_8"
+            android:text="取消"
+            android:textColor="@color/black"
+            app:shape_solidColor="#F2F2F7"
+            />
+
+        <com.hjq.shape.view.ShapeTextView
+            android:visibility="gone"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            app:shape_strokeFocusedColor="@color/color_669966"
+            android:textSize="@dimen/qb_px_12"
+            app:shape_strokeWidth="0.5dp"
+            android:id="@+id/tv_ok"
+            android:layout_width="@dimen/qb_px_120"
+            android:layout_height="@dimen/qb_px_35"
+            android:gravity="center"
+            app:shape_radius="@dimen/qb_px_8"
+            android:text="完成"
+            android:textColor="@color/black"
+            app:shape_solidColor="#F2F2F7"
+            />
+
+    </LinearLayout>
+
+
+</com.hjq.shape.layout.ShapeLinearLayout>
+
+</layout>

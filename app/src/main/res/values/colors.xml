@@ -36,4 +36,6 @@
     <color name="store_color">#DBFF6D00</color>
     <color name="app_list_color">#6200EA</color>
     <color name="projector_color">#00BFA5</color>
+    <color name="color_0076FF">#0076FF</color>
+    <color name="color_669966">#669966</color>
 </resources>

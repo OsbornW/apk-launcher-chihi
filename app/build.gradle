@@ -78,8 +78,8 @@ android {
         }
 
         yxt {
-            storeFile file("yxt_X98K_10.keystore")
-            //storeFile file("platform_X98K_301.keystore")
+           // storeFile file("yxt_X98K_10.keystore")
+            storeFile file("platform_X98K_301.keystore")
             storePassword "android"
             keyAlias "platform"
             keyPassword "android"
@@ -97,6 +97,13 @@ android {
             storePassword 'platform'
             keyAlias 'platform'
             keyPassword 'platform'
+        }
+
+        new_701 {
+            storeFile file("platform_701.keystore")
+            storePassword 'android'
+            keyAlias 'platform'
+            keyPassword 'android'
         }
     }
 
@@ -221,8 +228,9 @@ android {
             applicationId "com.soya.h27002"
             minSdk 22
             dimension "chihi"
-            manifestPlaceholders = [share_uid: ""]
-            signingConfig signingConfigs.hongxin
+            //manifestPlaceholders = [share_uid: ""]
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            signingConfig signingConfigs.new_701
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
@@ -274,7 +282,7 @@ android {
         }
 
         debug {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.new_701
         }
 
         //打包应用
@@ -338,7 +346,11 @@ android {
 }
 
 dependencies {
-    implementation files('libs/hslib-r0.0.2-release-LA22001.aar', 'libs/system.jar', 'libs/softwinner.keystone.jar')
+    implementation files(
+            'libs/hslib-r0.0.2-release-LA22001.aar',
+            'libs/system.jar',
+            'libs/softwinner.keystone.jar',
+    )
 
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'

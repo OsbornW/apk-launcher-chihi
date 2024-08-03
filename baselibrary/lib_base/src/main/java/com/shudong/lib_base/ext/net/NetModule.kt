@@ -1,6 +1,7 @@
 package com.thumbsupec.lib_net.di
 
 import android.util.Log
+import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.http.MyX509
 import com.thumbsupec.lib_net.http.SSL
 import com.thumbsupec.lib_net.http.convert.SerializationConverterFactory
@@ -9,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import retrofit2.http.Url
 import java.util.concurrent.TimeUnit
 
 /**
@@ -20,7 +22,8 @@ import java.util.concurrent.TimeUnit
  * @PACKAGE_NAME:  com.thumbsupec.lib_net.di
  */
 const val BASE_URL = "http://api.ispruz.com/"
-const val HEADERURL = "/app/api/"
+//const val BASE_URL_LOCAL = "http://192.168.1.188:9991/"
+const val HEADERURL = ""
 
 private const val TIME_OUT = 8L
 private const val TAG = "zengyue"
@@ -35,27 +38,41 @@ val httpLoggingInterceptor = HttpLoggingInterceptor { message -> Log.e(TAG, mess
 }
 
 
-val netModule = module {
+// 定义 Retrofit 实例用于主域名
+val mainRetrofitModule = module {
     single {
         Retrofit.Builder()
             .client(get())
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_URL)  // 主域名
             .addConverterFactory(SerializationConverterFactory.create())
             .build()
     }
+}
 
+// 定义 Retrofit 实例用于备用域名
+val alternateRetrofitModule = module {
+    single {
+        Retrofit.Builder()
+            .client(get())
+            .baseUrl(AppCacheNet.baseUrl)  // 备用域名
+            .addConverterFactory(SerializationConverterFactory.create())
+            .build()
+    }
+}
+
+// 定义 OkHttpClient 实例
+val httpClientModule = module {
     single {
         OkHttpClient.Builder()
             .addInterceptor(AuthorizationInterceptor())
-            //.addInterceptor(ErrorInterceptor())
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
             .sslSocketFactory(SSL(MyX509()), MyX509())
             .hostnameVerifier { _, _ -> true }
             .readTimeout(TIME_OUT, TimeUnit.SECONDS).also {
-                //if (BuildConfig.DEBUG) {
-                    it.addInterceptor(httpLoggingInterceptor)
-                //}
+                it.addInterceptor(httpLoggingInterceptor)
             }.build()
     }
 }
+
+val netModules = listOf(mainRetrofitModule, alternateRetrofitModule, httpClientModule)

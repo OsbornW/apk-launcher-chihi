@@ -12,13 +12,13 @@ class NoDragVerticalGridView @JvmOverloads constructor(
 ) : VerticalGridView(context, attrs, defStyle) {
 
 
+
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-        if (event?.action == MotionEvent.ACTION_MOVE) {
+              if (event?.action == MotionEvent.ACTION_MOVE) {
             // 返回 true 以拦截触摸事件，禁止拖拽
             return true
         }
         return super.dispatchTouchEvent(event)
     }
-
 
 }
