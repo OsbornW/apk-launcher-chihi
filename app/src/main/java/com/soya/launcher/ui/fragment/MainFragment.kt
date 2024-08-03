@@ -87,11 +87,13 @@ import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.getUpdateList
+import com.soya.launcher.ext.initializeAd
 import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isShowUpdate
 import com.soya.launcher.ext.isUDisk
+import com.soya.launcher.ext.startAd
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.HttpRequest.checkVersion
@@ -1147,6 +1149,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             } else {
                 startActivity(Intent(activity, SettingActivity::class.java))
             }
+            //requireActivity().initializeAd(rlAD!!,this)
+            //requireActivity().startAd()
+
            /* Ad.get().setEnableLog(true)
             if(adController==null){
                 adController = Ad.get().begin(requireContext())
