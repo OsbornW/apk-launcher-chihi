@@ -68,7 +68,7 @@ val httpClientModule = module {
             .addInterceptor(AuthorizationInterceptor())
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
-            .sslSocketFactory(SSL(createSslContext()), createSslContext())
+            //.sslSocketFactory(SSL(createSslContext()), createSslContext())
             .hostnameVerifier { _, _ -> true }
             .readTimeout(TIME_OUT, TimeUnit.SECONDS).also {
                 it.addInterceptor(httpLoggingInterceptor)
