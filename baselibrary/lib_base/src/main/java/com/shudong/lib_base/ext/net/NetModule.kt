@@ -5,6 +5,7 @@ import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.http.MyX509
 import com.thumbsupec.lib_net.http.SSL
 import com.thumbsupec.lib_net.http.convert.SerializationConverterFactory
+import com.thumbsupec.lib_net.http.createSslContext
 import com.thumbsupec.lib_net.http.intercept.AuthorizationInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -67,7 +68,7 @@ val httpClientModule = module {
             .addInterceptor(AuthorizationInterceptor())
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
-            .sslSocketFactory(SSL(MyX509()), MyX509())
+            .sslSocketFactory(SSL(createSslContext()), createSslContext())
             .hostnameVerifier { _, _ -> true }
             .readTimeout(TIME_OUT, TimeUnit.SECONDS).also {
                 it.addInterceptor(httpLoggingInterceptor)

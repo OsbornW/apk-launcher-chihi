@@ -133,7 +133,11 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
                     } else {
                         // 从网络加载
                         Log.e("zengyue", "bind: 走的网络Movice===");
-                        mIV.setImageDrawable(H27002ExtKt.getDrawableByName(context,(String) item.getImageName()));
+                        if(item.getImageName()==null||((String)item.getImageName()).isEmpty()){
+                            GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image);
+                        }else {
+                            mIV.setImageDrawable(H27002ExtKt.getDrawableByName(context, (String) item.getImageName()));
+                        }
                         //AppCacheBase.INSTANCE.getDrawableCache().put((String) image, mIV.getDrawable());
                         //LiveEventBus.get("loadnet", String.class).post((String)image);
 
