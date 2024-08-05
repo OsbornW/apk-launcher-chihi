@@ -326,9 +326,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     // 执行实际的任务
                     isShowUpdate().yes { performTask() }
 
-                    checkPicDownload()
-
-
                 }
             }
         }
@@ -337,15 +334,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     var isPicDownload = false
     private fun startPicTask() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
                     //"开始3秒轮询一次：$this".e("zengyue1")
                     checkPicDownload()
                     delay(15000) // 每两秒执行一次
 
-
                 }
-            }
+
         }
     }
 

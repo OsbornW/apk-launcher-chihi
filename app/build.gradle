@@ -274,7 +274,7 @@ android {
 
     buildTypes {
         release {
-            debuggable true
+            //debuggable true
             minifyEnabled false
             //清理多余的图片资源或raw中没有用到的资源等，一般会和混淆同时使用(和混淆都可以起到一定程度apk瘦身的作用)
             shrinkResources false
