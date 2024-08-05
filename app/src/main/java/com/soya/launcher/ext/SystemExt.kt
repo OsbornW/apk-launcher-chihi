@@ -3,6 +3,7 @@ package com.soya.launcher.ext
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.shudong.lib_base.ext.appContext
@@ -61,28 +62,45 @@ fun String.getAppVersionName(): String? {
 }
 
 
-fun getUpdateList():Boolean{
+fun getUpdateList(): Boolean {
     val updateApps = AppCache.updateInfo.jsonToTypeBean<MutableList<UpdateAppsDTO>>()
-    var localApps = AndroidSystem.getUserApps2(appContext).toMutableList()
+    val localApps = AndroidSystem.getUserApps2(appContext).toMutableList()
 
-    // 3. 创建包名到版本号的映射
+    // 创建包名到版本号的映射
     val versionCodeMap = mutableMapOf<String, Int>()
-    for (app in localApps) {
+    val installedPackageNames = localApps.map { it.packageName }.toSet()
+
+    localApps.forEach { app ->
         try {
             val packageInfo = appContext.packageManager.getPackageInfo(app.packageName, 0)
             versionCodeMap[app.packageName] = packageInfo.versionCode
         } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
+            // 记录异常信息
+            Log.e("UpdateList", "Package not found: ${app.packageName}", e)
         }
     }
-    // 4. 筛选 updateApps 列表，移除版本号相同的 UpdateAppsDTO
+
+    // 筛选需要更新的应用，移除版本号相同的和本地不存在的 UpdateAppsDTO
     val filteredUpdateApps = updateApps.filterNot { dto ->
-        "当前Code：${versionCodeMap[dto.packageName]}====${dto.versionCode}".e("zengyue1")
-        versionCodeMap[dto.packageName] == dto.versionCode
+        val currentVersionCode = versionCodeMap[dto.packageName]
+        val isNotInstalled = dto.packageName !in installedPackageNames
+        val shouldFilter = currentVersionCode == dto.versionCode || isNotInstalled
+
+        if (shouldFilter) {
+            // 日志记录
+            Log.d("UpdateList", "Filtering out ${dto.packageName}. " +
+                    "Installed: ${!isNotInstalled}, " +
+                    "Current Code: $currentVersionCode, DTO Code: ${dto.versionCode}")
+        }
+
+        shouldFilter
     }.toMutableList()
+
+    // 更新缓存
     AppCache.updateInfo = filteredUpdateApps.jsonToString()
     return filteredUpdateApps.isNotEmpty()
 }
+
 
 
 

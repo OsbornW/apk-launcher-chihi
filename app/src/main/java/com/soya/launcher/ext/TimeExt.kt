@@ -8,13 +8,14 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 fun isShowUpdate(): Boolean {
-    if (AppCache.lastTipTime == 0L) {
-        // 如果 lastTipTime 等于 0，则直接返回 true
-        return true
-    }
 
     if(currentActivity!=null&& currentActivity is UpdateAppsActivity){
         return false
+    }
+
+    if (AppCache.lastTipTime == 0L) {
+        // 如果 lastTipTime 等于 0，则直接返回 true
+        return true
     }
 
     val now = System.currentTimeMillis()
