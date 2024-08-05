@@ -579,7 +579,10 @@ public class AndroidSystem {
         // 定义要隐藏的应用包名列表
         Set<String> hiddenPackageNames = new HashSet<>(Arrays.asList(
                 "com.android.vending",
-                "com.explorer"
+                "com.explorer",
+                "com.amazon.avod.thirdpartyclient",
+                "com.google.android.apps.youtube.creator",
+                "com.netflix.mediaclient"
         ));
 
         for (LauncherActivityInfo launcher : launchers) {
@@ -604,7 +607,10 @@ public class AndroidSystem {
         // 定义要隐藏的应用包名列表
         Set<String> hiddenPackageNames = new HashSet<>(Arrays.asList(
                 "com.android.vending",
-                "com.explorer"
+                "com.explorer",
+                "com.amazon.avod.thirdpartyclient",
+                "com.google.android.apps.youtube.creator",
+                "com.netflix.mediaclient"
 
         ));
 
