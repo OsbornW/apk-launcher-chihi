@@ -312,7 +312,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
         detectNetStaus()
 
-        startRepeatingTask()
+        //startRepeatingTask()
 
 
     }
