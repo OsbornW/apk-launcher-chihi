@@ -87,6 +87,7 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.getUpdateList
 import com.soya.launcher.ext.initializeAd
 import com.soya.launcher.ext.isH6
@@ -334,12 +335,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     var isPicDownload = false
     private fun startPicTask() {
         lifecycleScope.launch {
-                while (true) {
-                    //"开始3秒轮询一次：$this".e("zengyue1")
-                    checkPicDownload()
-                    delay(15000) // 每两秒执行一次
+            while (true) {
+                //"开始3秒轮询一次：$this".e("zengyue1")
+                checkPicDownload()
+                delay(15000) // 每两秒执行一次
 
-                }
+            }
 
         }
     }
@@ -1747,9 +1748,19 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         ),
                         "Home.json"
                     )
-                    if(!isPicDownload){
-                        startPicTask()
-                        isPicDownload = true
+                    if (!isPicDownload) {
+                        lifecycleScope.launch {
+                            if (result.data.reg_id != AppCache.reqId) {
+                                withContext(Dispatchers.IO) {
+                                    deleteAllPic()
+                                }
+                                AppCache.reqId = result.data.reg_id
+                            }
+                            startPicTask()
+                            isPicDownload = true
+                        }
+
+
                     }
 
                     val header = fillData(result)
@@ -1776,6 +1787,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
             }
         }
+    }
+
+    private fun deleteAllPic() {
+        appContext.filesDir.absolutePath.deleteAllImages()
     }
 
     private fun switchMovice(bean: TypeItem) {
