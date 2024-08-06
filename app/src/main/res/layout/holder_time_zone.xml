@@ -17,14 +17,14 @@
         android:layout_height="match_parent">
         <View
             android:layout_gravity="center_vertical"
-            android:background="@drawable/oval_solid_1"
+            android:background="@color/white"
             android:layout_width="@dimen/holder_date_list_point_width"
             android:layout_height="@dimen/holder_date_list_point_height"/>
         <TextView
             android:id="@+id/title"
             android:textSize="@dimen/holder_language_title_text_size"
             android:layout_marginLeft="@dimen/holder_language_title_margin_left"
-            android:textColor="@color/text_color_style_1"
+            android:textColor="@color/white"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -37,7 +37,7 @@
             <TextView
                 android:id="@+id/desc"
                 android:textSize="@dimen/holder_language_desc_text_size"
-                android:textColor="@color/text_color_style_5"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <ImageView

@@ -109,7 +109,7 @@ public class DatePickerDialog extends SingleDialogFragment implements View.OnCli
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        blur(mRootView, mBlur);
+        //blur(mRootView, mBlur);
     }
 
     @Override

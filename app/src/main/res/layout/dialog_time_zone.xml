@@ -17,10 +17,11 @@
         android:layout_width="@dimen/dialog_time_picker_root_width"
         android:layout_height="wrap_content">
         <ImageView
+            android:src="@drawable/bg_dialog"
             android:id="@+id/blur"
             android:scaleType="centerCrop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -28,7 +29,7 @@
             <TextView
                 android:text="@string/time_zone"
                 android:textSize="@dimen/dialog_app_title_text_size"
-                android:textColor="@color/text_color_style_1"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dialog_app_opt_height"/>

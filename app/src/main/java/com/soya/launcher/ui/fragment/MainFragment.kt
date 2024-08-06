@@ -225,26 +225,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
         }
 
-        /*this.obseverLiveEvent<Boolean>("isenable"){
-            val index = mHorizontalContentGrid?.selectedPosition?:0
-            fillApps(
-                true,
-                mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
-            )
-            mAppBarLayout!!.setExpanded(true)
-
-            mHorizontalContentGrid?.apply {
-                val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount?:0)) index else index - 1
-                postDelayed({
-                    requestFocus()
-
-                    scrollToPosition(newFocusPosition)
-                    layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
-                },500)
-
-            }
-
-        }*/
 
         if (Config.COMPANY == 5) {
 
@@ -402,27 +382,26 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         startLoopTime()
         var infos = AndroidSystem.getUserApps2(activity)
         if (infos.size != useApps.size) {
-            val index = mHorizontalContentGrid?.selectedPosition ?: 0
+            val index = mHorizontalContentGrid?.selectedPosition ?: -1
             fillApps(
                 true,
                 mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
             )
-            mAppBarLayout!!.setExpanded(true)
+            if(isExpanded){
+                mHorizontalContentGrid?.apply {
+                    val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount
+                            ?: 0)
+                    ) index else index - 1
+                    postDelayed({
+                        requestFocus()
 
-            mHorizontalContentGrid?.apply {
-                val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount
-                        ?: 0)
-                ) index else index - 1
-                postDelayed({
-                    requestFocus()
+                        scrollToPosition(newFocusPosition)
+                        layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
+                    }, 500)
 
-                    scrollToPosition(newFocusPosition)
-                    layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
-                }, 500)
-
+                }
             }
         }
-        Log.d("ActivityLifecycle", "onResume")
 
     }
 
@@ -1145,12 +1124,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     //var adController:Controller?=null
     override fun onClick(v: View) {
         if (v == mSettingView) {
-           /* if (Config.COMPANY == 4) {
+            if (Config.COMPANY == 4) {
                 AndroidSystem.openSystemSetting(activity)
             } else {
                 startActivity(Intent(activity, SettingActivity::class.java))
-            }*/
-            loadJar()
+            }
+            //loadJar()
             //requireActivity().initializeAd(rlAD!!,this)
             //requireActivity().startAd()
 
@@ -1864,46 +1843,28 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             when (intent.action) {
                 IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
                 Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> {
-                    val index = mHorizontalContentGrid?.selectedPosition ?: 0
+                    val index = mHorizontalContentGrid?.selectedPosition ?: -1
                     fillApps(
                         true,
                         mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
                     )
-                    mAppBarLayout!!.setExpanded(true)
-
-                    mHorizontalContentGrid?.apply {
-                        val newFocusPosition =
-                            if (index < (mHorizontalContentGrid?.adapter?.itemCount
+                    if(isExpanded){
+                        mHorizontalContentGrid?.apply {
+                            val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount
                                     ?: 0)
                             ) index else index - 1
-                        postDelayed({
-                            requestFocus()
+                            postDelayed({
+                                requestFocus()
 
-                            scrollToPosition(newFocusPosition)
-                            layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
-                        }, 500)
+                                scrollToPosition(newFocusPosition)
+                                layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
+                            }, 500)
 
+                        }
                     }
 
-                    var code
-                            : Int = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
-                    var success
-                            : Boolean = code == PackageInstaller.STATUS_SUCCESS
-                    // 假设 intent 是你要判断的 Intent 对象
 
-                    /*lifecycleScope.launch {
-                        if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.action)) {
-                            delay(800)
-                            UninstallDialog.newInstance(null, true)
-                                .show(requireActivity().supportFragmentManager, UninstallDialog.TAG)
-                        }
 
-                    }*/
-                    /* success.yes {
-                         ToastUtils.show("卸载成功")
-                     }.otherwise {
-                         ToastUtils.show("卸载失败")
-                     }*/
                 }
 
             }

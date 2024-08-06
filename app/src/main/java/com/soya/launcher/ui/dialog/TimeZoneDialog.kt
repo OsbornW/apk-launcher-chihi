@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
+import com.shudong.lib_base.ext.e
 import com.soya.launcher.R
 import com.soya.launcher.adapter.TimeZoneAdapter
 import com.soya.launcher.bean.SimpleTimeZone
@@ -44,9 +45,9 @@ class TimeZoneDialog : SingleDialogFragment() {
         super.initBind(inflater, view)
 
         lifecycleScope.launch {
-            withContext(Dispatchers.Main){
+           /* withContext(Dispatchers.Main){
                 blur(mRootView, mBlur)
-            }
+            }*/
             var select = 0
             val list: MutableList<SimpleTimeZone> = ArrayList()
             val aDefault = TimeZone.getDefault()
@@ -57,20 +58,33 @@ class TimeZoneDialog : SingleDialogFragment() {
 
                 for (i in ids.indices) {
                     val id = ids[i]
-                    if (id == aDefault.id) select = i
                     val zone = TimeZone.getTimeZone(id)
                     list.add(SimpleTimeZone(zone, id, zone.displayName))
                 }
 
                 // 排序集合
                 Collections.sort(list, Comparator.comparingInt { o: SimpleTimeZone -> o.zone.rawOffset })
+
+                for (i in list.indices) {
+                    val id = list[i].zone.id
+                    if (id == aDefault.id) select = i
+                }
             }
             withContext(Dispatchers.Main){
-                mTimeZoneAdapter!!.setSelect(aDefault)
                 mTimeZoneAdapter!!.replace(list)
                 mContentGrid!!.adapter = mTimeZoneAdapter
                 mContentGrid!!.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
-                mContentGrid!!.selectedPosition = select
+
+                mContentGrid!!.apply {
+                   postDelayed({
+                       "开始执行".e("zengyue1")
+                       scrollToPosition(select)
+                       //mContentGrid!!.selectedPosition = select
+                       //mTimeZoneAdapter!!.setSelect(aDefault)
+                   },0)
+                }
+
+                "当前选中的时区是：${aDefault.displayName}::$select".e("zengyue1")
 
 
                 mTimeZoneAdapter!!.setCallback { bean -> if (callback != null) callback!!.onClick(bean) }

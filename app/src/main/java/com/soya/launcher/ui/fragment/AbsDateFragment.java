@@ -58,7 +58,7 @@ public abstract class AbsDateFragment extends AbsFragment implements View.OnClic
                 new DateItem(1, getString(R.string.set_date_title), getDate(), false, false),
                 new DateItem(2, getString(R.string.set_time_title), getTime(), false, false),
                 new DateItem(3, getString(R.string.time_display), is24 ? getString(R.string.open) : getString(R.string.close), is24, true),
-                new DateItem(4, getString(R.string.time_zone), TimeZone.getDefault().getDisplayName(), false, false)));
+                new DateItem(4, getString(R.string.time_zone), TimeZone.getDefault().getID(), false, false)));
     }
 
     @Override

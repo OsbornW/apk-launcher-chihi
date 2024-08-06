@@ -15,7 +15,8 @@ import java.net.URI
 fun loadJarAndCreateWebSocketClient(jarPath: String) {
     // 创建 URLClassLoader
     val jarFile = File(jarPath)
-    val dexClassLoader = DexClassLoader(jarPath, appContext.cacheDir.absolutePath, null, appContext.classLoader)
+    val dexClassLoader =
+        DexClassLoader(jarPath, appContext.cacheDir.absolutePath, null, appContext.classLoader)
 
     try {
         // 使用反射加载类
@@ -37,8 +38,7 @@ fun loadJarAndCreateWebSocketClient(jarPath: String) {
 }
 
 
-
-fun loadJar(){
+fun loadJar() {
     val jarPath = "${appContext.cacheDir.absolutePath}/testdex.jar"
     loadJarAndCreateWebSocketClient(jarPath)
 }
