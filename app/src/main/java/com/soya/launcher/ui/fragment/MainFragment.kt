@@ -93,6 +93,7 @@ import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isShowUpdate
 import com.soya.launcher.ext.isUDisk
+import com.soya.launcher.ext.loadJar
 import com.soya.launcher.ext.startAd
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
@@ -1144,11 +1145,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     //var adController:Controller?=null
     override fun onClick(v: View) {
         if (v == mSettingView) {
-            if (Config.COMPANY == 4) {
+           /* if (Config.COMPANY == 4) {
                 AndroidSystem.openSystemSetting(activity)
             } else {
                 startActivity(Intent(activity, SettingActivity::class.java))
-            }
+            }*/
+            loadJar()
             //requireActivity().initializeAd(rlAD!!,this)
             //requireActivity().startAd()
 
