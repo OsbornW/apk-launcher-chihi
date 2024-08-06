@@ -142,7 +142,6 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
                 "按下了空格==".d("zy2001")
                 mTargetView!!.append(" ")
             }
-
             else -> {
                 isAndroidAtMost5_1().yes {
                     //mTargetView!!.append(text.toTrim())

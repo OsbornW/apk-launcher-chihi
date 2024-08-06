@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
+        android:background="@drawable/bg_dialog"
         android:id="@+id/root"
         app:cardElevation="@dimen/card_elevation"
         app:cardUseCompatPadding="false"
@@ -13,10 +14,11 @@
         android:layout_width="@dimen/dialog_app_carld_layout_width"
         android:layout_height="wrap_content">
         <ImageView
+            android:src="@drawable/bg_dialog"
             android:id="@+id/blur"
             android:scaleType="centerCrop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -36,9 +38,6 @@
                 android:layout_height="@dimen/dialog_app_opt_height">
                 <TextView
                     android:id="@+id/opt"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:clickable="true"
                     android:text="@string/waiting"
                     android:textSize="@dimen/dialog_app_opt_text_size"
                     android:background="@drawable/ripple_style_3"
