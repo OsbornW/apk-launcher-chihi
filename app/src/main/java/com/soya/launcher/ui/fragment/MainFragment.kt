@@ -390,8 +390,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         var infos = AndroidSystem.getUserApps2(activity)
         if (infos.size != mAppListAdapter?.getDataList()?.size) {
             mAppListAdapter?.refresh(infos)
-            useApps.clear()
-            useApps.addAll(mAppListAdapter?.getDataList()!!)
+            //useApps.clear()
+            //useApps.addAll(mAppListAdapter?.getDataList()!!)
 
         }
 
