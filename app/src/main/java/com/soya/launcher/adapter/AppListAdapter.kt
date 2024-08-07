@@ -3,6 +3,7 @@ package com.soya.launcher.adapter
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
@@ -38,11 +40,64 @@ class AppListAdapter(
         return dataList.size
     }
 
+    fun getDataList():MutableList<ApplicationInfo>{
+        return dataList
+    }
     fun replace(list: List<ApplicationInfo>?) {
         dataList.clear()
         dataList.addAll(list!!)
         notifyDataSetChanged()
     }
+
+    fun refresh(list: MutableList<ApplicationInfo>) {
+        val oldPackageNames = dataList.map { it.packageName }.toSet()
+        val newPackageNames = list.map { it.packageName }.toSet()
+
+        // 找出新增的 packageName 和缺失的 packageName
+        val missingInNew = newPackageNames - oldPackageNames
+        val extraInOld = oldPackageNames - newPackageNames
+
+        Log.e("zengyue", "Old package names: $oldPackageNames")
+        Log.e("zengyue", "New package names: $newPackageNames")
+        Log.e("zengyue", "Missing in new: $missingInNew")
+        Log.e("zengyue", "Extra in old: $extraInOld")
+
+        when {
+            // 处理新增的情况
+            missingInNew.isNotEmpty() && extraInOld.isEmpty() -> {
+                "新增了包哦1".e("zengyue")
+                val missingPackageName = missingInNew.first()
+                val newItem = list.find { it.packageName == missingPackageName }
+                if (newItem != null) {
+                    "新增了包哦2".e("zengyue")
+                    dataList.add(newItem)
+                    notifyItemInserted(dataList.indexOf(newItem))
+                }
+            }
+            // 处理移除的情况
+            extraInOld.isNotEmpty() && missingInNew.isEmpty() -> {
+                "移除了包哦1".e("zengyue")
+                val extraPackageName = extraInOld.first()
+                val itemsToRemove = dataList.filter { it.packageName == extraPackageName }
+                itemsToRemove.forEach { item ->
+                    "移除了包哦2".e("zengyue")
+                    val position = dataList.indexOf(item)
+                    dataList.removeAt(position)
+                    notifyItemRemoved(position)
+                }
+
+                val oldPackageNames = dataList.map { it.packageName }.toSet()
+                Log.e("zengyue", "Old package names1111: $oldPackageNames")
+            }
+            else -> {
+                "没有新增移除".e("zengyue")
+                // 如果没有新增或移除
+                println("No changes detected.")
+            }
+        }
+    }
+
+
 
     inner class Holder(view: View) : RecyclerView.ViewHolder(view) {
         private val mIV: ImageView
@@ -61,7 +116,7 @@ class AppListAdapter(
         }
 
         fun bind(bean: ApplicationInfo) {
-            val root = itemView.getRootView()
+            val root = itemView.rootView
             val pm = context.packageManager
             //Drawable banner = bean.activityInfo.loadBanner(pm);
             val banner: Drawable? = null
@@ -75,8 +130,8 @@ class AppListAdapter(
             } else {
                 mTitle.text = bean.loadLabel(pm)
             }
-            mIV.setVisibility(if (banner == null) View.GONE else View.VISIBLE)
-            mIVSmall.setVisibility(if (banner == null) View.VISIBLE else View.GONE)
+            mIV.visibility = if (banner == null) View.GONE else View.VISIBLE
+            mIVSmall.visibility = if (banner == null) View.VISIBLE else View.GONE
             mRootView.setCallback { selected -> if (callback != null) callback!!.onSelect(selected) }
             itemView.setOnClickListener { if (callback != null) callback!!.onClick(bean) }
             itemView.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->

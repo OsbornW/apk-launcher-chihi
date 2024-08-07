@@ -44,6 +44,7 @@ import com.google.gson.stream.JsonReader
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.open.system.SystemUtils
+import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
@@ -323,7 +324,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
                     delay(3000) // 每两秒执行一次
-                    "开始3秒轮询一次：$this".e("zengyue1")
+                    //"开始3秒轮询一次：$this".e("zengyue1")
                     // 执行实际的任务
                     isShowUpdate().yes { performTask() }
 
@@ -345,7 +346,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 AppCache.updateInfo = this.jsonToString()
                 val isHasUpdate = getUpdateList()
                 "成功了：$isHasUpdate".e("zengyue")
-                isHasUpdate.yes {  startKtxActivity<UpdateAppsActivity>() }.otherwise {
+                isHasUpdate.yes {
+                    if(currentActivity !=null && currentActivity !is UpdateAppsActivity){
+                        startKtxActivity<UpdateAppsActivity>()
+                    }
+
+                }.otherwise {
                     AppCache.updateInteval = "hour"
                     AppCache.lastTipTime = System.currentTimeMillis()
                 }
@@ -1844,11 +1850,20 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
                 Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> {
                     val index = mHorizontalContentGrid?.selectedPosition ?: -1
-                    fillApps(
+
+                    var infos = AndroidSystem.getUserApps2(activity)
+                    if (infos.size != mAppListAdapter?.getDataList()?.size) {
+                        mAppListAdapter?.refresh(infos)
+                        useApps.clear()
+                        useApps.addAll(mAppListAdapter?.getDataList()!!)
+
+                    }
+
+                    /*fillApps(
                         true,
                         mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
-                    )
-                    if(isExpanded){
+                    )*/
+                    /*if(isExpanded){
                         mHorizontalContentGrid?.apply {
                             val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount
                                     ?: 0)
@@ -1861,7 +1876,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             }, 500)
 
                         }
-                    }
+                    }*/
 
 
 
