@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
+        android:background="@drawable/bg_dialog"
         android:id="@+id/root"
         app:cardCornerRadius="@dimen/dialog_app_card_corner_radius"
         app:cardBackgroundColor="@color/transparent"
@@ -12,10 +13,11 @@
         android:layout_width="@dimen/dialog_app_carld_layout_width"
         android:layout_height="wrap_content">
         <ImageView
+            android:src="@drawable/bg_dialog"
             android:id="@+id/blur"
             android:scaleType="centerCrop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -55,9 +57,6 @@
                 android:layout_height="@dimen/dialog_app_opt_height">
                 <TextView
                     android:id="@+id/close"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:clickable="true"
                     android:text="@string/close"
                     android:textSize="@dimen/dialog_app_opt_text_size"
                     android:background="@drawable/ripple_style_3"
@@ -69,9 +68,6 @@
                 <TextView
                     android:id="@+id/remove"
                     android:text="@string/remove"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:clickable="true"
                     android:textSize="@dimen/dialog_app_opt_text_size"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
@@ -82,9 +78,6 @@
                 <TextView
                     android:id="@+id/retry"
                     android:text="@string/retry"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:clickable="true"
                     android:textSize="@dimen/dialog_app_opt_text_size"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"

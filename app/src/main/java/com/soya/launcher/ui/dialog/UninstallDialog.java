@@ -72,7 +72,7 @@ public class UninstallDialog extends SingleDialogFragment implements View.OnClic
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mOptView.requestFocus();
-        blur(mRootView, mBlur);
+        //blur(mRootView, mBlur);
     }
 
     @Override
