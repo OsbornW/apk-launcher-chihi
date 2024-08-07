@@ -65,7 +65,7 @@ class AppListAdapter(
 
         when {
             // 处理新增的情况
-            missingInNew.isNotEmpty() && extraInOld.isEmpty() -> {
+            missingInNew.isNotEmpty()-> {
                 Log.e("zengyue", "新增了包哦1")
                 missingInNew.forEach { missingPackageName ->
                     val newItem = list.find { it.packageName == missingPackageName }
@@ -77,7 +77,7 @@ class AppListAdapter(
                 }
             }
             // 处理移除的情况
-            extraInOld.isNotEmpty() && missingInNew.isEmpty() -> {
+            extraInOld.isNotEmpty()-> {
                 Log.e("zengyue", "移除了包哦1")
                 val positionsToRemove = mutableListOf<Int>()
                 extraInOld.forEach { extraPackageName ->
