@@ -49,6 +49,7 @@ class AppListAdapter(
         notifyDataSetChanged()
     }
 
+
     fun refresh(list: MutableList<ApplicationInfo>) {
         val oldPackageNames = dataList.map { it.packageName }.toSet()
         val newPackageNames = list.map { it.packageName }.toSet()
@@ -65,37 +66,42 @@ class AppListAdapter(
         when {
             // 处理新增的情况
             missingInNew.isNotEmpty() && extraInOld.isEmpty() -> {
-                "新增了包哦1".e("zengyue")
-                val missingPackageName = missingInNew.first()
-                val newItem = list.find { it.packageName == missingPackageName }
-                if (newItem != null) {
-                    "新增了包哦2".e("zengyue")
-                    dataList.add(newItem)
-                    notifyItemInserted(dataList.indexOf(newItem))
+                Log.e("zengyue", "新增了包哦1")
+                missingInNew.forEach { missingPackageName ->
+                    val newItem = list.find { it.packageName == missingPackageName }
+                    if (newItem != null) {
+                        Log.e("zengyue", "新增了包哦2: $missingPackageName")
+                        dataList.add(newItem)
+                        notifyItemInserted(dataList.indexOf(newItem))
+                    }
                 }
             }
             // 处理移除的情况
             extraInOld.isNotEmpty() && missingInNew.isEmpty() -> {
-                "移除了包哦1".e("zengyue")
-                val extraPackageName = extraInOld.first()
-                val itemsToRemove = dataList.filter { it.packageName == extraPackageName }
-                itemsToRemove.forEach { item ->
-                    "移除了包哦2".e("zengyue")
-                    val position = dataList.indexOf(item)
+                Log.e("zengyue", "移除了包哦1")
+                val positionsToRemove = mutableListOf<Int>()
+                extraInOld.forEach { extraPackageName ->
+                    dataList.indexOfFirst { it.packageName == extraPackageName }.let { position ->
+                        if (position != -1) {
+                            Log.e("zengyue", "移除了包哦2: $extraPackageName")
+                            positionsToRemove.add(position)
+                        }
+                    }
+                }
+                // 从最后一个位置开始移除，避免索引问题
+                positionsToRemove.sortedDescending().forEach { position ->
                     dataList.removeAt(position)
                     notifyItemRemoved(position)
                 }
 
-                val oldPackageNames = dataList.map { it.packageName }.toSet()
-                Log.e("zengyue", "Old package names1111: $oldPackageNames")
+                Log.e("zengyue", "Updated package names after removal: ${dataList.map { it.packageName }}")
             }
             else -> {
-                "没有新增移除".e("zengyue")
-                // 如果没有新增或移除
-                println("No changes detected.")
+                Log.e("zengyue", "没有新增移除")
             }
         }
     }
+
 
 
 
