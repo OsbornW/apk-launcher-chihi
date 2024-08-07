@@ -12,6 +12,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
@@ -43,6 +45,7 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
         mAdapter = KeyboardAdapter(requireContext(), inflater, ArrayList())
     }
 
+    var isPressSpace = false
     override fun initBefore(inflater: LayoutInflater, view: View) {
         super.initBefore(inflater, view)
         mAdapter!!.setCallback(this)
@@ -53,6 +56,10 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
                         KeyEvent.KEYCODE_DEL -> del()
                     }
                 } else {
+                    when (keyCode) {
+                        KeyEvent.KEYCODE_SPACE -> isPressSpace = true
+                        else-> isPressSpace = false
+                    }
                     mTargetView!!.append(event.displayLabel.toString())
                 }
             }
@@ -144,13 +151,16 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
             }
 
             else -> {
-                isAndroidAtMost5_1().yes {
-                    //mTargetView!!.append(text.toTrim())
-                    mTargetView?.text = mTargetView?.text.toString().toTrim() + text.toTrim()
-                }.otherwise {
-                    mTargetView!!.append(text)
-                    //mTargetView?.text = mTargetView?.text?.toString()
+                isPressSpace.no {
+                    isAndroidAtMost5_1().yes {
+                        //mTargetView!!.append(text.toTrim())
+                        mTargetView?.text = mTargetView?.text.toString().toTrim() + text.toTrim()
+                    }.otherwise {
+                        mTargetView!!.append(text)
+                        //mTargetView?.text = mTargetView?.text?.toString()
+                    }
                 }
+
 
 
             }
