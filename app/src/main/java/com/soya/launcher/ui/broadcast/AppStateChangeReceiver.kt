@@ -25,7 +25,6 @@ class AppStateChangeReceiver : BroadcastReceiver() {
                     // App disabled
                     sendLiveEventData("isenable",false)
                    // Toast.makeText(context, "$packageName 已被禁用", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(context, "$ 已被禁用", Toast.LENGTH_SHORT).show()
                 }
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED -> {
 
@@ -33,7 +32,6 @@ class AppStateChangeReceiver : BroadcastReceiver() {
                     // App enabled
                     sendLiveEventData("isenable",true)
                     //Toast.makeText(context, "$packageName 已被启用", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(context, "$ 已被启用", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     println("进入其他的")

@@ -51,7 +51,7 @@
     <string name="already_latest_version">It is already the latest version</string>
     <string name="launcher">starter</string>
     <string name="loading">Loading</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="download_progress">Downloading (%. 1f%%)</string>
     <string name="download_fail">Download failed, please try again</string>
     <string name="upgrade_now">Download completed, please click on install</string>
@@ -83,7 +83,7 @@
     <string name="year">year</string>
     <string name="month">month</string>
     <string name="day">day</string>
-    <string name="hour">Time</string>
+    <string name="hour">time</string>
     <string name="minute">branch</string>
     <string name="second">second</string>
     <string name="remote_toast_1">1. Press and hold the left and right buttons on the remote control for 3 seconds until the red light flashes to enter pairing mode</string>
@@ -144,7 +144,7 @@
     <string name="notice">notice</string>
     <string name="remove_notify_apk_download">implement</string>
     <string name="remove">remove</string>
-    <string name="time_zone">time zone</string>
+    <string name="time_zone">Time zone</string>
     <string name="factory_reset">Restore factory settings</string>
     <string name="auto">automatic</string>
     <string name="auto_calibration">Horizontal calibration</string>
