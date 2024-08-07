@@ -386,27 +386,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         syncTime()
         syncNotify()
         startLoopTime()
+
         var infos = AndroidSystem.getUserApps2(activity)
-        if (infos.size != useApps.size) {
-            val index = mHorizontalContentGrid?.selectedPosition ?: -1
-            fillApps(
-                true,
-                mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
-            )
-            if(isExpanded){
-                mHorizontalContentGrid?.apply {
-                    val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount
-                            ?: 0)
-                    ) index else index - 1
-                    postDelayed({
-                        requestFocus()
+        if (infos.size != mAppListAdapter?.getDataList()?.size) {
+            mAppListAdapter?.refresh(infos)
+            useApps.clear()
+            useApps.addAll(mAppListAdapter?.getDataList()!!)
 
-                        scrollToPosition(newFocusPosition)
-                        layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
-                    }, 500)
-
-                }
-            }
         }
 
     }
@@ -1849,7 +1835,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             when (intent.action) {
                 IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
                 Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> {
-                    val index = mHorizontalContentGrid?.selectedPosition ?: -1
 
                     var infos = AndroidSystem.getUserApps2(activity)
                     if (infos.size != mAppListAdapter?.getDataList()?.size) {
