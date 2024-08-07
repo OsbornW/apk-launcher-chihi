@@ -144,7 +144,7 @@
     <string name="notice">notice</string>
     <string name="remove_notify_apk_download">implement</string>
     <string name="remove">remove</string>
-    <string name="time_zone">time zone</string>
+    <string name="time_zone">Time zone</string>
     <string name="factory_reset">Restore factory settings</string>
     <string name="auto">automatic</string>
     <string name="auto_calibration">Horizontal calibration</string>
