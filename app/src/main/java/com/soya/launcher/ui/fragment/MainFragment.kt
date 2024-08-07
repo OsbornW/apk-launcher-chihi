@@ -44,6 +44,7 @@ import com.google.gson.stream.JsonReader
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.open.system.SystemUtils
+import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
@@ -345,9 +346,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 AppCache.updateInfo = this.jsonToString()
                 val isHasUpdate = getUpdateList()
                 "成功了：$isHasUpdate".e("zengyue")
-                isHasUpdate.yes {  startKtxActivity<UpdateAppsActivity>() }.otherwise {
-                    AppCache.updateInteval = "hour"
-                    AppCache.lastTipTime = System.currentTimeMillis()
+                isHasUpdate.yes {
+                    if(currentActivity !=null && currentActivity !is UpdateAppsActivity){
+                        startKtxActivity<UpdateAppsActivity>()
+                    }
                 }
 
             }

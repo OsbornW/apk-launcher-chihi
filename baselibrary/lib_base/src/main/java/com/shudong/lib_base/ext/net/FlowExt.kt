@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.shudong.lib_base.base.BaseActivity
 import com.shudong.lib_base.base.BaseFragment
+import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -21,12 +22,15 @@ fun <T> Flow<T>.lifecycle(
     base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycle.flowOn(Dispatchers.IO).onCompletion {
         }.catch { t ->
-
             isShowError.yes {
                 t.handleNetError {
                     errorCallback?.let {
                         errorCallback(t)
                     }
+                }
+            }.otherwise {
+                errorCallback?.let {
+                    errorCallback(t)
                 }
             }
 
@@ -39,13 +43,19 @@ fun <T> Flow<T>.lifecycle(
 fun <T> Flow<T>.lifecycle(
     base: BaseFragment<*>,
     errorCallback: ((t: Throwable) -> Unit)? = null,
+    isShowError: Boolean = true,
     callback: T.() -> Unit
 ) {
     base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycle.flowOn(Dispatchers.IO).onCompletion {
         }.catch { t ->
-
-            t.handleNetError {
+            isShowError.yes {
+                t.handleNetError {
+                    errorCallback?.let {
+                        errorCallback(t)
+                    }
+                }
+            }.otherwise {
                 errorCallback?.let {
                     errorCallback(t)
                 }
@@ -61,6 +71,7 @@ fun <T> Flow<T>.lifecycle(
 fun <T> Flow<T>.lifecycleLoadingView(
     base: BaseFragment<*>,
     errorCallback: ((t: Throwable) -> Unit)? = null,
+    isShowError: Boolean = true,
     callback: T.() -> Unit
 ) {
     base.lifecycleScope.launch(Dispatchers.Main) {
@@ -69,7 +80,13 @@ fun <T> Flow<T>.lifecycleLoadingView(
         }.onCompletion {
             base.hideLoading()
         }.catch { t ->
-            t.handleNetError {
+            isShowError.yes {
+                t.handleNetError {
+                    errorCallback?.let {
+                        errorCallback(t)
+                    }
+                }
+            }.otherwise {
                 errorCallback?.let {
                     errorCallback(t)
                 }
@@ -97,6 +114,10 @@ fun <T> Flow<T>.lifecycle(
                         errorCallback(t)
                     }
                 }
+            }.otherwise {
+                errorCallback?.let {
+                    errorCallback(t)
+                }
             }
 
         }.collect {
@@ -110,6 +131,7 @@ fun <T> Flow<T>.lifecycleLoadingView(
     base: BaseActivity<*>,
     errorCallback: ((t: Throwable) -> Unit)? = null,
     msg: String = "",
+    isShowError: Boolean = true,
     callback: T.() -> Unit
 ) {
     base.lifecycleScope.launch(Dispatchers.Main) {
@@ -118,7 +140,13 @@ fun <T> Flow<T>.lifecycleLoadingView(
         }.onCompletion {
             base.hideLoading()
         }.catch { t ->
-            t.handleNetError {
+            isShowError.yes {
+                t.handleNetError {
+                    errorCallback?.let {
+                        errorCallback(t)
+                    }
+                }
+            }.otherwise {
                 errorCallback?.let {
                     errorCallback(t)
                 }
