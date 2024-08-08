@@ -146,6 +146,7 @@ android {
             applicationId "com.chihihx.launcher_game"
             dimension "chihi"
             signingConfig signingConfigs.hongxin_rk3326
+            //signingConfig signingConfigs.new_701
             versionCode 56
             versionName "1.57"
             manifestPlaceholders = [share_uid: "android.uid.system"]
@@ -164,6 +165,7 @@ android {
             applicationId "com.chihihx.launcher_game"
             dimension "chihi"
             signingConfig signingConfigs.hongxin
+            //signingConfig signingConfigs.new_701
             versionCode 56
             versionName "1.57"
             manifestPlaceholders = [share_uid: "android.uid.system"]

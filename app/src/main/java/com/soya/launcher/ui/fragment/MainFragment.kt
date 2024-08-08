@@ -324,10 +324,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
         setHeader(header)
         isConnectFirst = true
-        if (result.getData().reg_id != null) PreferencesUtils.setProperty(
+       /* if (result.getData().reg_id != null) PreferencesUtils.setProperty(
             Atts.RECENTLY_MODIFIED,
             result.getData().reg_id
-        )
+        )*/
         val item = header[0]
         fillMovice(item)
         if (BuildConfig.FLAVOR == "hongxin_H27002") {
@@ -368,7 +368,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             val filePathCache = AppCache.homeData.dataList
                             filePathCache[homeItem.icon as String] = path
                             AppCache.homeData = HomeDataList(filePathCache)
-                            if(countImagesWithPrefix()==size){
+                            if (countImagesWithPrefix() == size) {
                                 isLoadedList.no {
                                     setNetData(result)
                                     isLoadedList = true
@@ -385,7 +385,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
                 homeItem.datas.forEachIndexed { position, it ->
 
-                    val destPath =
+                    val destContentPath =
                         "${appContext.filesDir.absolutePath}/content_${(it.imageUrl as String).getFileNameFromUrl()}"
                     var isDownload = false
                     when (homeItem.name) {
@@ -400,17 +400,14 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
 
                     isDownload.yes {
-                        if (!File(destPath).exists()) {
-                            "准备下载了：${it.imageUrl}====${File(destPath).exists()}".e("zengyue2")
-                            (it.imageUrl as String).downloadPic(lifecycleScope, destPath,
+                        if (!File(destContentPath).exists()) {
+                            (it.imageUrl as String).downloadPic(lifecycleScope, destContentPath,
                                 downloadComplete = { _, path ->
-                                    "下载成功了：$path".e("zengyue2")
                                     val filePathCache = AppCache.homeData.dataList
                                     filePathCache[it.imageUrl as String] = path
                                     AppCache.homeData = HomeDataList(filePathCache)
                                 },
                                 downloadError = {
-                                    "下载错误了：$it".e("zengyue2")
                                 }
                             )
                         }
@@ -667,20 +664,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 }
 
                             }.otherwise {
-                                //ToastUtils.show("Failed, please try again!")
-                                //AppCacheBase.isActive = false
-                                //(activity as MainActivity).switchAuthFragment()
+
                             }
                         }
                     }
 
                     override fun onError(call: okhttp3.Call?, response: Response?, e: Exception?) {
-                        //showLoadingViewDismiss()
-                        //ToastUtils.show("Failed, please try again!")
-                        //AppCacheBase.isActive = false
-                        //(activity as MainActivity).switchAuthFragment()
-
-                        //Log.d("zy1996", "请求失败，原因：${e.toString()}====${response.toString()}")
 
                     }
 
@@ -1718,6 +1707,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         isConnectFirst = true
                         return
                     }
+                    "当前的数据是==${call.request().url}".e("zengyue6")
                     PreferencesUtils.setProperty(
                         Atts.LAST_UPDATE_HOME_TIME,
                         System.currentTimeMillis()
@@ -1729,6 +1719,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             if (result.data.reg_id != AppCache.reqId) {
                                 withContext(Dispatchers.IO) {
                                     deleteAllPic()
+                                    "开始下载图片:${AppCache.reqId}::::${result.data?.reg_id ?: 0L}".e("zengyue6")
                                     startPicTask()
                                 }
                                 AppCache.reqId = result.data?.reg_id ?: 0L

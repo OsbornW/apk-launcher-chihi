@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.R
@@ -92,32 +93,14 @@ class MainContentAdapter(
                     if (tvName != null) {
                         tvName.text = item.id
                     }
-                   /* if (!item.isLocal && !TextUtils.isEmpty(item.url) && App.MOVIE_IMAGE.containsKey(
-                            item.url
-                        )
-                    ) {
-                        Log.e("zengyue", "bind: Local=====进来了1==$position")
-                        val obj = App.MOVIE_IMAGE[item.url]
-                        if (obj != null) image = obj
-                        Log.e("zengyue", "bind: Local=====进来了2==$image")
-                    }
-*/
-                    //String path = FilePathMangaer.getMoviePath(context) + "/" + item.getPlaceHolderList().get(position).path;
-                    //Drawable drawable = H27002ExtKt.getDrawableFromPath(context,path);
                     Log.e("zengyue", "bind: 当前要加载的路径是$image")
 
-                    /*if(item.getImageName()==null||((String)item.getImageName()).isEmpty()){
-                        GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,null);
-                    }else {
-                        GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,H27002ExtKt.getDrawableByName(context,(String) item.getImageName()));
-
-                    }*/
 
                     if(!image.toString().contains("http")){
                         mIV.setImageDrawable(context.getDrawableByName(image.toString()))
                     }else{
                         val cacheFile = AppCache.homeData.dataList.get(image as String)
-                        "当前的文件路径是"
+                        "当前的文件路径是${cacheFile}".e("zengyue")
                         if (cacheFile != null) {
                             // 使用缓存的 Drawable
                             Log.e("zengyue", "bind: 走的缓存Movice===")
