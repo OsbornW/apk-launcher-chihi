@@ -132,6 +132,7 @@ fun String.downloadPic(
                 //it为Progress对象
                // process.invoke(it.progress)
             }.catch {
+                "显示错误:${it.printStackTrace()}==${it.message}==${it.cause?.message}".e("zengyue2")
                 downloadError?.invoke(it.message ?: "")
             }.collect {
                 downloadComplete?.invoke(it,path)

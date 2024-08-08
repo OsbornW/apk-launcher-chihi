@@ -2,6 +2,7 @@ package com.soya.launcher.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.AppItem;
 import com.soya.launcher.callback.SelectedCallback;
+import com.soya.launcher.h27002.H27002ExtKt;
 import com.soya.launcher.utils.GlideUtils;
 import com.soya.launcher.view.MyFrameLayout;
 
@@ -77,7 +79,12 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.Holder> {
 
         public void bind(AppItem bean){
             View root = itemView.getRootView();
-            GlideUtils.bind(context, mIV, TextUtils.isEmpty(bean.getLocalIcon()) ? bean.getAppIcon() : bean.getLocalIcon());
+            if(TextUtils.isEmpty(bean.getLocalIcon())){
+                GlideUtils.bind(context, mIV,  bean.getAppIcon());
+            }else {
+                Log.e("zengyue4", "bind: 当前要加载的文件是：${}"+bean.getLocalIcon() );
+                mIV.setImageDrawable(H27002ExtKt.getDrawableByName(context,bean.getLocalIcon()));
+            }
             mTitleView.setText(bean.getAppName());
             if (!TextUtils.isEmpty(bean.getAppSize()))
                 mMesView.setText(String.format("%.01f★ | %s", bean.getScore(), bean.getAppSize()));

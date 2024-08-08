@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageInstaller
 import android.hardware.usb.UsbManager
 import android.os.Bundle
 import android.os.Handler
@@ -74,13 +73,13 @@ import com.soya.launcher.adapter.StoreAdapter
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AppPackage
 import com.soya.launcher.bean.AuthBean
+import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
 import com.soya.launcher.bean.Notify
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
-import com.soya.launcher.bean.WeatherData
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.config.Config
 import com.soya.launcher.decoration.HSlideMarginDecoration
@@ -89,15 +88,13 @@ import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.deleteAllImages
+import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getUpdateList
-import com.soya.launcher.ext.initializeAd
 import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isShowUpdate
 import com.soya.launcher.ext.isUDisk
-import com.soya.launcher.ext.loadJar
-import com.soya.launcher.ext.startAd
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.HttpRequest.checkVersion
@@ -106,7 +103,6 @@ import com.soya.launcher.http.response.AppListResponse
 import com.soya.launcher.http.response.HomeResponse
 import com.soya.launcher.http.response.VersionResponse
 import com.soya.launcher.manager.FilePathMangaer
-import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.ui.activity.AboutActivity
 import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.ChooseGradientActivity
@@ -118,7 +114,6 @@ import com.soya.launcher.ui.activity.MainActivity
 import com.soya.launcher.ui.activity.ScaleScreenActivity
 import com.soya.launcher.ui.activity.SearchActivity
 import com.soya.launcher.ui.activity.SettingActivity
-import com.soya.launcher.ui.activity.WeatherActivity
 import com.soya.launcher.ui.activity.WifiListActivity
 import com.soya.launcher.ui.dialog.AppDialog
 import com.soya.launcher.ui.dialog.ToastDialog
@@ -132,6 +127,7 @@ import com.soya.launcher.view.ImageViewHouse
 import com.soya.launcher.view.NoDragVerticalGridView
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.ui.activity.UpdateAppsActivity
+import com.soya.launcher.utils.getFileNameFromUrl
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -142,6 +138,7 @@ import org.json.JSONObject
 import retrofit2.Call
 import java.io.File
 import java.io.FileReader
+import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 import java.util.Arrays
 import java.util.Calendar
@@ -152,8 +149,6 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
 class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
-    private val IS_TEST = false
-    private val MAX_WEATHER_TIME = 90 * 1000
     private val useApps: MutableList<ApplicationInfo> = ArrayList()
     private val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     private val exec = Executors.newCachedThreadPool()
@@ -163,7 +158,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private var mAppBarLayout: AppBarLayout? = null
     private var mRootView: View? = null
     private var mSettingView: ImageViewHouse? = null
-    private var mWeatherView: ImageView? = null
     private var mSearchView: View? = null
     private var mWifiView: ImageView? = null
     private var mLoginView: View? = null
@@ -190,9 +184,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private var isConnectFirst = false
     private var isFullAll = false
     private var isNetworkAvailable = false
-    private var lastWeatherTime: Long = -1
-    private val lastCheckPushTime = System.currentTimeMillis()
-    private val isFullStoreNow = false
     private var mMainHeaderAdapter: MainHeaderAdapter? = null
     private var mHMainContentAdapter: MainContentAdapter? = null
     private var mVMainContentAdapter: MainContentAdapter? = null
@@ -202,7 +193,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private var isExpanded = false
     lateinit var flList: FrameLayout
 
-    private var mBroadcast: MyBroadcast? = null
 
     private val mViewModel: HomeViewModel by viewModels()
 
@@ -292,10 +282,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             )
         }
 
-        mBroadcast = MyBroadcast()
-        val filterm = IntentFilter()
-        filterm.addAction(IntentAction.ACTION_DELETE_PACKAGE)
-        activity!!.registerReceiver(mBroadcast, filterm)
 
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)
@@ -325,9 +311,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
-                    delay(3000) // 每两秒执行一次
-                    //"开始3秒轮询一次：$this".e("zengyue1")
-                    // 执行实际的任务
+                    delay(3000)
                     isShowUpdate().yes { performTask() }
 
                 }
@@ -339,9 +323,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private fun startPicTask() {
         lifecycleScope.launch {
             while (true) {
-                //"开始3秒轮询一次：$this".e("zengyue1")
                 checkPicDownload()
-                delay(15000) // 每两秒执行一次
+                delay(15000)
 
             }
 
@@ -356,17 +339,57 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 HomeResponse::class.java
             )
 
-            result.data.movies.forEach {
-                it.datas.forEach {
-                    val destPath = "${appContext.filesDir.absolutePath}/${it.imageName}.jpg"
-                    if (!File(destPath).exists()) {
-                        (it.imageUrl as String).downloadPic(lifecycleScope, destPath,
-                            downloadComplete = { _, path ->
-                                "下载成功了：$path".e("zengyue")
-                                AppCacheBase.filePathCache[it.imageUrl as String] = File(path)
-                            }
-                        )
+            result.data.movies.forEachIndexed { index, homeItem ->
+                val destPath =
+                    "${appContext.filesDir.absolutePath}/${(homeItem.icon as String).getFileNameFromUrl()}"
+
+                if (!File(destPath).exists()) {
+                    (homeItem.icon as String).downloadPic(lifecycleScope, destPath,
+                        downloadComplete = { _, path ->
+                            val filePathCache = AppCache.homeData.dataList
+                            filePathCache[homeItem.icon as String] = path
+                            AppCache.homeData = HomeDataList(filePathCache)
+                        },
+                        downloadError = {
+
+                        }
+                    )
+                }
+
+
+                homeItem.datas.forEachIndexed { position, it ->
+
+                    val destPath =
+                        "${appContext.filesDir.absolutePath}/${(it.imageUrl as String).getFileNameFromUrl()}"
+                    var isDownload = false
+                    when (homeItem.name) {
+                        "Youtube", "Disney+", "Hulu", "Prime video" -> {
+                            isDownload = position < 8
+                        }
+
+                        else -> {
+                            isDownload = true
+                        }
                     }
+
+
+                    isDownload.yes {
+                        if (!File(destPath).exists()) {
+                            "准备下载了：${it.imageUrl}====${File(destPath).exists()}".e("zengyue2")
+                            (it.imageUrl as String).downloadPic(lifecycleScope, destPath,
+                                downloadComplete = { _, path ->
+                                    "下载成功了：$path".e("zengyue2")
+                                    val filePathCache = AppCache.homeData.dataList
+                                    filePathCache[it.imageUrl as String] = path
+                                    AppCache.homeData = HomeDataList(filePathCache)
+                                },
+                                downloadError = {
+                                    "下载错误了：$it".e("zengyue2")
+                                }
+                            )
+                        }
+                    }
+
 
                 }
             }
@@ -375,19 +398,17 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun performTask() {
-        "开始请求：".e("zengyue")
         mViewModel.reqUpdateInfo().lifecycle(this@MainFragment,
             errorCallback = { throwanle ->
-                "当前错误${throwanle.message}".e("zengyue")
+
             },
             isShowError = false,
             callback = {
 
                 AppCache.updateInfo = this.jsonToString()
                 val isHasUpdate = getUpdateList()
-                "成功了：$isHasUpdate".e("zengyue")
                 isHasUpdate.yes {
-                    if(currentActivity !=null && currentActivity !is UpdateAppsActivity){
+                    if (currentActivity != null && currentActivity !is UpdateAppsActivity) {
                         startKtxActivity<UpdateAppsActivity>()
                     }
 
@@ -406,7 +427,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         if (homeCall != null) homeCall!!.cancel()
         activity!!.unregisterReceiver(receiver)
         activity!!.unregisterReceiver(wallpaperReceiver)
-        activity!!.unregisterReceiver(mBroadcast)
         exec.shutdownNow()
     }
 
@@ -422,7 +442,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     override fun onResume() {
         super.onResume()
-        syncWeather()
         syncTime()
         syncNotify()
         startLoopTime()
@@ -439,7 +458,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     override fun onStart() {
         super.onStart()
-        syncWeather()
         syncTime()
         syncNotify()
         startLoopTime()
@@ -477,7 +495,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mAppBarLayout = view.findViewById(R.id.app_bar)
         mRootView = view.findViewById(R.id.root)
         mSettingView = view.findViewById(R.id.setting)
-        mWeatherView = view.findViewById(R.id.weather)
         mSearchView = view.findViewById(R.id.search)
         mWifiView = view.findViewById(R.id.wifi)
         mLoginView = view.findViewById(R.id.login)
@@ -535,11 +552,26 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             if (Config.COMPANY == 3) R.layout.holder_notify else R.layout.holder_notify_2
         )
         mMainHeaderAdapter =
-            MainHeaderAdapter(activity, inflater, CopyOnWriteArrayList(), newHeaderCallback())
+            MainHeaderAdapter(
+                requireContext(),
+                inflater,
+                CopyOnWriteArrayList(),
+                newHeaderCallback()
+            )
         mHMainContentAdapter =
-            MainContentAdapter(activity, inflater, CopyOnWriteArrayList(), newContentCallback())
+            MainContentAdapter(
+                requireContext(),
+                inflater,
+                CopyOnWriteArrayList(),
+                newContentCallback()
+            )
         mVMainContentAdapter =
-            MainContentAdapter(activity, inflater, CopyOnWriteArrayList(), newContentCallback())
+            MainContentAdapter(
+                requireContext(),
+                inflater,
+                CopyOnWriteArrayList(),
+                newContentCallback()
+            )
         mAppListAdapter = AppListAdapter(
             requireContext(),
             getLayoutInflater(),
@@ -673,7 +705,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         super.initBefore(view, inflater)
         mAppBarLayout!!.addOnOffsetChangedListener(this)
         mSettingView!!.setOnClickListener(this)
-        mWeatherView!!.setOnClickListener(this)
         mSearchView!!.setOnClickListener(this)
         mWifiView!!.setOnClickListener(this)
         mLoginView!!.setOnClickListener(this)
@@ -684,7 +715,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     override fun initBind(view: View, inflater: LayoutInflater) {
         super.initBind(view, inflater)
-        fillLocal()
         fillHeader()
         mNotifyRecycler!!.setLayoutManager(
             LinearLayoutManager(
@@ -717,7 +747,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun setMoviceContent(
-        list: MutableList<Movice?>?,
+        list: MutableList<Movice>?,
         direction: Int,
         columns: Int,
         layoutId: Int
@@ -771,13 +801,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 while (!isInterrupt) {
                     SystemClock.sleep(2000)
                     syncNotify()
-                    if (lastWeatherTime <= 0 || TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastWeatherTime) > MAX_WEATHER_TIME) {
-                        HttpRequest.getCityWeather(
-                            newWeatherCallback(),
-                            PreferencesManager.getCityName()
-                        )
-                        lastWeatherTime = System.currentTimeMillis()
-                    }
+
                     if (TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - requestTime) >= 25) {
                         requestTime = System.currentTimeMillis()
                         requestHome()
@@ -872,31 +896,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         })
     }
 
-
-    private fun newWeatherCallback(): ServiceRequest.Callback<WeatherData> {
-        return object : ServiceRequest.Callback<WeatherData> {
-            override fun onCallback(call: Call<*>, status: Int, result: WeatherData?) {
-                if (!isAdded) return
-                if (call.isCanceled || result == null || result.days == null || result.days.size == 0) return
-                App.WEATHER.setWeather(result)
-                syncWeather()
-            }
-        }
-    }
-
-    private fun syncWeather() {
-        uiHandler!!.post(Runnable {
-            if (App.WEATHER.weather == null || !isAdded) return@Runnable
-            val result = App.WEATHER.weather
-            mWeatherView!!.setImageBitmap(
-                AndroidSystem.getImageForAssets(
-                    requireContext(), FilePathMangaer.getWeatherIcon(
-                        result.days[0].icon
-                    )
-                )
-            )
-        })
-    }
 
     private fun syncTime() {
         val is24 = AppUtils.is24Display(activity)
@@ -1165,19 +1164,17 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             //requireActivity().initializeAd(rlAD!!,this)
             //requireActivity().startAd()
 
-           /* Ad.get().setEnableLog(true)
-            if(adController==null){
-                adController = Ad.get().begin(requireContext())
-                    .container(rlAD)
-                    .lifecycleOwner(this)
-                    .start();
-            }else{
-                adController?.start(rlAD)
-            }*/
+            /* Ad.get().setEnableLog(true)
+             if(adController==null){
+                 adController = Ad.get().begin(requireContext())
+                     .container(rlAD)
+                     .lifecycleOwner(this)
+                     .start();
+             }else{
+                 adController?.start(rlAD)
+             }*/
 
             //AndroidSystem.openSystemSetting(getActivity());
-        } else if (v == mWeatherView) {
-            startActivity(Intent(activity, WeatherActivity::class.java))
         } else if (v == mSearchView) {
             startActivity(Intent(activity, SearchActivity::class.java))
         } else if (v == mWifiView) {
@@ -1260,29 +1257,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }
     }
 
-    private fun fillLocal() {
-        try {
-            val data = Gson().fromJson(
-                FileReader(
-                    FilePathMangaer.getMoviePath(
-                        requireContext()
-                    ) + "/data/movie.json"
-                ), HomeResponse.Inner::class.java
-            )
-            for (home in data.getMovies()) {
-                for (movice in home.datas) {
-                    App.MOVIE_IMAGE.put(
-                        movice.url, FilePathMangaer.getMoviePath(
-                            requireContext()
-                        ) + "/" + movice.imageUrl
-                    )
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-        }
-    }
 
     private fun newHeaderCallback(): MainHeaderAdapter.Callback {
         return object : MainHeaderAdapter.Callback {
@@ -1454,16 +1428,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             val emptys: MutableList<AppItem> = ArrayList()
             try {
                 val apps = Gson().fromJson(
-                    FileReader(
-                        FilePathMangaer.getMoviePath(
-                            activity
-                        ) + "/data/app.json"
+                    InputStreamReader(
+                        requireContext().assets.open("app.json")
                     ), Array<AppItem>::class.java
                 )
                 if (apps != null) {
-                    for (item in apps) item.localIcon = FilePathMangaer.getMoviePath(
-                        activity
-                    ) + "/" + item.localIcon
                     emptys.addAll(Arrays.asList(*apps))
                 }
                 App.APP_STORE_ITEMS.addAll(Arrays.asList(*apps))
@@ -1505,7 +1474,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun local(filePath: String, direction: Int, columns: Int, layoutId: Int) {
         val files = AndroidSystem.getAssetsFileNames(activity, filePath)
-        val list: MutableList<Movice?> = ArrayList(files.size)
+        val list: MutableList<Movice> = ArrayList(files.size)
         for (item in files) {
             list.add(Movice(Types.TYPE_UNKNOW, null, "$filePath/$item", Movice.PIC_ASSETS))
         }
@@ -1574,25 +1543,18 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun setDefault() {
         try {
-            val data = Gson().fromJson(
-                FileReader(
-                    FilePathMangaer.getMoviePath(
-                        activity
-                    ) + "/data/movie.json"
-                ), HomeResponse.Inner::class.java
+
+            val result = Gson().fromJson<HomeResponse>(
+                InputStreamReader(
+                    requireContext().assets.open("home.json")
+                ),
+                HomeResponse::class.java
             )
-            val response = HomeResponse()
-            response.data = data
-            val header = fillData(response, TypeItem.TYPE_ICON_IMAGE_URL, 1)
-            for (item in header) {
-                item.icon = FilePathMangaer.getMoviePath(requireContext()) + "/" + item.icon
-            }
+            val header = fillData(result)
             header.addAll(items)
             addProduct5TypeItem(header)
+
             setHeader(header)
-            if (BuildConfig.FLAVOR == "hongxin_H27002") {
-                requestFocus(mHeaderGrid, 500)
-            }
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -1608,7 +1570,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         val menus: MutableList<TypeItem> = ArrayList()
         val gson = Gson()
         for (bean in homeItems) {
-            val movices: MutableList<Movice?> = ArrayList(bean.datas.size)
+            val movices: MutableList<Movice> = ArrayList(bean.datas.size)
             for (movice in bean.datas) {
                 movice.picType = Movice.PIC_NETWORD
                 movice.appName = bean.name
@@ -1723,7 +1685,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         return object : ServiceRequest.Callback<HomeResponse> {
             override fun onCallback(call: Call<*>, status: Int, result: HomeResponse?) {
                 try {
-                    "当前返回的结果是：${call.request().url.toUrl()}".e("zengyue")
                     if (!isAdded || call.isCanceled || result == null) return
                     if (result.data == null || result.data.getMovies() == null || result.data.getMovies()
                             .isEmpty()
@@ -1735,22 +1696,18 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         Atts.LAST_UPDATE_HOME_TIME,
                         System.currentTimeMillis()
                     )
-                    FileUtils.writeFile(
-                        Gson().toJson(result).toByteArray(StandardCharsets.UTF_8),
-                        FilePathMangaer.getJsonPath(
-                            activity
-                        ),
-                        "Home.json"
-                    )
+
+                    Gson().toJson(result).exportToJson("Home.json")
                     if (!isPicDownload) {
                         lifecycleScope.launch {
                             if (result.data.reg_id != AppCache.reqId) {
                                 withContext(Dispatchers.IO) {
                                     deleteAllPic()
+                                    startPicTask()
                                 }
-                                AppCache.reqId = result.data.reg_id
+                                AppCache.reqId = result.data?.reg_id ?: 0L
                             }
-                            startPicTask()
+
                             isPicDownload = true
                         }
 
@@ -1769,7 +1726,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         result.getData().reg_id
                     )
                     val item = header[0]
-                    "当前的名字和类型${item.name}====${item.type}".d("zy1998")
                     fillMovice(item)
                     if (BuildConfig.FLAVOR == "hongxin_H27002") {
                         requestFocus(mHeaderGrid, 500)
@@ -1826,18 +1782,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mAppBarLayout!!.setExpanded(isExpanded)
     }
 
-    private val placeholdings: List<Movice>
-        private get() {
-            val movices: MutableList<Movice> = ArrayList()
-            for (i in 0..19) {
-                movices.add(Movice(Types.TYPE_UNKNOW, null, "", Movice.PIC_PLACEHOLDING))
-            }
-            return movices
-        }
-
-    private fun setSpanSizeLookup(lm: GridLayoutManager, spanSizeLookup: SpanSizeLookup) {
-        lm.spanSizeLookup = spanSizeLookup
-    }
 
     private fun checkVersion() {
         checkVersion(object : ServiceRequest.Callback<VersionResponse> {
@@ -1850,48 +1794,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
             }
         })
-    }
-
-    inner class MyBroadcast : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            /*val index = mHorizontalContentGrid?.selectedPosition?:0
-            fillApps(
-                true,
-                mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
-            )
-            mAppBarLayout!!.setExpanded(true)
-
-            mHorizontalContentGrid?.apply {
-                val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount?:0)) index else index - 1
-               postDelayed({
-                   requestFocus()
-
-                   scrollToPosition(newFocusPosition)
-                   layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
-               },500)
-
-            }
-
-            var code
-                    : Int = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1)
-            var success
-                    : Boolean = code == PackageInstaller.STATUS_SUCCESS
-
-            lifecycleScope.launch {
-                delay(800)
-                UninstallDialog.newInstance(null,success).show(requireActivity().supportFragmentManager, UninstallDialog.TAG);
-
-            }*/
-
-
-            /* success.yes {
-                 ToastUtils.show("卸载成功")
-             }.otherwise {
-                 ToastUtils.show("卸载失败")
-             }*/
-
-
-        }
     }
 
     inner class InnerReceiver : BroadcastReceiver() {
@@ -1907,26 +1809,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         useApps.addAll(mAppListAdapter?.getDataList()!!)
 
                     }
-
-                    /*fillApps(
-                        true,
-                        mHeaderGrid!!.selectedPosition != -1 && targetMenus[mHeaderGrid!!.selectedPosition].type == Types.TYPE_MY_APPS
-                    )*/
-                    /*if(isExpanded){
-                        mHorizontalContentGrid?.apply {
-                            val newFocusPosition = if (index < (mHorizontalContentGrid?.adapter?.itemCount
-                                    ?: 0)
-                            ) index else index - 1
-                            postDelayed({
-                                requestFocus()
-
-                                scrollToPosition(newFocusPosition)
-                                layoutManager?.findViewByPosition(newFocusPosition)?.requestFocus()
-                            }, 500)
-
-                        }
-                    }*/
-
 
 
                 }

@@ -1,178 +1,152 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.shudong.lib_base.global.AppCacheBase
+import com.shudong.lib_base.global.AppCacheBase.drawableCache
+import com.soya.launcher.R
+import com.soya.launcher.bean.TypeItem
+import com.soya.launcher.cache.AppCache
+import com.soya.launcher.ext.bindImageView
+import com.soya.launcher.h27002.getDrawableByName
+import com.soya.launcher.utils.FileUtils
+import com.soya.launcher.utils.GlideUtils
+import com.soya.launcher.view.MyCardView
+import java.io.File
 
-import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.leanback.widget.ArrayObjectAdapter;
-import androidx.leanback.widget.Presenter;
-import androidx.recyclerview.widget.RecyclerView;
+class MainHeaderAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private val items: MutableList<TypeItem>,
+    private val callback: Callback?
+) : RecyclerView.Adapter<MainHeaderAdapter.Holder>() {
+    private val selectItem = -1
 
-import com.shudong.lib_base.global.AppCacheBase;
-import com.soya.launcher.R;
-import com.soya.launcher.bean.HomeItem;
-import com.soya.launcher.bean.TypeItem;
-import com.soya.launcher.callback.SelectedCallback;
-import com.soya.launcher.ext.GlideExtKt;
-import com.soya.launcher.h27002.H27002ExtKt;
-import com.soya.launcher.http.response.HomeResponse;
-import com.soya.launcher.manager.FilePathMangaer;
-import com.soya.launcher.utils.FileUtils;
-import com.soya.launcher.utils.GlideUtils;
-import com.soya.launcher.view.MyCardView;
-
-import java.util.List;
-import java.util.function.Consumer;
-
-public class MainHeaderAdapter extends RecyclerView.Adapter<MainHeaderAdapter.Holder> {
-    private final Context context;
-    private final LayoutInflater inflater;
-    private final int selectItem = -1;
-
-    private final Callback callback;
-    private final List<TypeItem> items;
-
-    public MainHeaderAdapter(Context context, LayoutInflater inflater, List<TypeItem> items, Callback callback) {
-        this.context = context;
-        this.inflater = inflater;
-        this.items = items;
-        this.callback = callback;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        return Holder(inflater.inflate(R.layout.holder_header, parent, false))
     }
 
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(R.layout.holder_header, parent, false));
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(items[position], position)
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(items.get(position), position);
+    override fun getItemCount(): Int {
+        return items.size
     }
 
-    @Override
-    public int getItemCount() {
-        return items.size();
+    fun replace(list: List<TypeItem>?) {
+        items.clear()
+        items.addAll(list!!)
+        notifyDataSetChanged()
     }
 
-    public void replace(List<TypeItem> list) {
-        items.clear();
-        items.addAll(list);
-        notifyDataSetChanged();
-    }
+    inner class Holder(view: View) : RecyclerView.ViewHolder(view) {
+        private val mIV: ImageView = view.findViewById(R.id.image)
+        private val mTitleView: TextView = view.findViewById(R.id.title)
+        private val mCardView: MyCardView = view.findViewById(R.id.root)
 
-    public class Holder extends RecyclerView.ViewHolder {
-        private final ImageView mIV;
-        private final TextView mTitleView;
-        private final MyCardView mCardView;
-
-
-        public Holder(View view) {
-            super(view);
-            mIV = view.findViewById(R.id.image);
-            mTitleView = view.findViewById(R.id.title);
-            mCardView = view.findViewById(R.id.root);
-        }
-
-        public void bind(TypeItem item, int position) {
-            View root = itemView.getRootView();
-            mTitleView.setBackgroundResource(R.drawable.light_item);
+        fun bind(item: TypeItem, position: Int) {
+            val root = itemView.rootView
+            mTitleView.setBackgroundResource(R.drawable.light_item)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                mTitleView.setTextColor(context.getColorStateList(R.color.text_selector_color_1));
+                mTitleView.setTextColor(context.getColorStateList(R.color.text_selector_color_1))
             } else {
-                ColorStateList colorStateList = ResourcesCompat.getColorStateList(context.getResources(), R.color.text_selector_color_1, null);
-                mTitleView.setTextColor(colorStateList);
-
+                val colorStateList = ResourcesCompat.getColorStateList(
+                    context.resources, R.color.text_selector_color_1, null
+                )
+                mTitleView.setTextColor(colorStateList)
             }
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (callback != null) callback.onClick(item);
-                }
-            });
+            itemView.setOnClickListener { callback?.onClick(item) }
 
-            root.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    mCardView.setSelected(hasFocus);
-                    Animation animation = AnimationUtils.loadAnimation(context, hasFocus ? R.anim.zoom_in_max : R.anim.zoom_out_max);
-                    animation.setFillAfter(true);
-                    itemView.startAnimation(animation);
-                }
-            });
+            root.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                mCardView.isSelected = hasFocus
+                val animation = AnimationUtils.loadAnimation(
+                    context, if (hasFocus) R.anim.zoom_in_max else R.anim.zoom_out_max
+                )
+                animation.fillAfter = true
+                itemView.startAnimation(animation)
+            }
 
-            mCardView.setCallback(new SelectedCallback() {
-                @Override
-                public void onSelect(boolean selected) {
-                    if (callback != null) callback.onSelect(selected, item);
-                }
-            });
+            mCardView.setCallback { selected -> callback?.onSelect(selected, item) }
 
-            /*if(item.getLayoutType()==2){
-                mIV.setScaleType(ImageView.ScaleType.FIT_XY);
-            }else {
-                mIV.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            }*/
+            when (item.iconType) {
+                TypeItem.TYPE_ICON_IMAGE_RES -> mIV.setImageResource((item.icon as Int))
+                TypeItem.TYPE_ICON_ASSETS -> GlideUtils.bind(
+                    context, mIV, FileUtils.readAssets(
+                        context, item.icon as String
+                    )
+                )
 
-            switch (item.getIconType()) {
-                case TypeItem.TYPE_ICON_IMAGE_RES:
+                else ->      {
 
-                    mIV.setImageResource((Integer) item.getIcon());
-                    break;
-                case TypeItem.TYPE_ICON_ASSETS:
-
-                    GlideUtils.bind(context, mIV, FileUtils.readAssets(context, (String) item.getIcon()));
-                    break;
-                default:
-                   /* if(item.getIconName()==null||item.getIconName().isEmpty()){
-                        GlideExtKt.bindImageView(mIV, item.getIcon(),null);
-
-                    }else {
-                        GlideExtKt.bindImageView(mIV, item.getIcon(),H27002ExtKt.getDrawableByName(context,item.getIconName()));
-
-                    }*/
-
-                    if (item.getIconName() == null || item.getIconName().isEmpty()) {
-                        GlideExtKt.bindImageView(mIV, item.getIcon());
-
-                    } else {
-                        Drawable cachedDrawable = AppCacheBase.INSTANCE.getDrawableCache().get((String) item.getIcon());
-                        if (cachedDrawable != null) {
+                    if(!item.icon.toString().contains("http")){
+                        mIV.setImageDrawable(context.getDrawableByName(item.icon.toString()))
+                    }else{
+                        val cacheFile = AppCache.homeData.dataList[item.icon as String]
+                        if (cacheFile != null) {
                             // 使用缓存的 Drawable
-                            Log.e("zengyue", "bind: 走的缓存Movice===");
-                            mIV.setImageDrawable(cachedDrawable);
+                            Log.e("zengyue", "bind: 走的缓存Movice===")
+                            //mIV.setImageDrawable(cachedDrawable);
+                            GlideUtils.bind(context, mIV, cacheFile)
                         } else {
-                            // 从网络加载
-                            Log.e("zengyue", "bind: 走的网络Movice===");
-                            mIV.setImageDrawable(H27002ExtKt.getDrawableByName(context, item.getIconName()));
-                            AppCacheBase.INSTANCE.getDrawableCache().put((String) item.getIcon(), mIV.getDrawable());
-                            //LiveEventBus.get("loadnet", String.class).post((String)image);
-
+                            // 轮询直到有缓存 Drawable
+                            Log.e("zengyue", "bind: 走的网络Movice===")
+                            startPollingForCache(mIV,item.icon.toString())
                         }
                     }
 
+
+                }
+
+
             }
-            mTitleView.setText(item.getName());
+            mTitleView.text = item.name
         }
 
-        public void unbind() {
+        fun unbind() {
         }
     }
 
-    public interface Callback {
-        void onClick(TypeItem bean);
+    interface Callback {
+        fun onClick(bean: TypeItem)
 
-        void onSelect(boolean selected, TypeItem bean);
+        fun onSelect(selected: Boolean, bean: TypeItem)
     }
+
+    private fun startPollingForCache( mIV:ImageView, image: String) {
+        val handler = Handler(Looper.getMainLooper())
+        val pollingInterval = 500L // 轮询间隔（毫秒）
+        val maxAttempts = 20 // 最大轮询次数
+        var attempts = 0
+
+        val runnable = object : Runnable {
+            override fun run() {
+                val cacheFile = AppCache.homeData.dataList.get(image)?.let { File(it) }
+                if (cacheFile?.exists()==true) {
+                    // 使用缓存的 Drawable
+                    Log.e("zengyue", "Polling: 走的缓存Movice===")
+                    GlideUtils.bind(context, mIV, cacheFile)
+                } else if (attempts < maxAttempts) {
+                    attempts++
+                    handler.postDelayed(this, pollingInterval)
+                } else {
+                    Log.e("zengyue", "Polling: 达到最大轮询次数，缓存仍然不可用")
+                    // 处理没有缓存的情况，可能需要使用默认图像或错误处理
+                }
+            }
+        }
+        handler.post(runnable)
+    }
+
 }

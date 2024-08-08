@@ -3,6 +3,7 @@ package com.soya.launcher.ext
 import java.io.File
 import android.util.Log
 import com.shudong.lib_base.ext.appContext
+import java.io.IOException
 
 // 扩展函数，用于删除指定路径下的所有图片文件
 fun String.deleteAllImages() {
@@ -29,8 +30,11 @@ fun String.deleteAllImages() {
     }
 }
 
-// 使用示例
-fun main() {
-    val directoryPath = appContext.filesDir.absolutePath
-    directoryPath.deleteAllImages()
+fun String.exportToJson(fileName: String = "home.json") {
+    try {
+        val file = File(appContext.filesDir, fileName)
+        file.writeText(this)
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
 }

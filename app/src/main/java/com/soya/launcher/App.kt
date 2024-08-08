@@ -8,12 +8,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.sip.SipErrorCode.TIME_OUT
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
+import com.chihi.m98.hook.JsonSerializeHook
+import com.drake.serialize.serialize.Serialize
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor
 import com.shudong.lib_base.ContextManager
@@ -38,10 +41,15 @@ import com.soya.launcher.utils.BluetoothScannerUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.net.di.homeModules
+import com.tencent.mmkv.MMKV
 import com.thumbsupec.lib_base.ext.language.initMultiLanguage
 import com.thumbsupec.lib_base.toast.ToastUtils
 import com.thumbsupec.lib_net.AppCacheNet
+import com.thumbsupec.lib_net.di.httpLoggingInterceptor
 import com.thumbsupec.lib_net.di.netModules
+import com.thumbsupec.lib_net.http.SSL
+import com.thumbsupec.lib_net.http.createSslContext
+import com.thumbsupec.lib_net.http.intercept.AuthorizationInterceptor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -51,6 +59,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
+import rxhttp.RxHttpPlugins
 import java.util.Arrays
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -106,6 +115,9 @@ class App : Application() {
         super.onCreate()
         instance = this
 
+        MMKV.initialize(this)
+        Serialize.hook = JsonSerializeHook()
+
         AppCacheNet.baseUrl = BuildConfig.BASE_URL
 
         startKoin {
@@ -115,8 +127,18 @@ class App : Application() {
             modules(baseModules)
             modules(homeModules)
         }
+
+        RxHttpPlugins.init( OkHttpClient.Builder()
+            .addInterceptor(AuthorizationInterceptor())
+            .sslSocketFactory(SSL(createSslContext()), createSslContext())
+            .hostnameVerifier { _, _ -> true }
+            .readTimeout(8L, TimeUnit.SECONDS).also {
+                it.addInterceptor(httpLoggingInterceptor)
+            }.build())
+
+
         AppCache.lastTipTime = 0L
-        AppCache.updateInteval
+        //AppCache.updateInteval
 
         OkGo.init(this)
 
@@ -161,33 +183,6 @@ class App : Application() {
         timeRemote()
 
 
-        AppCacheBase.isCopyed.no {
-            applicationScope.launch(Dispatchers.IO) {
-                try {
-                    FileUtils.copyAssets(assets, "movies", filesDir)
-                    withContext(Dispatchers.Main) {
-                        PreferencesUtils.setProperty(Atts.LAST_VERSION_CODE, BuildConfig.VERSION_CODE)
-                    }
-                    "复制完成".d("zy2000")
-                    AppCacheBase.isCopyed = true
-                    //sendLiveEventData("refreshdefault",true)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-
-
-       /* if (PreferencesManager.getLastVersionCode() != BuildConfig.VERSION_CODE) {
-            try {
-                FileUtils.copyAssets(assets, "movies", filesDir)
-                PreferencesUtils.setProperty(Atts.LAST_VERSION_CODE, BuildConfig.VERSION_CODE)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-            }
-        }
-*/
         MvvmHelper.init(this@App)
 
         ToastUtils.init(this@App)
@@ -347,11 +342,8 @@ class App : Application() {
             private set
         private val exec = Executors.newCachedThreadPool()
         @JvmField
-        val MOVIE_MAP: MutableMap<Long, MutableList<Movice?>> = ConcurrentHashMap()
-        @JvmField
-        val MOVIE_IMAGE: MutableMap<String, Any> = ConcurrentHashMap()
-        @JvmField
-        val WEATHER = CacheWeather()
+        val MOVIE_MAP: MutableMap<Long, MutableList<Movice>> = ConcurrentHashMap()
+
         @JvmField
         val WALLPAPERS: MutableList<Wallpaper> = ArrayList()
         @JvmField
