@@ -27,7 +27,7 @@ fun showLoadingView(title:String = "") {
                 loadingPopup = getPop(isLoading = true){
                     hasShadowBg(false)
                     dismissOnTouchOutside(false)
-                    dismissOnBackPressed(false)
+                    dismissOnBackPressed(true)
                     setPopupCallback(object : PopCallbackKT() {
                         override fun onShow(popupView: BasePopupView?) {
                             //true.invokeLoadingStatus()

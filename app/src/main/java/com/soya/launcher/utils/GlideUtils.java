@@ -31,6 +31,8 @@ public class GlideUtils {
     public static void bind(Context context, ImageView view, Object load, DiskCacheStrategy strategy){
         GlideApp.with(App.getInstance())
                 .load(load)
+                .placeholder(0)  // 设置占位符
+                .error(0)        // 设置错误图片
                 .diskCacheStrategy(strategy)
                 .placeholder(R.drawable.rectangle_solffffff)
                 .error(R.drawable.rectangle_solffffff)

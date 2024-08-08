@@ -26,6 +26,7 @@ import com.soya.launcher.R
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.ActivityMainBinding
 import com.soya.launcher.enums.IntentAction
+import com.soya.launcher.ext.bindNew
 import com.soya.launcher.ext.jumpToAuth
 import com.soya.launcher.ext.switchFragment
 import com.soya.launcher.manager.PreferencesManager
@@ -126,6 +127,10 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseViewModel>() {
                 canBackPressed = false
             }
         }
+
+        this.obseverLiveEvent<String>("loadnet"){
+           it.bindNew()
+        }
     }
 
 
@@ -152,4 +157,5 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseViewModel>() {
         }
 
     }
+
 }

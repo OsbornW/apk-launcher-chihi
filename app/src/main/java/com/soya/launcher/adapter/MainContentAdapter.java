@@ -1,6 +1,7 @@
 package com.soya.launcher.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +17,16 @@ import androidx.leanback.widget.Presenter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.shudong.lib_base.ext.LiveEventExtKt;
+import com.shudong.lib_base.global.AppCacheBase;
 import com.soya.launcher.App;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.Movice;
 import com.soya.launcher.callback.SelectedCallback;
+import com.soya.launcher.ext.GlideExtKt;
+import com.soya.launcher.h27002.H27002ExtKt;
+import com.soya.launcher.manager.FilePathMangaer;
 import com.soya.launcher.utils.AndroidSystem;
 import com.soya.launcher.utils.FileUtils;
 import com.soya.launcher.utils.GlideUtils;
@@ -27,6 +34,8 @@ import com.soya.launcher.view.MyFrameLayout;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.Holder> {
@@ -53,7 +62,7 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(dataList.get(position));
+        holder.bind(dataList.get(position),position);
     }
 
     @Override
@@ -85,7 +94,7 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
             tvLoadding = view.findViewById(R.id.tv_loadding);
         }
 
-        public void bind(Movice item){
+        public void bind(Movice item,int position){
             View root = itemView.getRootView();
             switch (item.getPicType()){
                 case Movice.PIC_ASSETS:
@@ -98,11 +107,42 @@ public class MainContentAdapter extends RecyclerView.Adapter<MainContentAdapter.
                         tvName.setText(item.getId());
                     }
                     if (!item.isLocal() && !TextUtils.isEmpty(item.getUrl()) && App.MOVIE_IMAGE.containsKey(item.getUrl())){
+                        Log.e("zengyue", "bind: Local=====进来了1=="+position);
                         Object obj = App.MOVIE_IMAGE.get(item.getUrl());
                         if (obj != null) image = obj;
+                        Log.e("zengyue", "bind: Local=====进来了2=="+image);
                     }
 
-                    GlideUtils.bind(context, mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image);
+                    //String path = FilePathMangaer.getMoviePath(context) + "/" + item.getPlaceHolderList().get(position).path;
+                    //Drawable drawable = H27002ExtKt.getDrawableFromPath(context,path);
+
+                    Log.e("zengyue", "bind: 当前要加载的路径是"+ image );
+                    /*if(item.getImageName()==null||((String)item.getImageName()).isEmpty()){
+                        GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,null);
+                    }else {
+                        GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image,H27002ExtKt.getDrawableByName(context,(String) item.getImageName()));
+
+                    }*/
+
+                    File cacheFile = AppCacheBase.INSTANCE.getFilePathCache().get((String) image);
+                    if (cacheFile != null) {
+                        // 使用缓存的 Drawable
+                        Log.e("zengyue", "bind: 走的缓存Movice===");
+                        //mIV.setImageDrawable(cachedDrawable);
+                        GlideUtils.bind(context, mIV, cacheFile);
+                    } else {
+                        // 从网络加载
+                        Log.e("zengyue", "bind: 走的网络Movice===");
+                        if(item.getImageName()==null||((String)item.getImageName()).isEmpty()){
+                            GlideExtKt.bindImageView( mIV, TextUtils.isEmpty((CharSequence) image) ? R.drawable.transparent : image);
+                        }else {
+                            mIV.setImageDrawable(H27002ExtKt.getDrawableByName(context, (String) item.getImageName()));
+                        }
+                        //AppCacheBase.INSTANCE.getDrawableCache().put((String) image, mIV.getDrawable());
+                        //LiveEventBus.get("loadnet", String.class).post((String)image);
+
+                    }
+
                     if(tvLoadding!=null){
                         if(item.getId().isEmpty()){
                             tvLoadding.setVisibility(View.GONE);

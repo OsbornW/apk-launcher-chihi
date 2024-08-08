@@ -14,6 +14,7 @@ public class TypeItem implements Serializable {
     private int layoutType = TYPE_LAYOUT_STYLE_UNKNOW;
     private final String name;
     private Object icon;
+    private String iconName;
     private final long id;
     private final int type;
     private String data;
@@ -33,6 +34,14 @@ public class TypeItem implements Serializable {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
     }
 
     public String getData() {

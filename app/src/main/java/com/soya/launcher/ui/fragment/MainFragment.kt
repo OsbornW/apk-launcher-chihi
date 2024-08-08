@@ -50,6 +50,7 @@ import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.downloadPic
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
@@ -87,6 +88,7 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.getUpdateList
 import com.soya.launcher.ext.initializeAd
 import com.soya.launcher.ext.isH6
@@ -328,16 +330,54 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     // 执行实际的任务
                     isShowUpdate().yes { performTask() }
 
+                }
+            }
+        }
+    }
+
+    var isPicDownload = false
+    private fun startPicTask() {
+        lifecycleScope.launch {
+            while (true) {
+                //"开始3秒轮询一次：$this".e("zengyue1")
+                checkPicDownload()
+                delay(15000) // 每两秒执行一次
+
+            }
+
+        }
+    }
+
+    private fun checkPicDownload() {
+        val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
+        if (File(path).exists()) {
+            val result = Gson().fromJson<HomeResponse>(
+                JsonReader(FileReader(path)),
+                HomeResponse::class.java
+            )
+
+            result.data.movies.forEach {
+                it.datas.forEach {
+                    val destPath = "${appContext.filesDir.absolutePath}/${it.imageName}.jpg"
+                    if (!File(destPath).exists()) {
+                        (it.imageUrl as String).downloadPic(lifecycleScope, destPath,
+                            downloadComplete = { _, path ->
+                                "下载成功了：$path".e("zengyue")
+                                AppCacheBase.filePathCache[it.imageUrl as String] = File(path)
+                            }
+                        )
+                    }
 
                 }
             }
+
         }
     }
 
     private fun performTask() {
         "开始请求：".e("zengyue")
         mViewModel.reqUpdateInfo().lifecycle(this@MainFragment,
-            errorCallback = {throwanle->
+            errorCallback = { throwanle ->
                 "当前错误${throwanle.message}".e("zengyue")
             },
             isShowError = false,
@@ -1702,6 +1742,21 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         ),
                         "Home.json"
                     )
+                    if (!isPicDownload) {
+                        lifecycleScope.launch {
+                            if (result.data.reg_id != AppCache.reqId) {
+                                withContext(Dispatchers.IO) {
+                                    deleteAllPic()
+                                }
+                                AppCache.reqId = result.data.reg_id
+                            }
+                            startPicTask()
+                            isPicDownload = true
+                        }
+
+
+                    }
+
                     val header = fillData(result)
                     header.addAll(items)
 
@@ -1728,6 +1783,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }
     }
 
+    private fun deleteAllPic() {
+        appContext.filesDir.absolutePath.deleteAllImages()
+    }
+
     private fun switchMovice(bean: TypeItem) {
         fillMovice(bean)
     }
@@ -1739,7 +1798,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
 
             override fun onClick(bean: ApplicationInfo) {
-                openApp(bean)
+                try {
+                    openApp(bean)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
             }
 
             override fun onMenuClick(bean: ApplicationInfo) {
