@@ -29,8 +29,6 @@ import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.DeviceUtils
@@ -87,6 +85,7 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.countImagesWithPrefix
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getUpdateList
@@ -119,7 +118,6 @@ import com.soya.launcher.ui.dialog.AppDialog
 import com.soya.launcher.ui.dialog.ToastDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AppUtils
-import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
 import com.soya.launcher.utils.showLoadingViewDismiss
@@ -139,7 +137,6 @@ import retrofit2.Call
 import java.io.File
 import java.io.FileReader
 import java.io.InputStreamReader
-import java.nio.charset.StandardCharsets
 import java.util.Arrays
 import java.util.Calendar
 import java.util.UUID
@@ -319,6 +316,25 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }
     }
 
+    private fun setNetData(result: HomeResponse) {
+        val header = fillData(result)
+        header.addAll(items)
+
+        addProduct5TypeItem(header)
+
+        setHeader(header)
+        isConnectFirst = true
+        if (result.getData().reg_id != null) PreferencesUtils.setProperty(
+            Atts.RECENTLY_MODIFIED,
+            result.getData().reg_id
+        )
+        val item = header[0]
+        fillMovice(item)
+        if (BuildConfig.FLAVOR == "hongxin_H27002") {
+            requestFocus(mHeaderGrid, 500)
+        }
+    }
+
     var isPicDownload = false
     private fun startPicTask() {
         lifecycleScope.launch {
@@ -331,6 +347,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }
     }
 
+    var isLoadedList = false
     private fun checkPicDownload() {
         val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
         if (File(path).exists()) {
@@ -339,9 +356,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 HomeResponse::class.java
             )
 
+            val size = result.data.movies.size
+
             result.data.movies.forEachIndexed { index, homeItem ->
                 val destPath =
-                    "${appContext.filesDir.absolutePath}/${(homeItem.icon as String).getFileNameFromUrl()}"
+                    "${appContext.filesDir.absolutePath}/header_${(homeItem.icon as String).getFileNameFromUrl()}"
 
                 if (!File(destPath).exists()) {
                     (homeItem.icon as String).downloadPic(lifecycleScope, destPath,
@@ -349,6 +368,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             val filePathCache = AppCache.homeData.dataList
                             filePathCache[homeItem.icon as String] = path
                             AppCache.homeData = HomeDataList(filePathCache)
+                            if(countImagesWithPrefix()==size){
+                                isLoadedList.no {
+                                    setNetData(result)
+                                    isLoadedList = true
+                                }
+
+                            }
                         },
                         downloadError = {
 
@@ -360,7 +386,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 homeItem.datas.forEachIndexed { position, it ->
 
                     val destPath =
-                        "${appContext.filesDir.absolutePath}/${(it.imageUrl as String).getFileNameFromUrl()}"
+                        "${appContext.filesDir.absolutePath}/content_${(it.imageUrl as String).getFileNameFromUrl()}"
                     var isDownload = false
                     when (homeItem.name) {
                         "Youtube", "Disney+", "Hulu", "Prime video" -> {
@@ -1714,22 +1740,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
                     }
 
-                    val header = fillData(result)
-                    header.addAll(items)
 
-                    addProduct5TypeItem(header)
-
-                    setHeader(header)
-                    isConnectFirst = true
-                    if (result.getData().reg_id != null) PreferencesUtils.setProperty(
-                        Atts.RECENTLY_MODIFIED,
-                        result.getData().reg_id
-                    )
-                    val item = header[0]
-                    fillMovice(item)
-                    if (BuildConfig.FLAVOR == "hongxin_H27002") {
-                        requestFocus(mHeaderGrid, 500)
-                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 } finally {

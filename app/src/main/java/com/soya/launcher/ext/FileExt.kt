@@ -1,5 +1,6 @@
 package com.soya.launcher.ext
 
+import android.graphics.BitmapFactory
 import java.io.File
 import android.util.Log
 import com.shudong.lib_base.ext.appContext
@@ -37,4 +38,13 @@ fun String.exportToJson(fileName: String = "home.json") {
     } catch (e: IOException) {
         e.printStackTrace()
     }
+}
+
+fun countImagesWithPrefix(prefix: String = "header_"): Int {
+    val directory = appContext.filesDir.absolutePath
+    val files = File(directory).listFiles { file ->
+        file.isFile && file.name.startsWith(prefix) &&
+                BitmapFactory.decodeFile(file.absolutePath) != null // 判断是否为有效图片
+    }
+    return files?.size ?: 0
 }
