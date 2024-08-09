@@ -395,12 +395,12 @@ public class AndroidSystem {
                     ActivityInfo info = resolveInfo.activityInfo;
                     Intent intent = getPackageNameIntent(context, info.packageName);
                     if (TextUtils.isEmpty(url)){
-                        //Log.d("zy1998", "jumpPlayer: 我要打开的包名是1==="+resolveInfo.activityInfo.packageName);
+                        //;
                         openPackageName(context, resolveInfo.activityInfo.packageName);
                     }else {
                         if (TextUtils.isEmpty(pk.getActivityName())){
                             if (intent != null){
-                                //Log.d("zy1998", "jumpPlayer: 我要打开的包名是3==="+url+"===="+Uri.parse(url).getPath());
+                                //;
 
                                 if(DeviceExtKt.isRK3326()){
                                     openPackageName(context, resolveInfo.activityInfo.packageName);
@@ -413,7 +413,7 @@ public class AndroidSystem {
 
                             }
                         }else {
-                            //Log.d("zy1998", "jumpPlayer: 我要打开的包名是2==="+intent.getComponent().getPackageName()+"===="+pk.getActivityName());
+                            //;
 
                             openPN(context, url, intent.getComponent().getPackageName(), pk.getActivityName());
                         }
@@ -567,29 +567,20 @@ public class AndroidSystem {
         }
         List<LauncherActivityInfo> launchers = apps.getActivityList(null, android.os.Process.myUserHandle());
 
-        Collections.sort(launchers, new Comparator<LauncherActivityInfo>() {
-            @Override
-            public int compare(LauncherActivityInfo o1, LauncherActivityInfo o2) {
-                return (int) (o2.getFirstInstallTime() - o1.getFirstInstallTime());
-            }
-        });
+        Collections.sort(launchers, (o1, o2) -> (int) (o2.getFirstInstallTime() - o1.getFirstInstallTime()));
 
         List<ApplicationInfo> result = new ArrayList<>();
 
-        // 定义要隐藏的应用包名列表
-        Set<String> hiddenPackageNames = new HashSet<>(Arrays.asList(
-                "com.android.vending",
-                "com.explorer",
-                "com.amazon.avod.thirdpartyclient",
-                "com.google.android.apps.youtube.creator",
-                "com.netflix.mediaclient"
-        ));
+
 
         for (LauncherActivityInfo launcher : launchers) {
             String packageName = launcher.getApplicationInfo().packageName;
-            if (!packageName.equals(BuildConfig.APPLICATION_ID) && !hiddenPackageNames.contains(packageName)) {
+            if (!packageName.equals(BuildConfig.APPLICATION_ID)) {
                 result.add(launcher.getApplicationInfo());
             }
+        }
+        for (ApplicationInfo item:result){
+            Log.e("zengyue1", "getUserApps2: 当前应用程序信息："+item.packageName );
         }
         return result;
     }
@@ -604,19 +595,10 @@ public class AndroidSystem {
 
         List<ApplicationInfo> result = new ArrayList<>();
 
-        // 定义要隐藏的应用包名列表
-        Set<String> hiddenPackageNames = new HashSet<>(Arrays.asList(
-                "com.android.vending",
-                "com.explorer",
-                "com.amazon.avod.thirdpartyclient",
-                "com.google.android.apps.youtube.creator",
-                "com.netflix.mediaclient"
-
-        ));
 
         for (ApplicationInfo packageInfo : packages) {
             Intent intent = getPackageNameIntent(context, packageInfo.packageName);
-            if (intent != null && !packageInfo.packageName.equals(BuildConfig.APPLICATION_ID) && !hiddenPackageNames.contains(packageInfo.packageName)) {
+            if (intent != null && !packageInfo.packageName.equals(BuildConfig.APPLICATION_ID) ) {
                 result.add(packageInfo);
             }
         }
@@ -701,7 +683,7 @@ public class AndroidSystem {
         }
     }
 
-    public static <T> boolean uninstallPackage(Context context, String packageName) {
+    public static  boolean uninstallPackage(Context context, String packageName) {
         boolean success = false;
         try {
             PackageManager packageManger = context.getPackageManager();

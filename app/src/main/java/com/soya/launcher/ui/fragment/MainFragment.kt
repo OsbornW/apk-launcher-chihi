@@ -656,7 +656,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             val authBean = s?.jsonToBean<AuthBean>()
                             (authBean?.status == 200).yes {
                                 authBean?.code?.let {
-                                    "开始判断msg===".d("zy1996")
+                                    "开始判断msg==="
                                     BuildConfig.DEBUG.no {
                                         it.getResult(authBean.msg)
                                     }
@@ -1279,10 +1279,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 when (bean.type) {
                     Types.TYPE_MOVICE -> {
                         val packages = Gson().fromJson(bean.data, Array<AppPackage>::class.java)
-                        "当前名字是====${packages.size}===${packages[0].packageName}".e("zy1998")
+                        "当前名字是====${packages.size}===${packages[0].packageName}"
                         when {
                             packages[0].packageName.contains("com.amazon.amazonvideo.livingroom") -> {
-                                Log.d("111", "111")
+
                                 if (Config.COMPANY == 5) {
                                     AndroidSystem.openActivityName(
                                         activity,
@@ -1301,7 +1301,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             }
 
                             packages[0].packageName.contains("youtube") -> {
-                                Log.d("2222", "222222")
+
                                 if (Config.COMPANY == 5) {
                                     AndroidSystem.openPackageName(
                                         activity,
@@ -1322,7 +1322,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                     val success = AndroidSystem.jumpPlayer(activity, packages, null)
                                     if (!success) {
                                         toastInstallPKApp(bean.name, packages)
-                                        Log.d("bean", "bean" + bean.name + "packages" + packages)
+
                                     }
                                 } catch (e: Exception) {
                                     e.printStackTrace()
@@ -1340,7 +1340,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     }
 
                     Types.TYPE_MY_APPS -> {
-                        "开始启动1".e("zy1998")
+                        "开始启动1"
                         val intent = Intent(activity, AppsActivity::class.java)
                         intent.putExtra(Atts.TYPE, bean.type)
                         startActivity(intent)
@@ -1358,7 +1358,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
 
             override fun onSelect(selected: Boolean, bean: TypeItem) {
-                Log.e("TAG", "onSelect: " + bean.type)
+
                 if (selected) {
                     setExpanded(true)
                     try {
@@ -1378,7 +1378,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun toastInstallApp(name: String, callback: ToastDialog.Callback) {
-        "当前的APP名字是=====$name".d("zy1996")
+        "当前的APP名字是=====$name"
         if (name == null || name == "") {
             ToastUtils.show("当前APP名字是空的")
         } else {
@@ -1661,7 +1661,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
 
                 bean.appPackage.forEach {
-                    "当前的包名是：${it.packageName}".e("zengyue")
+                    "当前的包名是：${it.packageName}"
                 }
 
 
@@ -1707,7 +1707,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         isConnectFirst = true
                         return
                     }
-                    "当前的数据是==${call.request().url}".e("zengyue6")
+                    "当前的数据是==${call.request().url}"
                     PreferencesUtils.setProperty(
                         Atts.LAST_UPDATE_HOME_TIME,
                         System.currentTimeMillis()
@@ -1719,7 +1719,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             if (result.data.reg_id != AppCache.reqId) {
                                 withContext(Dispatchers.IO) {
                                     deleteAllPic()
-                                    "开始下载图片:${AppCache.reqId}::::${result.data?.reg_id ?: 0L}".e("zengyue6")
+                                    "开始下载图片:${AppCache.reqId}::::${result.data?.reg_id ?: 0L}"
                                     startPicTask()
                                 }
                                 AppCache.reqId = result.data?.reg_id ?: 0L

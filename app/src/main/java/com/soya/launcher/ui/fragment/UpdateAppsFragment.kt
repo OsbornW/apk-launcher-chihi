@@ -74,7 +74,7 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                                 pbUpdate.setTextColor(com.shudong.lib_res.R.color.red.colorValue())
                                 pbUpdate.setProgressText("下载失败")
                                 pbUpdate.reset()
-                                "当前的错误是$it".e("zengyue")
+
                             },
                             downloadComplete = { _, destPath ->
                                 startInstallApp(destPath, pbUpdate, llRoot) {

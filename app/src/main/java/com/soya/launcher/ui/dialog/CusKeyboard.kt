@@ -89,7 +89,7 @@ class CusKeyboard private constructor(val setup: (CusKeyboard.() -> Unit)? = nul
     private fun fillEn() {
         var array =
             "q w e r t y u i o p".split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        Log.e(TAG, "fillEn: " + array.contentToString())
+
         for (item in array) ens.add(KeyItem(KeyItem.TYPE_ENG, item, -1, 1, false))
         array =
             "a s d f g h j k l ,".split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()

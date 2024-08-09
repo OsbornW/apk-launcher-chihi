@@ -77,14 +77,14 @@ class TimeZoneDialog : SingleDialogFragment() {
 
                 mContentGrid!!.apply {
                    postDelayed({
-                       "开始执行".e("zengyue1")
+                       "开始执行"
                        scrollToPosition(select)
                        //mContentGrid!!.selectedPosition = select
                        //mTimeZoneAdapter!!.setSelect(aDefault)
                    },0)
                 }
 
-                "当前选中的时区是：${aDefault.displayName}::$select".e("zengyue1")
+                "当前选中的时区是：${aDefault.displayName}::$select"
 
 
                 mTimeZoneAdapter!!.setCallback { bean -> if (callback != null) callback!!.onClick(bean) }

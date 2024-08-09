@@ -43,9 +43,24 @@ class AppListAdapter(
     fun getDataList():MutableList<ApplicationInfo>{
         return dataList
     }
+
+
+    private val excludedPackageNames = setOf(
+        "com.android.vending",
+        "com.explorer",
+        "com.amazon.avod.thirdpartyclient",
+        "com.google.android.apps.youtube.creator",
+        "com.netflix.mediaclient"
+    )
+
     fun replace(list: List<ApplicationInfo>?) {
+
+        val filteredList = list?.filterNot { appInfo ->
+            excludedPackageNames.contains(appInfo.packageName ?: "")
+        }
+
         dataList.clear()
-        dataList.addAll(list!!)
+        dataList.addAll(filteredList!!)
         notifyDataSetChanged()
     }
 
@@ -58,19 +73,19 @@ class AppListAdapter(
         val missingInNew = newPackageNames - oldPackageNames
         val extraInOld = oldPackageNames - newPackageNames
 
-        Log.e("zengyue", "Old package names: $oldPackageNames")
-        Log.e("zengyue", "New package names: $newPackageNames")
-        Log.e("zengyue", "Missing in new: $missingInNew")
-        Log.e("zengyue", "Extra in old: $extraInOld")
+
+
+
+
 
         when {
             // 处理新增的情况
             missingInNew.isNotEmpty()-> {
-                Log.e("zengyue", "新增了包哦1")
+
                 missingInNew.forEach { missingPackageName ->
                     val newItem = list.find { it.packageName == missingPackageName }
                     if (newItem != null) {
-                        Log.e("zengyue", "新增了包哦2: $missingPackageName")
+
                         dataList.add(newItem)
                         notifyItemInserted(dataList.indexOf(newItem))
                     }
@@ -78,12 +93,12 @@ class AppListAdapter(
             }
             // 处理移除的情况
             extraInOld.isNotEmpty()-> {
-                Log.e("zengyue", "移除了包哦1")
+
                 val positionsToRemove = mutableListOf<Int>()
                 extraInOld.forEach { extraPackageName ->
                     dataList.indexOfFirst { it.packageName == extraPackageName }.let { position ->
                         if (position != -1) {
-                            Log.e("zengyue", "移除了包哦2: $extraPackageName")
+
                             positionsToRemove.add(position)
                         }
                     }
@@ -94,10 +109,10 @@ class AppListAdapter(
                     notifyItemRemoved(position)
                 }
 
-                Log.e("zengyue", "Updated package names after removal: ${dataList.map { it.packageName }}")
+
             }
             else -> {
-                Log.e("zengyue", "没有新增移除")
+
             }
         }
     }

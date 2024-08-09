@@ -43,7 +43,6 @@ fun String.getAppIcon(): Drawable? {
 }
 
 
-
 /**
  * 扩展函数，通过包名获取应用的版本名称（versionName）。
  *
@@ -76,7 +75,7 @@ fun getUpdateList(): Boolean {
             versionCodeMap[app.packageName] = packageInfo.versionCode
         } catch (e: PackageManager.NameNotFoundException) {
             // 记录异常信息
-            Log.e("UpdateList", "Package not found: ${app.packageName}", e)
+
         }
     }
 
@@ -88,9 +87,11 @@ fun getUpdateList(): Boolean {
 
         if (shouldFilter) {
             // 日志记录
-            Log.d("UpdateList", "Filtering out ${dto.packageName}. " +
-                    "Installed: ${!isNotInstalled}, " +
-                    "Current Code: $currentVersionCode, DTO Code: ${dto.versionCode}")
+            Log.d(
+                "UpdateList", "Filtering out ${dto.packageName}. " +
+                        "Installed: ${!isNotInstalled}, " +
+                        "Current Code: $currentVersionCode, DTO Code: ${dto.versionCode}"
+            )
         }
 
         shouldFilter

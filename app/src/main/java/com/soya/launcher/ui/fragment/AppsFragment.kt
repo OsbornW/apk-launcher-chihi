@@ -138,7 +138,7 @@ class AppsFragment : AbsFragment() {
     override fun onResume() {
         super.onResume()
         fillApps()
-        Log.e("zy1998", "onResume: 开始启动4")
+
     }
 
     companion object {

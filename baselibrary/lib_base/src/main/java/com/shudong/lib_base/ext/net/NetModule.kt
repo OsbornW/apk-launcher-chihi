@@ -27,7 +27,7 @@ const val BASE_URL = "http://api.ispruz.com/"
 const val HEADERURL = ""
 
 private const val TIME_OUT = 8L
-private const val TAG = "zengyue"
+private const val TAG = "chihi_zeng"
 
 
 const val TOKEN_INVALID_1 = 1011006

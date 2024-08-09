@@ -96,7 +96,7 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
     private fun fillEn() {
         var array =
             "q w e r t y u i o p".split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        Log.e(TAG, "fillEn: " + array.contentToString())
+
         for (item in array) ens.add(KeyItem(KeyItem.TYPE_ENG, item, -1, 1, false))
         array =
             "a s d f g h j k l ,".split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -136,17 +136,17 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
 
             KeyItem.TYPE_UPCAST -> mAdapter!!.setUPCase(!mAdapter!!.isUPCaseKey)
             KeyItem.TYPE_DEL -> {
-                "按下了删除==".d("zy2001")
+                "按下了删除=="
                 del()
             }
             KeyItem.TYPE_SEARCH -> {
-                "按下了搜索==".d("zy2001")
+                "按下了搜索=="
                 mTargetView!!.onEditorAction(EditorInfo.IME_ACTION_DONE)
                 dismiss()
             }
 
             KeyItem.TYPE_SPACE->{
-                "按下了空格==".d("zy2001")
+                "按下了空格=="
                 mTargetView!!.append(" ")
             }
             else -> {
@@ -185,7 +185,7 @@ class KeyboardDialog : SingleDialogFragment(), KeyboardAdapter.Callback {
             }
 
 
-           // "设置之后,长文字是====${str}===${finalStr}===$len1".d("zy1997")
+           // "设置之后,长文字是====${str}===${finalStr}===$len1"
             mTargetView?.text = finalStr
 
         }

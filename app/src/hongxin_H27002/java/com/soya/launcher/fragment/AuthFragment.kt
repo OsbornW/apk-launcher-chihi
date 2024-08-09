@@ -174,7 +174,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
             val toBeEncryptedString = "$chanelId$childChanel$versionValue$activeCode$uniqueID$time$pwd"
             // 对字符串进行MD5加密
             val md5String = toBeEncryptedString.md5()
-            //Log.d("zy1996", "加密前：$toBeEncryptedString===加密后的MD5是：${md5String}")
+            //
 
             AppCacheBase.activeCode = activeCode
 
@@ -236,14 +236,14 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
 
             val jsonObject = JSONObject(params)
 
-            "开始请求接口".e("zengyue")
+            "开始请求接口"
             OkGo.post("https://api.freedestop.com/u/client")
                 .tag(this)
                 .upJson(jsonObject.toString())
                 .execute(object : StringCallback() {
                     override fun onSuccess(s: String?, call: Call?, response: Response?) {
                         //上传成功
-                        "请求成功".e("zengyue")
+                        "请求成功"
                         //Thread.sleep(3000)
                         lifecycleScope.launch {
                             delay(1000)
@@ -251,7 +251,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                             val authBean = s?.jsonToBean<AuthBean>()
                             (authBean?.status==200).yes {
                                     authBean?.code?.let {
-                                        "开始判断msg===".d("zy1996")
+                                        "开始判断msg==="
                                         it.getResult(authBean.msg)
                                     }
 
@@ -274,21 +274,21 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                     }
 
                     override fun onError(call: Call?, response: Response?, e: Exception?) {
-                        "请求失败".e("zengyue")
+                        "请求失败"
                         showLoadingViewDismiss()
                         ToastUtils.show("Failed, please try again!")
-                        //Log.d("zy1996", "请求失败，原因：${e.toString()}====${response.toString()}")
+                        //
 
                     }
 
                     override fun onBefore(request: BaseRequest<out BaseRequest<*>>?) {
                         super.onBefore(request)
-                        "请求之前".e("zengyue")
+                        "请求之前"
                     }
 
                     override fun onAfter(t: String?, e: java.lang.Exception?) {
                         super.onAfter(t, e)
-                        "请求之后".e("zengyue")
+                        "请求之后"
                     }
                 })
 

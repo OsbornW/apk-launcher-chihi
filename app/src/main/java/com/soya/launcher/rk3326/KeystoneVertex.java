@@ -22,10 +22,8 @@ public class KeystoneVertex {
             String sTopRight = ReflectUtils.getProperty(PROP_KEYSTONE_TOP_RIGHT, "0,0");
             String sBottomLeft = ReflectUtils.getProperty(PROP_KEYSTONE_BOTTOM_LEFT, "0,0");
             String sBottomRight = ReflectUtils.getProperty(PROP_KEYSTONE_BOTTOM_RIGHT, "0,0");
-				
-			Log.d("keystone", sTopLeft + " " + sTopRight + " " + sBottomLeft + " " + sBottomRight);
-				
-            vTopLeft = new Vertex(sTopLeft);
+
+        vTopLeft = new Vertex(sTopLeft);
             vTopRight = new Vertex(sTopRight);
             vBottomLeft = new Vertex(sBottomLeft);
             vBottomRight = new Vertex(sBottomRight);
@@ -36,8 +34,6 @@ public class KeystoneVertex {
         String sTopRight = ReflectUtils.getProperty(PROP_KEYSTONE_BOTTOM_RIGHT, "0,0");
         String sBottomLeft = ReflectUtils.getProperty(PROP_KEYSTONE_TOP_LEFT, "0,0");
         String sBottomRight = ReflectUtils.getProperty(PROP_KEYSTONE_TOP_RIGHT, "0,0");
-
-        Log.d("keystone", sTopLeft + " " + sTopRight + " " + sBottomLeft + " " + sBottomRight);
 
         vTopLeft = new Vertex(sTopLeft);
         vTopRight = new Vertex(sTopRight);

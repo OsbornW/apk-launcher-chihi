@@ -141,8 +141,7 @@ public class ServiceRequest {
                     T data = null;
                     try {
                         String json = new String(response.body() != null ? response.body().bytes() : response.errorBody().bytes());
-                        //Log.e(tag, tag+": "+json);
-                        Log.e("zy1998", call.request().url() +"==="+json);
+                        //;
                         data = GSON.fromJson(json, tClass);
                     }catch (Exception e){
                         e.printStackTrace();

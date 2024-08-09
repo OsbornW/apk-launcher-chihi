@@ -24,7 +24,7 @@ fun isSysApp(packageName:String): Boolean {
         } else {
             // 应用不可卸载,属于系统级APP
             // 提示用户无法卸载
-            "不可以卸载-====".d("chihi")
+
             return true
         }
     } catch (e: PackageManager.NameNotFoundException) {

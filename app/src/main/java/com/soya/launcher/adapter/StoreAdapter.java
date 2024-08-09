@@ -82,7 +82,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.Holder> {
             if(TextUtils.isEmpty(bean.getLocalIcon())){
                 GlideUtils.bind(context, mIV,  bean.getAppIcon());
             }else {
-                Log.e("zengyue4", "bind: 当前要加载的文件是：${}"+bean.getLocalIcon() );
                 mIV.setImageDrawable(H27002ExtKt.getDrawableByName(context,bean.getLocalIcon()));
             }
             mTitleView.setText(bean.getAppName());

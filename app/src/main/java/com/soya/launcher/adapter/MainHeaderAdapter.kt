@@ -96,12 +96,12 @@ class MainHeaderAdapter(
                         val cacheFile = AppCache.homeData.dataList[item.icon as String]
                         if (cacheFile != null) {
                             // 使用缓存的 Drawable
-                            Log.e("zengyue", "bind: 走的缓存Movice===")
+
                             //mIV.setImageDrawable(cachedDrawable);
                             GlideUtils.bind(context, mIV, cacheFile)
                         } else {
                             // 轮询直到有缓存 Drawable
-                            Log.e("zengyue", "bind: 走的网络Movice===")
+
                             startPollingForCache(mIV,item.icon.toString())
                         }
                     }
@@ -135,13 +135,13 @@ class MainHeaderAdapter(
                 val cacheFile = AppCache.homeData.dataList.get(image)?.let { File(it) }
                 if (cacheFile?.exists()==true) {
                     // 使用缓存的 Drawable
-                    Log.e("zengyue", "Polling: 走的缓存Movice===")
+
                     GlideUtils.bind(context, mIV, cacheFile)
                 } else if (attempts < maxAttempts) {
                     attempts++
                     handler.postDelayed(this, pollingInterval)
                 } else {
-                    Log.e("zengyue", "Polling: 达到最大轮询次数，缓存仍然不可用")
+
                     // 处理没有缓存的情况，可能需要使用默认图像或错误处理
                 }
             }

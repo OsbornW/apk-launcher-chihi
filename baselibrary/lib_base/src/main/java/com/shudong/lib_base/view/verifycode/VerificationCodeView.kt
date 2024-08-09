@@ -354,7 +354,7 @@ class VerificationCodeView(private val mContext: Context, attrs: AttributeSet?) 
     override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN) {
             val editText = v as EditText
-            Log.e("VerificationCodeView", "onKey: 点击删除当前的文本是=====" + editText.text.toString())
+
             backFocus(editText)
         }
         return false
@@ -422,7 +422,7 @@ class VerificationCodeView(private val mContext: Context, attrs: AttributeSet?) 
         for (i in mEtNumber - 1 downTo 0) {
             editText = getChildAt(i) as EditText
             val b = et === editText
-            // Log.e("VerificationCodeView","是否相等===="+b);
+            // ;
             if (b) {
                 // if (editText.getText().length() >= 1) {
                 if (i == 0) {
@@ -436,7 +436,7 @@ class VerificationCodeView(private val mContext: Context, attrs: AttributeSet?) 
                 // }
             }
 
-            //Log.e("VerificationCodeView", "backFocus: 当前按下删除键I是==="+i+"===当前的文本是=="+editText.getText().toString()+"长度是===="+editText.getText().length());
+            //;
         }
     }
 
@@ -461,9 +461,9 @@ class VerificationCodeView(private val mContext: Context, attrs: AttributeSet?) 
         for (i in mEtNumber - 1 downTo 0) {
             editText = getChildAt(i) as EditText
             if (editText == null) {
-                Log.e("VerificationCodeView", "setEmpty: 当前是空的哦====$i")
+
             } else {
-                Log.e("VerificationCodeView", "setEmpty: 当前不是空的哦====$i")
+
             }
             editText.setText("")
             if (i == 0) {

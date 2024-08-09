@@ -329,7 +329,7 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
                 kv.updateAllKeystoneVertex()
             }
             isH6()->{
-                "坐标：$ltx=====$lty".e("zengyue")
+                "坐标：$ltx=====$lty"
                 kv.getAllKeystoneVertexForH6()
                 kv.vTopLeft.x = ltx.toInt()
                 kv.vTopLeft.y = lty.toInt()

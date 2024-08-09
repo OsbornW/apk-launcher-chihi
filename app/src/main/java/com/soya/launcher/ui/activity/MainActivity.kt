@@ -93,7 +93,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseViewModel>() {
         }
 
         //val model = ReflectUtils.getProperty("persist.vendor.launcher.platform","")
-        //"当前设备型号是====$model".d("zy1998")
+        //"当前设备型号是====$model"
     }
 
 
@@ -120,7 +120,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, BaseViewModel>() {
         }
 
         this.obseverLiveEvent<Boolean>(IS_MAIN_CANBACK) {
-            Log.d("zy1996", "switchFragment: 收到false了====")
+
             it.yes {
                 canBackPressed = true
             }.otherwise {

@@ -80,7 +80,7 @@ class EmotionFragment : Fragment() {
             }
             val list = context?.assets?.list("ems")
             list?.forEach {
-                Log.i("zy1995", "当前的文件路径是-----$it")
+
             }
 
             Glide.with(mContext!!).load(path).into(holder.img!!)

@@ -135,7 +135,7 @@ public class UninstallDialog extends SingleDialogFragment implements View.OnClic
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("zy2000", "onReceive: 安装部被卸载了哦");
+            ;
             int code = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -1);
             boolean success = code == PackageInstaller.STATUS_SUCCESS;
             mMsgView.setText(getString(success ? R.string.uninstalled : R.string.uninstall_failed));

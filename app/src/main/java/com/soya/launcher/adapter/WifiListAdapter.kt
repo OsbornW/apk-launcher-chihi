@@ -72,10 +72,6 @@ class WifiListAdapter(
             }
         }
 
-        dataList.forEach {
-            "首次添加的WIFI数据是=====${it.item.SSID}".d("zy1996")
-        }
-
         notifyDataSetChanged()
     }
 

@@ -34,7 +34,6 @@ public class FileUtils {
                 File dir = new File(outPath, path);
                 if (!dir.exists()) {
                     if (!dir.mkdirs()) {
-                        Log.v("copyAssets", "Failed to create directory " + dir.getAbsolutePath());
                     }
                 }
 
@@ -51,7 +50,6 @@ public class FileUtils {
     }
 
     private static void copyFile(AssetManager assetManager, String fileName, File outPath) throws IOException {
-        Log.v("copyFile", "Copy " + fileName + " to " + outPath);
         InputStream in = assetManager.open(fileName);
         OutputStream out = new FileOutputStream(outPath + "/" + fileName);
         byte[] buffer = new byte[4000];

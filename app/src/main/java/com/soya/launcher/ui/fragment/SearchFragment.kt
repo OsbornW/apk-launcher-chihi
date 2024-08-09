@@ -106,7 +106,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
         mDivSearch!!.setOnClickListener(this)
         mEditView!!.addTextChangedListener(object : TextWatcherAdapter() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                Log.e("zengyue", "onTextChanged: $s")
+
                 if (TextUtils.isEmpty(s)) return
                 lifecycleScope.launch {
                     //delay(200)
@@ -184,7 +184,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
             }
             withContext(Dispatchers.Main) {
-                "刷新适配器1".e("zy2001")
+                "刷新适配器1"
                 mAdapter!!.replace(list)
             }
         }
@@ -200,30 +200,28 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
 
             withContext(Dispatchers.IO) {
-                "开始网络请求1==关键字：$searchText".e("zengyue")
                 call = HttpRequest.getAppList(object : AppServiceRequest.Callback<AppListResponse?> {
                     override fun onCallback(call: Call<*>?, status: Int, result: AppListResponse?) {
-                        "网络请求成功".e("zy2001")
                         val request = call?.request()
                             // 打印请求方法和URL
-                        "Request: ${request?.method} ${request?.url}".e("zengyue1")
+
                               // 打印 @FieldMap 参数信息
                         if (request?.method == "POST") {
                             val requestBody = request.body
                             if (requestBody is FormBody) {
                                 for (i in 0 until requestBody.size) {
-                                    "${requestBody.name(i)}: ${requestBody.value(i)}".e("zengyue1")
+
                                 }
                             }
                         }
-                        "响应结果：${result?.jsonToString()}".e("zengyue1")
+
                         if (!isAdded || call?.isCanceled == true || store == null) return
                         if (result?.result == null || result.result.appList == null || result.result.appList.isEmpty()) {
                             store?.state = 1
                             lifecycleScope.launch { mAdapter!!.sync(store) }
 
                         } else {
-                            "请求成功准备刷新".e("zy2001")
+
                             store?.list?.addAll(result.result.appList)
                             store?.state = 2
                             lifecycleScope.launch { mAdapter!!.sync(store) }
@@ -239,7 +237,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
 
             withContext(Dispatchers.Main) {
-                "刷新适配器1".e("zy2001")
+
                 mAdapter!!.replace(list)
             }
 
@@ -353,7 +351,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
     }
 
     private fun search() {
-        Log.e("zengyue", "search: 执行了搜索1${mEditView?.text.toString()}")
+
         val text = mEditView!!.text.toString()
         if (call != null) call!!.cancel()
         if (!TextUtils.isEmpty(text)) {

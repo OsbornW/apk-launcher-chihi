@@ -17,7 +17,7 @@ fun switchFragment() = run{
              sendLiveEventDataDelay(IS_MAIN_CANBACK,true,1000)
             WelcomeFragment.newInstance()
         } else {
-             Log.d("zy1996", "switchFragment: 发送false了====")
+
              sendLiveEventDataDelay(IS_MAIN_CANBACK,false,1000)
             MainFragment.newInstance()
         }

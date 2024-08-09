@@ -194,7 +194,6 @@ public class StatusBarUtil {
                 window.setAttributes(e);
                 result = true;
             } catch (Exception var8) {
-                Log.e("StatusBar", "darkIcon: failed");
             }
         }
 

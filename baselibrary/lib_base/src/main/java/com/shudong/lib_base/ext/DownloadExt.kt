@@ -1,23 +1,10 @@
 package com.shudong.lib_base.ext
 
-import android.app.PendingIntent
-import android.content.Intent
-import android.content.pm.PackageInstaller
-import android.os.Looper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import rxhttp.toDownloadFlow
 import rxhttp.wrapper.param.RxHttp
-import java.io.File
-import java.io.FileInputStream
-import kotlin.coroutines.resumeWithException
-import android.os.Handler
-import android.util.Log
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlin.coroutines.resume
 
 /**
  *
@@ -52,7 +39,7 @@ fun String.downloadApk(
 
 
 
-suspend fun String.silentInstall(): Boolean {
+/*suspend fun String.silentInstall(): Boolean {
     return suspendCancellableCoroutine { continuation ->
         val packageInstaller = appContext.packageManager.packageInstaller
         val apkFile = File(this)
@@ -116,7 +103,7 @@ suspend fun String.silentInstall(): Boolean {
             session?.close()
         }
     }
-}
+}*/
 
 
 fun String.downloadPic(

@@ -76,7 +76,6 @@ public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.Holder
         public void bind(SimpleTimeZone bean){
             boolean isSelect = select != null && bean.getZone().getID().equals(select.getID());
             if(isSelect){
-                Log.e("zengyue1", "bind: 当前名字"+bean.getZone().getID()+"=="+bean.getName()+"=="+select.getDisplayName() );
             }
             mTitleView.setText(bean.getName());
             mDescView.setText(bean.getDesc());

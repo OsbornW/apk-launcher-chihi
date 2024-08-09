@@ -18,16 +18,16 @@ fun String.deleteAllImages() {
                 if (fileExtension in imageExtensions) {
                     if (file.delete()) {
                         // 文件成功删除
-                        Log.d("DeleteImages", "Deleted file: ${file.name}")
+
                     } else {
                         // 文件删除失败
-                        Log.e("DeleteImages", "Failed to delete file: ${file.name}")
+
                     }
                 }
             }
         }
     } else {
-        Log.e("DeleteImages", "Directory does not exist or is not a directory.")
+
     }
 }
 

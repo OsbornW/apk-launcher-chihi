@@ -19,7 +19,7 @@ class MyFrameLayoutHouse @JvmOverloads constructor(
             return true
         }
         return super.onTouchEvent(event)*/
-        Log.d("zengyue","进来了")
+
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
                 // 记录初始位置

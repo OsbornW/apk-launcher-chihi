@@ -30,12 +30,12 @@ object SDCardUtil {
                 val volumeInfo = invokeVolumes[i]
                 val invokePath = getPath.invoke(volumeInfo) as File
                 val brand = getBrand.invoke(volumeInfo) as String
-                 Log.d("zy1997", "getStorageType: 当前的品牌是====="+brand)
-                Log.e(TAG, "invokePath:" + invokePath.path)
+
+
                 if ("/data" == invokePath.path || "/storage/emulated" == invokePath.path) continue
                 val invokeDiskInfo = getDisk.invoke(volumeInfo)
                 val description = getDescription.invoke(invokeDiskInfo) as String
-                Log.e(TAG, "getDescription:$description")
+
                 // map.put(invokePath.getPath(), description);
                 map[brand] = description
             }

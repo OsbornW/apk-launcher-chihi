@@ -22,13 +22,13 @@ fun Context.openBluetoothSettings() {
     try {
         startActivity(intent)
     } catch (e: Exception) {
-        Log.e("BluetoothSettings", "Explicit intent failed", e)
+
         // 显式启动失败，使用通用方式启动蓝牙设置页面
         val bluetoothIntent = Intent(Settings.ACTION_BLUETOOTH_SETTINGS)
         try {
             startActivity(bluetoothIntent)
         } catch (ex: Exception) {
-            Log.e("BluetoothSettings", "Fallback intent failed", ex)
+
             // 通知用户无法打开蓝牙设置（根据需求实现）
         }
     }

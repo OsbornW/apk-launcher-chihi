@@ -76,29 +76,30 @@ class App : Application() {
     private var lastRemoteTime: Long = -1
 
 
-    private val  handler = object : Handler(Looper.getMainLooper()) {
+    private val handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             // 处理消息
             when (msg.what) {
                 1 -> {
                     mFailDialog?.dismiss()
-                    (mSuccessDialog?.isShowing==false).yes {
+                    (mSuccessDialog?.isShowing == false).yes {
                         mSuccessDialog?.show()
                     }
                     postDelayed({
                         mSuccessDialog?.dismiss()
-                    },2500)
+                    }, 2500)
 
                 }
+
                 else -> {
                     mSuccessDialog?.dismiss()
-                    (mFailDialog?.isShowing==false).yes {
+                    (mFailDialog?.isShowing == false).yes {
                         mFailDialog?.show()
                     }
                     postDelayed({
                         mFailDialog?.dismiss()
-                    },2500)
+                    }, 2500)
 
                 }
             }
@@ -106,8 +107,10 @@ class App : Application() {
     }
 
     private val applicationScope =
-        CoroutineScope(SupervisorJob()
-                + Dispatchers.Main)
+        CoroutineScope(
+            SupervisorJob()
+                    + Dispatchers.Main
+        )
 
 
     private val interval: Long = 3000 // 定时任务间隔（毫秒）
@@ -128,13 +131,10 @@ class App : Application() {
             modules(homeModules)
         }
 
-        RxHttpPlugins.init( OkHttpClient.Builder()
-            .addInterceptor(AuthorizationInterceptor())
+        RxHttpPlugins.init(OkHttpClient.Builder()
             .sslSocketFactory(SSL(createSslContext()), createSslContext())
             .hostnameVerifier { _, _ -> true }
-            .readTimeout(8L, TimeUnit.SECONDS).also {
-                it.addInterceptor(httpLoggingInterceptor)
-            }.build())
+            .build())
 
 
         AppCache.lastTipTime = 0L
@@ -192,7 +192,7 @@ class App : Application() {
         initMultiLanguage(this)
 
         // 启动定时任务
-       // handler.post(runnable)
+        // handler.post(runnable)
 
     }
 
@@ -210,11 +210,11 @@ class App : Application() {
     private fun performTask() {
         // 定时任务逻辑
         println("Task executed at ${System.currentTimeMillis()}")
-       /* ((System.currentTimeMillis() - lastRemoteTime)>=5000).yes {
-            lastRemoteTime = System.currentTimeMillis()
-            if (mFailDialog!!.isShowing) mFailDialog!!.dismiss()
-            if (mSuccessDialog!!.isShowing) mSuccessDialog!!.dismiss()
-        }*/
+        /* ((System.currentTimeMillis() - lastRemoteTime)>=5000).yes {
+             lastRemoteTime = System.currentTimeMillis()
+             if (mFailDialog!!.isShowing) mFailDialog!!.dismiss()
+             if (mSuccessDialog!!.isShowing) mSuccessDialog!!.dismiss()
+         }*/
     }
 
     override fun onTerminate() {
@@ -233,8 +233,8 @@ class App : Application() {
                     if (lastRemoteTime == -1L) continue
                     if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastRemoteTime) >= 5) {
                         lastRemoteTime = System.currentTimeMillis()
-                       /* if (mFailDialog!!.isShowing) mFailDialog!!.dismiss()
-                        if (mSuccessDialog!!.isShowing) mSuccessDialog!!.dismiss()*/
+                        /* if (mFailDialog!!.isShowing) mFailDialog!!.dismiss()
+                         if (mSuccessDialog!!.isShowing) mSuccessDialog!!.dismiss()*/
                     }
                 }
             }
@@ -253,7 +253,7 @@ class App : Application() {
         filter.addAction(IntentAction.ACTION_SHOW_REMOTE_DIALOG)
         filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
         filter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)
-        if (Config.COMPANY!=3){
+        if (Config.COMPANY != 3) {
             registerReceiver(receiver, filter)
         }
     }
@@ -262,32 +262,38 @@ class App : Application() {
         @SuppressLint("MissingPermission")
         override fun onReceive(context: Context, intent: Intent) {
             val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-            //"当前收到的广播是====${intent.action}".d("zy1998")
+            //"当前收到的广播是====${intent.action}"
             when (intent.action) {
 
                 BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED -> {
-                    val state = intent.getIntExtra(BluetoothAdapter.EXTRA_CONNECTION_STATE, BluetoothAdapter.STATE_DISCONNECTED)
-                    val prevState = intent.getIntExtra(BluetoothAdapter.EXTRA_PREVIOUS_CONNECTION_STATE, BluetoothAdapter.STATE_DISCONNECTED)
-                    Log.d("zy1998", "当前收到的广播是连接状态改变: $state, previous state: $prevState")
-                    when(state){
-                        2->{
-                           /* if (!mSuccessDialog!!.isShowing && canDrawOverlays() && useRemoteDialog){
-                                mSuccessDialog!!.show()
-                            }
-                            if (mFailDialog!!.isShowing) {
-                                mFailDialog!!.dismiss()
-                                mSuccessDialog!!.setName(device?.name)
-                                lastRemoteTime = System.currentTimeMillis()
-                            }*/
+                    val state = intent.getIntExtra(
+                        BluetoothAdapter.EXTRA_CONNECTION_STATE,
+                        BluetoothAdapter.STATE_DISCONNECTED
+                    )
+                    val prevState = intent.getIntExtra(
+                        BluetoothAdapter.EXTRA_PREVIOUS_CONNECTION_STATE,
+                        BluetoothAdapter.STATE_DISCONNECTED
+                    )
+
+                    when (state) {
+                        2 -> {
+                            /* if (!mSuccessDialog!!.isShowing && canDrawOverlays() && useRemoteDialog){
+                                 mSuccessDialog!!.show()
+                             }
+                             if (mFailDialog!!.isShowing) {
+                                 mFailDialog!!.dismiss()
+                                 mSuccessDialog!!.setName(device?.name)
+                                 lastRemoteTime = System.currentTimeMillis()
+                             }*/
                             val msg = Message()
                             msg.what = 1
                             handler.sendMessage(msg)
 
 
-
                         }
-                        0->{
-                            if(prevState==3){
+
+                        0 -> {
+                            if (prevState == 3) {
 
                                 val msg = Message()
                                 msg.what = 2
@@ -301,9 +307,6 @@ class App : Application() {
                                     mFailDialog!!.setName(device?.name)
                                     lastRemoteTime = System.currentTimeMillis()
                                 }*/
-
-
-
 
 
                             }
@@ -320,7 +323,7 @@ class App : Application() {
                 }
 
                 BluetoothDevice.ACTION_ACL_DISCONNECTED -> {
-                    if (device!!.type != BluetoothDevice.DEVICE_TYPE_LE){
+                    if (device!!.type != BluetoothDevice.DEVICE_TYPE_LE) {
 
                     }
 
@@ -341,15 +344,19 @@ class App : Application() {
         var instance: App? = null
             private set
         private val exec = Executors.newCachedThreadPool()
+
         @JvmField
         val MOVIE_MAP: MutableMap<Long, MutableList<Movice>> = ConcurrentHashMap()
 
         @JvmField
         val WALLPAPERS: MutableList<Wallpaper> = ArrayList()
+
         @JvmField
         val APP_STORE_ITEMS: MutableList<AppItem> = CopyOnWriteArrayList()
+
         @JvmField
         val APP_SEARCH_STORE_ITEMS: MutableList<AppItem> = CopyOnWriteArrayList()
+
         @JvmField
         val SKIP_PAKS: Set<String> = HashSet(
             Arrays.asList(

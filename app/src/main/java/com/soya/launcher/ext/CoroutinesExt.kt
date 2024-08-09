@@ -1,4 +1,4 @@
-import com.shudong.lib_base.ext.silentInstall
+import com.soya.launcher.ext.silentInstall
 import com.soya.launcher.view.FlikerProgressBar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex

@@ -1103,7 +1103,7 @@ class SwitchButton : CompoundButton {
             super.onRestoreInstanceState(ss.superState)
             mRestoring = false
         }catch (exception:Exception){
-            "switchbutton发生异常".i("zy1996")
+
         }
 
     }

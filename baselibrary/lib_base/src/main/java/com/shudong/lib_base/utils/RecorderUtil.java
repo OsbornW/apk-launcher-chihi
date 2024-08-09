@@ -67,7 +67,6 @@ public class RecorderUtil {
             mRecorder.start();
             isRecording = true;
         } catch (Exception e){
-            Log.e(TAG, "prepare() failed");
         }
 
     }
@@ -86,7 +85,6 @@ public class RecorderUtil {
             mRecorder = null;
             isRecording =false;
         }catch (Exception e){
-            Log.e(TAG, "release() failed");
         }
 
     }
@@ -99,7 +97,6 @@ public class RecorderUtil {
         try{
             return readFile(new File(mFileName));
         }catch (IOException e){
-            Log.e(TAG, "read file error" + e);
             return null;
         }
     }

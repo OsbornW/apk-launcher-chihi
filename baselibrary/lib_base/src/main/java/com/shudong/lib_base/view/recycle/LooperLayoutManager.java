@@ -280,13 +280,11 @@ public class LooperLayoutManager extends RecyclerView.LayoutManager {
                 //向左滚动，移除一个左边不在内容里的view
                 if (view.getRight() < 0) {
                     removeAndRecycleView(view, recycler);
-                    Log.d(TAG, "循环: 移除 一个view  childCount=" + getChildCount());
                 }
             } else {
                 //向右滚动，移除一个右边不在内容里的view
                 if (view.getLeft() > getWidth()) {
                     removeAndRecycleView(view, recycler);
-                    Log.d(TAG, "循环: 移除 一个view  childCount=" + getChildCount());
                 }
             }
         }
@@ -307,13 +305,11 @@ public class LooperLayoutManager extends RecyclerView.LayoutManager {
                 //向上滚动，移除一个上边不在内容里的view
                 if (view.getBottom() < 0) {
                     removeAndRecycleView(view, recycler);
-                    Log.d(TAG, "循环: 移除 一个view  childCount=" + getChildCount());
                 }
             } else {
                 //向下滚动，移除一个下边不在内容里的view
                 if (view.getTop() > getHeight()) {
                     removeAndRecycleView(view, recycler);
-                    Log.d(TAG, "循环: 移除 一个view  childCount=" + getChildCount());
                 }
             }
         }

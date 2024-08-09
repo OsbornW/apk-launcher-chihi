@@ -108,7 +108,7 @@ open class BaseWebActivity : BaseVMActivity<ActivityBaseWebBinding, BaseViewMode
                 }
             }
         }
-        "当前的 URL是------${url}".i("zy1996")
+
 
     }
 

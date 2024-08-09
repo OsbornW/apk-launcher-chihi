@@ -87,7 +87,6 @@ public class FileUtil {
                 fos.close();
             }
         }catch (IOException e){
-            Log.e(TAG,"create bitmap file error" + e);
         }
         if (f.exists()){
             return f.getAbsolutePath();
@@ -110,7 +109,6 @@ public class FileUtil {
                 fos.close();
             }
         }catch (IOException e){
-            Log.e(TAG,"create file error" + e);
         }
     }
 
@@ -151,7 +149,6 @@ public class FileUtil {
                         return f;
                     }
                 }catch (IOException e){
-                    Log.e(TAG,"create file error" + e);
                     return null;
                 }
             }
@@ -313,7 +310,6 @@ public class FileUtil {
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
         }
-        Log.e(TAG, "ExternalStorage not mounted");
         return false;
     }
 

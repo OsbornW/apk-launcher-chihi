@@ -721,7 +721,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
 
     fun connectTo_21(context: Context, scanResult: ScanResult, password: String) {
-        "当前密码 的长度是$password====${password.length}".d("zy1998")
+        "当前密码 的长度是$password====${password.length}"
         val pwd = password.toTrim()
 
         target(scanResult)
@@ -786,7 +786,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
 
             it.forEach {
-                //"所有的WiFi数据======${it.item.SSID}===是否保存==${it.isSave}".d("zy1996")
+                //"所有的WiFi数据======${it.item.SSID}===是否保存==${it.isSave}"
             }
             val adds: MutableList<WifiItem> = ArrayList()
             val removes: MutableList<WifiItem> = ArrayList()
@@ -837,7 +837,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
             filteredList.forEach {
                 it.isSave.yes {
-                    //"当前过滤后的 集合是=====${it.item.SSID}".d("zy1996")
+                    //"当前过滤后的 集合是=====${it.item.SSID}"
                 }
 
             }
@@ -846,7 +846,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
             filteredList.forEach {
 
                 it.isSave.yes {
-                    // "当前即将要添加的已保存的WIFI数据是===${wifiItem.item.SSID}".d("zy1996")
+                    // "当前即将要添加的已保存的WIFI数据是===${wifiItem.item.SSID}"
                     val saveList = (rvSavedWifi?.mutable as MutableList<WifiItem>)
                     var isExist = false
                     saveList.forEach { wifiItem ->
@@ -860,7 +860,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
                             rvSavedWifi?.mutable?.size ?: 0 - 1
                         )
                     }
-                    //"当前集合里面是否包含这个WIFI？${it?.item?.SSID}===${isContain}".d("zy1996")
+                    //"当前集合里面是否包含这个WIFI？${it?.item?.SSID}===${isContain}"
 
                 }
 
@@ -951,7 +951,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
             mAdapter?.let {
                 it.getDataList().forEach {
-                    //"当前要未添加和保存WiFi是=====${it.item.SSID}".d("zy1996")
+                    //"当前要未添加和保存WiFi是=====${it.item.SSID}"
                 }
             }
 
@@ -969,7 +969,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
         val list: MutableList<WifiItem> = mutableListOf()
         val saves = mWifiManager?.configuredNetworks
         saves?.forEach {
-            //"当前的已保存的WIFI数据是===${it.SSID}".d("zy1996")
+            //"当前的已保存的WIFI数据是===${it.SSID}"
         }
         val map: MutableMap<String, WifiConfiguration> = HashMap()
         if (saves != null) {
@@ -991,7 +991,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
                 ) -1 else 1
             }
         }catch (e:Exception){
-            "异常是====${e.message}".e("zengyue")
+            "异常是====${e.message}"
             e.printStackTrace()
         }
         return list

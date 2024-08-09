@@ -21,7 +21,7 @@ class ChatController {
 
         // 如果之前存在播放动画，无论这次点击触发的是暂停还是播放，停止上次播放的动画
         if (mVoiceAnimation != null) {
-            "我要停止动画了------".i("zy1996")
+
             ivVoice.setBackgroundResource(com.shudong.lib_res.R.drawable.icon_voice_msg)
             mVoiceAnimation!!.stop()
         }
@@ -128,7 +128,7 @@ class ChatController {
         //计算图片缩放比例
         double imageWidth = opts.outWidth;
         double imageHeight = opts.outHeight;
-        //XLog.d("当前图片的获取到的宽高度是======"+imageWidth+"==="+imageHeight);
+        //X;
         return setDensity(extra, message, imageWidth, imageHeight, imageView);
     }
 
@@ -155,7 +155,7 @@ class ChatController {
             }
         }
 
-        //XLog.d("最终图片的获取到的宽高度是======"+imageWidth+"==="+imageHeight);
+        //X;
 
 
       */

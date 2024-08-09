@@ -29,7 +29,7 @@ fun loadJarAndCreateWebSocketClient(jarPath: String) {
         val method = clazz.getMethod("hello")
         val result = method.invoke(instance)
 
-        "当前返回的result是：$result".e("zengyue")
+        "当前返回的result是：$result"
         // 打印方法的结果
         println(result)
     } catch (e: Exception) {

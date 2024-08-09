@@ -207,7 +207,7 @@ abstract class BaseActivity<VDB : ViewDataBinding> : FragmentActivity(), BaseVMV
             field.isAccessible = true
             var sProviderInstance = field.get(null)
             if (sProviderInstance != null) {
-                Log.i("ww", "sProviderInstance isn't null")
+
                 return
             }
 
@@ -216,7 +216,7 @@ abstract class BaseActivity<VDB : ViewDataBinding> : FragmentActivity(), BaseVMV
                 sdkInt > 22 -> factoryClass.getDeclaredMethod("getProviderClass")
                 sdkInt == 22 -> factoryClass.getDeclaredMethod("getFactoryClass")
                 else -> {
-                    Log.i("ww", "Don't need to Hook WebView")
+
                     return
                 }
             }
@@ -250,12 +250,12 @@ abstract class BaseActivity<VDB : ViewDataBinding> : FragmentActivity(), BaseVMV
 
             if (sProviderInstance != null) {
                 field.set("sProviderInstance", sProviderInstance)
-                Log.i("ww", "Hook success!")
+
             } else {
-                Log.i("ww", "Hook failed!")
+
             }
         } catch (e: Throwable) {
-            Log.w("ww", e)
+
         }
 
     }

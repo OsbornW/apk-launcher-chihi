@@ -26,7 +26,7 @@ class NetActivity : BaseVMActivity<ActivityNetBinding,BaseViewModel>() {
                 while (true) {
                     withContext(Dispatchers.IO) {
                         (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).yes {
-                            //"当前网络可用1".d("zy1997")
+                            //"当前网络可用1"
                             withContext(Dispatchers.Main) {
                                 finish()
                             }

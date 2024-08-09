@@ -10,7 +10,7 @@ import com.soya.launcher.ui.fragment.AppsFragment
 class AppsActivity : AbsActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        "开始启动2".e("zy1998")
+        "开始启动2"
         super.onCreate(savedInstanceState)
     }
     override fun getLayoutId(): Int {
@@ -27,6 +27,6 @@ class AppsActivity : AbsActivity() {
 
     override fun onResume() {
         super.onResume()
-        "开始启动3".e("zy1998")
+        "开始启动3"
     }
 }

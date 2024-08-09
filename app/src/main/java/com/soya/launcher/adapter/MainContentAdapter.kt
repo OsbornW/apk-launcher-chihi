@@ -80,7 +80,7 @@ class MainContentAdapter(
             val root = itemView.rootView
             when (item.picType) {
                 Movice.PIC_ASSETS -> {
-                    Log.d("zy1996", "bind: 当前要显示的本地图片是------" + item.imageUrl)
+
                     GlideUtils.bind(
                         context, mIV, FileUtils.readAssets(
                             context, item.imageUrl as String
@@ -93,22 +93,22 @@ class MainContentAdapter(
                     if (tvName != null) {
                         tvName.text = item.id
                     }
-                    Log.e("zengyue", "bind: 当前要加载的路径是$image")
+
 
 
                     if(!image.toString().contains("http")){
                         mIV.setImageDrawable(context.getDrawableByName(image.toString()))
                     }else{
                         val cacheFile = AppCache.homeData.dataList.get(image as String)
-                        "当前的文件路径是${cacheFile}".e("zengyue")
+                        "当前的文件路径是${cacheFile}"
                         if (cacheFile != null) {
                             // 使用缓存的 Drawable
-                            Log.e("zengyue", "bind: 走的缓存Movice===")
+
                             //mIV.setImageDrawable(cachedDrawable);
                             GlideUtils.bind(context, mIV, cacheFile)
                         } else {
                             // 轮询直到有缓存 Drawable
-                            Log.e("zengyue", "bind: 走的网络Movice===")
+
                             startPollingForCache(mIV, image)
                         }
                     }
@@ -161,13 +161,13 @@ class MainContentAdapter(
                 val cacheFile = AppCache.homeData.dataList.get(image)?.let { File(it) }
                 if (cacheFile != null && cacheFile.exists()) {
                     // 使用缓存的 Drawable
-                    Log.e("zengyue", "Polling: 走的缓存Movice===")
+
                     GlideUtils.bind(context, mIV, cacheFile)
                 } else if (attempts < maxAttempts) {
                     attempts++
                     handler.postDelayed(this, pollingInterval)
                 } else {
-                    Log.e("zengyue", "Polling: 达到最大轮询次数，缓存仍然不可用")
+
                     // 处理没有缓存的情况，可能需要使用默认图像或错误处理
                 }
             }

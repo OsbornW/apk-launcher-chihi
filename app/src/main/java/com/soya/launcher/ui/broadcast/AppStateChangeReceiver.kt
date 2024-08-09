@@ -14,7 +14,7 @@ class AppStateChangeReceiver : BroadcastReceiver() {
         val action = intent.action
         val packageName = intent.data?.schemeSpecificPart
 
-        Log.d("TAG", "进入此方法 $action 进入了方法 $packageName")
+
 
         if (Intent.ACTION_PACKAGE_CHANGED == action && packageName != null) {
             val pm = context.packageManager

@@ -33,7 +33,7 @@ fun <E,F> String.toMap(): MutableMap<E,F> =
             MutableMap::class.java
         ) as MutableMap<E, F>
     }catch (e:Exception){
-        "进来解析失败".i("zy1998")
+
         hashMapOf()
     }
 

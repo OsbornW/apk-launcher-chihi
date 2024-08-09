@@ -155,7 +155,7 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
         for (propName in propList) {
             val propVal = ASystemProperties.get("$propName.$res", "0")
             ASystemProperties.set(propName, propVal)
-            Log.i(TAG, "Set [$propName] to $propVal")
+
         }
 
         loadSettings()
