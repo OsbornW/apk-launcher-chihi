@@ -33,7 +33,6 @@ import silentInstallWithMutex
 
 class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewModel>() {
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun initView() {
 
         mBind.rvApps.let {
