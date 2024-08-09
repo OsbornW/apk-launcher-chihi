@@ -73,6 +73,7 @@ fun getUpdateList(): Boolean {
         try {
             val packageInfo = appContext.packageManager.getPackageInfo(app.packageName, 0)
             versionCodeMap[app.packageName] = packageInfo.versionCode
+            Log.d("UpdateList", "Package==========: " + app.packageName + ", Version Code:============ " + packageInfo.versionCode);
         } catch (e: PackageManager.NameNotFoundException) {
             // 记录异常信息
 
