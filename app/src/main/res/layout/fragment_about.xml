@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"/>
             </FrameLayout>
-            <TextView
+            <com.hjq.shape.view.ShapeTextView
                 android:id="@+id/upgrade"
                 android:clickable="true"
                 android:focusable="true"
@@ -50,7 +50,8 @@
                 android:text="@string/upgrade"
                 android:textSize="@dimen/fragment_about_upgrade_text_size"
                 android:textColor="@color/text_color_style_1"
-                android:background="@drawable/ripple_style_3"
+                app:shape_solidFocusedColor="#80625356"
+                app:shape_radius="@dimen/qb_px_100"
                 android:gravity="center"
                 android:layout_width="@dimen/fragment_about_upgrade_width"
                 android:layout_height="@dimen/fragment_about_upgrade_height"/>

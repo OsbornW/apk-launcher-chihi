@@ -532,7 +532,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mGradientView = view.findViewById(R.id.gradient)
         rlAD = view.findViewById(R.id.rl_ad)
 
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
+
             mNotifyRecycler?.isVisible = false
             mSettingView?.let {
                 it.setOnFocusChangeListener { view, b ->
@@ -546,7 +546,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
             }
 
-        }
+
 
         mHorizontalContentGrid?.addItemDecoration(
             HSlideMarginDecoration(

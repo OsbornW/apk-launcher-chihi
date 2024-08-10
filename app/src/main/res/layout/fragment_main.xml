@@ -111,7 +111,7 @@
                             android:visibility="gone"
                             android:layout_width="@dimen/qb_px_40"
                             android:layout_height="@dimen/qb_px_40"
-                            app:shape_solidColor="@color/black"
+                            app:shape_solidColor="#80625356"
                             app:shape="oval"/>
 
 
@@ -122,7 +122,6 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:foreground="@drawable/ripple_style_1"
                             android:src="@drawable/baseline_settings_100"
                             android:padding="@dimen/fragment_main_opt_icon_padding"
                             android:layout_width="@dimen/qb_px_40"
@@ -244,7 +243,7 @@
                             android:visibility="gone"
                             android:layout_width="@dimen/qb_px_40"
                             android:layout_height="@dimen/qb_px_40"
-                            app:shape_solidColor="@color/black"
+                            app:shape_solidColor="#80625356"
                             app:shape="oval"/>
 
                         <com.soya.launcher.view.ImageViewHouse
@@ -253,7 +252,6 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:foreground="@drawable/ripple_style_1"
                             android:src="@drawable/baseline_wifi_100"
                             android:padding="@dimen/fragment_main_opt_icon_padding"
                             android:layout_width="@dimen/qb_px_40"
