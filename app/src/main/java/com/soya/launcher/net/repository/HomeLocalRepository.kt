@@ -1,6 +1,7 @@
 package com.soya.launcher.net.repository
 
 import com.shudong.lib_base.base.viewmodel.BaseRepository
+import com.soya.launcher.BuildConfig
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.net.api.HomeLocalApi
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +19,7 @@ class HomeLocalRepository(private val api: HomeLocalApi): BaseRepository(api) {
 
 
     fun reqUpdateInfo(): Flow<MutableList<UpdateAppsDTO>> = flow {
-        emit(api.reqUpdateInfo("0","LG27001"))
+        emit(api.reqUpdateInfo("0",BuildConfig.CHANNEL))
     }
 
 }

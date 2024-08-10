@@ -273,6 +273,10 @@
                 android:layout_marginRight="@dimen/fragment_main_div_content_margin_right"
                 android:layout_marginTop="@dimen/fragment_main_div_content_margin_top">
                 <androidx.leanback.widget.HorizontalGridView
+                    app:focusOutFront="true"
+                    android:clipToPadding="false"
+                    android:clipChildren="false"
+                    android:clipToOutline="false"
                     android:layout_gravity="center"
                     android:id="@+id/horizontal_content"
                     android:layout_width="match_parent"
@@ -280,8 +284,8 @@
                 <com.soya.launcher.view.NoDragVerticalGridView
                     android:layout_gravity="center"
                     android:id="@+id/vertical_content"
-                    app:focusOutFront="true"
                     android:layout_marginLeft="@dimen/qb_px_10"
+                    app:focusOutFront="true"
                     android:clipToPadding="false"
                     android:clipChildren="false"
                     android:clipToOutline="false"

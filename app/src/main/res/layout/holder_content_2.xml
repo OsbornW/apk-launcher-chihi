@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.soya.launcher.view.MyFrameLayoutHouse
+    android:clipToOutline="false"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:layout_marginLeft="@dimen/holder_content_2_root_margin_left"
+    android:layout_marginRight="@dimen/holder_content_2_root_margin_right"
+    android:layout_marginTop="@dimen/holder_content_2_root_margin_top"
+    android:layout_marginBottom="@dimen/holder_content_2_root_margin_bottom"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
@@ -13,10 +20,6 @@
         app:cardBackgroundColor="@color/solid_style_2"
         app:cardElevation="0dp"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/holder_content_2_root_margin_left"
-        android:layout_marginRight="@dimen/holder_content_2_root_margin_right"
-        android:layout_marginTop="@dimen/holder_content_2_root_margin_top"
-        android:layout_marginBottom="@dimen/holder_content_2_root_margin_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
