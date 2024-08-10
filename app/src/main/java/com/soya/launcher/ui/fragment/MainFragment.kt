@@ -12,7 +12,6 @@ import android.os.Handler
 import android.os.SystemClock
 import android.os.storage.StorageManager
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
@@ -45,10 +44,8 @@ import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
-import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.downloadPic
-import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
@@ -127,6 +124,7 @@ import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.ui.activity.UpdateAppsActivity
 import com.soya.launcher.utils.getFileNameFromUrl
 import com.thumbsupec.lib_base.toast.ToastUtils
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -336,10 +334,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     var isPicDownload = false
-    private fun startPicTask() {
-        lifecycleScope.launch {
+    private fun startPicTask(coroutineScope: CoroutineScope) {
+        coroutineScope.launch(Dispatchers.IO) {
             while (true) {
-                checkPicDownload()
+                checkPicDownload(coroutineScope)
                 delay(15000)
 
             }
@@ -348,76 +346,79 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     var isLoadedList = false
-    private fun checkPicDownload() {
-        val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
-        if (File(path).exists()) {
-            val result = Gson().fromJson<HomeResponse>(
-                JsonReader(FileReader(path)),
-                HomeResponse::class.java
-            )
+    private fun checkPicDownload(coroutineScope: CoroutineScope) {
+        coroutineScope.launch (Dispatchers.IO){
+            val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
+            if (File(path).exists()) {
+                val result = Gson().fromJson<HomeResponse>(
+                    JsonReader(FileReader(path)),
+                    HomeResponse::class.java
+                )
 
-            val size = result.data.movies.size
+                val size = result.data.movies.size
 
-            result.data.movies.forEachIndexed { index, homeItem ->
-                val destPath =
-                    "${appContext.filesDir.absolutePath}/header_${(homeItem.icon as String).getFileNameFromUrl()}"
+                result.data.movies.forEachIndexed { index, homeItem ->
+                    val destPath =
+                        "${appContext.filesDir.absolutePath}/header_${(homeItem.icon as String).getFileNameFromUrl()}"
 
-                if (!File(destPath).exists()) {
-                    (homeItem.icon as String).downloadPic(lifecycleScope, destPath,
-                        downloadComplete = { _, path ->
-                            val filePathCache = AppCache.homeData.dataList
-                            filePathCache[homeItem.icon as String] = path
-                            AppCache.homeData = HomeDataList(filePathCache)
-                            if (countImagesWithPrefix() == size) {
-                                isLoadedList.no {
-                                    setNetData(result)
-                                    isLoadedList = true
+                    if (!File(destPath).exists()) {
+                        (homeItem.icon as String).downloadPic(lifecycleScope, destPath,
+                            downloadComplete = { _, path ->
+                                val filePathCache = AppCache.homeData.dataList
+                                filePathCache[homeItem.icon as String] = path
+                                AppCache.homeData = HomeDataList(filePathCache)
+                                if (countImagesWithPrefix() == size) {
+                                    isLoadedList.no {
+                                        setNetData(result)
+                                        isLoadedList = true
+                                    }
+
                                 }
+                            },
+                            downloadError = {
 
                             }
-                        },
-                        downloadError = {
-
-                        }
-                    )
-                }
-
-
-                homeItem.datas.forEachIndexed { position, it ->
-
-                    val destContentPath =
-                        "${appContext.filesDir.absolutePath}/content_${(it.imageUrl as String).getFileNameFromUrl()}"
-                    var isDownload = false
-                    when (homeItem.name) {
-                        "Youtube", "Disney+", "Hulu", "Prime video" -> {
-                            isDownload = position < 8
-                        }
-
-                        else -> {
-                            isDownload = true
-                        }
+                        )
                     }
 
 
-                    isDownload.yes {
-                        if (!File(destContentPath).exists()) {
-                            (it.imageUrl as String).downloadPic(lifecycleScope, destContentPath,
-                                downloadComplete = { _, path ->
-                                    val filePathCache = AppCache.homeData.dataList
-                                    filePathCache[it.imageUrl as String] = path
-                                    AppCache.homeData = HomeDataList(filePathCache)
-                                },
-                                downloadError = {
-                                }
-                            )
+                    homeItem.datas.forEachIndexed { position, it ->
+
+                        val destContentPath =
+                            "${appContext.filesDir.absolutePath}/content_${(it.imageUrl as String).getFileNameFromUrl()}"
+                        var isDownload = false
+                        when (homeItem.name) {
+                            "Youtube", "Disney+", "Hulu", "Prime video" -> {
+                                isDownload = position < 8
+                            }
+
+                            else -> {
+                                isDownload = true
+                            }
                         }
+
+
+                        isDownload.yes {
+                            if (!File(destContentPath).exists()) {
+                                (it.imageUrl as String).downloadPic(lifecycleScope, destContentPath,
+                                    downloadComplete = { _, path ->
+                                        val filePathCache = AppCache.homeData.dataList
+                                        filePathCache[it.imageUrl as String] = path
+                                        AppCache.homeData = HomeDataList(filePathCache)
+                                    },
+                                    downloadError = {
+                                    }
+                                )
+                            }
+                        }
+
+
                     }
-
-
                 }
+
             }
-
         }
+
     }
 
     private fun performTask() {
@@ -1720,7 +1721,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 withContext(Dispatchers.IO) {
                                     deleteAllPic()
                                     "开始下载图片:${AppCache.reqId}::::${result.data?.reg_id ?: 0L}"
-                                    startPicTask()
+                                    startPicTask(this)
                                 }
                                 AppCache.reqId = result.data?.reg_id ?: 0L
                             }
