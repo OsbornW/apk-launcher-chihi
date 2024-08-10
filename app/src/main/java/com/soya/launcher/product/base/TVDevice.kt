@@ -1,6 +1,7 @@
 package com.soya.launcher.product.base
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.product.Projector713M
 import com.soya.launcher.product.ProjectorRK3326
@@ -14,6 +15,7 @@ import com.soya.launcher.product.base.Channel.TVBox_X98K_C
 sealed interface TVDevice{
     fun openDateSetting(context: Context){}
     fun openLanguageSetting(context: Context){}
+    fun filterRepeatApps(list:MutableList<ApplicationInfo>):MutableList<ApplicationInfo>? = null
 }
 
 data object DefaultDevice: TVDevice

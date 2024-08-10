@@ -17,6 +17,7 @@ import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.config.Config
+import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.isSysApp
 import com.soya.launcher.view.AppLayout
 import com.soya.launcher.view.MyFrameLayout
@@ -45,19 +46,10 @@ class AppListAdapter(
     }
 
 
-    private val excludedPackageNames = setOf(
-        "com.android.vending",
-        "com.explorer",
-        "com.amazon.avod.thirdpartyclient",
-        "com.google.android.apps.youtube.creator",
-        "com.netflix.mediaclient"
-    )
 
     fun replace(list: List<ApplicationInfo>?) {
 
-        val filteredList = list?.filterNot { appInfo ->
-            excludedPackageNames.contains(appInfo.packageName ?: "")
-        }
+        val filteredList = list?.toMutableList()?.let { product.filterRepeatApps(it) }?:list
 
         dataList.clear()
         dataList.addAll(filteredList!!)
