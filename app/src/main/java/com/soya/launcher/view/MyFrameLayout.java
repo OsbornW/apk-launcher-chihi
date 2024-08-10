@@ -7,11 +7,12 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.hjq.shape.layout.ShapeFrameLayout;
 import com.soya.launcher.callback.SelectedCallback;
 
 import org.jetbrains.annotations.NotNull;
 
-public class MyFrameLayout extends FrameLayout {
+public class MyFrameLayout extends ShapeFrameLayout {
     private SelectedCallback callback;
 
     public MyFrameLayout(@NonNull Context context) {
