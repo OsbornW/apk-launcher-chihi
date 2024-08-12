@@ -26,3 +26,5 @@ inline fun <reified T> LifecycleOwner.obseverLiveEvent(
 
 const val ACTIVE_SUCCESS = "ACTIVE_SUCCESS"
 const val IS_MAIN_CANBACK = "IS_MAIN_CANBACK"
+const val REFRESH_HOME = "REFRESH_HOME"
+const val UPDATE_HOME_LIST = "UPDATE_HOME_LIST"

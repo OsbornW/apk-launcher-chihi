@@ -1,6 +1,8 @@
 package com.soya.launcher.net.repository
 
 import com.shudong.lib_base.base.viewmodel.BaseRepository
+import com.soya.launcher.BuildConfig
+import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.net.api.HomeApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -16,8 +18,8 @@ import kotlinx.coroutines.flow.flow
 class HomeRepository(private val api: HomeApi): BaseRepository(api) {
 
 
-    fun reqHomeInfo(type:String): Flow<MutableList<String>> = flow {
-        emit(api.reqHomeInfo("youtube",type,"whj1001"))
+    fun reqHomeInfo(): Flow<HomeInfoDto> = flow {
+        emit(api.reqHomeInfo("0", BuildConfig.CHANNEL))
     }
 
 }

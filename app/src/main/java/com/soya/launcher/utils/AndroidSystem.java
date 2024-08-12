@@ -54,6 +54,7 @@ import com.soya.launcher.BuildConfig;
 import com.soya.launcher.R;
 import com.soya.launcher.bean.AppPackage;
 import com.soya.launcher.bean.HomeItem;
+import com.soya.launcher.bean.PackageName;
 import com.soya.launcher.bean.Version;
 import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.Atts;
@@ -385,10 +386,10 @@ public class AndroidSystem {
         return isNetworkConnected;
     }
 
-    public static boolean jumpPlayer(Context context, AppPackage[] packages, String url){
+    public static boolean jumpPlayer(Context context, List<PackageName> packages, String url){
         boolean success = false;
         List<ResolveInfo> infos = queryCategoryAllLauncher(context);
-        for (AppPackage pk : packages){
+        for (PackageName pk : packages){
             for (ResolveInfo resolveInfo : infos) {
                 if (pk.getPackageName().equals(resolveInfo.activityInfo.packageName)){
                     success = true;
@@ -486,7 +487,7 @@ public class AndroidSystem {
         }
     }
 
-    public static boolean jumpVideoApp(Context context, AppPackage[] packages, String url){
+    public static boolean jumpVideoApp(Context context, List<PackageName> packages, String url){
         boolean success = false;
         success = jumpPlayer(context, packages, url);
         return success;

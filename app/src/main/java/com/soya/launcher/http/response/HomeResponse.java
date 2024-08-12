@@ -17,7 +17,7 @@ public class HomeResponse {
 
     public static class Inner{
         public List<HomeItem> movies;
-        private Long req_id;
+        private int req_id;
 
         public List<HomeItem> getMovies() {
             return movies;
@@ -25,7 +25,7 @@ public class HomeResponse {
 
 
 
-        public Long getReg_id() {
+        public int getReg_id() {
             return req_id;
         }
     }

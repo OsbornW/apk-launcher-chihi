@@ -91,31 +91,40 @@
                 android:layout_width="match_parent"
                 android:padding="@dimen/dialog_app_opt_padding"
                 android:layout_height="@dimen/dialog_app_opt_height">
-                <TextView
+                <com.hjq.shape.view.ShapeTextView
                     android:id="@+id/close"
                     android:text="@string/close"
                     android:textSize="@dimen/dialog_app_opt_text_size"
-                    android:background="@drawable/ripple_style_3"
+                    app:shape_solidFocusedColor="#80625356"
+                    app:shape_radius="@dimen/qb_px_8"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"/>
-                <TextView
+                <com.hjq.shape.view.ShapeTextView
+                    app:shape_solidFocusedColor="#80625356"
+                    app:shape_radius="@dimen/qb_px_8"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
                     android:id="@+id/delete"
                     android:text="@string/uninstall"
                     android:textSize="@dimen/dialog_app_opt_text_size"
-                    android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"/>
-                <TextView
+                <com.hjq.shape.view.ShapeTextView
                     android:id="@+id/open"
                     android:text="@string/open"
                     android:textSize="@dimen/dialog_app_opt_text_size"
-                    android:background="@drawable/ripple_style_3"
+                    app:shape_solidFocusedColor="#80625356"
+                    app:shape_radius="@dimen/qb_px_8"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
