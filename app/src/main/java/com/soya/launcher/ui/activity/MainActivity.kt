@@ -83,7 +83,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
     }
 
 
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_HOME || keyCode == KEYCODE_AVR_POWER) {
             // 在这里处理 Home 按键按下事件
@@ -121,18 +120,18 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
         fetchJob?.cancel()
         mViewModel.reqHomeInfo().lifecycle(this, errorCallback = {
 
-        }, isShowError = false){
+        }, isShowError = false) {
             val dto = this
             dto.jsonToString().exportToJson("Home.json")
 
-            if(isRefresh){
-                if ((dto.reqId ?: 0) != AppCache.reqId){
+            if (isRefresh) {
+                if ((dto.reqId ?: 0) != AppCache.reqId) {
                     startCoroutineScope(dto)
                 }
-            }else{
+            } else {
                 startCoroutineScope(dto)
-            }
 
+            }
 
 
         }
@@ -142,12 +141,12 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
         fetchJob = lifecycleScope.launch {
             if ((dto.reqId ?: 0) != AppCache.reqId || !compareSizes(dto)) {
                 withContext(Dispatchers.IO) {
-                    if ((dto.reqId ?: 0) != AppCache.reqId){
+                    if ((dto.reqId ?: 0) != AppCache.reqId) {
                         AppCache.isAllDownload = false
                         deleteAllPic()
                     }
 
-                    AppCache.reqId =dto.reqId ?: 0
+                    AppCache.reqId = dto.reqId ?: 0
                     startPicTask(this)
                 }
 
@@ -176,7 +175,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
     private var isHandleUpdateList = false
     private fun checkPicDownload(coroutineScope: CoroutineScope) {
-        coroutineScope.launch (Dispatchers.IO){
+        coroutineScope.launch(Dispatchers.IO) {
             val path = FilePathMangaer.getJsonPath(this@MainActivity) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeInfoDto>(
@@ -184,75 +183,81 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                     HomeInfoDto::class.java
                 )
 
-               // val size = result.movies?.size
+                // val size = result.movies?.size
+                if(!compareSizes(result)){
+                    result.movies?.forEachIndexed { index, homeItem ->
 
-                result.movies?.forEachIndexed { index, homeItem ->
+                        val destPath =
+                            "${"header".getBasePath()}/header_${homeItem?.name}_${index}_${(homeItem?.icon as String).getFileNameFromUrl()}"
 
-                    val destPath =
-                        "${"header".getBasePath()}/header_${homeItem?.name}_${index}_${(homeItem?.icon as String).getFileNameFromUrl()}"
+                        if (!File(destPath).exists()) {
+                            //"当前要下载的图片Header是====${homeItem.icon}".e("zengyue1")
+                            (homeItem.icon).downloadPic(lifecycleScope, destPath,
+                                downloadComplete = { _, path ->
+                                    val filePathCache = AppCache.homeData.dataList
+                                    filePathCache[homeItem.icon] = path
+                                    AppCache.homeData = HomeDataList(filePathCache)
+                                    if (compareSizes(result) && !isHandleUpdateList) {
+                                        AppCache.isAllDownload = true
+                                        sendLiveEventData(UPDATE_HOME_LIST, true)
+                                        isHandleUpdateList = true
+                                    }
 
-                    if (!File(destPath).exists()) {
+                                },
+                                downloadError = {
+                                    // "当前图片Header下载错误是====${it}".e("zengyue1")
+                                }
+                            )
+                        }
 
-                        (homeItem.icon).downloadPic(lifecycleScope, destPath,
-                            downloadComplete = { _, path ->
-                                val filePathCache = AppCache.homeData.dataList
-                                filePathCache[homeItem.icon] = path
-                                AppCache.homeData = HomeDataList(filePathCache)
-                                if(compareSizes(result) && !isHandleUpdateList) {
-                                    AppCache.isAllDownload = true
-                                    sendLiveEventData(UPDATE_HOME_LIST,true)
-                                    isHandleUpdateList = true
+
+                        homeItem.datas?.forEachIndexed { position, it ->
+                            val destContentPath =
+                                "${"content".getBasePath()}/content_${homeItem.name?.toTrim()}_${position}_${(it?.imageUrl as String).getFileNameFromUrl()}"
+                            var isDownload = false
+                            when (homeItem.name) {
+                                "Youtube", "Disney+", "Hulu", "Prime video" -> {
+                                    isDownload = position < 8
                                 }
 
-                            },
-                            downloadError = {
-
-                            }
-                        )
-                    }
-
-
-                    homeItem.datas?.forEachIndexed { position, it ->
-                        val destContentPath =
-                            "${"content".getBasePath()}/content_${homeItem.name?.toTrim()}_${position}_${(it?.imageUrl as String).getFileNameFromUrl()}"
-                        var isDownload = false
-                        when (homeItem.name) {
-                            "Youtube", "Disney+", "Hulu", "Prime video" -> {
-                                isDownload = position < 8
+                                else -> {
+                                    isDownload = true
+                                }
                             }
 
-                            else -> {
-                                isDownload = true
-                            }
-                        }
+
+                            isDownload.yes {
+                                if (!File(destContentPath).exists()) {
+                                    // "当前要下载的图片Content是====${it.imageUrl}".e("zengyue1")
+
+                                    (it.imageUrl).downloadPic(lifecycleScope, destContentPath,
+                                        downloadComplete = { _, path ->
+
+                                            val filePathCache = AppCache.homeData.dataList
+                                            filePathCache[it.imageUrl] = path
+                                            AppCache.homeData = HomeDataList(filePathCache)
+                                            if (compareSizes(result) && !isHandleUpdateList) {
+                                                AppCache.isAllDownload = true
+                                                sendLiveEventData(UPDATE_HOME_LIST, true)
+                                                isHandleUpdateList = true
+                                            }
 
 
-                        isDownload.yes {
-                            if (!File(destContentPath).exists()) {
+                                        },
+                                        downloadError = {
+                                            // "当前图片Content下载错误是====${it}".e("zengyue1")
 
-                                (it.imageUrl).downloadPic(lifecycleScope, destContentPath,
-                                    downloadComplete = { _, path ->
-
-                                        val filePathCache = AppCache.homeData.dataList
-                                        filePathCache[it.imageUrl] = path
-                                        AppCache.homeData = HomeDataList(filePathCache)
-                                        if(compareSizes(result)&& !isHandleUpdateList) {
-                                            AppCache.isAllDownload = true
-                                            sendLiveEventData(UPDATE_HOME_LIST,true)
-                                            isHandleUpdateList = true
                                         }
-
-
-                                    },
-                                    downloadError = {
-                                    }
-                                )
+                                    )
+                                }
                             }
+
+
                         }
-
-
                     }
                 }
+
+
 
             }
         }
@@ -309,11 +314,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
             }
         }
 
-        this.obseverLiveEvent<String>("loadnet"){
-           it.bindNew()
+        this.obseverLiveEvent<String>("loadnet") {
+            it.bindNew()
         }
         this.obseverLiveEvent<Boolean>(REFRESH_HOME) {
-           fetchHomeData(true)
+            fetchHomeData(true)
         }
 
     }
@@ -329,7 +334,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
         canBackPressed = true
         jumpToAuth()
     }
-
 
 
     fun getFragment(): Fragment = switchFragment()
