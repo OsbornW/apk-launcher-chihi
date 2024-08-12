@@ -114,7 +114,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
 
     private var fetchJob: Job? = null
-    private fun fetchHomeData() {
+    private fun fetchHomeData(isRefresh: Boolean = false) {
         // 取消之前的任务（如果存在）
         fetchJob?.cancel()
         mViewModel.reqHomeInfo().lifecycle(this, errorCallback = {
@@ -122,18 +122,31 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
         }, isShowError = false){
             val dto = this
             dto.jsonToString().exportToJson("Home.json")
-            fetchJob = lifecycleScope.launch {
-                if ((dto.reqId ?: 0) != AppCache.reqId || !compareSizes(dto)) {
-                    withContext(Dispatchers.IO) {
-                        if ((dto.reqId ?: 0) != AppCache.reqId){
-                            AppCache.isAllDownload = false
-                            deleteAllPic()
-                        }
-                        "开始下载图片:${AppCache.reqId}::::${dto.reqId}".e("zengyue1")
-                        AppCache.reqId =dto.reqId ?: 0
-                        startPicTask(this)
-                    }
 
+            if(isRefresh){
+                if ((dto.reqId ?: 0) != AppCache.reqId){
+                    startCoroutineScope(dto)
+                }
+            }else{
+                startCoroutineScope(dto)
+            }
+
+
+
+        }
+    }
+
+    private fun startCoroutineScope(dto: HomeInfoDto) {
+        fetchJob = lifecycleScope.launch {
+            if ((dto.reqId ?: 0) != AppCache.reqId || !compareSizes(dto)) {
+                withContext(Dispatchers.IO) {
+                    if ((dto.reqId ?: 0) != AppCache.reqId){
+                        AppCache.isAllDownload = false
+                        deleteAllPic()
+                    }
+                    "开始下载图片:${AppCache.reqId}::::${dto.reqId}".e("zengyue1")
+                    AppCache.reqId =dto.reqId ?: 0
+                    startPicTask(this)
                 }
 
             }
@@ -292,7 +305,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
            it.bindNew()
         }
         this.obseverLiveEvent<Boolean>(REFRESH_HOME) {
-           fetchHomeData()
+           fetchHomeData(true)
         }
 
     }
