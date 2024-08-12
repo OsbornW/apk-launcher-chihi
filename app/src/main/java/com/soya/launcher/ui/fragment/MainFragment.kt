@@ -48,6 +48,7 @@ import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.downloadPic
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
@@ -333,22 +334,35 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun setNetData(result: HomeInfoDto) {
-        val header = fillData(result)
-        header.addAll(items)
 
-        addProduct5TypeItem(header)
+        lifecycleScope.launch {
+            mSettingView?.requestFocus()
 
-        setHeader(header)
-        isConnectFirst = true
-       /* if (result.getData().reg_id != null) PreferencesUtils.setProperty(
-            Atts.RECENTLY_MODIFIED,
-            result.getData().reg_id
-        )*/
-        val item = header[0]
-        fillMovice(item)
-        if (BuildConfig.FLAVOR == "hongxin_H27002") {
-            requestFocus(mHeaderGrid, 500)
+            val header = fillData(result)
+            header.addAll(items)
+
+            addProduct5TypeItem(header)
+            delay(800)
+
+            setHeader(header)
+            isConnectFirst = true
+            /* if (result.getData().reg_id != null) PreferencesUtils.setProperty(
+                 Atts.RECENTLY_MODIFIED,
+                 result.getData().reg_id
+             )*/
+            val item = header[0]
+            fillMovice(item)
+
+
+            delay(1500)
+            mSettingView?.clearFocus()
+            //delay(500)
+            mHeaderGrid?.requestFocus()
+            //requestFocus(mHeaderGrid, 0)
         }
+        /*if (BuildConfig.FLAVOR == "hongxin_H27002") {
+            requestFocus(mHeaderGrid, 500)
+        }*/
     }
 
     var isPicDownload = false
@@ -600,6 +614,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 CopyOnWriteArrayList(),
                 newHeaderCallback()
             )
+
+        mHeaderGrid!!.setAdapter(mMainHeaderAdapter)
+
         mHMainContentAdapter =
             MainContentAdapter(
                 requireContext(),
@@ -607,6 +624,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 CopyOnWriteArrayList(),
                 newContentCallback()
             )
+
+
         mVMainContentAdapter =
             MainContentAdapter(
                 requireContext(),
@@ -771,7 +790,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private fun setHeader(items: List<TypeItem>) {
         targetMenus.clear()
         targetMenus.addAll(items)
-        mHeaderGrid!!.setAdapter(mMainHeaderAdapter)
         mMainHeaderAdapter!!.replace(items)
         /*mHeaderGrid?.post {
             mHeaderGrid?.requestFocus()
@@ -787,7 +805,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         layoutId: Int
     ) {
         var list = list
-        if (list?.size ?: 0 > 4) {
+        if ((list?.size ?: 0) > 4) {
             flList.height(com.shudong.lib_dimen.R.dimen.qb_px_270.dimenValue())
         } else {
             flList.height(com.shudong.lib_dimen.R.dimen.qb_px_250.dimenValue())
@@ -1264,6 +1282,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private fun work(flag: String, bean: TypeItem) {
         uiHandler!!.postDelayed({
             if (flag == uuid) {
+                "当前的Name是：${bean.name}====${bean.iconName}::::${bean.type}".e("zengyue1")
                 selectWork(bean)
             }
         }, 220)

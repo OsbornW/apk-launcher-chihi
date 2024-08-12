@@ -116,7 +116,7 @@ fun String.uninstallApp(callback: (Boolean) -> Unit) {
             callback(false) // 如果超过最大重试次数仍然没卸载成功，返回 false
         }
     } catch (e: Exception) {
-        Log.e("UninstallError", "Error uninstalling app: ${e.message}")
+
         callback(false)
     }
 }
@@ -127,7 +127,7 @@ private fun performInstallation(
     apkFile: File,
     continuation: CancellableContinuation<Boolean>
 ) {
-    "开始安装".e("zengyue1")
+
     val sessionId =
         packageInstaller.createSession(PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL))
     val session = packageInstaller.openSession(sessionId)
@@ -150,7 +150,7 @@ private fun performInstallation(
 
         override fun onFinished(sessionId: Int, success: Boolean) {
             if (continuation.isActive) {
-                "安装结果：$success".e("zengyue1")
+
                 if (success) {
                     continuation.resume(true)
                 } else {

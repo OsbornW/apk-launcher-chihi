@@ -65,11 +65,11 @@ fun String.downloadApk(
                 override fun onCreated(sessionId: Int) {}
 
                 override fun onFinished(sessionId: Int, success: Boolean) {
-                    Log.d("SilentInstall", "Installation finished: $success")
+
                     if (continuation.isActive) {
                         continuation.resume(success)
                     } else {
-                        Log.w("SilentInstall", "Continuation already resumed or cancelled")
+
                     }
                 }
 
@@ -88,16 +88,16 @@ fun String.downloadApk(
             session.commit(pendingIntent.intentSender)
 
             continuation.invokeOnCancellation {
-                Log.d("SilentInstall", "Installation cancelled")
+
                 session.close()
             }
 
         } catch (e: Exception) {
-            Log.e("SilentInstall", "Exception occurred: ${e.message}", e)
+
             if (continuation.isActive) {
                 continuation.resumeWithException(e)
             } else {
-                Log.w("SilentInstall", "Continuation already resumed or cancelled")
+
             }
         } finally {
             session?.close()
@@ -119,7 +119,7 @@ fun String.downloadPic(
                 //it为Progress对象
                // process.invoke(it.progress)
             }.catch {
-                "显示错误:${it.printStackTrace()}==${it.message}==${it.cause?.message}".e("zengyue1")
+
                 downloadError?.invoke(it.message ?: "")
             }.collect {
                 downloadComplete?.invoke(it,path)

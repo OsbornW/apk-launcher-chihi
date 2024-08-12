@@ -581,7 +581,6 @@ public class AndroidSystem {
             }
         }
         for (ApplicationInfo item:result){
-            Log.e("zengyue1", "getUserApps2: 当前应用程序信息："+item.packageName );
         }
         return result;
     }

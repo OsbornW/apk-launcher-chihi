@@ -55,6 +55,7 @@ import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.utils.GlideUtils
 import com.soya.launcher.utils.getFileNameFromUrl
+import com.soya.launcher.utils.toTrim
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -118,7 +119,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
         // 取消之前的任务（如果存在）
         fetchJob?.cancel()
         mViewModel.reqHomeInfo().lifecycle(this, errorCallback = {
-            "数据请求错误${it.message}".e("zengyue1")
+
         }, isShowError = false){
             val dto = this
             dto.jsonToString().exportToJson("Home.json")
@@ -144,7 +145,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                         AppCache.isAllDownload = false
                         deleteAllPic()
                     }
-                    "开始下载图片:${AppCache.reqId}::::${dto.reqId}".e("zengyue1")
+
                     AppCache.reqId =dto.reqId ?: 0
                     startPicTask(this)
                 }
@@ -172,8 +173,10 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
         }
     }
 
+    private var isHandleUpdateList = false
     private fun checkPicDownload(coroutineScope: CoroutineScope) {
         coroutineScope.launch (Dispatchers.IO){
+            isHandleUpdateList = false
             val path = FilePathMangaer.getJsonPath(this@MainActivity) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeInfoDto>(
@@ -195,9 +198,10 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                                 val filePathCache = AppCache.homeData.dataList
                                 filePathCache[homeItem.icon] = path
                                 AppCache.homeData = HomeDataList(filePathCache)
-                                if(compareSizes(result)) {
+                                if(compareSizes(result) && !isHandleUpdateList) {
                                     AppCache.isAllDownload = true
                                     sendLiveEventData(UPDATE_HOME_LIST,true)
+                                    isHandleUpdateList = true
                                 }
 
                             },
@@ -210,7 +214,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
                     homeItem.datas?.forEachIndexed { position, it ->
                         val destContentPath =
-                            "${"content".getBasePath()}/content_${homeItem.name}_${position}_${(it?.imageUrl as String).getFileNameFromUrl()}"
+                            "${"content".getBasePath()}/content_${homeItem.name?.toTrim()}_${position}_${(it?.imageUrl as String).getFileNameFromUrl()}"
                         var isDownload = false
                         when (homeItem.name) {
                             "Youtube", "Disney+", "Hulu", "Prime video" -> {
@@ -225,16 +229,17 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
                         isDownload.yes {
                             if (!File(destContentPath).exists()) {
-                                "当前下载：${it.imageUrl}:::".e("zengyue1")
+
                                 (it.imageUrl).downloadPic(lifecycleScope, destContentPath,
                                     downloadComplete = { _, path ->
-                                        "下载成功：${it.imageUrl}:::".e("zengyue1")
+
                                         val filePathCache = AppCache.homeData.dataList
                                         filePathCache[it.imageUrl] = path
                                         AppCache.homeData = HomeDataList(filePathCache)
-                                        if(compareSizes(result)) {
+                                        if(compareSizes(result)&& !isHandleUpdateList) {
                                             AppCache.isAllDownload = true
                                             sendLiveEventData(UPDATE_HOME_LIST,true)
+                                            isHandleUpdateList = true
                                         }
 
 

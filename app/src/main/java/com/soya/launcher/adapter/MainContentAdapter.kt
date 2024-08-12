@@ -94,16 +94,23 @@ class MainContentAdapter(
 
 
                     if(!image.toString().contains("http")){
+                        "当前加载的缓存是1：：：${item.imageName}".e("zengyue1")
                         mIV.setImageDrawable(context.getDrawableByName(image.toString()))
                     }else{
                         val cacheFile = AppCache.homeData.dataList.get(image as String)
                         if (cacheFile != null&&AppCache.isAllDownload) {
+                            "当前加载的缓存是2：：：${item.imageName}".e("zengyue1")
+
                             // 使用缓存的 Drawable
                             GlideUtils.bind(context, mIV, cacheFile)
                         } else {
                             // 轮询直到有缓存 Drawable
 
+                            "当前加载的缓存是3：：：${item.imageName}".e("zengyue1")
+
                             if(!item.imageName.isNullOrEmpty()){
+                                "当前加载的缓存是4：：：${item.imageName}".e("zengyue1")
+
                                 val drawable = context.getDrawableByName(item.imageName)
                                 mIV.setImageDrawable(drawable)
                             }
