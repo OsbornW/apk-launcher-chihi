@@ -117,6 +117,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
     private var fetchJob: Job? = null
     private fun fetchHomeData(isRefresh: Boolean = false) {
         // 取消之前的任务（如果存在）
+        isHandleUpdateList = false
         fetchJob?.cancel()
         mViewModel.reqHomeInfo().lifecycle(this, errorCallback = {
 
@@ -176,7 +177,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
     private var isHandleUpdateList = false
     private fun checkPicDownload(coroutineScope: CoroutineScope) {
         coroutineScope.launch (Dispatchers.IO){
-            isHandleUpdateList = false
             val path = FilePathMangaer.getJsonPath(this@MainActivity) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeInfoDto>(

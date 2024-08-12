@@ -89,6 +89,7 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.compareSizes
 import com.soya.launcher.ext.countImagesWithPrefix
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.exportToJson
@@ -1558,14 +1559,19 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     JsonReader(FileReader(path)),
                     HomeInfoDto::class.java
                 )
-                val header = fillData(result)
-                header.addAll(items)
-                addProduct5TypeItem(header)
+                if(compareSizes(result)){
+                    val header = fillData(result)
+                    header.addAll(items)
+                    addProduct5TypeItem(header)
 
-                setHeader(header)
-                if (BuildConfig.FLAVOR == "hongxin_H27002") {
-                    requestFocus(mHeaderGrid, 500)
+                    setHeader(header)
+                    if (BuildConfig.FLAVOR == "hongxin_H27002") {
+                        requestFocus(mHeaderGrid, 500)
+                    }
+                }else{
+                    setDefault()
                 }
+
             } else {
                 setDefault()
             }
