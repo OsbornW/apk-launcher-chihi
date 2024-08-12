@@ -115,43 +115,68 @@
                             app:shape="oval"/>
 
 
-
-                        <com.soya.launcher.view.ImageViewHouse
-                            android:layout_centerInParent="true"
-                            android:id="@+id/setting"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:src="@drawable/baseline_settings_100"
-                            android:padding="@dimen/fragment_main_opt_icon_padding"
-                            android:layout_width="@dimen/qb_px_40"
-                            android:layout_height="@dimen/qb_px_40"/>
+                            <com.soya.launcher.view.ImageViewHouse
+                                android:id="@+id/setting"
+                                android:layout_width="@dimen/qb_px_40"
+                                android:layout_height="@dimen/qb_px_40"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:padding="@dimen/fragment_main_opt_icon_padding"
+                                android:src="@drawable/baseline_settings_100" />
 
                         </RelativeLayout>
 
+                        <RelativeLayout
+                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-                        <ImageView
+                            <com.hjq.shape.layout.ShapeRelativeLayout
+                                android:id="@+id/projection"
+                                android:visibility="gone"
+                                android:layout_width="@dimen/qb_px_40"
+                                android:layout_height="@dimen/qb_px_40"
+                                app:shape_solidColor="#80625356"
+                                app:shape="oval"/>
+
+                        <com.soya.launcher.view.ImageViewHouse
                             android:id="@+id/gradient"
                             android:clickable="true"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:foreground="@drawable/ripple_style_1"
                             android:src="@drawable/baseline_screenshot_monitor_100"
-                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
                             android:padding="@dimen/fragment_main_opt_icon_padding"
                             android:layout_width="@dimen/fragment_main_opt_icon_width"
                             android:layout_height="@dimen/fragment_main_opt_icon_height"/>
-                        <ImageView
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <com.hjq.shape.layout.ShapeRelativeLayout
+                                android:id="@+id/hdml"
+                                android:visibility="gone"
+                                android:layout_width="@dimen/qb_px_40"
+                                android:layout_height="@dimen/qb_px_40"
+                                app:shape_solidColor="#80625356"
+                                app:shape="oval"/>
+
+                        <com.soya.launcher.view.ImageViewHouse
                             android:id="@+id/hdmi"
                             android:clickable="true"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:foreground="@drawable/ripple_style_1"
                             android:src="@drawable/baseline_settings_input_hdmi_100"
-                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
                             android:padding="@dimen/fragment_main_opt_icon_padding"
                             android:layout_width="@dimen/fragment_main_opt_icon_width"
                             android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                        </RelativeLayout>
 
                         <ImageView
                             android:id="@+id/login"
