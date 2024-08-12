@@ -28,18 +28,11 @@ import java.io.File
 class MainContentAdapter(
     private val context: Context,
     private val inflater: LayoutInflater,
-    dataList: MutableList<Data>,
-    callback: Callback?
-) : RecyclerView.Adapter<MainContentAdapter.Holder?>() {
-    private val dataList: MutableList<Data>
-
+    private val dataList: MutableList<Data>,
     private val callback: Callback?
-    private var layoutId: Int = 0
+) : RecyclerView.Adapter<MainContentAdapter.Holder?>() {
 
-    init {
-        this.dataList = dataList
-        this.callback = callback
-    }
+    private var layoutId: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(inflater.inflate(layoutId, parent, false))
@@ -104,17 +97,15 @@ class MainContentAdapter(
                         mIV.setImageDrawable(context.getDrawableByName(image.toString()))
                     }else{
                         val cacheFile = AppCache.homeData.dataList.get(image as String)
-                        if (cacheFile != null) {
+                        if (cacheFile != null&&AppCache.isAllDownload) {
                             // 使用缓存的 Drawable
-
-                            //mIV.setImageDrawable(cachedDrawable);
                             GlideUtils.bind(context, mIV, cacheFile)
                         } else {
                             // 轮询直到有缓存 Drawable
 
                             if(!item.imageName.isNullOrEmpty()){
-                                "当前加载本地缓存：${item.imageName}::::::${item.imageUrl}".e("zengyue1")
-                                mIV.setImageDrawable(context.getDrawableByName(item.imageName.toString()))
+                                val drawable = context.getDrawableByName(item.imageName)
+                                mIV.setImageDrawable(drawable)
                             }
 
                             startPollingForCache(mIV, image)
@@ -167,7 +158,7 @@ class MainContentAdapter(
         val runnable = object : Runnable {
             override fun run() {
                 val cacheFile = AppCache.homeData.dataList.get(image)?.let { File(it) }
-                if (cacheFile != null && cacheFile.exists()) {
+                if (cacheFile != null && cacheFile.exists()&&AppCache.isAllDownload) {
                     // 使用缓存的 Drawable
 
                     GlideUtils.bind(context, mIV, cacheFile)

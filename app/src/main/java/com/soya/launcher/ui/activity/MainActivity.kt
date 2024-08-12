@@ -57,6 +57,7 @@ import com.soya.launcher.utils.GlideUtils
 import com.soya.launcher.utils.getFileNameFromUrl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -112,17 +113,20 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
     }
 
 
-
+    private var fetchJob: Job? = null
     private fun fetchHomeData() {
+        // 取消之前的任务（如果存在）
+        fetchJob?.cancel()
         mViewModel.reqHomeInfo().lifecycle(this, errorCallback = {
             "数据请求错误${it.message}".e("zengyue1")
         }, isShowError = false){
             val dto = this
             dto.jsonToString().exportToJson("Home.json")
-            lifecycleScope.launch {
+            fetchJob = lifecycleScope.launch {
                 if ((dto.reqId ?: 0) != AppCache.reqId || !compareSizes(dto)) {
                     withContext(Dispatchers.IO) {
                         if ((dto.reqId ?: 0) != AppCache.reqId){
+                            AppCache.isAllDownload = false
                             deleteAllPic()
                         }
                         "开始下载图片:${AppCache.reqId}::::${dto.reqId}".e("zengyue1")
@@ -175,7 +179,10 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                                 val filePathCache = AppCache.homeData.dataList
                                 filePathCache[homeItem.icon] = path
                                 AppCache.homeData = HomeDataList(filePathCache)
-                                if(compareSizes(result)) sendLiveEventData(UPDATE_HOME_LIST,true)
+                                if(compareSizes(result)) {
+                                    AppCache.isAllDownload = true
+                                    sendLiveEventData(UPDATE_HOME_LIST,true)
+                                }
 
                             },
                             downloadError = {
@@ -209,7 +216,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                                         val filePathCache = AppCache.homeData.dataList
                                         filePathCache[it.imageUrl] = path
                                         AppCache.homeData = HomeDataList(filePathCache)
-                                        if(compareSizes(result)) sendLiveEventData(UPDATE_HOME_LIST,true)
+                                        if(compareSizes(result)) {
+                                            AppCache.isAllDownload = true
+                                            sendLiveEventData(UPDATE_HOME_LIST,true)
+                                        }
+
 
                                     },
                                     downloadError = {

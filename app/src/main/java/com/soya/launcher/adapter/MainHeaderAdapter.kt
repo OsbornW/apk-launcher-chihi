@@ -94,7 +94,7 @@ class MainHeaderAdapter(
                         mIV.setImageDrawable(context.getDrawableByName(item.icon.toString()))
                     }else{
                         val cacheFile = AppCache.homeData.dataList[item.icon as String]
-                        if (cacheFile != null) {
+                        if (cacheFile != null&&AppCache.isAllDownload) {
                             // 使用缓存的 Drawable
 
                             //mIV.setImageDrawable(cachedDrawable);
@@ -136,7 +136,7 @@ class MainHeaderAdapter(
         val runnable = object : Runnable {
             override fun run() {
                 val cacheFile = AppCache.homeData.dataList.get(image)?.let { File(it) }
-                if (cacheFile?.exists()==true) {
+                if (cacheFile?.exists()==true&&AppCache.isAllDownload) {
                     // 使用缓存的 Drawable
 
                     GlideUtils.bind(context, mIV, cacheFile)
