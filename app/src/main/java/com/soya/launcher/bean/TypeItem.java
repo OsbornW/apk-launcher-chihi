@@ -1,6 +1,7 @@
 package com.soya.launcher.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class TypeItem implements Serializable {
     public static final int TYPE_ICON_IMAGE_RES = 0;
@@ -17,7 +18,7 @@ public class TypeItem implements Serializable {
     private String iconName;
     private final long id;
     private final int type;
-    private String data;
+    private List<PackageName> data;
 
     public TypeItem(String name, Object icon, long id, int type, int iconType, int layoutType){
         this.name = name;
@@ -28,13 +29,19 @@ public class TypeItem implements Serializable {
         this.layoutType = layoutType;
     }
 
+    public List<PackageName> getData() {
+        return data;
+    }
+
+    public void setData(List<PackageName> data) {
+        this.data = data;
+    }
+
     public void setIcon(Object icon) {
         this.icon = icon;
     }
 
-    public void setData(String data) {
-        this.data = data;
-    }
+
 
     public String getIconName() {
         return iconName;
@@ -44,9 +51,6 @@ public class TypeItem implements Serializable {
         this.iconName = iconName;
     }
 
-    public String getData() {
-        return data;
-    }
 
     public String getName() {
         return name;

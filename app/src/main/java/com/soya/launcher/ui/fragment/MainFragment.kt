@@ -41,6 +41,8 @@ import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.open.system.SystemUtils
 import com.shudong.lib_base.currentActivity
+import com.shudong.lib_base.ext.REFRESH_HOME
+import com.shudong.lib_base.ext.UPDATE_HOME_LIST
 import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
@@ -53,6 +55,7 @@ import com.shudong.lib_base.ext.net.lifecycle
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
@@ -68,10 +71,13 @@ import com.soya.launcher.adapter.StoreAdapter
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AppPackage
 import com.soya.launcher.bean.AuthBean
+import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeDataList
+import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
 import com.soya.launcher.bean.Notify
+import com.soya.launcher.bean.PackageName
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
@@ -213,6 +219,18 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
         }
 
+        obseverLiveEvent<Boolean>(UPDATE_HOME_LIST){
+            val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
+            if (File(path).exists()) {
+                val result = Gson().fromJson<HomeInfoDto>(
+                    JsonReader(FileReader(path)),
+                    HomeInfoDto::class.java
+                )
+                setNetData(result)
+            }
+
+        }
+
 
         if (Config.COMPANY == 5) {
 
@@ -314,7 +332,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }
     }
 
-    private fun setNetData(result: HomeResponse) {
+    private fun setNetData(result: HomeInfoDto) {
         val header = fillData(result)
         header.addAll(items)
 
@@ -369,7 +387,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 AppCache.homeData = HomeDataList(filePathCache)
                                 if (countImagesWithPrefix() == size) {
                                     isLoadedList.no {
-                                        setNetData(result)
+                                        //setNetData(result)
                                         isLoadedList = true
                                     }
 
@@ -763,7 +781,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun setMoviceContent(
-        list: MutableList<Movice>?,
+        list: MutableList<Data>?,
         direction: Int,
         columns: Int,
         layoutId: Int
@@ -1279,10 +1297,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             override fun onClick(bean: TypeItem) {
                 when (bean.type) {
                     Types.TYPE_MOVICE -> {
-                        val packages = Gson().fromJson(bean.data, Array<AppPackage>::class.java)
+                        val packages = bean.data
                         "当前名字是====${packages.size}===${packages[0].packageName}"
                         when {
-                            packages[0].packageName.contains("com.amazon.amazonvideo.livingroom") -> {
+                            packages[0].packageName?.contains("com.amazon.amazonvideo.livingroom") == true -> {
 
                                 if (Config.COMPANY == 5) {
                                     AndroidSystem.openActivityName(
@@ -1301,7 +1319,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 }
                             }
 
-                            packages[0].packageName.contains("youtube") -> {
+                            packages[0].packageName?.contains("youtube") == true -> {
 
                                 if (Config.COMPANY == 5) {
                                     AndroidSystem.openPackageName(
@@ -1424,7 +1442,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private fun requestHome() {
         if (isReqHome || isConnectFirst) return
         isReqHome = true
-        homeCall = HttpRequest.getHomeContents(newMoviceListCallback())
+        sendLiveEventData(REFRESH_HOME,true)
+       // homeCall = HttpRequest.getHomeContents(newMoviceListCallback())
     }
 
     private fun fillApps(replace: Boolean, isAttach: Boolean) {
@@ -1488,22 +1507,22 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mHorizontalContentGrid!!.visibility = View.VISIBLE
     }
 
-    private fun local(filePath: String, direction: Int, columns: Int, layoutId: Int) {
+   /* private fun local(filePath: String, direction: Int, columns: Int, layoutId: Int) {
         val files = AndroidSystem.getAssetsFileNames(activity, filePath)
-        val list: MutableList<Movice> = ArrayList(files.size)
+        val list: MutableList<Data> = ArrayList(files.size)
         for (item in files) {
-            list.add(Movice(Types.TYPE_UNKNOW, null, "$filePath/$item", Movice.PIC_ASSETS))
+            list.add(Data(Types.TYPE_UNKNOW, null, "$filePath/$item", Movice.PIC_ASSETS))
         }
         setMoviceContent(list, direction, columns, layoutId)
-    }
+    }*/
 
     private fun fillHeader() {
         try {
             val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
             if (File(path).exists()) {
-                val result = Gson().fromJson<HomeResponse>(
+                val result = Gson().fromJson<HomeInfoDto>(
                     JsonReader(FileReader(path)),
-                    HomeResponse::class.java
+                    HomeInfoDto::class.java
                 )
                 val header = fillData(result)
                 header.addAll(items)
@@ -1560,11 +1579,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private fun setDefault() {
         try {
 
-            val result = Gson().fromJson<HomeResponse>(
+            val result = Gson().fromJson(
                 InputStreamReader(
                     requireContext().assets.open("home.json")
                 ),
-                HomeResponse::class.java
+                HomeInfoDto::class.java
             )
             val header = fillData(result)
             header.addAll(items)
@@ -1578,57 +1597,63 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun fillData(
-        result: HomeResponse,
+        result: HomeInfoDto,
         iconType: Int = TypeItem.TYPE_ICON_IMAGE_URL,
         imageType: Int = 0
     ): MutableList<TypeItem> {
-        val homeItems = result.getData().getMovies()
+        val homeItems = result.movies
         val menus: MutableList<TypeItem> = ArrayList()
         val gson = Gson()
-        for (bean in homeItems) {
-            val movices: MutableList<Movice> = ArrayList(bean.datas.size)
-            for (movice in bean.datas) {
-                movice.picType = Movice.PIC_NETWORD
-                movice.appName = bean.name
-                movice.appPackage = bean.packageNames
-                if (imageType == 1) {
-                    val path = FilePathMangaer.getMoviePath(activity) + "/" + movice.imageUrl
-                    movice.imageUrl = path
-                    movice.isLocal = true
-                }
-                movices.add(movice)
-            }
-            val item = TypeItem(
-                bean.name,
-                bean.icon,
-                UUID.randomUUID().leastSignificantBits,
-                Types.TYPE_MOVICE,
-                iconType,
-                bean.type
-            )
-            item.data = gson.toJson(bean.packageNames)
-            App.MOVIE_MAP.put(item.id, movices)
-            if (Config.COMPANY == 5) {
-                when (item.name) {
-                    "Max", "Disney+", "Hulu", "Google play", "media center" -> {
-                    }
+        homeItems?.let {
+            for (bean in homeItems) {
+                val movices: MutableList<Data> = ArrayList(bean?.datas?.size?:0)
+                bean?.datas?.let {
+                    for (movice in bean.datas) {
+                        movice?.picType = Movice.PIC_NETWORD
+                        movice?.packageNames = bean.packageNames
+                        movice?.appName = bean.name
+                        //movice.appPackage = bean.packageNames
 
-                    else -> {
-                        menus.add(item)
+                        if (movice != null) {
+                            movices.add(movice)
+                        }
                     }
                 }
-            } else {
-                if (item.name == "Disney+") {
-                    isRK3326().no {
-                        menus.add(item)
+
+                val item = TypeItem(
+                    bean?.name,
+                    bean?.icon,
+                    UUID.randomUUID().leastSignificantBits,
+                    Types.TYPE_MOVICE,
+                    iconType,
+                    bean?.type?:0
+                )
+                item.iconName = bean?.iconName
+                item.data = bean?.packageNames
+                App.MOVIE_MAP.put(item.id, movices)
+                if (Config.COMPANY == 5) {
+                    when (item.name) {
+                        "Max", "Disney+", "Hulu", "Google play", "media center" -> {
+                        }
+
+                        else -> {
+                            menus.add(item)
+                        }
                     }
                 } else {
-                    menus.add(item)
+                    if (item.name == "Disney+") {
+                        isRK3326().no {
+                            menus.add(item)
+                        }
+                    } else {
+                        menus.add(item)
+                    }
+
                 }
 
             }
-
         }
+
         return menus
     }
 
@@ -1650,34 +1675,34 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun newContentCallback(): MainContentAdapter.Callback {
         return object : MainContentAdapter.Callback {
-            override fun onClick(bean: Movice) {
+            override fun onClick(bean: Data) {
                 var skip = false
-                if (bean.appPackage != null) {
-                    for (appPackage in bean.appPackage) {
-                        if (App.SKIP_PAKS.contains(appPackage.packageName)) {
-                            skip = true
-                            break
+                if (bean.packageNames != null) {
+                    bean.packageNames?.let {
+                        for (appPackage in it) {
+                            if (App.SKIP_PAKS.contains(appPackage?.packageName)) {
+                                skip = true
+                                break
+                            }
                         }
                     }
+
                 }
 
-                bean.appPackage.forEach {
-                    "当前的包名是：${it.packageName}"
-                }
 
 
                 var success = false
                 success = if (skip) {
-                    AndroidSystem.jumpVideoApp(activity, bean.appPackage, null)
+                    AndroidSystem.jumpVideoApp(activity, bean.packageNames, null)
                 } else {
-                    AndroidSystem.jumpVideoApp(activity, bean.appPackage, bean.url)
+                    AndroidSystem.jumpVideoApp(activity, bean.packageNames, bean.url)
                 }
                 if (!success) {
-                    toastInstallPKApp(bean.appName, bean.appPackage)
+                    toastInstallPKApp(bean.appName?:"", bean.packageNames)
                 }
             }
 
-            override fun onFouces(hasFocus: Boolean, bean: Movice) {
+            override fun onFouces(hasFocus: Boolean, bean: Data) {
                 if (hasFocus) {
                     setExpanded(false)
                 }
@@ -1685,12 +1710,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }
     }
 
-    private fun toastInstallPKApp(name: String, packages: Array<AppPackage>) {
+    private fun toastInstallPKApp(name: String, packages: List<PackageName?>?) {
         toastInstallApp(name) { type ->
             if (type == 1) {
-                val pns = arrayOfNulls<String>(packages.size)
+                val pns = arrayOfNulls<String>(packages?.size?:0)
                 for (i in pns.indices) {
-                    pns[i] = packages[i].packageName
+                    pns[i] = packages?.get(i)?.packageName
                 }
                 AndroidSystem.jumpAppStore(activity, null, pns)
             }
@@ -1720,10 +1745,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                             if (result.data.reg_id != AppCache.reqId) {
                                 withContext(Dispatchers.IO) {
                                     deleteAllPic()
-                                    "开始下载图片:${AppCache.reqId}::::${result.data?.reg_id ?: 0L}"
+                                    "开始下载图片:${AppCache.reqId}::::${result.data?.reg_id}"
                                     startPicTask(this)
                                 }
-                                AppCache.reqId = result.data?.reg_id ?: 0L
+                                AppCache.reqId = result.data?.reg_id ?: 0
                             }
 
                             isPicDownload = true

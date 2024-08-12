@@ -3,9 +3,11 @@ package com.thumbsupec.lib_net.di
 import android.util.Log
 import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.http.MyX509
+import com.thumbsupec.lib_net.http.MyX509TrustManager
 import com.thumbsupec.lib_net.http.SSL
 import com.thumbsupec.lib_net.http.convert.SerializationConverterFactory
 import com.thumbsupec.lib_net.http.createSslContext
+import com.thumbsupec.lib_net.http.getSSLContext
 import com.thumbsupec.lib_net.http.intercept.AuthorizationInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -64,11 +66,13 @@ val alternateRetrofitModule = module {
 // 定义 OkHttpClient 实例
 val httpClientModule = module {
     single {
+        val sslContext = getSSLContext()
+        val sslSocketFactory = sslContext.socketFactory
         OkHttpClient.Builder()
             .addInterceptor(AuthorizationInterceptor())
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
-            .sslSocketFactory(SSL(createSslContext()), createSslContext())
+            .sslSocketFactory(sslSocketFactory,MyX509TrustManager())
             .hostnameVerifier { _, _ -> true }
             .readTimeout(TIME_OUT, TimeUnit.SECONDS).also {
                 it.addInterceptor(httpLoggingInterceptor)

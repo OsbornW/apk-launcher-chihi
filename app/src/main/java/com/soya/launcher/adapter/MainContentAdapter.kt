@@ -16,6 +16,7 @@ import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.R
+import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.h27002.getDrawableByName
@@ -27,10 +28,10 @@ import java.io.File
 class MainContentAdapter(
     private val context: Context,
     private val inflater: LayoutInflater,
-    dataList: MutableList<Movice>,
+    dataList: MutableList<Data>,
     callback: Callback?
 ) : RecyclerView.Adapter<MainContentAdapter.Holder?>() {
-    private val dataList: MutableList<Movice>
+    private val dataList: MutableList<Data>
 
     private val callback: Callback?
     private var layoutId: Int = 0
@@ -56,10 +57,13 @@ class MainContentAdapter(
         this.layoutId = layoutId
     }
 
-    fun replace(list: List<Movice>?) {
-        dataList.clear()
-        dataList.addAll(list!!)
-        notifyDataSetChanged()
+    fun replace(list: List<Data>?) {
+        list?.let {
+            dataList.clear()
+            dataList.addAll(it)
+            notifyDataSetChanged()
+        }
+
     }
 
     inner class Holder(view: View) : RecyclerView.ViewHolder(view) {
@@ -76,7 +80,7 @@ class MainContentAdapter(
             tvLoadding = view.findViewById(R.id.tv_loadding)
         }
 
-        fun bind(item: Movice, position: Int) {
+        fun bind(item: Data, position: Int) {
             val root = itemView.rootView
             when (item.picType) {
                 Movice.PIC_ASSETS -> {
@@ -100,7 +104,6 @@ class MainContentAdapter(
                         mIV.setImageDrawable(context.getDrawableByName(image.toString()))
                     }else{
                         val cacheFile = AppCache.homeData.dataList.get(image as String)
-                        "当前的文件路径是${cacheFile}"
                         if (cacheFile != null) {
                             // 使用缓存的 Drawable
 
@@ -109,13 +112,18 @@ class MainContentAdapter(
                         } else {
                             // 轮询直到有缓存 Drawable
 
+                            if(!item.imageName.isNullOrEmpty()){
+                                "当前加载本地缓存：${item.imageName}::::::${item.imageUrl}".e("zengyue1")
+                                mIV.setImageDrawable(context.getDrawableByName(item.imageName.toString()))
+                            }
+
                             startPollingForCache(mIV, image)
                         }
                     }
 
 
                     if (tvLoadding != null) {
-                        if (item.id.isEmpty()) {
+                        if (item.id?.isNotEmpty() == true) {
                             tvLoadding.visibility = View.GONE
                         }
                     }
@@ -145,8 +153,8 @@ class MainContentAdapter(
     }
 
     interface Callback {
-        fun onClick(bean: Movice)
-        fun onFouces(hasFocus: Boolean, bean: Movice)
+        fun onClick(bean: Data)
+        fun onFouces(hasFocus: Boolean, bean: Data)
     }
 
 

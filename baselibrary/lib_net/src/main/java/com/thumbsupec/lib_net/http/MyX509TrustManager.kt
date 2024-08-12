@@ -4,21 +4,29 @@ import javax.net.ssl.X509TrustManager
 import java.security.cert.X509Certificate
 import java.security.cert.CertificateException
 
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.TrustManagerFactory
+
 class MyX509TrustManager : X509TrustManager {
-    @Throws(CertificateException::class)
+
     override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-        // 实现客户端证书验证逻辑
-        // 如果验证失败，可以抛出 CertificateException
+        // 这里可以实现自定义客户端证书检查逻辑
     }
 
-    @Throws(CertificateException::class)
     override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-        // 实现服务器证书验证逻辑
-        // 如果验证失败，可以抛出 CertificateException
+        // 这里可以实现自定义服务器证书检查逻辑
     }
 
-    override fun getAcceptedIssuers(): Array<X509Certificate>? {
-        // 返回受信任的颁发机构的证书列表
-        return null
+    override fun getAcceptedIssuers(): Array<X509Certificate> {
+        return arrayOf()
     }
 }
+
+fun getSSLContext(): SSLContext {
+    val trustManager = MyX509TrustManager()
+    val sslContext = SSLContext.getInstance("TLS")
+    sslContext.init(null, arrayOf(trustManager), null)
+    return sslContext
+}
+

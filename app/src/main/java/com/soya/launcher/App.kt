@@ -28,6 +28,7 @@ import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.CacheWeather
+import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
 import com.soya.launcher.bean.Wallpaper
@@ -47,8 +48,10 @@ import com.thumbsupec.lib_base.toast.ToastUtils
 import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.di.httpLoggingInterceptor
 import com.thumbsupec.lib_net.di.netModules
+import com.thumbsupec.lib_net.http.MyX509TrustManager
 import com.thumbsupec.lib_net.http.SSL
 import com.thumbsupec.lib_net.http.createSslContext
+import com.thumbsupec.lib_net.http.getSSLContext
 import com.thumbsupec.lib_net.http.intercept.AuthorizationInterceptor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -131,8 +134,10 @@ class App : Application() {
             modules(homeModules)
         }
 
+        val sslContext = getSSLContext()
+        val sslSocketFactory = sslContext.socketFactory
         RxHttpPlugins.init(OkHttpClient.Builder()
-            .sslSocketFactory(SSL(createSslContext()), createSslContext())
+            .sslSocketFactory(sslSocketFactory, MyX509TrustManager())
             .hostnameVerifier { _, _ -> true }
             .build())
 
@@ -346,7 +351,7 @@ class App : Application() {
         private val exec = Executors.newCachedThreadPool()
 
         @JvmField
-        val MOVIE_MAP: MutableMap<Long, MutableList<Movice>> = ConcurrentHashMap()
+        val MOVIE_MAP: MutableMap<Long, MutableList<Data>> = ConcurrentHashMap()
 
         @JvmField
         val WALLPAPERS: MutableList<Wallpaper> = ArrayList()

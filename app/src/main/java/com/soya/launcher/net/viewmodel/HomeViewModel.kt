@@ -2,6 +2,7 @@ package com.soya.launcher.net.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.shudong.lib_base.base.BaseViewModel
+import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.net.repository.HomeLocalRepository
 import com.soya.launcher.net.repository.HomeRepository
@@ -25,5 +26,6 @@ class HomeViewModel : BaseViewModel() {
 
 
     fun reqUpdateInfo(): Flow<MutableList<UpdateAppsDTO>> = repositoryLocal.reqUpdateInfo()
+    fun reqHomeInfo(): Flow<HomeInfoDto> = repository.reqHomeInfo()
 
 }

@@ -2,7 +2,9 @@ package com.soya.launcher.net.api
 
 import com.soya.launcher.net.Update_INFO
 import com.shudong.lib_base.base.viewmodel.BaseApi
+import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.UpdateAppsDTO
+import com.soya.launcher.net.HOME_INFO
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -16,12 +18,11 @@ import retrofit2.http.Query
  */
 interface HomeApi : BaseApi {
 
-    @GET(Update_INFO)
+    @GET(HOME_INFO)
     suspend fun reqHomeInfo(
-        @Query("app_name") appName: String,
-        @Query("type") type: String,
-        @Query("channel") channel: String
-    ): MutableList<String>
+        @Query("req_id") reqId: String,
+        @Query("channel") channel: String,
+    ): HomeInfoDto
 
 
 }
