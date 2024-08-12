@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.soya.launcher.view.MyFrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.soya.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:focusable="true"
     android:id="@+id/fl_root"
     android:focusableInTouchMode="true"
-    android:background="@drawable/ripple_style_2"
+    app:shape_solidColor="@color/transparent"
+    app:shape_solidFocusedColor="#80625356"
+    app:shape_radius="@dimen/qb_px_8"
     android:paddingLeft="@dimen/holder_language_root_padding_left"
     android:paddingRight="@dimen/holder_language_root_padding_right"
     android:layout_gravity="center"
