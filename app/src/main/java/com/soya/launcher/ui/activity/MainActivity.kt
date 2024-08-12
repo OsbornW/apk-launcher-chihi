@@ -155,7 +155,10 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
     }
 
     private fun deleteAllPic() {
-        appContext.filesDir.absolutePath.deleteAllImages()
+        val headerDirPath = "${appContext.filesDir.absolutePath}/header"
+        val contentDirPath = "${appContext.filesDir.absolutePath}/content"
+        headerDirPath.deleteAllImages()
+        contentDirPath.deleteAllImages()
     }
 
     private fun startPicTask(coroutineScope: CoroutineScope) {
@@ -183,7 +186,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                 result.movies?.forEachIndexed { index, homeItem ->
 
                     val destPath =
-                        "${"header".getBasePath()}/header_${(homeItem?.icon as String).getFileNameFromUrl()}"
+                        "${"header".getBasePath()}/header_${homeItem?.name}_${index}_${(homeItem?.icon as String).getFileNameFromUrl()}"
 
                     if (!File(destPath).exists()) {
 
@@ -207,7 +210,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
                     homeItem.datas?.forEachIndexed { position, it ->
                         val destContentPath =
-                            "${"content".getBasePath()}/content_${(it?.imageUrl as String).getFileNameFromUrl()}"
+                            "${"content".getBasePath()}/content_${homeItem.name}_${position}_${(it?.imageUrl as String).getFileNameFromUrl()}"
                         var isDownload = false
                         when (homeItem.name) {
                             "Youtube", "Disney+", "Hulu", "Prime video" -> {
