@@ -12,7 +12,7 @@ import com.soya.launcher.callback.SelectedCallback;
 
 import org.jetbrains.annotations.NotNull;
 
-public class MyFrameLayout extends FrameLayout {
+public class MyFrameLayout extends ShapeFrameLayout {
     private SelectedCallback callback;
 
     public MyFrameLayout(@NonNull Context context) {

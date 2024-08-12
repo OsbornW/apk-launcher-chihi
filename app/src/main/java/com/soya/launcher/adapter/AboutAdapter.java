@@ -11,10 +11,8 @@ import androidx.leanback.widget.Presenter;
 
 import com.soya.launcher.R;
 import com.soya.launcher.bean.AboutItem;
-import com.soya.launcher.bean.SettingItem;
 import com.soya.launcher.callback.SelectedCallback;
 import com.soya.launcher.view.MyFrameLayout;
-import com.soya.launcher.view.MyFrameShapeLayout;
 
 public class AboutAdapter extends Presenter {
 
@@ -46,7 +44,7 @@ public class AboutAdapter extends Presenter {
     }
 
     public class Holder extends ViewHolder {
-        private final MyFrameShapeLayout mRootView;
+        private final MyFrameLayout mRootView;
         private final ImageView mIconView;
         private final TextView mTitleView;
         private final TextView mDescView;
@@ -54,7 +52,7 @@ public class AboutAdapter extends Presenter {
 
         public Holder(View view) {
             super(view);
-            mRootView = (MyFrameShapeLayout) view;
+            mRootView = (MyFrameLayout) view;
             mIconView = view.findViewById(R.id.icon);
             mTitleView = view.findViewById(R.id.title);
             mDescView = view.findViewById(R.id.desc);
