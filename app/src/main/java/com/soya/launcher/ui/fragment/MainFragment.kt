@@ -560,10 +560,14 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mTestView = view.findViewById(R.id.test)
         mNotifyRecycler = view.findViewById(R.id.notify_recycler)
         mHdmiView = view.findViewById(R.id.hdmi)
-        val rlSetting = view.findViewById<RelativeLayout>(R.id.rl_setting)
-        val rlWifi = view.findViewById<RelativeLayout>(R.id.rl_wifi)
         mGradientView = view.findViewById(R.id.gradient)
         rlAD = view.findViewById(R.id.rl_ad)
+
+        val rlSetting = view.findViewById<RelativeLayout>(R.id.rl_setting)
+        val rlWifi = view.findViewById<RelativeLayout>(R.id.rl_wifi)
+        val projection = view.findViewById<RelativeLayout>(R.id.projection)
+        val hdml = view.findViewById<RelativeLayout>(R.id.hdml)
+
 
 
             mNotifyRecycler?.isVisible = false
@@ -572,6 +576,17 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     rlSetting.isVisible = b
                 }
             }
+
+        mGradientView?.let {
+            it.setOnFocusChangeListener { view, b ->
+                projection.isVisible = b
+            }
+        }
+        mHdmiView?.let {
+            it.setOnFocusChangeListener { view, b ->
+                hdml.isVisible = b
+            }
+        }
 
             mWifiView?.let {
                 it.setOnFocusChangeListener { view, b ->
