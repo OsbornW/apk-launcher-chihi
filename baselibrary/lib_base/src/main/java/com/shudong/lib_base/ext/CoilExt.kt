@@ -79,6 +79,16 @@ fun ImageView.loadFileRadius(path: String?, size: Int = 10) {
         transformations(RoundedCornersTransformation(ViewUtils.dpToPx(appContext, size)))
     }
 }
+
+fun ImageView.loadFileRadius1(path: File, size: Int = 10) {
+    this.load(path) {
+        scaleType = ImageView.ScaleType.FIT_XY
+        crossfade(true)
+        //placeholder(defaultPic).error(defaultPic)
+        transformations(RoundedCornersTransformation(ViewUtils.dpToPx(appContext, size)))
+    }
+}
+
 /*fun ImageView.loadRadius(file:File) {
     this.load(file){
         transformations(RoundedCornersTransformation(

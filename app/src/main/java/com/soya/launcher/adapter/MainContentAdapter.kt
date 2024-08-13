@@ -12,13 +12,18 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.loadFileRadius1
+import com.shudong.lib_base.ext.loadRadius
 import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.R
 import com.soya.launcher.bean.Data
+import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.cache.AppCache
+import com.soya.launcher.ext.loadImageWithGlide
 import com.soya.launcher.h27002.getDrawableByName
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.GlideUtils
@@ -94,22 +99,34 @@ class MainContentAdapter(
 
 
                     if(!image.toString().contains("http")){
-                        "当前加载的缓存是1：：：${item.imageName}".e("zengyue1")
                         mIV.setImageDrawable(context.getDrawableByName(image.toString()))
                     }else{
                         val cacheFile = AppCache.homeData.dataList.get(image)?.let { File(it) }
                         if (cacheFile?.exists()==true&&AppCache.isAllDownload) {
-                            "当前加载的缓存是2：：：${item.imageName}".e("zengyue1")
 
                             // 使用缓存的 Drawable
-                            GlideUtils.bind(context, mIV, cacheFile)
+                            //mIV.loadFileRadius1(cacheFile)
+                            mIV.loadImageWithGlide(cacheFile){
+                                // 删除本地缓存文件
+                                if (cacheFile.exists()) {
+                                    cacheFile.delete()
+                                }
+
+                                val cacheList = AppCache.homeData.dataList
+                                // 从 map 中删除对应的条目
+                                cacheList.remove(item.imageUrl)
+                                AppCache.homeData = HomeDataList(cacheList)
+
+                                if(!item.imageName.isNullOrEmpty()){
+
+                                    val drawable = context.getDrawableByName(item.imageName)
+                                    mIV.setImageDrawable(drawable)
+                                }
+                            }
                         } else {
                             // 轮询直到有缓存 Drawable
 
-                            "当前加载的缓存是3：：：${item.imageName}".e("zengyue1")
-
                             if(!item.imageName.isNullOrEmpty()){
-                                "当前加载的缓存是4：：：${item.imageName}".e("zengyue1")
 
                                 val drawable = context.getDrawableByName(item.imageName)
                                 mIV.setImageDrawable(drawable)

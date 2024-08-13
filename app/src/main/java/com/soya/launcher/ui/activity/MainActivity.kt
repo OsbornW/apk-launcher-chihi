@@ -195,26 +195,40 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                         val destPath =
                             "${"header".getBasePath()}/header_${homeItem?.name}_${index}_${(homeItem?.icon as String).getFileNameFromUrl()}"
 
-                        if (!File(destPath).exists()) {
-                            val filePathCache = AppCache.homeData.dataList
-                            filePathCache[homeItem.icon] = destPath
-                            AppCache.homeData = HomeDataList(filePathCache)
-                            "当前要下载的图片Header是====${homeItem.icon}".e("zengyue1")
-                            (homeItem.icon).downloadPic(lifecycleScope, destPath,
-                                downloadComplete = { _, path ->
+                        var isDownloadHeader = false
+                        when (homeItem.name) {
 
-                                    if (compareSizes(result) && !isHandleUpdateList) {
-                                        AppCache.isAllDownload = true
-                                        sendLiveEventData(UPDATE_HOME_LIST, true)
-                                        isHandleUpdateList = true
-                                    }
-
-                                },
-                                downloadError = {
-                                     "当前图片Header下载错误是====${it}".e("zengyue1")
-                                }
-                            )
+                            "Google play", "media center" -> {
+                                isDownloadHeader = false
+                            }
+                            else->{
+                                isDownloadHeader = true
+                            }
                         }
+
+                        isDownloadHeader.yes {
+                            if (!File(destPath).exists()) {
+                                val filePathCache = AppCache.homeData.dataList
+                                filePathCache[homeItem.icon] = destPath
+                                AppCache.homeData = HomeDataList(filePathCache)
+                                "当前要下载的图片Header是====${homeItem.icon}".e("zengyue1")
+                                (homeItem.icon).downloadPic(lifecycleScope, destPath,
+                                    downloadComplete = { _, path ->
+
+                                        if (compareSizes(result) && !isHandleUpdateList) {
+                                            AppCache.isAllDownload = true
+                                            sendLiveEventData(UPDATE_HOME_LIST, true)
+                                            isHandleUpdateList = true
+                                        }
+
+                                    },
+                                    downloadError = {
+                                        "当前图片Header下载错误是====${it}".e("zengyue1")
+                                    }
+                                )
+                            }
+                        }
+
 
 
                         homeItem.datas?.forEachIndexed { position, it ->
@@ -224,6 +238,9 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                             when (homeItem.name) {
                                 "Youtube", "Disney+", "Hulu", "Prime video" -> {
                                     isDownload = position < 8
+                                }
+                                "Google play","media center"->{
+                                    isDownload = false
                                 }
 
                                 else -> {

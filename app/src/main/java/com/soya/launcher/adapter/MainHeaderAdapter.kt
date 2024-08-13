@@ -17,9 +17,11 @@ import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.global.AppCacheBase
 import com.shudong.lib_base.global.AppCacheBase.drawableCache
 import com.soya.launcher.R
+import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.ext.bindImageView
+import com.soya.launcher.ext.loadImageWithGlide
 import com.soya.launcher.h27002.getDrawableByName
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.GlideUtils
@@ -94,18 +96,28 @@ class MainHeaderAdapter(
                     if(!item.icon.toString().contains("http")){
                         mIV.setImageDrawable(context.getDrawableByName(item.icon.toString()))
                     }else{
-                        for ((key,value) in AppCache.homeData.dataList){
-                            "当前的Key：：$key::::$value".e("zengyue2")
-                        }
+
                         val cacheFile = AppCache.homeData.dataList.get(item.icon)?.let { File(it) }
                         if (cacheFile?.exists()==true&&AppCache.isAllDownload) {
                             // 使用缓存的 Drawable
-                            "走的缓存${AppCache.homeData.dataList.get(item.icon)}".e("zengyue2")
-                            //mIV.setImageDrawable(cachedDrawable);
-                            GlideUtils.bind(context, mIV, cacheFile)
+                            mIV.loadImageWithGlide(cacheFile){
+                                // 删除本地缓存文件
+                                if (cacheFile.exists()) {
+                                    cacheFile.delete()
+                                }
+
+                                val cacheList = AppCache.homeData.dataList
+                                // 从 map 中删除对应的条目
+                                cacheList.remove(item.icon)
+                                AppCache.homeData = HomeDataList(cacheList)
+
+                                if(item.iconName!=null && item.iconName.isNotEmpty()){
+                                    mIV.setImageDrawable(context.getDrawableByName(item.iconName.toString()))
+                                }
+                            }
                         } else {
                             // 轮询直到有缓存 Drawable
-                            "走的轮询缓存".e("zengyue2")
+                            "走的轮询缓存".e("zengyue3")
                             if(item.iconName!=null && item.iconName.isNotEmpty()){
                                 mIV.setImageDrawable(context.getDrawableByName(item.iconName.toString()))
                             }

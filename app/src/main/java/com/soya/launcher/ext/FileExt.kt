@@ -70,6 +70,12 @@ fun HomeInfoDto.getTotalSize(): Int {
     val moviesSize = this.movies?.size ?: 0
     totalSize += moviesSize
 
+    this.movies?.forEach {
+        if(it?.name in listOf("Google play","media center")){
+            --totalSize
+        }
+    }
+
     // 计算 datas 列表的总大小
     this.movies?.forEach { movy ->
         val name = movy?.name
@@ -77,6 +83,8 @@ fun HomeInfoDto.getTotalSize(): Int {
             if (name in listOf("Youtube", "Disney+", "Hulu", "Prime video")) {
                 // 如果 name 匹配指定值，则只计算前 8 个元素
                 dataList.take(8).size
+            }else if(name in listOf("Google play","media center")){
+                0
             } else {
                 // 否则计算整个列表的大小
                 dataList.size
