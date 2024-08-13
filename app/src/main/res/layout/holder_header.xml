@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.soya.launcher.view.MyCardViewHouse xmlns:android="http://schemas.android.com/apk/res/android"
+<com.soya.launcher.view.MyCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/holder_header_root_radius"
     app:cardBackgroundColor="@color/solid_style_2"
@@ -31,4 +31,4 @@
         android:background="@drawable/light_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/holder_header_title_height"/>
-</com.soya.launcher.view.MyCardViewHouse>
+</com.soya.launcher.view.MyCardView>
