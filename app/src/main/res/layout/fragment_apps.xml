@@ -19,17 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <include layout="@layout/include_title"/>
-            <com.soya.launcher.view.NoDragVerticalGridView
+            <androidx.leanback.widget.VerticalGridView
                 android:id="@+id/content"
-                android:clipToOutline="false"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:paddingTop="@dimen/fragment_apps_cotent_padding_left"
-                android:paddingBottom="@dimen/fragment_apps_cotent_padding_left"
-                android:paddingLeft="@dimen/fragment_apps_cotent_padding_left"
-                android:paddingRight="@dimen/fragment_apps_cotent_padding_right"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"/>
+
+
         </LinearLayout>
     </FrameLayout>
 </com.google.android.material.appbar.AppBarLayout>

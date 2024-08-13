@@ -5,28 +5,44 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ApplicationInfo
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
+import com.drake.brv.utils.grid
+import com.drake.brv.utils.linear
+import com.drake.brv.utils.models
+import com.drake.brv.utils.setup
+import com.shudong.lib_base.ext.clickNoRepeat
+import com.shudong.lib_base.ext.no
 import com.soya.launcher.R
 import com.soya.launcher.adapter.AppListAdapter
+import com.soya.launcher.config.Config
+import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.dialog.AppDialog
 import com.soya.launcher.utils.AndroidSystem
+import com.soya.launcher.utils.isSysApp
+import com.soya.launcher.view.AppLayout
+import com.soya.launcher.view.MyCardView
+import com.soya.launcher.view.MyFrameLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AppsFragment : AbsFragment() {
-    private var mContentGrid: VerticalGridView? = null
+    lateinit var mContentGrid: VerticalGridView
     private var mTitleView: TextView? = null
 
     private var receiver: InnerReceiver? = null
 
-    private var mAppItemAdapter: AppListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,26 +74,68 @@ class AppsFragment : AbsFragment() {
         mContentGrid = view.findViewById(R.id.content)
         mTitleView = view.findViewById(R.id.title)
 
+        mContentGrid.grid(4).setup {
+            addType<ApplicationInfo>(R.layout.holder_app_2)
+            onBind {
+
+                val bean = _data as ApplicationInfo
+                val mIV = findView<ImageView>(R.id.image)
+                val mTitle = findView<TextView>(R.id.title)
+                val mIVSmall = findView<ImageView>(R.id.image_small)
+               val mAppLayout = findView<AppLayout>(R.id.root)
+               val cardView = findView<MyCardView>(R.id.card)
+
+                val pm = context.packageManager
+                val banner: Drawable? = null
+                if (banner != null) {
+                    mIV.setImageDrawable(banner)
+                } else {
+                    mIVSmall.setImageDrawable(bean.loadIcon(pm))
+                }
+                if (Config.COMPANY == 4 && bean.packageName == "com.mediatek.wwtv.tvcenter") {
+                    mTitle.text = "HDMI"
+                } else {
+                    mTitle.text = bean.loadLabel(pm)
+                }
+                mIV.visibility = if (banner == null) View.GONE else View.VISIBLE
+                mIVSmall.visibility = if (banner == null) View.VISIBLE else View.GONE
+
+                itemView.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                    itemView.isSelected = hasFocus
+                    val animation = AnimationUtils.loadAnimation(
+                        context, if (hasFocus) R.anim.zoom_in_middle else R.anim.zoom_out_middle
+                    )
+                    itemView.startAnimation(animation)
+                    animation.fillAfter = true
+                }
+
+                cardView.clickNoRepeat {
+                    AndroidSystem.openPackageName(activity, bean.packageName)
+                }
+
+                mAppLayout.setListener(AppLayout.EventListener { keyCode, event ->
+                    if ( event.keyCode == KeyEvent.KEYCODE_MENU) {
+                        isSysApp(bean.packageName).no {
+                            //点击了菜单
+                            menu(bean)
+                        }
+                        return@EventListener false
+                    }
+                    true
+                })
+
+
+            }
+        }.models = arrayListOf()
+
         mTitleView?.text = getString(R.string.apps)
-        mAppItemAdapter = AppListAdapter(
-            requireContext(),
-            layoutInflater,
-            ArrayList(),
-            R.layout.holder_app_2,
-            newAppListCallback()
-        )
     }
 
-    override fun initBind(view: View, inflater: LayoutInflater) {
+    /*override fun initBind(view: View, inflater: LayoutInflater) {
         super.initBind(view, inflater)
-        mContentGrid!!.adapter = mAppItemAdapter
         fillApps()
-    }
+    }*/
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requestFocus(mContentGrid)
-    }
 
     override fun getWallpaperView(): Int {
         return R.id.wallpaper
@@ -93,29 +151,20 @@ class AppsFragment : AbsFragment() {
                 setContent(list)
             }
         }
-        //setContent(AndroidSystem.getUserApps(activity))
     }
 
     private fun setContent(list: List<ApplicationInfo>) {
-        mContentGrid!!.setNumColumns(4)
-        mAppItemAdapter!!.replace(list)
-        requestFocus(mContentGrid)
-    }
-
-    private fun newAppListCallback(): AppListAdapter.Callback {
-        return object : AppListAdapter.Callback {
-            override fun onSelect(selected: Boolean) {
-            }
-
-            override fun onClick(bean: ApplicationInfo) {
-                AndroidSystem.openPackageName(activity, bean.packageName)
-            }
-
-            override fun onMenuClick(bean: ApplicationInfo) {
-                menu(bean)
-            }
+        val filteredList = list.toMutableList()?.let { product.filterRepeatApps(it) }?:list
+        mContentGrid.models = filteredList
+        mContentGrid.apply {
+            postDelayed({
+                requestFocus()
+                layoutManager?.findViewByPosition(0)?.requestFocus()
+            },800)
         }
+        //requestFocus(mContentGrid)
     }
+
 
     private fun menu(bean: ApplicationInfo) {
         val dialog = AppDialog.newInstance(bean)

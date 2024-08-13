@@ -571,7 +571,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
 
 
-            mNotifyRecycler?.isVisible = false
+           // mNotifyRecycler?.isVisible = false
             mSettingView?.let {
                 it.setOnFocusChangeListener { view, b ->
                     rlSetting.isVisible = b
@@ -932,12 +932,14 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 mWifiView!!.setImageResource(if (isNetworkAvailable) R.drawable.baseline_wifi_100 else R.drawable.baseline_wifi_off_100)
             }*/
             if (Config.COMPANY == 3) {
+
                 val notifies: MutableList<Notify> = ArrayList()
                 if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
                 val deviceHashMap =
                     (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
 
                 val isInsertUDisk = requireActivity().isUDisk()
+                //"是否存在U盘$isInsertUDisk".e("zengyue3")
                 isInsertUDisk.yes {
                     notifies.add(Notify(R.drawable.baseline_usb_100))
                 }
@@ -951,10 +953,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 )
 
                 val isInsertSDCard = requireActivity().isSDCard()
+                //"是否存在SD卡$isInsertSDCard".e("zengyue3")
                 isInsertSDCard.yes {
                     notifies.add(Notify(R.drawable.baseline_sd_storage_100))
                 }
-                /* for (volume in storageManager.storageVolumes) {
+                 /*for (volume in storageManager.storageVolumes) {
                          if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
                  }*/
                 mNotifyAdapter!!.replace(notifies)
