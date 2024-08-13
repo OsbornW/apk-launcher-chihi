@@ -932,9 +932,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 mWifiView!!.setImageResource(if (isNetworkAvailable) R.drawable.baseline_wifi_100 else R.drawable.baseline_wifi_off_100)
             }*/
             if (Config.COMPANY == 3) {
-
                 val notifies: MutableList<Notify> = ArrayList()
-                "进入页面${notifies}".e("OGLH")
                 if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
                 val deviceHashMap =
                     (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
@@ -955,7 +953,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 val isInsertSDCard = requireActivity().isSDCard()
                 isInsertSDCard.yes {
                     notifies.add(Notify(R.drawable.baseline_sd_storage_100))
-                    "进入页面${notifies.add(Notify(R.drawable.baseline_sd_storage_100))}".e("SDK")
                 }
                 /* for (volume in storageManager.storageVolumes) {
                          if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
@@ -1562,7 +1559,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     JsonReader(FileReader(path)),
                     HomeInfoDto::class.java
                 )
-
+                if(compareSizes(result)){
                     val header = fillData(result)
                     header.addAll(items)
                     addProduct5TypeItem(header)
@@ -1571,7 +1568,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     if (BuildConfig.FLAVOR == "hongxin_H27002") {
                         requestFocus(mHeaderGrid, 500)
                     }
-
+                }else{
+                    "走了defalut".e("zengyue1")
+                    setDefault()
+                }
 
             } else {
                 setDefault()
@@ -1774,18 +1774,19 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         isConnectFirst = true
                         return
                     }
-                    "当前的数据是==${call.request().url}".e("zengyue1")
+                    "当前的数据是==${call.request().url}"
                     PreferencesUtils.setProperty(
                         Atts.LAST_UPDATE_HOME_TIME,
                         System.currentTimeMillis()
                     )
+
                     Gson().toJson(result).exportToJson("Home.json")
                     if (!isPicDownload) {
                         lifecycleScope.launch {
                             if (result.data.reg_id != AppCache.reqId) {
                                 withContext(Dispatchers.IO) {
                                     deleteAllPic()
-                                    "开始下载图片:${AppCache.reqId}::::${result.data?.reg_id}".e("zengyue1")
+                                    "开始下载图片:${AppCache.reqId}::::${result.data?.reg_id}"
                                     startPicTask(this)
                                 }
                                 AppCache.reqId = result.data?.reg_id ?: 0

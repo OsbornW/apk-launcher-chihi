@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import java.io.File
 import android.util.Log
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.e
 import com.soya.launcher.bean.HomeInfoDto
 import java.io.IOException
 
@@ -108,5 +109,7 @@ fun compareSizes(homeInfo: HomeInfoDto): Boolean {
     val actualSize = headerImageCount + contentImageCount
 
     // 比较计算得到的大小与目录下图片的总数量
+    "走了defalut2:::$expectedSize::::$actualSize".e("zengyue1")
+
     return expectedSize == actualSize
 }

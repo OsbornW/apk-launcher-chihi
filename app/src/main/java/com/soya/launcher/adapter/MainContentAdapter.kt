@@ -97,12 +97,8 @@ class MainContentAdapter(
                         "当前加载的缓存是1：：：${item.imageName}".e("zengyue1")
                         mIV.setImageDrawable(context.getDrawableByName(image.toString()))
                     }else{
-                        for ((key, value) in  AppCache.homeData.dataList) {
-                            "当前MapKey是：：：${key}:::${value}".e("zengyue1")
-                        }
-
-                        val cacheFile = AppCache.homeData.dataList.get(image as String)
-                        if (cacheFile != null&&AppCache.isAllDownload&& File(cacheFile).exists()) {
+                        val cacheFile = AppCache.homeData.dataList.get(image)?.let { File(it) }
+                        if (cacheFile?.exists()==true&&AppCache.isAllDownload) {
                             "当前加载的缓存是2：：：${item.imageName}".e("zengyue1")
 
                             // 使用缓存的 Drawable
@@ -119,7 +115,9 @@ class MainContentAdapter(
                                 mIV.setImageDrawable(drawable)
                             }
 
-                            startPollingForCache(mIV, image)
+                            if (image != null) {
+                                startPollingForCache(mIV, image)
+                            }
                         }
                     }
 
