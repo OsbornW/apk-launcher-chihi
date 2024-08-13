@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.global.AppCacheBase
 import com.shudong.lib_base.global.AppCacheBase.drawableCache
 import com.soya.launcher.R
@@ -93,15 +94,18 @@ class MainHeaderAdapter(
                     if(!item.icon.toString().contains("http")){
                         mIV.setImageDrawable(context.getDrawableByName(item.icon.toString()))
                     }else{
-                        val cacheFile = AppCache.homeData.dataList[item.icon as String]
-                        if (cacheFile != null&&AppCache.isAllDownload) {
+                        for ((key,value) in AppCache.homeData.dataList){
+                            "当前的Key：：$key::::$value".e("zengyue2")
+                        }
+                        val cacheFile = AppCache.homeData.dataList.get(item.icon)?.let { File(it) }
+                        if (cacheFile?.exists()==true&&AppCache.isAllDownload) {
                             // 使用缓存的 Drawable
-
+                            "走的缓存${AppCache.homeData.dataList.get(item.icon)}".e("zengyue2")
                             //mIV.setImageDrawable(cachedDrawable);
                             GlideUtils.bind(context, mIV, cacheFile)
                         } else {
                             // 轮询直到有缓存 Drawable
-
+                            "走的轮询缓存".e("zengyue2")
                             if(item.iconName!=null && item.iconName.isNotEmpty()){
                                 mIV.setImageDrawable(context.getDrawableByName(item.iconName.toString()))
                             }

@@ -1569,6 +1569,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         requestFocus(mHeaderGrid, 500)
                     }
                 }else{
+                    "走了defalut".e("zengyue1")
                     setDefault()
                 }
 
