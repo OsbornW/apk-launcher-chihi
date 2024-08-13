@@ -188,15 +188,16 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                     result.movies?.forEachIndexed { index, homeItem ->
 
                         val destPath =
-                            "${"header".getBasePath()}/header_${homeItem?.name}_${index}_${(homeItem?.icon as String).getFileNameFromUrl()}"
+                            "${"header".getBasePath()}/header_${homeItem?.name?.toTrim()}_${index}_${(homeItem?.icon as String).getFileNameFromUrl()}"
 
                         if (!File(destPath).exists()) {
+                            val filePathCache = AppCache.homeData.dataList
+                            filePathCache[homeItem.icon] = path
+                            AppCache.homeData = HomeDataList(filePathCache)
                             //"当前要下载的图片Header是====${homeItem.icon}".e("zengyue1")
                             (homeItem.icon).downloadPic(lifecycleScope, destPath,
                                 downloadComplete = { _, path ->
-                                    val filePathCache = AppCache.homeData.dataList
-                                    filePathCache[homeItem.icon] = path
-                                    AppCache.homeData = HomeDataList(filePathCache)
+                                    "下载成功====${path}".e("zengyue2")
                                     if (compareSizes(result) && !isHandleUpdateList) {
                                         AppCache.isAllDownload = true
                                         sendLiveEventData(UPDATE_HOME_LIST, true)
@@ -205,7 +206,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
                                 },
                                 downloadError = {
-                                    // "当前图片Header下载错误是====${it}".e("zengyue1")
+                                     //"当前图片Header下载错误是====${it}".e("zengyue1")
                                 }
                             )
                         }
@@ -229,13 +230,12 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                             isDownload.yes {
                                 if (!File(destContentPath).exists()) {
                                     // "当前要下载的图片Content是====${it.imageUrl}".e("zengyue1")
-
+                                    val filePathCache = AppCache.homeData.dataList
+                                    filePathCache[it.imageUrl] = path
+                                    AppCache.homeData = HomeDataList(filePathCache)
                                     (it.imageUrl).downloadPic(lifecycleScope, destContentPath,
                                         downloadComplete = { _, path ->
-
-                                            val filePathCache = AppCache.homeData.dataList
-                                            filePathCache[it.imageUrl] = path
-                                            AppCache.homeData = HomeDataList(filePathCache)
+                                            "下载成功====${path}".e("zengyue2")
                                             if (compareSizes(result) && !isHandleUpdateList) {
                                                 AppCache.isAllDownload = true
                                                 sendLiveEventData(UPDATE_HOME_LIST, true)
@@ -245,7 +245,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
                                         },
                                         downloadError = {
-                                            // "当前图片Content下载错误是====${it}".e("zengyue1")
+                                           //  "当前图片Content下载错误是====${it}".e("zengyue1")
 
                                         }
                                     )

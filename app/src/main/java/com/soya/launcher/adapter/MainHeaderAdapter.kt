@@ -94,7 +94,7 @@ class MainHeaderAdapter(
                         mIV.setImageDrawable(context.getDrawableByName(item.icon.toString()))
                     }else{
                         val cacheFile = AppCache.homeData.dataList[item.icon as String]
-                        if (cacheFile != null&&AppCache.isAllDownload) {
+                        if (cacheFile != null&&AppCache.isAllDownload&& File(cacheFile).exists()) {
                             // 使用缓存的 Drawable
 
                             //mIV.setImageDrawable(cachedDrawable);
