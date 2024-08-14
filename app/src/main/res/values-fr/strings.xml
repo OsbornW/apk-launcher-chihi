@@ -161,6 +161,16 @@
     <string name="saved">Sauvegardé</string>
     <string name="disconnect_net">Déconnecter</string>
     <string name="ethernet">Ethernet est connecté, impossible d\'utiliser le Wi-Fi.</string>
-
+    <string name="available_updates">Mises à jour disponibles</string>
+    <string name="No_prompt_yet">Pas d\'indice pour le moment</string>
+    <string name="Cancell">Annulation</string>
+    <string name="Finish">Terminé</string>
+    <string name="Installation_Complete">Installation terminée</string>
+    <string name="Installation_failed">L\'installation a échoué</string>
+    <string name="Installation_Errors">Erreur d\'installation</string>
+    <string name="In_preparation">En préparation</string>
+    <string name="download">Télécharger% d%</string>
+    <string name="Download_failed">Le téléchargement a échoué</string>
+    <string name="update1">Mise à jour</string>
 
 </resources>

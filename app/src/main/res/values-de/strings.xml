@@ -162,5 +162,15 @@
     <string name="disconnect_net">Trennen</string>
     <string name="ethernet">Ethernet ist verbunden, WLAN kann nicht verwendet werden</string>
 
-
+    <string name="available_updates">Verfügbare Updates</string>
+    <string name="No_prompt_yet">Keine Aufforderung im Moment</string>
+    <string name="Cancell">Abbrechen</string>
+    <string name="Finish">komplett</string>
+    <string name="Installation_Complete">Installation abgeschlossen</string>
+    <string name="Installation_failed">Installation fehlgeschlagen</string>
+    <string name="Installation_Errors">Installationsfehler</string>
+    <string name="In_preparation">In Vorbereitung</string>
+    <string name="download">Download% d%%</string>
+    <string name="Download_failed">Download fehlgeschlagen</string>
+    <string name="update1">zu aktualisieren</string>
 </resources>

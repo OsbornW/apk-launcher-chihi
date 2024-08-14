@@ -161,4 +161,15 @@
     <string name="saved">Uloženo</string>
     <string name="disconnect_net">Odpojit</string>
 
+    <string name="available_updates">Dostupné aktualizace</string>
+    <string name="No_prompt_yet">Teď se nevyzývám</string>
+    <string name="Cancell">zrušit</string>
+    <string name="Finish">kompletní</string>
+    <string name="Installation_Complete">instalace je dokončena</string>
+    <string name="Installation_failed">Instalace selhala</string>
+    <string name="Installation_Errors">chyba instalace</string>
+    <string name="In_preparation">V přípravě</string>
+    <string name="download">Stáhnout% d%%</string>
+    <string name="Download_failed">Stahování selhalo</string>
+    <string name="update1">aktualizovat</string>
 </resources>

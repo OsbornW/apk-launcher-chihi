@@ -160,5 +160,15 @@
     <string name="done">teljes</string>
     <string name="saved">Mentve</string>
     <string name="disconnect_net">Kapcsolat leválasztása</string>
-
+    <string name="available_updates">Rendelkezésre álló frissítések</string>
+    <string name="No_prompt_yet">Most nem kértem.</string>
+    <string name="Cancell">törlés</string>
+    <string name="Finish">teljes</string>
+    <string name="Installation_Complete">a telepítés befejeződött</string>
+    <string name="Installation_failed">Telepítés sikertelen</string>
+    <string name="Installation_Errors">telepítési hiba</string>
+    <string name="In_preparation">Előkészítés alatt</string>
+    <string name="download">Letöltés% d%</string>
+    <string name="Download_failed">Letöltés sikertelen</string>
+    <string name="update1">frissítés</string>
 </resources>

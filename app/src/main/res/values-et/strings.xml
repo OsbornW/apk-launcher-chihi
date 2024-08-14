@@ -161,4 +161,15 @@
     <string name="saved">Salvestatud</string>
     <string name="disconnect_net">Katkesta ühendus</string>
 
+    <string name="available_updates">Saadaolevad uuendused</string>
+    <string name="No_prompt_yet">Praegu ei küsi</string>
+    <string name="Cancell">tühista</string>
+    <string name="Finish">lõpetatud</string>
+    <string name="Installation_Complete">paigaldus on lõpetatud</string>
+    <string name="Installation_failed">Paigaldamine nurjus</string>
+    <string name="Installation_Errors">paigaldusviga</string>
+    <string name="In_preparation">Ettevalmistamisel</string>
+    <string name="download">Allalaadimine% d%%</string>
+    <string name="Download_failed">Allalaadimine nurjus</string>
+    <string name="update1">uuendada</string>
 </resources>

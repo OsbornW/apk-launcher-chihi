@@ -62,16 +62,17 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                     llRoot.clickNoRepeat {
                         llRoot.isClickable = false
                         pbUpdate.setTextColor(R.color.color_669966.colorValue())
-                        pbUpdate.setProgressText("准备中")
+                        pbUpdate.setProgressText(getString(R.string.In_preparation))
                         dto.url.downloadApk(lifecycleScope, dto.packageName,
                             process = {
-                                pbUpdate.setProgressText("下载$it%")
+                                val progressText = getString(R.string.download, it)
+                                pbUpdate.setProgressText(progressText)
                                 pbUpdate.setProgress(it.toFloat())
                             },
                             downloadError = {
                                 llRoot.isClickable = true
                                 pbUpdate.setTextColor(com.shudong.lib_res.R.color.red.colorValue())
-                                pbUpdate.setProgressText("下载失败")
+                                pbUpdate.setProgressText(getString(R.string.Download_failed))
                                 pbUpdate.reset()
 
                             },
@@ -146,16 +147,16 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                 val result = destPath.silentInstallWithMutex(pbUpdate)
                 if (result) {
                     pbUpdate.setTextColor(com.shudong.lib_res.R.color.black.colorValue())
-                    pbUpdate.setProgressText("安装完成")
+                    pbUpdate.setProgressText(getString(R.string.Installation_Complete))
                 } else {
                     pbUpdate.setTextColor(com.shudong.lib_res.R.color.red.colorValue())
-                    pbUpdate.setProgressText("安装失败")
+                    pbUpdate.setProgressText(getString(R.string.Installation_failed))
                     llRoot.isClickable = true
                 }
                 callback(result)
             } catch (e: Exception) {
                 pbUpdate.setTextColor(com.shudong.lib_res.R.color.red.colorValue())
-                pbUpdate.setProgressText("安装错误")
+                pbUpdate.setProgressText(getString(R.string.Installation_Errors))
                 llRoot.isClickable = true
                 callback(false)
             }
