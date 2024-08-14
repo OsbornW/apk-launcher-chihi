@@ -46,10 +46,6 @@ class AppLayoutHouse @JvmOverloads constructor(
         return super.onTouchEvent(event)
     }
 
-    override fun performClick(): Boolean {
-        // 在这里实现点击事件的处理逻辑
-        return super.performClick()
-    }
 }
 
 

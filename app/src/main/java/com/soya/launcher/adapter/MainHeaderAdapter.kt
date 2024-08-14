@@ -117,7 +117,7 @@ class MainHeaderAdapter(
                             }
                         } else {
                             // 轮询直到有缓存 Drawable
-                            "走的轮询缓存".e("zengyue3")
+
                             if(item.iconName!=null && item.iconName.isNotEmpty()){
                                 mIV.setImageDrawable(context.getDrawableByName(item.iconName.toString()))
                             }

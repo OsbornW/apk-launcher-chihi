@@ -939,7 +939,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
 
                 val isInsertUDisk = requireActivity().isUDisk()
-                //"是否存在U盘$isInsertUDisk".e("zengyue3")
+
                 isInsertUDisk.yes {
                     notifies.add(Notify(R.drawable.baseline_usb_100))
                 }
@@ -953,7 +953,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 )
 
                 val isInsertSDCard = requireActivity().isSDCard()
-                //"是否存在SD卡$isInsertSDCard".e("zengyue3")
+
                 isInsertSDCard.yes {
                     notifies.add(Notify(R.drawable.baseline_sd_storage_100))
                 }
@@ -1301,7 +1301,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private fun work(flag: String, bean: TypeItem) {
         uiHandler!!.postDelayed({
             if (flag == uuid) {
-                "当前的Name是：${bean.name}====${bean.iconName}::::${bean.type}".e("zengyue1")
+
                 selectWork(bean)
             }
         }, 220)
@@ -1572,7 +1572,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         requestFocus(mHeaderGrid, 500)
                     }
                 }else{
-                    "走了defalut".e("zengyue1")
+
                     setDefault()
                 }
 

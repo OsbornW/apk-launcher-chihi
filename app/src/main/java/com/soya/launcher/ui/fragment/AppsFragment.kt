@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.drake.brv.utils.grid
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.models
+import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.no
@@ -83,7 +84,6 @@ class AppsFragment : AbsFragment() {
                 val mTitle = findView<TextView>(R.id.title)
                 val mIVSmall = findView<ImageView>(R.id.image_small)
                val mAppLayout = findView<AppLayout>(R.id.root)
-               val cardView = findView<MyCardView>(R.id.card)
 
                 val pm = context.packageManager
                 val banner: Drawable? = null
@@ -109,7 +109,7 @@ class AppsFragment : AbsFragment() {
                     animation.fillAfter = true
                 }
 
-                cardView.clickNoRepeat {
+                itemView.clickNoRepeat {
                     AndroidSystem.openPackageName(activity, bean.packageName)
                 }
 
@@ -154,14 +154,17 @@ class AppsFragment : AbsFragment() {
     }
 
     private fun setContent(list: List<ApplicationInfo>) {
-        val filteredList = list.toMutableList()?.let { product.filterRepeatApps(it) }?:list
-        mContentGrid.models = filteredList
-        mContentGrid.apply {
-            postDelayed({
-                requestFocus()
-                layoutManager?.findViewByPosition(0)?.requestFocus()
-            },800)
+        val filteredList = list.toMutableList().let { product.filterRepeatApps(it) } ?:list
+        if(filteredList.size!=mContentGrid.mutable.size){
+            mContentGrid.models = filteredList
+            mContentGrid.apply {
+                postDelayed({
+                    requestFocus()
+                    layoutManager?.findViewByPosition(0)?.requestFocus()
+                },800)
+            }
         }
+
         //requestFocus(mContentGrid)
     }
 

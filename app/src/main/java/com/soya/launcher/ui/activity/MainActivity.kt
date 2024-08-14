@@ -165,7 +165,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
     private fun startPicTask(coroutineScope: CoroutineScope) {
         coroutineScope.launch(Dispatchers.IO) {
             while (true) {
-                "执行了任务".e("zengyue1")
+
                 checkPicDownload(coroutineScope)
                 delay(15000)
 
@@ -184,11 +184,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                     HomeInfoDto::class.java
                 )
 
-                "执行了任务1${compareSizes(result)}".e("zengyue1")
+
 
                 // val size = result.movies?.size
                 if(!compareSizes(result)){
-                    "执行了任务2".e("zengyue1")
+
 
                     result.movies?.forEachIndexed { index, homeItem ->
 
@@ -211,7 +211,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                                 val filePathCache = AppCache.homeData.dataList
                                 filePathCache[homeItem.icon] = destPath
                                 AppCache.homeData = HomeDataList(filePathCache)
-                                "当前要下载的图片Header是====${homeItem.icon}".e("zengyue1")
+
                                 (homeItem.icon).downloadPic(lifecycleScope, destPath,
                                     downloadComplete = { _, path ->
 
@@ -223,7 +223,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
                                     },
                                     downloadError = {
-                                        "当前图片Header下载错误是====${it}".e("zengyue1")
+
                                     }
                                 )
                             }
@@ -251,7 +251,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
                             isDownload.yes {
                                 if (!File(destContentPath).exists()) {
-                                     "当前要下载的图片Content是====${it.imageUrl}".e("zengyue1")
+
                                     val filePathCache = AppCache.homeData.dataList
                                     filePathCache[it.imageUrl] = destContentPath
                                     AppCache.homeData = HomeDataList(filePathCache)
@@ -269,7 +269,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
                                         },
                                         downloadError = {
-                                             "当前图片Content下载错误是====${it}".e("zengyue1")
+
 
                                         }
                                     )
