@@ -1045,7 +1045,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         }
 
                         Projector.TYPE_PROJECTOR_MODE -> {
-                            startKtxActivity<InstallModeActivity>()
                             when {
                                 isH6() -> {
                                     startKtxActivity<InstallModeActivity>()
