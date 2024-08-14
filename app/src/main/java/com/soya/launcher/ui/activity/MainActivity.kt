@@ -126,9 +126,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
             if (isRefresh) {
                 if ((dto.reqId ?: 0) != AppCache.reqId) {
+                    "启动了协程1".e("zengyue")
                     startCoroutineScope(dto)
                 }
             } else {
+                "启动了协程2".e("zengyue")
                 startCoroutineScope(dto)
 
             }
@@ -147,6 +149,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                     }
 
                     AppCache.reqId = dto.reqId ?: 0
+                    "启动了定时器".e("zengyue")
                     startPicTask(this)
                 }
 
@@ -166,6 +169,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
         coroutineScope.launch(Dispatchers.IO) {
             while (true) {
 
+                "开始计时器".e("zengyue")
                 checkPicDownload(coroutineScope)
                 delay(15000)
 
@@ -177,6 +181,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
     private var isHandleUpdateList = false
     private fun checkPicDownload(coroutineScope: CoroutineScope) {
         coroutineScope.launch(Dispatchers.IO) {
+            "检测图片下载情况".e("zengyue")
             val path = FilePathMangaer.getJsonPath(this@MainActivity) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeInfoDto>(
@@ -191,7 +196,21 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
 
                     result.movies?.forEachIndexed { index, homeItem ->
+                        when (homeItem?.name) {
+                            "Youtube", "Disney+", "Hulu", "Prime video" -> {
+                                "头数量：${result.movies.size}::当前的子数量是====8".e("zengyue")
 
+                            }
+
+                            "Google play", "media center" -> {
+                                "头数量：${result.movies.size}::当前的子数量是====0".e("zengyue")
+
+                            }
+                            else->{
+                                "头数量：${result.movies.size}::当前的子数量是====${homeItem?.datas?.size}".e("zengyue")
+
+                            }
+                        }
                         val destPath =
                             "${"header".getBasePath()}/header_${homeItem?.name}_${index}_${(homeItem?.icon as String).getFileNameFromUrl()}"
 

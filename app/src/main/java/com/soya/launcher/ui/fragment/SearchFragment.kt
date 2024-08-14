@@ -41,6 +41,7 @@ import com.soya.launcher.ui.dialog.KeyboardDialog.Companion.newInstance
 import com.soya.launcher.ui.dialog.ToastDialog
 import com.soya.launcher.utils.AndroidSystem
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -101,19 +102,23 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
     }
 
+    // 声明一个全局变量来持有协程作业
+    private var debounceJob: Job? = null
     override fun initBefore(view: View, inflater: LayoutInflater) {
         super.initBefore(view, inflater)
         mDivSearch!!.setOnClickListener(this)
         mEditView!!.addTextChangedListener(object : TextWatcherAdapter() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
 
-                if (TextUtils.isEmpty(s)) return
-                lifecycleScope.launch {
-                    //delay(200)
+                // 取消之前的防抖动任务
+                debounceJob?.cancel()
 
+                // 启动一个新的防抖动任务
+                debounceJob = lifecycleScope.launch {
+                    delay(800)
+                    if (!s.isNullOrEmpty()) {
                         search()
-
-
+                    }
                 }
 
             }
@@ -133,7 +138,6 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
             fillAppStore()
         }
-
 
 
     }
@@ -156,7 +160,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
         val list: MutableList<DivSearch<*>?> = ArrayList()
 
         lifecycleScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 store = DivSearch(1, getString(R.string.app_store), ArrayList<Any>(), 0)
                 list.add(store)
 
@@ -200,37 +204,42 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
 
             withContext(Dispatchers.IO) {
-                call = HttpRequest.getAppList(object : AppServiceRequest.Callback<AppListResponse?> {
-                    override fun onCallback(call: Call<*>?, status: Int, result: AppListResponse?) {
-                        val request = call?.request()
+                call =
+                    HttpRequest.getAppList(object : AppServiceRequest.Callback<AppListResponse?> {
+                        override fun onCallback(
+                            call: Call<*>?,
+                            status: Int,
+                            result: AppListResponse?
+                        ) {
+                            val request = call?.request()
                             // 打印请求方法和URL
 
-                              // 打印 @FieldMap 参数信息
-                        if (request?.method == "POST") {
-                            val requestBody = request.body
-                            if (requestBody is FormBody) {
-                                for (i in 0 until requestBody.size) {
+                            // 打印 @FieldMap 参数信息
+                            if (request?.method == "POST") {
+                                val requestBody = request.body
+                                if (requestBody is FormBody) {
+                                    for (i in 0 until requestBody.size) {
 
+                                    }
                                 }
+                            }
+
+                            if (!isAdded || call?.isCanceled == true || store == null) return
+                            if (result?.result == null || result.result.appList == null || result.result.appList.isEmpty()) {
+                                store?.state = 1
+                                lifecycleScope.launch { mAdapter!!.sync(store) }
+
+                            } else {
+
+                                store?.list?.addAll(result.result.appList)
+                                store?.state = 2
+                                lifecycleScope.launch { mAdapter!!.sync(store) }
+
                             }
                         }
 
-                        if (!isAdded || call?.isCanceled == true || store == null) return
-                        if (result?.result == null || result.result.appList == null || result.result.appList.isEmpty()) {
-                            store?.state = 1
-                            lifecycleScope.launch { mAdapter!!.sync(store) }
 
-                        } else {
-
-                            store?.list?.addAll(result.result.appList)
-                            store?.state = 2
-                            lifecycleScope.launch { mAdapter!!.sync(store) }
-
-                        }
-                    }
-
-
-                }, Config.USER_ID, null, null, searchText, 1, 50)
+                    }, Config.USER_ID, null, null, searchText, 1, 50)
 
             }
 
@@ -240,8 +249,6 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
                 mAdapter!!.replace(list)
             }
-
-
 
 
         }
@@ -269,15 +276,20 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
     private fun fillAppStore() {
         lifecycleScope.launch {
-           // delay(200)
+            // delay(200)
             withContext(Dispatchers.IO) {
 
                 if (App.APP_SEARCH_STORE_ITEMS.isEmpty()) {
                     val emptys: MutableList<AppItem> = ArrayList()
                     for (i in 0..9) emptys.add(AppItem())
                     setStoreContent(emptys)
-                    appCall = HttpRequest.getAppList(object : AppServiceRequest.Callback<AppListResponse?> {
-                        override fun onCallback(call: Call<*>?, status: Int, result: AppListResponse?) {
+                    appCall = HttpRequest.getAppList(object :
+                        AppServiceRequest.Callback<AppListResponse?> {
+                        override fun onCallback(
+                            call: Call<*>?,
+                            status: Int,
+                            result: AppListResponse?
+                        ) {
                             if (!isAdded || call?.isCanceled == true || result == null || result.result == null || result.result.appList == null || result.result.appList.isEmpty()) return
 
                             App.APP_SEARCH_STORE_ITEMS.addAll(result.result.appList)
@@ -338,7 +350,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
         }
 
     override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
-        search()
+        //search()
         return false
     }
 
@@ -357,8 +369,8 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
         if (!TextUtils.isEmpty(text)) {
             searchText = text
             isRepeatExcute().no {
-                if(searchText?.endsWith(" ")==false) {
-                    println("chenhao"+ searchText!!.length)
+                if (searchText?.endsWith(" ") == false) {
+                    println("chenhao" + searchText!!.length)
                     replace()
                 }
             }

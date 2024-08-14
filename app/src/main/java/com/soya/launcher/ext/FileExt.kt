@@ -62,6 +62,38 @@ fun String.getBasePath():String{
     return folderPath
 }
 
+/*fun HomeInfoDto.getTotalSize(): Int {
+    var totalSize = 0
+
+    // 计算 datas 列表的大小
+    this.movies?.forEach { movy ->
+        val name = movy?.name
+        val datasSize = movy?.datas?.let { dataList ->
+            if (name in listOf("Youtube", "Disney+", "Hulu", "Prime video")) {
+                // 如果 name 匹配指定值，则只计算前 8 个元素
+                dataList.take(8).size
+            } else if (name in listOf("Google play", "media center")) {
+                // 特定的 movies 名称不计算 datas 大小
+                0
+            } else {
+                // 否则计算整个列表的大小
+                dataList.size
+            }
+        } ?: 0
+
+        // 打印调试信息
+        Log.d("Debug", "Movie: $name, Data Size: $datasSize")
+
+        totalSize += datasSize
+    }
+
+    // 打印最终计算结果
+    Log.d("Debug", "Total Size: $totalSize")
+
+    return totalSize
+}*/
+
+
 fun HomeInfoDto.getTotalSize(): Int {
     // 初始化总大小为0
     var totalSize = 0
@@ -117,7 +149,7 @@ fun compareSizes(homeInfo: HomeInfoDto): Boolean {
     val actualSize = headerImageCount + contentImageCount
 
     // 比较计算得到的大小与目录下图片的总数量
-
+    "计算出来的大小:::$expectedSize::::$actualSize".e("zengyue")
 
     return expectedSize == actualSize
 }
