@@ -1,8 +1,10 @@
 package com.soya.launcher.ext
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -100,6 +102,45 @@ fun getUpdateList(): Boolean {
     // 更新缓存
     AppCache.updateInfo = filteredUpdateApps.jsonToString()
     return filteredUpdateApps.isNotEmpty()
+}
+
+
+/**
+ * 对 [MutableList] 的 [ApplicationInfo] 按照安装时间进行排序，最新安装的应用在前面。
+ */
+fun MutableList<ApplicationInfo>.sortByInstallTime() {
+    val pm = appContext.packageManager
+
+    this.sortWith { o1, o2 ->
+        val installTime1 = getInstallTime(pm, o1)
+        val installTime2 = getInstallTime(pm, o2)
+        installTime2.compareTo(installTime1) // 最新的应用在前面
+    }
+}
+
+/**
+ * 获取应用的安装时间
+ */
+private fun getInstallTime(pm: PackageManager, appInfo: ApplicationInfo): Long {
+    return try {
+        val packageInfo = pm.getPackageInfo(appInfo.packageName, 0)
+        packageInfo.firstInstallTime
+    } catch (e: PackageManager.NameNotFoundException) {
+        // 如果获取失败，返回一个默认值，这里使用 Long.MIN_VALUE
+        Long.MIN_VALUE
+    }
+}
+
+/**
+ * 获取指定应用在排序后集合中的索引位置
+ * 如果找不到对应的索引，返回0
+ */
+fun MutableList<ApplicationInfo>.getIndexAfterSorting(targetAppInfo: ApplicationInfo): Int {
+    // 先进行排序
+    this.sortByInstallTime()
+
+    // 获取目标应用的信息在排序后集合中的索引位置
+    return this.indexOfFirst { it.packageName == targetAppInfo.packageName }.takeIf { it >= 0 } ?: 0
 }
 
 

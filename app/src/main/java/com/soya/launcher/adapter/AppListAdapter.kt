@@ -17,6 +17,8 @@ import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.config.Config
+import com.soya.launcher.ext.getIndexAfterSorting
+import com.soya.launcher.ext.sortByInstallTime
 import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.isSysApp
 import com.soya.launcher.view.AppLayout
@@ -77,8 +79,11 @@ class AppListAdapter(
                 missingInNew.forEach { missingPackageName ->
                     val newItem = list.find { it.packageName == missingPackageName }
                     if (newItem != null) {
-
-                        dataList.add(newItem)
+                        var tempList = mutableListOf<ApplicationInfo>()
+                        tempList.addAll(dataList)
+                        tempList.add(newItem)
+                        val sortIndex = tempList.getIndexAfterSorting(newItem)
+                        dataList.add(sortIndex,newItem)
                         notifyItemInserted(dataList.indexOf(newItem))
                     }
                 }
