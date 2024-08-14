@@ -63,7 +63,7 @@
         android:layout_height="@dimen/qb_px_25"
         app:radius="@dimen/qb_px_12"
         android:id="@+id/pb_update"
-        app:defaultText="更新"
+        app:defaultText="@string/update1"
         app:bgcolor="#F2F2F7"
         app:borderWidth="@dimen/qb_px_1"
         app:textColor="#669966"

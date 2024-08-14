@@ -161,4 +161,15 @@
     <string name="saved">Сохранено</string>
     <string name="disconnect_net">Отключить соединение</string>
 
+    <string name="available_updates">Доступные обновления</string>
+    <string name="No_prompt_yet">Пока нет.</string>
+    <string name="Cancell">Отменить</string>
+    <string name="Finish">Завершено</string>
+    <string name="Installation_Complete">Установка завершена</string>
+    <string name="Installation_failed">Ошибка установки</string>
+    <string name="Installation_Errors">Ошибка установки</string>
+    <string name="In_preparation">Готово.</string>
+    <string name="download">Скачать% d%%</string>
+    <string name="Download_failed">Ошибка загрузки</string>
+    <string name="update1">Обновление</string>
 </resources>

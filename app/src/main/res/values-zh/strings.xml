@@ -169,5 +169,17 @@
     <string name="disconnect_net">断开连接</string>
     <string name="ethernet">以太网已连接，无法使用WiFi</string>
 
+    <string name="available_updates">可用更新</string>
+    <string name="No_prompt_yet">暂不提示</string>
+    <string name="Cancell">取消</string>
+    <string name="Finish">完成</string>
+    <string name="Installation_Complete">安装完成</string>
+    <string name="Installation_failed">安装失败</string>
+    <string name="Installation_Errors">安装错误</string>
+    <string name="In_preparation">准备中</string>
+    <string name="download">下载 %d%%</string>
+    <string name="Download_failed">下载失败</string>
+    <string name="update1">更新</string>
+
 
 </resources>

@@ -161,4 +161,15 @@
     <string name="saved">Guardado</string>
     <string name="disconnect_net">Desconexión</string>
 
+    <string name="available_updates">Actualizaciones disponibles</string>
+    <string name="No_prompt_yet">No se le pide por el momento</string>
+    <string name="Cancell">Cancelación</string>
+    <string name="Finish">Completado</string>
+    <string name="Installation_Complete">Se completa la instalación</string>
+    <string name="Installation_failed">Instalación fallida</string>
+    <string name="Installation_Errors">Error de instalación</string>
+    <string name="In_preparation">En preparación</string>
+    <string name="download">Descargar% d%%</string>
+    <string name="Download_failed">Falló la descarga</string>
+    <string name="update1">Actualización</string>
 </resources>

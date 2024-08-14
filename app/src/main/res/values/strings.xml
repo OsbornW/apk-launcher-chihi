@@ -167,4 +167,18 @@
 
     <string name="disconnect_net">Disconnect</string>
     <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
+
+    <string name="available_updates">Available updates</string>
+    <string name="No_prompt_yet">No prompt yet</string>
+    <string name="Cancell">Cancel </string>
+    <string name="Finish">Finish</string>
+
+    <string name="Installation_Complete">Installation_Complete</string>
+    <string name="Installation_failed">Installation_failed</string>
+    <string name="Installation_Errors">Installation_Errors</string>
+    <string name="In_preparation">In_preparation</string>
+    <string name="download">download %d%%</string>
+    <string name="Download_failed">Download_failed</string>
+    <string name="update1">update</string>
+
 </resources>

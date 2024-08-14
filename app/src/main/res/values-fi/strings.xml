@@ -160,5 +160,15 @@
     <string name="done">täydellinen</string>
     <string name="saved">Tallennettu</string>
     <string name="disconnect_net">Katkaise yhteys</string>
-
+    <string name="available_updates">Saatavilla olevat päivitykset</string>
+    <string name="No_prompt_yet">En kysy nyt</string>
+    <string name="Cancell">peruuta</string>
+    <string name="Finish">täydellinen</string>
+    <string name="Installation_Complete">asennus on valmis</string>
+    <string name="Installation_failed">Asennus epäonnistui</string>
+    <string name="Installation_Errors">asennusvirhe</string>
+    <string name="In_preparation">Valmistelussa</string>
+    <string name="download">Lataa% d%%</string>
+    <string name="Download_failed">Lataus epäonnistui</string>
+    <string name="update1">päivitettävä</string>
 </resources>

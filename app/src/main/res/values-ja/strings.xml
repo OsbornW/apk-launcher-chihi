@@ -161,6 +161,16 @@
     <string name="saved">保存済み</string>
     <string name="disconnect_net">接続解除</string>
     <string name="ethernet">イーサネットが接続されているため、Wi- Fiを使用できません</string>
-
+    <string name="available_updates">使用可能な更新</string>
+    <string name="No_prompt_yet">プロンプトを保留中</string>
+    <string name="Cancell">キャンセル</string>
+    <string name="Finish">完了</string>
+    <string name="Installation_Complete">インストール完了</string>
+    <string name="Installation_failed">インストールに失敗しました</string>
+    <string name="Installation_Errors">インストールエラー</string>
+    <string name="In_preparation">準備中</string>
+    <string name="download">ダウンロード%d%%</string>
+    <string name="Download_failed">ダウンロードに失敗しました</string>
+    <string name="update1">更新</string>
 
 </resources>
