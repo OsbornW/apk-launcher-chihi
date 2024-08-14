@@ -129,6 +129,7 @@ import com.soya.launcher.utils.showLoadingViewDismiss
 import com.soya.launcher.view.ImageViewHouse
 import com.soya.launcher.view.NoDragVerticalGridView
 import com.soya.launcher.net.viewmodel.HomeViewModel
+import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.UpdateAppsActivity
 import com.soya.launcher.utils.getFileNameFromUrl
 import com.thumbsupec.lib_base.toast.ToastUtils
@@ -206,7 +207,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         uiHandler = Handler()
         receiver = InnerReceiver()
         wallpaperReceiver = WallpaperReceiver()
-        useApps.addAll(AndroidSystem.getUserApps2(requireContext()))
+        val infos = AndroidSystem.getUserApps2(requireContext())
+        val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+
+        useApps.addAll(filteredList)
 
         this.obseverLiveEvent<Boolean>("refreshdefault") {
             lifecycleScope.launch {
@@ -221,7 +225,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
         }
 
-        obseverLiveEvent<Boolean>(UPDATE_HOME_LIST){
+        obseverLiveEvent<Boolean>(UPDATE_HOME_LIST) {
             val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeInfoDto>(
@@ -380,7 +384,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     var isLoadedList = false
     private fun checkPicDownload(coroutineScope: CoroutineScope) {
-        coroutineScope.launch (Dispatchers.IO){
+        coroutineScope.launch(Dispatchers.IO) {
             val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeResponse>(
@@ -504,10 +508,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         startLoopTime()
 
         var infos = AndroidSystem.getUserApps2(activity)
-        if (infos.size != mAppListAdapter?.getDataList()?.size) {
-            mAppListAdapter?.refresh(infos)
+        val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+
+        if (filteredList.size != mAppListAdapter?.getDataList()?.size) {
+            mAppListAdapter?.refresh(filteredList)
             useApps.clear()
-            useApps.addAll(infos)
+            useApps.addAll(filteredList)
 
         }
 
@@ -570,13 +576,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         val hdml = view.findViewById<RelativeLayout>(R.id.hdml)
 
 
-
-           // mNotifyRecycler?.isVisible = false
-            mSettingView?.let {
-                it.setOnFocusChangeListener { view, b ->
-                    rlSetting.isVisible = b
-                }
+        // mNotifyRecycler?.isVisible = false
+        mSettingView?.let {
+            it.setOnFocusChangeListener { view, b ->
+                rlSetting.isVisible = b
             }
+        }
 
         mGradientView?.let {
             it.setOnFocusChangeListener { view, b ->
@@ -589,11 +594,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
         }
 
-            mWifiView?.let {
-                it.setOnFocusChangeListener { view, b ->
-                    rlWifi.isVisible = b
-                }
+        mWifiView?.let {
+            it.setOnFocusChangeListener { view, b ->
+                rlWifi.isVisible = b
             }
+        }
 
 
 
@@ -957,9 +962,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 isInsertSDCard.yes {
                     notifies.add(Notify(R.drawable.baseline_sd_storage_100))
                 }
-                 /*for (volume in storageManager.storageVolumes) {
-                         if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
-                 }*/
+                /*for (volume in storageManager.storageVolumes) {
+                        if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
+                }*/
                 mNotifyAdapter!!.replace(notifies)
 
 
@@ -1480,18 +1485,20 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private fun requestHome() {
         if (isReqHome || isConnectFirst) return
         isReqHome = true
-        sendLiveEventData(REFRESH_HOME,true)
-       // homeCall = HttpRequest.getHomeContents(newMoviceListCallback())
+        sendLiveEventData(REFRESH_HOME, true)
+        // homeCall = HttpRequest.getHomeContents(newMoviceListCallback())
     }
 
     private fun fillApps(replace: Boolean, isAttach: Boolean) {
         if (replace) {
             useApps.clear()
             var infos = AndroidSystem.getUserApps2(activity)
+            val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+
             /*if (infos.size > 8) {
                 infos = infos.subList(0, 8)
             }*/
-            useApps.addAll(infos)
+            useApps.addAll(filteredList)
         }
         if (isAttach) setAppContent(useApps)
     }
@@ -1545,14 +1552,14 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mHorizontalContentGrid!!.visibility = View.VISIBLE
     }
 
-   /* private fun local(filePath: String, direction: Int, columns: Int, layoutId: Int) {
-        val files = AndroidSystem.getAssetsFileNames(activity, filePath)
-        val list: MutableList<Data> = ArrayList(files.size)
-        for (item in files) {
-            list.add(Data(Types.TYPE_UNKNOW, null, "$filePath/$item", Movice.PIC_ASSETS))
-        }
-        setMoviceContent(list, direction, columns, layoutId)
-    }*/
+    /* private fun local(filePath: String, direction: Int, columns: Int, layoutId: Int) {
+         val files = AndroidSystem.getAssetsFileNames(activity, filePath)
+         val list: MutableList<Data> = ArrayList(files.size)
+         for (item in files) {
+             list.add(Data(Types.TYPE_UNKNOW, null, "$filePath/$item", Movice.PIC_ASSETS))
+         }
+         setMoviceContent(list, direction, columns, layoutId)
+     }*/
 
     private fun fillHeader() {
         try {
@@ -1562,7 +1569,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     JsonReader(FileReader(path)),
                     HomeInfoDto::class.java
                 )
-                if(compareSizes(result)){
+                if (compareSizes(result)) {
                     val header = fillData(result)
                     header.addAll(items)
                     addProduct5TypeItem(header)
@@ -1571,7 +1578,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     if (BuildConfig.FLAVOR == "hongxin_H27002") {
                         requestFocus(mHeaderGrid, 500)
                     }
-                }else{
+                } else {
 
                     setDefault()
                 }
@@ -1650,7 +1657,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         val gson = Gson()
         homeItems?.let {
             for (bean in homeItems) {
-                val movices: MutableList<Data> = ArrayList(bean?.datas?.size?:0)
+                val movices: MutableList<Data> = ArrayList(bean?.datas?.size ?: 0)
                 bean?.datas?.let {
                     for (movice in bean.datas) {
                         movice?.picType = Movice.PIC_NETWORD
@@ -1670,7 +1677,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     UUID.randomUUID().leastSignificantBits,
                     Types.TYPE_MOVICE,
                     iconType,
-                    bean?.type?:0
+                    bean?.type ?: 0
                 )
                 item.iconName = bean?.iconName
                 item.data = bean?.packageNames
@@ -1734,7 +1741,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 }
 
 
-
                 var success = false
                 success = if (skip) {
                     AndroidSystem.jumpVideoApp(activity, bean.packageNames, null)
@@ -1742,7 +1748,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     AndroidSystem.jumpVideoApp(activity, bean.packageNames, bean.url)
                 }
                 if (!success) {
-                    toastInstallPKApp(bean.appName?:"", bean.packageNames)
+                    toastInstallPKApp(bean.appName ?: "", bean.packageNames)
                 }
             }
 
@@ -1757,7 +1763,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private fun toastInstallPKApp(name: String, packages: List<PackageName?>?) {
         toastInstallApp(name) { type ->
             if (type == 1) {
-                val pns = arrayOfNulls<String>(packages?.size?:0)
+                val pns = arrayOfNulls<String>(packages?.size ?: 0)
                 for (i in pns.indices) {
                     pns[i] = packages?.get(i)?.packageName
                 }
@@ -1875,8 +1881,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> {
 
                     var infos = AndroidSystem.getUserApps2(activity)
-                    if (infos.size != mAppListAdapter?.getDataList()?.size) {
-                        mAppListAdapter?.refresh(infos)
+                    val filteredList =
+                        infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+                    if (filteredList.size != mAppListAdapter?.getDataList()?.size) {
+                        mAppListAdapter?.refresh(filteredList)
                         useApps.clear()
                         useApps.addAll(mAppListAdapter?.getDataList()!!)
 

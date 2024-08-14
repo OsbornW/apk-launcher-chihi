@@ -154,9 +154,9 @@ class AppsFragment : AbsFragment() {
     }
 
     private fun setContent(list: List<ApplicationInfo>) {
-        val filteredList = list.toMutableList().let { product.filterRepeatApps(it) } ?:list
-        if(filteredList.size!=mContentGrid.mutable.size){
-            mContentGrid.models = filteredList
+       // val filteredList = list.toMutableList().let { product.filterRepeatApps(it) } ?:list
+        if(list.size!=mContentGrid.mutable.size){
+            mContentGrid.models = list
             mContentGrid.apply {
                 postDelayed({
                     requestFocus()
