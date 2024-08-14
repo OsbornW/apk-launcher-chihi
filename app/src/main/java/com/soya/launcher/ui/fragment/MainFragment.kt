@@ -347,7 +347,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             header.addAll(items)
 
             addProduct5TypeItem(header)
-            delay(800)
+            delay(1500)
 
             setHeader(header)
             isConnectFirst = true
@@ -359,7 +359,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             fillMovice(item)
 
 
-            delay(1500)
+            delay(2000)
             mSettingView?.clearFocus()
             //delay(500)
             mHeaderGrid?.requestFocus()
