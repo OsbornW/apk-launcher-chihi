@@ -173,4 +173,6 @@
     <string name="download">다운로드%d%%</string>
     <string name="Download_failed">다운로드 실패</string>
     <string name="update1">업데이트</string>
+    <string name="The_author_of_The_New_York_Times">설치 대기 중</string>
+    <string name="The_author">설치 중</string>
 </resources>

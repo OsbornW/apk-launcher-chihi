@@ -172,4 +172,6 @@
     <string name="download">Allalaadimine% d%%</string>
     <string name="Download_failed">Allalaadimine nurjus</string>
     <string name="update1">uuendada</string>
+    <string name="The_author_of_The_New_York_Times">Paigaldamise ootamine</string>
+    <string name="The_author">Käimasolev paigaldus</string>
 </resources>

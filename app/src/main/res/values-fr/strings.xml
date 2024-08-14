@@ -173,4 +173,7 @@
     <string name="Download_failed">Le téléchargement a échoué</string>
     <string name="update1">Mise à jour</string>
 
+    <string name="The_author_of_The_New_York_Times">En attente d\'installation</string>
+    <string name="The_author">Dans l\'installation</string>
+
 </resources>

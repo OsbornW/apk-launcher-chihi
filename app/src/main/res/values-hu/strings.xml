@@ -171,4 +171,7 @@
     <string name="download">Letöltés% d%</string>
     <string name="Download_failed">Letöltés sikertelen</string>
     <string name="update1">frissítés</string>
+
+    <string name="The_author_of_The_New_York_Times">Telepítésre várva</string>
+    <string name="The_author">A létesítmény folyamatban van</string>
 </resources>

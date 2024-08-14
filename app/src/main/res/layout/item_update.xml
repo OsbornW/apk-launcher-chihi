@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
+        android:layout_marginEnd="16dp"
         android:paddingStart="16dp">
 
         <TextView
@@ -58,16 +59,17 @@
     </LinearLayout>
 
     <com.soya.launcher.view.FlikerProgressBar
-        android:layout_gravity="center_vertical"
-        android:layout_width="@dimen/qb_px_60"
-        android:layout_height="@dimen/qb_px_25"
-        app:radius="@dimen/qb_px_12"
         android:id="@+id/pb_update"
-        app:defaultText="@string/update1"
+        android:layout_width="126dp"
+        android:layout_height="@dimen/qb_px_30"
+        android:layout_gravity="center_vertical"
         app:bgcolor="#F2F2F7"
         app:borderWidth="@dimen/qb_px_1"
-        app:textColor="#669966"
+        app:defaultText="@string/update1"
         app:progressColor="#669966"
-        />
+        app:radius="@dimen/qb_px_12"
+        android:singleLine="false"
+        android:maxLines="2"
+        app:textColor="#669966" />
 
 </com.hjq.shape.layout.ShapeLinearLayout>

@@ -172,4 +172,6 @@
     <string name="download">ดาวน์โหลด%d%%</string>
     <string name="Download_failed">การดาวน์โหลดล้มเหลว</string>
     <string name="update1">อัพเดท</string>
+    <string name="The_author_of_The_New_York_Times">รอการติดตั้ง</string>
+    <string name="The_author">ในการติดตั้ง</string>
 </resources>

@@ -173,4 +173,6 @@
     <string name="download">下載%d%%</string>
     <string name="Download_failed">下載失敗</string>
     <string name="update1">更新</string>
+    <string name="The_author_of_The_New_York_Times">等待安裝</string>
+    <string name="The_author">安裝中</string>
 </resources>

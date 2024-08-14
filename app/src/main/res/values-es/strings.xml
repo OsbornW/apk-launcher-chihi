@@ -172,4 +172,7 @@
     <string name="download">Descargar% d%%</string>
     <string name="Download_failed">Falló la descarga</string>
     <string name="update1">Actualización</string>
+
+    <string name="The_author_of_The_New_York_Times">Esperando la instalación</string>
+    <string name="The_author">En instalación</string>
 </resources>

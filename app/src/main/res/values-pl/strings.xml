@@ -172,5 +172,7 @@
     <string name="download">Pobierz% d%%</string>
     <string name="Download_failed">Pobieranie nie powiodło się</string>
     <string name="update1">do aktualizacji</string>
+    <string name="The_author_of_The_New_York_Times">Czekanie na instalację</string>
+    <string name="The_author">Instalacja w toku</string>
 
 </resources>

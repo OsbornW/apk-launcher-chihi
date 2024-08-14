@@ -171,4 +171,6 @@
     <string name="download">Transferir% d%%</string>
     <string name="Download_failed">A transferência falhou</string>
     <string name="update1">a actualizar</string>
+    <string name="The_author_of_The_New_York_Times">À espera da instalação</string>
+    <string name="The_author">Instalação em curso</string>
 </resources>

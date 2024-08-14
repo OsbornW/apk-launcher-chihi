@@ -172,4 +172,6 @@
     <string name="download">Скачать% d%%</string>
     <string name="Download_failed">Ошибка загрузки</string>
     <string name="update1">Обновление</string>
+    <string name="The_author_of_The_New_York_Times">Ожидание установки</string>
+    <string name="The_author">В процессе установки</string>
 </resources>
