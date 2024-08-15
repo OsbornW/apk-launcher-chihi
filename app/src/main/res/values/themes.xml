@@ -7,10 +7,10 @@
 
 
     <style name="AVLoadingIndicatorView">
-        <item name="minWidth">48dip</item>
-        <item name="maxWidth">48dip</item>
-        <item name="minHeight">48dip</item>
-        <item name="maxHeight">48dip</item>
+        <item name="minWidth">@dimen/qb_px_48</item>
+        <item name="maxWidth">@dimen/qb_px_48</item>
+        <item name="minHeight">@dimen/qb_px_48</item>
+        <item name="maxHeight">@dimen/qb_px_48</item>
         <item name="indicatorName">BallPulseIndicator</item>
     </style>
 
