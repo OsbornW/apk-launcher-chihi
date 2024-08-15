@@ -3,22 +3,37 @@ package com.soya.launcher.ext
 import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
+import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.sendLiveEventDataDelay
+import com.shudong.lib_base.ext.yes
+import com.soya.launcher.BuildConfig
 import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.ui.fragment.WelcomeFragment
 
 fun switchFragment() = run{
 
-    if (PreferencesManager.isGuide() == 0 ) {
-        sendLiveEventDataDelay(IS_MAIN_CANBACK,true,1000)
-        WelcomeFragment.newInstance()
-    } else {
+    BuildConfig.DEBUG.yes {
+        if (PreferencesManager.isGuide() == 0 ) {
+            sendLiveEventDataDelay(IS_MAIN_CANBACK,true,1000)
+            WelcomeFragment.newInstance()
+        } else {
 
-        sendLiveEventDataDelay(IS_MAIN_CANBACK,false,1000)
-        MainFragment.newInstance()
+            sendLiveEventDataDelay(IS_MAIN_CANBACK,false,1000)
+            MainFragment.newInstance()
+        }
+    }.otherwise {
+        if (PreferencesManager.isGuide() == 0 ) {
+            sendLiveEventDataDelay(IS_MAIN_CANBACK,true,1000)
+            WelcomeFragment.newInstance()
+        } else {
+
+            sendLiveEventDataDelay(IS_MAIN_CANBACK,false,1000)
+            MainFragment.newInstance()
+        }
     }
+
 
 
 }

@@ -105,6 +105,14 @@ android {
             keyAlias 'platform'
             keyPassword 'android'
         }
+
+        x88 {
+            storeFile file("platform.keystore")
+            storePassword "platform"
+            keyAlias "platform"
+            keyPassword "platform"
+        }
+
     }
 
     flavorDimensions.add("chihi")
@@ -285,7 +293,9 @@ android {
         }
 
         debug {
-            signingConfig signingConfigs.new_701
+            //signingConfig signingConfigs.new_701
+            signingConfig signingConfigs.x88
+            //signingConfig signingConfigs.debug
         }
 
         //打包应用
