@@ -26,14 +26,14 @@
                 android:padding="@dimen/qb_px_5"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
-                android:layout_width="@dimen/qb_px_146"
-                android:layout_height="@dimen/qb_px_82"/>
+                android:layout_width="@dimen/qb_px_180"
+                android:layout_height="@dimen/qb_px_120"/>
             <FrameLayout
                 android:background="@drawable/light_item"
                 android:orientation="vertical"
                 android:padding="@dimen/qb_px_5"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/qb_px_46">
+                android:layout_height="@dimen/qb_px_60">
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:orientation="vertical"
                     android:layout_gravity="center_vertical"

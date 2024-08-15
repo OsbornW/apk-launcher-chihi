@@ -19,6 +19,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
@@ -132,6 +133,7 @@ import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.UpdateAppsActivity
 import com.soya.launcher.utils.getFileNameFromUrl
+import com.soya.launcher.view.MyCardView
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -195,7 +197,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private var mStoreAdapter: StoreAdapter? = null
     private var requestTime = System.currentTimeMillis()
     private var isExpanded = false
-    lateinit var flList: FrameLayout
+    lateinit var flList: RelativeLayout
 
 
     private val mViewModel: HomeViewModel by viewModels()
@@ -830,9 +832,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     ) {
         var list = list
         if ((list?.size ?: 0) > 4) {
-            flList.height(com.shudong.lib_dimen.R.dimen.qb_px_270.dimenValue())
+            mVerticalContentGrid?.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_10.dimenValue())
+           // flList.height(com.shudong.lib_dimen.R.dimen.qb_px_270.dimenValue())
         } else {
-            flList.height(com.shudong.lib_dimen.R.dimen.qb_px_250.dimenValue())
+            mVerticalContentGrid?.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_40.dimenValue())
+           // flList.height(com.shudong.lib_dimen.R.dimen.qb_px_250.dimenValue())
 
         }
         when (direction) {
@@ -1017,12 +1021,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             onBind {
                 val mIV = findView<ImageView>(R.id.image)
                 val mTitleView = findView<TextView>(R.id.title)
+                val rlRoot = findView<RelativeLayout>(R.id.rl_root)
 
                 val bean = _data as SettingItem
                 mIV.setImageResource(bean.ico)
                 mTitleView.text = bean.name
 
-                itemView.setOnFocusChangeListener { view, b ->
+                rlRoot.setOnFocusChangeListener { view, b ->
                     view.animScale(b, 1.15f)
                     b.yes {
                         mTitleView.isSelected = true
@@ -1032,7 +1037,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     if (b) setExpanded(false)
                 }
 
-                itemView.clickNoRepeat {
+                rlRoot.clickNoRepeat {
                     val bean = _data as SettingItem
                     when (bean.type) {
                         Projector.TYPE_SETTING -> {

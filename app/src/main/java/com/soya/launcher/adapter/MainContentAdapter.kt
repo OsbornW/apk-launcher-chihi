@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -69,6 +70,7 @@ class MainContentAdapter(
         private val mIV: ImageView
         private val tvName: TextView?
         private val tvLoadding: TextView?
+        private val flRoot: FrameLayout?
 
         init {
             view.nextFocusUpId = R.id.header
@@ -76,6 +78,7 @@ class MainContentAdapter(
             mCardView = view as MyFrameLayout
             tvName = view.findViewById(R.id.tv_name)
             tvLoadding = view.findViewById(R.id.tv_loadding)
+            flRoot = view.findViewById(R.id.fl_root)
         }
 
         fun bind(item: Data, position: Int) {
@@ -148,17 +151,18 @@ class MainContentAdapter(
 
                 else -> GlideUtils.bind(context, mIV, R.drawable.transparent)
             }
-            itemView.setOnClickListener(View.OnClickListener {
+            flRoot?.setOnClickListener(View.OnClickListener {
+                "我点击了".e("zengyue1")
                 if (TextUtils.isEmpty(item.url)) return@OnClickListener
                 callback?.onClick(item)
             })
 
-            root.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            flRoot?.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
                 mCardView.isSelected = hasFocus
                 val animation = AnimationUtils.loadAnimation(
                     context, if (hasFocus) R.anim.zoom_in_middle else R.anim.zoom_out_middle
                 )
-                root.startAnimation(animation)
+                flRoot?.startAnimation(animation)
                 animation.fillAfter = true
             }
 

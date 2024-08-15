@@ -6,16 +6,16 @@
     android:layout_marginBottom="@dimen/qb_px_13"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clickable="true"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:clipToOutline="false"
     android:clipToPadding="false"
     android:clipChildren="false"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <com.soya.launcher.view.MyFrameLayout
-
+        android:id="@+id/fl_root"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:foreground="@drawable/bg_app"
         android:clipChildren="false"
         android:clipToPadding="false"
@@ -30,7 +30,7 @@
             app:cardElevation="0dp"
             app:cardUseCompatPadding="false"
             android:layout_gravity="center"
-            android:layout_width="@dimen/qb_px_82"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
                 android:text="@string/loading"
@@ -42,8 +42,8 @@
             <ImageView
                 android:id="@+id/image"
                 android:scaleType="centerCrop"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/qb_px_146"/>
+                android:layout_width="@dimen/qb_px_130"
+                android:layout_height="@dimen/qb_px_220"/>
         </com.soya.launcher.view.MyCardView>
     </com.soya.launcher.view.MyFrameLayout>
 </com.soya.launcher.view.MyFrameLayoutHouse>

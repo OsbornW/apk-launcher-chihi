@@ -22,18 +22,16 @@
             android:layout_height="match_parent">
             <FrameLayout
                 android:background="@color/solid_style_10"
-                android:layout_width="@dimen/qb_px_146"
-                android:layout_height="@dimen/qb_px_82">
+                android:layout_width="@dimen/qb_px_180"
+                android:layout_height="@dimen/qb_px_120">
                 <ImageView
                     android:id="@+id/image"
-                    android:layout_weight="1"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <ImageView
                     android:id="@+id/image_small"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
@@ -43,7 +41,7 @@
             <FrameLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/qb_px_46">
+                android:layout_height="@dimen/qb_px_60">
                 <TextView
                     android:id="@+id/title"
                     android:text="Google play"
