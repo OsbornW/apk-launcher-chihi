@@ -1,5 +1,6 @@
 package com.soya.launcher.ext
 
+import androidx.fragment.app.FragmentActivity
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.sendLiveEventDataDelay
