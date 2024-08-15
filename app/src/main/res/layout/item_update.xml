@@ -70,6 +70,7 @@
         app:radius="@dimen/qb_px_12"
         android:singleLine="false"
         android:maxLines="2"
+        app:textSize="@dimen/qb_px_sp_12"
         app:textColor="#669966" />
 
 </com.hjq.shape.layout.ShapeLinearLayout>

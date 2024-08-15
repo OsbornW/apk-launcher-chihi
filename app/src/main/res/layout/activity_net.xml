@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="Please check your network settings."
             android:textStyle="bold"
-            android:textSize="@dimen/qb_px_16"
+            android:textSize="@dimen/qb_px_sp_16"
             android:layout_marginBottom="@dimen/qb_px_20"
             android:layout_marginTop="@dimen/qb_px_20"
             />
@@ -45,6 +45,7 @@
             android:orientation="horizontal">
 
             <com.hjq.shape.view.ShapeTextView
+                android:textSize="@dimen/qb_px_sp_14"
                 android:nextFocusDown="@id/tv_ok"
                 android:nextFocusForward="@id/tv_ok"
                 android:nextFocusLeft="@id/tv_ok"
@@ -66,6 +67,7 @@
                 />
 
             <com.hjq.shape.view.ShapeTextView
+                android:textSize="@dimen/qb_px_sp_14"
                 android:nextFocusDown="@id/tv_cancle"
                 android:nextFocusForward="@id/tv_cancle"
                 android:nextFocusLeft="@id/tv_cancle"

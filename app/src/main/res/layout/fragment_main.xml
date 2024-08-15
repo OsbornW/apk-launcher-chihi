@@ -31,11 +31,11 @@
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/fragment_main_toolbar_height"
+                android:layout_height="@dimen/qb_px_230"
                 android:background="@android:color/transparent"
                 app:layout_scrollFlags="exitUntilCollapsed|scroll">
                 <androidx.appcompat.widget.Toolbar
-                    android:layout_marginTop="@dimen/fragment_main_header_margin_top"
+                    android:layout_marginTop="@dimen/qb_px_55"
                     android:alpha="0"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
@@ -43,7 +43,7 @@
                     android:background="@android:color/transparent"
                     app:layout_collapseMode="parallax"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/until_collapsed_height"/>
+                    android:layout_height="@dimen/qb_px_70"/>
                 <androidx.leanback.widget.HorizontalGridView
                     android:id="@+id/header"
                     app:layout_collapseMode="parallax"
@@ -52,17 +52,17 @@
                     android:clipToPadding="false"
                     app:focusOutFront="true"
                     app:focusOutEnd="true"
-                    android:paddingTop="@dimen/fragment_main_header_padding_top"
-                    android:paddingBottom="@dimen/fragment_main_header_padding_bottom"
-                    android:layout_marginTop="@dimen/fragment_main_header_margin_top"
+                    android:paddingTop="@dimen/qb_px_12"
+                    android:paddingBottom="@dimen/qb_px_12"
+                    android:layout_marginTop="@dimen/qb_px_56"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <FrameLayout
                     android:id="@+id/div_toolbar"
-                    android:layout_marginLeft="@dimen/fragment_main_opt_margin_left"
-                    android:layout_marginRight="@dimen/fragment_main_opt_margin_right"
+                    android:layout_marginLeft="@dimen/qb_px_27"
+                    android:layout_marginRight="@dimen/qb_px_27"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/fragment_main_opt_height"
+                    android:layout_height="@dimen/qb_px_56"
                     app:layout_collapseMode="pin">
                     <LinearLayout
                         android:layout_gravity="center_vertical"
@@ -77,16 +77,16 @@
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/loop_time"
                                 android:text="08 : 08"
-                                android:textSize="@dimen/fragment_main_opt_time_text_size"
+                                android:textSize="@dimen/qb_px_sp_14"
                                 android:textColor="@color/text_color_style_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/loop_segment"
                                 android:text="AM"
-                                android:textSize="@dimen/fragment_main_opt_segment_test_size"
+                                android:textSize="@dimen/qb_px_10"
                                 android:textColor="@color/text_color_style_1"
-                                android:layout_marginLeft="@dimen/fragment_main_opt_segment_margin_left"
+                                android:layout_marginLeft="@dimen/qb_px_2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -95,11 +95,11 @@
                             android:layout_marginRight="@dimen/fragment_main_opt_cut_margin_right"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/rect_solid_8dp_1"
-                            android:layout_width="@dimen/fragment_main_opt_cut_width"
-                            android:layout_height="@dimen/fragment_main_opt_cut_height"/>
+                            android:layout_width="@dimen/qb_px_2"
+                            android:layout_height="@dimen/qb_px_23"/>
 
                         <RelativeLayout
-                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
+                            android:layout_marginLeft="@dimen/qb_px_12"
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
@@ -108,7 +108,7 @@
 
                         <com.hjq.shape.layout.ShapeRelativeLayout
                             android:id="@+id/rl_setting"
-                            android:visibility="gone"
+                            android:visibility="invisible"
                             android:layout_width="@dimen/qb_px_40"
                             android:layout_height="@dimen/qb_px_40"
                             app:shape_solidColor="#80625356"
@@ -117,65 +117,65 @@
 
                             <com.soya.launcher.view.ImageViewHouse
                                 android:id="@+id/setting"
-                                android:layout_width="@dimen/qb_px_40"
-                                android:layout_height="@dimen/qb_px_40"
+                                android:layout_width="@dimen/qb_px_25"
+                                android:layout_height="@dimen/qb_px_25"
+                                android:layout_centerInParent="true"
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:focusableInTouchMode="true"
-                                android:padding="@dimen/fragment_main_opt_icon_padding"
                                 android:src="@drawable/baseline_settings_100" />
 
                         </RelativeLayout>
 
                         <RelativeLayout
-                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
+                            android:layout_marginLeft="@dimen/qb_px_6"
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
                             <com.hjq.shape.layout.ShapeRelativeLayout
                                 android:id="@+id/projection"
-                                android:visibility="gone"
                                 android:layout_width="@dimen/qb_px_40"
                                 android:layout_height="@dimen/qb_px_40"
-                                app:shape_solidColor="#80625356"
-                                app:shape="oval"/>
+                                android:visibility="invisible"
+                                app:shape="oval"
+                                app:shape_solidColor="#80625356" />
 
-                        <com.soya.launcher.view.ImageViewHouse
-                            android:id="@+id/gradient"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:src="@drawable/baseline_screenshot_monitor_100"
-                            android:padding="@dimen/fragment_main_opt_icon_padding"
-                            android:layout_width="@dimen/fragment_main_opt_icon_width"
-                            android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                            <com.soya.launcher.view.ImageViewHouse
+                                android:layout_centerInParent="true"
+                                android:id="@+id/gradient"
+                                android:layout_width="@dimen/qb_px_20"
+                                android:layout_height="@dimen/qb_px_20"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:src="@drawable/baseline_screenshot_monitor_100" />
 
                         </RelativeLayout>
 
                         <RelativeLayout
-                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
+                            android:layout_marginLeft="@dimen/qb_px_12"
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
                             <com.hjq.shape.layout.ShapeRelativeLayout
                                 android:id="@+id/hdml"
-                                android:visibility="gone"
+                                android:visibility="invisible"
                                 android:layout_width="@dimen/qb_px_40"
                                 android:layout_height="@dimen/qb_px_40"
                                 app:shape_solidColor="#80625356"
                                 app:shape="oval"/>
 
-                        <com.soya.launcher.view.ImageViewHouse
-                            android:id="@+id/hdmi"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:src="@drawable/baseline_settings_input_hdmi_100"
-                            android:padding="@dimen/fragment_main_opt_icon_padding"
-                            android:layout_width="@dimen/fragment_main_opt_icon_width"
-                            android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                            <com.soya.launcher.view.ImageViewHouse
+                                android:layout_centerInParent="true"
+                                android:id="@+id/hdmi"
+                                android:layout_width="@dimen/qb_px_25"
+                                android:layout_height="@dimen/qb_px_25"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:src="@drawable/baseline_settings_input_hdmi_100" />
                         </RelativeLayout>
 
                         <ImageView
@@ -220,8 +220,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <LinearLayout
-                        android:paddingLeft="@dimen/fragment_main_div_search_padding_left"
-                        android:paddingRight="@dimen/fragment_main_div_search_padding_right"
+                        android:paddingLeft="@dimen/qb_px_10"
+                        android:paddingRight="@dimen/qb_px_10"
                         android:layout_gravity="right|center_vertical"
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
@@ -231,23 +231,23 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:paddingLeft="@dimen/fragment_main_opt_search_padding_left"
-                            android:paddingRight="@dimen/fragment_main_opt_search_padding_right"
-                            android:layout_marginRight="@dimen/fragment_main_opt_search_margin_right"
+                            android:paddingLeft="@dimen/qb_px_13"
+                            android:paddingRight="@dimen/qb_px_13"
+                            android:layout_marginRight="@dimen/qb_px_5"
                             android:layout_gravity="center_vertical"
                             android:foreground="@drawable/ripple_style_4"
                             android:background="@drawable/menu_item_4"
                             android:orientation="horizontal"
-                            android:layout_width="@dimen/fragment_main_opt_search_width"
-                            android:layout_height="@dimen/fragment_main_opt_search_height">
+                            android:layout_width="@dimen/qb_px_120"
+                            android:layout_height="@dimen/qb_px_30">
                             <ImageView
                                 android:layout_gravity="center_vertical"
                                 android:src="@drawable/baseline_search_100"
-                                android:layout_width="@dimen/fragment_main_opt_search_icon_width"
-                                android:layout_height="@dimen/fragment_main_opt_search_icon_height"/>
+                                android:layout_width="@dimen/qb_px_14"
+                                android:layout_height="@dimen/qb_px_14"/>
                             <TextView
-                                android:textSize="@dimen/fragment_main_opt_search_text_size"
-                                android:layout_marginLeft="@dimen/fragment_main_opt_search_text_margin_left"
+                                android:textSize="@dimen/qb_px_sp_10"
+                                android:layout_marginLeft="@dimen/qb_px_5"
                                 android:layout_gravity="center_vertical"
                                 android:text="@string/search"
                                 android:textColor="@color/text_color_style_1"
@@ -256,7 +256,7 @@
                         </com.soya.launcher.view.LinearLayoutHouse>
 
                         <RelativeLayout
-                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
+                            android:layout_marginLeft="@dimen/qb_px_6"
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
@@ -265,7 +265,7 @@
 
                         <com.hjq.shape.layout.ShapeRelativeLayout
                             android:id="@+id/rl_wifi"
-                            android:visibility="gone"
+                            android:visibility="invisible"
                             android:layout_width="@dimen/qb_px_40"
                             android:layout_height="@dimen/qb_px_40"
                             app:shape_solidColor="#80625356"
@@ -276,11 +276,11 @@
                             android:layout_gravity="center_vertical"
                             android:clickable="true"
                             android:focusable="true"
+                            android:layout_centerInParent="true"
                             android:focusableInTouchMode="true"
                             android:src="@drawable/baseline_wifi_100"
-                            android:padding="@dimen/fragment_main_opt_icon_padding"
-                            android:layout_width="@dimen/qb_px_40"
-                            android:layout_height="@dimen/qb_px_40"/>
+                            android:layout_width="@dimen/qb_px_25"
+                            android:layout_height="@dimen/qb_px_25"/>
                         </RelativeLayout>
 
                     </LinearLayout>
@@ -292,9 +292,9 @@
                 android:background="@drawable/rect_solid_8dp_alpha_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/fragment_main_div_content_margin_left"
-                android:layout_marginRight="@dimen/fragment_main_div_content_margin_right"
-                android:layout_marginTop="@dimen/fragment_main_div_content_margin_top">
+                android:layout_marginLeft="@dimen/qb_px_10"
+                android:layout_marginRight="@dimen/qb_px_10"
+                android:layout_marginTop="@dimen/qb_px_10">
                 <androidx.leanback.widget.HorizontalGridView
                     app:focusOutFront="true"
                     android:clipToPadding="false"

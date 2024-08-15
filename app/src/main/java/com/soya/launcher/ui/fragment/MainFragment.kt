@@ -579,24 +579,27 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         // mNotifyRecycler?.isVisible = false
         mSettingView?.let {
             it.setOnFocusChangeListener { view, b ->
-                rlSetting.isVisible = b
+                if(b)rlSetting.isVisible = true else rlSetting.visibility = View.INVISIBLE
             }
         }
 
         mGradientView?.let {
             it.setOnFocusChangeListener { view, b ->
-                projection.isVisible = b
+                if(b)projection.isVisible = true else projection.visibility = View.INVISIBLE
+
             }
         }
         mHdmiView?.let {
             it.setOnFocusChangeListener { view, b ->
-                hdml.isVisible = b
+                if(b)hdml.isVisible = true else hdml.visibility = View.INVISIBLE
+
             }
         }
 
         mWifiView?.let {
             it.setOnFocusChangeListener { view, b ->
-                rlWifi.isVisible = b
+                if(b)rlWifi.isVisible = true else rlWifi.visibility = View.INVISIBLE
+
             }
         }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.soya.launcher.view.MyCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/holder_header_root_radius"
+    app:cardCornerRadius="@dimen/qb_px_8"
     app:cardBackgroundColor="@color/solid_style_2"
     app:cardUseCompatPadding="false"
     android:clipChildren="false"
@@ -12,7 +12,7 @@
     android:focusableInTouchMode="true"
     android:layout_gravity="center"
     android:clickable="true"
-    android:layout_margin="@dimen/holder_header_root_margin"
+    android:layout_margin="@dimen/qb_px_8"
     android:layout_width="@dimen/qb_px_200"
     android:layout_height="@dimen/qb_px_180">
     <androidx.appcompat.widget.AppCompatImageView
@@ -24,11 +24,11 @@
         android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/title"
-        android:textSize="@dimen/holder_header_title_text_size"
+        android:textSize="@dimen/qb_px_sp_12"
         android:gravity="center"
         android:textColor="@color/text_selector_color_1"
         android:layout_gravity="bottom"
         android:background="@drawable/light_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/holder_header_title_height"/>
+        android:layout_height="@dimen/qb_px_35"/>
 </com.soya.launcher.view.MyCardView>
