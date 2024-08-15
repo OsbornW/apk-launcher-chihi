@@ -94,8 +94,8 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
             mAdapter = FullSearchAdapter(activity, inflater, ArrayList(), this@SearchFragment)
             mRecommendGrid?.addItemDecoration(
                 HSlideMarginDecoration(
-                    resources.getDimension(R.dimen.margin_decoration_max),
-                    resources.getDimension(R.dimen.margin_decoration_min)
+                    resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
+                    resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)
                 )
             )
         }

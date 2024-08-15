@@ -5,12 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:id="@+id/root"
-        android:layout_margin="@dimen/dialog_wifi_pass_root_margin"
-        app:cardCornerRadius="@dimen/dialog_app_card_corner_radius"
+        android:layout_margin="@dimen/qb_px_16"
+        app:cardCornerRadius="@dimen/qb_px_8"
         app:cardBackgroundColor="@color/transparent"
-        app:cardElevation="@dimen/card_elevation"
+        app:cardElevation="@dimen/qb_px_8"
         android:layout_gravity="center"
-        android:layout_width="@dimen/dialog_app_carld_layout_width"
+        android:layout_width="@dimen/qb_px_300"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/blur"
@@ -23,50 +23,50 @@
             android:layout_height="wrap_content">
             <TextView
                 android:text="@string/edit_wifi_pass"
-                android:textSize="@dimen/dialog_app_title_text_size"
+                android:textSize="@dimen/qb_px_sp_25"
                 android:textColor="@color/text_color_style_1"
                 android:gravity="center"
-                android:layout_marginTop="@dimen/dialog_app_title_margin_top"
+                android:layout_marginTop="@dimen/qb_px_16"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dialog_app_title_height"/>
+                android:layout_height="@dimen/qb_px_45"/>
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dialog_wifi_pass_root_height">
+                android:layout_height="@dimen/qb_px_100">
                 <TextView
                     android:layout_gravity="center"
                     android:id="@+id/edit_pass"
                     android:background="@drawable/menu_item_2"
-                    android:paddingLeft="@dimen/dialog_wifi_pass_edit_pass_padding_left"
-                    android:paddingRight="@dimen/dialog_wifi_pass_edit_pass_padding_right"
+                    android:paddingLeft="@dimen/qb_px_10"
+                    android:paddingRight="@dimen/qb_px_10"
                     android:gravity="center"
-                    android:textSize="@dimen/dialog_wifi_pass_edit_pass_text_size"
+                    android:textSize="@dimen/qb_px_sp_18"
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:textColor="@color/text_color_style_1"
-                    android:layout_marginLeft="@dimen/dialog_wifi_pass_edit_pass_margin_left"
-                    android:layout_marginRight="@dimen/dialog_wifi_pass_edit_pass_margin_right"
+                    android:layout_marginLeft="@dimen/qb_px_16"
+                    android:layout_marginRight="@dimen/qb_px_16"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dialog_wifi_pass_edit_pass_height"/>
+                    android:layout_height="@dimen/qb_px_45"/>
             </FrameLayout>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:padding="@dimen/qb_px_5"
-                android:layout_height="@dimen/qb_px_33">
+                android:padding="@dimen/qb_px_8"
+                android:layout_height="@dimen/qb_px_50">
                 <TextView
                     android:id="@+id/close"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:clickable="true"
                     android:text="@string/close"
-                    android:textSize="@dimen/qb_px_sp_12"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/qb_px_0"
                     android:layout_height="match_parent"/>
                 <TextView
                     android:id="@+id/clean"
@@ -74,12 +74,12 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:clickable="true"
-                    android:textSize="@dimen/qb_px_sp_12"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/qb_px_0"
                     android:layout_height="match_parent"/>
                 <TextView
                     android:id="@+id/confirm"
@@ -87,12 +87,12 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:clickable="true"
-                    android:textSize="@dimen/qb_px_sp_12"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/qb_px_0"
                     android:layout_height="match_parent"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>

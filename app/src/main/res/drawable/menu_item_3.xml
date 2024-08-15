@@ -4,8 +4,8 @@
     <item android:state_focused="true">
         <shape android:shape="rectangle">
             <solid android:color="#59000000" />
-            <stroke android:width="@dimen/menu_item_3_stroke" android:color="@color/solid_style_8" />
-            <corners android:radius="@dimen/menu_item_3_radius"/>
+            <stroke android:width="@dimen/qb_px_2" android:color="@color/solid_style_8" />
+            <corners android:radius="@dimen/qb_px_8"/>
         </shape>
     </item>
 
@@ -13,8 +13,8 @@
     <item>
         <shape android:shape="rectangle">
             <solid android:color="#59000000" />
-            <stroke android:width="@dimen/menu_item_3_stroke" android:color="@color/solid_style_8" />
-            <corners android:radius="@dimen/menu_item_3_radius"/>
+            <stroke android:width="@dimen/qb_px_2" android:color="@color/solid_style_8" />
+            <corners android:radius="@dimen/qb_px_8"/>
         </shape>
     </item>
 

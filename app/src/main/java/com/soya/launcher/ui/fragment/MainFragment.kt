@@ -203,7 +203,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        maxVerticalOffset = resources.getDimension(R.dimen.until_collapsed_height)
+        maxVerticalOffset = resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_60)
         uiHandler = Handler()
         receiver = InnerReceiver()
         wallpaperReceiver = WallpaperReceiver()
@@ -607,14 +607,14 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
         mHorizontalContentGrid?.addItemDecoration(
             HSlideMarginDecoration(
-                resources.getDimension(R.dimen.margin_decoration_max),
-                resources.getDimension(R.dimen.margin_decoration_min)
+                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
+                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)
             )
         )
         mHeaderGrid?.addItemDecoration(
             HSlideMarginDecoration(
-                resources.getDimension(R.dimen.margin_decoration_max),
-                resources.getDimension(R.dimen.margin_decoration_min)
+                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
+                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)
             )
         )
         mHeaderGrid?.pivotY = maxVerticalOffset
@@ -855,7 +855,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 mVerticalContentGrid!!.setNumColumns(columns)
                 activity?.let {
                     mVerticalContentGrid!!.setVerticalSpacing(
-                        it.resources.getDimension(R.dimen.main_page_vertical_spacing).toInt()
+                        it.resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_1).toInt()
                     )
                 }
 

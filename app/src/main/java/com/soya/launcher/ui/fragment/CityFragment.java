@@ -77,7 +77,7 @@ public class CityFragment extends AbsFragment implements TextView.OnEditorAction
         mDivSearch = view.findViewById(R.id.div_search);
         mProgressView = view.findViewById(R.id.progressBar);
 
-        mRecommendGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(R.dimen.margin_decoration_max), getResources().getDimension(R.dimen.margin_decoration_min)));
+        mRecommendGrid.addItemDecoration(new HSlideMarginDecoration(getResources().getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10), getResources().getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)));
     }
 
     @Override

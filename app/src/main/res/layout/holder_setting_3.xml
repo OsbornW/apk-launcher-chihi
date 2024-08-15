@@ -17,8 +17,8 @@
         android:layout_marginRight="@dimen/qb_px_9"
         android:layout_marginTop="@dimen/qb_px_35"
         android:layout_marginBottom="@dimen/qb_px_17"
-        android:layout_width="@dimen/holder_setting_2_root_width"
-        android:layout_height="@dimen/holder_setting_3_root_height">
+        android:layout_width="@dimen/qb_px_120"
+        android:layout_height="@dimen/qb_px_80">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -32,8 +32,8 @@
                     android:layout_gravity="center"
                     android:src="@drawable/baseline_wifi_100"
                     android:scaleType="centerCrop"
-                    android:layout_width="@dimen/holder_setting_3_image_width"
-                    android:layout_height="@dimen/holder_setting_3_image_height"/>
+                    android:layout_width="@dimen/qb_px_120"
+                    android:layout_height="@dimen/qb_px_80"/>
             </FrameLayout>
             <TextView
                 android:id="@+id/title"

@@ -5,11 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:id="@+id/root"
-        app:cardCornerRadius="@dimen/card_elevation"
+        app:cardCornerRadius="@dimen/qb_px_8"
         app:cardBackgroundColor="@color/transparent"
-        app:cardElevation="@dimen/card_elevation"
+        app:cardElevation="@dimen/qb_px_8"
         android:layout_gravity="center"
-        android:layout_width="@dimen/dialog_date_picker_root_width"
+        android:layout_width="@dimen/qb_px_450"
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/bg_dialog"
@@ -23,17 +23,17 @@
             android:layout_height="wrap_content">
             <TextView
                 android:text="@string/date_picker"
-                android:textSize="@dimen/dialog_app_title_text_size"
+                android:textSize="@dimen/qb_px_sp_25"
                 android:visibility="gone"
                 android:textColor="@color/text_color_style_1"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dialog_app_title_height"
+                android:layout_height="@dimen/qb_px_45"
                 android:background="@color/solid_style_4"/>
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:paddingRight="@dimen/dialog_date_picker_content_padding_right"
-                android:layout_marginTop="@dimen/dialog_app_margin_top"
-                android:layout_marginBottom="@dimen/dialog_app_margin_bottom"
+                android:paddingRight="@dimen/qb_px_16"
+                android:layout_marginTop="@dimen/qb_px_26"
+                android:layout_marginBottom="@dimen/qb_px_26"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -44,11 +44,11 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:text="@string/year"
-                        android:textSize="@dimen/dialog_date_picker_text_text_size"
+                        android:textSize="@dimen/qb_px_sp_16"
                         android:layout_gravity="center_vertical"
                         android:gravity="center"
                         android:textColor="@color/text_color_style_1"
-                        android:layout_width="@dimen/dialog_date_picker_text_text_width"
+                        android:layout_width="@dimen/qb_px_100"
                         android:layout_height="wrap_content"/>
                     <androidx.leanback.widget.HorizontalGridView
                         android:id="@+id/year"
@@ -62,11 +62,11 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:text="@string/month"
-                        android:textSize="@dimen/dialog_date_picker_text_text_size"
+                        android:textSize="@dimen/qb_px_sp_16"
                         android:layout_gravity="center_vertical"
                         android:gravity="center"
                         android:textColor="@color/text_color_style_1"
-                        android:layout_width="@dimen/dialog_date_picker_text_text_width"
+                        android:layout_width="@dimen/qb_px_100"
                         android:layout_height="wrap_content"/>
                     <androidx.leanback.widget.HorizontalGridView
                         android:id="@+id/month"
@@ -80,11 +80,11 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:text="@string/day"
-                        android:textSize="@dimen/dialog_date_picker_text_text_size"
+                        android:textSize="@dimen/qb_px_sp_16"
                         android:layout_gravity="center_vertical"
                         android:gravity="center"
                         android:textColor="@color/text_color_style_1"
-                        android:layout_width="@dimen/dialog_date_picker_text_text_width"
+                        android:layout_width="@dimen/qb_px_100"
                         android:layout_height="wrap_content"/>
                     <androidx.leanback.widget.HorizontalGridView
                         android:id="@+id/day"
@@ -96,15 +96,15 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:padding="@dimen/qb_px_5"
-                android:layout_height="@dimen/qb_px_33">
+                android:padding="@dimen/qb_px_8"
+                android:layout_height="@dimen/qb_px_50">
                 <TextView
                     android:id="@+id/cancel"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:clickable="true"
                     android:text="@string/cancel"
-                    android:textSize="@dimen/qb_px_sp_12"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
@@ -117,7 +117,7 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:clickable="true"
-                    android:textSize="@dimen/qb_px_sp_12"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"

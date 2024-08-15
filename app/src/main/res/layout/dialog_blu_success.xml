@@ -7,7 +7,7 @@
         android:id="@+id/root"
         app:cardCornerRadius="@dimen/qb_px_8"
         app:cardBackgroundColor="@color/dialog_background"
-        app:cardElevation="@dimen/card_elevation"
+        app:cardElevation="@dimen/qb_px_8"
         android:layout_margin="@dimen/qb_px_16"
         android:layout_gravity="bottom|right"
         android:layout_width="wrap_content"
