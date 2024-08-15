@@ -24,25 +24,25 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:layout_marginTop="@dimen/fragment_city_search_margin_top"
-                android:layout_marginBottom="@dimen/fragment_city_search_margin_bottom"
+                android:layout_marginTop="@dimen/qb_px_26"
+                android:layout_marginBottom="@dimen/qb_px_16"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/menu_item_2"
                 android:orientation="horizontal"
-                android:layout_width="@dimen/fragment_city_search_width"
-                android:layout_height="@dimen/fragment_city_search_height">
+                android:layout_width="@dimen/qb_px_350"
+                android:layout_height="@dimen/qb_px_40">
                 <ImageView
-                    android:padding="@dimen/fragment_city_search_icon_padding"
+                    android:padding="@dimen/qb_px_4"
                     android:rotation="-270"
-                    android:layout_marginLeft="@dimen/fragment_city_search_icon_margin_left"
+                    android:layout_marginLeft="@dimen/qb_px_10"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/baseline_search_100"
-                    android:layout_width="@dimen/fragment_city_search_icon_width"
-                    android:layout_height="@dimen/fragment_city_search_icon_height"/>
+                    android:layout_width="@dimen/qb_px_35"
+                    android:layout_height="@dimen/qb_px_35"/>
                 <TextView
                     android:id="@+id/edit_query"
                     android:hint="@string/search"
-                    android:textSize="@dimen/fragment_city_search_edit_text_size"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:imeOptions="actionSearch"
                     android:background="@color/transparent"
                     android:gravity="center_vertical"
@@ -50,8 +50,8 @@
                     android:layout_gravity="center_vertical"
                     android:maxLines="1"
                     android:inputType="text"
-                    android:paddingLeft="@dimen/fragment_city_search_edit_pading_left"
-                    android:paddingRight="@dimen/fragment_city_search_edit_pading_right"
+                    android:paddingLeft="@dimen/qb_px_8"
+                    android:paddingRight="@dimen/qb_px_8"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </com.soya.launcher.view.InterceptLinearLayout>
@@ -67,9 +67,9 @@
                     android:clipToPadding="false"
                     android:clipChildren="false"
                     android:clipToOutline="false"
-                    android:paddingBottom="@dimen/fragment_city_content_padding_left"
-                    android:paddingLeft="@dimen/fragment_city_content_padding_left"
-                    android:paddingRight="@dimen/fragment_city_content_padding_right"
+                    android:paddingBottom="@dimen/qb_px_16"
+                    android:paddingLeft="@dimen/qb_px_16"
+                    android:paddingRight="@dimen/qb_px_16"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
@@ -83,25 +83,25 @@
             </FrameLayout>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
-                android:layout_marginBottom="@dimen/fragment_city_recommend_margin_bottom"
-                android:layout_marginLeft="@dimen/fragment_city_recommend_margin_left"
-                android:layout_marginRight="@dimen/fragment_city_recommend_margin_right"
+                android:layout_marginBottom="@dimen/qb_px_16"
+                android:layout_marginLeft="@dimen/qb_px_26"
+                android:layout_marginRight="@dimen/qb_px_26"
                 android:background="@drawable/rect_solid_8dp_alpha_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/recommend_title"
-                    android:layout_marginLeft="@dimen/fragment_city_recommend_title_margin_left"
-                    android:layout_marginTop="@dimen/fragment_city_recommend_title_margin_top"
+                    android:layout_marginLeft="@dimen/qb_px_10"
+                    android:layout_marginTop="@dimen/qb_px_16"
                     android:text="@string/recommend_city"
-                    android:textSize="@dimen/fragment_city_recommend_title_text_size"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:textColor="@color/text_color_style_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <androidx.leanback.widget.HorizontalGridView
                     android:id="@+id/recommend"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/fragment_city_recommend_content_width"/>
+                    android:layout_height="@dimen/qb_px_120"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </FrameLayout>

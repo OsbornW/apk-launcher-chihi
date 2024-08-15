@@ -27,16 +27,16 @@
                 app:focusOutFront="true"
                 app:focusOutEnd="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/fragment_about_content_margin_left"
-                android:layout_marginRight="@dimen/fragment_about_content_margin_right"
-                android:paddingLeft="@dimen/fragment_movice_list_content_padding_left"
-                android:paddingRight="@dimen/fragment_movice_list_content_padding_right"
+                android:layout_marginLeft="@dimen/qb_px_16"
+                android:layout_marginRight="@dimen/qb_px_16"
+                android:paddingLeft="@dimen/qb_px_16"
+                android:paddingRight="@dimen/qb_px_16"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
             <TextView
                 android:text="@string/no_data"
                 android:id="@+id/masked"
-                android:textSize="@dimen/fragment_search_search_edit_text_size"
+                android:textSize="@dimen/qb_px_sp_16"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

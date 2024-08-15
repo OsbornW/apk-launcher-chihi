@@ -48,13 +48,13 @@
             android:background="@drawable/menu_item_3"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:layout_width="@dimen/fragment_gradient_screen_width"
-            android:layout_height="@dimen/fragment_gradient_screen_height">
+            android:layout_width="@dimen/qb_px_400"
+            android:layout_height="@dimen/qb_px_225">
             <androidx.cardview.widget.CardView
                 app:cardBackgroundColor="@color/transparent"
                 app:cardElevation="0dp"
-                app:cardCornerRadius="@dimen/fragment_gradient_content_radius"
-                android:layout_margin="@dimen/fragment_gradient_content_margin"
+                app:cardCornerRadius="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_6"
                 app:cardUseCompatPadding="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -72,23 +72,23 @@
             android:id="@+id/skip_tip"
             android:text="@string/guide_group_gradient_tip_next"
             android:textColor="@color/text_color_style_1"
-            android:layout_marginBottom="@dimen/fragment_guide_group_gradient_text_tip_margin_bottom"
+            android:layout_marginBottom="@dimen/qb_px_36"
             android:lineSpacingExtra="5dp"
             android:gravity="center"
-            android:maxWidth="@dimen/fragment_guide_group_gradient_text_max_width"
-            android:textSize="@dimen/fragment_guide_group_gradient_text_size"
+            android:maxWidth="@dimen/qb_px_490"
+            android:textSize="@dimen/qb_px_sp_17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <FrameLayout
-            android:layout_marginTop="@dimen/fragment_guide_group_gradient_div_opt_margin_top"
+            android:layout_marginTop="@dimen/qb_px_26"
             app:layout_constraintTop_toBottomOf="@id/content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_width="@dimen/fragment_guide_group_gradient_image_width"
+            android:layout_width="@dimen/qb_px_380"
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/manual"
-                android:textSize="@dimen/fragment_set_date_next_text_size"
+                android:textSize="@dimen/qb_px_sp_18"
                 android:textColor="@color/text_color_style_1"
                 android:layout_gravity="left|center_vertical"
                 android:text="@string/manual_text"
@@ -98,11 +98,11 @@
                 android:focusable="true"
                 android:clickable="true"
                 android:background="@drawable/ripple_style_3"
-                android:layout_width="@dimen/fragment_guide_group_gradient_button_width"
-                android:layout_height="@dimen/fragment_set_date_next_height"/>
+                android:layout_width="@dimen/qb_px_130"
+                android:layout_height="@dimen/qb_px_45"/>
             <TextView
                 android:id="@+id/skip"
-                android:textSize="@dimen/fragment_set_date_next_text_size"
+                android:textSize="@dimen/qb_px_sp_18"
                 android:textColor="@color/text_color_style_1"
                 android:layout_gravity="right|center_vertical"
                 android:text="@string/next"
@@ -112,8 +112,8 @@
                 android:focusable="true"
                 android:clickable="true"
                 android:background="@drawable/ripple_style_3"
-                android:layout_width="@dimen/fragment_guide_group_gradient_button_width"
-                android:layout_height="@dimen/fragment_set_date_next_height"/>
+                android:layout_width="@dimen/qb_px_130"
+                android:layout_height="@dimen/qb_px_45"/>
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

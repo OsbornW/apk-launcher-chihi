@@ -21,10 +21,10 @@
         android:layout_height="wrap_content">
         <TextView
             android:text="@string/set_bluetooth_connected"
-            android:textSize="@dimen/fragment_set_language_text_text_size"
+            android:textSize="@dimen/qb_px_sp_36"
             android:textColor="@color/text_color_style_1"
-            android:layout_marginTop="@dimen/fragment_set_language_text_margin_top"
-            android:layout_marginBottom="@dimen/fragment_set_language_text_margin_top"
+            android:layout_marginTop="@dimen/qb_px_26"
+            android:layout_marginBottom="@dimen/qb_px_26"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -38,6 +38,6 @@
             app:focusOutEnd="true"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/fragment_set_language_content_height"/>
+            android:layout_height="@dimen/qb_px_250"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </FrameLayout>

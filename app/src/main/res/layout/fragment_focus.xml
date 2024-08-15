@@ -10,28 +10,28 @@
         android:layout_height="match_parent"/>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/fragment_focus_root_margin_bottom"
+        android:layout_marginBottom="@dimen/qb_px_46"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
             android:layout_gravity="center_horizontal"
             android:src="@drawable/baseline_filter_center_focus_300"
-            android:layout_width="@dimen/fragment_focus_image_width"
-            android:layout_height="@dimen/fragment_focus_image_height"/>
+            android:layout_width="@dimen/qb_px_300"
+            android:layout_height="@dimen/qb_px_300"/>
         <TextView
             android:text="@string/focus_guide"
-            android:textSize="@dimen/fragment_focus_text_text_size"
+            android:textSize="@dimen/qb_px_sp_22"
             android:textColor="@color/text_color_style_1"
-            android:layout_marginTop="@dimen/fragment_focus_text_margin_top"
+            android:layout_marginTop="@dimen/qb_px_26"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <TextView
         android:id="@+id/next"
-        android:layout_marginBottom="@dimen/fragment_focus_next_margin_top"
-        android:textSize="@dimen/fragment_focus_next_text_size"
+        android:layout_marginBottom="@dimen/qb_px_26"
+        android:textSize="@dimen/qb_px_sp_18"
         android:textColor="@color/text_color_style_1"
         android:layout_gravity="center_horizontal|bottom"
         android:text="@string/next"
@@ -41,6 +41,6 @@
         android:focusable="true"
         android:clickable="true"
         android:background="@drawable/ripple_style_3"
-        android:layout_width="@dimen/fragment_focus_next_width"
-        android:layout_height="@dimen/fragment_focus_next_height"/>
+        android:layout_width="@dimen/qb_px_150"
+        android:layout_height="@dimen/qb_px_45"/>
 </FrameLayout>
