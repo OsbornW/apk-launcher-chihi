@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="@string/available_updates"
             android:textColor="@color/black"
-            android:textSize="@dimen/qb_px_18"
+            android:textSize="@dimen/qb_px_sp_18"
             />
     </RelativeLayout>
 

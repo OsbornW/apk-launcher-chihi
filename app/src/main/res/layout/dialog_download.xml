@@ -53,12 +53,12 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:padding="@dimen/dialog_app_opt_padding"
-                android:layout_height="@dimen/dialog_app_opt_height">
+                android:padding="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_33">
                 <TextView
                     android:id="@+id/close"
                     android:text="@string/close"
-                    android:textSize="@dimen/dialog_app_opt_text_size"
+                    android:textSize="@dimen/qb_px_sp_12"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
@@ -68,7 +68,7 @@
                 <TextView
                     android:id="@+id/remove"
                     android:text="@string/remove"
-                    android:textSize="@dimen/dialog_app_opt_text_size"
+                    android:textSize="@dimen/qb_px_sp_12"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
@@ -78,7 +78,7 @@
                 <TextView
                     android:id="@+id/retry"
                     android:text="@string/retry"
-                    android:textSize="@dimen/dialog_app_opt_text_size"
+                    android:textSize="@dimen/qb_px_sp_12"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"

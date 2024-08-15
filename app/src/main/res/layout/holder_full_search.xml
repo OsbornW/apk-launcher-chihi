@@ -2,8 +2,8 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/fragment_search_web_padding_left"
-    android:paddingRight="@dimen/fragment_search_web_padding_right"
+    android:paddingLeft="@dimen/qb_px_17"
+    android:paddingRight="@dimen/qb_px_17"
     android:clipToPadding="false"
     android:clipChildren="false"
     android:clipToOutline="false"
@@ -13,11 +13,11 @@
     <TextView
         android:id="@+id/title"
         android:textColor="@color/text_color_style_1"
-        android:textSize="@dimen/fragment_search_web_title_text_size"
+        android:textSize="@dimen/qb_px_sp_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <FrameLayout
-        android:minHeight="@dimen/fragment_search_web_min_height"
+        android:minHeight="@dimen/qb_px_48"
         android:clipToPadding="false"
         android:clipChildren="false"
         android:clipToOutline="false"
@@ -51,7 +51,7 @@
             android:visibility="gone"
             android:layout_gravity="center_vertical"
             android:text="@string/no_data"
-            android:textSize="25sp"
+            android:textSize="@dimen/qb_px_sp_25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </FrameLayout>

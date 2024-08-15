@@ -7,22 +7,22 @@
     android:focusableInTouchMode="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="@dimen/holder_city_2_root_radius"
+        app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/solid_style_1"
-        android:layout_margin="@dimen/holder_city_2_root_margin"
+        android:layout_margin="@dimen/qb_px_5"
         android:layout_gravity="center"
-        android:layout_width="@dimen/holder_city_2_root_width"
-        android:layout_height="@dimen/holder_city_2_root_height">
+        android:layout_width="@dimen/qb_px_186"
+        android:layout_height="@dimen/qb_px_60">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
-            android:paddingLeft="@dimen/holder_city_2_root_padding_left"
-            android:paddingRight="@dimen/holder_city_2_root_padding_right"
+            android:paddingLeft="@dimen/qb_px_6"
+            android:paddingRight="@dimen/qb_px_6"
             android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/title"
-                android:textSize="@dimen/holder_city_2_title_text_size"
+                android:textSize="@dimen/qb_px_sp_14"
                 android:lines="1"
                 android:ellipsize="end"
                 android:textColor="@color/text_color_style_2"
@@ -33,7 +33,7 @@
                 android:id="@+id/des"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="@dimen/holder_city_2_des_text_size"
+                android:textSize="@dimen/qb_px_sp_10"
                 android:textColor="@color/text_color_style_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

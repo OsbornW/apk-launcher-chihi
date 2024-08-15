@@ -9,11 +9,11 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
     <com.soya.launcher.view.MyCardView
-        app:cardCornerRadius="@dimen/holder_app_root_radius"
+        app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/transparent"
         app:cardElevation="0dp"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/holder_app_root_margin"
+        android:layout_margin="@dimen/qb_px_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -22,8 +22,8 @@
             android:layout_height="match_parent">
             <FrameLayout
                 android:background="@color/solid_style_10"
-                android:layout_width="@dimen/holder_app_image_width"
-                android:layout_height="@dimen/holder_app_image_height">
+                android:layout_width="@dimen/qb_px_146"
+                android:layout_height="@dimen/qb_px_82">
                 <ImageView
                     android:id="@+id/image"
                     android:layout_weight="1"
@@ -37,19 +37,19 @@
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
-                    android:layout_width="@dimen/holder_app_image_small_width"
-                    android:layout_height="@dimen/holder_app_image_small_height"/>
+                    android:layout_width="@dimen/qb_px_60"
+                    android:layout_height="@dimen/qb_px_60"/>
             </FrameLayout>
             <FrameLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/holder_app_opt_height">
+                android:layout_height="@dimen/qb_px_46">
                 <TextView
                     android:id="@+id/title"
                     android:text="Google play"
-                    android:textSize="@dimen/holder_app_opt_title_text_size"
-                    android:paddingLeft="@dimen/holder_app_opt_title_margin_left"
-                    android:paddingRight="@dimen/holder_app_opt_title_margin_right"
+                    android:textSize="@dimen/qb_px_sp_12"
+                    android:paddingLeft="@dimen/qb_px_5"
+                    android:paddingRight="@dimen/qb_px_5"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:textColor="@color/text_selector_color_1"

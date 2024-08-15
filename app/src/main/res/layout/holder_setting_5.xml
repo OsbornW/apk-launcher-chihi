@@ -8,16 +8,16 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <com.soya.launcher.view.MyCardView
-        app:cardCornerRadius="@dimen/holder_setting_2_root_radius"
+        app:cardCornerRadius="@dimen/qb_px_5"
         app:cardElevation="0dp"
         app:cardBackgroundColor="@color/solid_style_3"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/holder_setting_2_root_margin_top"
-        android:layout_marginRight="@dimen/holder_setting_2_root_margin_bottom"
-        android:layout_marginTop="@dimen/holder_setting_2_root_margin_top"
-        android:layout_marginBottom="@dimen/holder_setting_2_root_margin_bottom"
-        android:layout_width="@dimen/holder_setting_4_root_width"
-        android:layout_height="@dimen/holder_setting_4_root_height">
+        android:layout_marginLeft="@dimen/qb_px_17"
+        android:layout_marginRight="@dimen/qb_px_17"
+        android:layout_marginTop="@dimen/qb_px_17"
+        android:layout_marginBottom="@dimen/qb_px_17"
+        android:layout_width="@dimen/qb_px_120"
+        android:layout_height="@dimen/qb_px_120">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -31,19 +31,19 @@
                     android:layout_gravity="center"
                     android:src="@drawable/baseline_wifi_100"
                     android:scaleType="centerCrop"
-                    android:layout_width="@dimen/holder_setting_2_image_width"
-                    android:layout_height="@dimen/holder_setting_2_image_height"/>
+                    android:layout_width="@dimen/qb_px_40"
+                    android:layout_height="@dimen/qb_px_40"/>
             </FrameLayout>
             <TextView
                 android:id="@+id/title"
                 android:text="WIFI"
-                android:textSize="@dimen/holder_setting_2_title_size"
+                android:textSize="@dimen/qb_px_sp_12"
                 android:gravity="center"
                 android:layout_gravity="bottom"
                 android:textColor="@color/text_selector_color_1"
                 android:background="@drawable/light_item"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/holder_setting_2_title_height"/>
+                android:layout_height="@dimen/qb_px_33"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.soya.launcher.view.MyCardView>
 </com.soya.launcher.view.MyFrameLayout>

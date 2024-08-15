@@ -187,9 +187,9 @@
                             android:foreground="@drawable/ripple_style_1"
                             android:src="@drawable/baseline_logout_100"
                             android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
-                            android:padding="@dimen/fragment_main_opt_icon_padding"
-                            android:layout_width="@dimen/fragment_main_opt_icon_width"
-                            android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                            android:padding="@dimen/qb_px_4"
+                            android:layout_width="@dimen/qb_px_26"
+                            android:layout_height="@dimen/qb_px_26"/>
                         <ImageView
                             android:id="@+id/help"
                             android:visibility="gone"
@@ -199,9 +199,9 @@
                             android:foreground="@drawable/ripple_style_1"
                             android:src="@drawable/baseline_help_100"
                             android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
-                            android:padding="@dimen/fragment_main_opt_icon_padding"
-                            android:layout_width="@dimen/fragment_main_opt_icon_width"
-                            android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                            android:padding="@dimen/qb_px_4"
+                            android:layout_width="@dimen/qb_px_26"
+                            android:layout_height="@dimen/qb_px_26"/>
                     </LinearLayout>
                     <TextView
                         android:id="@+id/test"

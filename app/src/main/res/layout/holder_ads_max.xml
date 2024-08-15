@@ -7,21 +7,21 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
     <com.soya.launcher.view.MyCardView
-        app:cardCornerRadius="@dimen/holder_content_3_root_radius"
+        app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/solid_style_1"
         android:clickable="true"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/holder_content_3_root_margin_left"
-        android:layout_marginRight="@dimen/holder_content_3_root_margin_right"
-        android:layout_marginTop="@dimen/holder_content_3_root_margin_top"
-        android:layout_marginBottom="@dimen/holder_content_3_root_margin_bottom"
+        android:layout_marginLeft="@dimen/qb_px_5"
+        android:layout_marginRight="@dimen/qb_px_5"
+        android:layout_marginTop="@dimen/qb_px_6"
+        android:layout_marginBottom="@dimen/qb_px_6"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
         <ImageView
             android:id="@+id/image"
             android:scaleType="centerCrop"
             android:src="@drawable/ads_1"
-            android:layout_width="@dimen/holder_ads_max_image_width"
+            android:layout_width="@dimen/qb_px_120"
             android:layout_height="match_parent"/>
     </com.soya.launcher.view.MyCardView>
 </com.soya.launcher.view.MyFrameLayout>

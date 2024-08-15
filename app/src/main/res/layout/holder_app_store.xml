@@ -8,11 +8,11 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
     <com.soya.launcher.view.MyCardView
-        app:cardCornerRadius="@dimen/holder_app_store_root_radius"
+        app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/transparent"
         app:cardElevation="0dp"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/holder_app_store_root_margin"
+        android:layout_margin="@dimen/qb_px_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -23,17 +23,17 @@
                 android:id="@+id/image"
                 android:layout_weight="1"
                 android:background="@color/solid_style_5"
-                android:padding="@dimen/holder_app_store_root_margin"
+                android:padding="@dimen/qb_px_5"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
-                android:layout_width="@dimen/holder_app_store_image_width"
-                android:layout_height="@dimen/holder_app_store_image_height"/>
+                android:layout_width="@dimen/qb_px_146"
+                android:layout_height="@dimen/qb_px_82"/>
             <FrameLayout
                 android:background="@drawable/light_item"
                 android:orientation="vertical"
-                android:padding="@dimen/holder_app_store_opt_padding"
+                android:padding="@dimen/qb_px_5"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/holder_app_store_opt_height">
+                android:layout_height="@dimen/qb_px_46">
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:orientation="vertical"
                     android:layout_gravity="center_vertical"
@@ -42,7 +42,7 @@
                     <TextView
                         android:id="@+id/title"
                         android:text="Google play"
-                        android:textSize="@dimen/holder_app_store_opt_title_text_size"
+                        android:textSize="@dimen/qb_px_sp_11"
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:textColor="@color/text_selector_color_1"
@@ -51,12 +51,12 @@
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:id="@+id/mes"
-                        android:layout_marginTop="@dimen/holder_app_store_opt_mes_margin_top"
+                        android:layout_marginTop="@dimen/qb_px_1"
                         android:text="工具 | 4.2★ | 53MB"
                         android:textColor="@color/text_selector_color_1"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:textSize="@dimen/holder_app_store_opt_mes_text_size"
+                        android:textSize="@dimen/qb_px_sp_9"
                         android:layout_gravity="bottom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>

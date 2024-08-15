@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_margin="@dimen/include_instructions_margin"
+    android:layout_margin="@dimen/qb_px_24"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_gravity="right"
-        android:layout_marginTop="@dimen/include_instructions_margin_slide"
-        android:layout_marginBottom="@dimen/include_instructions_margin_slide"
-        android:layout_marginLeft="46dp"
-        android:layout_marginRight="46dp"
+        android:layout_marginTop="@dimen/qb_px_16"
+        android:layout_marginBottom="@dimen/qb_px_16"
+        android:layout_marginLeft="@dimen/qb_px_46"
+        android:layout_marginRight="@dimen/qb_px_46"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/fragment_gradient_indicator_height">
+        android:layout_height="@dimen/qb_px_30">
         <ImageView
             android:id="@+id/l"
             android:src="@drawable/baseline_arrow_left_100"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:layout_width="@dimen/fragment_gradient_indicator_image_width"
-            android:layout_height="@dimen/fragment_gradient_indicator_image_height"/>
+            android:layout_width="@dimen/qb_px_26"
+            android:layout_height="@dimen/qb_px_23"/>
         <TextView
             android:id="@+id/lr"
             android:layout_gravity="center_vertical"
             android:text="0"
             android:gravity="center"
-            android:textSize="@dimen/include_instructions_text_text_size"
+            android:textSize="@dimen/qb_px_sp_17"
             android:textColor="@color/text_color_style_1"
-            android:layout_width="@dimen/fragment_gradient_indicator_text_width"
+            android:layout_width="@dimen/qb_px_33"
             android:layout_height="wrap_content"/>
         <ImageView
             android:id="@+id/r"
@@ -35,15 +35,15 @@
             android:rotation="180"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:layout_width="@dimen/fragment_gradient_indicator_image_width"
-            android:layout_height="@dimen/fragment_gradient_indicator_image_height"/>
+            android:layout_width="@dimen/qb_px_26"
+            android:layout_height="@dimen/qb_px_23"/>
     </LinearLayout>
     <LinearLayout
         android:layout_gravity="right"
-        android:layout_marginLeft="@dimen/include_instructions_margin_slide"
-        android:layout_marginRight="@dimen/include_instructions_margin_slide"
-        android:layout_marginTop="46dp"
-        android:layout_marginBottom="46dp"
+        android:layout_marginLeft="@dimen/qb_px_16"
+        android:layout_marginRight="@dimen/qb_px_16"
+        android:layout_marginTop="@dimen/qb_px_46"
+        android:layout_marginBottom="@dimen/qb_px_46"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -53,25 +53,25 @@
             android:rotation="90"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:layout_width="@dimen/fragment_gradient_indicator_image_width"
-            android:layout_height="@dimen/fragment_gradient_indicator_image_height"/>
+            android:layout_width="@dimen/qb_px_26"
+            android:layout_height="@dimen/qb_px_23"/>
         <TextView
             android:id="@+id/tb"
             android:layout_gravity="center_vertical"
             android:text="0"
-            android:textSize="@dimen/include_instructions_text_text_size"
+            android:textSize="@dimen/qb_px_sp_17"
             android:gravity="center"
             android:textColor="@color/text_color_style_1"
-            android:layout_width="@dimen/fragment_gradient_indicator_text_v_width"
-            android:layout_height="@dimen/fragment_gradient_indicator_text_v_height"/>
+            android:layout_width="@dimen/qb_px_33"
+            android:layout_height="@dimen/qb_px_33"/>
         <ImageView
             android:id="@+id/b"
             android:src="@drawable/baseline_arrow_left_100"
             android:rotation="-90"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:layout_width="@dimen/fragment_gradient_indicator_image_width"
-            android:layout_height="@dimen/fragment_gradient_indicator_image_height"/>
+            android:layout_width="@dimen/qb_px_26"
+            android:layout_height="@dimen/qb_px_23"/>
     </LinearLayout>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_gravity="right"
@@ -81,11 +81,11 @@
         android:layout_height="wrap_content">
         <View
             android:background="@android:color/white"
-            android:layout_width="@dimen/include_instructions_rect_width_1"
-            android:layout_height="@dimen/include_instructions_rect_height_1"/>
+            android:layout_width="@dimen/qb_px_40"
+            android:layout_height="@dimen/qb_px_8"/>
         <View
             android:background="@android:color/white"
-            android:layout_width="@dimen/include_instructions_rect_width_2"
-            android:layout_height="@dimen/include_instructions_rect_height_2"/>
+            android:layout_width="@dimen/qb_px_8"
+            android:layout_height="@dimen/qb_px_32"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </FrameLayout>

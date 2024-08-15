@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="@dimen/include_title_root_margint_top"
-    android:layout_marginBottom="@dimen/include_title_root_margint_bottom"
-    android:layout_marginLeft="@dimen/include_title_root_margint_left"
+    android:layout_marginTop="@dimen/qb_px_10"
+    android:layout_marginBottom="@dimen/qb_px_10"
+    android:layout_marginLeft="@dimen/qb_px_17"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -19,32 +19,32 @@
             <View
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/oval_solid_1"
-                android:layout_width="@dimen/include_title_min_oval_width"
-                android:layout_height="@dimen/include_title_min_oval_height"/>
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"/>
             <View
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/include_title_min_rect_margin_left"
+                android:layout_marginLeft="@dimen/qb_px_3"
                 android:background="@drawable/rect_solid_100dp_1"
-                android:layout_width="@dimen/include_title_min_rect_width"
-                android:layout_height="@dimen/include_title_min_rect_height"/>
+                android:layout_width="@dimen/qb_px_6"
+                android:layout_height="@dimen/qb_px_2"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="@dimen/include_title_min_rect_margin_top"
-            android:layout_marginBottom="@dimen/include_title_min_rect_margin_bottom"
+            android:layout_marginTop="@dimen/qb_px_2"
+            android:layout_marginBottom="@dimen/qb_px_2"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <View
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/oval_solid_1"
-                android:layout_width="@dimen/include_title_min_oval_width"
-                android:layout_height="@dimen/include_title_min_oval_height"/>
+                android:layout_width="@dimen/qb_px_4"
+                android:layout_height="@dimen/qb_px_4"/>
             <View
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/include_title_min_rect_margin_left"
+                android:layout_marginLeft="@dimen/qb_px_3"
                 android:background="@drawable/rect_solid_100dp_1"
-                android:layout_width="@dimen/include_title_min_rect_width"
-                android:layout_height="@dimen/include_title_min_rect_height"/>
+                android:layout_width="@dimen/qb_px_6"
+                android:layout_height="@dimen/qb_px_2"/>
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -53,20 +53,20 @@
             <View
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/oval_solid_1"
-                android:layout_width="@dimen/include_title_min_oval_width"
-                android:layout_height="@dimen/include_title_min_oval_height"/>
+                android:layout_width="@dimen/qb_px_4"
+                android:layout_height="@dimen/qb_px_4"/>
             <View
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/include_title_min_rect_margin_left"
+                android:layout_marginLeft="@dimen/qb_px_3"
                 android:background="@drawable/rect_solid_100dp_1"
-                android:layout_width="@dimen/include_title_min_rect_width"
-                android:layout_height="@dimen/include_title_min_rect_height"/>
+                android:layout_width="@dimen/qb_px_6"
+                android:layout_height="@dimen/qb_px_2"/>
         </LinearLayout>
     </LinearLayout>
     <TextView
         android:id="@+id/title"
-        android:textSize="@dimen/include_title_title_text_size"
-        android:layout_marginLeft="@dimen/include_title_title_margin_left"
+        android:textSize="@dimen/qb_px_sp_18"
+        android:layout_marginLeft="@dimen/qb_px_6"
         android:layout_gravity="center_vertical"
         android:textColor="@color/text_color_style_1"
         android:layout_width="wrap_content"

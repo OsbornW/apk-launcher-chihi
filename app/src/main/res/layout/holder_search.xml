@@ -9,15 +9,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.soya.launcher.view.MyCardView
-        app:cardCornerRadius="@dimen/holder_search_root_radius"
+        app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/transparent"
         app:cardElevation="0dp"
         android:clickable="true"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/holder_search_root_margin_left"
-        android:layout_marginRight="@dimen/holder_search_root_margin_right"
-        android:layout_marginTop="@dimen/holder_search_root_margin_top"
-        android:layout_marginBottom="@dimen/holder_search_root_margin_bottom"
+        android:layout_marginLeft="@dimen/qb_px_5"
+        android:layout_marginRight="@dimen/qb_px_5"
+        android:layout_marginTop="@dimen/qb_px_6"
+        android:layout_marginBottom="@dimen/qb_px_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -28,20 +28,20 @@
                 android:id="@+id/image"
                 android:background="@color/solid_style_2"
                 android:scaleType="centerCrop"
-                android:layout_width="@dimen/holder_search_image_width"
-                android:layout_height="@dimen/holder_search_image_height"/>
+                android:layout_width="@dimen/qb_px_130"
+                android:layout_height="@dimen/qb_px_73"/>
             <TextView
                 android:background="@drawable/light_item"
                 android:id="@+id/title"
                 android:lines="2"
-                android:textSize="@dimen/holder_search_title_text_size"
-                android:paddingLeft="@dimen/holder_search_title_padding"
-                android:paddingRight="@dimen/holder_search_title_padding"
+                android:textSize="@dimen/qb_px_sp_9"
+                android:paddingLeft="@dimen/qb_px_5"
+                android:paddingRight="@dimen/qb_px_5"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:textColor="@color/text_selector_color_1"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/holder_search_title_height"/>
+                android:layout_height="@dimen/qb_px_33"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.soya.launcher.view.MyCardView>
 </com.soya.launcher.view.MyFrameLayout>

@@ -8,29 +8,29 @@
     android:focusableInTouchMode="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="@dimen/holder_wallpaper_root_radius"
+        app:cardCornerRadius="@dimen/qb_px_8"
         app:cardUseCompatPadding="false"
         app:cardBackgroundColor="@color/solid_style_1"
-        android:layout_marginLeft="@dimen/holder_wallpaper_root_margin_left"
-        android:layout_marginRight="@dimen/holder_wallpaper_root_margin_right"
-        android:layout_marginTop="@dimen/holder_wallpaper_root_margin_top"
-        android:layout_marginBottom="@dimen/holder_wallpaper_root_margin_bottom"
+        android:layout_marginLeft="@dimen/qb_px_8"
+        android:layout_marginRight="@dimen/qb_px_8"
+        android:layout_marginTop="@dimen/qb_px_8"
+        android:layout_marginBottom="@dimen/qb_px_8"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/image"
             android:scaleType="centerCrop"
-            android:layout_width="@dimen/holder_wallpaper_image_width"
-            android:layout_height="@dimen/holder_wallpaper_image_height"/>
+            android:layout_width="@dimen/qb_px_173"
+            android:layout_height="@dimen/qb_px_98"/>
         <ImageView
             android:id="@+id/check"
             android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/holder_wallpaper_check_margin"
+            android:layout_margin="@dimen/qb_px_10"
             android:background="@drawable/rect_solid_100dp_alpha_2"
             android:src="@drawable/baseline_check_100"
-            android:padding="@dimen/holder_wallpaper_check_padding"
-            android:layout_width="@dimen/holder_wallpaper_check_width"
-            android:layout_height="@dimen/holder_wallpaper_check_height"/>
+            android:padding="@dimen/qb_px_4"
+            android:layout_width="@dimen/qb_px_23"
+            android:layout_height="@dimen/qb_px_23"/>
     </androidx.cardview.widget.CardView>
 </com.soya.launcher.view.MyFrameLayout>

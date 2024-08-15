@@ -5,12 +5,12 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:background="@drawable/ripple_style_2"
-    android:paddingLeft="@dimen/holder_about_root_padding_left"
-    android:paddingRight="@dimen/holder_about_root_padding_right"
+    android:paddingLeft="@dimen/qb_px_10"
+    android:paddingRight="@dimen/qb_px_10"
     android:layout_gravity="center"
     android:orientation="horizontal"
-    android:layout_width="@dimen/holder_about_root_width"
-    android:layout_height="@dimen/holder_about_root_height">
+    android:layout_width="@dimen/qb_px_200"
+    android:layout_height="@dimen/qb_px_36">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -19,13 +19,13 @@
             android:id="@+id/icon"
             android:layout_gravity="center_vertical"
             android:src="@drawable/baseline_settings_100"
-            android:layout_width="@dimen/holder_about_icon_width"
-            android:layout_height="@dimen/holder_about_icon_height"/>
+            android:layout_width="@dimen/qb_px_16"
+            android:layout_height="@dimen/qb_px_16"/>
         <TextView
             android:id="@+id/title"
-            android:textSize="@dimen/holder_about_title_text_size"
+            android:textSize="@dimen/qb_px_sp_10"
             android:textColor="@color/text_color_style_1"
-            android:layout_marginLeft="@dimen/holder_about_title_margin_left"
+            android:layout_marginLeft="@dimen/qb_px_10"
             android:lines="1"
             android:ellipsize="end"
             android:layout_gravity="center_vertical"
@@ -35,9 +35,9 @@
         <TextView
             android:id="@+id/action"
             android:gravity="center"
-            android:textSize="@dimen/holder_notify_bar_action_text_size"
+            android:textSize="@dimen/qb_px_sp_8"
             android:layout_gravity="center_vertical"
-            android:layout_width="@dimen/holder_notify_bar_action_width"
-            android:layout_height="@dimen/holder_notify_bar_action_height"/>
+            android:layout_width="@dimen/qb_px_53"
+            android:layout_height="@dimen/qb_px_20"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.soya.launcher.view.MyFrameLayout>

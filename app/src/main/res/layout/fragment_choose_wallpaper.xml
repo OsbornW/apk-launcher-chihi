@@ -37,8 +37,8 @@
                     android:clipToOutline="false"
                     android:clipChildren="false"
                     android:clipToPadding="false"
-                    android:paddingLeft="@dimen/fragment_wallpaper_list_content_padding_left"
-                    android:paddingRight="@dimen/fragment_wallpaper_list_content_padding_left"
+                    android:paddingLeft="@dimen/qb_px_42"
+                    android:paddingRight="@dimen/qb_px_42"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/fragment_wallpaper_list_content_height"/>

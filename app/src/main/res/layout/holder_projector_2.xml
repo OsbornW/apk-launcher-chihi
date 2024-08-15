@@ -11,11 +11,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.soya.launcher.view.MyCardView
-        app:cardCornerRadius="@dimen/holder_projector_root_radius"
+        app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="#0D47A1"
         app:cardElevation="0dp"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/holder_projector_root_margin"
+        android:layout_margin="@dimen/qb_px_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -27,9 +27,9 @@
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
-                android:padding="@dimen/holder_projector_image_padding"
-                android:layout_width="@dimen/holder_projector_image_width"
-                android:layout_height="@dimen/holder_projector_image_height"/>
+                android:padding="@dimen/qb_px_33"
+                android:layout_width="@dimen/qb_px_129"
+                android:layout_height="@dimen/qb_px_129"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.soya.launcher.view.MyCardView>
 </com.soya.launcher.view.MyFrameLayout>

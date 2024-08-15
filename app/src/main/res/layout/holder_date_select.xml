@@ -2,16 +2,16 @@
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/title"
-    android:layout_margin="@dimen/holder_date_select_root_margin"
+    android:layout_margin="@dimen/qb_px_5"
     android:focusableInTouchMode="true"
     android:focusable="true"
     android:clickable="true"
-    android:minWidth="@dimen/holder_date_select_root_min_width"
+    android:minWidth="@dimen/qb_px_40"
     android:gravity="center"
-    android:paddingLeft="@dimen/holder_date_select_padding"
-    android:paddingRight="@dimen/holder_date_select_padding"
-    android:textSize="@dimen/holder_date_text_text_size"
+    android:paddingLeft="@dimen/qb_px_5"
+    android:paddingRight="@dimen/qb_px_5"
+    android:textSize="@dimen/qb_px_sp_10"
     android:textColor="@color/text_color_style_1"
     android:background="@drawable/menu_item"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/holder_date_select_width"/>
+    android:layout_height="@dimen/qb_px_23"/>

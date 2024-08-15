@@ -61,8 +61,8 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:padding="@dimen/dialog_app_opt_padding"
-                android:layout_height="@dimen/dialog_app_opt_height">
+                android:padding="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_33">
                 <TextView
                     android:id="@+id/close"
                     android:focusable="true"

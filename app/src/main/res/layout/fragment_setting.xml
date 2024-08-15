@@ -17,8 +17,8 @@
         <include layout="@layout/include_title"/>
         <androidx.leanback.widget.VerticalGridView
             android:id="@+id/content"
-            android:paddingLeft="@dimen/fragment_setting_list_content_padding_left"
-            android:paddingRight="@dimen/fragment_setting_list_content_padding_right"
+            android:paddingLeft="@dimen/qb_px_10"
+            android:paddingRight="@dimen/qb_px_10"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

@@ -6,8 +6,8 @@
     android:clickable="false"
     android:focusable="false"
     android:focusableInTouchMode="false"
-    android:layout_marginLeft="@dimen/fragment_main_opt_notify_margin_left_1"
-    android:layout_marginRight="@dimen/fragment_main_opt_notify_margin_right_1">
+    android:layout_marginLeft="@dimen/qb_px_3"
+    android:layout_marginRight="@dimen/qb_px_3">
     <ImageView
         android:id="@+id/image"
         android:layout_gravity="center_vertical"
@@ -16,7 +16,7 @@
         android:focusableInTouchMode="false"
         android:background="@drawable/oval_solid_5"
         android:src="@drawable/baseline_wifi_tethering_100_2"
-        android:padding="@dimen/fragment_main_opt_icon_padding"
-        android:layout_width="@dimen/fragment_main_opt_icon_width"
-        android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+        android:padding="@dimen/qb_px_4"
+        android:layout_width="@dimen/qb_px_26"
+        android:layout_height="@dimen/qb_px_26"/>
 </FrameLayout>

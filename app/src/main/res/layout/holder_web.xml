@@ -9,20 +9,20 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
     <com.soya.launcher.view.MyCardView
-        app:cardCornerRadius="@dimen/holder_recommend_root_radius"
+        app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/solid_style_1"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/holder_recommend_root_margin_left"
-        android:layout_marginRight="@dimen/holder_recommend_root_margin_right"
-        android:layout_marginTop="@dimen/holder_recommend_root_margin_top"
-        android:layout_marginBottom="@dimen/holder_recommend_root_margin_bottom"
-        android:layout_width="@dimen/holder_web_root_width"
-        android:layout_height="@dimen/holder_web_root_height">
+        android:layout_marginLeft="@dimen/qb_px_5"
+        android:layout_marginRight="@dimen/qb_px_5"
+        android:layout_marginTop="@dimen/qb_px_6"
+        android:layout_marginBottom="@dimen/qb_px_6"
+        android:layout_width="@dimen/qb_px_106"
+        android:layout_height="@dimen/qb_px_60">
         <ImageView
             android:layout_gravity="center"
             android:id="@+id/image"
             android:scaleType="centerCrop"
-            android:layout_width="@dimen/holder_web_image_width"
-            android:layout_height="@dimen/holder_web_image_height"/>
+            android:layout_width="@dimen/qb_px_40"
+            android:layout_height="@dimen/qb_px_40"/>
     </com.soya.launcher.view.MyCardView>
 </com.soya.launcher.view.MyFrameLayout>

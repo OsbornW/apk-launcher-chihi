@@ -11,14 +11,14 @@
     android:layout_height="wrap_content">
     <com.soya.launcher.view.MyCardView
         android:id="@+id/card"
-        app:cardCornerRadius="@dimen/holder_app_2_root_radius"
+        app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/transparent"
         app:cardElevation="0dp"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/holder_app_2_root_margin_left"
-        android:layout_marginRight="@dimen/holder_app_2_root_margin_right"
-        android:layout_marginTop="@dimen/holder_app_2_root_margin_top"
-        android:layout_marginBottom="@dimen/holder_app_2_root_margin_bottom"
+        android:layout_marginLeft="@dimen/qb_px_5"
+        android:layout_marginRight="@dimen/qb_px_5"
+        android:layout_marginTop="@dimen/qb_px_6"
+        android:layout_marginBottom="@dimen/qb_px_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -27,8 +27,8 @@
             android:layout_height="match_parent">
             <FrameLayout
                 android:background="@color/solid_style_10"
-                android:layout_width="@dimen/holder_app_2_image_width"
-                android:layout_height="@dimen/holder_app_2_image_height">
+                android:layout_width="@dimen/qb_px_133"
+                android:layout_height="@dimen/qb_px_76">
                 <ImageView
                     android:id="@+id/image"
                     android:layout_weight="1"
@@ -42,19 +42,19 @@
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
-                    android:layout_width="@dimen/holder_app_2_image_small_width"
-                    android:layout_height="@dimen/holder_app_2_image_small_height"/>
+                    android:layout_width="@dimen/qb_px_60"
+                    android:layout_height="@dimen/qb_px_60"/>
             </FrameLayout>
             <FrameLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/holder_app_2_opt_height">
+                android:layout_height="@dimen/qb_px_36">
                 <TextView
                     android:id="@+id/title"
                     android:text="Google play"
-                    android:textSize="@dimen/holder_app_2_opt_title_text_size"
-                    android:paddingLeft="@dimen/holder_app_2_opt_title_margin_left"
-                    android:paddingRight="@dimen/holder_app_2_opt_title_margin_right"
+                    android:textSize="@dimen/qb_px_sp_12"
+                    android:paddingLeft="@dimen/qb_px_5"
+                    android:paddingRight="@dimen/qb_px_5"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:layout_gravity="center"
