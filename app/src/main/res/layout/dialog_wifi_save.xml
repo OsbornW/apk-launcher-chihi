@@ -5,11 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:id="@+id/root"
-        app:cardCornerRadius="@dimen/dialog_app_card_corner_radius"
+        app:cardCornerRadius="@dimen/qb_px_8"
         app:cardBackgroundColor="@color/transparent"
-        app:cardElevation="@dimen/card_elevation"
+        app:cardElevation="@dimen/qb_px_8"
         android:layout_gravity="center"
-        android:layout_width="@dimen/dialog_app_carld_layout_width"
+        android:layout_width="@dimen/qb_px_300"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/blur"
@@ -23,25 +23,25 @@
             <TextView
                 android:text="@string/connect"
                 android:textSize="@dimen/qb_px_23"
-                android:layout_marginTop="@dimen/dialog_app_title_margin_top"
+                android:layout_marginTop="@dimen/qb_px_16"
                 android:textColor="@color/text_color_style_1"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dialog_app_title_height"/>
+                android:layout_height="@dimen/qb_px_45"/>
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dialog_wifi_save_root_height">
+                android:layout_height="@dimen/qb_px_100">
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:paddingTop="@dimen/dialog_wifi_save_root_padding_top"
-                    android:paddingLeft="@dimen/dialog_wifi_save_root_padding_left"
-                    android:paddingRight="@dimen/dialog_wifi_save_root_padding_right"
+                    android:paddingTop="@dimen/qb_px_8"
+                    android:paddingLeft="@dimen/qb_px_10"
+                    android:paddingRight="@dimen/qb_px_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/wifi_name"
-                        android:textSize="@dimen/dialog_wifi_save_wifi_name_text_size"
+                        android:textSize="@dimen/qb_px_sp_25"
                         android:text="-"
                         android:lines="1"
                         android:ellipsize="end"
@@ -50,7 +50,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
-                        android:textSize="@dimen/dialog_wifi_save_save_toast_text_size"
+                        android:textSize="@dimen/qb_px_sp_16"
                         android:text="@string/saved_networks"
                         android:textColor="@color/text_color_style_1"
                         android:layout_gravity="center"
@@ -61,8 +61,8 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:padding="@dimen/dialog_app_opt_padding"
-                android:layout_height="@dimen/dialog_app_opt_height">
+                android:padding="@dimen/qb_px_8"
+                android:layout_height="@dimen/qb_px_50">
                 <TextView
                     android:id="@+id/close"
                     android:focusable="true"
@@ -74,7 +74,7 @@
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/qb_px_0"
                     android:layout_height="match_parent"/>
                 <TextView
                     android:id="@+id/clean"
@@ -87,7 +87,7 @@
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/qb_px_0"
                     android:layout_height="match_parent"/>
                 <TextView
                     android:id="@+id/confirm"
@@ -100,7 +100,7 @@
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/qb_px_0"
                     android:layout_height="match_parent"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>

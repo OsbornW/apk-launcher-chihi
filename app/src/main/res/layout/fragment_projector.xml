@@ -30,13 +30,13 @@
                     android:clipToOutline="false"
                     android:clipChildren="false"
                     android:clipToPadding="false"
-                    android:paddingTop="@dimen/fragment_movice_list_content_padding_left"
-                    android:paddingBottom="@dimen/fragment_movice_list_content_padding_left"
-                    android:paddingLeft="@dimen/fragment_projector_content_padding_left"
-                    android:paddingRight="@dimen/fragment_projector_content_padding_right"
+                    android:paddingTop="@dimen/qb_px_16"
+                    android:paddingBottom="@dimen/qb_px_16"
+                    android:paddingLeft="@dimen/qb_px_36"
+                    android:paddingRight="@dimen/qb_px_36"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/holder_setting_root_height"/>
+                    android:layout_height="@dimen/qb_px_170"/>
             </FrameLayout>
         </LinearLayout>
     </FrameLayout>

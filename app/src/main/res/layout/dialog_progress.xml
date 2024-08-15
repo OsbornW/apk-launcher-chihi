@@ -6,20 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:layout_gravity="center"
-        android:layout_margin="@dimen/dialog_progress_root_margin"
+        android:layout_margin="@dimen/qb_px_16"
         android:background="@color/solid_style_3"
-        app:cardCornerRadius="@dimen/dialog_progress_root_card_raidus"
+        app:cardCornerRadius="@dimen/qb_px_8"
         android:orientation="horizontal"
-        android:layout_width="@dimen/dialog_progress_root_width"
-        android:layout_height="@dimen/dialog_progress_root_height">
+        android:layout_width="@dimen/qb_px_250"
+        android:layout_height="@dimen/qb_px_60">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="horizontal"
-            android:layout_marginLeft="@dimen/dialog_progress_opt_margin"
+            android:layout_marginLeft="@dimen/qb_px_10"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ProgressBar
                 android:id="@+id/progressBar"
-                android:layout_margin="@dimen/dialog_progress_opt_bar_margin"
+                android:layout_margin="@dimen/qb_px_8"
                 android:layout_gravity="center_vertical"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
@@ -28,8 +28,8 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/place_waiting"
                 android:gravity="center_vertical"
-                android:textSize="@dimen/dialog_progress_opt_text_text_size"
-                android:layout_marginLeft="@dimen/dialog_progress_opt_text_margin"
+                android:textSize="@dimen/qb_px_sp_16"
+                android:layout_marginLeft="@dimen/qb_px_16"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </androidx.appcompat.widget.LinearLayoutCompat>

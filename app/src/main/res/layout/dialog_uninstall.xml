@@ -6,12 +6,12 @@
     <androidx.cardview.widget.CardView
         android:background="@drawable/bg_dialog"
         android:id="@+id/root"
-        app:cardElevation="@dimen/card_elevation"
+        app:cardElevation="@dimen/qb_px_8"
         app:cardUseCompatPadding="false"
-        app:cardCornerRadius="@dimen/dialog_app_card_corner_radius"
+        app:cardCornerRadius="@dimen/qb_px_8"
         app:cardBackgroundColor="@color/transparent"
         android:layout_gravity="center"
-        android:layout_width="@dimen/dialog_app_carld_layout_width"
+        android:layout_width="@dimen/qb_px_300"
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/bg_dialog"
@@ -28,23 +28,23 @@
                 android:gravity="center"
                 android:text="@string/uninstalling"
                 android:textColor="@color/text_color_style_1"
-                android:textSize="@dimen/dialog_uninstall_text_size"
+                android:textSize="@dimen/qb_px_sp_19"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dialog_uninstall_height"/>
+                android:layout_height="@dimen/qb_px_120"/>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:padding="@dimen/dialog_app_opt_padding"
-                android:layout_height="@dimen/dialog_app_opt_height">
+                android:padding="@dimen/qb_px_8"
+                android:layout_height="@dimen/qb_px_50">
                 <TextView
                     android:id="@+id/opt"
                     android:text="@string/waiting"
-                    android:textSize="@dimen/dialog_app_opt_text_size"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/qb_px_0"
                     android:layout_height="match_parent"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>

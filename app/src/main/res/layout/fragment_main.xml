@@ -186,10 +186,10 @@
                             android:focusableInTouchMode="true"
                             android:foreground="@drawable/ripple_style_1"
                             android:src="@drawable/baseline_logout_100"
-                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
-                            android:padding="@dimen/fragment_main_opt_icon_padding"
-                            android:layout_width="@dimen/fragment_main_opt_icon_width"
-                            android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                            android:layout_marginLeft="@dimen/qb_px_10"
+                            android:padding="@dimen/qb_px_7"
+                            android:layout_width="@dimen/qb_px_40"
+                            android:layout_height="@dimen/qb_px_40"/>
                         <ImageView
                             android:id="@+id/help"
                             android:visibility="gone"
@@ -198,17 +198,17 @@
                             android:focusableInTouchMode="true"
                             android:foreground="@drawable/ripple_style_1"
                             android:src="@drawable/baseline_help_100"
-                            android:layout_marginLeft="@dimen/fragment_main_opt_icon_margin_left"
-                            android:padding="@dimen/fragment_main_opt_icon_padding"
-                            android:layout_width="@dimen/fragment_main_opt_icon_width"
-                            android:layout_height="@dimen/fragment_main_opt_icon_height"/>
+                            android:layout_marginLeft="@dimen/qb_px_10"
+                            android:padding="@dimen/qb_px_7"
+                            android:layout_width="@dimen/qb_px_40"
+                            android:layout_height="@dimen/qb_px_40"/>
                     </LinearLayout>
                     <TextView
                         android:id="@+id/test"
                         android:visibility="gone"
                         android:layout_gravity="center"
                         android:textColor="@color/text_color_style_1"
-                        android:textSize="@dimen/fragment_main_opt_segment_test_size"
+                        android:textSize="@dimen/qb_px_sp_11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <com.soya.launcher.view.NoFocuRecyclerView

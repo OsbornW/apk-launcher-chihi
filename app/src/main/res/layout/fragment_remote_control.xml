@@ -10,16 +10,16 @@
         android:layout_height="match_parent"/>
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/fragment_remote_control_root_margin_bottom"
+        android:layout_marginBottom="@dimen/qb_px_46"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
-            android:layout_marginBottom="@dimen/fragment_remote_control_title_margin_bottom"
+            android:layout_marginBottom="@dimen/qb_px_46"
             android:layout_gravity="center_horizontal"
             android:text="@string/remote_control_connect"
             android:textColor="@color/text_color_style_1"
-            android:textSize="@dimen/fragment_remote_control_title_text_size"
+            android:textSize="@dimen/qb_px_sp_48"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -28,46 +28,46 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/remote_control"
-                android:layout_width="@dimen/fragment_remote_control_icon_width"
-                android:layout_height="@dimen/fragment_remote_control_icon_height"/>
+                android:layout_width="@dimen/qb_px_180"
+                android:layout_height="@dimen/qb_px_170"/>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:maxWidth="@dimen/fragment_remote_control_text_text_min_width"
-                    android:layout_marginTop="@dimen/fragment_remote_control_text_margin_top"
-                    android:layout_marginBottom="@dimen/fragment_remote_control_text_margin_bottom"
+                    android:maxWidth="@dimen/qb_px_430"
+                    android:layout_marginTop="@dimen/qb_px_8"
+                    android:layout_marginBottom="@dimen/qb_px_8"
                     android:textColor="@color/text_color_style_1"
-                    android:textSize="@dimen/fragment_remote_control_text_text_size"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:text="@string/remote_toast_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:maxWidth="@dimen/fragment_remote_control_text_text_min_width"
-                    android:layout_marginTop="@dimen/fragment_remote_control_text_margin_top"
-                    android:layout_marginBottom="@dimen/fragment_remote_control_text_margin_bottom"
+                    android:maxWidth="@dimen/qb_px_430"
+                    android:layout_marginTop="@dimen/qb_px_8"
+                    android:layout_marginBottom="@dimen/qb_px_8"
                     android:textColor="@color/text_color_style_1"
-                    android:textSize="@dimen/fragment_remote_control_text_text_size"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:text="@string/remote_toast_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:maxWidth="@dimen/fragment_remote_control_text_text_min_width"
-                    android:layout_marginTop="@dimen/fragment_remote_control_text_margin_top"
-                    android:layout_marginBottom="@dimen/fragment_remote_control_text_margin_bottom"
+                    android:maxWidth="@dimen/qb_px_430"
+                    android:layout_marginTop="@dimen/qb_px_8"
+                    android:layout_marginBottom="@dimen/qb_px_8"
                     android:textColor="@color/text_color_style_1"
-                    android:textSize="@dimen/fragment_remote_control_text_text_size"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:text="@string/remote_toast_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:maxWidth="@dimen/fragment_remote_control_text_text_min_width"
-                    android:layout_marginTop="@dimen/fragment_remote_control_text_margin_top"
-                    android:layout_marginBottom="@dimen/fragment_remote_control_text_margin_bottom"
+                    android:maxWidth="@dimen/qb_px_430"
+                    android:layout_marginTop="@dimen/qb_px_8"
+                    android:layout_marginBottom="@dimen/qb_px_8"
                     android:textColor="@color/text_color_style_1"
-                    android:textSize="@dimen/fragment_remote_control_text_text_size"
+                    android:textSize="@dimen/qb_px_sp_16"
                     android:text="@string/remote_toast_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -75,14 +75,14 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <androidx.cardview.widget.CardView
-        android:layout_marginBottom="@dimen/fragment_focus_next_margin_top"
+        android:layout_marginBottom="@dimen/qb_px_26"
         android:layout_gravity="center_horizontal|bottom"
-        app:cardElevation="0dp"
-        app:cardCornerRadius="@dimen/card_radius"
+        app:cardElevation="@dimen/qb_px_0"
+        app:cardCornerRadius="@dimen/qb_px_8"
         app:cardBackgroundColor="@color/solid_style_2"
         android:orientation="horizontal"
-        android:layout_width="@dimen/fragment_remote_control_div_paring_width"
-        android:layout_height="@dimen/fragment_remote_control_div_paring_height">
+        android:layout_width="@dimen/qb_px_620"
+        android:layout_height="@dimen/qb_px_65">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -90,7 +90,7 @@
             <FrameLayout
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/qb_px_0"
                 android:layout_height="wrap_content">
                 <FrameLayout
                     android:layout_gravity="center_vertical"
@@ -103,7 +103,7 @@
                         android:layout_height="wrap_content"/>
                     <TextView
                         android:id="@+id/search_message"
-                        android:textSize="@dimen/fragment_remote_control_paring_message_text_size"
+                        android:textSize="@dimen/qb_px_sp_25"
                         android:textColor="@color/text_color_style_1"
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
@@ -113,14 +113,14 @@
                     android:visibility="gone"
                     android:id="@+id/connected_icon"
                     android:layout_gravity="center_vertical"
-                    android:padding="@dimen/fragment_remote_control_paring_icon_padding"
-                    android:layout_margin="@dimen/fragment_remote_control_paring_icon_margin"
-                    android:layout_width="@dimen/fragment_remote_control_paring_icon_width"
-                    android:layout_height="@dimen/fragment_remote_control_paring_icon_height"/>
+                    android:padding="@dimen/qb_px_4"
+                    android:layout_margin="@dimen/qb_px_8"
+                    android:layout_width="@dimen/qb_px_55"
+                    android:layout_height="@dimen/qb_px_65"/>
             </FrameLayout>
             <TextView
                 android:id="@+id/next"
-                android:textSize="@dimen/fragment_focus_next_text_size"
+                android:textSize="@dimen/qb_px_sp_18"
                 android:textColor="@color/text_color_style_1"
                 android:text="@string/next"
                 android:textStyle="bold"
@@ -129,7 +129,7 @@
                 android:focusable="true"
                 android:clickable="true"
                 android:background="@drawable/ripple_style_5"
-                android:layout_width="@dimen/fragment_focus_next_width"
+                android:layout_width="@dimen/qb_px_150"
                 android:layout_height="match_parent"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.cardview.widget.CardView>

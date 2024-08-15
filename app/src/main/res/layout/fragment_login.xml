@@ -31,39 +31,39 @@
                         android:background="@drawable/rect_solid_8dp_alpha_1"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:paddingLeft="10dp"
-                        android:layout_height="50dp">
+                        android:paddingLeft="@dimen/qb_px_10"
+                        android:layout_height="@dimen/qb_px_50">
                         <ImageView
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/baseline_account_circle_100"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"/>
+                            android:layout_width="@dimen/qb_px_30"
+                            android:layout_height="@dimen/qb_px_30"/>
                         <EditText
                             android:hint="@string/account"
                             android:background="@color/transparent"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
+                            android:paddingLeft="@dimen/qb_px_10"
+                            android:paddingRight="@dimen/qb_px_10"
                             android:gravity="center_vertical"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                     <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_marginTop="26dp"
+                        android:layout_marginTop="@dimen/qb_px_26"
                         android:background="@drawable/rect_solid_8dp_alpha_1"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:paddingLeft="10dp"
-                        android:layout_height="50dp">
+                        android:paddingLeft="@dimen/qb_px_10"
+                        android:layout_height="@dimen/qb_px_50">
                         <ImageView
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/baseline_password_100"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"/>
+                            android:layout_width="@dimen/qb_px_30"
+                            android:layout_height="@dimen/qb_px_30"/>
                         <EditText
                             android:hint="@string/password"
                             android:background="@color/transparent"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
+                            android:paddingLeft="@dimen/qb_px_10"
+                            android:paddingRight="@dimen/qb_px_10"
                             android:gravity="center_vertical"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"/>
@@ -72,12 +72,12 @@
                         android:id="@+id/login"
                         android:clickable="true"
                         android:background="@drawable/ripple_style_1"
-                        android:layout_marginTop="46dp"
-                        android:padding="8dp"
+                        android:layout_marginTop="@dimen/qb_px_46"
+                        android:padding="@dimen/qb_px_8"
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/baseline_arrow_forward_100"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"/>
+                        android:layout_width="@dimen/qb_px_50"
+                        android:layout_height="@dimen/qb_px_50"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </FrameLayout>
         </LinearLayout>

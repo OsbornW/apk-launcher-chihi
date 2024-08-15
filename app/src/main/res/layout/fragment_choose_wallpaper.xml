@@ -24,8 +24,8 @@
             <TextView
                 android:text="@string/choose_wallpaper"
                 android:textColor="@color/text_color_style_1"
-                android:textSize="@dimen/fragment_choose_wallpaper_text_size"
-                android:layout_marginTop="@dimen/fragment_choose_wallpaper_text_margin_top"
+                android:textSize="@dimen/qb_px_sp_36"
+                android:layout_marginTop="@dimen/qb_px_26"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -37,11 +37,11 @@
                     android:clipToOutline="false"
                     android:clipChildren="false"
                     android:clipToPadding="false"
-                    android:paddingLeft="@dimen/fragment_wallpaper_list_content_padding_left"
-                    android:paddingRight="@dimen/fragment_wallpaper_list_content_padding_left"
+                    android:paddingLeft="@dimen/qb_px_63"
+                    android:paddingRight="@dimen/qb_px_63"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/fragment_wallpaper_list_content_height"/>
+                    android:layout_height="@dimen/qb_px_374"/>
             </FrameLayout>
         </LinearLayout>
     </FrameLayout>
