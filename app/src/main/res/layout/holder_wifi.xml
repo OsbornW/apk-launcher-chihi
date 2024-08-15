@@ -12,8 +12,8 @@
     android:paddingRight="@dimen/qb_px_10"
     android:layout_gravity="center"
     android:orientation="horizontal"
-    android:layout_width="@dimen/qb_px_200"
-    android:layout_height="@dimen/qb_px_36">
+    android:layout_width="@dimen/qb_px_250"
+    android:layout_height="@dimen/qb_px_45">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:orientation="horizontal"
         android:layout_width="match_parent"

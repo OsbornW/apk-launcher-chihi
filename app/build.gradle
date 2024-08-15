@@ -176,7 +176,7 @@ android {
             signingConfig signingConfigs.new_701
             versionCode 56
             versionName "1.57"
-            manifestPlaceholders = [share_uid: "android.uid.system"]
+            //manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://la.keencloud.work/"'
             buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.keencloud.work/"'
