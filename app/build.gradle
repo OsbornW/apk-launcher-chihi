@@ -107,7 +107,7 @@ android {
         }
 
         x88 {
-            storeFile file("platform.keystore")
+            storeFile file("platform_x88.keystore")
             storePassword "platform"
             keyAlias "platform"
             keyPassword "platform"

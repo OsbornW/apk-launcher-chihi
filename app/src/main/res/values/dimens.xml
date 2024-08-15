@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
 
     <!-- dialog_app -->
@@ -17,7 +17,7 @@
     <dimen name="dialog_app_opt_padding">8dp</dimen>
     <dimen name="dialog_app_opt_height">50dp</dimen>
     <dimen name="dialog_app_opt_text_size">16sp</dimen>
-    
+
     <!-- dialog_progress -->
     <dimen name="dialog_progress_root_margin">16dp</dimen>
     <dimen name="dialog_progress_root_card_raidus">8dp</dimen>
@@ -27,11 +27,11 @@
     <dimen name="dialog_progress_opt_bar_margin">8dp</dimen>
     <dimen name="dialog_progress_opt_text_margin">16dp</dimen>
     <dimen name="dialog_progress_opt_text_text_size">16sp</dimen>
-    
+
     <!-- fragment_apps -->
     <dimen name="fragment_apps_cotent_padding_left">16dp</dimen>
     <dimen name="fragment_apps_cotent_padding_right">16dp</dimen>
-    
+
     <!-- fragment_city -->
     <dimen name="fragment_city_search_margin_top">26dp</dimen>
     <dimen name="fragment_city_search_margin_bottom">16dp</dimen>
@@ -54,7 +54,7 @@
     <dimen name="fragment_city_recommend_title_margin_left">10dp</dimen>
     <dimen name="fragment_city_recommend_title_text_size">15sp</dimen>
     <dimen name="fragment_city_recommend_content_width">120dp</dimen>
-    
+
     <!-- fragment_movice_list -->
     <dimen name="fragment_movice_list_content_padding_left">16dp</dimen>
     <dimen name="fragment_movice_list_content_padding_right">16dp</dimen>
@@ -86,11 +86,11 @@
     <dimen name="fragment_search_web_padding_right">26dp</dimen>
     <dimen name="fragment_search_web_height">120dp</dimen>
     <dimen name="fragment_search_web_min_height">72dp</dimen>
-    
+
     <!-- fragment_setting -->
     <dimen name="fragment_setting_list_content_padding_left">16dp</dimen>
     <dimen name="fragment_setting_list_content_padding_right">16dp</dimen>
-    
+
     <!-- fragment_weather -->
     <dimen name="fragment_weather_opt_width">60dp</dimen>
     <dimen name="fragment_weather_search_icon_margin_left">16dp</dimen>
@@ -688,4 +688,6 @@
     <dimen name="main_page_vertical_spacing">2dp</dimen>
     <dimen name="card_elevation">8dp</dimen>
     <dimen name="card_radius">8dp</dimen>
+
+
 </resources>
