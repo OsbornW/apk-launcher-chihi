@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <com.soya.launcher.view.NoDragVerticalGridView
+                    android:paddingTop="80dp"
                     android:id="@+id/content"
                     android:clipToOutline="false"
                     android:clipChildren="false"
@@ -37,7 +38,7 @@
                     android:paddingRight="@dimen/qb_px_42"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/qb_px_250"/>
+                    android:layout_height="wrap_content"/>
             </FrameLayout>
         </LinearLayout>
     </FrameLayout>
