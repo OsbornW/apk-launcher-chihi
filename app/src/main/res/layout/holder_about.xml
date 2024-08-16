@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:focusable="true"
+    android:layout_marginBottom="@dimen/qb_px_8"
     android:focusableInTouchMode="true"
     app:shape_solidColor="@color/transparent"
     app:shape_solidFocusedColor="#80625356"
@@ -11,8 +12,8 @@
     android:paddingRight="@dimen/qb_px_10"
     android:layout_gravity="center"
     android:orientation="horizontal"
-    android:layout_width="@dimen/qb_px_350"
-    android:layout_height="@dimen/qb_px_56">
+    android:layout_width="@dimen/qb_px_400"
+    android:layout_height="@dimen/qb_px_48">
     <androidx.appcompat.widget.LinearLayoutCompat
         android:orientation="horizontal"
         android:layout_width="match_parent"

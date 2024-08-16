@@ -1,60 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clickable="true">
-    <FrameLayout
-        android:orientation="vertical"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/wallpaper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/wallpaper"
-            android:src="@drawable/wallpaper_1"
-            android:scaleType="centerCrop"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <include layout="@layout/include_title"/>
-            <FrameLayout
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/qb_px_0">
-                <androidx.leanback.widget.VerticalGridView
-                    android:id="@+id/content"
-                    android:clipToOutline="false"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    app:focusOutFront="true"
-                    app:focusOutEnd="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="@dimen/qb_px_16"
-                    android:layout_marginRight="@dimen/qb_px_16"
-                    android:paddingLeft="@dimen/qb_px_16"
-                    android:paddingRight="@dimen/qb_px_16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
-            </FrameLayout>
-            <com.hjq.shape.view.ShapeTextView
-                android:id="@+id/upgrade"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:layout_marginBottom="@dimen/qb_px_26"
-                android:layout_gravity="center"
-                android:text="@string/upgrade"
-                android:textSize="@dimen/qb_px_sp_18"
-                android:textColor="@color/text_color_style_1"
-                app:shape_solidFocusedColor="#80625356"
-                app:shape_radius="@dimen/qb_px_100"
-                android:gravity="center"
-                android:layout_width="@dimen/qb_px_200"
-                android:layout_height="@dimen/qb_px_45"/>
-        </LinearLayout>
-    </FrameLayout>
-</com.google.android.material.appbar.AppBarLayout>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/wallpaper_1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_title" />
+
+        <androidx.leanback.widget.VerticalGridView
+            app:focusOutFront="true"
+            app:focusOutEnd="true"
+            android:layout_marginTop="@dimen/qb_px_50"
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/qb_px_280"
+            android:layout_gravity="center_horizontal" />
+
+        <com.hjq.shape.view.ShapeTextView
+            android:id="@+id/upgrade"
+            android:layout_width="@dimen/qb_px_200"
+            android:layout_height="@dimen/qb_px_45"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/qb_px_20"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:text="@string/upgrade"
+            android:textColor="@color/text_color_style_1"
+            android:textSize="@dimen/qb_px_sp_18"
+            app:shape_radius="@dimen/qb_px_100"
+            app:shape_solidFocusedColor="#80625356" />
+    </LinearLayout>
+</FrameLayout>
