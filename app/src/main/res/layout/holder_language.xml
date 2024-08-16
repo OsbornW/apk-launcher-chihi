@@ -44,8 +44,8 @@
             <ImageView
                 android:id="@+id/check"
                 android:src="@drawable/baseline_check_100"
-                android:layout_width="@dimen/qb_px_13"
-                android:layout_height="@dimen/qb_px_13"/>
+                android:layout_width="@dimen/qb_px_17"
+                android:layout_height="@dimen/qb_px_17"/>
         </FrameLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.soya.launcher.view.MyFrameLayout>

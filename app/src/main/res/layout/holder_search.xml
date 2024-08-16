@@ -11,7 +11,7 @@
     <com.soya.launcher.view.MyCardView
         app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/transparent"
-        app:cardElevation="0dp"
+        app:cardElevation="@dimen/qb_px_0"
         android:clickable="true"
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/qb_px_5"
