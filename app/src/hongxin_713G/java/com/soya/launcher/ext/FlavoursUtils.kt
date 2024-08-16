@@ -15,14 +15,14 @@ import com.soya.launcher.ui.fragment.WelcomeFragment
 fun switchFragment() = run{
 
     BuildConfig.DEBUG.yes {
-        /*if (PreferencesManager.isGuide() == 0 ) {
+        if (PreferencesManager.isGuide() == 0 ) {
             sendLiveEventDataDelay(IS_MAIN_CANBACK,true,1000)
             WelcomeFragment.newInstance()
-        } else {*/
+        } else {
 
             sendLiveEventDataDelay(IS_MAIN_CANBACK,false,1000)
             MainFragment.newInstance()
-       // }
+        }
     }.otherwise {
         if (PreferencesManager.isGuide() == 0 ) {
             sendLiveEventDataDelay(IS_MAIN_CANBACK,true,1000)

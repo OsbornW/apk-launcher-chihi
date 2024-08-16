@@ -3,56 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clipToOutline="false"
-    android:clipChildren="false"
-    android:clipToPadding="false">
+   >
     <ImageView
         android:id="@+id/wallpaper"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_gravity="center"
         android:orientation="vertical"
-        android:clipToOutline="false"
-        android:clipChildren="false"
-        android:clipToPadding="false"
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <TextView
             android:text="@string/set_language"
-            android:textSize="@dimen/qb_px_sp_36"
+            android:textSize="@dimen/qb_px_sp_25"
             android:textColor="@color/text_color_style_1"
-            android:layout_marginTop="@dimen/qb_px_26"
-            android:layout_marginBottom="@dimen/qb_px_26"
+            android:layout_marginVertical="@dimen/qb_px_25"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <androidx.leanback.widget.VerticalGridView
             android:id="@+id/content"
             android:layout_gravity="center"
-            android:clipToOutline="false"
-            android:clipChildren="false"
-            android:clipToPadding="false"
             app:focusOutFront="true"
             app:focusOutEnd="true"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/qb_px_250"/>
+            android:layout_marginBottom="@dimen/qb_px_80"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/next"
+            android:layout_marginBottom="@dimen/qb_px_50"
+            android:textSize="@dimen/qb_px_sp_18"
+            android:textColor="@color/text_color_style_1"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text="@string/next"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@drawable/ripple_style_3"
+            android:layout_width="@dimen/qb_px_150"
+            android:layout_height="@dimen/qb_px_45"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
-    <TextView
-        android:id="@+id/next"
-        android:layout_marginBottom="@dimen/qb_px_26"
-        android:textSize="@dimen/qb_px_sp_18"
-        android:textColor="@color/text_color_style_1"
-        android:layout_gravity="center_horizontal|bottom"
-        android:text="@string/next"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
-        android:clickable="true"
-        android:background="@drawable/ripple_style_3"
-        android:layout_width="@dimen/qb_px_150"
-        android:layout_height="@dimen/qb_px_45"/>
+
 </FrameLayout>

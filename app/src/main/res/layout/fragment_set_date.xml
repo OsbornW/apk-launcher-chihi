@@ -24,10 +24,10 @@
         <TextView
             android:id="@+id/title"
             android:text="@string/set_date"
-            android:textSize="@dimen/qb_px_sp_36"
+            android:textSize="@dimen/qb_px_sp_25"
             android:textColor="@color/text_color_style_1"
-            android:layout_marginTop="@dimen/qb_px_26"
-            android:layout_marginBottom="@dimen/qb_px_26"
+            android:layout_marginTop="@dimen/qb_px_80"
+            android:layout_marginBottom="@dimen/qb_px_30"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -47,8 +47,8 @@
                 android:clipToPadding="false"
                 app:focusOutFront="true"
                 app:focusOutEnd="true"
-                android:layout_width="@dimen/qb_px_300"
-                android:layout_height="@dimen/qb_px_220"/>
+                android:layout_width="@dimen/qb_px_350"
+                android:layout_height="@dimen/qb_px_300"/>
             <androidx.leanback.widget.HorizontalGridView
                 android:id="@+id/content"
                 android:layout_gravity="center"
