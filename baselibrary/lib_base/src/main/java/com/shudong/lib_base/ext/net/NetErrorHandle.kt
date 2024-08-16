@@ -25,12 +25,12 @@ fun Throwable.handleNetError(handle:()->Unit) {
             when (code) {
                 TOKEN_INVALID_1, TOKEN_INVALID_2, TOKEN_INVALID_3 -> {
                     // Token 失效，需要最退出登录处理
-                    message?.let { showErrorToast(com.shudong.lib_res.R.string.logout.stringValue()) }
+                   // message?.let { showErrorToast(com.shudong.lib_res.R.string.logout.stringValue()) }
                     //exitLogin()
                 }
                 else ->{
-                    message?.isNotEmpty()?.yes { showErrorToast(message!!) }
-                        ?.otherwise { showErrorToast(com.shudong.lib_res.R.string.server_error.stringValue()) }
+                   /* message?.isNotEmpty()?.yes { showErrorToast(message!!) }
+                        ?.otherwise { showErrorToast(com.shudong.lib_res.R.string.server_error.stringValue()) }*/
                     handle.invoke()
                 }
 
@@ -38,7 +38,7 @@ fun Throwable.handleNetError(handle:()->Unit) {
         }
         else -> {
             //其他异常
-            showErrorToast(com.shudong.lib_res.R.string.net_error.stringValue())
+            //showErrorToast(com.shudong.lib_res.R.string.net_error.stringValue())
             handle.invoke()
         }
     }

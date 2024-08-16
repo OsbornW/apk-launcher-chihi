@@ -12,9 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.shudong.lib_base.currentActivity
-import com.shudong.lib_res.constant.CHATTYPE
-import com.shudong.lib_res.enum_.ChatType
-import com.shudong.lib_res.ext.convertToNum
 import java.io.Serializable
 
 /**
@@ -141,45 +138,4 @@ fun String.gotoBrowser(){
 }
 
 
-fun Activity.startKtxActivityForMain() {
-    this.run {
-        val intent = Intent(
-            this,
-            Class.forName("com.shudong.xinqingapp.MainActivity")
-        )
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        startActivity(
-            intent
-        )
-    }
-}
-
-fun Activity.startKtxActivityForRemark() {
-    this.run {
-        val intent = Intent(
-            this,
-            Class.forName("com.shudong.message.activity.RemarksActivity")
-        )
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-        startActivity(
-            intent
-        )
-    }
-}
-
-fun Activity.startKtxActivityForChat(chatType: ChatType) {
-    this.run {
-        val intent = Intent(
-            this,
-            Class.forName("com.shudong.message.activity.SingleChatActivity")
-        )
-        intent.putExtra(CHATTYPE,chatType.convertToNum())
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-        startActivity(
-            intent
-        )
-    }
-}
