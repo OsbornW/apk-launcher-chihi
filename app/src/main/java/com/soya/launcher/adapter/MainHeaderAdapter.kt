@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +12,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.shudong.lib_base.ext.e
-import com.shudong.lib_base.global.AppCacheBase
-import com.shudong.lib_base.global.AppCacheBase.drawableCache
 import com.soya.launcher.R
 import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.cache.AppCache
-import com.soya.launcher.ext.bindImageView
 import com.soya.launcher.ext.loadImageWithGlide
 import com.soya.launcher.h27002.getDrawableByName
 import com.soya.launcher.utils.FileUtils
@@ -37,7 +32,7 @@ class MainHeaderAdapter(
     private val selectItem = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder(inflater.inflate(R.layout.holder_header, parent, false))
+        return Holder(inflater.inflate(R.layout.item_home_header, parent, false))
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {

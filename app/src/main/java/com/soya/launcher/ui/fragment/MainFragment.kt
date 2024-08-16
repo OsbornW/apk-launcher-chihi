@@ -14,7 +14,6 @@ import android.os.storage.StorageManager
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -49,8 +48,6 @@ import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.downloadPic
-import com.shudong.lib_base.ext.e
-import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
@@ -71,7 +68,6 @@ import com.soya.launcher.adapter.NotifyAdapter
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.adapter.StoreAdapter
 import com.soya.launcher.bean.AppItem
-import com.soya.launcher.bean.AppPackage
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeDataList
@@ -133,7 +129,7 @@ import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.UpdateAppsActivity
 import com.soya.launcher.utils.getFileNameFromUrl
-import com.soya.launcher.view.MyCardView
+import com.soya.launcher.view.RelativeLayoutHouse
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -372,93 +368,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }*/
     }
 
-    var isPicDownload = false
-    private fun startPicTask(coroutineScope: CoroutineScope) {
-        coroutineScope.launch(Dispatchers.IO) {
-            while (true) {
-                checkPicDownload(coroutineScope)
-                delay(15000)
 
-            }
-
-        }
-    }
-
-    var isLoadedList = false
-    private fun checkPicDownload(coroutineScope: CoroutineScope) {
-        coroutineScope.launch(Dispatchers.IO) {
-            val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
-            if (File(path).exists()) {
-                val result = Gson().fromJson<HomeResponse>(
-                    JsonReader(FileReader(path)),
-                    HomeResponse::class.java
-                )
-
-                val size = result.data.movies.size
-
-                result.data.movies.forEachIndexed { index, homeItem ->
-                    val destPath =
-                        "${appContext.filesDir.absolutePath}/header_${(homeItem.icon as String).getFileNameFromUrl()}"
-
-                    if (!File(destPath).exists()) {
-                        (homeItem.icon as String).downloadPic(lifecycleScope, destPath,
-                            downloadComplete = { _, path ->
-                                val filePathCache = AppCache.homeData.dataList
-                                filePathCache[homeItem.icon as String] = path
-                                AppCache.homeData = HomeDataList(filePathCache)
-                                if (countImagesWithPrefix() == size) {
-                                    isLoadedList.no {
-                                        //setNetData(result)
-                                        isLoadedList = true
-                                    }
-
-                                }
-                            },
-                            downloadError = {
-
-                            }
-                        )
-                    }
-
-
-                    homeItem.datas.forEachIndexed { position, it ->
-
-                        val destContentPath =
-                            "${appContext.filesDir.absolutePath}/content_${(it.imageUrl as String).getFileNameFromUrl()}"
-                        var isDownload = false
-                        when (homeItem.name) {
-                            "Youtube", "Disney+", "Hulu", "Prime video" -> {
-                                isDownload = position < 8
-                            }
-
-                            else -> {
-                                isDownload = true
-                            }
-                        }
-
-
-                        isDownload.yes {
-                            if (!File(destContentPath).exists()) {
-                                (it.imageUrl as String).downloadPic(lifecycleScope, destContentPath,
-                                    downloadComplete = { _, path ->
-                                        val filePathCache = AppCache.homeData.dataList
-                                        filePathCache[it.imageUrl as String] = path
-                                        AppCache.homeData = HomeDataList(filePathCache)
-                                    },
-                                    downloadError = {
-                                    }
-                                )
-                            }
-                        }
-
-
-                    }
-                }
-
-            }
-        }
-
-    }
 
     private fun performTask() {
         mViewModel.reqUpdateInfo().lifecycle(this@MainFragment,
@@ -663,7 +573,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             requireContext(),
             getLayoutInflater(),
             CopyOnWriteArrayList(),
-            R.layout.holder_app,
+            R.layout.item_home_localapps,
             newAppListCallback()
         )
         mHdmiView?.visibility =
@@ -1021,7 +931,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             onBind {
                 val mIV = findView<ImageView>(R.id.image)
                 val mTitleView = findView<TextView>(R.id.title)
-                val rlRoot = findView<RelativeLayout>(R.id.rl_root)
+                val rlRoot = findView<RelativeLayoutHouse>(R.id.rl_root)
 
                 val bean = _data as SettingItem
                 mIV.setImageResource(bean.ico)
@@ -1463,22 +1373,22 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun fillMovice(bean: TypeItem) {
-        var layoutId = R.layout.holder_content
+        var layoutId = R.layout.item_home_content_por
         var columns = 1
         when (bean.layoutType) {
             1 -> {
                 columns = 0
-                layoutId = R.layout.holder_content
+                layoutId = R.layout.item_home_content_por
             }
 
             0 -> {
                 columns = 4
-                layoutId = R.layout.holder_content_4
+                layoutId = R.layout.item_home_content_lan
             }
 
             2 -> {
                 columns = 4
-                layoutId = R.layout.holder_content_6
+                layoutId = R.layout.item_home_content_game
             }
         }
         fillMovice(bean.id, bean.layoutType, columns, layoutId)
@@ -1775,51 +1685,6 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     pns[i] = packages?.get(i)?.packageName
                 }
                 AndroidSystem.jumpAppStore(activity, null, pns)
-            }
-        }
-    }
-
-    private fun newMoviceListCallback(): ServiceRequest.Callback<HomeResponse> {
-        return object : ServiceRequest.Callback<HomeResponse> {
-            override fun onCallback(call: Call<*>, status: Int, result: HomeResponse?) {
-                try {
-                    if (!isAdded || call.isCanceled || result == null) return
-                    if (result.data == null || result.data.getMovies() == null || result.data.getMovies()
-                            .isEmpty()
-                    ) {
-                        isConnectFirst = true
-                        return
-                    }
-                    "当前的数据是==${call.request().url}"
-                    PreferencesUtils.setProperty(
-                        Atts.LAST_UPDATE_HOME_TIME,
-                        System.currentTimeMillis()
-                    )
-
-                    Gson().toJson(result).exportToJson("Home.json")
-                    if (!isPicDownload) {
-                        lifecycleScope.launch {
-                            if (result.data.reg_id != AppCache.reqId) {
-                                withContext(Dispatchers.IO) {
-                                    deleteAllPic()
-                                    "开始下载图片:${AppCache.reqId}::::${result.data?.reg_id}"
-                                    startPicTask(this)
-                                }
-                                AppCache.reqId = result.data?.reg_id ?: 0
-                            }
-
-                            isPicDownload = true
-                        }
-
-
-                    }
-
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                } finally {
-                    isReqHome = false
-                }
             }
         }
     }

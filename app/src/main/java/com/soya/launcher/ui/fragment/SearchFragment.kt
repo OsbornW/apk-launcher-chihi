@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +13,8 @@ import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
-import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.isRepeatExcute
-import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.no
-import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
 import com.soya.launcher.R
 import com.soya.launcher.adapter.AppItemAdapter
@@ -88,7 +84,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
                 activity,
                 layoutInflater,
                 ArrayList(),
-                R.layout.holder_app_3,
+                R.layout.item_search_apps,
                 newAppClickCallback()
             )
             mAdapter = FullSearchAdapter(activity, inflater, ArrayList(), this@SearchFragment)

@@ -5,7 +5,7 @@
     android:layout_marginTop="@dimen/qb_px_40"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <RelativeLayout
+    <com.soya.launcher.view.RelativeLayoutHouse
         android:nextFocusUp="@id/header"
         android:id="@+id/rl_root"
         android:clickable="true"
@@ -51,6 +51,6 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.soya.launcher.view.MyCardView>
 
-    </RelativeLayout>
+    </com.soya.launcher.view.RelativeLayoutHouse>
 
 </com.soya.launcher.view.MyFrameLayoutHouse>

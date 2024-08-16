@@ -68,11 +68,8 @@ public class SettingAdapter extends Presenter {
                }
            });
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (callback != null) callback.onClick(bean);
-                }
+            view.setOnClickListener(v -> {
+                if (callback != null) callback.onClick(bean);
             });
         }
 

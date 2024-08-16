@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.soya.launcher.view.MyFrameLayoutHouse
-    android:clipToOutline="false"
-    android:clipToPadding="false"
-    android:clipChildren="false"
-    android:layout_marginLeft="@dimen/qb_px_5"
-    android:layout_marginRight="@dimen/qb_px_5"
-    android:layout_marginTop="@dimen/qb_px_6"
-    android:layout_marginBottom="@dimen/qb_px_6"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clickable="true"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <FrameLayout
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:clipToOutline="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.soya.launcher.view.MyFrameLayoutHouse
+        android:clickable="true"
+        android:id="@+id/fl_root"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:foreground="@drawable/bg_app"
         android:clipChildren="false"
         android:clipToPadding="false"
@@ -27,10 +25,12 @@
             app:cardCornerRadius="@dimen/qb_px_5"
             app:cardBackgroundColor="@color/solid_style_2"
             app:cardElevation="0dp"
+            app:cardUseCompatPadding="false"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_loadding"
                 android:text="@string/loading"
                 android:layout_gravity="center"
                 android:textColor="@color/text_color_style_1"
@@ -39,9 +39,20 @@
                 android:layout_height="wrap_content"/>
             <ImageView
                 android:id="@+id/image"
-                android:scaleType="centerCrop"
-                android:layout_width="@dimen/qb_px_140"
-                android:layout_height="@dimen/qb_px_79"/>
+                android:scaleType="fitXY"
+                android:layout_width="@dimen/qb_px_205"
+                android:layout_height="@dimen/qb_px_180"/>
+            <TextView
+                android:textColor="@color/white"
+                android:textSize="@dimen/qb_px_sp_18"
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="拳皇"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="@dimen/qb_px_8"
+                />
+
         </com.soya.launcher.view.MyCardView>
-    </FrameLayout>
+    </com.soya.launcher.view.MyFrameLayoutHouse>
 </com.soya.launcher.view.MyFrameLayoutHouse>

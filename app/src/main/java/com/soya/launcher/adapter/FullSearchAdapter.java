@@ -119,7 +119,7 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
         }
 
         private void setAppContent(DivSearch bean){
-            AppListAdapter adapter = new AppListAdapter(context, inflater, new ArrayList<>(bean.list), R.layout.holder_app_3, new AppListAdapter.Callback() {
+            AppListAdapter adapter = new AppListAdapter(context, inflater, new ArrayList<>(bean.list), R.layout.item_search_apps, new AppListAdapter.Callback() {
                 @Override
                 public void onSelect(boolean selected) {
 
@@ -140,7 +140,7 @@ public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Ho
         }
 
         private void setAppStore(DivSearch bean){
-            AppItemAdapter adapter = new AppItemAdapter(context, inflater, new ArrayList<>(bean.list), R.layout.holder_app_3, new AppItemAdapter.Callback() {
+            AppItemAdapter adapter = new AppItemAdapter(context, inflater, new ArrayList<>(bean.list), R.layout.item_search_apps, new AppItemAdapter.Callback() {
                 @Override
                 public void onSelect(boolean selected) {
 

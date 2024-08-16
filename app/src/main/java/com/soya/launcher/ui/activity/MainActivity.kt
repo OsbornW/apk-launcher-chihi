@@ -169,9 +169,8 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
         coroutineScope.launch(Dispatchers.IO) {
             while (true) {
 
-                "开始计时器".e("zengyue")
                 checkPicDownload(coroutineScope)
-                delay(15000)
+                delay(60000)
 
             }
 

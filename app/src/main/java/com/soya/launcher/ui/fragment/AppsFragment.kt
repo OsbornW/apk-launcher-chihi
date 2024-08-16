@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.content.pm.ApplicationInfo
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -16,24 +15,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import com.drake.brv.utils.grid
-import com.drake.brv.utils.linear
 import com.drake.brv.utils.models
 import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.no
 import com.soya.launcher.R
-import com.soya.launcher.adapter.AppListAdapter
 import com.soya.launcher.config.Config
-import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.dialog.AppDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.isSysApp
 import com.soya.launcher.view.AppLayout
-import com.soya.launcher.view.MyCardView
-import com.soya.launcher.view.MyFrameLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -76,7 +69,7 @@ class AppsFragment : AbsFragment() {
         mTitleView = view.findViewById(R.id.title)
 
         mContentGrid.grid(4).setup {
-            addType<ApplicationInfo>(R.layout.holder_app_2)
+            addType<ApplicationInfo>(R.layout.item_apps)
             onBind {
 
                 val bean = _data as ApplicationInfo

@@ -9,10 +9,11 @@
     android:layout_marginVertical="@dimen/qb_px_12"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <FrameLayout
+    <com.soya.launcher.view.MyFrameLayoutHouse
+        android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:id="@+id/rl_root"
+        android:id="@+id/fl_root"
         android:foreground="@drawable/bg_app"
         android:clipChildren="false"
         android:clipToPadding="false"
@@ -41,5 +42,5 @@
                 android:layout_width="@dimen/qb_px_200"
                 android:layout_height="@dimen/qb_px_100"/>
         </com.soya.launcher.view.MyCardView>
-    </FrameLayout>
+    </com.soya.launcher.view.MyFrameLayoutHouse>
 </com.soya.launcher.view.MyFrameLayoutHouse>
