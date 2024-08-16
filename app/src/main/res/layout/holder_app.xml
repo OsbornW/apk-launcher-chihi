@@ -13,7 +13,7 @@
         app:cardBackgroundColor="@color/transparent"
         app:cardElevation="0dp"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/qb_px_5"
+        android:layout_margin="@dimen/qb_px_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -22,8 +22,8 @@
             android:layout_height="match_parent">
             <FrameLayout
                 android:background="@color/solid_style_10"
-                android:layout_width="@dimen/qb_px_180"
-                android:layout_height="@dimen/qb_px_120">
+                android:layout_width="@dimen/qb_px_200"
+                android:layout_height="@dimen/qb_px_130">
                 <ImageView
                     android:id="@+id/image"
                     android:scaleType="centerCrop"
@@ -35,8 +35,8 @@
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
-                    android:layout_width="@dimen/qb_px_60"
-                    android:layout_height="@dimen/qb_px_60"/>
+                    android:layout_width="@dimen/qb_px_80"
+                    android:layout_height="@dimen/qb_px_80"/>
             </FrameLayout>
             <FrameLayout
                 android:orientation="vertical"
@@ -45,7 +45,7 @@
                 <TextView
                     android:id="@+id/title"
                     android:text="Google play"
-                    android:textSize="@dimen/qb_px_sp_12"
+                    android:textSize="@dimen/qb_px_sp_14"
                     android:paddingLeft="@dimen/qb_px_5"
                     android:paddingRight="@dimen/qb_px_5"
                     android:maxLines="1"

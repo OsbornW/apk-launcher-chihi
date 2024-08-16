@@ -10,9 +10,9 @@
     <com.soya.launcher.view.MyCardView
         app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/transparent"
-        app:cardElevation="0dp"
+        app:cardElevation="@dimen/qb_px_0"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/qb_px_5"
+        android:layout_margin="@dimen/qb_px_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -23,10 +23,10 @@
                 android:id="@+id/image"
                 android:layout_weight="1"
                 android:background="@color/solid_style_5"
-                android:padding="@dimen/qb_px_5"
+                android:padding="@dimen/qb_px_15"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
-                android:layout_width="@dimen/qb_px_180"
+                android:layout_width="@dimen/qb_px_200"
                 android:layout_height="@dimen/qb_px_120"/>
             <FrameLayout
                 android:background="@drawable/light_item"
@@ -42,7 +42,7 @@
                     <TextView
                         android:id="@+id/title"
                         android:text="Google play"
-                        android:textSize="@dimen/qb_px_sp_11"
+                        android:textSize="@dimen/qb_px_sp_13"
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:textColor="@color/text_selector_color_1"
@@ -56,7 +56,7 @@
                         android:textColor="@color/text_selector_color_1"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:textSize="@dimen/qb_px_sp_9"
+                        android:textSize="@dimen/qb_px_sp_11"
                         android:layout_gravity="bottom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>

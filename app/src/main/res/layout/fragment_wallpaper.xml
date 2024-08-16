@@ -28,7 +28,7 @@
                 android:clipToPadding="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <androidx.leanback.widget.VerticalGridView
+                <com.soya.launcher.view.NoDragVerticalGridView
                     android:id="@+id/content"
                     android:clipToOutline="false"
                     android:clipChildren="false"
@@ -37,7 +37,7 @@
                     android:paddingRight="@dimen/qb_px_42"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/qb_px_249"/>
+                    android:layout_height="@dimen/qb_px_250"/>
             </FrameLayout>
         </LinearLayout>
     </FrameLayout>

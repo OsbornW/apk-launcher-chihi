@@ -22,8 +22,8 @@
             android:layout_height="match_parent">
             <FrameLayout
                 android:background="@color/solid_style_10"
-                android:layout_width="@dimen/qb_px_66"
-                android:layout_height="@dimen/qb_px_37">
+                android:layout_width="@dimen/qb_px_76"
+                android:layout_height="@dimen/qb_px_47">
                 <ImageView
                     android:id="@+id/image"
                     android:layout_weight="1"

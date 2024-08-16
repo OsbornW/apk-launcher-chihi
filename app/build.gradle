@@ -222,8 +222,8 @@ android {
             applicationId "com.soya.launcher"
             dimension "chihi"
             manifestPlaceholders = [share_uid:"android.uid.system"]
-            signingConfig signingConfigs.yxt
-            //signingConfig signingConfigs.new_701
+            //signingConfig signingConfigs.yxt
+            signingConfig signingConfigs.new_701
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'

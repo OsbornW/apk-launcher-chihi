@@ -13,23 +13,25 @@
         app:cardBackgroundColor="@color/solid_style_1"
         android:layout_marginLeft="@dimen/qb_px_8"
         android:layout_marginRight="@dimen/qb_px_8"
-        android:layout_marginTop="@dimen/qb_px_8"
+        android:layout_marginTop="@dimen/qb_px_13"
         android:layout_marginBottom="@dimen/qb_px_8"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/image"
-            android:scaleType="centerCrop"
-            android:layout_width="@dimen/qb_px_173"
-            android:layout_height="@dimen/qb_px_98"/>
+            android:layout_width="@dimen/qb_px_240"
+            android:layout_height="@dimen/qb_px_135"
+            android:scaleType="centerCrop" />
+
         <ImageView
             android:id="@+id/check"
             android:layout_gravity="bottom|right"
             android:layout_margin="@dimen/qb_px_10"
             android:background="@drawable/rect_solid_100dp_alpha_2"
             android:src="@drawable/baseline_check_100"
-            android:padding="@dimen/qb_px_4"
+            android:padding="@dimen/qb_px_6"
             android:layout_width="@dimen/qb_px_23"
             android:layout_height="@dimen/qb_px_23"/>
     </androidx.cardview.widget.CardView>
