@@ -4,23 +4,23 @@
     android:layout_width="match_parent"
     app:shape_solidColor="@color/white"
     android:orientation="vertical"
-    app:shape_radius="@dimen/qb_px_12"
+    app:shape_radius="@dimen/qb_px_8"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/qb_px_60"
+        android:layout_height="@dimen/qb_px_55"
         >
         <TextView
             android:textStyle="bold"
            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/qb_px_30"
+            android:layout_marginLeft="@dimen/qb_px_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/available_updates"
             android:textColor="@color/black"
-            android:textSize="@dimen/qb_px_sp_18"
+            android:textSize="@dimen/qb_px_sp_16"
             />
     </RelativeLayout>
 
@@ -31,8 +31,6 @@
         android:focusable="true"
         app:focusOutFront="true"
         app:focusOutEnd="true"
-        android:clipChildren="false"
-        android:clipToPadding="false"
         android:layout_below="@id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"

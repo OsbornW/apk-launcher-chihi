@@ -1,9 +1,12 @@
 package com.soya.launcher.ext
 
+import android.util.Log
 import com.shudong.lib_base.currentActivity
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.ui.activity.UpdateAppsActivity
+import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -39,18 +42,30 @@ fun isShowUpdate(): Boolean {
     }
 }
 
-// 扩展函数定义
 fun String.formatTimeyyyyMMddHHmm(): String {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+    val inputFormats = arrayOf(
+        SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault()),
+        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()),
+        SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+    )
     val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
     return try {
-        // 解析原始字符串为日期对象
-        val date = inputFormat.parse(this)
-        // 将日期对象格式化为新的字符串
-        outputFormat.format(date)
+        inputFormats.forEach { format ->
+            try {
+                val date = format.parse(this)
+                return outputFormat.format(date)
+            } catch (e: ParseException) {
+                // 尝试下一个格式
+            }
+        }
+        // 如果所有格式都解析失败，抛出自定义异常
+        throw IllegalArgumentException("Invalid time format: $this")
     } catch (e: Exception) {
-        // 如果解析失败，返回原始字符串或空字符串
-        ""
+        // 日志记录
+        Log.e("TimeFormatter", "Error parsing time: $this", e)
+        // 返回默认值或抛出异常
+        return outputFormat.format(Date()) // 或 throw MyCustomException()
     }
 }
+

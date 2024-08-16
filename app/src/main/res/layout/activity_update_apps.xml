@@ -11,8 +11,8 @@
     <FrameLayout
         android:layout_centerInParent="true"
         android:id="@+id/fl_container"
-        android:layout_width="@dimen/qb_px_300"
-        android:layout_height="@dimen/qb_px_300"/>
+        android:layout_width="@dimen/qb_px_320"
+        android:layout_height="@dimen/qb_px_320"/>
 
 </RelativeLayout>
 </layout>

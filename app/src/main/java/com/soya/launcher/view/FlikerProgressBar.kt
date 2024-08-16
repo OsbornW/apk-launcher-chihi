@@ -15,6 +15,7 @@ import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import com.soya.launcher.R
+import com.soya.launcher.utils.truncateTo13WithEllipsis
 import kotlin.math.min
 
 /**
@@ -114,6 +115,7 @@ class FlikerProgressBar @JvmOverloads constructor(
             radius = ta.getDimension(R.styleable.FlikerProgressBar_radius, 0f).toInt()
             borderWidth = ta.getDimension(R.styleable.FlikerProgressBar_borderWidth, 1f).toInt()
             progressText = ta.getText(R.styleable.FlikerProgressBar_defaultText) as String
+            progressText = progressText?.truncateTo13WithEllipsis()
             bgColor = ta.getColor(R.styleable.FlikerProgressBar_bgcolor, Color.TRANSPARENT)
             borderColor = ta.getColor(R.styleable.FlikerProgressBar_borderColor, Color.TRANSPARENT)
             textColor = ta.getColor(R.styleable.FlikerProgressBar_textColor, Color.WHITE)
@@ -293,7 +295,10 @@ class FlikerProgressBar @JvmOverloads constructor(
         val tWidth = textRect!!.width()
         val tHeight = textRect!!.height()
         val xCoordinate = ((measuredWidth - tWidth) / 2).toFloat()
-        val yCoordinate = ((measuredHeight + tHeight) / 2).toFloat()
+        // 计算基线位置
+        val fontMetrics = textPaint!!.fontMetrics
+        val yCoordinate = ((measuredHeight - fontMetrics.descent + fontMetrics.ascent) / 2 - fontMetrics.ascent).toFloat()
+
         val progressWidth = (progress / maxProgress) * measuredWidth
         if (progressWidth > xCoordinate) {
             canvas.save()
@@ -321,7 +326,7 @@ class FlikerProgressBar @JvmOverloads constructor(
     }
 
     fun setProgressText(text: String?) {
-        progressText = text
+        progressText = text?.truncateTo13WithEllipsis()
         invalidate()
     }
 

@@ -163,20 +163,20 @@
     <string name="ethernet">Ethernet is connected, WiFi is not available</string>
 
     <string name="available_updates">Available updates</string>
-    <string name="No_prompt_yet">No prompt yet</string>
+    <string name="No_prompt_yet">Later</string>
     <string name="Cancell">Cancel</string>
     <string name="Finish">Finish</string>
 
-    <string name="Installation_Complete">Installation_Complete</string>
-    <string name="Installation_failed">Installation_failed</string>
-    <string name="Installation_Errors">Installation_Errors</string>
-    <string name="In_preparation">In_preparation</string>
-    <string name="download">download %d%%</string>
-    <string name="Download_failed">Download_failed</string>
-    <string name="update1">update</string>
+    <string name="Installation_Complete">InstallSuccess</string>
+    <string name="Installation_failed">InstallFailed</string>
+    <string name="Installation_Errors">InstallError</string>
+    <string name="In_preparation">Preparing</string>
+    <string name="download">Accepted %d%%</string>
+    <string name="Download_failed">DownloadFailed</string>
+    <string name="update1">Update</string>
 
-    <string name="The_author_of_The_New_York_Times">Waitingforinstallation</string>
-    <string name="The_author">Being_installed</string>
+    <string name="The_author_of_The_New_York_Times">WaitInstall</string>
+    <string name="The_author">Installing</string>
 
 
 </resources>

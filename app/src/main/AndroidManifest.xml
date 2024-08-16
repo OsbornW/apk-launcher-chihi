@@ -102,7 +102,6 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.WeatherActivity" android:screenOrientation="landscape" />
         <activity android:name=".ui.activity.CityActivity" android:screenOrientation="landscape" android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".ui.activity.MoviceListActivity" android:screenOrientation="landscape" />
         <activity android:name=".ui.activity.SearchActivity" android:screenOrientation="landscape" android:windowSoftInputMode="adjustNothing"
@@ -117,11 +116,11 @@
         <activity android:name=".ui.activity.AboutActivity" android:screenOrientation="landscape" />
         <activity android:name=".ui.activity.WallpaperActivity" android:screenOrientation="landscape" />
         <activity android:name=".ui.activity.UpgradeActivity" android:screenOrientation="landscape" />
-        <activity android:name=".ui.activity.GuideActivity" />
-        <activity android:name=".ui.activity.LanguageActivity" />
-        <activity android:name=".ui.activity.GradientActivity" />
-        <activity android:name=".ui.activity.SetDateActivity" />
-        <activity android:name=".ui.activity.ProjectorActivity" />
+        <activity android:name=".ui.activity.GuideActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.activity.LanguageActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.activity.GradientActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.activity.SetDateActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.activity.ProjectorActivity" android:screenOrientation="landscape"/>
         <activity
             android:name=".ui.activity.WifiListActivity"
             android:enabled="true"
@@ -131,11 +130,11 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.ScaleScreenActivity" />
-        <activity android:name=".ui.activity.BluetoothActivity" />
-        <activity android:name=".ui.activity.RemoteControlActivity" />
-        <activity android:name=".ui.activity.ChooseGradientActivity" />
-        <activity android:name=".ui.activity.HomeGuideGroupGradientActivity" />
+        <activity android:name=".ui.activity.ScaleScreenActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.activity.BluetoothActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.activity.RemoteControlActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.activity.ChooseGradientActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ui.activity.HomeGuideGroupGradientActivity" android:screenOrientation="landscape"/>
         <activity android:name=".ui.activity.NetActivity"/>
         <activity
             android:name=".ui.activity.InstallModeActivity"

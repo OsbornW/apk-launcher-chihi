@@ -23,3 +23,11 @@ fun String.getFileNameFromUrl(): String {
     return matchResult?.value ?: ""
 }
 
+fun String.truncateTo13WithEllipsis(): String {
+    return if (length > 14) {
+        substring(0, 13) + ".."
+    } else {
+        this
+    }
+}
+

@@ -9,18 +9,16 @@ import com.soya.launcher.product.ProjectorH6
 import com.soya.launcher.product.ProjectorRK3326
 import com.soya.launcher.product.TVBoxH27002
 import com.soya.launcher.product.TVBoxX98K
-import com.soya.launcher.product.aiboyouPrjector
-import com.soya.launcher.product.aiboyouTV
+import com.soya.launcher.product.PrjectorAiboyou
+import com.soya.launcher.product.TVBoxAiboyou
 import com.soya.launcher.product.base.Channel.AIBOYOUPROJECTOR
 import com.soya.launcher.product.base.Channel.AIBOYOUTV
-import com.soya.launcher.product.base.Channel.NOSYSSIGN
 import com.soya.launcher.product.base.Channel.PROJECTOR_713G_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_713M_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_H6_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_RK3326_C
 import com.soya.launcher.product.base.Channel.TVBox_H27002_C
 import com.soya.launcher.product.base.Channel.TVBox_X98K_C
-import com.soya.launcher.product.noSysSign
 
 sealed interface TVDevice{
     fun openDateSetting(context: Context){}
@@ -39,7 +37,6 @@ object Channel{
     const val PROJECTOR_713G_C = "hongxin_713G"
     const val PROJECTOR_H6_C = "H6"
     const val AIBOYOUTV = "aiboyou_tv"
-    const val NOSYSSIGN = "no_sys_sign"
     const val AIBOYOUPROJECTOR = "aiboyou_projector"
 }
 
@@ -49,12 +46,9 @@ val product : TVDevice =
         PROJECTOR_RK3326_C -> ProjectorRK3326
         TVBox_H27002_C -> TVBoxH27002
         TVBox_X98K_C -> TVBoxX98K
-
         PROJECTOR_713G_C -> Projector713G
         PROJECTOR_H6_C-> ProjectorH6
-        AIBOYOUTV -> aiboyouTV
-        NOSYSSIGN -> noSysSign
-        AIBOYOUPROJECTOR -> aiboyouPrjector
-
+        AIBOYOUTV -> TVBoxAiboyou
+        AIBOYOUPROJECTOR -> PrjectorAiboyou
         else -> DefaultDevice
     }
