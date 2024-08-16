@@ -169,7 +169,7 @@
     <string name="Installation_failed">Ошибка установки</string>
     <string name="Installation_Errors">Ошибка установки</string>
     <string name="In_preparation">Готово.</string>
-    <string name="download">Скачать% d%%</string>
+    <string name="download">Скачать %d%%</string>
     <string name="Download_failed">Ошибка загрузки</string>
     <string name="update1">Обновление</string>
     <string name="The_author_of_The_New_York_Times">Ожидание установки</string>

@@ -168,7 +168,7 @@
     <string name="Installation_failed">A instalação falhou</string>
     <string name="Installation_Errors">erro de instalação</string>
     <string name="In_preparation">Em preparação</string>
-    <string name="download">Transferir% d%%</string>
+    <string name="download">Transferir %d%%</string>
     <string name="Download_failed">A transferência falhou</string>
     <string name="update1">a actualizar</string>
     <string name="The_author_of_The_New_York_Times">À espera da instalação</string>

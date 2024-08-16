@@ -169,7 +169,7 @@
     <string name="Installation_failed">Namestitev ni uspela</string>
     <string name="Installation_Errors">napaka pri namestitvi</string>
     <string name="In_preparation">V pripravi</string>
-    <string name="download">Prenos% d%%</string>
+    <string name="download">Prenos %d%%</string>
     <string name="Download_failed">Prenos ni uspel</string>
     <string name="update1">za posodobitev</string>
     <string name="The_author_of_The_New_York_Times">Čakamo na namestitev</string>

@@ -169,7 +169,7 @@
     <string name="Installation_failed">Paigaldamine nurjus</string>
     <string name="Installation_Errors">paigaldusviga</string>
     <string name="In_preparation">Ettevalmistamisel</string>
-    <string name="download">Allalaadimine% d%%</string>
+    <string name="download">Allalaadimine %d%%</string>
     <string name="Download_failed">Allalaadimine nurjus</string>
     <string name="update1">uuendada</string>
     <string name="The_author_of_The_New_York_Times">Paigaldamise ootamine</string>

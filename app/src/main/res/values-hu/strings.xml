@@ -168,7 +168,7 @@
     <string name="Installation_failed">Telepítés sikertelen</string>
     <string name="Installation_Errors">telepítési hiba</string>
     <string name="In_preparation">Előkészítés alatt</string>
-    <string name="download">Letöltés% d%</string>
+    <string name="download">Letöltés %d%%</string>
     <string name="Download_failed">Letöltés sikertelen</string>
     <string name="update1">frissítés</string>
 

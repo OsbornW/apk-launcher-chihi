@@ -170,7 +170,7 @@
     <string name="Installation_failed">Installation fehlgeschlagen</string>
     <string name="Installation_Errors">Installationsfehler</string>
     <string name="In_preparation">In Vorbereitung</string>
-    <string name="download">Download% d%%</string>
+    <string name="download">Download %d%%</string>
     <string name="Download_failed">Download fehlgeschlagen</string>
     <string name="update1">zu aktualisieren</string>
     <string name="The_author_of_The_New_York_Times">Warten auf Installation</string>

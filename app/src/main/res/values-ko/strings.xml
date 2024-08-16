@@ -170,7 +170,7 @@
     <string name="Installation_failed">설치 실패</string>
     <string name="Installation_Errors">설치 오류</string>
     <string name="In_preparation">준비 중</string>
-    <string name="download">다운로드%d%%</string>
+    <string name="download">다운로드 %d%%</string>
     <string name="Download_failed">다운로드 실패</string>
     <string name="update1">업데이트</string>
     <string name="The_author_of_The_New_York_Times">설치 대기 중</string>

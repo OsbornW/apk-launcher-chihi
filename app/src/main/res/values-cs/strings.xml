@@ -169,7 +169,7 @@
     <string name="Installation_failed">Instalace selhala</string>
     <string name="Installation_Errors">chyba instalace</string>
     <string name="In_preparation">V přípravě</string>
-    <string name="download">Stáhnout% d%%</string>
+    <string name="download">Stáhnout %d%%</string>
     <string name="Download_failed">Stahování selhalo</string>
     <string name="update1">aktualizovat</string>
     <string name="The_author_of_The_New_York_Times">Čekání na instalaci</string>

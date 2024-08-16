@@ -168,7 +168,7 @@
     <string name="Installation_failed">Αποτυχία εγκατάστασης</string>
     <string name="Installation_Errors">σφάλμα εγκατάστασης</string>
     <string name="In_preparation">Σε προετοιμασία</string>
-    <string name="download">Λήψη% d%%</string>
+    <string name="download">Λήψη %d%%</string>
     <string name="Download_failed">Αποτυχία λήψης</string>
     <string name="update1">για ενημέρωση</string>
     <string name="The_author_of_The_New_York_Times">Αναμονή εγκατάστασης</string>

@@ -169,7 +169,7 @@
     <string name="Installation_failed">فشل التثبيت</string>
     <string name="Installation_Errors">تركيب خطأ</string>
     <string name="In_preparation">إعداد</string>
-    <string name="download">تحميل %d%</string>
+    <string name="download">تحميل %d%%</string>
     <string name="Download_failed">فشل التحميل</string>
     <string name="update1">تجديد .</string>
     <string name="The_author_of_The_New_York_Times">في انتظار التثبيت</string>
