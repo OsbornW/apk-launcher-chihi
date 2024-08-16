@@ -140,9 +140,7 @@ class MainContentAdapter(
 
 
                     if (tvLoadding != null) {
-                        if (item.id?.isNotEmpty() == true) {
                             tvLoadding.visibility = View.GONE
-                        }
                     }
                 }
 
