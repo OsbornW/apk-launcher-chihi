@@ -47,6 +47,10 @@
         android:orientation="horizontal">
 
         <com.hjq.shape.view.ShapeTextView
+            android:paddingHorizontal="@dimen/qb_px_12"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
             android:focusableInTouchMode="true"
             android:focusable="true"
             app:shape_strokeFocusedColor="@color/color_669966"
@@ -63,6 +67,10 @@
             />
 
         <com.hjq.shape.view.ShapeTextView
+            android:paddingHorizontal="@dimen/qb_px_12"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
             android:focusableInTouchMode="true"
             android:focusable="true"
             app:shape_strokeFocusedColor="@color/color_669966"
@@ -80,6 +88,10 @@
             />
 
         <com.hjq.shape.view.ShapeTextView
+            android:paddingHorizontal="@dimen/qb_px_12"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
             android:visibility="gone"
             android:focusableInTouchMode="true"
             android:focusable="true"

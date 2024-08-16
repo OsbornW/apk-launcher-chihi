@@ -177,7 +177,7 @@
     <string name="Installation_failed">InstallFailed</string>
     <string name="Installation_Errors">InstallError</string>
     <string name="In_preparation">Preparing</string>
-    <string name="download">Accepted %d%%</string>
+    <string name="download">Accept %d%%</string>
     <string name="Download_failed">DownloadFailed</string>
     <string name="update1">Update</string>
 

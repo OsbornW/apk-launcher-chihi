@@ -169,7 +169,7 @@
     <string name="Installation_failed">L\'installation a échoué</string>
     <string name="Installation_Errors">Erreur d\'installation</string>
     <string name="In_preparation">En préparation</string>
-    <string name="download">Télécharger% d%</string>
+    <string name="download">Télécharger %d%%</string>
     <string name="Download_failed">Le téléchargement a échoué</string>
     <string name="update1">Mise à jour</string>
 
