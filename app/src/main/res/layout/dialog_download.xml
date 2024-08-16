@@ -10,7 +10,7 @@
         app:cardBackgroundColor="@color/transparent"
         app:cardElevation="@dimen/qb_px_8"
         android:layout_gravity="center"
-        android:layout_width="@dimen/qb_px_300"
+        android:layout_width="@dimen/qb_px_350"
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/bg_dialog"
@@ -33,7 +33,7 @@
                 android:background="@color/solid_style_4"/>
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/qb_px_100">
+                android:layout_height="@dimen/qb_px_150">
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_gravity="center"
                     android:orientation="vertical"
@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:textSize="@dimen/qb_px_sp_16"
+                        android:textSize="@dimen/qb_px_sp_20"
                         android:id="@+id/text"
                         android:textColor="@color/text_color_style_1"
                         android:layout_gravity="center"
@@ -54,11 +54,11 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:padding="@dimen/qb_px_8"
-                android:layout_height="@dimen/qb_px_50">
+                android:layout_height="@dimen/qb_px_70">
                 <TextView
                     android:id="@+id/close"
                     android:text="@string/close"
-                    android:textSize="@dimen/qb_px_sp_16"
+                    android:textSize="@dimen/qb_px_sp_20"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
@@ -68,7 +68,7 @@
                 <TextView
                     android:id="@+id/remove"
                     android:text="@string/remove"
-                    android:textSize="@dimen/qb_px_sp_16"
+                    android:textSize="@dimen/qb_px_sp_20"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
@@ -78,7 +78,7 @@
                 <TextView
                     android:id="@+id/retry"
                     android:text="@string/retry"
-                    android:textSize="@dimen/qb_px_sp_16"
+                    android:textSize="@dimen/qb_px_sp_20"
                     android:background="@drawable/ripple_style_3"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"

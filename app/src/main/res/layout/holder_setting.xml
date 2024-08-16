@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:focusable="true"
-    android:layout_marginTop="@dimen/qb_px_40"
+    android:layout_marginTop="@dimen/qb_px_60"
     android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -15,8 +15,8 @@
         app:cardElevation="0dp"
         app:cardBackgroundColor="@color/solid_style_3"
         android:layout_gravity="center"
-        android:layout_width="@dimen/qb_px_180"
-        android:layout_height="@dimen/qb_px_180">
+        android:layout_width="@dimen/qb_px_160"
+        android:layout_height="@dimen/qb_px_160">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -30,8 +30,8 @@
                     android:layout_gravity="center"
                     android:src="@drawable/baseline_wifi_100"
                     android:scaleType="centerCrop"
-                    android:layout_width="@dimen/qb_px_80"
-                    android:layout_height="@dimen/qb_px_80"/>
+                    android:layout_width="@dimen/qb_px_70"
+                    android:layout_height="@dimen/qb_px_70"/>
             </FrameLayout>
             <TextView
                 android:id="@+id/title"

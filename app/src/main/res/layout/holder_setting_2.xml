@@ -17,7 +17,7 @@
         android:layout_marginTop="@dimen/qb_px_17"
         android:layout_marginBottom="@dimen/qb_px_17"
         android:layout_width="@dimen/qb_px_126"
-        android:layout_height="@dimen/qb_px_146">
+        android:layout_height="@dimen/qb_px_126">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:layout_width="match_parent"

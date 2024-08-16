@@ -11,7 +11,7 @@
         app:cardCornerRadius="@dimen/qb_px_8"
         app:cardBackgroundColor="@color/transparent"
         android:layout_gravity="center"
-        android:layout_width="@dimen/qb_px_250"
+        android:layout_width="@dimen/qb_px_320"
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/bg_dialog"
@@ -22,7 +22,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/qb_px_170">
             <TextView
                 android:visibility="gone"
                 android:text="@string/operate"
@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/qb_px_40"/>
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginTop="@dimen/qb_px_20"
+                android:layout_marginTop="@dimen/qb_px_23"
                 android:layout_marginBottom="@dimen/qb_px_20"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -43,8 +43,8 @@
                     app:cardElevation="0dp"
                     app:cardCornerRadius="@dimen/qb_px_5"
                     app:cardBackgroundColor="@color/transparent"
-                    android:layout_width="@dimen/qb_px_46"
-                    android:layout_height="@dimen/qb_px_46">
+                    android:layout_width="@dimen/qb_px_56"
+                    android:layout_height="@dimen/qb_px_56">
                     <ImageView
                         android:id="@+id/icon"
                         android:layout_width="match_parent"
@@ -71,13 +71,13 @@
                         android:layout_height="wrap_content">
                         <TextView
                             android:text="@string/version"
-                            android:textSize="@dimen/qb_px_sp_10"
+                            android:textSize="@dimen/qb_px_sp_15"
                             android:textColor="@color/text_color_style_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                         <TextView
                             android:id="@+id/version"
-                            android:textSize="@dimen/qb_px_10"
+                            android:textSize="@dimen/qb_px_sp_15"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textColor="@color/text_color_style_1"
@@ -90,11 +90,12 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:padding="@dimen/qb_px_5"
-                android:layout_height="@dimen/qb_px_43">
+                android:layout_marginTop="@dimen/qb_px_13"
+                android:layout_height="@dimen/qb_px_53">
                 <com.hjq.shape.view.ShapeTextView
                     android:id="@+id/close"
                     android:text="@string/close"
-                    android:textSize="@dimen/qb_px_sp_10"
+                    android:textSize="@dimen/qb_px_sp_15"
                     app:shape_solidFocusedColor="#80625356"
                     app:shape_radius="@dimen/qb_px_8"
                     android:focusableInTouchMode="true"
@@ -111,7 +112,7 @@
                     android:focusable="true"
                     android:id="@+id/delete"
                     android:text="@string/uninstall"
-                    android:textSize="@dimen/qb_px_sp_10"
+                    android:textSize="@dimen/qb_px_sp_15"
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
@@ -120,7 +121,7 @@
                 <com.hjq.shape.view.ShapeTextView
                     android:id="@+id/open"
                     android:text="@string/open"
-                    android:textSize="@dimen/qb_px_sp_10"
+                    android:textSize="@dimen/qb_px_sp_15"
                     app:shape_solidFocusedColor="#80625356"
                     app:shape_radius="@dimen/qb_px_8"
                     android:focusableInTouchMode="true"
