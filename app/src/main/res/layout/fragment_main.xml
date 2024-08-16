@@ -239,7 +239,7 @@
                             android:foreground="@drawable/ripple_style_4"
                             android:background="@drawable/menu_item_4"
                             android:orientation="horizontal"
-                            android:layout_width="@dimen/qb_px_120"
+                            android:layout_width="@dimen/qb_px_130"
                             android:layout_height="@dimen/qb_px_30">
                             <ImageView
                                 android:layout_gravity="center_vertical"
