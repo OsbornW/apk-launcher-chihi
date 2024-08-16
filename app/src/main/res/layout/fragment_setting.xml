@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <include layout="@layout/include_title"/>
-        <androidx.leanback.widget.VerticalGridView
+        <com.soya.launcher.view.NoDragVerticalGridView
             android:id="@+id/content"
             android:paddingLeft="@dimen/qb_px_10"
             android:paddingRight="@dimen/qb_px_10"
