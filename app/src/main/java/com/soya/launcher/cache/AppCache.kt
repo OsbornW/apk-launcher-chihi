@@ -11,5 +11,6 @@ object AppCache {
     var reqId:Int by serial(0)
     var homeData: HomeDataList by serial(default = HomeDataList(mutableMapOf()))
     var isAllDownload:Boolean by serial(default = false)
+    var isSkipGuid:Boolean by serial(default = false)   //是否跳过引导页
 
 }

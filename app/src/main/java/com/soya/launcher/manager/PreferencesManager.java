@@ -10,10 +10,6 @@ public class PreferencesManager {
         return PreferencesUtils.getString(Atts.CITY, "Hong Kong");
     }
 
-    public static final int isGuide(){
-        return PreferencesUtils.getInt(Atts.IS_GUIDE, 0);
-    }
-
     public static final int getWallpaper(){
         return PreferencesUtils.getInt(Atts.WALLPAPER, -1);
     }

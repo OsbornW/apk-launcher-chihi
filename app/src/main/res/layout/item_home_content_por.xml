@@ -12,6 +12,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
     <com.soya.launcher.view.MyFrameLayoutHouse
+        android:nextFocusUp="@id/header"
         android:id="@+id/fl_root"
         android:clickable="true"
         android:focusable="true"

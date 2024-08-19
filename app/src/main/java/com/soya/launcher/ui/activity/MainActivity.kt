@@ -31,6 +31,7 @@ import com.shudong.lib_base.ext.net.lifecycle
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
@@ -47,12 +48,10 @@ import com.soya.launcher.ext.countImagesWithPrefix
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getBasePath
-import com.soya.launcher.ext.jumpToAuth
-import com.soya.launcher.ext.switchFragment
-import com.soya.launcher.http.response.HomeResponse
 import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.net.viewmodel.HomeViewModel
+import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.GlideUtils
 import com.soya.launcher.utils.getFileNameFromUrl
 import com.soya.launcher.utils.toTrim
@@ -189,9 +188,8 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                 )
 
 
-
                 // val size = result.movies?.size
-                if(!compareSizes(result)){
+                if (!compareSizes(result)) {
 
 
                     result.movies?.forEachIndexed { index, homeItem ->
@@ -205,8 +203,11 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                                 "头数量：${result.movies.size}::当前的子数量是====0".e("zengyue")
 
                             }
-                            else->{
-                                "头数量：${result.movies.size}::当前的子数量是====${homeItem?.datas?.size}".e("zengyue")
+
+                            else -> {
+                                "头数量：${result.movies.size}::当前的子数量是====${homeItem?.datas?.size}".e(
+                                    "zengyue"
+                                )
 
                             }
                         }
@@ -219,7 +220,8 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                             "Google play", "media center" -> {
                                 isDownloadHeader = false
                             }
-                            else->{
+
+                            else -> {
                                 isDownloadHeader = true
                             }
                         }
@@ -257,7 +259,8 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                                 "Youtube", "Disney+", "Hulu", "Prime video" -> {
                                     isDownload = position < 8
                                 }
-                                "Google play","media center"->{
+
+                                "Google play", "media center" -> {
                                     isDownload = false
                                 }
 
@@ -298,7 +301,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                         }
                     }
                 }
-
 
 
             }
@@ -367,18 +369,14 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
 
     private fun commit() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_browse_fragment, getFragment())
-            .commitAllowingStateLoss()
+        product.switchFragment()?.let { replaceFragment(it, R.id.main_browse_fragment) }
     }
 
     fun switchAuthFragment() {
         canBackPressed = true
-        jumpToAuth()
+        product.jumpToAuth(this)
     }
 
-
-    fun getFragment(): Fragment = switchFragment()
 
     override fun onBackPressed() {
         if (canBackPressed) {

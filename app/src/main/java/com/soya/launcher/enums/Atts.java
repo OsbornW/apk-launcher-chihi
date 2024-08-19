@@ -6,7 +6,6 @@ public interface Atts {
     String CITY = "city";
     String WALLPAPER = "wallpaper";
     String UPGRADE_VERSION = "upgrade_version";
-    String IS_GUIDE = "is_guide";
     String LANGUAGE = "language";
     String WORD = "word";
     String SHOW_BOTTOM = "show_bottom";

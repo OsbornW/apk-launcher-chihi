@@ -34,9 +34,6 @@ android {
             java.srcDirs = ['src/hongxin_713RK_G/java']
         }
 
-        no_sys_sign {
-            java.srcDirs = ['src/no_sys_sign/java']
-        }
 
         aiboyou_projector {
             java.srcDirs = ['src/aiboyou_projector/java']
@@ -266,21 +263,7 @@ android {
             buildConfigField "String", "CHIHI_TYPE", '"H6"'
             buildConfigField "String", "MODEL", '"H6"'
         }
-
-        no_sys_sign {
-            applicationId "com.soya.launcher.nosyssign"
-            dimension "chihi"
-            manifestPlaceholders = [share_uid: ""]
-            // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
-            buildConfigField "String", "COMPANY", '"2"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LA22001"'
-            buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
-            buildConfigField "String", "MODEL", '"001"'
-            signingConfig signingConfigs.hongxin
-        }
+        
     }
 
     buildTypes {

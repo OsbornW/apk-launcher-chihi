@@ -2,6 +2,8 @@ package com.soya.launcher.product.base
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.product.Projector713G
 import com.soya.launcher.product.Projector713M
@@ -24,6 +26,8 @@ sealed interface TVDevice{
     fun openDateSetting(context: Context){}
     fun openLanguageSetting(context: Context){}
     fun filterRepeatApps(list:MutableList<ApplicationInfo>):MutableList<ApplicationInfo>? = null
+    fun switchFragment():Fragment? = null
+    fun jumpToAuth(activity: FragmentActivity){}
 }
 
 data object DefaultDevice: TVDevice

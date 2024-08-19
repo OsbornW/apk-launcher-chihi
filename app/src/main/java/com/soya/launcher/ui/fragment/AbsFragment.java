@@ -21,7 +21,7 @@ import com.soya.launcher.utils.GlideUtils;
 public abstract class AbsFragment extends Fragment {
     public abstract int getLayoutId();
 
-    protected ImageView mWallpaperView;
+     public ImageView mWallpaperView;
 
     @Nullable
     @Override
