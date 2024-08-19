@@ -174,4 +174,15 @@
     <string name="update1">Cập nhật</string>
     <string name="The_author_of_The_New_York_Times">Chờ cài đặt</string>
     <string name="The_author">Đang cài đặt</string>
+
+    <string name="Activating">Kích hoạt......</string>
+    <string name="Success">Thành công</string>
+    <string name="Failed_please">Thất bại, vui lòng thử lại!</string>
+    <string name="Invalid_PIN">Mã PIN không hợp lệ, vui lòng thử lại!</string>
+    <string name="The_input">Input không thể để trống</string>
+
+    <string name="System_activation">Kích hoạt hệ thống</string>
+    <string name="Please_input">Vui lòng nhập mã PIN</string>
+    <string name="active_the_app">Vui lòng nhập mã PIN để kích hoạt ứng dụng</string>
+    <string name="Activate_Now">Kích hoạt ngay</string>
 </resources>

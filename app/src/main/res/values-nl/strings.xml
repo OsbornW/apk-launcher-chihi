@@ -174,4 +174,15 @@
     <string name="The_author_of_The_New_York_Times">Wachten op installatie</string>
     <string name="The_author">Installatie in uitvoering</string>
 
+
+    <string name="Activating">Activeren</string>
+    <string name="Success">succes</string>
+    <string name="Failed_please">Mislukt, probeer het alsjeblieft opnieuw!</string>
+    <string name="Invalid_PIN">De pincode is ongeldig, probeer het opnieuw!</string>
+    <string name="The_input">Invoer kan niet leeg zijn</string>
+
+    <string name="System_activation">Systeemactivering</string>
+    <string name="Please_input">Voer de pincode in</string>
+    <string name="active_the_app">Voer de pincode in om de applicatie te activeren</string>
+    <string name="Activate_Now">Nu activeren</string>
 </resources>

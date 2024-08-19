@@ -175,4 +175,16 @@
     <string name="update1">更新</string>
     <string name="The_author_of_The_New_York_Times">等待安裝</string>
     <string name="The_author">安裝中</string>
+
+
+    <string name="Activating">啟動中…</string>
+    <string name="Success">成功</string>
+    <string name="Failed_please">失敗，請重試！</string>
+    <string name="Invalid_PIN">PIN碼無效，請重試！</string>
+    <string name="The_input">輸入不能為空</string>
+
+    <string name="System_activation">系統啟動</string>
+    <string name="Please_input">請輸入PIN碼</string>
+    <string name="active_the_app">請輸入PIN碼以啟動應用程序</string>
+    <string name="Activate_Now">立即啟動</string>
 </resources>

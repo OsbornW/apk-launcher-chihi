@@ -174,4 +174,16 @@
 
     <string name="The_author_of_The_New_York_Times">In attesa dell\'installazione</string>
     <string name="The_author">Installazione in corso</string>
+
+    <string name="Activating">Attivazione</string>
+    <string name="Success">successo</string>
+    <string name="Failed_please">Fallito, riprova!</string>
+    <string name="Invalid_PIN">Il codice PIN non è valido, riprova!</string>
+    <string name="The_input">L\'input non può essere vuoto</string>
+
+    <string name="System_activation">Attivazione del sistema</string>
+    <string name="Please_input">Inserisci il codice PIN</string>
+    <string name="active_the_app">Inserisci il codice PIN per attivare l\'applicazione</string>
+    <string name="Activate_Now">Attiva ora</string>
+
 </resources>

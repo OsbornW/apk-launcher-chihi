@@ -174,4 +174,15 @@
     <string name="update1">för att uppdatera</string>
     <string name="The_author_of_The_New_York_Times">Väntar på installation</string>
     <string name="The_author">Pågående installation</string>
+
+    <string name="Activating">Aktiverar</string>
+    <string name="Success">framgång</string>
+    <string name="Failed_please">Misslyckades, försök igen!</string>
+    <string name="Invalid_PIN">PIN-koden är ogiltig, försök igen!</string>
+    <string name="The_input">Input kan inte vara tom</string>
+
+    <string name="System_activation">Systemaktivering</string>
+    <string name="Please_input">Ange PIN-koden</string>
+    <string name="active_the_app">Ange PIN-koden för att aktivera programmet</string>
+    <string name="Activate_Now">Aktivera nu</string>
 </resources>

@@ -175,4 +175,15 @@
     <string name="The_author_of_The_New_York_Times">Czekanie na instalację</string>
     <string name="The_author">Instalacja w toku</string>
 
+    <string name="Activating">Aktywacja</string>
+    <string name="Success">sukces</string>
+    <string name="Failed_please">Nieudało się, spróbuj ponownie!</string>
+    <string name="Invalid_PIN">Kod PIN jest nieprawidłowy, spróbuj ponownie!</string>
+    <string name="The_input">Wejście nie może być puste</string>
+
+    <string name="System_activation">Aktywacja systemu</string>
+    <string name="Please_input">Proszę wprowadzić kod PIN</string>
+    <string name="active_the_app">Proszę wprowadzić kod PIN, aby aktywować aplikację</string>
+    <string name="Activate_Now">Aktywuj teraz</string>
+
 </resources>

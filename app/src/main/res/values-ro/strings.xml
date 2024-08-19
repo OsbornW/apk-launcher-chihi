@@ -174,4 +174,15 @@
     <string name="update1">pentru a actualiza</string>
     <string name="The_author_of_The_New_York_Times">Așteaptă instalarea</string>
     <string name="The_author">Instalație în curs de desfășurare</string>
+
+    <string name="Activating">Activare</string>
+    <string name="Success">succes</string>
+    <string name="Failed_please">Eşuat, vă rugăm să încercaţi din nou!</string>
+    <string name="Invalid_PIN">Codul PIN nu este valid, vă rugăm să încercați din nou!</string>
+    <string name="The_input">Intrarea nu poate fi goală</string>
+
+    <string name="System_activation">Activarea sistemului</string>
+    <string name="Please_input">Introduceţi codul PIN</string>
+    <string name="active_the_app">Introduceți codul PIN pentru a activa aplicația</string>
+    <string name="Activate_Now">Activează acum</string>
 </resources>

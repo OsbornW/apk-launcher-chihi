@@ -64,9 +64,9 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                 }
             }
         }else{
-          mBind.rlSetting.requestFocus()
+            mBind.rlSetting.requestFocus()
             startKtxActivity<NetActivity>()
-          //ToastUtils.delayedShow("The network is not connected, please set up the network",1000)
+            //ToastUtils.delayedShow("The network is not connected, please set up the network",1000)
         }
 
 
@@ -104,12 +104,12 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                     it.yes {
                         mBind.tvActive.apply {
                             post { requestFocus()
-                            performClick()}
+                                performClick()}
                         }
                         //Thread.sleep(500)
                         //mBind.tvActive.performClick()
                     }.otherwise {
-                        ToastUtils.show("The input cannot be empty")//输入不能为空
+                        ToastUtils.show(getString(R.string.The_input))//输入不能为空
                     }
 
 
@@ -157,7 +157,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                 startKtxActivity<NetActivity>()
                 return@clickNoRepeat
             }
-            showLoadingView("Activating...")
+            showLoadingView(getString(R.string.Activating))
             val uniqueID = DeviceUtils.getUniqueDeviceId().subSequence(0,DeviceUtils.getUniqueDeviceId().length-1)
             //激活码
             val activeCode = mBind.etActiveCode.text.toString().replace('-',' ').toTrim()
@@ -184,7 +184,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                     if(activeCode=="11111111"){
                         AppCacheBase.isActive = true
                         showLoadingViewDismiss()
-                        ToastUtils.show("Success")
+                        ToastUtils.show(getString(R.string.Activating))
                         lifecycleScope.launch {
                             delay(500)
                             showLoadingViewDismiss()
@@ -198,20 +198,20 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                 }
                 else->{
                     //if(BuildConfig.DEBUG){
-                       /* if(activeCode=="11111111"){
-                            AppCacheBase.isActive = true
-                            showLoadingViewDismiss()
-                            ToastUtils.show("Success")
-                            lifecycleScope.launch {
-                                delay(500)
-                                showLoadingViewDismiss()
-                                //repeatOnLifecycle(Lifecycle.State.RESUMED){
-                                sendLiveEventData(ACTIVE_SUCCESS, true)
-                                // }
+                    /* if(activeCode=="11111111"){
+                         AppCacheBase.isActive = true
+                         showLoadingViewDismiss()
+                         ToastUtils.show("Success")
+                         lifecycleScope.launch {
+                             delay(500)
+                             showLoadingViewDismiss()
+                             //repeatOnLifecycle(Lifecycle.State.RESUMED){
+                             sendLiveEventData(ACTIVE_SUCCESS, true)
+                             // }
 
-                            }
-                            return@clickNoRepeat
-                        }*/
+                         }
+                         return@clickNoRepeat
+                     }*/
                     //}
                 }
             }
@@ -250,13 +250,13 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                             showLoadingViewDismiss()
                             val authBean = s?.jsonToBean<AuthBean>()
                             (authBean?.status==200).yes {
-                                    authBean?.code?.let {
-                                        "开始判断msg==="
-                                        it.getResult(authBean.msg)
-                                    }
+                                authBean?.code?.let {
+                                    "开始判断msg==="
+                                    it.getResult(authBean.msg)
+                                }
 
                             }.otherwise {
-                                ToastUtils.show("Failed, please try again!")
+                                ToastUtils.show(getString(R.string.Failed_please))
                             }
                         }
 
@@ -276,7 +276,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                     override fun onError(call: Call?, response: Response?, e: Exception?) {
                         "请求失败"
                         showLoadingViewDismiss()
-                        ToastUtils.show("Failed, please try again!")
+                        ToastUtils.show(getString(R.string.Failed_please))
                         //
 
                     }
@@ -303,7 +303,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
                 10000L-> {
                     AppCacheBase.isActive = true
                     showLoadingViewDismiss()
-                    ToastUtils.show("Success")
+                    ToastUtils.show(getString(R.string.Activating))
                     lifecycleScope.launch {
                         delay(500)
                         //repeatOnLifecycle(Lifecycle.State.RESUMED){
@@ -314,10 +314,10 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
 
                 }
 
-                10004L->ToastUtils.show("Invalid PIN, please try again! ")
+                10004L->ToastUtils.show(getString(R.string.Invalid_PIN))
 
                 else -> {
-                    ToastUtils.show("Failed, please try again!")
+                    ToastUtils.show(getString(R.string.Failed_please))
                 }
             }
         }

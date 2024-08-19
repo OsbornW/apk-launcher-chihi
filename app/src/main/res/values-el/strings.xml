@@ -173,4 +173,17 @@
     <string name="update1">για ενημέρωση</string>
     <string name="The_author_of_The_New_York_Times">Αναμονή εγκατάστασης</string>
     <string name="The_author">Εγκατάσταση σε εξέλιξη</string>
+
+
+
+    <string name="Activating">Ενεργοποίηση</string>
+    <string name="Success">επιτυχία</string>
+    <string name="Failed_please">Αποτυχία, παρακαλώ προσπαθήστε ξανά!</string>
+    <string name="Invalid_PIN">Ο κωδικός είναι άκυρος, δοκιμάστε ξανά!</string>
+    <string name="The_input">Η είσοδος δεν μπορεί να είναι κενή</string>
+
+    <string name="System_activation">Ενεργοποίηση συστήματος</string>
+    <string name="Please_input">Παρακαλώ εισάγετε τον κωδικό PIN</string>
+    <string name="active_the_app">Παρακαλώ εισάγετε τον κωδικό για να ενεργοποιήσετε την εφαρμογή</string>
+    <string name="Activate_Now">Ενεργοποίηση τώρα</string>
 </resources>

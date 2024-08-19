@@ -175,4 +175,16 @@
     <string name="update1">zu aktualisieren</string>
     <string name="The_author_of_The_New_York_Times">Warten auf Installation</string>
     <string name="The_author">Installation in Bearbeitung</string>
+
+
+    <string name="Activating">Aktivieren</string>
+    <string name="Success">Erfolg</string>
+    <string name="Failed_please">Fehlgeschlagen, bitte versuchen Sie es erneut!</string>
+    <string name="Invalid_PIN">Der PIN-Code ist ungültig, bitte versuchen Sie es erneut!</string>
+    <string name="The_input">Eingabe kann nicht leer sein</string>
+
+    <string name="System_activation">Systemaktivierung</string>
+    <string name="Please_input">Bitte geben Sie den PIN-Code ein</string>
+    <string name="active_the_app">Bitte geben Sie den PIN-Code ein, um die Anwendung zu aktivieren</string>
+    <string name="Activate_Now">Jetzt aktivieren</string>
 </resources>

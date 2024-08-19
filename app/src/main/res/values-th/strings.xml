@@ -174,4 +174,17 @@
     <string name="update1">อัพเดท</string>
     <string name="The_author_of_The_New_York_Times">รอการติดตั้ง</string>
     <string name="The_author">ในการติดตั้ง</string>
+
+
+
+    <string name="Activating">ในการเปิดใช้งาน ...</string>
+    <string name="Success">ความสำเร็จ</string>
+    <string name="Failed_please">ล้มเหลวโปรดลองอีกครั้ง!</string>
+    <string name="Invalid_PIN">รหัส PIN ไม่ถูกต้องโปรดลองอีกครั้ง!</string>
+    <string name="The_input">ป้อนข้อมูลไม่สามารถว่างเปล่าได้</string>
+
+    <string name="System_activation">การเปิดใช้งานระบบ</string>
+    <string name="Please_input">กรุณากรอกรหัส PIN</string>
+    <string name="active_the_app">กรุณาใส่รหัส PIN เพื่อเปิดใช้งานแอปพลิเคชัน</string>
+    <string name="Activate_Now">เปิดใช้งานทันที</string>
 </resources>

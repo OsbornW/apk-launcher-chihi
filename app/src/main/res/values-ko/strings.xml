@@ -175,4 +175,16 @@
     <string name="update1">업데이트</string>
     <string name="The_author_of_The_New_York_Times">설치 대기 중</string>
     <string name="The_author">설치 중</string>
+
+
+    <string name="Activating">활성화 중...</string>
+    <string name="Success">성공</string>
+    <string name="Failed_please">실패, 다시 시도하십시오!</string>
+    <string name="Invalid_PIN">PIN 코드가 잘못되었습니다. 다시 시도하십시오!</string>
+    <string name="The_input">입력은 비워둘 수 없습니다.</string>
+
+    <string name="System_activation">시스템 활성화</string>
+    <string name="Please_input">PIN 코드를 입력하십시오.</string>
+    <string name="active_the_app">PIN 코드를 입력하여 응용 프로그램을 활성화하십시오.</string>
+    <string name="Activate_Now">지금 활성화</string>
 </resources>

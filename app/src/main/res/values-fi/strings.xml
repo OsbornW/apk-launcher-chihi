@@ -173,4 +173,17 @@
     <string name="update1">päivitettävä</string>
     <string name="The_author_of_The_New_York_Times">Odotetaan asennusta</string>
     <string name="The_author">Asennus käynnissä</string>
+
+
+    <string name="Activating">Aktivoi</string>
+    <string name="Success">menestys</string>
+    <string name="Failed_please">Epäonnistui, yritä uudelleen!</string>
+    <string name="Invalid_PIN">PIN-koodi on virheellinen, yritä uudelleen!</string>
+    <string name="The_input">Syötettä ei voi olla tyhjä</string>
+
+
+    <string name="System_activation">Järjestelmän aktivointi</string>
+    <string name="Please_input">Anna PIN-koodi</string>
+    <string name="active_the_app">Anna PIN-koodi aktivoidaksesi sovelluksen</string>
+    <string name="Activate_Now">Aktivoi nyt</string>
 </resources>

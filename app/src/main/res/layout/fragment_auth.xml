@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/qb_px_24"
-        android:text="System activation"
+        android:text="@string/System_activation"
         android:layout_marginTop="@dimen/qb_px_25"
         android:layout_marginLeft="@dimen/qb_px_25"
         />
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/qb_px_22"
-            android:text="Please input the PIN"
+            android:text="@string/Please_input"
             />
         <EditText
             android:maxLength="9"
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/qb_px_16"
-            android:text="Please input the PIN to active the app"
+            android:text="@string/active_the_app"
             />
 
         <com.hjq.shape.view.ShapeTextView
@@ -64,7 +64,7 @@
             android:layout_width="@dimen/qb_px_330"
             android:layout_height="wrap_content"
             android:textSize="@dimen/qb_px_16"
-            android:text="Activate Now"
+            android:text="@string/Activate_Now"
             app:shape_solidColor="@color/color_3D4661"
             app:shape_solidFocusedColor="@color/color_3391F5"
             app:shape_textColor="@color/color_495B87"

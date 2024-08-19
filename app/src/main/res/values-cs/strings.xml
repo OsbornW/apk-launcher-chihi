@@ -174,4 +174,16 @@
     <string name="update1">aktualizovat</string>
     <string name="The_author_of_The_New_York_Times">Čekání na instalaci</string>
     <string name="The_author">Instalace probíhá</string>
+
+    <string name="Activating">Aktivuji</string>
+    <string name="Success">úspěch</string>
+    <string name="Failed_please">Selhalo, zkuste to prosím znovu!</string>
+    <string name="Invalid_PIN">PIN kód je neplatný, zkuste to prosím znovu!</string>
+    <string name="The_input">Vstup nemůže být prázdný</string>
+
+    <string name="System_activation">Aktivace systému</string>
+    <string name="Please_input">Zadejte prosím PIN kód</string>
+    <string name="active_the_app">Pro aktivaci aplikace zadejte PIN kód</string>
+    <string name="Activate_Now">Aktivovat nyní</string>
+
 </resources>

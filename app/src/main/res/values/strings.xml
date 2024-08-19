@@ -183,5 +183,21 @@
 
     <string name="The_author_of_The_New_York_Times">WaitInstall</string>
     <string name="The_author">Installing</string>
+    <string name="The_author_of_The_New_York_Times">WaitInstall</string>
+
+
+    <string name="Activating">Activating...</string>
+    <string name="Success">success</string>
+    <string name="Failed_please">Failed, please try again!</string>
+    <string name="Invalid_PIN">The PIN code is invalid, please try again!</string>
+    <string name="The_input">Input cannot be empty</string>
+    <string name="The_author">Installing</string>
+
+
+    <string name="System_activation">System activation</string>
+    <string name="Please_input">Please enter the PIN code</string>
+    <string name="active_the_app">Please enter the PIN code to activate the application</string>
+    <string name="Activate_Now">Activate Now</string>
+
 
 </resources>
