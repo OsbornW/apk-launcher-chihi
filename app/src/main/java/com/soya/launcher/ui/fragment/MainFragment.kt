@@ -47,7 +47,6 @@ import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
-import com.shudong.lib_base.ext.downloadPic
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
@@ -70,7 +69,6 @@ import com.soya.launcher.adapter.StoreAdapter
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Data
-import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
@@ -87,9 +85,8 @@ import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.enums.Tools
 import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.compareSizes
-import com.soya.launcher.ext.countImagesWithPrefix
+import com.soya.launcher.ext.convertH27002Json
 import com.soya.launcher.ext.deleteAllImages
-import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getUpdateList
 import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
@@ -101,7 +98,6 @@ import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.HttpRequest.checkVersion
 import com.soya.launcher.http.ServiceRequest
 import com.soya.launcher.http.response.AppListResponse
-import com.soya.launcher.http.response.HomeResponse
 import com.soya.launcher.http.response.VersionResponse
 import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.ui.activity.AboutActivity
@@ -128,10 +124,8 @@ import com.soya.launcher.view.NoDragVerticalGridView
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.UpdateAppsActivity
-import com.soya.launcher.utils.getFileNameFromUrl
 import com.soya.launcher.view.RelativeLayoutHouse
 import com.thumbsupec.lib_base.toast.ToastUtils
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -1522,26 +1516,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
                 )
             )
-            header.add(
-                1, TypeItem(
-                    "Google Play",
-                    R.drawable.iocn,
-                    0,
-                    Types.TYPE_GOOGLE_PLAY,
-                    TypeItem.TYPE_ICON_IMAGE_RES,
-                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                )
-            )
-            header.add(
-                2, TypeItem(
-                    "Media Center",
-                    R.drawable.media,
-                    0,
-                    Types.TYPE_MEDIA_CENTER,
-                    TypeItem.TYPE_ICON_IMAGE_RES,
-                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                )
-            )
+
+            val menuList = convertH27002Json()
+            header.addAll(1,menuList)
         }
     }
 
