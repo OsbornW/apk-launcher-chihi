@@ -174,4 +174,16 @@
     <string name="update1">za posodobitev</string>
     <string name="The_author_of_The_New_York_Times">Čakamo na namestitev</string>
     <string name="The_author">Namestitev v teku</string>
+
+
+    <string name="Activating">Aktiviranje</string>
+    <string name="Success">uspeh</string>
+    <string name="Failed_please">Ni uspelo, prosim poskusite znova!</string>
+    <string name="Invalid_PIN">PIN koda je neveljavna, poskusite znova!</string>
+    <string name="The_input">Vnos ne more biti prazen</string>
+
+    <string name="System_activation">Aktivacija sistema</string>
+    <string name="Please_input">Prosim vnesite PIN kodo</string>
+    <string name="active_the_app">Za aktiviranje aplikacije vnesite PIN kodo</string>
+    <string name="Activate_Now">Aktiviraj zdaj</string>
 </resources>

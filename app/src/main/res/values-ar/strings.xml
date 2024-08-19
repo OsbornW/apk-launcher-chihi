@@ -175,4 +175,16 @@
     <string name="The_author_of_The_New_York_Times">في انتظار التثبيت</string>
     <string name="The_author">تركيب</string>
 
+
+    <string name="Activating">تفعيل .</string>
+    <string name="Success">النجاح .</string>
+    <string name="Failed_please">فشل ، يرجى المحاولة مرة أخرى !</string>
+    <string name="Invalid_PIN">دبوس غير صالح ، يرجى المحاولة مرة أخرى !</string>
+    <string name="The_input">لا يمكن إدخال فارغة</string>
+
+    <string name="System_activation">تفعيل النظام</string>
+    <string name="Please_input">الرجاء إدخال رقم التعريف الشخصي</string>
+    <string name="active_the_app">الرجاء إدخال رقم التعريف الشخصي لتنشيط التطبيق</string>
+    <string name="Activate_Now">تفعيل فوري</string>
+
 </resources>

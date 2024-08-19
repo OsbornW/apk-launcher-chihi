@@ -176,4 +176,18 @@
     <string name="The_author">በእይነታ እንደ ተጫነ</string>
 
 
+    <string name="Activating">እየተነቃቁ ነው...</string>
+    <string name="Success">ስኬት</string>
+    <string name="Failed_please">አልተሳካም፣ እባክዎን ድጋሚ ይሞክሩ!</string>
+    <string name="Invalid_PIN">የተሳሳተ ፒን ኮድ፣ እባክዎን ድጋሚ ይሞክሩ!</string>
+    <string name="The_input">መግቢያ ባዶ መሆን አይችልም</string>
+
+
+    <string name="System_activation">የሲስተም እንቅስቃሴ</string>
+    <string name="Please_input">እባክዎ ፒን ኮድ ያስገቡ</string>
+    <string name="active_the_app">አፕሊኬሽኑን ለማንቃት ፒን ኮድ ያስገቡ</string>
+    <string name="Activate_Now">አሁን ንቁ</string>
+
+
+
 </resources>

@@ -173,4 +173,16 @@
     <string name="update1">a actualizar</string>
     <string name="The_author_of_The_New_York_Times">À espera da instalação</string>
     <string name="The_author">Instalação em curso</string>
+
+
+    <string name="Activating">Activar</string>
+    <string name="Success">sucesso</string>
+    <string name="Failed_please">Falhou, tente novamente!</string>
+    <string name="Invalid_PIN">O código PIN é inválido, tente novamente!</string>
+    <string name="The_input">A entrada não pode estar vazia</string>
+
+    <string name="System_activation">Activação do sistema</string>
+    <string name="Please_input">Introduza o código PIN</string>
+    <string name="active_the_app">Introduza o código PIN para activar a aplicação</string>
+    <string name="Activate_Now">Activar Agora</string>
 </resources>

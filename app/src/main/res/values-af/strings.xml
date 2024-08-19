@@ -183,4 +183,18 @@
     <string name="The_author">Besig om te installeer</string>
 
 
+    <string name="Activating">Besig om te aktiveer...</string>
+    <string name="Success">Sukses</string>
+    <string name="Failed_please">Misluk, probeer asseblief weer!</string>
+    <string name="Invalid_PIN">Ongeldige PIN-kode, probeer asseblief weer!</string>
+    <string name="The_input">Die invoer kan nie leeg wees nie</string>
+
+
+    <string name="System_activation">Stelselaktivering</string>
+    <string name="Please_input">Voer asseblief die PIN-kode in</string>
+    <string name="active_the_app">Voer asseblief die PIN-kode in om die program te aktiveer</string>
+    <string name="Activate_Now">Aktiveer Nou</string>
+
+
+
 </resources>

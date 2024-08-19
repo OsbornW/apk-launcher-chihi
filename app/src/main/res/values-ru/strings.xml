@@ -174,4 +174,16 @@
     <string name="update1">Обновление</string>
     <string name="The_author_of_The_New_York_Times">Ожидание установки</string>
     <string name="The_author">В процессе установки</string>
+
+
+    <string name="Activating">Активировать...</string>
+    <string name="Success">Успех</string>
+    <string name="Failed_please">Неудача, повторите попытку!</string>
+    <string name="Invalid_PIN">PIN - код не действителен, попробуйте снова!</string>
+    <string name="The_input">Ввод не может быть пустым</string>
+
+    <string name="System_activation">Активация системы</string>
+    <string name="Please_input">Введите PIN - код.</string>
+    <string name="active_the_app">Введите PIN - код для активации приложения</string>
+    <string name="Activate_Now">Немедленно активируйте</string>
 </resources>

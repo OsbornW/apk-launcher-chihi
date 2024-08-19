@@ -174,4 +174,16 @@
 
     <string name="The_author_of_The_New_York_Times">Telepítésre várva</string>
     <string name="The_author">A létesítmény folyamatban van</string>
+
+
+    <string name="Activating">Aktiválás</string>
+    <string name="Success">siker</string>
+    <string name="Failed_please">Nem sikerült, kérem próbálja meg újra!</string>
+    <string name="Invalid_PIN">A PIN kód érvénytelen, próbálja meg újra!</string>
+    <string name="The_input">A bemenet nem lehet üres</string>
+
+    <string name="System_activation">Rendszer aktiválása</string>
+    <string name="Please_input">Kérjük, adja meg a PIN kódot</string>
+    <string name="active_the_app">Kérjük, adja meg a PIN kódot az alkalmazás aktiválásához</string>
+    <string name="Activate_Now">Aktiválás most</string>
 </resources>

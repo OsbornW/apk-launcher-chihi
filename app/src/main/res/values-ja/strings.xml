@@ -175,4 +175,15 @@
     <string name="The_author_of_The_New_York_Times">インストール待ち</string>
     <string name="The_author">インストール中</string>
 
+    <string name="Activating">アクティブ化中...</string>
+    <string name="Success">成功</string>
+    <string name="Failed_please">失敗しました、再試行してください！</string>
+    <string name="Invalid_PIN">PINコードが無効です。再試行してください！</string>
+    <string name="The_input">入力を空にすることはできません</string>
+
+    <string name="System_activation">システムのアクティブ化</string>
+    <string name="Please_input">PINコードを入力してください</string>
+    <string name="active_the_app">アプリケーションをアクティブ化するためにPINコードを入力してください</string>
+    <string name="Activate_Now">今すぐアクティブにする</string>
+
 </resources>

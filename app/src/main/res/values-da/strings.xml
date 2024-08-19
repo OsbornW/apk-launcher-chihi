@@ -174,4 +174,17 @@
     <string name="update1">at opdatere</string>
     <string name="The_author_of_The_New_York_Times">Venter på installation</string>
     <string name="The_author">Installation i gang</string>
+
+
+    <string name="Activating">Aktiverer</string>
+    <string name="Success">succes</string>
+    <string name="Failed_please">Mislykkedes, prøv igen!</string>
+    <string name="Invalid_PIN">PIN-koden er ugyldig, prøv venligst igen!</string>
+    <string name="The_input">Input kan ikke være tom</string>
+
+    <string name="System_activation">Systemaktivering</string>
+    <string name="Please_input">Indtast PIN-koden</string>
+    <string name="active_the_app">Indtast PIN-koden for at aktivere programmet</string>
+    <string name="Activate_Now">Aktivér nu</string>
+
 </resources>

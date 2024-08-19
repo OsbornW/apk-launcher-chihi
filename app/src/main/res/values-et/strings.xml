@@ -174,4 +174,18 @@
     <string name="update1">uuendada</string>
     <string name="The_author_of_The_New_York_Times">Paigaldamise ootamine</string>
     <string name="The_author">Käimasolev paigaldus</string>
+
+
+
+    <string name="Activating">Aktiveerimine</string>
+    <string name="Success">edu</string>
+    <string name="Failed_please">Ebaõnnestus, palun proovi uuesti!</string>
+    <string name="Invalid_PIN">PIN kood on kehtetu, palun proovige uuesti!</string>
+    <string name="The_input">Sisend ei saa olla tühi</string>
+
+
+    <string name="System_activation">Järjestelmän aktivointi</string>
+    <string name="Please_input">Anna PIN-koodi</string>
+    <string name="active_the_app">Anna PIN-koodi aktivoidaksesi sovelluksen</string>
+    <string name="Activate_Now">Aktivoi nyt</string>
 </resources>
