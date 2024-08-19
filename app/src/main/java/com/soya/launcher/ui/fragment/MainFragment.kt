@@ -926,6 +926,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             false
         )
         mVerticalContentGrid!!.setNumColumns(4)
+        mVerticalContentGrid?.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_10.dimenValue())
         mVerticalContentGrid!!.setup {
             addType<SettingItem>(R.layout.holder_setting_3)
             onBind {
