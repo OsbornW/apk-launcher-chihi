@@ -1,9 +1,11 @@
 package com.soya.launcher.ext
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import com.google.gson.Gson
@@ -142,6 +144,19 @@ fun MutableList<ApplicationInfo>.getIndexAfterSorting(targetAppInfo: Application
     // 获取目标应用的信息在排序后集合中的索引位置
     return this.indexOfFirst { it.packageName == targetAppInfo.packageName }.takeIf { it >= 0 } ?: 0
 }
+
+fun String.openAppInGooglePlay(context:Context) {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$this"))
+        intent.setPackage("com.android.vending")
+        context.startActivity(intent)
+    } catch (e: Exception) {
+        // 如果 Google Play Store 不存在或者跳转失败，使用 Web 浏览器打开
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$this"))
+        context.startActivity(intent)
+    }
+}
+
 
 
 
