@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.soya.launcher.R;
+import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.Atts;
 
 public class ToastDialog extends SingleDialogFragment{
@@ -62,6 +63,11 @@ public class ToastDialog extends SingleDialogFragment{
         mRootView = view.findViewById(R.id.root);
         mBlur = view.findViewById(R.id.blur);
         mCancelView = view.findViewById(R.id.cancel);
+   if (Config.COMPANY==0){
+       mRootView.setBackgroundResource(R.drawable.bg_dialog_2);
+   }else {
+       mRootView.setBackgroundResource(R.drawable.bg_dialog);
+   }
 
         switch (mode){
             case MODE_CONFIRM:

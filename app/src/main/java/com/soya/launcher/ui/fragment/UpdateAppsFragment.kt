@@ -1,10 +1,6 @@
-package com.soya.launcher.ui.fragment
-
-import android.os.Build
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.drake.brv.utils.addModels
@@ -16,8 +12,6 @@ import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.colorValue
 import com.shudong.lib_base.ext.downloadApk
-import com.shudong.lib_base.ext.e
-import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToTypeBean
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
@@ -34,7 +28,6 @@ import silentInstallWithMutex
 class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewModel>() {
 
     override fun initView() {
-
         mBind.rvApps.let {
             it.linear().setup {
                 addType<UpdateAppsDTO>(R.layout.item_update)
@@ -56,7 +49,6 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                             pbUpdate.setBorderColor(R.color.color_669966.colorValue())
                         else
                             pbUpdate.setBorderColor(R.color.transparent.colorValue())
-
                     }
 
                     llRoot.clickNoRepeat {
@@ -74,7 +66,6 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                                 pbUpdate.setTextColor(com.shudong.lib_res.R.color.red.colorValue())
                                 pbUpdate.setProgressText(getString(R.string.Download_failed))
                                 pbUpdate.reset()
-
                             },
                             downloadComplete = { _, destPath ->
                                 startInstallApp(destPath, pbUpdate, llRoot) {
@@ -86,23 +77,17 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                                         mBind.tvCancle.isVisible = false
                                         mBind.tvOk.isVisible = true
                                         mBind.tvOk.post { mBind.tvOk.requestFocus() }
-
                                     }
                                 }
                             }
                         )
                     }
-
                 }
-
             }.models = arrayListOf()
-
         }
 
         val list = AppCache.updateInfo.jsonToTypeBean<MutableList<UpdateAppsDTO>>()
-
         mBind.rvApps.addModels(list)
-
 
         mBind.rvApps.apply {
             postDelayed({
@@ -111,6 +96,22 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
             }, 0)
         }
 
+        checkAndShowPrompt()
+    }
+
+    private fun checkAndShowPrompt() {
+        // 获取当前时间
+        val currentTime = System.currentTimeMillis()
+        // 获取上次提示时间和间隔设置
+        val lastTipTime = AppCache.lastTipTime
+        val updateInterval = AppCache.updateInteval
+
+        if (updateInterval == "day" && currentTime - lastTipTime < 24 * 60 * 60 * 1000) {
+            // 24小时内不显示弹窗
+            return
+        }
+
+        // 显示弹窗的逻辑（如果需要）
     }
 
     override fun initClick() {
@@ -123,13 +124,14 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
             }
             tvCancle.clickNoRepeat {
                 // 点击取消，应用重启或者间隔超过24小时后提示
+                val currentTime = System.currentTimeMillis()
                 AppCache.updateInteval = "day"
-                AppCache.lastTipTime = System.currentTimeMillis()
+                AppCache.lastTipTime = currentTime
                 requireActivity().finish()
             }
 
             tvOk.clickNoRepeat {
-                //点击完成
+                // 点击完成
                 requireActivity().finish()
                 AppCache.lastTipTime = 0
             }
@@ -162,7 +164,6 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
             }
         }
     }
-
 
     companion object {
         @JvmStatic
