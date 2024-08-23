@@ -67,11 +67,6 @@ class AppListAdapter(
         val missingInNew = newPackageNames - oldPackageNames
         val extraInOld = oldPackageNames - newPackageNames
 
-
-
-
-
-
         when {
             // 处理新增的情况
             missingInNew.isNotEmpty()-> {

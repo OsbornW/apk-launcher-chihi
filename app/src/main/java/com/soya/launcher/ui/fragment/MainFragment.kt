@@ -532,7 +532,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             newStoreClickCallback()
         )
         mNotifyAdapter = NotifyAdapter(
-            activity,
+            requireContext(),
             inflater,
             CopyOnWriteArrayList(),
             if (Config.COMPANY == 3) R.layout.holder_notify else R.layout.holder_notify_2
@@ -696,6 +696,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         mGradientView!!.setOnClickListener(this)
     }
 
+    var storageList = mutableListOf<Notify>()
     override fun initBind(view: View, inflater: LayoutInflater) {
         super.initBind(view, inflater)
         fillHeader()
@@ -707,6 +708,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             )
         )
         mNotifyRecycler!!.setAdapter(mNotifyAdapter)
+
     }
 
     override fun getWallpaperView(): Int {
@@ -847,23 +849,23 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             } else {
                 mWifiView!!.setImageResource(if (isNetworkAvailable) R.drawable.baseline_wifi_100 else R.drawable.baseline_wifi_off_100)
             }*/
-            if (Config.COMPANY == 3) {
+            //if (Config.COMPANY == 3) {
 
                 val notifies: MutableList<Notify> = ArrayList()
-                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100))
+                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100,3))
                 val deviceHashMap =
                     (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
 
                 val isInsertUDisk = requireActivity().isUDisk()
 
                 isInsertUDisk.yes {
-                    notifies.add(Notify(R.drawable.baseline_usb_100))
+                    notifies.add(Notify(R.drawable.baseline_usb_100,0))
                 }
 
                 /*for (i in 0 until deviceHashMap.size) {
                         notifies.add(Notify(R.drawable.baseline_usb_100))
                  }*/
-                if (SystemUtils.isApEnable(activity)) notifies.add(Notify(R.drawable.baseline_wifi_tethering_100_2))
+                if (SystemUtils.isApEnable(activity)) notifies.add(Notify(R.drawable.baseline_wifi_tethering_100_2,2))
                 val storageManager = activity!!.getSystemService(
                     StorageManager::class.java
                 )
@@ -871,15 +873,18 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 val isInsertSDCard = requireActivity().isSDCard()
 
                 isInsertSDCard.yes {
-                    notifies.add(Notify(R.drawable.baseline_sd_storage_100))
+                    notifies.add(Notify(R.drawable.baseline_sd_storage_100,1))
                 }
                 /*for (volume in storageManager.storageVolumes) {
                         if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
                 }*/
-                mNotifyAdapter!!.replace(notifies)
-
-
+            if(notifies.size !=mNotifyAdapter?.getDataList()?.size){
+                mNotifyAdapter!!.refresh(notifies)
             }
+
+
+
+            //}
         })
     }
 

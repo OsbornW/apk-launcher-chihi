@@ -143,7 +143,7 @@ class App : Application() {
             .build())
 
 
-        AppCache.lastTipTime = 0L
+        //AppCache.lastTipTime = 0L
         //AppCache.updateInteval
 
         OkGo.init(this)

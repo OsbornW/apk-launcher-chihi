@@ -212,12 +212,10 @@
                         android:textSize="@dimen/qb_px_sp_11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
-                    <com.soya.launcher.view.NoFocuRecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_marginRight="@dimen/qb_px_200"
                         android:id="@+id/notify_recycler"
-                        android:descendantFocusability="blocksDescendants"
-                        android:layout_gravity="center"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
+                        android:layout_gravity="right|center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <LinearLayout
@@ -227,6 +225,7 @@
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
+
                         <com.soya.launcher.view.LinearLayoutHouse
                             android:id="@+id/search"
                             android:clickable="true"
