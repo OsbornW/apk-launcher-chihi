@@ -170,8 +170,8 @@ android {
             applicationId "com.chihihx.launcher_game"
             dimension "chihi"
             //signingConfig signingConfigs.hongxin
-            //signingConfig signingConfigs.new_701
-            signingConfig signingConfigs.x88
+            signingConfig signingConfigs.new_701
+            //signingConfig signingConfigs.x88
             versionCode 56
             versionName "1.57"
             manifestPlaceholders = [share_uid: "android.uid.system"]

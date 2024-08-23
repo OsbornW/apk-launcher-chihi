@@ -852,7 +852,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             //if (Config.COMPANY == 3) {
 
                 val notifies: MutableList<Notify> = ArrayList()
+            if (Config.COMPANY == 3){
                 if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100,3))
+            }
+
                 val deviceHashMap =
                     (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
 
