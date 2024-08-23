@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
-        android:background="@drawable/bg_dialog"
         android:id="@+id/root"
         app:cardCornerRadius="@dimen/qb_px_8"
         app:cardBackgroundColor="@color/transparent"
@@ -13,7 +12,7 @@
         android:layout_width="@dimen/qb_px_300"
         android:layout_height="wrap_content">
         <ImageView
-            android:src="@drawable/bg_dialog"
+
             android:id="@+id/blur"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
@@ -44,7 +43,7 @@
                     <TextView
                         android:textSize="@dimen/qb_px_sp_16"
                         android:id="@+id/text"
-                        android:textColor="#80000000"
+                        android:textColor="@color/solid_style_1"
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>

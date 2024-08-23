@@ -264,7 +264,7 @@ android {
             buildConfigField "String", "CHIHI_TYPE", '"H6"'
             buildConfigField "String", "MODEL", '"H6"'
         }
-        
+
     }
 
     buildTypes {
