@@ -125,6 +125,7 @@ class App : Application() {
         Serialize.hook = JsonSerializeHook()
 
         AppCacheNet.baseUrl = BuildConfig.BASE_URL
+        AppCache.isGuidChageLanguage = false
 
         startKoin {
             androidContext(this@App)

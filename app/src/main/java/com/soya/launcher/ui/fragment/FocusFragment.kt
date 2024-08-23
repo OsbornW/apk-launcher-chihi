@@ -1,59 +1,63 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import androidx.fragment.app.FragmentManager
+import com.soya.launcher.R
+import com.soya.launcher.cache.AppCache
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+class FocusFragment : AbsFragment(), View.OnClickListener {
+    private var mNextView: View? = null
 
-import com.soya.launcher.R;
-
-public class FocusFragment extends AbsFragment implements View.OnClickListener {
-
-    public static FocusFragment newInstance() {
-        
-        Bundle args = new Bundle();
-        
-        FocusFragment fragment = new FocusFragment();
-        fragment.setArguments(args);
-        return fragment;
+    override fun getLayoutId(): Int {
+        return R.layout.fragment_focus
     }
 
-    private View mNextView;
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_focus;
+    override fun init(view: View, inflater: LayoutInflater) {
+        super.init(view, inflater)
+        mNextView = view.findViewById(R.id.next)
     }
 
-    @Override
-    protected void init(View view, LayoutInflater inflater) {
-        super.init(view, inflater);
-        mNextView = view.findViewById(R.id.next);
+    override fun initBind(view: View, inflater: LayoutInflater) {
+        super.initBind(view, inflater)
+        mNextView!!.setOnClickListener { v: View -> this.onClick(v) }
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        mNextView.setOnClickListener(this::onClick);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requestFocus(mNextView)
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        requestFocus(mNextView);
-    }
 
-    @Override
-    public void onClick(View v) {
-        if (v.equals(mNextView)){
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GuideLanguageFragment.newInstance()).addToBackStack(null).commit();
+    override fun onClick(v: View) {
+        if (v == mNextView) {
+
+            val fManager = activity!!.supportFragmentManager
+            if (fManager.backStackEntryCount > 0) {
+                fManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            }
+            AppCache.isGuidChageLanguage = false
+
+            val fragmentTag = GuideGroupGradientFragment::class.java.name
+            activity!!.supportFragmentManager.beginTransaction()
+                .replace(R.id.main_browse_fragment, GuideLanguageFragment.newInstance())
+                .addToBackStack(fragmentTag).commit()
         }
     }
 
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
+    override fun getWallpaperView(): Int {
+        return R.id.wallpaper
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): FocusFragment {
+            val args = Bundle()
+
+            val fragment = FocusFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

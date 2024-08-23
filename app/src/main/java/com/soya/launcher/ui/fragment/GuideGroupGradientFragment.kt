@@ -1,30 +1,34 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import androidx.lifecycle.lifecycleScope
+import com.shudong.lib_base.ext.e
+import com.soya.launcher.cache.AppCache
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.open.system.ASystemProperties;
-import com.soya.launcher.R;
-import com.soya.launcher.ui.activity.ChooseGradientActivity;
-
-public class GuideGroupGradientFragment extends AbsGroupGradientFragment {
-
-    public static GuideGroupGradientFragment newInstance() {
-
-        Bundle args = new Bundle();
-
-        GuideGroupGradientFragment fragment = new GuideGroupGradientFragment();
-        fragment.setArguments(args);
-        return fragment;
+class GuideGroupGradientFragment : AbsGroupGradientFragment() {
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            delay(1500)
+            AppCache.isGuidChageLanguage = false
+        }
     }
 
-    @Override
-    protected boolean isGuide() {
-        return true;
+
+    override val isGuide: Boolean
+        get() = true
+
+    companion object {
+        fun newInstance(): GuideGroupGradientFragment {
+            val args = Bundle()
+
+            val fragment = GuideGroupGradientFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

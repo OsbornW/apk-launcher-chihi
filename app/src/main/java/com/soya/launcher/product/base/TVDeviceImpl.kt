@@ -7,10 +7,12 @@ import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.sendLiveEventDataDelay
 import com.shudong.lib_base.ext.startKtxActivity
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.ui.activity.LanguageActivity
 import com.soya.launcher.ui.activity.SetDateActivity
+import com.soya.launcher.ui.fragment.GuideLanguageFragment
 import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.ui.fragment.WelcomeFragment
 
@@ -29,7 +31,12 @@ interface TVDeviceImpl: TVDevice {
     override fun switchFragment(): Fragment? = run {
         AppCache.isSkipGuid.no {
             sendLiveEventDataDelay(IS_MAIN_CANBACK,true,1000)
-            WelcomeFragment.newInstance()
+            AppCache.isGuidChageLanguage.yes {
+                GuideLanguageFragment.newInstance()
+            }.otherwise {
+                WelcomeFragment.newInstance()
+            }
+
         }.otherwise {
             sendLiveEventDataDelay(IS_MAIN_CANBACK,false,1000)
             MainFragment.newInstance()
