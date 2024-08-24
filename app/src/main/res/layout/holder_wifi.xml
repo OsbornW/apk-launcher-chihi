@@ -25,7 +25,7 @@
             android:layout_height="@dimen/qb_px_4"/>
         <TextView
             android:id="@+id/title"
-            android:textSize="@dimen/qb_px_sp_12"
+            android:textSize="@dimen/qb_px_sp_15"
             android:layout_marginLeft="@dimen/qb_px_10"
             android:textColor="@color/text_color_style_1"
             android:layout_gravity="center_vertical"

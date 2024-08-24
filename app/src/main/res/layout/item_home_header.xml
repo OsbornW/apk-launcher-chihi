@@ -24,7 +24,7 @@
         android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/title"
-        android:textSize="@dimen/qb_px_sp_12"
+        android:textSize="@dimen/qb_px_sp_17"
         android:gravity="center"
         android:textColor="@color/text_selector_color_1"
         android:layout_gravity="bottom"

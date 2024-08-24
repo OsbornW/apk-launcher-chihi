@@ -41,7 +41,7 @@
                 <TextView
                     android:id="@+id/title"
                     android:text="WIFI"
-                    android:textSize="@dimen/qb_px_sp_12"
+                    android:textSize="@dimen/qb_px_sp_15"
                     android:gravity="center"
                     android:layout_gravity="bottom"
                     android:textColor="@color/text_selector_color_1"
