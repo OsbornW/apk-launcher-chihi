@@ -61,6 +61,19 @@ class NotifyAdapter(
                     if (newItem != null) {
                         var tempList = mutableListOf<Notify>()
                         tempList.addAll(dataList)
+
+
+                        // 找到第一个type为0的元素的索引
+                        val index = tempList.indexOfFirst { it.type == 0 }
+
+                        // 如果找到了type为0的元素，就在其前面插入newItem
+                        if (index != -1) {
+                            tempList.add(index, newItem)
+                        } else {
+                            // 如果没有找到，则直接添加到列表末尾
+                            tempList.add(newItem)
+                        }
+
                         tempList.add(newItem)
                         val sortIndex = tempList.getIndexAfterSorting(newItem)
                         dataList.add(sortIndex,newItem)
