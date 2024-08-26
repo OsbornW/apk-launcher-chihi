@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true">
     <ImageView
+        android:visibility="gone"
         android:id="@+id/wallpaper"
         android:src="@drawable/wallpaper_1"
         android:scaleType="centerCrop"
@@ -14,7 +16,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include layout="@layout/include_title"/>
+        <include layout="@layout/include_title"
+            android:id="@+id/layout"/>
         <com.soya.launcher.view.NoDragVerticalGridView
             android:id="@+id/content"
             android:paddingLeft="@dimen/qb_px_10"
@@ -23,3 +26,5 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 </FrameLayout>
+
+</layout>

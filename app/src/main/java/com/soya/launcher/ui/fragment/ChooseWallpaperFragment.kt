@@ -57,7 +57,7 @@ class ChooseWallpaperFragment : AbsFragment() {
         )
         mContentGrid!!.adapter = itemBridgeAdapter
         mContentGrid!!.setNumColumns(3)
-        mArrayObjectAdapter!!.addAll(0, App.WALLPAPERS)
+        mArrayObjectAdapter!!.addAll(0, AppCache.WALLPAPERS)
         mContentGrid!!.requestFocus()
     }
 

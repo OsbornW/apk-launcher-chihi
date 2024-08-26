@@ -1,24 +1,20 @@
-package com.soya.launcher.ui.activity;
+package com.soya.launcher.ui.activity
 
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.Fragment
+import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.replaceFragment
+import com.soya.launcher.BaseWallpaperActivity
+import com.soya.launcher.R
+import com.soya.launcher.databinding.ActivityMainBinding
+import com.soya.launcher.enums.Atts
+import com.soya.launcher.ui.fragment.ProjectorFragment
+import com.soya.launcher.ui.fragment.ProjectorFragment.Companion
+import com.soya.launcher.ui.fragment.SearchFragment.Companion.newInstance
 
-import com.soya.launcher.R;
-import com.soya.launcher.enums.Atts;
-import com.soya.launcher.ui.fragment.SearchFragment;
+class SearchActivity : BaseWallpaperActivity<ActivityMainBinding, BaseViewModel>() {
 
-public class SearchActivity extends AbsActivity{
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_main;
+    override fun initView() {
+        replaceFragment(newInstance(intent.getStringExtra(Atts.WORD)), R.id.main_browse_fragment)
     }
 
-    @Override
-    public int getContainerId() {
-        return R.id.main_browse_fragment;
-    }
-
-    @Override
-    public Fragment getFragment() {
-        return SearchFragment.newInstance(getIntent().getStringExtra(Atts.WORD));
-    }
 }

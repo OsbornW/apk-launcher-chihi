@@ -13,6 +13,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.registerReceiver
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
@@ -35,6 +36,7 @@ import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
+import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
 import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.HomeInfoDto
@@ -65,7 +67,7 @@ import java.io.File
 import java.io.FileReader
 
 
-class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
+class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>() {
     private var canBackPressed = true
 
 
@@ -84,23 +86,12 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_HOME || keyCode == KEYCODE_AVR_POWER) {
-            // 在这里处理 Home 按键按下事件
-            // 如果需要特殊处理，需要使用 System UI 相关权限
             // 处理 Home 键按下的逻辑
             sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
             return true
         }
         return super.onKeyDown(keyCode, event)
     }
-
-    /* override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-         if (keyCode == KeyEvent.KEYCODE_HOME) {
-             // 在这里处理 Home 按键抬起事件
-             // 如果需要特殊处理，需要使用 System UI 相关权限
-             return true
-         }
-         return super.onKeyUp(keyCode, event)
-     }*/
 
     override fun initBeforeContent() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
@@ -125,11 +116,9 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
             if (isRefresh) {
                 if ((dto.reqId ?: 0) != AppCache.reqId) {
-                    "启动了协程1".e("zengyue")
                     startCoroutineScope(dto)
                 }
             } else {
-                "启动了协程2".e("zengyue")
                 startCoroutineScope(dto)
 
             }
@@ -148,7 +137,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
                     }
 
                     AppCache.reqId = dto.reqId ?: 0
-                    "启动了定时器".e("zengyue")
                     startPicTask(this)
                 }
 
@@ -179,7 +167,6 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
     private var isHandleUpdateList = false
     private fun checkPicDownload(coroutineScope: CoroutineScope) {
         coroutineScope.launch(Dispatchers.IO) {
-            "检测图片下载情况".e("zengyue")
             val path = FilePathMangaer.getJsonPath(this@MainActivity) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeInfoDto>(
@@ -329,7 +316,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding, HomeViewModel>() {
 
     fun setBG(view: ImageView?) {
         var id = if (Config.COMPANY == 0) R.drawable.wallpaper_22 else R.drawable.wallpaper_1
-        for (wallpaper in App.WALLPAPERS) {
+        for (wallpaper in AppCache.WALLPAPERS) {
             if (wallpaper.id == PreferencesManager.getWallpaper()) {
                 id = wallpaper.picture
                 break

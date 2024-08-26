@@ -1,14 +1,14 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
+import android.os.Bundle
 
-public class GuideWifiListFragment extends AbsWifiListFragment {
-    public static GuideWifiListFragment newInstance() {
+object GuideWifiListFragment : AbsWifiListFragment() {
+    @JvmStatic
+    fun newInstance(): GuideWifiListFragment {
+        val args = Bundle()
 
-        Bundle args = new Bundle();
-
-        GuideWifiListFragment fragment = new GuideWifiListFragment();
-        fragment.setArguments(args);
-        return fragment;
+        val fragment: GuideWifiListFragment = GuideWifiListFragment
+        fragment.arguments = args
+        return fragment
     }
 }

@@ -14,10 +14,14 @@ import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
+import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.appContext
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.config.Config
+import com.soya.launcher.databinding.FragmentSettingBinding
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.ext.openBluetoothSettings
 import com.soya.launcher.handler.PermissionHandler
@@ -29,9 +33,7 @@ import com.soya.launcher.ui.activity.WifiListActivity
 import com.soya.launcher.utils.AndroidSystem
 import java.util.Arrays
 
-class SettingFragment : AbsFragment() {
-    private var mContentGrid: VerticalGridView? = null
-    private var mTitleView: TextView? = null
+class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding,BaseViewModel>() {
     private var launcher: ActivityResultLauncher<*>? = null
 
     private var receiver: WallpaperReceiver? = null
@@ -52,31 +54,14 @@ class SettingFragment : AbsFragment() {
         activity!!.unregisterReceiver(receiver)
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_setting
+
+    override fun initdata() {
+        mBind.layout.title.text =  getString(R.string.setting)
+        setContent()
+        mBind.content.requestFocus()
     }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mContentGrid = view.findViewById(R.id.content)
-        mTitleView = view.findViewById(R.id.title)
 
-        mTitleView?.text = getString(R.string.setting)
-    }
-
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
-        setContent(view, inflater)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requestFocus(mContentGrid)
-    }
-
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
 
     private fun initLauncher() {
         launcher = PermissionHandler.createPermissionsWithIntent(
@@ -84,11 +69,11 @@ class SettingFragment : AbsFragment() {
         ) { }
     }
 
-    private fun setContent(view: View, inflater: LayoutInflater) {
+    private fun setContent() {
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
                 activity,
-                inflater,
+                LayoutInflater.from(appContext),
                 newCallback(),
                 R.layout.holder_setting
             )
@@ -99,8 +84,8 @@ class SettingFragment : AbsFragment() {
             FocusHighlight.ZOOM_FACTOR_LARGE,
             false
         )
-        mContentGrid!!.adapter = itemBridgeAdapter
-        mContentGrid!!.setNumColumns(4)
+        mBind.content.adapter = itemBridgeAdapter
+        mBind.content.setNumColumns(4)
 
         if (Config.COMPANY == 0) {
             arrayObjectAdapter.addAll(

@@ -262,7 +262,7 @@ public abstract class AbsDateFragment extends AbsFragment implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v.equals(mNextView)){
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, GuideWifiListFragment.newInstance()).addToBackStack(null).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, new AbsWifiListFragment()).addToBackStack(null).commit();
         }
     }
 

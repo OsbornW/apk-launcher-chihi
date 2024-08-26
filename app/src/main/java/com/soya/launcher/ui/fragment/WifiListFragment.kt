@@ -1,27 +1,25 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.os.Bundle
 
-public class WifiListFragment extends AbsWifiListFragment {
-    public static WifiListFragment newInstance() {
-
-        Bundle args = new Bundle();
-
-        WifiListFragment fragment = new WifiListFragment();
-        fragment.setArguments(args);
-        return fragment;
+class WifiListFragment : AbsWifiListFragment() {
+    override fun initView() {
+        super.initView()
+        showNext(false)
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        showNext(false);
+
+    override fun useNext(): Boolean {
+        return false
     }
 
-    @Override
-    protected boolean useNext() {
-        return false;
+    companion object {
+        fun newInstance(): WifiListFragment {
+            val args = Bundle()
+
+            val fragment = WifiListFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

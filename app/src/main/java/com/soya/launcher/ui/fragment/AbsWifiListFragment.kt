@@ -29,6 +29,8 @@ import com.blankj.utilcode.util.NetworkUtils
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
+import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.d
 import com.shudong.lib_base.ext.dimenValue
@@ -37,9 +39,11 @@ import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.stringValue
 import com.shudong.lib_base.ext.yes
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.adapter.WifiListAdapter
 import com.soya.launcher.bean.WifiItem
+import com.soya.launcher.databinding.FragmentWifiListBinding
 import com.soya.launcher.ext.isGreaterThanLollipop
 import com.soya.launcher.ui.dialog.ProgressDialog
 import com.soya.launcher.ui.dialog.ToastDialog
@@ -56,32 +60,9 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-abstract class AbsWifiListFragment : AbsFragment() {
+open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,BaseViewModel>() {
     private val exec = Executors.newCachedThreadPool()
-    private var mWifiEnableView: View? = null
-
-    // 未保存和连接的WiFi列表
-    private var mContentGrid: VerticalGridView? = null
-
-    // 已保存的WiFi列表
-    private var rvSavedWifi: VerticalGridView? = null
-
-    // 当前已连接的WiFi View
-    private var fl_connected: MyFrameLayout? = null
-
-    // 左侧面板 WiFi名字
-    private var mWifiNameView: TextView? = null
-    private var mNetwordConnectedView: TextView? = null
-    private var mIPView: TextView? = null
-    private var mSignalView: TextView? = null
-    private var mLockView: ImageView? = null
-
-
-    private var mWifiSwitch: Switch? = null
-    private var mOffView: View? = null
-    private var mProgressBar: View? = null
-    private var mNextView: View? = null
-    private var mLoopProgress: View? = null
+    
     private var mWifiManager: WifiManager? = null
     private var mAdapter: WifiListAdapter? = null
     private var receiver: WifiReceiver? = null
@@ -90,14 +71,6 @@ abstract class AbsWifiListFragment : AbsFragment() {
     private var mTarget: ScanResult? = null
     private var connectedTime: Long = -1
 
-    //当前连接的WiFi名称
-    private var tvConnectedName: TextView? = null
-
-    // 当前WiFi连接状态
-    private var tvConnectStatus: TextView? = null
-
-    //当前连接WiFi信号值
-    private var ivConectedSignal: ImageView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -135,43 +108,24 @@ abstract class AbsWifiListFragment : AbsFragment() {
         activity!!.unregisterReceiver(receiver)
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_wifi_list
-    }
+  
 
     fun setRVSaveHeight(height: Int) {
-        rvSavedWifi?.post {
-            rvSavedWifi?.layoutParams?.height = height
-            rvSavedWifi?.requestLayout() // 强制重新布局
+        mBind.apply {
+            mBind.rvSavedWifi.post {
+                mBind.rvSavedWifi.layoutParams?.height = height
+                mBind.rvSavedWifi.requestLayout() // 强制重新布局
+            }
         }
     }
 
-    @SuppressLint("MissingPermission")
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        tvConnectedName = view.findViewById(R.id.tv_connected_wifiname)
-        tvConnectStatus = view.findViewById(R.id.tv_connected_status)
-        ivConectedSignal = view.findViewById(R.id.tv_connected_signal)
-        mLockView = view.findViewById(R.id.iv_ock)
-        mWifiEnableView = view.findViewById(R.id.wifi_enable)
-        mContentGrid = view.findViewById(R.id.content)
-        rvSavedWifi = view.findViewById(R.id.rv_saved_wifi)
-        fl_connected = view.findViewById(R.id.wifi_connected)
-        mWifiNameView = view.findViewById(R.id.wifi_name)
-        mNetwordConnectedView = view.findViewById(R.id.netword_connected_mes)
-        mIPView = view.findViewById(R.id.ip)
-        mSignalView = view.findViewById(R.id.signal)
-        mWifiSwitch = view.findViewById(R.id.switch_item)
-        mOffView = view.findViewById(R.id.off)
-        mProgressBar = view.findViewById(R.id.progressBar)
-        mNextView = view.findViewById(R.id.next)
-        mLoopProgress = view.findViewById(R.id.loop)
+    override fun initView() {
         mAdapter =
-            WifiListAdapter(activity!!, inflater, CopyOnWriteArrayList(), useNext(), newCallback())
+            WifiListAdapter(activity!!, LayoutInflater.from(appContext), CopyOnWriteArrayList(), useNext(), newCallback())
         mAdapter!!.replace(fillterWifi(mWifiManager!!.scanResults))
 
 
-        fl_connected?.let {
+        mBind.wifiConnected.let {
             it.clickNoRepeat {
                 val info = mWifiManager!!.connectionInfo
                 val dialog = WifiSaveDialog.newInstance(info.ssid,R.string.disconnect_net.stringValue())
@@ -179,7 +133,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
                     override fun onClick(type: Int) {
                         when (type) {
                             0 -> {
-                               mWifiManager?.disableNetwork(info!!.networkId)
+                                mWifiManager?.disableNetwork(info!!.networkId)
                             }
 
                             -1 -> {
@@ -198,15 +152,15 @@ abstract class AbsWifiListFragment : AbsFragment() {
         * */
         mWifiManager?.let {
             (it.isWifiEnabled).yes {
-                mOffView?.isVisible = false
-                mContentGrid?.isVisible = true
-                rvSavedWifi?.isVisible = true
-                fl_connected?.isVisible = true
+                mBind.off.isVisible = false
+                mBind.content.isVisible = true
+                mBind.rvSavedWifi.isVisible = true
+                mBind.wifiConnected.isVisible = true
             }.otherwise {
-                mOffView?.isVisible = true
-                mContentGrid?.isVisible = false
-                rvSavedWifi?.isVisible = false
-                fl_connected?.isVisible = false
+                mBind.off.isVisible = true
+                mBind.content.isVisible = false
+                mBind.rvSavedWifi.isVisible = false
+                mBind.wifiConnected.isVisible = false
             }
         }
 
@@ -218,7 +172,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
         /**
          * 已保存WiFi列表 控件初始化和数据绑定
          */
-        rvSavedWifi?.linear()
+        mBind.rvSavedWifi.linear()
             ?.setup {
 
 
@@ -266,58 +220,55 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
         //列表加载进度条是否可见
         (mWifiManager?.isWifiEnabled ?: true).yes {
-            mProgressBar?.setVisibility(
+            mBind.progressBar.setVisibility(
                 if (mAdapter!!.itemCount == 0) View.VISIBLE
                 else View.GONE
             )
         }
 
         if (useNext()) {
-            mWifiEnableView?.nextFocusLeftId = R.id.next
-            mWifiEnableView?.nextFocusRightId = R.id.next
+            mBind.wifiEnable.nextFocusLeftId = R.id.next
+            mBind.wifiEnable.nextFocusRightId = R.id.next
         }
-    }
 
-    override fun initBefore(view: View, inflater: LayoutInflater) {
-        super.initBefore(view, inflater)
-        mWifiEnableView!!.setOnClickListener {
+        mBind.wifiEnable.setOnClickListener {
             val isEnable = !mWifiManager!!.isWifiEnabled
             mWifiManager!!.setWifiEnabled(isEnable)
 
 
-            mWifiSwitch!!.isChecked = isEnable
+            mBind.switchItem.isChecked = isEnable
 
             (isEnable && mAdapter!!.itemCount == 0).yes {
-                mProgressBar?.isVisible = true
+                mBind.progressBar.isVisible = true
             }.otherwise {
-                mProgressBar?.isVisible = false
+                mBind.progressBar.isVisible = false
             }
 
             (isEnable).yes {
-                mOffView?.isVisible = false
-                mContentGrid?.isVisible = true
-                rvSavedWifi?.isVisible = true
-                fl_connected?.isVisible = true
+                mBind.off.isVisible = false
+                mBind.content.isVisible = true
+                mBind.rvSavedWifi.isVisible = true
+                mBind.wifiConnected.isVisible = true
             }.otherwise {
-                mOffView?.isVisible = true
-                mContentGrid?.isVisible = false
-                rvSavedWifi?.isVisible = false
-                fl_connected?.isVisible = false
+                mBind.off.isVisible = true
+                mBind.content.isVisible = false
+                mBind.rvSavedWifi.isVisible = false
+                mBind.wifiConnected.isVisible = false
             }
 
         }
-        mNextView!!.setOnClickListener {
+        mBind.next.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()
                 .replace(R.id.main_browse_fragment, ChooseWallpaperFragment.newInstance())
                 .addToBackStack(null).commit()
         }
         mDialog!!.setCallback { connectedTime = -1 }
+
     }
 
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
-        mContentGrid!!.setAdapter(mAdapter)
-        mWifiSwitch!!.isChecked = mWifiManager!!.isWifiEnabled
+    override fun initdata() {
+        mBind.content.setAdapter(mAdapter)
+        mBind.switchItem.isChecked = mWifiManager!!.isWifiEnabled
         exec.execute(Runnable {
             var time = 0
             while (isAdded) {
@@ -377,14 +328,13 @@ abstract class AbsWifiListFragment : AbsFragment() {
         })
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requestFocus(mWifiEnableView)
+        mBind.wifiEnable.requestFocus()
     }
-
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
+    
 
     private fun toastFail() {
         if (!isAdded) return
@@ -413,20 +363,20 @@ abstract class AbsWifiListFragment : AbsFragment() {
         }
         val isConnected = !TextUtils.isEmpty(info.ssid) && info.ipAddress != 0
 
-        mIPView!!.text = Formatter.formatIpAddress(info.ipAddress)
-        mSignalView!!.text = if (isConnected) levelStr else "-"
-        mNetwordConnectedView?.text =
+        mBind.ip.text = Formatter.formatIpAddress(info.ipAddress)
+        mBind.signal.text = if (isConnected) levelStr else "-"
+        mBind.networdConnectedMes.text =
             if (isConnected) getString(R.string.connected) else R.string.connecting.stringValue()
-        tvConnectStatus?.text =
+        mBind.tvConnectedStatus.text =
             if (isConnected) getString(R.string.connected) else R.string.connecting.stringValue()
 
         (info.ssid.contains("unknown")||info.ssid.contains("0x")).yes {
-            mWifiNameView?.text = ""
-            fl_connected?.isVisible = false
+            mBind.wifiName.text = ""
+            mBind.wifiConnected.isVisible = false
         }.otherwise {
-            fl_connected?.isVisible = true
-            mWifiNameView!!.text = getNoDoubleQuotationSSID(info.ssid)
-            tvConnectedName!!.text = getNoDoubleQuotationSSID(info.ssid)
+            mBind.wifiConnected.isVisible = true
+            mBind.wifiName.text = getNoDoubleQuotationSSID(info.ssid)
+            mBind.tvConnectedWifiname.text = getNoDoubleQuotationSSID(info.ssid)
         }
 
         var isNeedPwd = true
@@ -440,9 +390,9 @@ abstract class AbsWifiListFragment : AbsFragment() {
         }
 
         isNeedPwd.yes {
-            mLockView?.isVisible = true
+            mBind.ivOck.isVisible = true
         }.otherwise {
-            mLockView?.isVisible = false
+            mBind.ivOck.isVisible = false
         }
 
 
@@ -450,21 +400,21 @@ abstract class AbsWifiListFragment : AbsFragment() {
          * 已保存列表中的WiFi连接成功后，从已保存列表中进行移除
          * */
         isConnected.yes {
-            ((rvSavedWifi?.mutable as MutableList<WifiItem>).size > 0).yes {
-                for (i in (rvSavedWifi?.mutable as MutableList<WifiItem>).size - 1 downTo 0) {
+            ((mBind.rvSavedWifi.mutable as MutableList<WifiItem>).size > 0).yes {
+                for (i in (mBind.rvSavedWifi.mutable as MutableList<WifiItem>).size - 1 downTo 0) {
 
-                    if ((rvSavedWifi?.mutable as MutableList<WifiItem>)[i].item.SSID == mAdapter!!.connectSSID) {
-                        (rvSavedWifi?.mutable as MutableList<WifiItem>).removeAt(i)
-                        rvSavedWifi?.adapter?.notifyDataSetChanged()
+                    if ((mBind.rvSavedWifi.mutable as MutableList<WifiItem>)[i].item.SSID == mAdapter!!.connectSSID) {
+                        (mBind.rvSavedWifi.mutable as MutableList<WifiItem>).removeAt(i)
+                        mBind.rvSavedWifi.adapter?.notifyDataSetChanged()
 
-                        fl_connected?.post {
-                            fl_connected?.requestFocus()
+                        mBind.wifiConnected.post {
+                            mBind.wifiConnected.requestFocus()
 
                         }
                     }
                 }
 
-                ((rvSavedWifi?.mutable as MutableList<WifiItem>).size > 2).yes {
+                ((mBind.rvSavedWifi.mutable as MutableList<WifiItem>).size > 2).yes {
                     setRVSaveHeight(com.shudong.lib_dimen.R.dimen.qb_px_120.dimenValue())
                 }.otherwise {
                     setRVSaveHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
@@ -475,11 +425,11 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
         // 信号状态更新
         if (level == 1 || level == 2) {
-            ivConectedSignal!!.setImageResource(R.drawable.baseline_wifi_1_bar_100)
+            mBind.tvConnectedSignal.setImageResource(R.drawable.baseline_wifi_1_bar_100)
         } else if (level == 3) {
-            ivConectedSignal!!.setImageResource(R.drawable.baseline_wifi_2_bar_100)
+            mBind.tvConnectedSignal.setImageResource(R.drawable.baseline_wifi_2_bar_100)
         } else {
-            ivConectedSignal!!.setImageResource(R.drawable.baseline_wifi_100)
+            mBind.tvConnectedSignal.setImageResource(R.drawable.baseline_wifi_100)
         }
     }
 
@@ -619,7 +569,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
                     val dialog = WifiSaveDialog.newInstance(bean.SSID,"")
                     dialog.setCallback (object :WifiSaveDialog.Callback{
                         override fun onClick(type: Int) {
-                            val index = rvSavedWifi?.mutable?.indexOf(wifiItem) ?: 0
+                            val index = mBind.rvSavedWifi.mutable?.indexOf(wifiItem) ?: 0
                             when (type) {
                                 0 -> {
                                     isGreaterThanLollipop().yes {
@@ -634,14 +584,14 @@ abstract class AbsWifiListFragment : AbsFragment() {
                                     mWifiManager!!.removeNetwork(item!!.networkId)
                                     wifiItem.isSave = false
                                     if (index != -1){
-                                        rvSavedWifi?.mutable?.removeAt(index)
-                                        rvSavedWifi?.adapter?.notifyItemRemoved(index)
+                                        mBind.rvSavedWifi.mutable?.removeAt(index)
+                                        mBind.rvSavedWifi.adapter?.notifyItemRemoved(index)
                                     }
 
-                                    //rvSavedWifi?.adapter?.notifyDataSetChanged()
+                                    //mBind.rvSavedWifi?.adapter?.notifyDataSetChanged()
 
-                                    //rvSavedWifi?.mutable?.clear()
-                                    //rvSavedWifi?.adapter?.notifyDataSetChanged()
+                                    //mBind.rvSavedWifi?.mutable?.clear()
+                                    //mBind.rvSavedWifi?.adapter?.notifyDataSetChanged()
 
                                     setRVSaveHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
 
@@ -656,8 +606,8 @@ abstract class AbsWifiListFragment : AbsFragment() {
                     dialog.setCallback (object :WifiPassDialog.Callback{
                         override fun onConfirm(text: String) {
                             wifiItem.isSave = true
-                            val index = rvSavedWifi?.mutable?.indexOf(wifiItem) ?: 0
-                            if (index != -1) rvSavedWifi?.adapter!!.notifyItemChanged(index)
+                            val index = mBind.rvSavedWifi.mutable?.indexOf(wifiItem) ?: 0
+                            if (index != -1) mBind.rvSavedWifi.adapter!!.notifyItemChanged(index)
                             isGreaterThanLollipop().yes {
                                 connect(bean, text)
                             }.otherwise {
@@ -669,8 +619,8 @@ abstract class AbsWifiListFragment : AbsFragment() {
                     dialog.show(getChildFragmentManager(), WifiPassDialog.TAG)
                 } else {
                     wifiItem.isSave = true
-                    val index = rvSavedWifi?.mutable?.indexOf(wifiItem) ?: 0
-                    if (index != -1) rvSavedWifi?.adapter!!.notifyItemChanged(index)
+                    val index = mBind.rvSavedWifi.mutable?.indexOf(wifiItem) ?: 0
+                    if (index != -1) mBind.rvSavedWifi.adapter!!.notifyItemChanged(index)
                     isGreaterThanLollipop().yes {
                         connect(bean, "")
                     }.otherwise {
@@ -682,15 +632,15 @@ abstract class AbsWifiListFragment : AbsFragment() {
     }
 
     private fun showDialog() {
-        mLoopProgress!!.visibility = View.VISIBLE
+        mBind.loop.visibility = View.VISIBLE
         val animation = AnimationUtils.loadAnimation(activity, R.anim.loop_translate)
-        mLoopProgress!!.startAnimation(animation)
+        mBind.loop.startAnimation(animation)
         //mDialog.show(getChildFragmentManager(), ProgressDialog.TAG);
     }
 
     private fun closeDialog() {
-        mLoopProgress!!.visibility = View.GONE
-        if (mLoopProgress!!.animation != null) mLoopProgress!!.animation.cancel()
+        mBind.loop.visibility = View.GONE
+        if (mBind.loop.animation != null) mBind.loop.animation.cancel()
         //if (mDialog.isAdded() && mDialog.isVisible()) mDialog.dismiss();
     }
 
@@ -828,9 +778,9 @@ abstract class AbsWifiListFragment : AbsFragment() {
             }
 
             val e = d.distinctBy { it.item.SSID }
-            val cur = rvSavedWifi?.mutable as MutableList<WifiItem>
+            val cur = mBind.rvSavedWifi.mutable as MutableList<WifiItem>
 
-            //rvSavedWifi?.mutable?.clear()
+            //mBind.rvSavedWifi?.mutable?.clear()
             val repeat = it.distinctBy { it.item.SSID }
 
             val filteredList = repeat.filterNot { it in cur }
@@ -847,7 +797,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
 
                 it.isSave.yes {
                     // "当前即将要添加的已保存的WIFI数据是===${wifiItem.item.SSID}"
-                    val saveList = (rvSavedWifi?.mutable as MutableList<WifiItem>)
+                    val saveList = (mBind.rvSavedWifi.mutable as MutableList<WifiItem>)
                     var isExist = false
                     saveList.forEach { wifiItem ->
                         if (it.item.SSID == wifiItem.item.SSID) {
@@ -855,9 +805,9 @@ abstract class AbsWifiListFragment : AbsFragment() {
                         }
                     }
                     if (!isExist) {
-                        rvSavedWifi?.mutable?.add(it)
-                        rvSavedWifi?.adapter?.notifyItemInserted(
-                            rvSavedWifi?.mutable?.size ?: 0 - 1
+                        mBind.rvSavedWifi.mutable?.add(it)
+                        mBind.rvSavedWifi.adapter?.notifyItemInserted(
+                            mBind.rvSavedWifi.mutable?.size ?: 0 - 1
                         )
                     }
                     //"当前集合里面是否包含这个WIFI？${it?.item?.SSID}===${isContain}"
@@ -868,18 +818,18 @@ abstract class AbsWifiListFragment : AbsFragment() {
             }
 
 
-            for (i in (rvSavedWifi?.mutable as MutableList<WifiItem>).size - 1 downTo 0) {
+            for (i in (mBind.rvSavedWifi.mutable as MutableList<WifiItem>).size - 1 downTo 0) {
 
-                if ((rvSavedWifi?.mutable as MutableList<WifiItem>)[i].item.SSID == mAdapter!!.connectSSID
+                if ((mBind.rvSavedWifi.mutable as MutableList<WifiItem>)[i].item.SSID == mAdapter!!.connectSSID
                 ) {
-                    (rvSavedWifi?.mutable as MutableList<WifiItem>).removeAt(i)
-                    rvSavedWifi?.adapter?.notifyItemRemoved(i)
+                    (mBind.rvSavedWifi.mutable as MutableList<WifiItem>).removeAt(i)
+                    mBind.rvSavedWifi.adapter?.notifyItemRemoved(i)
 
                 }
             }
 
 
-            ((rvSavedWifi?.mutable as MutableList<WifiItem>).size > 2).yes {
+            ((mBind.rvSavedWifi.mutable as MutableList<WifiItem>).size > 2).yes {
                 setRVSaveHeight(com.shudong.lib_dimen.R.dimen.qb_px_120.dimenValue())
             }.otherwise {
                 setRVSaveHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
@@ -892,7 +842,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
                         (it.getDataList()).removeAt(i)
                         mAdapter?.notifyItemRemoved(i)
                     }
-                    rvSavedWifi?.let { it1 ->
+                    mBind.rvSavedWifi.let { it1 ->
                         for (j in (it1.mutable).size - 1 downTo 0) {
                             try {
                                 if ((it.getDataList())[i].item.SSID == ((it1.mutable)[j] as WifiItem).item.SSID) {
@@ -955,8 +905,8 @@ abstract class AbsWifiListFragment : AbsFragment() {
                 }
             }
 
-            mProgressBar!!.visibility =
-                if (mAdapter!!.itemCount == 0 && mOffView!!.visibility == View.GONE) View.VISIBLE else View.GONE
+            mBind.progressBar.visibility =
+                if (mAdapter!!.itemCount == 0 && mBind.off.visibility == View.GONE) View.VISIBLE else View.GONE
 
         }
     }
@@ -1010,7 +960,7 @@ abstract class AbsWifiListFragment : AbsFragment() {
     }
 
     fun showNext(show: Boolean) {
-        mNextView!!.visibility = if (show) View.VISIBLE else View.GONE
+        mBind.next.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private inner class WifiReceiver : BroadcastReceiver() {
