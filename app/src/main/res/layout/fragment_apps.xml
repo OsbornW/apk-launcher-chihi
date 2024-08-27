@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<com.google.android.material.appbar.AppBarLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true">
-    <FrameLayout
-        android:orientation="vertical"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <include layout="@layout/include_title"
-                android:id="@+id/layout"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/layout"
+                layout="@layout/include_title" />
 
             <androidx.leanback.widget.VerticalGridView
+                android:paddingBottom="@dimen/qb_px_20"
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/qb_px_40"/>
+                />
 
 
         </LinearLayout>
     </FrameLayout>
-</com.google.android.material.appbar.AppBarLayout>
 </layout>

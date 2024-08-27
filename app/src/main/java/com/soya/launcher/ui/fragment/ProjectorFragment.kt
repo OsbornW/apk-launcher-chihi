@@ -120,7 +120,7 @@ class ProjectorFragment : BaseWallPaperFragment<FragmentProjectorBinding,BaseVie
                             else->{
                                 val success = AndroidSystem.openProjectorMode(requireContext())
                                 if (!success) Toast.makeText(
-                                    activity,
+                                    requireContext(),
                                     getString(R.string.place_install_app),
                                     Toast.LENGTH_SHORT
                                 ).show()
