@@ -15,8 +15,8 @@
 
     <TextView
         android:text="@string/set_the_screen_trimming"
-        android:textSize="@dimen/qb_px_sp_16"
-        android:layout_marginTop="@dimen/qb_px_26"
+        android:textSize="@dimen/qb_px_sp_20"
+        android:layout_marginTop="@dimen/qb_px_66"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/text_color_style_1"
         android:layout_width="wrap_content"
