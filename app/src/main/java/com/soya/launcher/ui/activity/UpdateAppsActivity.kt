@@ -9,6 +9,7 @@ import com.soya.launcher.R
 import com.soya.launcher.databinding.ActivitySettingBinding
 import com.soya.launcher.databinding.ActivityUpdateAppsBinding
 import com.soya.launcher.ui.fragment.InstallModeFragment
+import com.soya.launcher.ui.fragment.UpdateAppsFragment
 
 
 class UpdateAppsActivity : BaseVMActivity<ActivityUpdateAppsBinding, BaseViewModel>() {
