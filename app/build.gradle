@@ -50,6 +50,9 @@ android {
         H6 {
             java.srcDirs = ['src/h6/java']
         }
+        aiboyou_launcher {
+            java.srcDirs = ['src/aiboyou_launcher/java']
+        }
     }
 
     signingConfigs {
@@ -109,6 +112,15 @@ android {
             keyAlias "platform"
             keyPassword "platform"
         }
+
+        AiBY {
+            storeFile file("platform_AiBY.keystore")
+            storePassword "android"
+            keyAlias "platform"
+            keyPassword "android"
+        }
+
+
 
     }
 
@@ -214,6 +226,27 @@ android {
             buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
             buildConfigField "String", "MODEL", '"001"'
         }
+
+
+
+        //爱泊优(TV)
+        aiboyou_launcher {
+            applicationId "com.soya.launcher.aiboyoutv"
+            dimension "chihi"
+            signingConfig signingConfigs.AiBY
+            manifestPlaceholders = [share_uid:"android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"7"'
+            buildConfigField "String", "APP_ID", '"launcher"'
+            buildConfigField "String", "CHANNEL", '"TV22001"'
+            buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
+            buildConfigField "String", "MODEL", '"001"'
+        }
+
+
+
 
         // X98K (TV)
         yxt_X98K {

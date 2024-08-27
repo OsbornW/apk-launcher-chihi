@@ -12,9 +12,11 @@ import com.soya.launcher.product.ProjectorRK3326
 import com.soya.launcher.product.TVBoxH27002
 import com.soya.launcher.product.TVBoxX98K
 import com.soya.launcher.product.PrjectorAiboyou
+import com.soya.launcher.product.TVBox22001
 import com.soya.launcher.product.TVBoxAiboyou
 import com.soya.launcher.product.base.Channel.AIBOYOUPROJECTOR
 import com.soya.launcher.product.base.Channel.AIBOYOUTV
+import com.soya.launcher.product.base.Channel.AIBOYOUTV_TV22001
 import com.soya.launcher.product.base.Channel.PROJECTOR_713G_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_713M_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_H6_C
@@ -42,6 +44,8 @@ object Channel{
     const val PROJECTOR_H6_C = "H6"
     const val AIBOYOUTV = "aiboyou_tv"
     const val AIBOYOUPROJECTOR = "aiboyou_projector"
+
+    const val AIBOYOUTV_TV22001 = "aiboyou_launcher"
 }
 
 val product : TVDevice =
@@ -54,5 +58,6 @@ val product : TVDevice =
         PROJECTOR_H6_C-> ProjectorH6
         AIBOYOUTV -> TVBoxAiboyou
         AIBOYOUPROJECTOR -> PrjectorAiboyou
+        AIBOYOUTV_TV22001 -> TVBox22001
         else -> DefaultDevice
     }
