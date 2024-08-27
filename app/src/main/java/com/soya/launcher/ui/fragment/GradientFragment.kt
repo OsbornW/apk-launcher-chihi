@@ -1,26 +1,28 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import com.shudong.lib_base.base.BaseViewModel
+import com.soya.launcher.databinding.FragmentGradientBinding
 
-public class GradientFragment extends AbsGradientFragment{
-    public static GradientFragment newInstance() {
-        
-        Bundle args = new Bundle();
-        
-        GradientFragment fragment = new GradientFragment();
-        fragment.setArguments(args);
-        return fragment;
+class GradientFragment : AbsGradientFragment<FragmentGradientBinding,BaseViewModel>() {
+
+    override fun useLongClick(): Boolean {
+        return false
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
+    override fun onClick(p0: View?) {
+
     }
 
-    @Override
-    protected boolean useLongClick() {
-        return false;
+    companion object {
+        fun newInstance(): GradientFragment {
+            val args = Bundle()
+
+            val fragment = GradientFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

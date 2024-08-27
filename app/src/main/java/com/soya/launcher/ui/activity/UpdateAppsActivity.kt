@@ -10,7 +10,7 @@ import com.soya.launcher.databinding.ActivitySettingBinding
 import com.soya.launcher.databinding.ActivityUpdateAppsBinding
 import com.soya.launcher.ui.fragment.InstallModeFragment
 
-class UpdateAppsActivity : BaseWallpaperActivity<ActivityUpdateAppsBinding, BaseViewModel>() {
+class UpdateAppsActivity : BaseVMActivity<ActivityUpdateAppsBinding, BaseViewModel>() {
 
     override fun initView() {
         replaceFragment(UpdateAppsFragment.newInstance(), R.id.fl_container)

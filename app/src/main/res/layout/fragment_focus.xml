@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/wallpaper"
-        android:scaleType="centerCrop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/qb_px_46"
@@ -44,3 +41,4 @@
         android:layout_width="@dimen/qb_px_150"
         android:layout_height="@dimen/qb_px_45"/>
 </FrameLayout>
+</layout>

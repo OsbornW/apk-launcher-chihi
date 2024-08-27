@@ -1,5 +1,6 @@
 package com.soya.launcher.ui.activity
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.replaceFragment
@@ -15,6 +16,7 @@ class UpgradeActivity : BaseWallpaperActivity<ActivityMainBinding, BaseViewModel
         replaceFragment(UpgradeFragment.newInstance(), R.id.main_browse_fragment)
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         //super.onBackPressed();
     }

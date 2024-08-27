@@ -1,281 +1,276 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.app.AlarmManager;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.app.AlarmManager
+import android.content.Context
+import android.os.Build
+import android.os.Bundle
+import android.provider.Settings
+import android.provider.Settings.SettingNotFoundException
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.databinding.ViewDataBinding
+import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.FocusHighlight
+import androidx.leanback.widget.FocusHighlightHelper
+import androidx.leanback.widget.HorizontalGridView
+import androidx.leanback.widget.ItemBridgeAdapter
+import androidx.leanback.widget.VerticalGridView
+import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.appContext
+import com.soya.launcher.BaseWallPaperFragment
+import com.soya.launcher.R
+import com.soya.launcher.adapter.DateListAdapter
+import com.soya.launcher.adapter.SettingAdapter
+import com.soya.launcher.bean.DateItem
+import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.bean.SimpleTimeZone
+import com.soya.launcher.databinding.FragmentSetDateBinding
+import com.soya.launcher.ui.dialog.DatePickerDialog
+import com.soya.launcher.ui.dialog.TimePickerDialog
+import com.soya.launcher.ui.dialog.TimeZoneDialog
+import com.soya.launcher.ui.dialog.ToastDialog
+import com.soya.launcher.utils.AndroidSystem
+import com.soya.launcher.utils.AppUtils
+import java.util.Arrays
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
 
-import androidx.annotation.Nullable;
-import androidx.leanback.widget.ArrayObjectAdapter;
-import androidx.leanback.widget.FocusHighlight;
-import androidx.leanback.widget.FocusHighlightHelper;
-import androidx.leanback.widget.HorizontalGridView;
-import androidx.leanback.widget.ItemBridgeAdapter;
-import androidx.leanback.widget.VerticalGridView;
+abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel> : BaseWallPaperFragment<VDB,VM>(), View.OnClickListener {
 
-import com.soya.launcher.R;
-import com.soya.launcher.adapter.DateListAdapter;
-import com.soya.launcher.adapter.SettingAdapter;
-import com.soya.launcher.bean.DateItem;
-import com.soya.launcher.bean.SettingItem;
-import com.soya.launcher.bean.SimpleTimeZone;
-import com.soya.launcher.ui.dialog.DatePickerDialog;
-import com.soya.launcher.ui.dialog.TimePickerDialog;
-import com.soya.launcher.ui.dialog.TimeZoneDialog;
-import com.soya.launcher.ui.dialog.ToastDialog;
-import com.soya.launcher.utils.AndroidSystem;
-import com.soya.launcher.utils.AppUtils;
+    private var mItemAdapter: DateListAdapter? = null
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+    private val itemList: MutableList<DateItem> = ArrayList()
 
-public abstract class AbsDateFragment extends AbsFragment implements View.OnClickListener {
-
-    private HorizontalGridView mContentGrid;
-    private VerticalGridView mSlideGrid;
-    private View mNextView;
-    private TextView mTitleView;
-
-    private DateListAdapter mItemAdapter;
-
-    private final List<DateItem> itemList = new ArrayList<>();
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        boolean is24 = AppUtils.is24Display(getActivity());
-        itemList.addAll(Arrays.asList(new DateItem(0, getString(R.string.auto_time_title), isAutoTime() ? getString(R.string.open) : getString(R.string.close), isAutoTime(), true),
-                new DateItem(1, getString(R.string.set_date_title), getDate(), false, false),
-                new DateItem(2, getString(R.string.set_time_title), getTime(), false, false),
-                new DateItem(3, getString(R.string.time_display), is24 ? getString(R.string.open) : getString(R.string.close), is24, true),
-                new DateItem(4, getString(R.string.time_zone), TimeZone.getDefault().getID(), false, false)));
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val is24 = AppUtils.is24Display(activity)
+        itemList.addAll(
+            Arrays.asList(
+                DateItem(
+                    0,
+                    getString(R.string.auto_time_title),
+                    if (isAutoTime) getString(R.string.open) else getString(R.string.close),
+                    isAutoTime,
+                    true
+                ),
+                DateItem(1, getString(R.string.set_date_title), date, false, false),
+                DateItem(2, getString(R.string.set_time_title), time, false, false),
+                DateItem(
+                    3,
+                    getString(R.string.time_display),
+                    if (is24) getString(R.string.open) else getString(R.string.close),
+                    is24,
+                    true
+                ),
+                DateItem(4, getString(R.string.time_zone), TimeZone.getDefault().id, false, false)
+            )
+        )
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_set_date;
+
+    override fun initView() {
+        mBind.slide.post {
+            mBind.slide.requestFocus()
+        }
+        mBind.next.setOnClickListener(this)
+
+        setContent()
+        setSlide()
     }
 
-    @Override
-    protected void init(View view, LayoutInflater inflater) {
-        super.init(view, inflater);
-        mContentGrid = view.findViewById(R.id.content);
-        mNextView = view.findViewById(R.id.next);
-        mSlideGrid = view.findViewById(R.id.slide);
-        mTitleView = view.findViewById(R.id.title);
 
-        mSlideGrid.post(() -> {
-            mSlideGrid.requestFocus();
-        });
+    private fun setContent() {
+        val arrayObjectAdapter = ArrayObjectAdapter(
+            SettingAdapter(
+                activity,
+                LayoutInflater.from(appContext),
+                newCallback(),
+                R.layout.holder_setting
+            )
+        )
+        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
+        FocusHighlightHelper.setupBrowseItemFocusHighlight(
+            itemBridgeAdapter,
+            FocusHighlight.ZOOM_FACTOR_MEDIUM,
+            false
+        )
+        mBind.content.adapter = itemBridgeAdapter
+        mBind.content.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        arrayObjectAdapter.addAll(
+            0,
+            listOf(SettingItem(1, getString(R.string.network), R.drawable.baseline_wifi_100))
+        )
     }
 
-    @Override
-    protected void initBefore(View view, LayoutInflater inflater) {
-        super.initBefore(view, inflater);
-        mNextView.setOnClickListener(this);
-    }
-
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        setContent(view, inflater);
-        setSlide(view, inflater);
-    }
-
-    private void setContent(View view, LayoutInflater inflater){
-        ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new SettingAdapter(getActivity(), inflater, newCallback(), R.layout.holder_setting));
-        ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-        mContentGrid.setAdapter(itemBridgeAdapter);
-        mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        arrayObjectAdapter.addAll(0, Collections.singletonList(new SettingItem(1, getString(R.string.network), R.drawable.baseline_wifi_100)));
-    }
-
-    private void setSlide(View view, LayoutInflater inflater){
-        mItemAdapter = new DateListAdapter(getActivity(), inflater, itemList, new DateListAdapter.Callback() {
-            @Override
-            public void onClick(DateItem bean) {
-                switch (bean.getType()){
-                    case 0:
-                        changAutoTime(bean);
-                        break;
-                    case 1:
-                        if (isAutoTime()){
-                            ToastDialog dialog = ToastDialog.newInstance(getString(R.string.is_auto_time_toast), ToastDialog.MODE_CONFIRM);
-                            dialog.show(getChildFragmentManager(), ToastDialog.TAG);
-                        }else {
-                            openDatePicker();
+    private fun setSlide() {
+        mItemAdapter =
+            DateListAdapter(activity, LayoutInflater.from(appContext), itemList, object : DateListAdapter.Callback {
+                override fun onClick(bean: DateItem) {
+                    when (bean.type) {
+                        0 -> changAutoTime(bean)
+                        1 -> if (isAutoTime) {
+                            val dialog = ToastDialog.newInstance(
+                                getString(R.string.is_auto_time_toast),
+                                ToastDialog.MODE_CONFIRM
+                            )
+                            dialog.show(childFragmentManager, ToastDialog.TAG)
+                        } else {
+                            openDatePicker()
                         }
-                        break;
-                    case 2:
-                        if (isAutoTime()){
-                            ToastDialog dialog = ToastDialog.newInstance(getString(R.string.is_auto_time_toast), ToastDialog.MODE_CONFIRM);
-                            dialog.show(getChildFragmentManager(), ToastDialog.TAG);
-                        }else {
-                            openTimePicker();
+
+                        2 -> if (isAutoTime) {
+                            val dialog = ToastDialog.newInstance(
+                                getString(R.string.is_auto_time_toast),
+                                ToastDialog.MODE_CONFIRM
+                            )
+                            dialog.show(childFragmentManager, ToastDialog.TAG)
+                        } else {
+                            openTimePicker()
                         }
-                        break;
-                    case 3:
-                        chang24Display(bean);
-                        break;
-                    case 4:
-                        openTimeZone(bean);
-                        break;
+
+                        3 -> chang24Display(bean)
+                        4 -> openTimeZone(bean)
+                    }
                 }
-            }
-        });
-        mSlideGrid.setAdapter(mItemAdapter);
-        mSlideGrid.setSelectedPosition(0);
+            })
+        mBind.slide.adapter = mItemAdapter
+        mBind.slide.selectedPosition = 0
     }
 
-    private void openTimeZone(DateItem item){
-        TimeZoneDialog dialog = TimeZoneDialog.newInstance();
-        dialog.setCallback(new TimeZoneDialog.Callback() {
-            @Override
-            public void onClick(SimpleTimeZone bean) {
-                AlarmManager alarmManager = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    alarmManager = getActivity().getSystemService(AlarmManager.class);
-                }else {
-                    alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+    private fun openTimeZone(item: DateItem) {
+        val dialog = TimeZoneDialog.newInstance()
+        dialog.setCallback(object : TimeZoneDialog.Callback {
+            override fun onClick(bean: SimpleTimeZone?) {
+                var alarmManager: AlarmManager? = null
+                alarmManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    activity!!.getSystemService(AlarmManager::class.java)
+                } else {
+                    activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                 }
 
-                alarmManager.setTimeZone(bean.getZone().getID());
-                item.setDescription(bean.getDesc());
-                itemList.get(1).setDescription(getDate());
-                itemList.get(2).setDescription(getTime());
-                mItemAdapter.notifyDataSetChanged();
-                dialog.dismiss();
+                alarmManager!!.setTimeZone(bean!!.zone.id)
+                item.description = bean.desc
+                itemList[1].description = date
+                itemList[2].description = time
+                mItemAdapter!!.notifyDataSetChanged()
+                dialog.dismiss()
             }
-        });
-        dialog.show(getChildFragmentManager(), TimeZoneDialog.TAG);
+        })
+        dialog.show(childFragmentManager, TimeZoneDialog.TAG)
     }
 
-    private String getDate(){
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        String name = Locale.getDefault().getLanguage();
-        return name.equals("zh") ? getString(R.string.year_month_day, year, month, day) : getString(R.string.year_month_day, day, month, year);
-    }
+    private val date: String
+        get() {
+            val calendar = Calendar.getInstance()
+            val year = calendar[Calendar.YEAR]
+            val month = calendar[Calendar.MONTH] + 1
+            val day = calendar[Calendar.DAY_OF_MONTH]
+            val name = Locale.getDefault().language
+            return if (name == "zh") getString(
+                R.string.year_month_day,
+                year,
+                month,
+                day
+            ) else getString(R.string.year_month_day, day, month, year)
+        }
 
-    private String getTime(){
-        Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        int second = calendar.get(Calendar.SECOND);
-        return getString(R.string.hour_minute_second, hour, minute);
-    }
+    private val time: String
+        get() {
+            val calendar = Calendar.getInstance()
+            val hour = calendar[Calendar.HOUR_OF_DAY]
+            val minute = calendar[Calendar.MINUTE]
+            val second = calendar[Calendar.SECOND]
+            return getString(R.string.hour_minute_second, hour, minute)
+        }
 
-    private void openDatePicker(){
-        DatePickerDialog dialog = DatePickerDialog.newInstance();
-        dialog.setCallback(new DatePickerDialog.Callback() {
-            @Override
-            public void onConfirm(long timeMills) {
-                AppUtils.setTime(timeMills);
-                itemList.get(1).setDescription(getDate());
-                mItemAdapter.notifyItemRangeChanged(0, itemList.size());
+    private fun openDatePicker() {
+        val dialog = DatePickerDialog.newInstance()
+        dialog.setCallback(object : DatePickerDialog.Callback {
+            override fun onConfirm(timeMills: Long) {
+                AppUtils.setTime(timeMills)
+                itemList[1].description = date
+                mItemAdapter!!.notifyItemRangeChanged(0, itemList.size)
             }
-        });
-        dialog.show(getChildFragmentManager(), DatePickerDialog.TAG);
+        })
+        dialog.show(childFragmentManager, DatePickerDialog.TAG)
     }
 
-    private void changAutoTime(DateItem bean){
+    private fun changAutoTime(bean: DateItem) {
         try {
-            boolean isAuto = isAutoTime();
-            AppUtils.setAutoDate(getActivity(), !isAuto);
-            bean.setDescription(!isAuto ? getString(R.string.open) : getString(R.string.close));
-            bean.setSwitch(!isAuto);
-            mItemAdapter.notifyItemRangeChanged(itemList.indexOf(bean), itemList.size());
-        }catch (Exception e){
-            e.printStackTrace();
+            val isAuto = isAutoTime
+            AppUtils.setAutoDate(activity, !isAuto)
+            bean.description = if (!isAuto) getString(R.string.open) else getString(R.string.close)
+            bean.isSwitch = !isAuto
+            mItemAdapter!!.notifyItemRangeChanged(itemList.indexOf(bean), itemList.size)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    private void chang24Display(DateItem bean){
+    private fun chang24Display(bean: DateItem) {
         try {
-            boolean isAuto = AppUtils.is24Display(getActivity());
-            AppUtils.set24Display(getActivity(), !isAuto);
-            bean.setDescription(!isAuto ? getString(R.string.open) : getString(R.string.close));
-            bean.setSwitch(!isAuto);
-            mItemAdapter.notifyItemRangeChanged(itemList.indexOf(bean), itemList.size());
-        }catch (Exception e){
-            e.printStackTrace();
+            val isAuto = AppUtils.is24Display(activity)
+            AppUtils.set24Display(activity, !isAuto)
+            bean.description = if (!isAuto) getString(R.string.open) else getString(R.string.close)
+            bean.isSwitch = !isAuto
+            mItemAdapter!!.notifyItemRangeChanged(itemList.indexOf(bean), itemList.size)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    private boolean isAutoTime(){
-        try {
-            return Settings.Global.getInt(getActivity().getContentResolver(), Settings.Global.AUTO_TIME) == 1;
-        } catch (Settings.SettingNotFoundException e) {
-            return false;
+    private val isAutoTime: Boolean
+        get() = try {
+            Settings.Global.getInt(activity!!.contentResolver, Settings.Global.AUTO_TIME) == 1
+        } catch (e: SettingNotFoundException) {
+            false
         }
+
+
+    private fun openTimePicker() {
+        val dialog = TimePickerDialog.newInstance()
+        dialog.setCallback(object : TimePickerDialog.Callback {
+            override fun onConfirm(timeMills: Long) {
+                AppUtils.setTime(timeMills)
+                itemList[2].description = time
+                mItemAdapter!!.notifyItemRangeChanged(0, itemList.size)
+            }
+        })
+        dialog.show(childFragmentManager, TimePickerDialog.TAG)
     }
 
-
-    private void openTimePicker(){
-        TimePickerDialog dialog = TimePickerDialog.newInstance();
-        dialog.setCallback(new TimePickerDialog.Callback() {
-            @Override
-            public void onConfirm(long timeMills) {
-                AppUtils.setTime(timeMills);
-                itemList.get(2).setDescription(getTime());
-                mItemAdapter.notifyItemRangeChanged(0, itemList.size());
-            }
-        });
-        dialog.show(getChildFragmentManager(), TimePickerDialog.TAG);
-    }
-
-    public SettingAdapter.Callback newCallback(){
-        return new SettingAdapter.Callback() {
-            @Override
-            public void onSelect(boolean selected, SettingItem bean) {
-
+    fun newCallback(): SettingAdapter.Callback {
+        return object : SettingAdapter.Callback {
+            override fun onSelect(selected: Boolean, bean: SettingItem) {
             }
 
-            @Override
-            public void onClick(SettingItem bean) {
-                switch (bean.getType()){
-                    case 0:
-                        AndroidSystem.openDateSetting(getActivity());
-                        break;
-                    case 1:
-                        AndroidSystem.openWifiSetting(getActivity());
-                        break;
+            override fun onClick(bean: SettingItem) {
+                when (bean.type) {
+                    0 -> AndroidSystem.openDateSetting(requireContext())
+                    1 -> AndroidSystem.openWifiSetting(requireContext())
                 }
             }
-        };
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.equals(mNextView)){
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, new AbsWifiListFragment()).addToBackStack(null).commit();
         }
     }
 
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
+    override fun onClick(v: View) {
+        if (v == mBind.next) {
+            activity!!.supportFragmentManager.beginTransaction()
+                .replace(R.id.main_browse_fragment, GuideWifiListFragment.newInstance())
+                .addToBackStack(null).commit()
+        }
     }
 
-    protected void showWifi(boolean show){
-        mContentGrid.setVisibility(show ? View.VISIBLE : View.GONE);
+
+    protected fun showWifi(show: Boolean) {
+        mBind.content.visibility = if (show) View.VISIBLE else View.GONE
     }
 
-    protected void showNext(boolean show){
-        mNextView.setVisibility(show ? View.VISIBLE : View.GONE);
+    protected fun showNext(show: Boolean) {
+        mBind.next.visibility = if (show) View.VISIBLE else View.GONE
     }
 }

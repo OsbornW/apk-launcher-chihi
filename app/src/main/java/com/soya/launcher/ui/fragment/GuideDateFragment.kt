@@ -1,23 +1,28 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import com.shudong.lib_base.base.BaseViewModel
+import com.soya.launcher.databinding.FragmentSetDateBinding
+import com.soya.launcher.ui.fragment.GuideWifiListFragment.showNext
 
-public class GuideDateFragment extends AbsDateFragment{
-    public static GuideDateFragment newInstance() {
+class GuideDateFragment : AbsDateFragment<FragmentSetDateBinding,BaseViewModel>() {
 
-        Bundle args = new Bundle();
 
-        GuideDateFragment fragment = new GuideDateFragment();
-        fragment.setArguments(args);
-        return fragment;
+    override fun initView() {
+        super.initView()
+        showNext(true)
+        showWifi(false)
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        showNext(true);
-        showWifi(false);
+    companion object {
+        fun newInstance(): GuideDateFragment {
+            val args = Bundle()
+
+            val fragment = GuideDateFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

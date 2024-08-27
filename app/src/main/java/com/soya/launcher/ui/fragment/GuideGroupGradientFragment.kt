@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.lifecycleScope
+import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.e
 import com.soya.launcher.cache.AppCache
+import com.soya.launcher.databinding.FragmentGuideGroupGradientBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class GuideGroupGradientFragment : AbsGroupGradientFragment() {
+class GuideGroupGradientFragment : AbsGroupGradientFragment<FragmentGuideGroupGradientBinding,BaseViewModel>() {
     override fun onResume() {
         super.onResume()
         lifecycleScope.launch {

@@ -1,111 +1,82 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.os.Bundle
+import android.text.TextUtils
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.leanback.widget.VerticalGridView
+import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.appContext
+import com.soya.launcher.BaseWallPaperFragment
+import com.soya.launcher.R
+import com.soya.launcher.adapter.BluetoothItemAdapter
+import com.soya.launcher.bean.BluetoothItem
+import com.soya.launcher.databinding.FragmentBluetoothBinding
+import com.soya.launcher.utils.BluetoothScannerUtils
 
-import androidx.annotation.Nullable;
-import androidx.leanback.widget.VerticalGridView;
-
-import com.soya.launcher.R;
-import com.soya.launcher.adapter.BluetoothItemAdapter;
-import com.soya.launcher.bean.BluetoothItem;
-import com.soya.launcher.utils.AndroidSystem;
-import com.soya.launcher.utils.BluetoothScannerUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-public class BluetoothFragment extends AbsFragment implements BluetoothItemAdapter.Callback {
-
-    public static BluetoothFragment newInstance() {
-
-        Bundle args = new Bundle();
-
-        BluetoothFragment fragment = new BluetoothFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    private BluetoothItemAdapter mAdapter;
-    private VerticalGridView mContentGrid;
+class BluetoothFragment : BaseWallPaperFragment<FragmentBluetoothBinding,BaseViewModel>(),
+    BluetoothItemAdapter.Callback {
+    private var mAdapter: BluetoothItemAdapter? = null
 
     @SuppressLint("MissingPermission")
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        BluetoothScannerUtils.startListening(getActivity(), new BluetoothScannerUtils.Listener(){
-            @Override
-            public void onFound(BluetoothAdapter adapter, List<BluetoothDevice> devices) {
-                super.onFound(adapter, devices);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        BluetoothScannerUtils.startListening(activity, object : BluetoothScannerUtils.Listener() {
+            override fun onFound(adapter: BluetoothAdapter, devices: List<BluetoothDevice>) {
+                super.onFound(adapter, devices)
 
-                Set<BluetoothDevice> deviceSet = adapter.getBondedDevices();
-                Map<String, BluetoothDevice> map = new HashMap<>();
-                for (BluetoothDevice device : deviceSet){
-                    if (!TextUtils.isEmpty(device.getName())) map.put(device.getName(), device);
+                val deviceSet = adapter.bondedDevices
+                val map: MutableMap<String, BluetoothDevice> = HashMap()
+                for (device in deviceSet) {
+                    if (!TextUtils.isEmpty(device.name)) map[device.name] = device
                 }
-                for (BluetoothDevice device : devices){
-                    if (!TextUtils.isEmpty(device.getName())) map.put(device.getName(), device);
+                for (device in devices) {
+                    if (!TextUtils.isEmpty(device.name)) map[device.name] = device
                 }
 
-                Map<String, BluetoothItem> strings = new HashMap<>();
-                for (BluetoothItem item : mAdapter.getDataList()) strings.put(item.getDevice().getName(), item);
-                List<BluetoothItem> items = new ArrayList<>();
+                val strings: MutableMap<String, BluetoothItem> = HashMap()
+                for (item in mAdapter!!.dataList) strings[item.device.name] = item
+                val items: MutableList<BluetoothItem> = ArrayList()
 
-                for (Map.Entry<String, BluetoothDevice> entry : map.entrySet()){
-                    if (!strings.containsKey(entry.getKey()))
-                        items.add(new BluetoothItem(entry.getValue()));
-                    else
-                        strings.get(entry.getKey()).setDevice(entry.getValue());
-
+                for ((key, value) in map) {
+                    if (!strings.containsKey(key)) items.add(BluetoothItem(value))
+                    else strings[key]!!.device = value
                 }
-                mAdapter.add(items);
-                mAdapter.notifyItemChanged(0, mAdapter.getItemCount());
+                mAdapter!!.add(items)
+                mAdapter!!.notifyItemChanged(0, mAdapter!!.itemCount)
             }
-        });
+        })
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        BluetoothScannerUtils.removeListener(getActivity());
+    override fun onDestroy() {
+        super.onDestroy()
+        BluetoothScannerUtils.removeListener(activity)
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_bluetooth;
+
+    override fun initView() {
+        mAdapter = BluetoothItemAdapter(activity, LayoutInflater.from(appContext), ArrayList(), this)
+        mBind.content.adapter = mAdapter
+        mBind.content.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    @Override
-    protected void init(View view, LayoutInflater inflater) {
-        super.init(view, inflater);
-        mContentGrid = view.findViewById(R.id.content);
 
-        mAdapter = new BluetoothItemAdapter(getActivity(), inflater, new ArrayList<>(), this);
+
+
+    override fun onClick(bean: BluetoothItem) {
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        mContentGrid.setAdapter(mAdapter);
-        mContentGrid.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-    }
+    companion object {
+        fun newInstance(): BluetoothFragment {
+            val args = Bundle()
 
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
-    }
-
-    @Override
-    public void onClick(BluetoothItem bean) {
-
+            val fragment = BluetoothFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

@@ -1,42 +1,42 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import com.shudong.lib_base.base.BaseViewModel
+import com.soya.launcher.R
+import com.soya.launcher.bean.Language
+import com.soya.launcher.databinding.FragmentSetLanguageBinding
+import com.soya.launcher.enums.Atts
+import com.soya.launcher.manager.PreferencesManager
+import com.soya.launcher.ui.fragment.GuideWifiListFragment.showNext
+import com.soya.launcher.utils.AndroidSystem
+import com.soya.launcher.utils.PreferencesUtils
+import java.util.Locale
 
-import com.soya.launcher.R;
-import com.soya.launcher.bean.Language;
-import com.soya.launcher.enums.Atts;
-import com.soya.launcher.manager.PreferencesManager;
-import com.soya.launcher.utils.AndroidSystem;
-import com.soya.launcher.utils.PreferencesUtils;
+class SetLanguageFragment : AbsLanguageFragment<FragmentSetLanguageBinding,BaseViewModel>() {
 
-import java.util.Locale;
 
-public class SetLanguageFragment extends AbsLanguageFragment {
-    public static SetLanguageFragment newInstance() {
-
-        Bundle args = new Bundle();
-
-        SetLanguageFragment fragment = new SetLanguageFragment();
-        fragment.setArguments(args);
-        return fragment;
+    override fun initView() {
+        super.initView()
+        showNext(false)
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        showNext(false);
+    override fun onSelectLanguage(bean: Language) {
+        PreferencesUtils.setProperty(Atts.LANGUAGE, bean.language.toLanguageTag())
+        AndroidSystem.setSystemLanguage(
+            activity,
+            Locale.forLanguageTag(PreferencesManager.getLanguage())
+        )
     }
 
-    @Override
-    protected void onSelectLanguage(Language bean) {
-        PreferencesUtils.setProperty(Atts.LANGUAGE, bean.getLanguage().toLanguageTag());
-        AndroidSystem.setSystemLanguage(getActivity(), Locale.forLanguageTag(PreferencesManager.getLanguage()));
-    }
+    companion object {
+        fun newInstance(): SetLanguageFragment {
+            val args = Bundle()
 
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
+            val fragment = SetLanguageFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

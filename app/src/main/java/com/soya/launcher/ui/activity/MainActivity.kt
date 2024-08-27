@@ -297,32 +297,10 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     override fun initView() {
         lifecycleScope.launch {
-            withContext(Dispatchers.Main) {
-                // Simulate a long running task
-                setBG(mBind.ivBg)
-            }
-
-            withContext(Dispatchers.Main) {
-                // Simulate a long running task
-                registerReceiver(homeReceiver, IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
-                commit()
-            }
+            registerReceiver(homeReceiver, IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+            commit()
         }
 
-        //val model = ReflectUtils.getProperty("persist.vendor.launcher.platform","")
-        //"当前设备型号是====$model"
-    }
-
-
-    fun setBG(view: ImageView?) {
-        var id = if (Config.COMPANY == 0) R.drawable.wallpaper_22 else R.drawable.wallpaper_1
-        for (wallpaper in AppCache.WALLPAPERS) {
-            if (wallpaper.id == PreferencesManager.getWallpaper()) {
-                id = wallpaper.picture
-                break
-            }
-        }
-        GlideUtils.bindBlur(this, view, id)
     }
 
 

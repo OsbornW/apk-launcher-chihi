@@ -12,49 +12,36 @@ import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
 import com.open.system.ASystemProperties
+import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.databinding.FragmentChooseGradientBinding
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ui.activity.GradientActivity
 import com.soya.launcher.utils.AndroidSystem
 
-class ChooseGradientFragment : AbsFragment() {
+class ChooseGradientFragment : BaseWallPaperFragment<FragmentChooseGradientBinding,BaseViewModel>() {
     private val dataList: MutableList<SettingItem?> = ArrayList()
     private var itemBridgeAdapter: ItemBridgeAdapter? = null
-    private var mTitleView: TextView? = null
-    private var mContentGrid: VerticalGridView? = null
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_choose_gradient
-    }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mTitleView = view.findViewById(R.id.title)
-        mContentGrid = view.findViewById(R.id.content)
-        mTitleView?.text = getString(R.string.project_gradient)
-    }
 
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
+    override fun initView() {
+        mBind.layout.title.text = getString(R.string.project_gradient)
         setContent()
 
         setCurMode(true)
+        mBind.content.apply { post { requestFocus() } }
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requestFocus(mContentGrid)
-    }
 
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
+
 
     private fun setContent() {
         dataList.clear()
@@ -72,9 +59,9 @@ class ChooseGradientFragment : AbsFragment() {
             FocusHighlight.ZOOM_FACTOR_LARGE,
             false
         )
-        mContentGrid!!.setAdapter(itemBridgeAdapter)
-        mContentGrid!!.setNumColumns(2)
-        mContentGrid!!.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+        mBind.content.setAdapter(itemBridgeAdapter)
+        mBind.content.setNumColumns(2)
+        mBind.content.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
         val isEnalbe = ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
         dataList.add(
             SettingItem(
@@ -104,14 +91,14 @@ class ChooseGradientFragment : AbsFragment() {
                         if (isEnalbe) {
                             isRK3326().yes {
                                 AndroidSystem.openActivityName(
-                                    activity,
+                                    requireContext(),
                                     "com.lei.hxkeystone",
                                     "com.lei.hxkeystone.CheckGsensorActivity"
                                 )
 
                             }.otherwise {
                                 AndroidSystem.openActivityName(
-                                    activity,
+                                    requireContext(),
                                     "com.hxdevicetest",
                                     "com.hxdevicetest.CheckGsensorActivity"
                                 )
@@ -120,7 +107,7 @@ class ChooseGradientFragment : AbsFragment() {
                         } else {
                             isRK3326().yes {
                                 AndroidSystem.openActivityName(
-                                    activity,
+                                    requireContext(),
                                     "com.lei.hxkeystone",
                                     "com.lei.hxkeystone.FourPoint"
                                 )

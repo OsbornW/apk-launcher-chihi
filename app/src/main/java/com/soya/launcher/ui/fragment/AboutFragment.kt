@@ -10,12 +10,15 @@ import android.widget.TextView
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
+import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
 import com.soya.launcher.adapter.AboutAdapter
 import com.soya.launcher.bean.AboutItem
 import com.soya.launcher.config.Config
+import com.soya.launcher.databinding.FragmentAboutBinding
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.response.VersionResponse
@@ -25,10 +28,8 @@ import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.PreferencesUtils
 import retrofit2.Call
 
-class AboutFragment : AbsFragment(), View.OnClickListener {
-    private var mTitleView: TextView? = null
-    private var mContentGrid: VerticalGridView? = null
-    private var mUpgradeView: View? = null
+class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,BaseViewModel>(),
+    View.OnClickListener {
 
     private var uiHandler: Handler? = null
 
@@ -44,22 +45,11 @@ class AboutFragment : AbsFragment(), View.OnClickListener {
         if (call != null) call!!.cancel()
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_about
-    }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mTitleView = view.findViewById(R.id.title)
-        mContentGrid = view.findViewById(R.id.content)
-        mUpgradeView = view.findViewById(R.id.upgrade)
+    override fun initView() {
+        mBind.layout.title.text = getString(R.string.about)
 
-        mTitleView?.text = getString(R.string.about)
-    }
-
-    override fun initBefore(view: View, inflater: LayoutInflater) {
-        super.initBefore(view, inflater)
-        mUpgradeView!!.clickNoRepeat (2000){
+        mBind.upgrade.clickNoRepeat (2000){
             val dialog = ProgressDialog.newInstance()
             dialog.show(childFragmentManager, ProgressDialog.TAG)
             call =
@@ -76,7 +66,7 @@ class AboutFragment : AbsFragment(), View.OnClickListener {
                     val result = response.data
                     if (result.version > BuildConfig.VERSION_CODE && Config.CHANNEL == result.channel) {
                         PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, result.version.toInt())
-                        AndroidSystem.jumpUpgrade(activity, result)
+                        AndroidSystem.jumpUpgrade(requireContext(), result)
                     } else {
                         val toastDialog = ToastDialog.newInstance(
                             getString(R.string.already_latest_version),
@@ -88,19 +78,14 @@ class AboutFragment : AbsFragment(), View.OnClickListener {
         }
     }
 
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
+
+    override fun initdata() {
         setContent()
+        mBind.content.apply { post { requestFocus() } }
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requestFocus(mContentGrid)
-    }
 
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
 
     private fun setContent() {
         val list: MutableList<AboutItem?> = ArrayList()
@@ -119,7 +104,7 @@ class AboutFragment : AbsFragment(), View.OnClickListener {
                 R.drawable.baseline_translate_100,
                 getString(R.string.language),
                 AndroidSystem.getSystemLanguage(
-                    activity
+                    requireContext()
                 )
             )
         )
@@ -129,7 +114,7 @@ class AboutFragment : AbsFragment(), View.OnClickListener {
                 R.drawable.baseline_apps_100,
                 getString(R.string.apps),
                 AndroidSystem.getUserApps(
-                    activity
+                    requireContext()
                 ).size.toString()
             )
         )
@@ -155,7 +140,7 @@ class AboutFragment : AbsFragment(), View.OnClickListener {
                 R.drawable.baseline_token_100,
                 getString(R.string.device_id),
                 AndroidSystem.getDeviceId(
-                    activity
+                    requireContext()
                 )
             )
         )
@@ -163,19 +148,19 @@ class AboutFragment : AbsFragment(), View.OnClickListener {
         val arrayObjectAdapter =
             ArrayObjectAdapter(AboutAdapter(activity, layoutInflater).setCallback { bean ->
                 when (bean.type) {
-                    2 -> AndroidSystem.restoreFactory(activity)
+                    2 -> AndroidSystem.restoreFactory(requireContext())
                 }
             })
         val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
-        mContentGrid!!.adapter = itemBridgeAdapter
-        mContentGrid!!.setNumColumns(1)
+        mBind.content.adapter = itemBridgeAdapter
+        mBind.content.setNumColumns(1)
         arrayObjectAdapter.addAll(0, list)
-        mContentGrid!!.requestFocus()
-        mContentGrid!!.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+        mBind.content.requestFocus()
+        mBind.content.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onClick(v: View) {
-        if (v == mUpgradeView) {
+        if (v == mBind.upgrade) {
 
         }
     }

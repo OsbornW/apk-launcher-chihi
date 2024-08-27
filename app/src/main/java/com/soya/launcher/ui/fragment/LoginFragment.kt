@@ -1,51 +1,34 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
+import com.shudong.lib_base.base.BaseViewModel
+import com.soya.launcher.BaseWallPaperFragment
+import com.soya.launcher.R
+import com.soya.launcher.databinding.FragmentLoginBinding
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+class LoginFragment : BaseWallPaperFragment<FragmentLoginBinding,BaseViewModel>() {
 
-import com.soya.launcher.R;
 
-public class LoginFragment extends AbsFragment{
+    override fun initView() {
+        mBind.layout.title.text = getString(R.string.login)
+        mBind.login.apply { post { requestFocus() } }
 
-    public static LoginFragment newInstance() {
-
-        Bundle args = new Bundle();
-
-        LoginFragment fragment = new LoginFragment();
-        fragment.setArguments(args);
-        return fragment;
     }
 
-    private View mLoginView;
-    private TextView mTitleVoew;
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.fragment_login;
-    }
 
-    @Override
-    protected void init(View view, LayoutInflater inflater) {
-        super.init(view, inflater);
-        mLoginView = view.findViewById(R.id.login);
-        mTitleVoew = view.findViewById(R.id.title);
 
-        mTitleVoew.setText(getString(R.string.login));
-    }
+    companion object {
+        fun newInstance(): LoginFragment {
+            val args = Bundle()
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        requestFocus(mLoginView);
-    }
-
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
+            val fragment = LoginFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

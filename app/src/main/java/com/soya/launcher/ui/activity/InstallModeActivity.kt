@@ -8,7 +8,7 @@ import com.soya.launcher.R
 import com.soya.launcher.databinding.ActivitySettingBinding
 import com.soya.launcher.ui.fragment.InstallModeFragment
 
-class InstallModeActivity : BaseWallpaperActivity<ActivitySettingBinding, BaseViewModel>() {
+class InstallModeActivity : BaseVMActivity<ActivitySettingBinding, BaseViewModel>() {
 
     override fun initView() {
         replaceFragment(InstallModeFragment.newInstance(), R.id.fl_container)

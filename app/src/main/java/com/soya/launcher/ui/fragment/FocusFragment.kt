@@ -4,34 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.FragmentManager
+import com.shudong.lib_base.base.BaseViewModel
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.cache.AppCache
+import com.soya.launcher.databinding.FragmentFocusBinding
 
-class FocusFragment : AbsFragment(), View.OnClickListener {
-    private var mNextView: View? = null
+class FocusFragment : BaseWallPaperFragment<FragmentFocusBinding,BaseViewModel>(), View.OnClickListener {
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_focus
+
+    override fun initView() {
+        mBind.next.setOnClickListener { v: View -> this.onClick(v) }
+        mBind.next.apply { post { requestFocus() } }
+
     }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mNextView = view.findViewById(R.id.next)
-    }
 
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
-        mNextView!!.setOnClickListener { v: View -> this.onClick(v) }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requestFocus(mNextView)
-    }
 
 
     override fun onClick(v: View) {
-        if (v == mNextView) {
+        if (v == mBind.next) {
 
             val fManager = activity!!.supportFragmentManager
             if (fManager.backStackEntryCount > 0) {
@@ -46,9 +38,7 @@ class FocusFragment : AbsFragment(), View.OnClickListener {
         }
     }
 
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
+
 
     companion object {
         @JvmStatic

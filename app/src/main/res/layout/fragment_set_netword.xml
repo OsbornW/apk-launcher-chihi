@@ -1,55 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToOutline="false"
-    android:clipChildren="false"
-    android:clipToPadding="false">
-    <ImageView
-        android:id="@+id/wallpaper"
-        android:scaleType="centerCrop"
+<layout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_marginBottom="@dimen/qb_px_46"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:clipToOutline="false"
+        android:layout_height="match_parent"
         android:clipChildren="false"
-        android:clipToPadding="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <androidx.leanback.widget.HorizontalGridView
-            android:id="@+id/content"
-            android:layout_gravity="center"
-            android:clipToOutline="false"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:layout_centerHorizontal="true"
-            android:layout_width="@dimen/qb_px_190"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:text="@string/set_netword_title"
-            android:textSize="@dimen/qb_px_sp_22"
-            android:textColor="@color/text_color_style_1"
-            android:layout_marginTop="@dimen/qb_px_26"
-            android:layout_gravity="center_horizontal"
+        android:clipToOutline="false"
+        android:clipToPadding="false">
+
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <TextView
-        android:id="@+id/next"
-        android:layout_marginBottom="@dimen/qb_px_26"
-        android:textSize="@dimen/qb_px_sp_18"
-        android:textColor="@color/text_color_style_1"
-        android:layout_gravity="center_horizontal|bottom"
-        android:text="@string/next"
-        android:gravity="center"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
-        android:clickable="true"
-        android:background="@drawable/ripple_style_3"
-        android:layout_width="@dimen/qb_px_150"
-        android:layout_height="@dimen/qb_px_45"/>
-</FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/qb_px_46"
+            android:clipChildren="false"
+            android:clipToOutline="false"
+            android:clipToPadding="false"
+            android:orientation="vertical">
+
+            <androidx.leanback.widget.HorizontalGridView
+                android:id="@+id/content"
+                android:layout_width="@dimen/qb_px_190"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:clipChildren="false"
+                android:clipToOutline="false"
+                android:clipToPadding="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/qb_px_26"
+                android:text="@string/set_netword_title"
+                android:textColor="@color/text_color_style_1"
+                android:textSize="@dimen/qb_px_sp_22" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:id="@+id/next"
+            android:layout_width="@dimen/qb_px_150"
+            android:layout_height="@dimen/qb_px_45"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="@dimen/qb_px_26"
+            android:background="@drawable/ripple_style_3"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:text="@string/next"
+            android:textColor="@color/text_color_style_1"
+            android:textSize="@dimen/qb_px_sp_18" />
+    </FrameLayout>
+</layout>

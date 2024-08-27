@@ -25,8 +25,21 @@ open class BaseWallpaperActivity<VDB : ViewDataBinding,VM:BaseViewModel> : BaseV
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateWallPaper()
+    }
+
     fun updateWallPaper(){
-        GlideUtils.bindBlur(appContext, rootBinding.ivWallpaper, curWallpaper())
+        val resId = curWallpaper()
+
+        rootBinding.ivWallpaper.drawable?.constantState?.hashCode()?.let {
+            if (it != resId.hashCode()) {
+                GlideUtils.bindBlur(appContext, rootBinding.ivWallpaper, resId)
+            }
+        }
+
+
     }
 
 

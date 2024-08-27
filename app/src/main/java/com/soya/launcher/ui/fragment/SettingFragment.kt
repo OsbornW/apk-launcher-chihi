@@ -58,7 +58,11 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding,BaseViewMod
     override fun initdata() {
         mBind.layout.title.text =  getString(R.string.setting)
         setContent()
-        mBind.content.requestFocus()
+        mBind.content.apply {
+            post {
+                requestFocus()
+            }
+        }
     }
 
 
@@ -251,39 +255,39 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding,BaseViewMod
             override fun onClick(bean: SettingItem) {
                 when (bean.type) {
                     0 -> if (Config.COMPANY == 3) {
-                        AndroidSystem.openWifiSetting(activity)
+                        AndroidSystem.openWifiSetting(requireContext())
                     } else {
-                        startActivity(Intent(activity, WifiListActivity::class.java))
+                        startActivity(Intent(requireContext(), WifiListActivity::class.java))
                     }
 
-                    1 -> startActivity(Intent(activity, WallpaperActivity::class.java))
+                    1 -> startActivity(Intent(requireContext(), WallpaperActivity::class.java))
                     2 -> if (Config.COMPANY == 0 || Config.COMPANY == 9) {
-                        startActivity(Intent(activity, ProjectorActivity::class.java))
+                        startActivity(Intent(requireContext(), ProjectorActivity::class.java))
                     } else if (Config.COMPANY == 1) {
-                        AndroidSystem.openActivityName(activity, "com.qf.keystone.AllActivity")
+                        AndroidSystem.openActivityName(requireContext(), "com.qf.keystone.AllActivity")
                     }
 
                     3 -> product.openLanguageSetting(requireContext())
                     4 -> product.openDateSetting(requireContext())
                     5 -> if (Config.COMPANY == 1 || Config.COMPANY == 2) {
-                        AndroidSystem.openBluetoothSetting2(activity)
+                        AndroidSystem.openBluetoothSetting2(requireContext())
                     } else if (Config.COMPANY == 3) {
-                        AndroidSystem.openBluetoothSetting3(activity)
+                        AndroidSystem.openBluetoothSetting3(requireContext())
                     }
 
-                    6 -> startActivity(Intent(activity, AboutActivity::class.java))
+                    6 -> startActivity(Intent(requireContext(), AboutActivity::class.java))
                     7 -> if (Config.COMPANY == 0 || Config.COMPANY == 1) {
-                        AndroidSystem.openSystemSetting(activity)
+                        AndroidSystem.openSystemSetting(requireContext())
                     } else {
-                        AndroidSystem.openSystemSetting2(activity)
+                        AndroidSystem.openSystemSetting2(requireContext())
                     }
 
-                    8 -> AndroidSystem.openVoiceSetting(activity)
-                    9 -> AndroidSystem.openInputSetting(activity)
+                    8 -> AndroidSystem.openVoiceSetting(requireContext())
+                    9 -> AndroidSystem.openInputSetting(requireContext())
                     10 -> if (Config.COMPANY == 9) {
                         context!!.openBluetoothSettings()
                     } else {
-                        AndroidSystem.openBluetoothSetting4(context)
+                        AndroidSystem.openBluetoothSetting4(requireContext())
                     }
 
                 }

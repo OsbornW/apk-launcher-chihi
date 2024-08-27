@@ -1,19 +1,20 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
+import android.os.Bundle
+import com.shudong.lib_base.base.BaseViewModel
+import com.soya.launcher.databinding.FragmentGuideGroupGradientBinding
 
-public class HomeGuideGroupGradientFragment extends AbsGroupGradientFragment{
-    public static HomeGuideGroupGradientFragment newInstance() {
+class HomeGuideGroupGradientFragment : AbsGroupGradientFragment<FragmentGuideGroupGradientBinding,BaseViewModel>() {
+    override val isGuide: Boolean
+        get() = false
 
-        Bundle args = new Bundle();
+    companion object {
+        fun newInstance(): HomeGuideGroupGradientFragment {
+            val args = Bundle()
 
-        HomeGuideGroupGradientFragment fragment = new HomeGuideGroupGradientFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    protected boolean isGuide() {
-        return false;
+            val fragment = HomeGuideGroupGradientFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

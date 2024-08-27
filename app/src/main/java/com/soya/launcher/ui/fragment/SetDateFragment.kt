@@ -1,31 +1,31 @@
-package com.soya.launcher.ui.fragment;
+package com.soya.launcher.ui.fragment
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import com.shudong.lib_base.base.BaseViewModel
+import com.soya.launcher.R
+import com.soya.launcher.databinding.FragmentSetDateBinding
+import com.soya.launcher.ui.fragment.GuideWifiListFragment.showNext
 
-import com.soya.launcher.R;
+class SetDateFragment : AbsDateFragment<FragmentSetDateBinding,BaseViewModel>() {
 
-public class SetDateFragment extends AbsDateFragment{
 
-    public static SetDateFragment newInstance() {
-        
-        Bundle args = new Bundle();
-        
-        SetDateFragment fragment = new SetDateFragment();
-        fragment.setArguments(args);
-        return fragment;
+    override fun initView() {
+        super.initView()
+        showNext(false)
+        showWifi(false)
     }
 
-    @Override
-    protected void initBind(View view, LayoutInflater inflater) {
-        super.initBind(view, inflater);
-        showNext(false);
-        showWifi(false);
-    }
 
-    @Override
-    protected int getWallpaperView() {
-        return R.id.wallpaper;
+
+    companion object {
+        fun newInstance(): SetDateFragment {
+            val args = Bundle()
+
+            val fragment = SetDateFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

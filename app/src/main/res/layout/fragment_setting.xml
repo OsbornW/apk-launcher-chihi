@@ -5,13 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true">
-    <ImageView
-        android:visibility="gone"
-        android:id="@+id/wallpaper"
-        android:src="@drawable/wallpaper_1"
-        android:scaleType="centerCrop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

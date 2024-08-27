@@ -22,6 +22,7 @@ import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.databinding.ViewDataBinding
 import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -60,8 +61,8 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,BaseViewModel>() {
-    private val exec = Executors.newCachedThreadPool()
+open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel> : BaseWallPaperFragment<VDB,VM>() {
+    private var exec = Executors.newCachedThreadPool()
     
     private var mWifiManager: WifiManager? = null
     private var mAdapter: WifiListAdapter? = null
@@ -119,6 +120,7 @@ open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,B
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun initView() {
         mAdapter =
             WifiListAdapter(activity!!, LayoutInflater.from(appContext), CopyOnWriteArrayList(), useNext(), newCallback())
@@ -173,7 +175,7 @@ open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,B
          * 已保存WiFi列表 控件初始化和数据绑定
          */
         mBind.rvSavedWifi.linear()
-            ?.setup {
+            .setup {
 
 
                 addType<WifiItem>(R.layout.holder_wifi)
@@ -220,10 +222,8 @@ open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,B
 
         //列表加载进度条是否可见
         (mWifiManager?.isWifiEnabled ?: true).yes {
-            mBind.progressBar.setVisibility(
-                if (mAdapter!!.itemCount == 0) View.VISIBLE
-                else View.GONE
-            )
+            mBind.progressBar.visibility = if (mAdapter!!.itemCount == 0) View.VISIBLE
+            else View.GONE
         }
 
         if (useNext()) {
@@ -269,6 +269,7 @@ open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,B
     override fun initdata() {
         mBind.content.setAdapter(mAdapter)
         mBind.switchItem.isChecked = mWifiManager!!.isWifiEnabled
+        if(exec.isShutdown)exec = Executors.newCachedThreadPool()
         exec.execute(Runnable {
             var time = 0
             while (isAdded) {
@@ -569,7 +570,7 @@ open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,B
                     val dialog = WifiSaveDialog.newInstance(bean.SSID,"")
                     dialog.setCallback (object :WifiSaveDialog.Callback{
                         override fun onClick(type: Int) {
-                            val index = mBind.rvSavedWifi.mutable?.indexOf(wifiItem) ?: 0
+                            val index = mBind.rvSavedWifi.mutable.indexOf(wifiItem)
                             when (type) {
                                 0 -> {
                                     isGreaterThanLollipop().yes {
@@ -584,7 +585,7 @@ open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,B
                                     mWifiManager!!.removeNetwork(item!!.networkId)
                                     wifiItem.isSave = false
                                     if (index != -1){
-                                        mBind.rvSavedWifi.mutable?.removeAt(index)
+                                        mBind.rvSavedWifi.mutable.removeAt(index)
                                         mBind.rvSavedWifi.adapter?.notifyItemRemoved(index)
                                     }
 
@@ -606,7 +607,7 @@ open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,B
                     dialog.setCallback (object :WifiPassDialog.Callback{
                         override fun onConfirm(text: String) {
                             wifiItem.isSave = true
-                            val index = mBind.rvSavedWifi.mutable?.indexOf(wifiItem) ?: 0
+                            val index = mBind.rvSavedWifi.mutable.indexOf(wifiItem)
                             if (index != -1) mBind.rvSavedWifi.adapter!!.notifyItemChanged(index)
                             isGreaterThanLollipop().yes {
                                 connect(bean, text)
@@ -619,7 +620,7 @@ open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,B
                     dialog.show(getChildFragmentManager(), WifiPassDialog.TAG)
                 } else {
                     wifiItem.isSave = true
-                    val index = mBind.rvSavedWifi.mutable?.indexOf(wifiItem) ?: 0
+                    val index = mBind.rvSavedWifi.mutable.indexOf(wifiItem)
                     if (index != -1) mBind.rvSavedWifi.adapter!!.notifyItemChanged(index)
                     isGreaterThanLollipop().yes {
                         connect(bean, "")
@@ -805,9 +806,9 @@ open class AbsWifiListFragment : BaseWallPaperFragment<FragmentWifiListBinding,B
                         }
                     }
                     if (!isExist) {
-                        mBind.rvSavedWifi.mutable?.add(it)
+                        mBind.rvSavedWifi.mutable.add(it)
                         mBind.rvSavedWifi.adapter?.notifyItemInserted(
-                            mBind.rvSavedWifi.mutable?.size ?: 0 - 1
+                            mBind.rvSavedWifi.mutable.size
                         )
                     }
                     //"当前集合里面是否包含这个WIFI？${it?.item?.SSID}===${isContain}"
