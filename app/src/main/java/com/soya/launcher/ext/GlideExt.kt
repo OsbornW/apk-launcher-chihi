@@ -71,8 +71,8 @@ fun ImageView.loadImageWithGlide(
     Glide.with(appContext)
         .load(load)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .placeholder(R.drawable.rectangle_solffffff)
-        .error(R.drawable.rectangle_solffffff)
+        //.placeholder(R.drawable.rectangle_solffffff)
+        //.error(R.drawable.rectangle_solffffff)
         .transition(DrawableTransitionOptions.with(
             DrawableCrossFadeFactory.Builder(250).setCrossFadeEnabled(true).build()
         ))

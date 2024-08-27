@@ -32,8 +32,8 @@ public class GlideUtils {
         GlideApp.with(App.getInstance())
                 .load(load)
                 .diskCacheStrategy(strategy)
-                .placeholder(R.drawable.rectangle_solffffff)
-                .error(R.drawable.rectangle_solffffff)
+                //.placeholder(R.drawable.rectangle_solffffff)
+                //.error(R.drawable.rectangle_solffffff)
                 .transition(DrawableTransitionOptions.with(new DrawableCrossFadeFactory.Builder(250).setCrossFadeEnabled(true).build()))
                 .into(view);
     }

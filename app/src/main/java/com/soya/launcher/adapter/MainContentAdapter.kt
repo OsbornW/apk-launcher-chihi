@@ -143,9 +143,9 @@ class MainContentAdapter(
 
 
                     if (tvLoadding != null) {
-                        //if (item.id?.isNotEmpty() == true) {
+                        if (item.id?.isNotEmpty() == false) {
                             tvLoadding.visibility = View.GONE
-                        //}
+                        }
                     }
                 }
 

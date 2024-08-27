@@ -36,7 +36,7 @@
             <TextView
                 android:text="@string/loading"
                 android:layout_gravity="center"
-                android:textSize="@dimen/qb_px_sp_9"
+                android:textSize="@dimen/qb_px_sp_11"
                 android:textColor="@color/text_color_style_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
