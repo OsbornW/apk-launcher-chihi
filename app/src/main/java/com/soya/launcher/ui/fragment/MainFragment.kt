@@ -181,7 +181,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         uiHandler = Handler()
         receiver = InnerReceiver()
         wallpaperReceiver = WallpaperReceiver()
-        val infos = AndroidSystem.getUserApps2(requireContext())
+        val infos = AndroidSystem.getUserApps2(appContext)
         val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
         useApps.addAll(filteredList)
@@ -202,7 +202,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
 
         obseverLiveEvent<Boolean>(UPDATE_HOME_LIST) {
-            val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
+            val path = FilePathMangaer.getJsonPath(appContext) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeInfoDto>(
                     JsonReader(FileReader(path)),
@@ -331,14 +331,14 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             newStoreClickCallback()
         )
         mNotifyAdapter = NotifyAdapter(
-            requireContext(),
+            appContext,
             LayoutInflater.from(appContext),
             CopyOnWriteArrayList(),
             if (Config.COMPANY == 3) R.layout.holder_notify else R.layout.holder_notify_2
         )
         mMainHeaderAdapter =
             MainHeaderAdapter(
-                requireContext(),
+                appContext,
                 LayoutInflater.from(appContext),
                 CopyOnWriteArrayList(),
                 newHeaderCallback()
@@ -348,7 +348,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         mHMainContentAdapter =
             MainContentAdapter(
-                requireContext(),
+                appContext,
                 LayoutInflater.from(appContext),
                 CopyOnWriteArrayList(),
                 newContentCallback()
@@ -357,13 +357,13 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         mVMainContentAdapter =
             MainContentAdapter(
-                requireContext(),
+                appContext,
                 LayoutInflater.from(appContext),
                 CopyOnWriteArrayList(),
                 newContentCallback()
             )
         mAppListAdapter = AppListAdapter(
-            requireContext(),
+            appContext,
             getLayoutInflater(),
             CopyOnWriteArrayList(),
             R.layout.item_home_localapps,
@@ -448,7 +448,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         fillHeader()
         mBind.notifyRecycler.setLayoutManager(
             LinearLayoutManager(
-                requireContext(),
+                appContext,
                 RecyclerView.HORIZONTAL,
                 false
             )
@@ -592,7 +592,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         syncNotify()
         startLoopTime()
 
-        var infos = AndroidSystem.getUserApps2(requireContext())
+        var infos = AndroidSystem.getUserApps2(appContext)
         val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
         if (filteredList.size != mAppListAdapter?.getDataList()?.size) {
@@ -701,7 +701,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 mBind.verticalContent.visibility = View.VISIBLE
                 mBind.horizontalContent.visibility = View.GONE
                 mBind.verticalContent.setNumColumns(columns)
-                requireContext().let {
+                appContext.let {
                     mBind.verticalContent.setVerticalSpacing(
                         it.resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_1).toInt()
                     )
@@ -775,13 +775,13 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             if (!isAdded) return@Runnable
             syncTime()
             val old = isNetworkAvailable
-            isNetworkAvailable = AndroidSystem.isNetworkAvailable(requireContext())
+            isNetworkAvailable = AndroidSystem.isNetworkAvailable(appContext)
             if (isNetworkAvailable != old && isNetworkAvailable) {
                 requestHome()
             }
 
 
-            /*if (AndroidSystem.isEthernetConnected(requireContext())) {
+            /*if (AndroidSystem.isEthernetConnected(appContext)) {
                 mBind.wifi!!.setImageResource(R.drawable.baseline_lan_100)
             } else {
                 mBind.wifi!!.setImageResource(if (isNetworkAvailable) R.drawable.baseline_wifi_100 else R.drawable.baseline_wifi_off_100)
@@ -791,7 +791,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 val notifies: MutableList<Notify> = ArrayList()
                 if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100,3))
                 val deviceHashMap =
-                    (requireContext().getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
+                    (appContext.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
 
                 val isInsertUDisk = requireActivity().isUDisk()
 
@@ -802,8 +802,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 /*for (i in 0 until deviceHashMap.size) {
                         notifies.add(Notify(R.drawable.baseline_usb_100))
                  }*/
-                if (SystemUtils.isApEnable(requireContext())) notifies.add(Notify(R.drawable.baseline_wifi_tethering_100_2,2))
-                val storageManager = requireContext().getSystemService(
+                if (SystemUtils.isApEnable(appContext)) notifies.add(Notify(R.drawable.baseline_wifi_tethering_100_2,2))
+                val storageManager = appContext.getSystemService(
                     StorageManager::class.java
                 )
 
@@ -827,7 +827,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
 
     private fun syncTime() {
-        val is24 = AppUtils.is24Display(requireContext())
+        val is24 = AppUtils.is24Display(appContext)
         val calendar = Calendar.getInstance()
         val h = calendar[if (is24) Calendar.HOUR_OF_DAY else Calendar.HOUR]
         val m = calendar[Calendar.MINUTE]
@@ -849,7 +849,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         //dasdas
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
-                requireContext(),
+                appContext,
                 LayoutInflater.from(appContext),
                 newProjectorCallback(),
                 R.layout.holder_setting_3
@@ -890,12 +890,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         Projector.TYPE_SETTING -> {
                             isRK3326().yes {
                                 AndroidSystem.openActivityName(
-                                    requireContext(),
+                                    appContext,
                                     "com.lei.hxkeystone",
                                     "com.lei.hxkeystone.ScaleActivity"
                                 )
                             }.otherwise {
-                                startActivity(Intent(requireContext(), ScaleScreenActivity::class.java))
+                                startActivity(Intent(appContext, ScaleScreenActivity::class.java))
                             }
                         }
 
@@ -906,7 +906,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                                 }
 
                                 else -> {
-                                    val success = AndroidSystem.openProjectorMode(requireContext())
+                                    val success = AndroidSystem.openProjectorMode(appContext)
                                     if (!success) toastInstall()
                                 }
                             }
@@ -914,7 +914,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         }
 
                         Projector.TYPE_HDMI -> {
-                            val success = AndroidSystem.openProjectorHDMI(requireContext())
+                            val success = AndroidSystem.openProjectorHDMI(appContext)
                             if (!success) toastInstall()
                         }
 
@@ -927,7 +927,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                                 else -> {
                                     startActivity(
                                         Intent(
-                                            requireContext(),
+                                            appContext,
                                             ChooseGradientActivity::class.java
                                         )
                                     )
@@ -982,7 +982,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun setToolContent() {
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
-                requireContext(),
+                appContext,
                 getLayoutInflater(),
                 newToolCallback(),
                 R.layout.holder_setting_3
@@ -1026,7 +1026,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     Projector.TYPE_SETTING -> {
                         isRK3326().yes {
                             AndroidSystem.openActivityName(
-                                requireContext(),
+                                appContext,
                                 "com.lei.hxkeystone",
                                 "com.lei.hxkeystone.ScaleActivity"
                             )
@@ -1036,17 +1036,17 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     }
 
                     Projector.TYPE_PROJECTOR_MODE -> {
-                        val success = AndroidSystem.openProjectorMode(requireContext())
+                        val success = AndroidSystem.openProjectorMode(appContext)
                         if (!success) toastInstall()
                     }
 
                     Projector.TYPE_HDMI -> {
-                        val success = AndroidSystem.openProjectorHDMI(requireContext())
+                        val success = AndroidSystem.openProjectorHDMI(appContext)
                         if (!success) toastInstall()
                     }
 
                     Projector.TYPE_SCREEN -> {
-                        startActivity(Intent(requireContext(), ChooseGradientActivity::class.java))
+                        startActivity(Intent(appContext, ChooseGradientActivity::class.java))
                     }
                 }
             }
@@ -1062,12 +1062,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             override fun onClick(bean: SettingItem) {
                 when (bean.type) {
                     Tools.TYPE_HDMI -> AndroidSystem.openPackageName(
-                        requireContext(),
+                        appContext,
                         "com.mediatek.wwtv.tvcenter"
                     )
 
                     Tools.TYPE_FILE -> AndroidSystem.openPackageName(
-                        requireContext(),
+                        appContext,
                         "com.conocx.fileexplorer"
                     )
                 }
@@ -1086,9 +1086,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     override fun onClick(v: View) {
         if (v == mBind.setting) {
             if (Config.COMPANY == 4) {
-                AndroidSystem.openSystemSetting(requireContext())
+                AndroidSystem.openSystemSetting(appContext)
             } else {
-                startActivity(Intent(requireContext(), SettingActivity::class.java))
+                startActivity(Intent(appContext, SettingActivity::class.java))
             }
             //loadJar()
             //requireActivity().initializeAd(rlAD!!,this)
@@ -1096,7 +1096,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             /* Ad.get().setEnableLog(true)
              if(adController==null){
-                 adController = Ad.get().begin(requireContext())
+                 adController = Ad.get().begin(appContext)
                      .container(rlAD)
                      .lifecycleOwner(this)
                      .start();
@@ -1109,7 +1109,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             startActivity(Intent(activity, SearchActivity::class.java))
         } else if (v == mBind.wifi) {
             if (Config.COMPANY == 3 || Config.COMPANY == 4) {
-                AndroidSystem.openWifiSetting(requireContext())
+                AndroidSystem.openWifiSetting(appContext)
             } else {
                 startActivity(Intent(activity, WifiListActivity::class.java))
             }
@@ -1118,11 +1118,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         } else if (v == mBind.help) {
             startActivity(Intent(activity, AboutActivity::class.java))
         } else if (v == mBind.hdmi) {
-            AndroidSystem.openProjectorHDMI(requireContext())
+            AndroidSystem.openProjectorHDMI(appContext)
         } else if (v == mBind.gradient) {
-            //startActivity(Intent(requireContext(), HomeGuideGroupGradientActivity::class.java))
+            //startActivity(Intent(appContext, HomeGuideGroupGradientActivity::class.java))
 
-            // startActivity(Intent(requireContext(), ChooseGradientActivity::class.java))
+            // startActivity(Intent(appContext, ChooseGradientActivity::class.java))
             when {
                 isH6() -> {
                     startKtxActivity<GradientActivity>()
@@ -1149,7 +1149,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             //跳转自动校准页面
             /* AndroidSystem.openActivityName(
-                 requireContext(),
+                 appContext,
                  "com.hxdevicetest",
                  "com.hxdevicetest.CheckGsensorActivity"
              )*/
@@ -1201,13 +1201,13 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
                                 if (Config.COMPANY == 5) {
                                     AndroidSystem.openActivityName(
-                                        requireContext(),
+                                        appContext,
                                         "com.amazon.avod.thirdpartyclient",
                                         "com.amazon.avod.thirdpartyclient.LauncherActivity"
                                     )
 
                                 } else {
-                                    val success = AndroidSystem.jumpPlayer(requireContext(), packages, null)
+                                    val success = AndroidSystem.jumpPlayer(appContext, packages, null)
                                     if (!success) {
                                         toastInstallPKApp(bean.name, packages)
                                     } else {
@@ -1220,11 +1220,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
                                 if (Config.COMPANY == 5) {
                                     AndroidSystem.openPackageName(
-                                        requireContext(),
+                                        appContext,
                                         "com.google.android.apps.youtube.creator"
                                     )
                                 } else {
-                                    val success = AndroidSystem.jumpPlayer(requireContext(), packages, null)
+                                    val success = AndroidSystem.jumpPlayer(appContext, packages, null)
                                     if (!success) {
                                         toastInstallPKApp(bean.name, packages)
                                     } else {
@@ -1235,7 +1235,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
                             else -> {
                                 try {
-                                    val success = AndroidSystem.jumpPlayer(requireContext(), packages, null)
+                                    val success = AndroidSystem.jumpPlayer(appContext, packages, null)
                                     if (!success) {
                                         toastInstallPKApp(bean.name, packages)
 
@@ -1251,23 +1251,23 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     }
 
                     Types.TYPE_APP_STORE -> {
-                        val success = AndroidSystem.jumpAppStore(requireContext())
+                        val success = AndroidSystem.jumpAppStore(appContext)
                         if (!success) toastInstall()
                     }
 
                     Types.TYPE_MY_APPS -> {
                         "开始启动1"
-                        val intent = Intent(requireContext(), AppsActivity::class.java)
+                        val intent = Intent(appContext, AppsActivity::class.java)
                         intent.putExtra(Atts.TYPE, bean.type)
                         startActivity(intent)
                     }
 
                     Types.TYPE_GOOGLE_PLAY -> {
-                        AndroidSystem.openPackageName(requireContext(), "com.android.vending")
+                        AndroidSystem.openPackageName(appContext, "com.android.vending")
                     }
 
                     Types.TYPE_MEDIA_CENTER -> {
-                        AndroidSystem.openPackageName(requireContext(), "com.explorer")
+                        AndroidSystem.openPackageName(appContext, "com.explorer")
 
                     }
                 }
@@ -1346,7 +1346,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun fillApps(replace: Boolean, isAttach: Boolean) {
         if (replace) {
             useApps.clear()
-            var infos = AndroidSystem.getUserApps2(requireContext())
+            var infos = AndroidSystem.getUserApps2(appContext)
             val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
             /*if (infos.size > 8) {
@@ -1363,7 +1363,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             try {
                 val apps = Gson().fromJson(
                     InputStreamReader(
-                        requireContext().assets.open("app.json")
+                        appContext.assets.open("app.json")
                     ), Array<AppItem>::class.java
                 )
                 if (apps != null) {
@@ -1417,7 +1417,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun fillHeader() {
         try {
-            val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
+            val path = FilePathMangaer.getJsonPath(appContext) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeInfoDto>(
                     JsonReader(FileReader(path)),
@@ -1471,7 +1471,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             val result = Gson().fromJson(
                 InputStreamReader(
-                    requireContext().assets.open("home.json")
+                    appContext.assets.open("home.json")
                 ),
                 HomeInfoDto::class.java
             )
@@ -1555,7 +1555,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             override fun onClick(bean: AppItem) {
                 if (!TextUtils.isEmpty(bean.appDownLink)) AndroidSystem.jumpAppStore(
-                    requireContext(),
+                    appContext,
                     Gson().toJson(bean),
                     null
                 )
@@ -1582,9 +1582,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
                 var success = false
                 success = if (skip) {
-                    AndroidSystem.jumpVideoApp(requireContext(), bean.packageNames, null)
+                    AndroidSystem.jumpVideoApp(appContext, bean.packageNames, null)
                 } else {
-                    AndroidSystem.jumpVideoApp(requireContext(), bean.packageNames, bean.url)
+                    AndroidSystem.jumpVideoApp(appContext, bean.packageNames, bean.url)
                 }
                 if (!success) {
                     toastInstallPKApp(bean.appName ?: "", bean.packageNames)
@@ -1606,7 +1606,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 for (i in pns.indices) {
                     pns[i] = packages?.get(i)?.packageName
                 }
-                AndroidSystem.jumpAppStore(requireContext(), null, pns)
+                AndroidSystem.jumpAppStore(appContext, null, pns)
             }
         }
     }
@@ -1641,12 +1641,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private fun openApp(bean: ApplicationInfo) {
-        AndroidSystem.openPackageName(requireContext(), bean.packageName)
+        AndroidSystem.openPackageName(appContext, bean.packageName)
     }
 
     private fun appMenu(bean: ApplicationInfo) {
         val dialog = AppDialog.newInstance(bean)
-        dialog.setCallback { AndroidSystem.openPackageName(requireContext(), bean.packageName) }
+        dialog.setCallback { AndroidSystem.openPackageName(appContext, bean.packageName) }
         dialog.show(getChildFragmentManager(), AppDialog.TAG)
     }
 
@@ -1662,7 +1662,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 val version = result.data
                 if (version.version > BuildConfig.VERSION_CODE && Config.CHANNEL == version.channel) {
                     PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, version.version.toInt())
-                    AndroidSystem.jumpUpgrade(requireContext(), version)
+                    AndroidSystem.jumpUpgrade(appContext, version)
                 }
             }
         })
@@ -1674,7 +1674,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
                 Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> {
 
-                    var infos = AndroidSystem.getUserApps2(requireContext())
+                    var infos = AndroidSystem.getUserApps2(appContext)
                     val filteredList =
                         infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
                     if (filteredList.size != mAppListAdapter?.getDataList()?.size) {
