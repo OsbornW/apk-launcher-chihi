@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,11 +7,7 @@
     android:clipToOutline="false"
     android:clipChildren="false"
     android:clipToPadding="false">
-    <ImageView
-        android:id="@+id/wallpaper"
-        android:scaleType="centerCrop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_gravity="center"
         android:orientation="vertical"
@@ -297,3 +294,4 @@
         android:layout_height="@dimen/qb_px_30"/>
 
 </FrameLayout>
+</layout>

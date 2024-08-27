@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <com.soya.launcher.view.KeyEventFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
@@ -11,11 +12,7 @@
         android:id="@+id/surface"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <ImageView
-        android:id="@+id/wallpaper"
-        android:scaleType="centerCrop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
     <TextView
         android:text="@string/set_the_screen_trimming"
         android:textSize="@dimen/qb_px_sp_16"
@@ -214,3 +211,4 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.soya.launcher.view.KeyEventFrameLayout>
+</layout>

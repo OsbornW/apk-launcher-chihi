@@ -6,12 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.ViewDataBinding
+import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
 import com.softwinner.keystone.KeystoneCorrection
 import com.softwinner.keystone.KeystoneCorrectionManager
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
+import com.soya.launcher.databinding.FragmentGradientBinding
 import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.rk3326.KeystoneVertex
@@ -19,38 +23,15 @@ import com.soya.launcher.view.KeyEventFrameLayout
 import com.soya.launcher.view.KeyEventFrameLayout.KeyEventCallback
 import java.util.concurrent.TimeUnit
 
-abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEventCallback {
+abstract class AbsGradientFragment<VDB : FragmentGradientBinding, VM : BaseViewModel> 
+    : BaseWallPaperFragment<VDB,VM>(), View.OnClickListener, KeyEventCallback {
     private var x = 0f
     private var y = 0f
     private var centerX = 0f
     private var centerY = 0f
     private var detialX = 0f
     private var detialY = 0f
-    private var mRootView: KeyEventFrameLayout? = null
     private var keystone: KeystoneCorrectionManager? = null
-    private var mSurfaceView: View? = null
-    private var mContentView: View? = null
-    private var mLT: View? = null
-    private var mRT: View? = null
-    private var mLB: View? = null
-    private var mRB: View? = null
-    private var mLongTipView: View? = null
-    private var mLRTextView: TextView? = null
-    private var mTBTextView: TextView? = null
-    private var mLTA: View? = null
-    private var mLBA: View? = null
-    private var mRTA: View? = null
-    private var mRBA: View? = null
-    private var mLT_LR: View? = null
-    private var mLT_TB: View? = null
-    private var mLB_LR: View? = null
-    private var mLB_TB: View? = null
-    private var mRT_LR: View? = null
-    private var mRT_TB: View? = null
-    private var mRB_LR: View? = null
-    private var mRB_TB: View? = null
-    private var mDirLR: ImageView? = null
-    private var mDirTB: ImageView? = null
     private val MAX_LOOP = 4
     private val MAX_PROGRESS = 100
     private var type = TYPE_LT
@@ -62,15 +43,13 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
         keystone = KeystoneCorrectionManager()
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_gradient
-    }
+   
 
     override fun onStart() {
         super.onStart()
         time = -1
         isOut = false
-        mRootView!!.post {
+        mBind.root.post {
             syncDetial()
             setDefaultXY(type)
         }
@@ -82,58 +61,16 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
         isOut = true
     }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mRootView = view.findViewById(R.id.root)
-        mSurfaceView = view.findViewById(R.id.surface)
-        mContentView = view.findViewById(R.id.content)
-        mLT = view.findViewById(R.id.lt)
-        mRT = view.findViewById(R.id.rt)
-        mLB = view.findViewById(R.id.lb)
-        mRB = view.findViewById(R.id.rb)
-        mLTA = view.findViewById(R.id.lt_anchors)
-        mLBA = view.findViewById(R.id.lb_anchors)
-        mRTA = view.findViewById(R.id.rt_anchors)
-        mRBA = view.findViewById(R.id.rb_anchors)
-        mLT_LR = view.findViewById(R.id.lt_lr)
-        mLT_TB = view.findViewById(R.id.lt_tb)
-        mLB_LR = view.findViewById(R.id.lb_lr)
-        mLB_TB = view.findViewById(R.id.lb_tb)
-        mRT_LR = view.findViewById(R.id.rt_lr)
-        mRT_TB = view.findViewById(R.id.rt_tb)
-        mRB_LR = view.findViewById(R.id.rb_lr)
-        mRB_TB = view.findViewById(R.id.rb_tb)
-        mLongTipView = view.findViewById(R.id.long_click_tip)
-        mTBTextView = view.findViewById(R.id.tb_text)
-        mLRTextView = view.findViewById(R.id.lr_text)
-        mDirLR = view.findViewById(R.id.dir_lr)
-        mDirTB = view.findViewById(R.id.dir_tb)
-
+    override fun initView() {
+        mBind.root.setKeyEventCallback(this)
+        mBind.longClickTip.visibility = if (useLongClick()) View.VISIBLE else View.GONE
+        mBind.content.apply { post { requestFocus() } }
 
     }
-
-    override fun initBefore(view: View, inflater: LayoutInflater) {
-        super.initBefore(view, inflater)
-        mRootView!!.setKeyEventCallback(this)
-    }
-
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
-        mLongTipView!!.visibility = if (useLongClick()) View.VISIBLE else View.GONE
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requestFocus(mContentView)
-    }
-
-    override fun onClick(v: View) {}
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
+   
 
     override fun onKeyDown(event: KeyEvent) {
-        if (mRootView!!.measuredWidth == 0 || mRootView!!.measuredHeight == 0) return
+        if (mBind.root.measuredWidth == 0 || mBind.root.measuredHeight == 0) return
         if (centerX == 0f || centerY == 0f) {
             syncDetial()
         }
@@ -203,25 +140,25 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
     }
 
     private fun syncDetial() {
-        centerX = (mRootView!!.measuredWidth / 2).toFloat()
-        centerY = (mRootView!!.measuredHeight / 2).toFloat()
+        centerX = (mBind.root.measuredWidth / 2).toFloat()
+        centerY = (mBind.root.measuredHeight / 2).toFloat()
         detialX = centerX / MAX_PROGRESS
         detialY = centerY / MAX_PROGRESS
     }
 
     private fun setInstructionVisible(lt: Boolean, rt: Boolean, lb: Boolean, rb: Boolean) {
-        mLTA!!.visibility = if (lt) View.VISIBLE else View.GONE
-        mRTA!!.visibility = if (rt) View.VISIBLE else View.GONE
-        mLBA!!.visibility = if (lb) View.VISIBLE else View.GONE
-        mRBA!!.visibility = if (rb) View.VISIBLE else View.GONE
-        mLT_LR!!.visibility = if (lt) View.VISIBLE else View.GONE
-        mLT_TB!!.visibility = if (lt) View.VISIBLE else View.GONE
-        mRT_LR!!.visibility = if (rt) View.VISIBLE else View.GONE
-        mRT_TB!!.visibility = if (rt) View.VISIBLE else View.GONE
-        mLB_LR!!.visibility = if (lb) View.VISIBLE else View.GONE
-        mLB_TB!!.visibility = if (lb) View.VISIBLE else View.GONE
-        mRB_LR!!.visibility = if (rb) View.VISIBLE else View.GONE
-        mRB_TB!!.visibility = if (rb) View.VISIBLE else View.GONE
+        mBind.ltAnchors.visibility = if (lt) View.VISIBLE else View.GONE
+        mBind.rtAnchors.visibility = if (rt) View.VISIBLE else View.GONE
+        mBind.lbAnchors.visibility = if (lb) View.VISIBLE else View.GONE
+        mBind.rbAnchors.visibility = if (rb) View.VISIBLE else View.GONE
+        mBind.ltLr.visibility = if (lt) View.VISIBLE else View.GONE
+        mBind.ltTb.visibility = if (lt) View.VISIBLE else View.GONE
+        mBind.rtLr.visibility = if (rt) View.VISIBLE else View.GONE
+        mBind.rtTb.visibility = if (rt) View.VISIBLE else View.GONE
+        mBind.lbLr.visibility = if (lb) View.VISIBLE else View.GONE
+        mBind.lbTb.visibility = if (lb) View.VISIBLE else View.GONE
+        mBind.rbLr.visibility = if (rb) View.VISIBLE else View.GONE
+        mBind.rbTb.visibility = if (rb) View.VISIBLE else View.GONE
     }
 
     private fun setDefaultXY(type: Int) {
@@ -254,23 +191,23 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
         val yP = (y / centerY * 100).toInt()
         when (type) {
             TYPE_LT -> {
-                mLRTextView!!.text = xP.toString()
-                mTBTextView!!.text = yP.toString()
+                mBind.lrText.text = xP.toString()
+                mBind.tbText.text = yP.toString()
             }
 
             TYPE_LB -> {
-                mTBTextView!!.text = xP.toString()
-                mLRTextView!!.text = yP.toString()
+                mBind.tbText.text = xP.toString()
+                mBind.lrText.text = yP.toString()
             }
 
             TYPE_RT -> {
-                mLRTextView!!.text = xP.toString()
-                mTBTextView!!.text = yP.toString()
+                mBind.lrText.text = xP.toString()
+                mBind.tbText.text = yP.toString()
             }
 
             TYPE_RB -> {
-                mTBTextView!!.text = xP.toString()
-                mLRTextView!!.text = yP.toString()
+                mBind.tbText.text = xP.toString()
+                mBind.lrText.text = yP.toString()
             }
         }
         switchDir(type)
@@ -279,23 +216,23 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
     private fun switchDir(type: Int) {
         when (type) {
             TYPE_LT -> {
-                mDirLR!!.rotation = 180f
-                mDirTB!!.rotation = 270f
+                mBind.dirLr.rotation = 180f
+                mBind.dirTb.rotation = 270f
             }
 
             TYPE_LB -> {
-                mDirLR!!.rotation = 90f
-                mDirTB!!.rotation = 180f
+                mBind.dirLr.rotation = 90f
+                mBind.dirTb.rotation = 180f
             }
 
             TYPE_RT -> {
-                mDirLR!!.rotation = 360f
-                mDirTB!!.rotation = 270f
+                mBind.dirLr.rotation = 360f
+                mBind.dirTb.rotation = 270f
             }
 
             TYPE_RB -> {
-                mDirLR!!.rotation = 90f
-                mDirTB!!.rotation = 360f
+                mBind.dirLr.rotation = 90f
+                mBind.dirTb.rotation = 360f
             }
         }
     }
@@ -357,26 +294,26 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
         }
 
 
-        mSurfaceView!!.invalidate()
+        mBind.surface.invalidate()
         when (type) {
             TYPE_LT -> {
-                mLRTextView!!.text = (ltx / centerX * 100).toInt().toString()
-                mTBTextView!!.text = (lty / centerY * 100).toInt().toString()
+                mBind.lrText.text = (ltx / centerX * 100).toInt().toString()
+                mBind.tbText.text = (lty / centerY * 100).toInt().toString()
             }
 
             TYPE_LB -> {
-                mTBTextView!!.text = (lbx / centerX * 100).toInt().toString()
-                mLRTextView!!.text = (lby / centerY * 100).toInt().toString()
+                mBind.tbText.text = (lbx / centerX * 100).toInt().toString()
+                mBind.lrText.text = (lby / centerY * 100).toInt().toString()
             }
 
             TYPE_RT -> {
-                mLRTextView!!.text = (rtx / centerX * 100).toInt().toString()
-                mTBTextView!!.text = (rty / centerY * 100).toInt().toString()
+                mBind.lrText.text = (rtx / centerX * 100).toInt().toString()
+                mBind.tbText.text = (rty / centerY * 100).toInt().toString()
             }
 
             TYPE_RB -> {
-                mTBTextView!!.text = (rbx / centerX * 100).toInt().toString()
-                mLRTextView!!.text = (rby / centerY * 100).toInt().toString()
+                mBind.tbText.text = (rbx / centerX * 100).toInt().toString()
+                mBind.lrText.text = (rby / centerY * 100).toInt().toString()
             }
         }
     }
@@ -414,9 +351,9 @@ abstract class AbsGradientFragment : AbsFragment(), View.OnClickListener, KeyEve
 
         }
 
-        mSurfaceView!!.invalidate()
-        mLRTextView!!.text = 0.toString()
-        mTBTextView!!.text = 0.toString()
+        mBind.surface.invalidate()
+        mBind.lrText.text = 0.toString()
+        mBind.tbText.text = 0.toString()
     }
 
     private fun getValue(key: String, def: Float): Float {

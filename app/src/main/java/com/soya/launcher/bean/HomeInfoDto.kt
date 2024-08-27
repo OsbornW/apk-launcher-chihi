@@ -23,7 +23,7 @@ data class Movy(
     @SerialName("name")
     val name: String?,
     @SerialName("packageNames")
-    val packageNames: List<PackageName?>?,
+    val packageNames: List<PackageName>?,
     @SerialName("type")
     val type: Int?
 )
@@ -41,7 +41,7 @@ data class Data(
     @SerialName("picType")
     var picType:Int = 0,
     @SerialName("packageNames")
-    var packageNames: List<PackageName?>?,
+    var packageNames: List<PackageName>?,
     @SerialName("appName")
     var appName: String?,
 )

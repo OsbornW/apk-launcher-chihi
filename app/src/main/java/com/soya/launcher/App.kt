@@ -33,6 +33,7 @@ import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
 import com.soya.launcher.bean.Wallpaper
 import com.soya.launcher.cache.AppCache
+import com.soya.launcher.cache.AppCache.WALLPAPERS
 import com.soya.launcher.config.Config
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
@@ -169,21 +170,24 @@ class App : Application() {
         }
         BluetoothScannerUtils.init(this)
         initRemote()
-        if (Config.COMPANY == 0) {
-            WALLPAPERS.add(Wallpaper(3, R.drawable.wallpaper_22))
-            WALLPAPERS.add(Wallpaper(0, R.drawable.wallpaper_1))
-            WALLPAPERS.add(Wallpaper(1, R.drawable.wallpaper_20))
-            WALLPAPERS.add(Wallpaper(2, R.drawable.wallpaper_21))
-            WALLPAPERS.add(Wallpaper(4, R.drawable.wallpaper_24))
-            WALLPAPERS.add(Wallpaper(5, R.drawable.wallpaper_25))
-        } else {
-            WALLPAPERS.add(Wallpaper(0, R.drawable.wallpaper_1))
-            WALLPAPERS.add(Wallpaper(1, R.drawable.wallpaper_20))
-            WALLPAPERS.add(Wallpaper(2, R.drawable.wallpaper_21))
-            WALLPAPERS.add(Wallpaper(3, R.drawable.wallpaper_22))
-            WALLPAPERS.add(Wallpaper(4, R.drawable.wallpaper_24))
-            WALLPAPERS.add(Wallpaper(5, R.drawable.wallpaper_25))
+        if(WALLPAPERS.isEmpty()){
+            if (Config.COMPANY == 0) {
+                WALLPAPERS.add(Wallpaper(3, R.drawable.wallpaper_22))
+                WALLPAPERS.add(Wallpaper(0, R.drawable.wallpaper_1))
+                WALLPAPERS.add(Wallpaper(1, R.drawable.wallpaper_20))
+                WALLPAPERS.add(Wallpaper(2, R.drawable.wallpaper_21))
+                WALLPAPERS.add(Wallpaper(4, R.drawable.wallpaper_24))
+                WALLPAPERS.add(Wallpaper(5, R.drawable.wallpaper_25))
+            } else {
+                WALLPAPERS.add(Wallpaper(0, R.drawable.wallpaper_1))
+                WALLPAPERS.add(Wallpaper(1, R.drawable.wallpaper_20))
+                WALLPAPERS.add(Wallpaper(2, R.drawable.wallpaper_21))
+                WALLPAPERS.add(Wallpaper(3, R.drawable.wallpaper_22))
+                WALLPAPERS.add(Wallpaper(4, R.drawable.wallpaper_24))
+                WALLPAPERS.add(Wallpaper(5, R.drawable.wallpaper_25))
+            }
         }
+
         com.hs.App.init(this)
         //AndroidSystem.setEnableBluetooth(this, true)
         timeRemote()
@@ -354,8 +358,8 @@ class App : Application() {
         @JvmField
         val MOVIE_MAP: MutableMap<Long, MutableList<Data>> = ConcurrentHashMap()
 
-        @JvmField
-        val WALLPAPERS: MutableList<Wallpaper> = ArrayList()
+        /*@JvmField
+        val WALLPAPERS: MutableList<Wallpaper> = ArrayList()*/
 
         @JvmField
         val APP_STORE_ITEMS: MutableList<AppItem> = CopyOnWriteArrayList()

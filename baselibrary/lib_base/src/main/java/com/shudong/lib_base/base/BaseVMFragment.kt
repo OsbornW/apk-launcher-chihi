@@ -26,8 +26,4 @@ abstract class BaseVMFragment<VDB : ViewDataBinding, VM : BaseViewModel>:BaseFra
         lifecycle.addObserver(mViewModel)
         super.onViewCreated(view, savedInstanceState)
     }
-
-
-
-
 }

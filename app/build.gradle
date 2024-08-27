@@ -310,8 +310,8 @@ android {
         }
 
         debug {
-            signingConfig signingConfigs.new_701
-            //signingConfig signingConfigs.x88
+            //signingConfig signingConfigs.new_701
+            signingConfig signingConfigs.x88
             //signingConfig signingConfigs.debug
         }
 

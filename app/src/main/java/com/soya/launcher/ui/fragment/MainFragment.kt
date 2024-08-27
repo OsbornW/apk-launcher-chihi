@@ -58,6 +58,7 @@ import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
 import com.soya.launcher.adapter.AppListAdapter
@@ -79,6 +80,7 @@ import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.config.Config
+import com.soya.launcher.databinding.FragmentMainBinding
 import com.soya.launcher.decoration.HSlideMarginDecoration
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
@@ -96,6 +98,7 @@ import com.soya.launcher.ext.isUDisk
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.HttpRequest.checkVersion
+import com.soya.launcher.http.HttpRequest.uidPull
 import com.soya.launcher.http.ServiceRequest
 import com.soya.launcher.http.response.AppListResponse
 import com.soya.launcher.http.response.VersionResponse
@@ -144,28 +147,11 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
-class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>(), AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
     private val useApps: MutableList<ApplicationInfo> = ArrayList()
     private val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     private val exec = Executors.newCachedThreadPool()
-    private var mHeaderGrid: HorizontalGridView? = null
-    private var mHorizontalContentGrid: HorizontalGridView? = null
-    private var mVerticalContentGrid: NoDragVerticalGridView? = null
-    private var mAppBarLayout: AppBarLayout? = null
-    private var mRootView: View? = null
-    private var mSettingView: ImageViewHouse? = null
-    private var mSearchView: View? = null
-    private var mWifiView: ImageView? = null
-    private var mLoginView: View? = null
-    private var mTimeView: TextView? = null
-    private var mSegmentView: TextView? = null
-    private var mHelpView: View? = null
-    private var mTestView: TextView? = null
-    private var mNotifyRecycler: RecyclerView? = null
-    private var mGradientView: View? = null
-    private var rlAD: RelativeLayout? = null
-    private var mHdmiView: View? = null
-    private var mNotifyAdapter: NotifyAdapter? = null
+
     private var uiHandler: Handler? = null
     private var uuid: String? = null
     private val call: Call<*>? = null
@@ -187,23 +173,21 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private var mStoreAdapter: StoreAdapter? = null
     private var requestTime = System.currentTimeMillis()
     private var isExpanded = false
-    lateinit var flList: RelativeLayout
+    lateinit var mNotifyAdapter: NotifyAdapter
 
 
-    private val mViewModel: HomeViewModel by viewModels()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun initView() {
         maxVerticalOffset = resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_60)
         uiHandler = Handler()
         receiver = InnerReceiver()
         wallpaperReceiver = WallpaperReceiver()
-        val infos = AndroidSystem.getUserApps2(requireContext())
+        val infos = AndroidSystem.getUserApps2(appContext)
         val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
         useApps.addAll(filteredList)
+    }
 
+    override fun initObserver() {
         this.obseverLiveEvent<Boolean>("refreshdefault") {
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
@@ -218,7 +202,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }
 
         obseverLiveEvent<Boolean>(UPDATE_HOME_LIST) {
-            val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
+            val path = FilePathMangaer.getJsonPath(appContext) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeInfoDto>(
                     JsonReader(FileReader(path)),
@@ -229,10 +213,10 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
         }
 
+    }
 
-        if (Config.COMPANY == 5) {
-
-        } else {
+    override fun initdata() {
+        if(Config.COMPANY!=5){
             items.addAll(
                 Arrays.asList(
                     *arrayOf(
@@ -248,11 +232,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         )
                 )
             )
-        }
 
-        if (Config.COMPANY == 5) {
-
-        } else {
             items.addAll(
                 Arrays.asList(
                     *arrayOf(
@@ -267,7 +247,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     )
                 )
             )
+
         }
+
         if (Config.COMPANY == 0 || Config.COMPANY == 9) {
             items.add(
                 TypeItem(
@@ -316,130 +298,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
         startRepeatingTask()
 
-    }
-
-    private fun startRepeatingTask() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
-                while (true) {
-                    delay(3000)
-                    isShowUpdate().yes { performTask() }
-
-                }
-            }
-        }
-    }
-
-    private fun setNetData(result: HomeInfoDto) {
-
-        lifecycleScope.launch {
-            mSettingView?.requestFocus()
-
-            val header = fillData(result)
-            header.addAll(items)
-
-            addProduct5TypeItem(header)
-            delay(1500)
-
-            setHeader(header)
-            isConnectFirst = true
-            /* if (result.getData().reg_id != null) PreferencesUtils.setProperty(
-                 Atts.RECENTLY_MODIFIED,
-                 result.getData().reg_id
-             )*/
-            val item = header[0]
-            fillMovice(item)
-
-
-            delay(2000)
-            mSettingView?.clearFocus()
-            //delay(500)
-            mHeaderGrid?.requestFocus()
-            //requestFocus(mHeaderGrid, 0)
-        }
-        /*if (BuildConfig.FLAVOR == "hongxin_H27002") {
-            requestFocus(mHeaderGrid, 500)
-        }*/
-    }
-
-
-
-    private fun performTask() {
-        mViewModel.reqUpdateInfo().lifecycle(this@MainFragment,
-            errorCallback = { throwanle ->
-
-            },
-            isShowError = false,
-            callback = {
-
-                AppCache.updateInfo = this.jsonToString()
-                val isHasUpdate = getUpdateList()
-                isHasUpdate.yes {
-                    if (currentActivity != null && currentActivity !is UpdateAppsActivity) {
-                        startKtxActivity<UpdateAppsActivity>()
-                    }
-
-                }.otherwise {
-                    AppCache.updateInteval = "hour"
-                    AppCache.lastTipTime = System.currentTimeMillis()
-                }
-
-            }
-        )
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        call?.cancel()
-        if (homeCall != null) homeCall!!.cancel()
-        activity!!.unregisterReceiver(receiver)
-        activity!!.unregisterReceiver(wallpaperReceiver)
-        exec.shutdownNow()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        stopLoopTime()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        stopLoopTime()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        syncTime()
-        syncNotify()
-        startLoopTime()
-
-        var infos = AndroidSystem.getUserApps2(activity)
-        val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
-
-        if (filteredList.size != mAppListAdapter?.getDataList()?.size) {
-            mAppListAdapter?.refresh(filteredList)
-            useApps.clear()
-            useApps.addAll(filteredList)
-
-        }
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        syncTime()
-        syncNotify()
-        startLoopTime()
-    }
-
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_main
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requestFocus(mHeaderGrid, 350)
-
+        mBind.header.requestFocus()
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
@@ -452,79 +311,19 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }
 
 
-        //uidPull()
-    }
-
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mHeaderGrid = view.findViewById(R.id.header)
-        flList = view.findViewById(R.id.fl_list)
-        mHorizontalContentGrid = view.findViewById(R.id.horizontal_content)
-        mVerticalContentGrid = view.findViewById(R.id.vertical_content)
-        mAppBarLayout = view.findViewById(R.id.app_bar)
-        mRootView = view.findViewById(R.id.root)
-        mSettingView = view.findViewById(R.id.setting)
-        mSearchView = view.findViewById(R.id.search)
-        mWifiView = view.findViewById(R.id.wifi)
-        mLoginView = view.findViewById(R.id.login)
-        mSegmentView = view.findViewById(R.id.loop_segment)
-        mTimeView = view.findViewById(R.id.loop_time)
-        mHelpView = view.findViewById(R.id.help)
-        mTestView = view.findViewById(R.id.test)
-        mNotifyRecycler = view.findViewById(R.id.notify_recycler)
-        mHdmiView = view.findViewById(R.id.hdmi)
-        mGradientView = view.findViewById(R.id.gradient)
-        rlAD = view.findViewById(R.id.rl_ad)
-
-        val rlSetting = view.findViewById<RelativeLayout>(R.id.rl_setting)
-        val rlWifi = view.findViewById<RelativeLayout>(R.id.rl_wifi)
-        val projection = view.findViewById<RelativeLayout>(R.id.projection)
-        val hdml = view.findViewById<RelativeLayout>(R.id.hdml)
-
-
-        // mNotifyRecycler?.isVisible = false
-        mSettingView?.let {
-            it.setOnFocusChangeListener { view, b ->
-                if(b)rlSetting.isVisible = true else rlSetting.visibility = View.INVISIBLE
-            }
-        }
-
-        mGradientView?.let {
-            it.setOnFocusChangeListener { view, b ->
-                if(b)projection.isVisible = true else projection.visibility = View.INVISIBLE
-
-            }
-        }
-        mHdmiView?.let {
-            it.setOnFocusChangeListener { view, b ->
-                if(b)hdml.isVisible = true else hdml.visibility = View.INVISIBLE
-
-            }
-        }
-
-        mWifiView?.let {
-            it.setOnFocusChangeListener { view, b ->
-                if(b)rlWifi.isVisible = true else rlWifi.visibility = View.INVISIBLE
-
-            }
-        }
-
-
-
-        mHorizontalContentGrid?.addItemDecoration(
+        mBind.horizontalContent.addItemDecoration(
             HSlideMarginDecoration(
                 resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
                 resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)
             )
         )
-        mHeaderGrid?.addItemDecoration(
+        mBind.header.addItemDecoration(
             HSlideMarginDecoration(
                 resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
                 resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)
             )
         )
-        mHeaderGrid?.pivotY = maxVerticalOffset
-        mTestView?.text = "CHIHI Test Version: " + BuildConfig.VERSION_NAME
+        mBind.header.pivotY = maxVerticalOffset
         mStoreAdapter = StoreAdapter(
             activity,
             getLayoutInflater(),
@@ -532,25 +331,25 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             newStoreClickCallback()
         )
         mNotifyAdapter = NotifyAdapter(
-            requireContext(),
-            inflater,
+            appContext,
+            LayoutInflater.from(appContext),
             CopyOnWriteArrayList(),
             if (Config.COMPANY == 3) R.layout.holder_notify else R.layout.holder_notify_2
         )
         mMainHeaderAdapter =
             MainHeaderAdapter(
-                requireContext(),
-                inflater,
+                appContext,
+                LayoutInflater.from(appContext),
                 CopyOnWriteArrayList(),
                 newHeaderCallback()
             )
 
-        mHeaderGrid!!.setAdapter(mMainHeaderAdapter)
+        mBind.header.setAdapter(mMainHeaderAdapter)
 
         mHMainContentAdapter =
             MainContentAdapter(
-                requireContext(),
-                inflater,
+                appContext,
+                LayoutInflater.from(appContext),
                 CopyOnWriteArrayList(),
                 newContentCallback()
             )
@@ -558,21 +357,21 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
         mVMainContentAdapter =
             MainContentAdapter(
-                requireContext(),
-                inflater,
+                appContext,
+                LayoutInflater.from(appContext),
                 CopyOnWriteArrayList(),
                 newContentCallback()
             )
         mAppListAdapter = AppListAdapter(
-            requireContext(),
+            appContext,
             getLayoutInflater(),
             CopyOnWriteArrayList(),
             R.layout.item_home_localapps,
             newAppListCallback()
         )
-        mHdmiView?.visibility =
+        mBind.hdmi.visibility =
             if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
-        mGradientView?.visibility =
+        mBind.gradient.visibility =
             if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
 
         AppCacheBase.isActive.yes {
@@ -645,6 +444,17 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
         }
 
+
+        fillHeader()
+        mBind.notifyRecycler.setLayoutManager(
+            LinearLayoutManager(
+                appContext,
+                RecyclerView.HORIZONTAL,
+                false
+            )
+        )
+        mBind.notifyRecycler.setAdapter(mNotifyAdapter)
+
     }
 
     private fun Long.getResult(msg: String?) {
@@ -682,51 +492,179 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
         }
 
+
+
     }
 
-    override fun initBefore(view: View, inflater: LayoutInflater) {
-        super.initBefore(view, inflater)
-        mAppBarLayout!!.addOnOffsetChangedListener(this)
-        mSettingView!!.setOnClickListener(this)
-        mSearchView!!.setOnClickListener(this)
-        mWifiView!!.setOnClickListener(this)
-        mLoginView!!.setOnClickListener(this)
-        mHelpView!!.setOnClickListener(this)
-        mHdmiView!!.setOnClickListener(this)
-        mGradientView!!.setOnClickListener(this)
+
+    private fun startRepeatingTask() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
+                while (true) {
+                    delay(3000)
+                    isShowUpdate().yes { performTask() }
+
+                }
+            }
+        }
     }
 
-    var storageList = mutableListOf<Notify>()
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
-        fillHeader()
-        mNotifyRecycler!!.setLayoutManager(
-            LinearLayoutManager(
-                requireContext(),
-                RecyclerView.HORIZONTAL,
-                false
-            )
+    private fun setNetData(result: HomeInfoDto) {
+
+        lifecycleScope.launch {
+            mBind.setting.requestFocus()
+
+            val header = fillData(result)
+            header.addAll(items)
+
+            addProduct5TypeItem(header)
+            delay(1500)
+
+            setHeader(header)
+            isConnectFirst = true
+            /* if (result.getData().reg_id != null) PreferencesUtils.setProperty(
+                 Atts.RECENTLY_MODIFIED,
+                 result.getData().reg_id
+             )*/
+            val item = header[0]
+            fillMovice(item)
+
+
+            delay(2000)
+            mBind.setting.clearFocus()
+            //delay(500)
+            mBind.header.requestFocus()
+            //requestFocus(mBind.header, 0)
+        }
+        /*if (BuildConfig.FLAVOR == "hongxin_H27002") {
+            requestFocus(mBind.header, 500)
+        }*/
+    }
+
+
+
+    private fun performTask() {
+        mViewModel.reqUpdateInfo().lifecycle(this@MainFragment,
+            errorCallback = { throwanle ->
+
+            },
+            isShowError = false,
+            callback = {
+
+                AppCache.updateInfo = this.jsonToString()
+                val isHasUpdate = getUpdateList()
+                isHasUpdate.yes {
+                    if (currentActivity != null && currentActivity !is UpdateAppsActivity) {
+                        startKtxActivity<UpdateAppsActivity>()
+                    }
+
+                }.otherwise {
+                    AppCache.updateInteval = "hour"
+                    AppCache.lastTipTime = System.currentTimeMillis()
+                }
+
+            }
         )
-        mNotifyRecycler!!.setAdapter(mNotifyAdapter)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        call?.cancel()
+        if (homeCall != null) homeCall!!.cancel()
+        activity!!.unregisterReceiver(receiver)
+        activity!!.unregisterReceiver(wallpaperReceiver)
+        exec.shutdownNow()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLoopTime()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopLoopTime()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        syncTime()
+        syncNotify()
+        startLoopTime()
+
+        var infos = AndroidSystem.getUserApps2(appContext)
+        val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+
+        if (filteredList.size != mAppListAdapter?.getDataList()?.size) {
+            mAppListAdapter?.refresh(filteredList.toMutableList())
+            useApps.clear()
+            useApps.addAll(filteredList)
+
+        }
 
     }
 
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
+    override fun onStart() {
+        super.onStart()
+        syncTime()
+        syncNotify()
+        startLoopTime()
     }
 
-    private fun uidPull() {
-        //if (!IS_TEST) HttpRequest.uidPull(AppInfo.newInfo(getActivity()));
+
+    override fun initClick() {
+        initFocus()
+
+        mBind.appBar.addOnOffsetChangedListener(this)
+        mBind.setting.setOnClickListener(this)
+        mBind.search.setOnClickListener(this)
+        mBind.wifi.setOnClickListener(this)
+        mBind.login.setOnClickListener(this)
+        mBind.help.setOnClickListener(this)
+        mBind.hdmi.setOnClickListener(this)
+        mBind.gradient.setOnClickListener(this)
+
     }
+
+    private fun initFocus() {
+        mBind.apply {
+            mBind.setting.let {
+                it.setOnFocusChangeListener { view, b ->
+                    if(b)rlSetting.isVisible = true else rlSetting.visibility = View.INVISIBLE
+                }
+            }
+
+            mBind.gradient.let {
+                it.setOnFocusChangeListener { view, b ->
+                    if(b)projection.isVisible = true else projection.visibility = View.INVISIBLE
+
+                }
+            }
+
+            mBind.hdmi.let {
+                it.setOnFocusChangeListener { view, b ->
+                    if(b)hdml.isVisible = true else hdml.visibility = View.INVISIBLE
+
+                }
+            }
+
+            mBind.wifi.let {
+                it.setOnFocusChangeListener { view, b ->
+                    if(b)rlWifi.isVisible = true else rlWifi.visibility = View.INVISIBLE
+
+                }
+            }
+
+
+        }
+    }
+
+    
 
     private fun setHeader(items: List<TypeItem>) {
         targetMenus.clear()
         targetMenus.addAll(items)
         mMainHeaderAdapter!!.replace(items)
-        /*mHeaderGrid?.post {
-            mHeaderGrid?.requestFocus()
-            mHeaderGrid!!.selectedPosition = 0
-        }*/
 
     }
 
@@ -738,19 +676,19 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     ) {
         var list = list
         if ((list?.size ?: 0) > 4) {
-            mVerticalContentGrid?.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_10.dimenValue())
+            mBind.verticalContent.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_10.dimenValue())
            // flList.height(com.shudong.lib_dimen.R.dimen.qb_px_270.dimenValue())
         } else {
-            mVerticalContentGrid?.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_40.dimenValue())
+            mBind.verticalContent.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_40.dimenValue())
            // flList.height(com.shudong.lib_dimen.R.dimen.qb_px_250.dimenValue())
 
         }
         when (direction) {
             1 -> {
-                mHorizontalContentGrid!!.setAdapter(mHMainContentAdapter)
+                mBind.horizontalContent.setAdapter(mHMainContentAdapter)
                 mHMainContentAdapter!!.setLayoutId(layoutId)
-                mVerticalContentGrid!!.visibility = View.GONE
-                mHorizontalContentGrid!!.visibility = View.VISIBLE
+                mBind.verticalContent.visibility = View.GONE
+                mBind.horizontalContent.visibility = View.VISIBLE
                 mHMainContentAdapter!!.replace(list)
             }
 
@@ -758,13 +696,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 if (list?.size ?: 0 > columns * 2) {
                     list = list?.subList(0, columns * 2)
                 }
-                mVerticalContentGrid!!.setAdapter(mVMainContentAdapter)
+                mBind.verticalContent.setAdapter(mVMainContentAdapter)
                 mVMainContentAdapter!!.setLayoutId(layoutId)
-                mVerticalContentGrid!!.visibility = View.VISIBLE
-                mHorizontalContentGrid!!.visibility = View.GONE
-                mVerticalContentGrid!!.setNumColumns(columns)
-                activity?.let {
-                    mVerticalContentGrid!!.setVerticalSpacing(
+                mBind.verticalContent.visibility = View.VISIBLE
+                mBind.horizontalContent.visibility = View.GONE
+                mBind.verticalContent.setNumColumns(columns)
+                appContext.let {
+                    mBind.verticalContent.setVerticalSpacing(
                         it.resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_1).toInt()
                     )
                 }
@@ -805,7 +743,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     val netType = NetworkUtils.getNetworkType()
                     when (netType) {
                         NetworkUtils.NetworkType.NETWORK_ETHERNET -> {
-                            mWifiView!!.setImageResource(R.drawable.baseline_lan_100)
+                            mBind.wifi.setImageResource(R.drawable.baseline_lan_100)
                         }
 
                         else -> {
@@ -813,11 +751,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).yes {
                                     // 达大厦
                                     withContext(Dispatchers.Main) {
-                                        mWifiView!!.setImageResource(R.drawable.baseline_wifi_100)
+                                        mBind.wifi.setImageResource(R.drawable.baseline_wifi_100)
                                     }
                                 }.otherwise {
                                     withContext(Dispatchers.Main) {
-                                        mWifiView!!.setImageResource(R.drawable.baseline_wifi_off_100)
+                                        mBind.wifi.setImageResource(R.drawable.baseline_wifi_off_100)
 
                                     }
 
@@ -837,17 +775,16 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             if (!isAdded) return@Runnable
             syncTime()
             val old = isNetworkAvailable
-            isNetworkAvailable = AndroidSystem.isNetworkAvailable(activity)
+            isNetworkAvailable = AndroidSystem.isNetworkAvailable(appContext)
             if (isNetworkAvailable != old && isNetworkAvailable) {
-                uidPull()
                 requestHome()
             }
 
 
-            /*if (AndroidSystem.isEthernetConnected(activity)) {
-                mWifiView!!.setImageResource(R.drawable.baseline_lan_100)
+            /*if (AndroidSystem.isEthernetConnected(appContext)) {
+                mBind.wifi!!.setImageResource(R.drawable.baseline_lan_100)
             } else {
-                mWifiView!!.setImageResource(if (isNetworkAvailable) R.drawable.baseline_wifi_100 else R.drawable.baseline_wifi_off_100)
+                mBind.wifi!!.setImageResource(if (isNetworkAvailable) R.drawable.baseline_wifi_100 else R.drawable.baseline_wifi_off_100)
             }*/
             //if (Config.COMPANY == 3) {
 
@@ -857,7 +794,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             }
 
                 val deviceHashMap =
-                    (activity!!.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
+                    (appContext.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
 
                 val isInsertUDisk = requireActivity().isUDisk()
 
@@ -868,8 +805,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 /*for (i in 0 until deviceHashMap.size) {
                         notifies.add(Notify(R.drawable.baseline_usb_100))
                  }*/
-                if (SystemUtils.isApEnable(activity)) notifies.add(Notify(R.drawable.baseline_wifi_tethering_100_2,2))
-                val storageManager = activity!!.getSystemService(
+                if (SystemUtils.isApEnable(appContext)) notifies.add(Notify(R.drawable.baseline_wifi_tethering_100_2,2))
+                val storageManager = appContext.getSystemService(
                     StorageManager::class.java
                 )
 
@@ -881,8 +818,8 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 /*for (volume in storageManager.storageVolumes) {
                         if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
                 }*/
-            if(notifies.size !=mNotifyAdapter?.getDataList()?.size){
-                mNotifyAdapter!!.refresh(notifies)
+            if(notifies.size != mNotifyAdapter.getDataList().size){
+                mNotifyAdapter.refresh(notifies)
             }
 
 
@@ -893,29 +830,29 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
 
     private fun syncTime() {
-        val is24 = AppUtils.is24Display(activity)
+        val is24 = AppUtils.is24Display(appContext)
         val calendar = Calendar.getInstance()
         val h = calendar[if (is24) Calendar.HOUR_OF_DAY else Calendar.HOUR]
         val m = calendar[Calendar.MINUTE]
         val time = getString(R.string.hour_minute_second, h, m)
         val segment = if (calendar[Calendar.AM_PM] == 0) "AM" else "PM"
-        mSegmentView!!.visibility = if (is24) View.GONE else View.VISIBLE
-        mSegmentView!!.text = segment
-        mTimeView!!.text = time
+        mBind.loopSegment.visibility = if (is24) View.GONE else View.VISIBLE
+        mBind.loopSegment.text = segment
+        mBind.loopTime.text = time
     }
 
     private fun setAppContent(list: List<ApplicationInfo>) {
         mAppListAdapter!!.replace(list)
-        mHorizontalContentGrid!!.setAdapter(mAppListAdapter)
-        mVerticalContentGrid!!.visibility = View.GONE
-        mHorizontalContentGrid!!.visibility = View.VISIBLE
+        mBind.horizontalContent.setAdapter(mAppListAdapter)
+        mBind.verticalContent.visibility = View.GONE
+        mBind.horizontalContent.visibility = View.VISIBLE
     }
 
     private fun setProjectorContent() {
         //dasdas
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
-                activity,
+                appContext,
                 LayoutInflater.from(appContext),
                 newProjectorCallback(),
                 R.layout.holder_setting_3
@@ -927,9 +864,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             FocusHighlight.ZOOM_FACTOR_MEDIUM,
             false
         )
-        mVerticalContentGrid!!.setNumColumns(4)
-        mVerticalContentGrid?.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_10.dimenValue())
-        mVerticalContentGrid!!.setup {
+        mBind.verticalContent.setNumColumns(4)
+        mBind.verticalContent.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_10.dimenValue())
+        mBind.verticalContent.setup {
             addType<SettingItem>(R.layout.holder_setting_3)
             onBind {
                 val mIV = findView<ImageView>(R.id.image)
@@ -956,12 +893,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         Projector.TYPE_SETTING -> {
                             isRK3326().yes {
                                 AndroidSystem.openActivityName(
-                                    activity,
+                                    appContext,
                                     "com.lei.hxkeystone",
                                     "com.lei.hxkeystone.ScaleActivity"
                                 )
                             }.otherwise {
-                                startActivity(Intent(activity, ScaleScreenActivity::class.java))
+                                startActivity(Intent(appContext, ScaleScreenActivity::class.java))
                             }
                         }
 
@@ -972,7 +909,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 }
 
                                 else -> {
-                                    val success = AndroidSystem.openProjectorMode(activity)
+                                    val success = AndroidSystem.openProjectorMode(appContext)
                                     if (!success) toastInstall()
                                 }
                             }
@@ -980,7 +917,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         }
 
                         Projector.TYPE_HDMI -> {
-                            val success = AndroidSystem.openProjectorHDMI(activity)
+                            val success = AndroidSystem.openProjectorHDMI(appContext)
                             if (!success) toastInstall()
                         }
 
@@ -993,7 +930,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                                 else -> {
                                     startActivity(
                                         Intent(
-                                            activity,
+                                            appContext,
                                             ChooseGradientActivity::class.java
                                         )
                                     )
@@ -1009,9 +946,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
         }.models = arrayListOf()
 
 
-        // mHorizontalContentGrid!!.setAdapter(itemBridgeAdapter)
-        mVerticalContentGrid!!.visibility = View.VISIBLE
-        mHorizontalContentGrid!!.visibility = View.GONE
+        // mBind.horizontalContent!!.setAdapter(itemBridgeAdapter)
+        mBind.verticalContent.visibility = View.VISIBLE
+        mBind.horizontalContent.visibility = View.GONE
         val list: MutableList<SettingItem?> = ArrayList()
         list.add(
             SettingItem(
@@ -1042,13 +979,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             )
         )
         //arrayObjectAdapter.addAll(0, list)
-        mVerticalContentGrid!!.addModels(list)
+        mBind.verticalContent.addModels(list)
     }
 
     private fun setToolContent() {
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
-                activity,
+                appContext,
                 getLayoutInflater(),
                 newToolCallback(),
                 R.layout.holder_setting_3
@@ -1060,9 +997,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             FocusHighlight.ZOOM_FACTOR_MEDIUM,
             false
         )
-        mHorizontalContentGrid!!.setAdapter(itemBridgeAdapter)
-        mVerticalContentGrid!!.visibility = View.GONE
-        mHorizontalContentGrid!!.visibility = View.VISIBLE
+        mBind.horizontalContent.setAdapter(itemBridgeAdapter)
+        mBind.verticalContent.visibility = View.GONE
+        mBind.horizontalContent.visibility = View.VISIBLE
         val list: MutableList<SettingItem?> = ArrayList()
         list.add(
             SettingItem(
@@ -1092,7 +1029,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     Projector.TYPE_SETTING -> {
                         isRK3326().yes {
                             AndroidSystem.openActivityName(
-                                activity,
+                                appContext,
                                 "com.lei.hxkeystone",
                                 "com.lei.hxkeystone.ScaleActivity"
                             )
@@ -1102,17 +1039,17 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     }
 
                     Projector.TYPE_PROJECTOR_MODE -> {
-                        val success = AndroidSystem.openProjectorMode(activity)
+                        val success = AndroidSystem.openProjectorMode(appContext)
                         if (!success) toastInstall()
                     }
 
                     Projector.TYPE_HDMI -> {
-                        val success = AndroidSystem.openProjectorHDMI(activity)
+                        val success = AndroidSystem.openProjectorHDMI(appContext)
                         if (!success) toastInstall()
                     }
 
                     Projector.TYPE_SCREEN -> {
-                        startActivity(Intent(activity, ChooseGradientActivity::class.java))
+                        startActivity(Intent(appContext, ChooseGradientActivity::class.java))
                     }
                 }
             }
@@ -1128,12 +1065,12 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             override fun onClick(bean: SettingItem) {
                 when (bean.type) {
                     Tools.TYPE_HDMI -> AndroidSystem.openPackageName(
-                        activity,
+                        appContext,
                         "com.mediatek.wwtv.tvcenter"
                     )
 
                     Tools.TYPE_FILE -> AndroidSystem.openPackageName(
-                        activity,
+                        appContext,
                         "com.conocx.fileexplorer"
                     )
                 }
@@ -1144,17 +1081,17 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
         isExpanded = verticalOffset != 0
         val value = (1f - abs((verticalOffset / 2f).toDouble()) / maxVerticalOffset).toFloat()
-        mHeaderGrid!!.scaleX = value
-        mHeaderGrid!!.scaleY = value
+        mBind.header.scaleX = value
+        mBind.header.scaleY = value
     }
 
     //var adController:Controller?=null
     override fun onClick(v: View) {
-        if (v == mSettingView) {
+        if (v == mBind.setting) {
             if (Config.COMPANY == 4) {
-                AndroidSystem.openSystemSetting(activity)
+                AndroidSystem.openSystemSetting(appContext)
             } else {
-                startActivity(Intent(activity, SettingActivity::class.java))
+                startActivity(Intent(appContext, SettingActivity::class.java))
             }
             //loadJar()
             //requireActivity().initializeAd(rlAD!!,this)
@@ -1162,7 +1099,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
             /* Ad.get().setEnableLog(true)
              if(adController==null){
-                 adController = Ad.get().begin(requireContext())
+                 adController = Ad.get().begin(appContext)
                      .container(rlAD)
                      .lifecycleOwner(this)
                      .start();
@@ -1171,24 +1108,24 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
              }*/
 
             //AndroidSystem.openSystemSetting(getActivity());
-        } else if (v == mSearchView) {
+        } else if (v == mBind.search) {
             startActivity(Intent(activity, SearchActivity::class.java))
-        } else if (v == mWifiView) {
+        } else if (v == mBind.wifi) {
             if (Config.COMPANY == 3 || Config.COMPANY == 4) {
-                AndroidSystem.openWifiSetting(activity)
+                AndroidSystem.openWifiSetting(appContext)
             } else {
                 startActivity(Intent(activity, WifiListActivity::class.java))
             }
-        } else if (v == mLoginView) {
+        } else if (v == mBind.login) {
             startActivity(Intent(activity, LoginActivity::class.java))
-        } else if (v == mHelpView) {
+        } else if (v == mBind.help) {
             startActivity(Intent(activity, AboutActivity::class.java))
-        } else if (v == mHdmiView) {
-            AndroidSystem.openProjectorHDMI(activity)
-        } else if (v == mGradientView) {
-            //startActivity(Intent(activity, HomeGuideGroupGradientActivity::class.java))
+        } else if (v == mBind.hdmi) {
+            AndroidSystem.openProjectorHDMI(appContext)
+        } else if (v == mBind.gradient) {
+            //startActivity(Intent(appContext, HomeGuideGroupGradientActivity::class.java))
 
-            // startActivity(Intent(activity, ChooseGradientActivity::class.java))
+            // startActivity(Intent(appContext, ChooseGradientActivity::class.java))
             when {
                 isH6() -> {
                     startKtxActivity<GradientActivity>()
@@ -1215,7 +1152,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
             //跳转自动校准页面
             /* AndroidSystem.openActivityName(
-                 requireContext(),
+                 appContext,
                  "com.hxdevicetest",
                  "com.hxdevicetest.CheckGsensorActivity"
              )*/
@@ -1267,13 +1204,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
                                 if (Config.COMPANY == 5) {
                                     AndroidSystem.openActivityName(
-                                        activity,
+                                        appContext,
                                         "com.amazon.avod.thirdpartyclient",
                                         "com.amazon.avod.thirdpartyclient.LauncherActivity"
                                     )
 
                                 } else {
-                                    val success = AndroidSystem.jumpPlayer(activity, packages, null)
+                                    val success = AndroidSystem.jumpPlayer(appContext, packages, null)
                                     if (!success) {
                                         toastInstallPKApp(bean.name, packages)
                                     } else {
@@ -1286,11 +1223,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
                                 if (Config.COMPANY == 5) {
                                     AndroidSystem.openPackageName(
-                                        activity,
+                                        appContext,
                                         "com.google.android.apps.youtube.creator"
                                     )
                                 } else {
-                                    val success = AndroidSystem.jumpPlayer(activity, packages, null)
+                                    val success = AndroidSystem.jumpPlayer(appContext, packages, null)
                                     if (!success) {
                                         toastInstallPKApp(bean.name, packages)
                                     } else {
@@ -1301,7 +1238,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
                             else -> {
                                 try {
-                                    val success = AndroidSystem.jumpPlayer(activity, packages, null)
+                                    val success = AndroidSystem.jumpPlayer(appContext, packages, null)
                                     if (!success) {
                                         toastInstallPKApp(bean.name, packages)
 
@@ -1317,23 +1254,23 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                     }
 
                     Types.TYPE_APP_STORE -> {
-                        val success = AndroidSystem.jumpAppStore(activity)
+                        val success = AndroidSystem.jumpAppStore(appContext)
                         if (!success) toastInstall()
                     }
 
                     Types.TYPE_MY_APPS -> {
                         "开始启动1"
-                        val intent = Intent(activity, AppsActivity::class.java)
+                        val intent = Intent(appContext, AppsActivity::class.java)
                         intent.putExtra(Atts.TYPE, bean.type)
                         startActivity(intent)
                     }
 
                     Types.TYPE_GOOGLE_PLAY -> {
-                        AndroidSystem.openPackageName(activity, "com.android.vending")
+                        AndroidSystem.openPackageName(appContext, "com.android.vending")
                     }
 
                     Types.TYPE_MEDIA_CENTER -> {
-                        AndroidSystem.openPackageName(activity, "com.explorer")
+                        AndroidSystem.openPackageName(appContext, "com.explorer")
 
                     }
                 }
@@ -1412,7 +1349,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     private fun fillApps(replace: Boolean, isAttach: Boolean) {
         if (replace) {
             useApps.clear()
-            var infos = AndroidSystem.getUserApps2(activity)
+            var infos = AndroidSystem.getUserApps2(appContext)
             val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
             /*if (infos.size > 8) {
@@ -1429,7 +1366,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
             try {
                 val apps = Gson().fromJson(
                     InputStreamReader(
-                        requireContext().assets.open("app.json")
+                        appContext.assets.open("app.json")
                     ), Array<AppItem>::class.java
                 )
                 if (apps != null) {
@@ -1452,7 +1389,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                         ) {
                             isFullAll = false
                             if (!isAdded || call.isCanceled || result == null || result.result == null || result.result.appList == null || result.result.appList.isEmpty()) return
-                            if (mHeaderGrid!!.selectedPosition == -1 || mHeaderGrid!!.selectedPosition > targetMenus.size - 1 || targetMenus[mHeaderGrid!!.selectedPosition].type != Types.TYPE_APP_STORE) return
+                            if (mBind.header.selectedPosition == -1 || mBind.header.selectedPosition > targetMenus.size - 1 || targetMenus[mBind.header.selectedPosition].type != Types.TYPE_APP_STORE) return
                             App.APP_STORE_ITEMS.addAll(result.result.appList)
                             setStoreContent(App.APP_STORE_ITEMS)
                         }
@@ -1467,9 +1404,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun setStoreContent(list: List<AppItem>) {
         mStoreAdapter!!.replace(list)
-        mHorizontalContentGrid!!.setAdapter(mStoreAdapter)
-        mVerticalContentGrid!!.visibility = View.GONE
-        mHorizontalContentGrid!!.visibility = View.VISIBLE
+        mBind.horizontalContent.setAdapter(mStoreAdapter)
+        mBind.verticalContent.visibility = View.GONE
+        mBind.horizontalContent.visibility = View.VISIBLE
     }
 
     /* private fun local(filePath: String, direction: Int, columns: Int, layoutId: Int) {
@@ -1483,7 +1420,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
     private fun fillHeader() {
         try {
-            val path = FilePathMangaer.getJsonPath(requireContext()) + "/Home.json"
+            val path = FilePathMangaer.getJsonPath(appContext) + "/Home.json"
             if (File(path).exists()) {
                 val result = Gson().fromJson<HomeInfoDto>(
                     JsonReader(FileReader(path)),
@@ -1496,7 +1433,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
                     setHeader(header)
                     if (BuildConfig.FLAVOR == "hongxin_H27002") {
-                        requestFocus(mHeaderGrid, 500)
+                        mBind.header.postDelayed({
+                            mBind.header.requestFocus()
+                        },500)
                     }
                 } else {
 
@@ -1535,7 +1474,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
             val result = Gson().fromJson(
                 InputStreamReader(
-                    requireContext().assets.open("home.json")
+                    appContext.assets.open("home.json")
                 ),
                 HomeInfoDto::class.java
             )
@@ -1619,7 +1558,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
             override fun onClick(bean: AppItem) {
                 if (!TextUtils.isEmpty(bean.appDownLink)) AndroidSystem.jumpAppStore(
-                    activity,
+                    appContext,
                     Gson().toJson(bean),
                     null
                 )
@@ -1634,7 +1573,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 if (bean.packageNames != null) {
                     bean.packageNames?.let {
                         for (appPackage in it) {
-                            if (App.SKIP_PAKS.contains(appPackage?.packageName)) {
+                            if (App.SKIP_PAKS.contains(appPackage.packageName)) {
                                 skip = true
                                 break
                             }
@@ -1646,9 +1585,9 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
 
                 var success = false
                 success = if (skip) {
-                    AndroidSystem.jumpVideoApp(activity, bean.packageNames, null)
+                    AndroidSystem.jumpVideoApp(appContext, bean.packageNames, null)
                 } else {
-                    AndroidSystem.jumpVideoApp(activity, bean.packageNames, bean.url)
+                    AndroidSystem.jumpVideoApp(appContext, bean.packageNames, bean.url)
                 }
                 if (!success) {
                     toastInstallPKApp(bean.appName ?: "", bean.packageNames)
@@ -1670,7 +1609,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 for (i in pns.indices) {
                     pns[i] = packages?.get(i)?.packageName
                 }
-                AndroidSystem.jumpAppStore(activity, null, pns)
+                AndroidSystem.jumpAppStore(appContext, null, pns)
             }
         }
     }
@@ -1705,17 +1644,17 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
     }
 
     private fun openApp(bean: ApplicationInfo) {
-        AndroidSystem.openPackageName(activity, bean.packageName)
+        AndroidSystem.openPackageName(appContext, bean.packageName)
     }
 
     private fun appMenu(bean: ApplicationInfo) {
         val dialog = AppDialog.newInstance(bean)
-        dialog.setCallback { AndroidSystem.openPackageName(activity, bean.packageName) }
+        dialog.setCallback { AndroidSystem.openPackageName(appContext, bean.packageName) }
         dialog.show(getChildFragmentManager(), AppDialog.TAG)
     }
 
     private fun setExpanded(isExpanded: Boolean) {
-        mAppBarLayout!!.setExpanded(isExpanded)
+        mBind.appBar.setExpanded(isExpanded)
     }
 
 
@@ -1726,7 +1665,7 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 val version = result.data
                 if (version.version > BuildConfig.VERSION_CODE && Config.CHANNEL == version.channel) {
                     PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, version.version.toInt())
-                    AndroidSystem.jumpUpgrade(activity, version)
+                    AndroidSystem.jumpUpgrade(appContext, version)
                 }
             }
         })
@@ -1738,11 +1677,11 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
                 Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> {
 
-                    var infos = AndroidSystem.getUserApps2(activity)
+                    var infos = AndroidSystem.getUserApps2(appContext)
                     val filteredList =
                         infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
                     if (filteredList.size != mAppListAdapter?.getDataList()?.size) {
-                        mAppListAdapter?.refresh(filteredList)
+                        mAppListAdapter?.refresh(filteredList.toMutableList())
                         useApps.clear()
                         useApps.addAll(mAppListAdapter?.getDataList()!!)
 
@@ -1763,13 +1702,13 @@ class MainFragment : AbsFragment(), AppBarLayout.OnOffsetChangedListener, View.O
                 UsbManager.ACTION_USB_DEVICE_DETACHED -> {}
                 IntentAction.ACTION_RESET_SELECT_HOME -> {
                     if (isExpanded) {
-                        requestFocus(mHeaderGrid)
-                        mHeaderGrid?.scrollToPosition(0)
+                        mBind.header.requestFocus()
+                        mBind.header.scrollToPosition(0)
                     } else {
-                        (mHeaderGrid?.isFocused)?.no {
-                            requestFocus(mHeaderGrid)
+                        (mBind.header.isFocused).no {
+                            mBind.header.requestFocus()
                         }
-                        mHeaderGrid?.scrollToPosition(0)
+                        mBind.header.scrollToPosition(0)
                     }
                 }
             }

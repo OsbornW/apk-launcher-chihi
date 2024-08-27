@@ -6,28 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.databinding.ViewDataBinding
 import com.open.system.ASystemProperties
+import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
+import com.soya.launcher.databinding.FragmentGuideGroupGradientBinding
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ui.activity.GradientActivity
 import com.soya.launcher.ui.activity.ScaleScreenActivity
 import com.soya.launcher.utils.AndroidSystem
 
-open class AbsGroupGradientFragment : AbsFragment() {
-    private var mManualView: View? = null
-    private var mSkipView: TextView? = null
-    private var mSkipTipView: TextView? = null
-    private var root: FrameLayout? = null
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
+open class AbsGroupGradientFragment<VDB : FragmentGuideGroupGradientBinding, VM : BaseViewModel>
+    : BaseWallPaperFragment<VDB,VM>() {
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_guide_group_gradient
-    }
 
     private fun setCurMode(isEnalbe: Boolean) {
         ASystemProperties.set(
@@ -40,32 +35,27 @@ open class AbsGroupGradientFragment : AbsFragment() {
 
     }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mManualView = view.findViewById(R.id.manual)
-        mSkipView = view.findViewById(R.id.skip)
-        mSkipTipView = view.findViewById(R.id.skip_tip)
-        root = view.findViewById(R.id.root)
-        mManualView?.setOnKeyListener { view, i, keyEvent ->
+    override fun initView() {
+        mBind.manual.setOnKeyListener { view, i, keyEvent ->
             false
         }
         setCurMode(true)
 
+        mBind.manual.apply {
+            post {
+                requestFocus()
+            }
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requestFocus(mManualView)
-    }
 
-    override fun initBefore(view: View, inflater: LayoutInflater) {
-        super.initBefore(view, inflater)
-        mManualView!!.setOnClickListener {
+    override fun initClick() {
+        mBind.manual.setOnClickListener {
             setCurMode(false)
 
             isRK3326().yes {
                 AndroidSystem.openActivityName(
-                    activity,
+                    requireContext(),
                     "com.lei.hxkeystone",
                     "com.lei.hxkeystone.FourPoint"
                 )
@@ -75,7 +65,7 @@ open class AbsGroupGradientFragment : AbsFragment() {
 
 
         }
-        mSkipView!!.setOnClickListener(object : View.OnClickListener {
+        mBind.skip.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 if (isGuide) activity!!.supportFragmentManager.beginTransaction()
                     .replace(R.id.main_browse_fragment, GuideDateFragment.newInstance())
@@ -84,12 +74,15 @@ open class AbsGroupGradientFragment : AbsFragment() {
         })
     }
 
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
-        mSkipView!!.text = if (isGuide) getString(R.string.next) else getString(R.string.done)
-        mSkipTipView!!.text =
+    override fun initdata() {
+        mBind.skip.text = if (isGuide) getString(R.string.next) else getString(R.string.done)
+        mBind.skipTip.text =
             if (isGuide) getString(R.string.guide_group_gradient_tip_next) else getString(R.string.guide_group_gradient_tip_done)
+
     }
+
+
+
 
     protected open val isGuide: Boolean
         protected get() = true

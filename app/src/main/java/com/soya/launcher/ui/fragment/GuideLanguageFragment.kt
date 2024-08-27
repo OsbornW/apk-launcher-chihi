@@ -4,25 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.FragmentManager
+import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.bean.Language
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.cache.AppCache.isGuidChageLanguage
+import com.soya.launcher.databinding.FragmentSetLanguageBinding
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.PreferencesUtils
 
-class GuideLanguageFragment : AbsLanguageFragment() {
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
+class GuideLanguageFragment : AbsLanguageFragment<FragmentSetLanguageBinding,BaseViewModel>() {
+
+
+    override fun initView() {
+        super.initView()
         showNext(false)
         "我又进来了引导语言：：$isGuidChageLanguage".e("zengyue2")
         isGuidChageLanguage.yes {
             jump()
         }
-
     }
 
     override fun onSelectLanguage(bean: Language) {

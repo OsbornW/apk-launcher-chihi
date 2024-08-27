@@ -13,9 +13,12 @@ import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
+import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.isRepeatExcute
 import com.shudong.lib_base.ext.no
 import com.soya.launcher.App
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.adapter.AppItemAdapter
 import com.soya.launcher.adapter.FullSearchAdapter
@@ -26,6 +29,7 @@ import com.soya.launcher.bean.DivSearch
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.WebItem
 import com.soya.launcher.config.Config
+import com.soya.launcher.databinding.FragmentSearchBinding
 import com.soya.launcher.decoration.HSlideMarginDecoration
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.Types
@@ -45,13 +49,9 @@ import okhttp3.FormBody
 import retrofit2.Call
 import java.util.Locale
 
-class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListener,
+class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel>(),
+    View.OnClickListener, OnEditorActionListener,
     FullSearchAdapter.Callback {
-    private var mRecommendGrid: HorizontalGridView? = null
-    private var mContentGrid: VerticalGridView? = null
-    private var mTitleView: TextView? = null
-    private var mEditView: TextView? = null
-    private var mDivSearch: View? = null
 
     private var mAdapter: FullSearchAdapter? = null
     private var mAppItemAdapter: AppItemAdapter? = null
@@ -67,18 +67,8 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
         if (appCall != null) appCall!!.cancel()
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_search
-    }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mRecommendGrid = view.findViewById(R.id.recommend)
-        mTitleView = view.findViewById(R.id.recommend_title)
-        mEditView = view.findViewById(R.id.edit_query)
-        mContentGrid = view.findViewById(R.id.content)
-        mDivSearch = view.findViewById(R.id.div_search)
-
+    override fun initView() {
         lifecycleScope.launch {
             mAppItemAdapter = AppItemAdapter(
                 activity,
@@ -87,23 +77,19 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
                 R.layout.item_search_apps,
                 newAppClickCallback()
             )
-            mAdapter = FullSearchAdapter(activity, inflater, ArrayList(), this@SearchFragment)
-            mRecommendGrid?.addItemDecoration(
+            mAdapter = FullSearchAdapter(activity, LayoutInflater.from(appContext), ArrayList(), this@SearchFragment)
+            mBind.recommend.addItemDecoration(
                 HSlideMarginDecoration(
                     resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
                     resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)
                 )
             )
         }
-
     }
 
-    // 声明一个全局变量来持有协程作业
-    private var debounceJob: Job? = null
-    override fun initBefore(view: View, inflater: LayoutInflater) {
-        super.initBefore(view, inflater)
-        mDivSearch!!.setOnClickListener(this)
-        mEditView!!.addTextChangedListener(object : TextWatcherAdapter() {
+    override fun initdata() {
+        mBind.divSearch.setOnClickListener(this)
+        mBind.editQuery.addTextChangedListener(object : TextWatcherAdapter() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
 
                 // 取消之前的防抖动任务
@@ -119,28 +105,29 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
             }
         })
-    }
 
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
         lifecycleScope.launch {
-            mRecommendGrid!!.adapter = mAppItemAdapter
-            mContentGrid!!.adapter = mAdapter
+            mBind.recommend.adapter = mAppItemAdapter
+            mBind.content.adapter = mAdapter
             val word = arguments!!.getString(Atts.WORD)
             if (!TextUtils.isEmpty(word)) {
-                mEditView!!.text = word
+                mBind.editQuery.text = word
                 search()
             }
 
             fillAppStore()
         }
 
-
     }
+
+
+    // 声明一个全局变量来持有协程作业
+    private var debounceJob: Job? = null
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requestFocus(mDivSearch)
+        mBind.divSearch.apply { post { requestFocus() } }
         lifecycleScope.launch {
             delay(300)
             showKeyboard()
@@ -148,9 +135,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
     }
 
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
+
 
     private fun replace() {
         val list: MutableList<DivSearch<*>?> = ArrayList()
@@ -161,7 +146,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
                 list.add(store)
 
                 val pm = activity!!.packageManager
-                val infos = AndroidSystem.getUserApps(activity)
+                val infos = AndroidSystem.getUserApps(requireContext())
                 val apps: MutableList<Any?> = ArrayList()
                 for (info in infos) {
                     if (info.loadLabel(pm).toString().lowercase(Locale.getDefault()).contains(
@@ -195,7 +180,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
             }
             withContext(Dispatchers.Main) {
 
-                mContentGrid!!.visibility = View.VISIBLE
+                mBind.content.visibility = View.VISIBLE
             }
 
 
@@ -260,7 +245,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
                 2 -> url += "/s?wd=$searchText"
                 3 -> url += "/search/?text=$searchText"
             }
-            val infos = AndroidSystem.queryBrowareLauncher(activity, url)
+            val infos = AndroidSystem.queryBrowareLauncher(requireContext(), url)
             if (infos.isEmpty()) {
                 toastInstall()
                 return@Callback
@@ -309,7 +294,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
     private fun setStoreContent(list: List<AppItem>) {
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
-                mTitleView!!.text = getString(R.string.recommend_for_you, list.size)
+                mBind.recommendTitle.text = getString(R.string.recommend_for_you, list.size)
                 mAppItemAdapter!!.replace(list)
             }
         }
@@ -328,7 +313,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
             override fun onClick(bean: AppItem) {
                 if (!TextUtils.isEmpty(bean.appDownLink)) AndroidSystem.jumpAppStore(
-                    activity,
+                    requireContext(),
                     Gson().toJson(bean),
                     null
                 )
@@ -352,15 +337,15 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
 
     override fun onClick(type: Int, bean: Any) {
         when (type) {
-            0 -> AndroidSystem.openPackageName(activity, (bean as ApplicationInfo).packageName)
-            1 -> AndroidSystem.jumpAppStore(activity, Gson().toJson(bean as AppItem), null)
+            0 -> AndroidSystem.openPackageName(requireContext(), (bean as ApplicationInfo).packageName)
+            1 -> AndroidSystem.jumpAppStore(requireContext(), Gson().toJson(bean as AppItem), null)
             2 -> webClick(bean as WebItem)
         }
     }
 
     private fun search() {
 
-        val text = mEditView!!.text.toString()
+        val text = mBind.editQuery.text.toString()
         if (call != null) call!!.cancel()
         if (!TextUtils.isEmpty(text)) {
             searchText = text
@@ -382,7 +367,7 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
             2 -> url += "/s?wd=$searchText"
             3 -> url += "/search/?text=$searchText"
         }
-        val infos = AndroidSystem.queryBrowareLauncher(activity, url)
+        val infos = AndroidSystem.queryBrowareLauncher(requireContext(), url)
         if (infos.isEmpty()) {
             toastInstall()
             return
@@ -392,14 +377,14 @@ class SearchFragment : AbsFragment(), View.OnClickListener, OnEditorActionListen
     }
 
     override fun onClick(v: View) {
-        if (v == mDivSearch) {
+        if (v == mBind.divSearch) {
             showKeyboard()
         }
     }
 
     private fun showKeyboard() {
         val dialog = newInstance()
-        dialog.setTargetView(mEditView)
+        dialog.setTargetView(mBind.editQuery)
         dialog.show(childFragmentManager, KeyboardDialog.TAG)
     }
 

@@ -70,8 +70,8 @@ public class WallpaperAdapter extends Presenter {
                     if (callback != null) callback.onClick(bean);
                 }
             });
-            mIV.setImageResource(bean.getPicture());
-            mCheckView.setVisibility(bean.getId() == PreferencesManager.getWallpaper() ? View.VISIBLE : View.GONE);
+            mIV.setImageResource(bean.picture);
+            mCheckView.setVisibility(bean.id == PreferencesManager.getWallpaper() ? View.VISIBLE : View.GONE);
         }
 
         public void unbind(){}

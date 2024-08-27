@@ -14,10 +14,14 @@ import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
+import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.appContext
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.config.Config
+import com.soya.launcher.databinding.FragmentSettingBinding
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.ext.openBluetoothSettings
 import com.soya.launcher.handler.PermissionHandler
@@ -29,9 +33,7 @@ import com.soya.launcher.ui.activity.WifiListActivity
 import com.soya.launcher.utils.AndroidSystem
 import java.util.Arrays
 
-class SettingFragment : AbsFragment() {
-    private var mContentGrid: VerticalGridView? = null
-    private var mTitleView: TextView? = null
+class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding,BaseViewModel>() {
     private var launcher: ActivityResultLauncher<*>? = null
 
     private var receiver: WallpaperReceiver? = null
@@ -52,31 +54,18 @@ class SettingFragment : AbsFragment() {
         activity!!.unregisterReceiver(receiver)
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_setting
+
+    override fun initdata() {
+        mBind.layout.title.text =  getString(R.string.setting)
+        setContent()
+        mBind.content.apply {
+            post {
+                requestFocus()
+            }
+        }
     }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mContentGrid = view.findViewById(R.id.content)
-        mTitleView = view.findViewById(R.id.title)
 
-        mTitleView?.text = getString(R.string.setting)
-    }
-
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
-        setContent(view, inflater)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requestFocus(mContentGrid)
-    }
-
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
 
     private fun initLauncher() {
         launcher = PermissionHandler.createPermissionsWithIntent(
@@ -84,11 +73,11 @@ class SettingFragment : AbsFragment() {
         ) { }
     }
 
-    private fun setContent(view: View, inflater: LayoutInflater) {
+    private fun setContent() {
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
                 activity,
-                inflater,
+                LayoutInflater.from(appContext),
                 newCallback(),
                 R.layout.holder_setting
             )
@@ -99,8 +88,8 @@ class SettingFragment : AbsFragment() {
             FocusHighlight.ZOOM_FACTOR_LARGE,
             false
         )
-        mContentGrid!!.adapter = itemBridgeAdapter
-        mContentGrid!!.setNumColumns(4)
+        mBind.content.adapter = itemBridgeAdapter
+        mBind.content.setNumColumns(4)
 
         if (Config.COMPANY == 0) {
             arrayObjectAdapter.addAll(
@@ -295,39 +284,39 @@ class SettingFragment : AbsFragment() {
             override fun onClick(bean: SettingItem) {
                 when (bean.type) {
                     0 -> if (Config.COMPANY == 3) {
-                        AndroidSystem.openWifiSetting(activity)
+                        AndroidSystem.openWifiSetting(requireContext())
                     } else {
-                        startActivity(Intent(activity, WifiListActivity::class.java))
+                        startActivity(Intent(requireContext(), WifiListActivity::class.java))
                     }
 
-                    1 -> startActivity(Intent(activity, WallpaperActivity::class.java))
+                    1 -> startActivity(Intent(requireContext(), WallpaperActivity::class.java))
                     2 -> if (Config.COMPANY == 0 || Config.COMPANY == 9) {
-                        startActivity(Intent(activity, ProjectorActivity::class.java))
+                        startActivity(Intent(requireContext(), ProjectorActivity::class.java))
                     } else if (Config.COMPANY == 1) {
-                        AndroidSystem.openActivityName(activity, "com.qf.keystone.AllActivity")
+                        AndroidSystem.openActivityName(requireContext(), "com.qf.keystone.AllActivity")
                     }
 
                     3 -> product.openLanguageSetting(requireContext())
                     4 -> product.openDateSetting(requireContext())
                     5 -> if (Config.COMPANY == 1 || Config.COMPANY == 2) {
-                        AndroidSystem.openBluetoothSetting2(activity)
+                        AndroidSystem.openBluetoothSetting2(requireContext())
                     } else if (Config.COMPANY == 3) {
-                        AndroidSystem.openBluetoothSetting3(activity)
+                        AndroidSystem.openBluetoothSetting3(requireContext())
                     }
 
-                    6 -> startActivity(Intent(activity, AboutActivity::class.java))
+                    6 -> startActivity(Intent(requireContext(), AboutActivity::class.java))
                     7 -> if (Config.COMPANY == 0 || Config.COMPANY == 1) {
-                        AndroidSystem.openSystemSetting(activity)
+                        AndroidSystem.openSystemSetting(requireContext())
                     } else {
-                        AndroidSystem.openSystemSetting2(activity)
+                        AndroidSystem.openSystemSetting2(requireContext())
                     }
 
-                    8 -> AndroidSystem.openVoiceSetting(activity)
-                    9 -> AndroidSystem.openInputSetting(activity)
+                    8 -> AndroidSystem.openVoiceSetting(requireContext())
+                    9 -> AndroidSystem.openInputSetting(requireContext())
                     10 -> if (Config.COMPANY == 9) {
                         context!!.openBluetoothSettings()
                     } else {
-                        AndroidSystem.openBluetoothSetting4(context)
+                        AndroidSystem.openBluetoothSetting4(requireContext())
                     }
 
                 }

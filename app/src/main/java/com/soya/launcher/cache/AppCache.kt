@@ -2,6 +2,7 @@ package com.soya.launcher.cache
 
 import com.drake.serialize.serialize.serial
 import com.soya.launcher.bean.HomeDataList
+import com.soya.launcher.bean.Wallpaper
 
 object AppCache {
     // (day,week)
@@ -13,5 +14,7 @@ object AppCache {
     var isAllDownload:Boolean by serial(default = false)
     var isSkipGuid:Boolean by serial(default = false)   //是否跳过引导页
     var isGuidChageLanguage:Boolean by serial(default = false)   //是否跳过引导页
+
+    var WALLPAPERS: MutableList<Wallpaper> by serial(default = mutableListOf())
 
 }

@@ -11,13 +11,16 @@ import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
+import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.databinding.FragmentProjectorBinding
 import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ui.activity.ChooseGradientActivity
@@ -26,35 +29,17 @@ import com.soya.launcher.ui.activity.InstallModeActivity
 import com.soya.launcher.ui.activity.ScaleScreenActivity
 import com.soya.launcher.utils.AndroidSystem
 
-class ProjectorFragment : AbsFragment() {
-    private var mTitleView: TextView? = null
-    private var mContentGrid: VerticalGridView? = null
+class ProjectorFragment : BaseWallPaperFragment<FragmentProjectorBinding,BaseViewModel>() {
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_projector
-    }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mTitleView = view.findViewById(R.id.title)
-        mContentGrid = view.findViewById(R.id.content)
-
-        mTitleView?.text = getString(R.string.pojector)
-    }
-
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
+    override fun initView() {
+        mBind.layout.title.text = getString(R.string.pojector)
         setContent()
+
+        mBind.content.apply { post { requestFocus() } }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requestFocus(mContentGrid)
-    }
 
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
 
     private fun setContent() {
         val arrayObjectAdapter = ArrayObjectAdapter(
@@ -71,8 +56,8 @@ class ProjectorFragment : AbsFragment() {
             FocusHighlight.ZOOM_FACTOR_LARGE,
             false
         )
-        mContentGrid!!.adapter = itemBridgeAdapter
-        mContentGrid!!.setNumColumns(4)
+        mBind.content.adapter = itemBridgeAdapter
+        mBind.content.setNumColumns(4)
         val list: MutableList<SettingItem?> = ArrayList()
         list.add(
             SettingItem(
@@ -118,7 +103,7 @@ class ProjectorFragment : AbsFragment() {
                         if (!success) Toast.makeText(getActivity(), getString(R.string.place_install_app), Toast.LENGTH_SHORT).show();*/
                         isRK3326().yes {
                             AndroidSystem.openActivityName(
-                                activity,
+                                requireContext(),
                                 "com.lei.hxkeystone",
                                 "com.lei.hxkeystone.ScaleActivity"
                             )
@@ -133,7 +118,7 @@ class ProjectorFragment : AbsFragment() {
                                 startKtxActivity<InstallModeActivity>()
                             }
                             else->{
-                                val success = AndroidSystem.openProjectorMode(activity)
+                                val success = AndroidSystem.openProjectorMode(requireContext())
                                 if (!success) Toast.makeText(
                                     activity,
                                     getString(R.string.place_install_app),
@@ -145,7 +130,7 @@ class ProjectorFragment : AbsFragment() {
                     }
 
                     Projector.TYPE_HDMI -> {
-                        val success = AndroidSystem.openProjectorHDMI(activity)
+                        val success = AndroidSystem.openProjectorHDMI(requireContext())
                         if (!success) Toast.makeText(
                             activity,
                             getString(R.string.place_install_app),

@@ -13,11 +13,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
 import com.open.system.ASystemProperties
+import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
 import com.softwinner.keystone.KeystoneCorrection
 import com.softwinner.keystone.KeystoneCorrectionManager
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
+import com.soya.launcher.databinding.FragmentScaleScreenBinding
 import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.h6.H6Manager
@@ -26,20 +29,15 @@ import com.soya.launcher.view.KeyEventFrameLayout
 import com.soya.launcher.view.KeyEventFrameLayout.KeyEventCallback
 import java.util.Arrays
 
-class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
+class ScaleScreenFragment : BaseWallPaperFragment<FragmentScaleScreenBinding,BaseViewModel>(),
+    KeyEventCallback {
     private val keystone = KeystoneCorrectionManager()
-    private var mRootView: KeyEventFrameLayout? = null
-    private var mSurfaceView: View? = null
 
     private var screenWidth = 0
     private var screenHeigh = 0
 
     private var pressKeyState = upKey
 
-    private var mDirL: ImageView? = null
-    private var mDirR: ImageView? = null
-    private var mDirT: ImageView? = null
-    private var mDirB: ImageView? = null
 
     private var AX = 0
     private var AY = 0 //A translate
@@ -62,30 +60,11 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
     private var mWindowManager: WindowManager? = null
     private var screenXaxis = 0
     private var screenYaxis = 0
-    private var mScaleTextView: TextView? = null
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_scale_screen
-    }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mRootView = view.findViewById(R.id.root)
-        mSurfaceView = view.findViewById(R.id.surface)
-        mDirB = view.findViewById(R.id.dir_b)
-        mDirL = view.findViewById(R.id.dir_l)
-        mDirT = view.findViewById(R.id.dir_t)
-        mDirR = view.findViewById(R.id.dir_r)
-        mScaleTextView = view.findViewById(R.id.tb_text)
-    }
+    override fun initView() {
+        mBind.root.setKeyEventCallback(this)
 
-    override fun initBefore(view: View, inflater: LayoutInflater) {
-        super.initBefore(view, inflater)
-        mRootView!!.setKeyEventCallback(this)
-    }
-
-    override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
         mWindowManager = activity!!.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         screenWidth = mWindowManager!!.defaultDisplay.width
         screenHeigh = mWindowManager!!.defaultDisplay.height
@@ -98,9 +77,8 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
         loadSettings()
     }
 
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
+
+
 
     private val hwOffset: Unit
         get() {
@@ -214,7 +192,7 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
             }
         }
 
-        mSurfaceView!!.invalidate()
+        mBind.surface.invalidate()
         syncScale()
     }
 
@@ -254,7 +232,7 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
             isH6().yes {
                 var zoom = H6Manager.getInstance(requireContext())?.zoomValue
                 H6Manager.getInstance(requireContext())?.zoomValue = (zoom?:0)+1
-                mSurfaceView!!.invalidate()
+                mBind.surface.invalidate()
                 syncScale()
             }.otherwise {
                 setValue()
@@ -293,7 +271,7 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
                 if (zoom != null) {
                     if(zoom>(H6Manager.getInstance(requireContext())?.zoomMinValue)?:0){
                         H6Manager.getInstance(requireContext())?.zoomValue = zoom -1
-                        mSurfaceView!!.invalidate()
+                        mBind.surface.invalidate()
                         syncScale()
                     }
                 }
@@ -332,7 +310,7 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
             isH6().yes {
                 var zoom = H6Manager.getInstance(requireContext())?.zoomValue
                 H6Manager.getInstance(requireContext())?.zoomValue = (zoom?:0)+1
-                mSurfaceView!!.invalidate()
+                mBind.surface.invalidate()
                 syncScale()
             }.otherwise {
                 setValue()
@@ -368,7 +346,7 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
             isH6().yes {
                 var zoom = H6Manager.getInstance(requireContext())?.zoomValue
                 H6Manager.getInstance(requireContext())?.zoomValue = (zoom?:0)-1
-                mSurfaceView!!.invalidate()
+                mBind.surface.invalidate()
                 syncScale()
             }.otherwise {
                 setValue()
@@ -394,10 +372,10 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
         )
 
         when (code) {
-            KeyEvent.KEYCODE_DPAD_UP -> mDirT!!.setImageDrawable(drawable)
-            KeyEvent.KEYCODE_DPAD_DOWN -> mDirB!!.setImageDrawable(drawable)
-            KeyEvent.KEYCODE_DPAD_LEFT -> mDirL!!.setImageDrawable(drawable)
-            KeyEvent.KEYCODE_DPAD_RIGHT -> mDirR!!.setImageDrawable(drawable)
+            KeyEvent.KEYCODE_DPAD_UP -> mBind.dirT.setImageDrawable(drawable)
+            KeyEvent.KEYCODE_DPAD_DOWN -> mBind.dirB.setImageDrawable(drawable)
+            KeyEvent.KEYCODE_DPAD_LEFT -> mBind.dirL.setImageDrawable(drawable)
+            KeyEvent.KEYCODE_DPAD_RIGHT -> mBind.dirR.setImageDrawable(drawable)
         }
     }
 
@@ -415,10 +393,10 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
             ) else resources.getColor(R.color.ico_style_1, Resources.getSystem().newTheme())
         )
 
-        mDirB!!.setImageDrawable(drawable)
-        mDirT!!.setImageDrawable(drawable)
-        mDirL!!.setImageDrawable(drawable)
-        mDirR!!.setImageDrawable(drawable)
+        mBind.dirB.setImageDrawable(drawable)
+        mBind.dirT.setImageDrawable(drawable)
+        mBind.dirL.setImageDrawable(drawable)
+        mBind.dirR.setImageDrawable(drawable)
     }
 
     private val kv = KeystoneVertex()
@@ -447,7 +425,7 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
         }
 
 
-        mSurfaceView!!.invalidate()
+        mBind.surface.invalidate()
         syncScale()
     }
 
@@ -466,10 +444,10 @@ class ScaleScreenFragment : AbsFragment(), KeyEventCallback {
         val num = H6Manager.getInstance(requireContext())?.zoomValue
         isH6().yes {
             if (num != null) {
-                mScaleTextView!!.text = num.toString()
+                mBind.tbText.text = num.toString()
             }
         }.otherwise {
-            mScaleTextView!!.text = doubles[0].toInt().toString()
+            mBind.tbText.text = doubles[0].toInt().toString()
 
         }
     }

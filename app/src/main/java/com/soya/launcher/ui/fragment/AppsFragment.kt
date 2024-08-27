@@ -13,16 +13,20 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.HandlerCompat.postDelayed
 import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
 import com.drake.brv.utils.grid
 import com.drake.brv.utils.models
 import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
+import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.no
+import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.config.Config
+import com.soya.launcher.databinding.FragmentAppsBinding
 import com.soya.launcher.ui.dialog.AppDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.isSysApp
@@ -31,9 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AppsFragment : AbsFragment() {
-    lateinit var mContentGrid: VerticalGridView
-    private var mTitleView: TextView? = null
+class AppsFragment : BaseWallPaperFragment<FragmentAppsBinding,BaseViewModel>() {
 
     private var receiver: InnerReceiver? = null
 
@@ -59,16 +61,9 @@ class AppsFragment : AbsFragment() {
         activity!!.unregisterReceiver(receiver)
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_apps
-    }
 
-    override fun init(view: View, inflater: LayoutInflater) {
-        super.init(view, inflater)
-        mContentGrid = view.findViewById(R.id.content)
-        mTitleView = view.findViewById(R.id.title)
-
-        mContentGrid.grid(4).setup {
+    override fun initView() {
+        mBind.content.grid(4).setup {
             addType<ApplicationInfo>(R.layout.item_apps)
             onBind {
 
@@ -76,7 +71,7 @@ class AppsFragment : AbsFragment() {
                 val mIV = findView<ImageView>(R.id.image)
                 val mTitle = findView<TextView>(R.id.title)
                 val mIVSmall = findView<ImageView>(R.id.image_small)
-               val mAppLayout = findView<AppLayout>(R.id.root)
+                val mAppLayout = findView<AppLayout>(R.id.root)
 
                 val pm = context.packageManager
                 val banner: Drawable? = null
@@ -103,7 +98,7 @@ class AppsFragment : AbsFragment() {
                 }
 
                 itemView.clickNoRepeat {
-                    AndroidSystem.openPackageName(activity, bean.packageName)
+                    AndroidSystem.openPackageName(requireContext(), bean.packageName)
                 }
 
                 mAppLayout.setListener(AppLayout.EventListener { keyCode, event ->
@@ -121,24 +116,16 @@ class AppsFragment : AbsFragment() {
             }
         }.models = arrayListOf()
 
-        mTitleView?.text = getString(R.string.apps)
+        mBind.layout.title.text = getString(R.string.apps)
     }
 
-    /*override fun initBind(view: View, inflater: LayoutInflater) {
-        super.initBind(view, inflater)
-        fillApps()
-    }*/
 
-
-    override fun getWallpaperView(): Int {
-        return R.id.wallpaper
-    }
 
     private fun fillApps() {
         lifecycleScope.launch {
             var list:List<ApplicationInfo>
             withContext(Dispatchers.IO){
-                 list = AndroidSystem.getUserApps(activity)
+                 list = AndroidSystem.getUserApps(requireContext())
             }
             withContext(Dispatchers.Main){
                 setContent(list)
@@ -148,9 +135,9 @@ class AppsFragment : AbsFragment() {
 
     private fun setContent(list: List<ApplicationInfo>) {
        // val filteredList = list.toMutableList().let { product.filterRepeatApps(it) } ?:list
-        if(list.size!=mContentGrid.mutable.size){
-            mContentGrid.models = list
-            mContentGrid.apply {
+        if(list.size!=mBind.content.mutable.size){
+            mBind.content.models = list
+            mBind.content.apply {
                 postDelayed({
                     requestFocus()
                     layoutManager?.findViewByPosition(0)?.requestFocus()
@@ -166,7 +153,7 @@ class AppsFragment : AbsFragment() {
         val dialog = AppDialog.newInstance(bean)
         dialog.setCallback {
             AndroidSystem.openPackageName(
-                activity, bean.packageName
+                requireContext(), bean.packageName
             )
         }
         dialog.show(childFragmentManager, AppDialog.TAG)
