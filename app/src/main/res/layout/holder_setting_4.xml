@@ -35,6 +35,12 @@
                     android:layout_height="@dimen/qb_px_50"/>
             </FrameLayout>
             <TextView
+                android:paddingHorizontal="@dimen/qb_px_10"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
                 android:id="@+id/title"
                 android:text="WIFI"
                 android:textSize="@dimen/qb_px_sp_15"
