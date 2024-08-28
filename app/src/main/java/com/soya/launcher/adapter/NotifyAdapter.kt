@@ -14,6 +14,7 @@ import com.soya.launcher.R
 import com.soya.launcher.bean.Notify
 import com.soya.launcher.ext.getIndexAfterSorting
 import com.soya.launcher.ext.sortByInstallTime
+import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.GlideUtils
 
 class NotifyAdapter(
@@ -128,9 +129,7 @@ class NotifyAdapter(
             itemView.clickNoRepeat {
                 when(bean.type){
                     Notify.TYPE_UDisk,Notify.TYPE_TF->{
-                        val intent = Intent(Intent.ACTION_GET_CONTENT)
-                        intent.type = "*/*" // 设置文件类型，*/* 表示任意类型
-                        context.startActivity(intent)
+                       product.openFileManager()
                     }
 
                 }

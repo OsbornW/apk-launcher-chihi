@@ -32,6 +32,7 @@ sealed interface TVDevice{
     fun filterRepeatApps(list:MutableList<ApplicationInfo>):MutableList<ApplicationInfo>? = null
     fun switchFragment():Fragment? = null
     fun jumpToAuth(activity: FragmentActivity){}
+    fun openFileManager(){}
 }
 
 data object DefaultDevice: TVDevice

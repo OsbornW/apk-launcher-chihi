@@ -6,18 +6,17 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
+import android.os.Environment
 import android.util.Log
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import androidx.core.content.FileProvider
+import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.appContext
-import com.shudong.lib_base.ext.e
-import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.jsonToTypeBean
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.utils.AndroidSystem
+import java.io.File
 
 /**
  * 扩展函数，根据包名获取应用的图标。
@@ -158,6 +157,87 @@ fun String.openAppInGooglePlay(context:Context) {
 }
 
 
+fun String.openApp(result: ((Boolean) -> Unit?)? = null) {
+    val packageManager = appContext.packageManager
+    val parts = this.split("/")
+
+    if (parts.size == 2) {
+        val packageName = parts[0]
+        val activityClassName = parts[1]
+        val intent = Intent().setClassName(packageName, activityClassName)
+        currentActivity?.startActivity(intent)
+        result?.invoke(true)
+    } else {
+        val packageName = this
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        if (intent != null) {
+            currentActivity?.startActivity(intent)
+            result?.invoke(true)
+        } else {
+            // 如果找不到启动 Intent，尝试打开应用商店页面
+            try {
+
+                result?.invoke(false)
+            } catch (e: android.content.ActivityNotFoundException) {
+                // 如果没有应用商店应用，打开网页版
+
+                result?.invoke(false)
+            }
+        }
+    }
+}
+
+fun String.openApp1(result: (Boolean) -> Unit) {
+    val packageManager = appContext.packageManager
+    val parts = this.split("/")
+
+    if (parts.size == 2) {
+        val packageName = parts[0]
+        val activityClassName = parts[1]
+        val intent = Intent().setClassName(packageName, activityClassName)
+        currentActivity?.startActivity(intent)
+        result(true)
+    } else {
+        val packageName = this
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        if (intent != null) {
+            currentActivity?.startActivity(intent)
+            result(true)
+        } else {
+            // 如果找不到启动 Intent，尝试打开应用商店页面
+            try {
+                currentActivity?.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=$packageName")
+                    )
+                )
+                result(false)
+            } catch (e: android.content.ActivityNotFoundException) {
+                // 如果没有应用商店应用，打开网页版
+                currentActivity?.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                    )
+                )
+                result(false)
+            }
+        }
+    }
+}
+
+fun openFileM() {
+    val intent = Intent()
+    intent.setClassName("com.droidlogic.FileBrower", "com.droidlogic.FileBrower.FileBrower")
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+    if (intent.resolveActivity(appContext.packageManager) != null) {
+        currentActivity?.startActivity(intent)
+    } else {
+        Log.e("FileBrower", "FileBrower is not installed on this device.")
+    }
+}
 
 
 
