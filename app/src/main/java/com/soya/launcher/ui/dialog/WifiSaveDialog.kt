@@ -37,6 +37,8 @@ class WifiSaveDialog : SingleDialogFragment(), View.OnClickListener {
             (mConfirmView as TextView).setText(arguments!!.getString("oktext"))
         }
 
+        blur(mRootView, mBlur)
+
     }
 
 
@@ -50,7 +52,7 @@ class WifiSaveDialog : SingleDialogFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mConfirmView!!.requestFocus()
-        blur(mRootView, mBlur)
+
     }
 
     fun setCallback(callback: Callback?) {

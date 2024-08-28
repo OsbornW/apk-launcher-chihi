@@ -39,6 +39,8 @@ class TimeZoneDialog : SingleDialogFragment() {
         mRootView = view.findViewById(R.id.root)
 
         mTimeZoneAdapter = TimeZoneAdapter(activity, inflater, ArrayList())
+
+        blur(mRootView, mBlur)
     }
 
     override fun initBind(inflater: LayoutInflater, view: View) {

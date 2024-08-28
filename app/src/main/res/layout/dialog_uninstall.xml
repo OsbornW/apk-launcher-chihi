@@ -3,18 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.cardview.widget.CardView
-        android:background="@drawable/bg_dialog"
+    <com.hjq.shape.layout.ShapeConstraintLayout
+        app:shape_radius="@dimen/qb_px_8"
+        app:shape_solidColor="@color/transparent"
         android:id="@+id/root"
-        app:cardElevation="@dimen/qb_px_8"
         app:cardUseCompatPadding="false"
-        app:cardCornerRadius="@dimen/qb_px_8"
-        app:cardBackgroundColor="@color/transparent"
         android:layout_gravity="center"
         android:layout_width="@dimen/qb_px_300"
         android:layout_height="wrap_content">
-        <ImageView
-            android:src="@drawable/bg_dialog"
+        <org.raphets.roundimageview.RoundImageView
+            app:border_color="@color/transparent"
+            app:type="round"
+            app:corner_radius="@dimen/qb_px_8"
             android:id="@+id/blur"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
@@ -48,5 +48,5 @@
                     android:layout_height="match_parent"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.cardview.widget.CardView>
+    </com.hjq.shape.layout.ShapeConstraintLayout>
 </FrameLayout>
