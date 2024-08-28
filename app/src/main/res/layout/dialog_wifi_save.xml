@@ -9,7 +9,7 @@
         android:id="@+id/root"
         android:layout_gravity="center"
         android:layout_width="@dimen/qb_px_320"
-        android:layout_height="@dimen/qb_px_170">
+        android:layout_height="wrap_content">
         <org.raphets.roundimageview.RoundImageView
             app:border_color="@color/transparent"
             app:type="round"
@@ -67,8 +67,6 @@
                 android:layout_height="@dimen/qb_px_50">
                 <TextView
                     android:id="@+id/close"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:clickable="true"
                     android:text="@string/close"
                     android:textSize="@dimen/qb_px_sp_10"
@@ -81,8 +79,6 @@
                 <TextView
                     android:id="@+id/clean"
                     android:text="@string/unsave"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:clickable="true"
                     android:textSize="@dimen/qb_px_sp_10"
                     android:background="@drawable/ripple_style_3"
@@ -94,8 +90,6 @@
                 <TextView
                     android:id="@+id/confirm"
                     android:text="@string/connect"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:clickable="true"
                     android:textSize="@dimen/qb_px_sp_10"
                     android:background="@drawable/ripple_style_3"

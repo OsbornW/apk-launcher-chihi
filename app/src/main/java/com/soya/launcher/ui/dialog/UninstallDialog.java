@@ -82,6 +82,7 @@ public class UninstallDialog extends SingleDialogFragment implements View.OnClic
         mMsgView = view.findViewById(R.id.msg);
         mBlur = view.findViewById(R.id.blur);
         mRootView = view.findViewById(R.id.root);
+        blur(mRootView, mBlur);
     }
 
     @Override
