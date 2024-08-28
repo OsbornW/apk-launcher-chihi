@@ -106,7 +106,7 @@ public class ServiceRequest {
         map.put("version", String.valueOf(BuildConfig.VERSION_CODE));
         map.put("sdk", String.valueOf(Build.VERSION.SDK_INT));
         map.put("uuid", String.valueOf(DeviceUuidFactory.getUUID(App.getInstance())));
-        map.put("model", Build.MODEL);
+        map.put("model", Config.MODEL);
         map.put("brand", Build.BRAND);
         map.put("product", Build.PRODUCT);
         Call<ResponseBody> call = request.checkVersion(map);
