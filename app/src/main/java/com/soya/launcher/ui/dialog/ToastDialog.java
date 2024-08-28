@@ -15,12 +15,13 @@ import com.soya.launcher.R;
 import com.soya.launcher.config.Config;
 import com.soya.launcher.enums.Atts;
 
-public class ToastDialog extends SingleDialogFragment{
+public class ToastDialog extends SingleDialogFragment {
     public static final String TAG = "ToastDialog";
 
     public static ToastDialog newInstance(String text) {
         return newInstance(text, MODE_DEFAULT);
     }
+
     public static ToastDialog newInstance(String text, int mode) {
 
         Bundle args = new Bundle();
@@ -63,13 +64,13 @@ public class ToastDialog extends SingleDialogFragment{
         mRootView = view.findViewById(R.id.root);
         mBlur = view.findViewById(R.id.blur);
         mCancelView = view.findViewById(R.id.cancel);
-   if (Config.COMPANY==0){
-       mRootView.setBackgroundResource(R.drawable.bg_dialog_2);
-   }else {
-       mRootView.setBackgroundResource(R.drawable.bg_dialog);
-   }
+       /* if (Config.COMPANY == 0) {
+            mRootView.setBackgroundResource(R.drawable.bg_dialog_2);
+        } else {
+            mRootView.setBackgroundResource(R.drawable.bg_dialog);
+        }*/
 
-        switch (mode){
+        switch (mode) {
             case MODE_CONFIRM:
                 mCancelView.setVisibility(View.GONE);
                 mConfirmView.setVisibility(View.VISIBLE);
@@ -104,7 +105,7 @@ public class ToastDialog extends SingleDialogFragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //blur(mRootView, mBlur);
+        blur(mRootView, mBlur);
     }
 
     @Override
@@ -131,7 +132,7 @@ public class ToastDialog extends SingleDialogFragment{
         this.callback = callback;
     }
 
-    public interface Callback{
+    public interface Callback {
         void onClick(int type);
     }
 }

@@ -64,7 +64,6 @@ public class AppDialog extends SingleDialogFragment implements View.OnClickListe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mOpenView.requestFocus();
-        //blur(mRootView, mBlur);
     }
 
     @Override
@@ -78,6 +77,8 @@ public class AppDialog extends SingleDialogFragment implements View.OnClickListe
         mVersionView = view.findViewById(R.id.version);
         mBlur = view.findViewById(R.id.blur);
         mRootView = view.findViewById(R.id.root);
+
+        blur(mRootView, mBlur);
     }
 
     @Override
