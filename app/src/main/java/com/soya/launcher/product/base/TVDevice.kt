@@ -12,6 +12,7 @@ import com.soya.launcher.product.ProjectorRK3326
 import com.soya.launcher.product.TVBoxH27002
 import com.soya.launcher.product.TVBoxX98K
 import com.soya.launcher.product.PrjectorAiboyou
+import com.soya.launcher.product.ProjectorP50
 import com.soya.launcher.product.TVBox22001
 import com.soya.launcher.product.ProjectorRK3326G
 import com.soya.launcher.product.TVBoxAiboyou
@@ -21,6 +22,7 @@ import com.soya.launcher.product.base.Channel.AIBOYOUTV_TV22001
 import com.soya.launcher.product.base.Channel.PROJECTOR_713G_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_713M_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_H6_C
+import com.soya.launcher.product.base.Channel.PROJECTOR_P50_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_RK3326G_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_RK3326_C
 import com.soya.launcher.product.base.Channel.TVBox_H27002_C
@@ -33,6 +35,7 @@ sealed interface TVDevice{
     fun switchFragment():Fragment? = null
     fun jumpToAuth(activity: FragmentActivity){}
     fun openFileManager(){}
+    fun openKeystoneCorrection(context:Context){}
 }
 
 data object DefaultDevice: TVDevice
@@ -50,6 +53,7 @@ object Channel{
     const val AIBOYOUPROJECTOR = "aiboyou_projector"
 
     const val AIBOYOUTV_TV22001 = "aiboyou_launcher"
+    const val PROJECTOR_P50_C = "p50_713M"
 }
 
 val product : TVDevice =
@@ -64,5 +68,6 @@ val product : TVDevice =
         AIBOYOUTV -> TVBoxAiboyou
         AIBOYOUPROJECTOR -> PrjectorAiboyou
         AIBOYOUTV_TV22001 -> TVBox22001
+        PROJECTOR_P50_C -> ProjectorP50
         else -> DefaultDevice
     }

@@ -11,6 +11,7 @@ import com.shudong.lib_base.ext.yes
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.ext.openFileM
 import com.soya.launcher.manager.PreferencesManager
+import com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity
 import com.soya.launcher.ui.activity.LanguageActivity
 import com.soya.launcher.ui.activity.SetDateActivity
 import com.soya.launcher.ui.fragment.GuideLanguageFragment
@@ -47,5 +48,9 @@ interface TVDeviceImpl : TVDevice {
 
     override fun openFileManager() {
         openFileM()
+    }
+
+    override fun openKeystoneCorrection(context:Context) {
+        context.startKtxActivity<HomeGuideGroupGradientActivity>()
     }
 }

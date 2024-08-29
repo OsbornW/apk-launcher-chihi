@@ -144,6 +144,21 @@ android {
             buildConfigField "String", "MODEL", '"713M"'
         }
 
+        p50_713M {
+            applicationId "com.soya.launcher"
+            dimension "chihi"
+            signingConfig signingConfigs.hongxin
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"0"'
+            buildConfigField "String", "APP_ID", '"launcher"'
+            buildConfigField "String", "CHANNEL", '"P27001"'
+            buildConfigField "String", "CHIHI_TYPE", '"P50_H713M"'
+            buildConfigField "String", "MODEL", '"P50_713M"'
+        }
+
         hongxin_713RK {
             applicationId "com.soya.launcher"
             dimension "chihi"

@@ -1126,15 +1126,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             //startActivity(Intent(requireContext(), HomeGuideGroupGradientActivity::class.java))
 
             // startActivity(Intent(requireContext(), ChooseGradientActivity::class.java))
-            when {
-                isH6() -> {
-                    startKtxActivity<GradientActivity>()
-                }
-
-                else -> {
-                    startKtxActivity<HomeGuideGroupGradientActivity>()
-                }
-            }
+           product.openKeystoneCorrection(requireContext())
 
 
             /*
