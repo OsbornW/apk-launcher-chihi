@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-
+    // 源目录名字需要跟渠道名字对应，目录名字可以随意
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -52,6 +52,10 @@ android {
         }
         aiboyou_launcher {
             java.srcDirs = ['src/aiboyou_launcher/java']
+        }
+
+        p50_713M {
+            java.srcDirs = ['src/p50_713m/java']
         }
     }
 

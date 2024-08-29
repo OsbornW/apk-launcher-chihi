@@ -10,5 +10,6 @@ object ProjectorP50 : TVDeviceImpl{
     override fun openFileManager()  = PACKAGE_NAME_FILE_MANAGER_713.openApp()
     override fun openKeystoneCorrection(context: Context) {
         autoFocus()
+        super.openKeystoneCorrection(context)
     }
 }
