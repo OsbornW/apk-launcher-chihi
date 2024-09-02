@@ -82,6 +82,10 @@
         "packageNames": [
           {
             "activityName": "",
+            "packageName": "com.yutube.app"
+          },
+          {
+            "activityName": "",
             "packageName": "com.google.android.youtube.tv"
           },
           {
@@ -200,6 +204,10 @@
         "packageNames": [
           {
             "activityName": "",
+            "packageName": "com.naifei.app"
+          },
+          {
+            "activityName": "",
             "packageName": "com.netflix.ninja"
           },
           {
@@ -289,6 +297,10 @@
         "iconName": "",
         "name": "Prime video",
         "packageNames": [
+          {
+            "activityName": "",
+            "packageName": "com.amazon.app"
+          },
           {
             "activityName": "",
             "packageName": "com.amazon.amazonvideo.livingroom"

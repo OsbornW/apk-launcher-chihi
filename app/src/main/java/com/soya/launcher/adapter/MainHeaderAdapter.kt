@@ -16,6 +16,7 @@ import com.soya.launcher.R
 import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.cache.AppCache
+import com.soya.launcher.callback.HeaderCallback
 import com.soya.launcher.ext.loadImageWithGlide
 import com.soya.launcher.h27002.getDrawableByName
 import com.soya.launcher.utils.FileUtils
@@ -27,7 +28,7 @@ class MainHeaderAdapter(
     private val context: Context,
     private val inflater: LayoutInflater,
     private val items: MutableList<TypeItem>,
-    private val callback: Callback?
+    private val callback: HeaderCallback?
 ) : RecyclerView.Adapter<MainHeaderAdapter.Holder>() {
     private val selectItem = -1
 
@@ -65,7 +66,7 @@ class MainHeaderAdapter(
                 )
                 mTitleView.setTextColor(colorStateList)
             }
-            itemView.setOnClickListener { callback?.onClick(item) }
+            itemView.setOnClickListener { callback?.onClick?.invoke(item) }
 
             root.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
                 mCardView.isSelected = hasFocus
@@ -76,7 +77,7 @@ class MainHeaderAdapter(
                 itemView.startAnimation(animation)
             }
 
-            mCardView.setCallback { selected -> callback?.onSelect(selected, item) }
+            mCardView.setCallback { selected -> callback?.onSelect?.invoke(selected, item) }
 
             when (item.iconType) {
                 TypeItem.TYPE_ICON_IMAGE_RES -> mIV.setImageResource((item.icon as Int))
@@ -132,11 +133,6 @@ class MainHeaderAdapter(
         }
     }
 
-    interface Callback {
-        fun onClick(bean: TypeItem)
-
-        fun onSelect(selected: Boolean, bean: TypeItem)
-    }
 
     private fun startPollingForCache( mIV:ImageView, image: String) {
         val handler = Handler(Looper.getMainLooper())

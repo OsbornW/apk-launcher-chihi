@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +12,13 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.shudong.lib_base.ext.e
-import com.shudong.lib_base.ext.loadFileRadius1
-import com.shudong.lib_base.ext.loadRadius
-import com.shudong.lib_base.global.AppCacheBase
-import com.soya.launcher.App
 import com.soya.launcher.R
 import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.cache.AppCache
+import com.soya.launcher.callback.ContentCallback
 import com.soya.launcher.ext.loadImageWithGlide
 import com.soya.launcher.h27002.getDrawableByName
 import com.soya.launcher.utils.FileUtils
@@ -35,7 +30,7 @@ class MainContentAdapter(
     private val context: Context,
     private val inflater: LayoutInflater,
     private val dataList: MutableList<Data>,
-    private val callback: Callback?
+    private val callback: ContentCallback?
 ) : RecyclerView.Adapter<MainContentAdapter.Holder?>() {
 
     private var layoutId: Int = 0
@@ -101,15 +96,15 @@ class MainContentAdapter(
 
 
 
-                    if(!image.toString().contains("http")){
+                    if (!image.toString().contains("http")) {
                         mIV.setImageDrawable(context.getDrawableByName(image.toString()))
-                    }else{
+                    } else {
                         val cacheFile = AppCache.homeData.dataList.get(image)?.let { File(it) }
-                        if (cacheFile?.exists()==true&&AppCache.isAllDownload) {
+                        if (cacheFile?.exists() == true && AppCache.isAllDownload) {
 
                             // 使用缓存的 Drawable
                             //mIV.loadFileRadius1(cacheFile)
-                            mIV.loadImageWithGlide(cacheFile){
+                            mIV.loadImageWithGlide(cacheFile) {
                                 // 删除本地缓存文件
                                 if (cacheFile.exists()) {
                                     cacheFile.delete()
@@ -120,7 +115,7 @@ class MainContentAdapter(
                                 cacheList.remove(item.imageUrl)
                                 AppCache.homeData = HomeDataList(cacheList)
 
-                                if(!item.imageName.isNullOrEmpty()){
+                                if (!item.imageName.isNullOrEmpty()) {
 
                                     val drawable = context.getDrawableByName(item.imageName)
                                     mIV.setImageDrawable(drawable)
@@ -129,7 +124,7 @@ class MainContentAdapter(
                         } else {
                             // 轮询直到有缓存 Drawable
 
-                            if(!item.imageName.isNullOrEmpty()){
+                            if (!item.imageName.isNullOrEmpty()) {
 
                                 val drawable = context.getDrawableByName(item.imageName)
                                 mIV.setImageDrawable(drawable)
@@ -154,7 +149,7 @@ class MainContentAdapter(
             flRoot?.setOnClickListener(View.OnClickListener {
                 "我点击了".e("zengyue1")
                 if (TextUtils.isEmpty(item.url)) return@OnClickListener
-                callback?.onClick(item)
+                callback?.onClick?.invoke(item)
             })
 
             flRoot?.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
@@ -166,20 +161,17 @@ class MainContentAdapter(
                 animation.fillAfter = true
             }
 
-            mCardView.setCallback { selected -> callback?.onFouces(selected, item) }
+            mCardView.setCallback { selected -> callback?.onFocus?.invoke(selected, item) }
         }
 
         fun unbind() {
         }
     }
 
-    interface Callback {
-        fun onClick(bean: Data)
-        fun onFouces(hasFocus: Boolean, bean: Data)
-    }
 
 
-    private fun startPollingForCache( mIV:ImageView, image: String) {
+
+    private fun startPollingForCache(mIV: ImageView, image: String) {
         val handler = Handler(Looper.getMainLooper())
         val pollingInterval = 500L // 轮询间隔（毫秒）
         val maxAttempts = 20 // 最大轮询次数
@@ -188,7 +180,7 @@ class MainContentAdapter(
         val runnable = object : Runnable {
             override fun run() {
                 val cacheFile = AppCache.homeData.dataList.get(image)?.let { File(it) }
-                if (cacheFile != null && cacheFile.exists()&&AppCache.isAllDownload) {
+                if (cacheFile != null && cacheFile.exists() && AppCache.isAllDownload) {
                     // 使用缓存的 Drawable
 
                     GlideUtils.bind(context, mIV, cacheFile)

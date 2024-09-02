@@ -15,15 +15,12 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.fragment.app.viewModels
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
-import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -79,6 +76,8 @@ import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.cache.AppCache
+import com.soya.launcher.callback.ContentCallback
+import com.soya.launcher.callback.HeaderCallback
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.FragmentMainBinding
 import com.soya.launcher.decoration.HSlideMarginDecoration
@@ -98,7 +97,6 @@ import com.soya.launcher.ext.isUDisk
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.HttpRequest.checkVersion
-import com.soya.launcher.http.HttpRequest.uidPull
 import com.soya.launcher.http.ServiceRequest
 import com.soya.launcher.http.response.AppListResponse
 import com.soya.launcher.http.response.VersionResponse
@@ -107,7 +105,6 @@ import com.soya.launcher.ui.activity.AboutActivity
 import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.ChooseGradientActivity
 import com.soya.launcher.ui.activity.GradientActivity
-import com.soya.launcher.ui.activity.HomeGuideGroupGradientActivity
 import com.soya.launcher.ui.activity.InstallModeActivity
 import com.soya.launcher.ui.activity.LoginActivity
 import com.soya.launcher.ui.activity.MainActivity
@@ -122,8 +119,6 @@ import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
 import com.soya.launcher.utils.showLoadingViewDismiss
-import com.soya.launcher.view.ImageViewHouse
-import com.soya.launcher.view.NoDragVerticalGridView
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.UpdateAppsActivity
@@ -147,7 +142,8 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
-class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>(), AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>(),
+    AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
     private val useApps: MutableList<ApplicationInfo> = ArrayList()
     private val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     private val exec = Executors.newCachedThreadPool()
@@ -216,7 +212,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     override fun initdata() {
-        if(Config.COMPANY!=5){
+        if (Config.COMPANY != 5) {
             items.addAll(
                 Arrays.asList(
                     *arrayOf(
@@ -341,7 +337,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 appContext,
                 LayoutInflater.from(appContext),
                 CopyOnWriteArrayList(),
-                newHeaderCallback()
+                headerCallback
             )
 
         mBind.header.setAdapter(mMainHeaderAdapter)
@@ -351,7 +347,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 appContext,
                 LayoutInflater.from(appContext),
                 CopyOnWriteArrayList(),
-                newContentCallback()
+                contentClick
             )
 
 
@@ -360,7 +356,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 appContext,
                 LayoutInflater.from(appContext),
                 CopyOnWriteArrayList(),
-                newContentCallback()
+                contentClick
             )
         mAppListAdapter = AppListAdapter(
             appContext,
@@ -493,7 +489,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
 
 
-
     }
 
 
@@ -540,7 +535,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             requestFocus(mBind.header, 500)
         }*/
     }
-
 
 
     private fun performTask() {
@@ -630,27 +624,27 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         mBind.apply {
             mBind.setting.let {
                 it.setOnFocusChangeListener { view, b ->
-                    if(b)rlSetting.isVisible = true else rlSetting.visibility = View.INVISIBLE
+                    if (b) rlSetting.isVisible = true else rlSetting.visibility = View.INVISIBLE
                 }
             }
 
             mBind.gradient.let {
                 it.setOnFocusChangeListener { view, b ->
-                    if(b)projection.isVisible = true else projection.visibility = View.INVISIBLE
+                    if (b) projection.isVisible = true else projection.visibility = View.INVISIBLE
 
                 }
             }
 
             mBind.hdmi.let {
                 it.setOnFocusChangeListener { view, b ->
-                    if(b)hdml.isVisible = true else hdml.visibility = View.INVISIBLE
+                    if (b) hdml.isVisible = true else hdml.visibility = View.INVISIBLE
 
                 }
             }
 
             mBind.wifi.let {
                 it.setOnFocusChangeListener { view, b ->
-                    if(b)rlWifi.isVisible = true else rlWifi.visibility = View.INVISIBLE
+                    if (b) rlWifi.isVisible = true else rlWifi.visibility = View.INVISIBLE
 
                 }
             }
@@ -659,7 +653,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
     }
 
-    
 
     private fun setHeader(items: List<TypeItem>) {
         targetMenus.clear()
@@ -677,10 +670,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         var list = list
         if ((list?.size ?: 0) > 4) {
             mBind.verticalContent.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_10.dimenValue())
-           // flList.height(com.shudong.lib_dimen.R.dimen.qb_px_270.dimenValue())
+            // flList.height(com.shudong.lib_dimen.R.dimen.qb_px_270.dimenValue())
         } else {
             mBind.verticalContent.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_40.dimenValue())
-           // flList.height(com.shudong.lib_dimen.R.dimen.qb_px_250.dimenValue())
+            // flList.height(com.shudong.lib_dimen.R.dimen.qb_px_250.dimenValue())
 
         }
         when (direction) {
@@ -788,40 +781,49 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             }*/
             //if (Config.COMPANY == 3) {
 
-                val notifies: MutableList<Notify> = ArrayList()
-            if (Config.COMPANY == 3){
-                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(Notify(R.drawable.baseline_bluetooth_100,3))
+            val notifies: MutableList<Notify> = ArrayList()
+            if (Config.COMPANY == 3) {
+                if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(
+                    Notify(
+                        R.drawable.baseline_bluetooth_100,
+                        3
+                    )
+                )
             }
 
-                val deviceHashMap =
-                    (appContext.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
+            val deviceHashMap =
+                (appContext.getSystemService(Context.USB_SERVICE) as UsbManager).deviceList
 
-                val isInsertUDisk = requireActivity().isUDisk()
+            val isInsertUDisk = requireActivity().isUDisk()
 
-                isInsertUDisk.yes {
-                    notifies.add(Notify(R.drawable.baseline_usb_100,0))
-                }
+            isInsertUDisk.yes {
+                notifies.add(Notify(R.drawable.baseline_usb_100, 0))
+            }
 
-                /*for (i in 0 until deviceHashMap.size) {
-                        notifies.add(Notify(R.drawable.baseline_usb_100))
-                 }*/
-                if (SystemUtils.isApEnable(appContext)) notifies.add(Notify(R.drawable.baseline_wifi_tethering_100_2,2))
-                val storageManager = appContext.getSystemService(
-                    StorageManager::class.java
+            /*for (i in 0 until deviceHashMap.size) {
+                    notifies.add(Notify(R.drawable.baseline_usb_100))
+             }*/
+            if (SystemUtils.isApEnable(appContext)) notifies.add(
+                Notify(
+                    R.drawable.baseline_wifi_tethering_100_2,
+                    2
                 )
+            )
+            val storageManager = appContext.getSystemService(
+                StorageManager::class.java
+            )
 
-                val isInsertSDCard = requireActivity().isSDCard()
+            val isInsertSDCard = requireActivity().isSDCard()
 
-                isInsertSDCard.yes {
-                    notifies.add(Notify(R.drawable.baseline_sd_storage_100,1))
-                }
-                /*for (volume in storageManager.storageVolumes) {
-                        if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
-                }*/
-            if(notifies.size != mNotifyAdapter.getDataList().size){
+            isInsertSDCard.yes {
+                notifies.add(Notify(R.drawable.baseline_sd_storage_100, 1))
+            }
+            /*for (volume in storageManager.storageVolumes) {
+                    if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
+            }*/
+            if (notifies.size != mNotifyAdapter.getDataList().size) {
                 mNotifyAdapter.refresh(notifies)
             }
-
 
 
             //}
@@ -898,7 +900,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                                     "com.lei.hxkeystone.ScaleActivity"
                                 )
                             }.otherwise {
-                                startActivity(Intent(requireContext(), ScaleScreenActivity::class.java))
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        ScaleScreenActivity::class.java
+                                    )
+                                )
                             }
                         }
 
@@ -1126,7 +1133,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             //startActivity(Intent(requireContext(), HomeGuideGroupGradientActivity::class.java))
 
             // startActivity(Intent(requireContext(), ChooseGradientActivity::class.java))
-           product.openKeystoneCorrection(requireContext())
+            product.openKeystoneCorrection(requireContext())
 
 
             /*
@@ -1183,106 +1190,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
     }
 
-
-    private fun newHeaderCallback(): MainHeaderAdapter.Callback {
-        return object : MainHeaderAdapter.Callback {
-            override fun onClick(bean: TypeItem) {
-                when (bean.type) {
-                    Types.TYPE_MOVICE -> {
-                        val packages = bean.data
-                        "当前名字是====${packages.size}===${packages[0].packageName}"
-                        when {
-                            packages[0].packageName?.contains("com.amazon.amazonvideo.livingroom") == true -> {
-
-                                if (Config.COMPANY == 5) {
-                                    AndroidSystem.openActivityName(
-                                        requireContext(),
-                                        "com.amazon.avod.thirdpartyclient",
-                                        "com.amazon.avod.thirdpartyclient.LauncherActivity"
-                                    )
-
-                                } else {
-                                    val success = AndroidSystem.jumpPlayer(requireContext(), packages, null)
-                                    if (!success) {
-                                        toastInstallPKApp(bean.name, packages)
-                                    } else {
-
-                                    }
-                                }
-                            }
-
-                            packages[0].packageName?.contains("youtube") == true -> {
-
-                                if (Config.COMPANY == 5) {
-                                    AndroidSystem.openPackageName(
-                                        requireContext(),
-                                        "com.google.android.apps.youtube.creator"
-                                    )
-                                } else {
-                                    val success = AndroidSystem.jumpPlayer(requireContext(), packages, null)
-                                    if (!success) {
-                                        toastInstallPKApp(bean.name, packages)
-                                    } else {
-
-                                    }
-                                }
-                            }
-
-                            else -> {
-                                try {
-                                    val success = AndroidSystem.jumpPlayer(requireContext(), packages, null)
-                                    if (!success) {
-                                        toastInstallPKApp(bean.name, packages)
-
-                                    }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                    //ToastUtils.show("")
-                                }
-                            }
-                        }
-
-
-                    }
-
-                    Types.TYPE_APP_STORE -> {
-                        val success = AndroidSystem.jumpAppStore(requireContext())
-                        if (!success) toastInstall()
-                    }
-
-                    Types.TYPE_MY_APPS -> {
-                        "开始启动1"
-                        val intent = Intent(requireContext(), AppsActivity::class.java)
-                        intent.putExtra(Atts.TYPE, bean.type)
-                        startActivity(intent)
-                    }
-
-                    Types.TYPE_GOOGLE_PLAY -> {
-                        AndroidSystem.openPackageName(requireContext(), "com.android.vending")
-                    }
-
-                    Types.TYPE_MEDIA_CENTER -> {
-                        AndroidSystem.openPackageName(requireContext(), "com.explorer")
-
-                    }
-                }
-            }
-
-            override fun onSelect(selected: Boolean, bean: TypeItem) {
-
-                if (selected) {
-                    setExpanded(true)
-                    try {
-                        call?.cancel()
-                        uuid = UUID.randomUUID().toString()
-                        work(uuid!!, bean)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-        }
-    }
 
     private fun toastInstall() {
         toast(getString(R.string.place_install_app), ToastDialog.MODE_DEFAULT, null)
@@ -1427,7 +1334,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     if (BuildConfig.FLAVOR == "hongxin_H27002") {
                         mBind.header.postDelayed({
                             mBind.header.requestFocus()
-                        },500)
+                        }, 500)
                     }
                 } else {
 
@@ -1457,7 +1364,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             )
 
             val menuList = convertH27002Json()
-            header.addAll(1,menuList)
+            header.addAll(1, menuList)
         }
     }
 
@@ -1558,41 +1465,123 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
     }
 
-    private fun newContentCallback(): MainContentAdapter.Callback {
-        return object : MainContentAdapter.Callback {
-            override fun onClick(bean: Data) {
-                var skip = false
-                if (bean.packageNames != null) {
-                    bean.packageNames?.let {
-                        for (appPackage in it) {
-                            if (App.SKIP_PAKS.contains(appPackage.packageName)) {
-                                skip = true
-                                break
+    val headerCallback = HeaderCallback(
+        onClick = { bean ->
+            when (bean.type) {
+                Types.TYPE_MOVICE -> {
+                    val packages = bean.data
+                    "当前名字是====${packages.size}===${packages[0].packageName}"
+                    when {
+                        packages[0].packageName?.contains("com.amazon.amazonvideo.livingroom") == true -> {
+
+                            if (Config.COMPANY == 5) {
+                                AndroidSystem.openActivityName(
+                                    requireContext(),
+                                    "com.amazon.avod.thirdpartyclient",
+                                    "com.amazon.avod.thirdpartyclient.LauncherActivity"
+                                )
+
+                            } else {
+                                val success =
+                                    AndroidSystem.jumpPlayer(requireContext(), packages, null)
+                                if (!success) {
+                                    toastInstallPKApp(bean.name, packages)
+                                } else {
+
+                                }
+                            }
+                        }
+
+                        packages[0].packageName?.contains("youtube") == true -> {
+
+                            if (Config.COMPANY == 5) {
+                                AndroidSystem.openPackageName(
+                                    requireContext(),
+                                    "com.google.android.apps.youtube.creator"
+                                )
+                            } else {
+                                val success =
+                                    AndroidSystem.jumpPlayer(requireContext(), packages, null)
+                                if (!success) {
+                                    toastInstallPKApp(bean.name, packages)
+                                } else {
+
+                                }
+                            }
+                        }
+
+                        else -> {
+                            try {
+                                val success =
+                                    AndroidSystem.jumpPlayer(requireContext(), packages, null)
+                                if (!success) {
+                                    toastInstallPKApp(bean.name, packages)
+
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                //ToastUtils.show("")
                             }
                         }
                     }
 
+
                 }
 
-
-                var success = false
-                success = if (skip) {
-                    AndroidSystem.jumpVideoApp(requireContext(), bean.packageNames, null)
-                } else {
-                    AndroidSystem.jumpVideoApp(requireContext(), bean.packageNames, bean.url)
+                Types.TYPE_APP_STORE -> {
+                    val success = AndroidSystem.jumpAppStore(requireContext())
+                    if (!success) toastInstall()
                 }
-                if (!success) {
+
+                Types.TYPE_MY_APPS -> {
+                    "开始启动1"
+                    val intent = Intent(requireContext(), AppsActivity::class.java)
+                    intent.putExtra(Atts.TYPE, bean.type)
+                    startActivity(intent)
+                }
+
+                Types.TYPE_GOOGLE_PLAY -> {
+                    AndroidSystem.openPackageName(requireContext(), "com.android.vending")
+                }
+
+                Types.TYPE_MEDIA_CENTER -> {
+                    AndroidSystem.openPackageName(requireContext(), "com.explorer")
+
+                }
+            }
+        },
+        onSelect = { selected, bean ->
+            if (selected) {
+                setExpanded(true)
+                try {
+                    call?.cancel()
+                    uuid = UUID.randomUUID().toString()
+                    work(uuid!!, bean)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    )
+
+    val contentClick = ContentCallback(
+        onClick = { bean ->
+            /* Handle click */
+            mViewModel.handleContentClick(bean) {
+                if (!it) {
                     toastInstallPKApp(bean.appName ?: "", bean.packageNames)
                 }
             }
 
-            override fun onFouces(hasFocus: Boolean, bean: Data) {
-                if (hasFocus) {
-                    setExpanded(false)
-                }
+        },
+        onFocus = { hasFocus, bean ->
+            /* Handle focus */
+            if (hasFocus) {
+                setExpanded(false)
             }
         }
-    }
+    )
+
 
     private fun toastInstallPKApp(name: String, packages: List<PackageName?>?) {
         toastInstallApp(name) { type ->
