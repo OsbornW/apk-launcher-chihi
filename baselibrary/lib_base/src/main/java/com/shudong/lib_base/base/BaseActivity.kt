@@ -25,6 +25,8 @@ import com.shudong.lib_base.databinding.ViewRootBinding
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.colorValue
+import com.shudong.lib_base.ext.loading.showLoadingView
+import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.yes
 import com.thumbsupec.lib_base.ext.language.changeContextLocale
@@ -173,11 +175,11 @@ abstract class BaseActivity<VDB : ViewDataBinding> : FragmentActivity(), BaseVMV
     }
 
     override fun loadingView(msg: String) {
-        //showLoadingView(msg)
+        showLoadingView(msg)
     }
 
     override fun hideLoading() {
-        //showLoadingViewDismiss()
+        showLoadingViewDismiss()
     }
 
     open fun setLocale(locale: Locale?) {

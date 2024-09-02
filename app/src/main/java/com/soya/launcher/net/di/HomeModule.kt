@@ -1,7 +1,9 @@
 package com.soya.launcher.net.di
 
+import com.soya.launcher.net.api.AuthApi
 import com.soya.launcher.net.api.HomeApi
 import com.soya.launcher.net.api.HomeLocalApi
+import com.soya.launcher.net.repository.AuthRepository
 import com.soya.launcher.net.repository.HomeLocalRepository
 import com.soya.launcher.net.repository.HomeRepository
 import com.soya.launcher.net.viewmodel.HomeViewModel
@@ -22,8 +24,10 @@ import retrofit2.Retrofit
 private val homeNetModule = module {
     single { get<Retrofit>().create(HomeApi::class.java) }
     single { get<Retrofit>().create(HomeLocalApi::class.java) }
+    single { get<Retrofit>().create(AuthApi::class.java) }
     single { HomeRepository(get()) }
     single { HomeLocalRepository(get()) }
+    single { AuthRepository(get()) }
 
 }
 

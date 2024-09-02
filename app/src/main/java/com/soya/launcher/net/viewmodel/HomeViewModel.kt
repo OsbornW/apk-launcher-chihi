@@ -24,12 +24,12 @@ import org.koin.core.component.inject
 class HomeViewModel : BaseViewModel() {
 
     private val repository: HomeRepository by inject()
-    private val repositoryLocal: HomeLocalRepository by inject()
+    //private val repositoryLocal: HomeLocalRepository by inject()
 
     val firmwareModelMacData = MutableLiveData<Pair<String, String>>()
 
 
-    fun reqUpdateInfo(): Flow<MutableList<UpdateAppsDTO>> = repositoryLocal.reqUpdateInfo()
+    fun reqUpdateInfo(): Flow<MutableList<UpdateAppsDTO>> = repository.reqUpdateInfo()
     fun reqHomeInfo(): Flow<HomeInfoDto> = repository.reqHomeInfo()
 
     fun handleContentClick(bean: Data,successInvoke:(isSuccess:Boolean)->Unit) {

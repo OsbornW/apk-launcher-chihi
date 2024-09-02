@@ -15,4 +15,6 @@ data class ResultEntity(val code: Int, val msg: String?, val data: JsonElement?)
     override fun getRequestMessage() = msg?:"网络错误"
 
 
+
+
 }

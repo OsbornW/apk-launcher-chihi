@@ -1,4 +1,4 @@
-package com.soya.launcher.utils
+package com.shudong.lib_base.ext.loading
 
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.XPopupCallback

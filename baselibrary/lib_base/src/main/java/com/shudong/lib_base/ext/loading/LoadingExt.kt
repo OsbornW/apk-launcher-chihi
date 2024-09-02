@@ -1,4 +1,4 @@
-package com.soya.launcher.utils
+package com.shudong.lib_base.ext.loading
 
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.impl.LoadingPopupView
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 var loadingPopup: LoadingPopupView? = null
 fun showLoadingView(title:String = "") {
     globalCoroutine().launch {
-        (loadingPopup==null).yes {
+        (loadingPopup ==null).yes {
             isRepeatExcute(500).no {
                 showLoadingViewDismiss()
                 loadingPopup = getPop(isLoading = true){
@@ -48,7 +48,7 @@ fun showLoadingView(title:String = "") {
 
 fun showLoadingView(title:String = "",isCanBack:Boolean = true) {
     globalCoroutine().launch {
-        (loadingPopup==null).yes {
+        (loadingPopup ==null).yes {
                 showLoadingViewDismiss()
                 loadingPopup = getPop(isLoading = true){
                     hasShadowBg(false)

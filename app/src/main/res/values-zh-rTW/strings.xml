@@ -178,7 +178,7 @@
 
 
     <string name="Activating">啟動中…</string>
-    <string name="Success">成功</string>
+    <string name="Success">激活成功</string>
     <string name="Failed_please">失敗，請重試！</string>
     <string name="Invalid_PIN">PIN碼無效，請重試！</string>
     <string name="The_input">輸入不能為空</string>

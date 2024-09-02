@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 
 
 class ResponseBodyConverter(type: Type) :
-        BaseResponseBodyConverter(type) {
+    BaseResponseAuthBodyConverter(type) {
 
 
     override fun getResultClass(): KClass<out IResponseData<JsonElement>> {

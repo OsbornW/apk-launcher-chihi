@@ -14,6 +14,6 @@ import com.drake.serialize.serialize.serialLazy
 object AppCacheNet {
     // APP Token
     var token: String? by serialLazy()
-    var baseUrl: String? by serial("")
+    var baseUrl: String by serial("")
 
 }

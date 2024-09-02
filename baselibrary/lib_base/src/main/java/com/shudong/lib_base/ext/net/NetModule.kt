@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
  * @PACKAGE_NAME:  com.thumbsupec.lib_net.di
  */
 const val BASE_URL = "http://api.ispruz.com/"
-//const val BASE_URL_LOCAL = "http://192.168.1.188:9991/"
+const val BASE_URL_CHECK_CODE = "https://api.freedestop.com/"
 const val HEADERURL = ""
 
 private const val TIME_OUT = 8L
@@ -46,7 +46,7 @@ val mainRetrofitModule = module {
     single {
         Retrofit.Builder()
             .client(get())
-            .baseUrl(BASE_URL)  // 主域名
+            .baseUrl(AppCacheNet.baseUrl)  // 主域名
             .addConverterFactory(SerializationConverterFactory.create())
             .build()
     }
@@ -58,6 +58,17 @@ val alternateRetrofitModule = module {
         Retrofit.Builder()
             .client(get())
             .baseUrl(AppCacheNet.baseUrl)  // 备用域名
+            .addConverterFactory(SerializationConverterFactory.create())
+            .build()
+    }
+}
+
+// 定义 Retrofit 实例用于注册码检查激活码
+val activeCodeRetrofitModule = module {
+    single {
+        Retrofit.Builder()
+            .client(get())
+            .baseUrl(BASE_URL_CHECK_CODE)  // 备用域名
             .addConverterFactory(SerializationConverterFactory.create())
             .build()
     }
@@ -80,4 +91,4 @@ val httpClientModule = module {
     }
 }
 
-val netModules = listOf(mainRetrofitModule, alternateRetrofitModule, httpClientModule)
+val netModules = listOf(mainRetrofitModule, alternateRetrofitModule, activeCodeRetrofitModule, httpClientModule)

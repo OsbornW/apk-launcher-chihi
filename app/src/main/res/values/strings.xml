@@ -185,7 +185,7 @@
 
 
     <string name="Activating">Activating...</string>
-    <string name="Success">success</string>
+    <string name="Success">Active Success</string>
     <string name="Failed_please">Failed, please try again!</string>
     <string name="Invalid_PIN">The PIN code is invalid, please try again!</string>
     <string name="The_input">Input cannot be empty</string>

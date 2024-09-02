@@ -44,7 +44,6 @@ import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
-import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
@@ -119,7 +118,7 @@ import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
-import com.soya.launcher.utils.showLoadingViewDismiss
+import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.UpdateAppsActivity

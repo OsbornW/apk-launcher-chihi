@@ -177,7 +177,7 @@
     <string name="The_author">安装中</string>
 
     <string name="Activating">激活中...</string>
-    <string name="Success">成功</string>
+    <string name="Success">激活成功</string>
     <string name="Failed_please">失败,请重试!</string>
     <string name="Invalid_PIN">PIN码无效,请重试!</string>
     <string name="The_input">输入不能为空</string>

@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.shudong.lib_base.ext.loading.showLoadingView
+import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -42,10 +44,10 @@ abstract class BaseFragment<VDB : ViewDataBinding>:Fragment(),BaseVMView {
     }
 
     override fun loadingView(msg: String) {
-        //showLoadingView(msg)
+        showLoadingView(msg)
     }
 
     override fun hideLoading() {
-        //showLoadingViewDismiss()
+        showLoadingViewDismiss()
     }
 }
