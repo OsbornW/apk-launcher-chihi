@@ -44,6 +44,7 @@ import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
@@ -1425,7 +1426,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 App.MOVIE_MAP.put(item.id, movices)
                 if (Config.COMPANY == 5) {
                     when (item.name) {
-                        "Max", "Disney+", "Hulu", "Google play", "media center" -> {
+                        "Max", "Hulu", "Google play", "media center" -> {
                         }
 
                         else -> {

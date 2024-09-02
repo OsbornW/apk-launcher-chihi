@@ -121,7 +121,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, BaseViewModel>() {
 
         mBind.rlSetting.apply {
             clickNoRepeat {
-                AndroidSystem.openSystemSetting(activity)
+                AndroidSystem.openSystemSetting(requireContext())
             }
             setOnFocusChangeListener { view, b ->
                 b.yes {
