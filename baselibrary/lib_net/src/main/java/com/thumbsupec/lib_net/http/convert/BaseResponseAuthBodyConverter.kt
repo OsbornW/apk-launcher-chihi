@@ -37,6 +37,11 @@ abstract class BaseResponseAuthBodyConverter(val type: Type) :
         isLenient = true
     }
 
+    fun isValidResponse(response: IResponseData<JsonElement>): Boolean {
+        return response.data() != null&& response.getRequestCode() == REQUEST_SUCCESS||response.getRequestCode() == REQUEST_FAILED
+    }
+
+
     abstract fun getResultClass(): KClass<out IResponseData<JsonElement>>
 
     override fun convert(value: ResponseBody): Any? {
@@ -46,10 +51,11 @@ abstract class BaseResponseAuthBodyConverter(val type: Type) :
         var result: IResponseData<JsonElement> =
             json.decodeFromString(kSerializer, valueString) as IResponseData<JsonElement>
 
-        // 检查是否包含 `code`, `msg`, `data` 结构
-        if (!result.jsonElementContainsRequiredFields()) {
-            // 如果不包含，将整个返回的数据塞给 `data`
 
+        // 检查是否包含 `code`, `msg`, `data` 结构
+        if (!isValidResponse(result)) {
+            // 如果不包含，将整个返回的数据塞给 `data`
+            Log.e("zengyue2", "convert: 没有包含code data结构" )
             val structuredData = mapOf(
                 "code" to REQUEST_SUCCESS, // 可以使用默认值或者其他逻辑
                 "msg" to "Response structure does not match expected format",
@@ -66,6 +72,7 @@ abstract class BaseResponseAuthBodyConverter(val type: Type) :
             return json.decodeFromString(serializer(type), json.encodeToString(data))
         } else {
             // 正常处理逻辑
+            Log.e("zengyue2", "convert: 包含code data结构" )
             when (result.getRequestCode()) {
                 REQUEST_SUCCESS -> {
                     val data = result.data()
