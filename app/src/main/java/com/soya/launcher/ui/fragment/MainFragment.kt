@@ -803,15 +803,13 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             /*for (i in 0 until deviceHashMap.size) {
                     notifies.add(Notify(R.drawable.baseline_usb_100))
              }*/
-            if (SystemUtils.isApEnable(appContext)) notifies.add(
+            if (com.soya.launcher.utils.SystemUtils.isApEnable(appContext)) notifies.add(
                 Notify(
                     R.drawable.baseline_wifi_tethering_100_2,
                     2
                 )
             )
-            val storageManager = appContext.getSystemService(
-                StorageManager::class.java
-            )
+
 
             val isInsertSDCard = requireActivity().isSDCard()
 

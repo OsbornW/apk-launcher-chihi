@@ -290,7 +290,7 @@ android {
             minSdk 22
             dimension "chihi"
             //manifestPlaceholders = [share_uid: ""]
-            manifestPlaceholders = [share_uid: "android.uid.system"]
+            //manifestPlaceholders = [share_uid: "android.uid.system"]
             signingConfig signingConfigs.new_701
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
@@ -330,8 +330,8 @@ android {
 
         debug {
             //signingConfig signingConfigs.new_701
-            signingConfig signingConfigs.x88
-            //signingConfig signingConfigs.debug
+            //signingConfig signingConfigs.x88
+            signingConfig signingConfigs.debug
         }
 
         //打包应用

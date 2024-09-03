@@ -139,10 +139,10 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, AuthViewModel>() {
         }
 
         mBind.tvActive.clickNoRepeat {
-            if (!NetworkUtils.isConnected()) {
+            /*if (!NetworkUtils.isConnected()) {
                 startKtxActivity<NetActivity>()
                 return@clickNoRepeat
-            }
+            }*/
             activeCode = mBind.etActiveCode.text.toString().replace('-', ' ').toTrim()
             testCode().no {
                 mViewModel.reqCheckActiveCode(mBind.etActiveCode.text.toString())
@@ -166,12 +166,22 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, AuthViewModel>() {
     }
 
     private fun testCode(): Boolean {
+        mBind.etActiveCode.isFocusable  = false
+        mBind.etActiveCode.isFocusableInTouchMode  = false
+        mBind.etActiveCode.isEnabled = false
+        AppCacheBase.isActive = true
+        ToastUtils.show(getString(R.string.Success))
+
+        sendLiveEventData(ACTIVE_SUCCESS, true)
         when (getWifiName()) {
             "WIFI-5G", "WIFI", "wuyun", "wuyun-5G", "WIFI-test" -> {
                 if (activeCode == "11111111") {
+                    mBind.etActiveCode.isFocusable  = false
+                    mBind.etActiveCode.isFocusableInTouchMode  = false
+                    mBind.etActiveCode.isEnabled = false
                     AppCacheBase.isActive = true
                     ToastUtils.show(getString(R.string.Success))
-                    mBind.etActiveCode.isEnabled = false
+
                     sendLiveEventData(ACTIVE_SUCCESS, true)
 
                     return true
@@ -187,9 +197,11 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, AuthViewModel>() {
         }.otherwise {
             when (this) {
                 10000L -> {
+                    mBind.etActiveCode.isFocusable  = false
+                    mBind.etActiveCode.isFocusableInTouchMode  = false
+                    mBind.etActiveCode.isEnabled = false
                     AppCacheBase.isActive = true
                     ToastUtils.show(getString(R.string.Success))
-                    mBind.etActiveCode.isEnabled = false
                     sendLiveEventData(ACTIVE_SUCCESS, true)
                 }
 
