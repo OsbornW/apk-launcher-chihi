@@ -6,6 +6,7 @@ import com.shudong.lib_base.base.BaseVMFragment
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.margin
 import com.shudong.lib_base.ext.net.lifecycleLoadingView
@@ -174,9 +175,10 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, AuthViewModel>() {
                     mBind.etActiveCode.isEnabled = false
                     AppCacheBase.isActive = true
                     ToastUtils.show(getString(R.string.Success))
-
-                    sendLiveEventData(ACTIVE_SUCCESS, true)
-
+                    lifecycleScope.launch {
+                       delay(500)
+                        sendLiveEventData(ACTIVE_SUCCESS, true)
+                    }
                     return true
                 }
             }
@@ -195,7 +197,11 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, AuthViewModel>() {
                     mBind.etActiveCode.isEnabled = false
                     AppCacheBase.isActive = true
                     ToastUtils.show(getString(R.string.Success))
-                    sendLiveEventData(ACTIVE_SUCCESS, true)
+                    lifecycleScope.launch {
+                        delay(500)
+                        sendLiveEventData(ACTIVE_SUCCESS, true)
+                    }
+
                 }
 
                 10004L -> ToastUtils.show(getString(R.string.Invalid_PIN))
