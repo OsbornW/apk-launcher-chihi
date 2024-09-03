@@ -11,6 +11,7 @@ import com.thumbsupec.lib_net.http.getSSLContext
 import com.thumbsupec.lib_net.http.intercept.AuthorizationInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.http.Url
@@ -43,7 +44,7 @@ val httpLoggingInterceptor = HttpLoggingInterceptor { message -> Log.e(TAG, mess
 
 // 定义 Retrofit 实例用于主域名
 val mainRetrofitModule = module {
-    single {
+    single(named("main")) {
         Retrofit.Builder()
             .client(get())
             .baseUrl(AppCacheNet.baseUrl)  // 主域名
@@ -54,7 +55,7 @@ val mainRetrofitModule = module {
 
 // 定义 Retrofit 实例用于备用域名
 val alternateRetrofitModule = module {
-    single {
+    single (named("alternate")){
         Retrofit.Builder()
             .client(get())
             .baseUrl(AppCacheNet.baseUrl)  // 备用域名
@@ -65,7 +66,7 @@ val alternateRetrofitModule = module {
 
 // 定义 Retrofit 实例用于注册码检查激活码
 val activeCodeRetrofitModule = module {
-    single {
+    single (named("activeCode")){
         Retrofit.Builder()
             .client(get())
             .baseUrl(BASE_URL_CHECK_CODE)  // 备用域名

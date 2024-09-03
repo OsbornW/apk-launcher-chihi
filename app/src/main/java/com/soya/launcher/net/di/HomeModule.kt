@@ -8,6 +8,7 @@ import com.soya.launcher.net.repository.HomeLocalRepository
 import com.soya.launcher.net.repository.HomeRepository
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -22,9 +23,9 @@ import retrofit2.Retrofit
 
 
 private val homeNetModule = module {
-    single { get<Retrofit>().create(HomeApi::class.java) }
-    single { get<Retrofit>().create(HomeLocalApi::class.java) }
-    single { get<Retrofit>().create(AuthApi::class.java) }
+    single { get<Retrofit>(named("main")).create(HomeApi::class.java) }
+    single { get<Retrofit>(named("alternate")).create(HomeLocalApi::class.java) }
+    single { get<Retrofit>(named("activeCode")).create(AuthApi::class.java) }
     single { HomeRepository(get()) }
     single { HomeLocalRepository(get()) }
     single { AuthRepository(get()) }

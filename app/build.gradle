@@ -330,8 +330,8 @@ android {
 
         debug {
             //signingConfig signingConfigs.new_701
-            //signingConfig signingConfigs.x88
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.x88
+            //signingConfig signingConfigs.debug
         }
 
         //打包应用
