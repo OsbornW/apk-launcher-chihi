@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.hjq.shape.layout.ShapeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:shape_radius="@dimen/qb_px_8"
+        app:shape_solidColor="@color/color_1B1C1E">
+
+        <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_55">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/qb_px_12"
+                android:text="@string/app_text_15"
+                android:textColor="@color/white"
+                android:textSize="@dimen/qb_px_sp_16"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="@dimen/qb_px_20"
+                android:layout_marginTop="@dimen/qb_px_40"
+                android:text="@string/app_text_16"
+                android:textColor="@color/white"
+                android:textSize="@dimen/qb_px_sp_14" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:layout_marginBottom="@dimen/qb_px_10"
+            android:orientation="horizontal">
+
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/tv_next_time"
+                android:layout_width="@dimen/qb_px_90"
+                android:layout_height="@dimen/qb_px_35"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingHorizontal="@dimen/qb_px_12"
+                android:singleLine="true"
+                android:text="@string/app_text_17"
+                android:textColor="@color/white"
+                android:textSize="@dimen/qb_px_sp_12"
+                app:shape_radius="@dimen/qb_px_8"
+                app:shape_solidColor="@color/color_202124"
+                app:shape_strokeFocusedColor="#669966"
+                app:shape_strokeWidth="0.5dp" />
+
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/tv_cancle"
+                android:layout_width="@dimen/qb_px_90"
+                android:layout_height="@dimen/qb_px_35"
+                android:layout_marginLeft="@dimen/qb_px_50"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingHorizontal="@dimen/qb_px_12"
+                android:singleLine="true"
+                android:text="@string/app_text_18"
+                android:textColor="@color/white"
+                android:textSize="@dimen/qb_px_sp_12"
+                app:shape_radius="@dimen/qb_px_8"
+                app:shape_solidColor="@color/color_202124"
+                app:shape_strokeFocusedColor="#669966"
+                app:shape_strokeWidth="0.5dp" />
+
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/tv_ok"
+                android:layout_width="@dimen/qb_px_120"
+                android:layout_height="@dimen/qb_px_35"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingHorizontal="@dimen/qb_px_12"
+                android:singleLine="true"
+                android:text="立即更新"
+                android:textColor="@color/black"
+                android:textSize="@dimen/qb_px_sp_12"
+                android:visibility="gone"
+                app:shape_radius="@dimen/qb_px_8"
+                app:shape_solidColor="@color/color_202124"
+                app:shape_strokeFocusedColor="#669966"
+                app:shape_strokeWidth="0.5dp" />
+
+        </LinearLayout>
+
+
+    </com.hjq.shape.layout.ShapeLinearLayout>
+
+</layout>

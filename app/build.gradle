@@ -82,7 +82,7 @@ android {
         }
 
         yxt {
-           // storeFile file("yxt_X98K_10.keystore")
+            // storeFile file("yxt_X98K_10.keystore")
             storeFile file("platform_X98K_301.keystore")
             storePassword "android"
             keyAlias "platform"
@@ -123,7 +123,6 @@ android {
             keyAlias "platform"
             keyPassword "android"
         }
-
 
 
     }
@@ -247,13 +246,12 @@ android {
         }
 
 
-
         //爱泊优(TV)
         aiboyou_launcher {
             applicationId "com.soya.launcher.aiboyoutv"
             dimension "chihi"
             signingConfig signingConfigs.AiBY
-            manifestPlaceholders = [share_uid:"android.uid.system"]
+            manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
@@ -265,13 +263,11 @@ android {
         }
 
 
-
-
         // X98K (TV)
         yxt_X98K {
             applicationId "com.soya.launcher"
             dimension "chihi"
-            manifestPlaceholders = [share_uid:"android.uid.system"]
+            manifestPlaceholders = [share_uid: "android.uid.system"]
             //signingConfig signingConfigs.yxt
             signingConfig signingConfigs.new_701
             // 自定义buildConfig.java中的变量供代码中使用
@@ -359,7 +355,7 @@ android {
         versionName "1.57"
 
         buildConfigField "String", "BASE_URL", '"https://99soya.shop/"'
-       buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
+        buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
         buildConfigField "String", "APP_ID", '"launcher"'
         buildConfigField "String", "USER_ID", '"62"'
 

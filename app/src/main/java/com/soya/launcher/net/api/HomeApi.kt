@@ -6,12 +6,15 @@ import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.UpdateAppsDTO
+import com.soya.launcher.bean.UpdateDto
 import com.soya.launcher.net.CHECK_ACTIVE_CODE
+import com.soya.launcher.net.CHECK_VERSION
 import com.soya.launcher.net.HOME_INFO
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 /**
  *
@@ -34,6 +37,11 @@ interface HomeApi : BaseApi {
         @Query("req_id") reqId: String,
         @Query("channel") channel: String,
     ): MutableList<UpdateAppsDTO>
+
+    @GET(CHECK_VERSION)
+    suspend fun reqVersionInfo(
+        @QueryMap map: MutableMap<String, Any>,
+    ): UpdateDto
 
 
 }

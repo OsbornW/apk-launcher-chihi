@@ -1,5 +1,6 @@
 package com.shudong.lib_base.ext
 
+import com.blankj.utilcode.util.AppUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -31,6 +32,28 @@ fun String.downloadApk(
                 downloadError?.invoke(it.message ?: "")
             }.collect {
                 downloadComplete?.invoke(it,destPath)
+            }
+    }
+
+
+
+fun String.downloadApkNopkName(
+    scope: CoroutineScope,
+    downloadError: ((error: String) -> Unit)? = null,
+    downloadComplete: ((str: String, destPath: String) -> Unit)? = null,
+    process: (progress: Int) -> Unit
+) =
+    scope.launch {
+        val destPath =
+            "${appContext.filesDir.absolutePath}/${AppUtils.getAppPackageName()}_update.apk"
+        RxHttp.get(this@downloadApkNopkName)
+            .toDownloadFlow(destPath) {
+                //it为Progress对象
+                process.invoke(it.progress)
+            }.catch {
+                downloadError?.invoke(it.message ?: "")
+            }.collect {
+                downloadComplete?.invoke(it, destPath)
             }
     }
 

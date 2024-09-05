@@ -44,6 +44,7 @@ import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.downloadApkNopkName
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
@@ -119,9 +120,11 @@ import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
 import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
+import com.soya.launcher.ext.silentInstallWithMutex
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.UpdateAppsActivity
+import com.soya.launcher.ui.activity.UpdateLauncherActivity
 import com.soya.launcher.view.RelativeLayoutHouse
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.Dispatchers
@@ -294,13 +297,15 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         startRepeatingTask()
 
+        checkLauncherUpdate()
+
         mBind.header.requestFocus()
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).yes {
                     withContext(Dispatchers.Main) {
-                        checkVersion()
+                        //checkVersion()
                     }
                 }
             }
@@ -489,6 +494,36 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
 
 
+    }
+
+
+    private fun checkLauncherUpdate() {
+        lifecycleScope.launch {
+            delay(3000)
+            mViewModel.reqLauncherVersionInfo().lifecycle(this@MainFragment,{}, isShowError = false){
+                val dto = this
+                dto.downLink.isNullOrEmpty().no {
+                    AppCache.updateInfoForLauncher = dto.jsonToString()
+                    (dto.tip == 1).yes {
+                        //强制更新
+                        dto.downLink?.downloadApkNopkName(this@launch, downloadError = {
+
+                        }, downloadComplete = { str, destPath ->
+                            lifecycleScope.launch {
+                                destPath.silentInstallWithMutex()
+                            }
+
+                        }) { progress: Int ->
+
+                        }
+                    }.otherwise {
+                        //非强制更新
+                        startKtxActivity<UpdateLauncherActivity>()
+                    }
+                }
+            }
+
+        }
     }
 
 

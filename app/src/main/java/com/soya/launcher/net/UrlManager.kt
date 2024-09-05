@@ -8,3 +8,4 @@ const val CHECK_ACTIVE_CODE = "${HEADERURL}u/client"
 
 const val Update_INFO = "${HEADERURL}appapi/launch/hotline"
 const val HOME_INFO = "${HEADERURL}appapi/launch/deskapplist"
+const val CHECK_VERSION = "${HEADERURL}appapi/appinfo/getVersion"

@@ -5,6 +5,7 @@ import com.soya.launcher.BuildConfig
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.UpdateAppsDTO
+import com.soya.launcher.bean.UpdateDto
 import com.soya.launcher.net.api.HomeApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -25,6 +26,10 @@ class HomeRepository(private val api: HomeApi): BaseRepository(api) {
 
     fun reqUpdateInfo(): Flow<MutableList<UpdateAppsDTO>> = flow {
         emit(api.reqUpdateInfo("0",BuildConfig.CHANNEL))
+    }
+
+    fun reqVersionInfo(map: MutableMap<String, Any>): Flow<UpdateDto> = flow {
+        emit(api.reqVersionInfo(map))
     }
 
 

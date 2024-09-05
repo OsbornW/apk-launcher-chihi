@@ -38,4 +38,10 @@
     <color name="projector_color">#00BFA5</color>
     <color name="color_0076FF">#0076FF</color>
     <color name="color_669966">#669966</color>
+
+    <color name="color_1B1C1E">#1B1C1E</color>
+    <color name="color_202124">#202124</color>
+    <color name="color_3B3C3F">#3B3C3F</color>
+    <color name="color_263238">#263238</color>
+
 </resources>

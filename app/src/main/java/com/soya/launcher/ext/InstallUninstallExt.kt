@@ -29,13 +29,11 @@ import java.io.FileInputStream
 import kotlin.coroutines.resume
 
 private val installMutex = Mutex()
-suspend fun String.silentInstallWithMutex(pbUpdate: FlikerProgressBar): Boolean {
-    val context: Context = pbUpdate.context
-    // pbUpdate.setProgressText("等待安装")
-    pbUpdate.setProgressText(context.getString(R.string.The_author_of_The_New_York_Times))
+suspend fun String.silentInstallWithMutex(pbUpdate: FlikerProgressBar?=null): Boolean {
+    val context = pbUpdate?.context
+    context?.let { pbUpdate.setProgressText(it.getString(R.string.The_author_of_The_New_York_Times)) }
     return installMutex.withLock {
-        //pbUpdate.setProgressText("安装中")
-        pbUpdate.setProgressText(context.getString(R.string.The_author))
+        context?.let { pbUpdate.setProgressText(it.getString(R.string.The_author)) }
         silentInstall()
     }
 }

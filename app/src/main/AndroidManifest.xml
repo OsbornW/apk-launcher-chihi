@@ -84,6 +84,10 @@
             android:value="xxxx" />
 
 
+        <activity
+            android:name=".ui.activity.UpdateLauncherActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Chihi.LeanbackPreferences" />
 
         <activity
             android:name=".ui.activity.MainActivity"

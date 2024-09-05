@@ -9,6 +9,7 @@ object AppCache {
     var updateInteval:String by serial(default = "day")
     var lastTipTime:Long by serial(default = 0L)
     var updateInfo:String by serial()
+    var updateInfoForLauncher:String by serial()
     var reqId:Int by serial(0)
     var homeData: HomeDataList by serial(default = HomeDataList(mutableMapOf()))
     var isAllDownload:Boolean by serial(default = false)
