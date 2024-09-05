@@ -2,6 +2,7 @@ package com.soya.launcher.ext
 
 import android.content.Intent
 import android.app.PendingIntent
+import android.content.Context
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -15,13 +16,29 @@ import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.yes
+import com.soya.launcher.R
+import com.soya.launcher.view.FlikerProgressBar
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.io.File
 import java.io.FileInputStream
 import kotlin.coroutines.resume
+
+private val installMutex = Mutex()
+suspend fun String.silentInstallWithMutex(pbUpdate: FlikerProgressBar): Boolean {
+    val context: Context = pbUpdate.context
+    // pbUpdate.setProgressText("等待安装")
+    pbUpdate.setProgressText(context.getString(R.string.The_author_of_The_New_York_Times))
+    return installMutex.withLock {
+        //pbUpdate.setProgressText("安装中")
+        pbUpdate.setProgressText(context.getString(R.string.The_author))
+        silentInstall()
+    }
+}
 
 suspend fun String.silentInstall(): Boolean {
     return suspendCancellableCoroutine { continuation ->

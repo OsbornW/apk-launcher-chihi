@@ -1598,7 +1598,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private fun switchMovice(bean: TypeItem) {
-        fillMovice(bean)
+        if((App.MOVIE_MAP[bean.id]?.size ?: 0) > 0){
+            fillMovice(bean)
+        }
     }
 
     private fun newAppListCallback(): AppListAdapter.Callback {

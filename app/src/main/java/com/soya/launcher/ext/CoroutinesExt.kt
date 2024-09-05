@@ -15,14 +15,3 @@ suspend fun repeatWithDelay(times: Int, delayMillis: Long, action: suspend () ->
     }
 }
 
-private val installMutex = Mutex()
-suspend fun String.silentInstallWithMutex(pbUpdate: FlikerProgressBar): Boolean {
-    val context: Context = pbUpdate.context
-    // pbUpdate.setProgressText("等待安装")
-       pbUpdate.setProgressText(context.getString(R.string.The_author_of_The_New_York_Times))
-     return installMutex.withLock {
-        //pbUpdate.setProgressText("安装中")
-        pbUpdate.setProgressText(context.getString(R.string.The_author))
-        silentInstall()
-    }
-}

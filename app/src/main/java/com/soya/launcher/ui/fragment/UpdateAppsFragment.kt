@@ -26,10 +26,10 @@ import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.FragmentUpdateAppsBinding
 import com.soya.launcher.ext.getAppIcon
 import com.soya.launcher.ext.getAppVersionName
+import com.soya.launcher.ext.silentInstallWithMutex
 import com.soya.launcher.view.FlikerProgressBar
 import kotlinx.coroutines.launch
 import org.raphets.roundimageview.RoundImageView
-import silentInstallWithMutex
 
 class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewModel>() {
 

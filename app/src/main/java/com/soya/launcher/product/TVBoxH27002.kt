@@ -22,7 +22,11 @@ object TVBoxH27002 : TVDeviceImpl{
             "com.explorer",
             "com.amazon.avod.thirdpartyclient",
             "com.google.android.apps.youtube.creator",
-            "com.netflix.mediaclient"
+            "com.netflix.mediaclient",
+            "com.yutube.app",
+            "com.naifei.app",
+            "com.dsn.app",
+            "com.amazon.app",
         )
 
         return list.filterNot { appInfo ->
