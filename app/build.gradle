@@ -251,7 +251,7 @@ android {
             applicationId "com.soya.launcher.aiboyoutv"
             dimension "chihi"
             signingConfig signingConfigs.AiBY
-            manifestPlaceholders = [share_uid: "android.uid.system"]
+            //manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
@@ -325,8 +325,8 @@ android {
         }
 
         debug {
-            //signingConfig signingConfigs.new_701
-            signingConfig signingConfigs.x88
+            signingConfig signingConfigs.new_701
+            //signingConfig signingConfigs.x88
             //signingConfig signingConfigs.debug
         }
 

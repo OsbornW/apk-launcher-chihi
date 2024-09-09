@@ -14,6 +14,7 @@ import android.os.storage.StorageManager
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -120,6 +121,7 @@ import com.soya.launcher.utils.AppUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
 import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
+import com.shudong.lib_base.ext.width
 import com.soya.launcher.ext.silentInstallWithMutex
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
@@ -325,6 +327,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             )
         )
         mBind.header.pivotY = maxVerticalOffset
+
         mStoreAdapter = StoreAdapter(
             activity,
             getLayoutInflater(),
@@ -919,7 +922,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     }.otherwise {
                         mTitleView.isSelected = false
                     }
-                    if (b) setExpanded(false)
+                    if (b){
+                        setRVHeight(false)
+                        setExpanded(false)
+                    }
                 }
 
                 rlRoot.clickNoRepeat {
@@ -1061,7 +1067,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun newProjectorCallback(): SettingAdapter.Callback {
         return object : SettingAdapter.Callback {
             override fun onSelect(selected: Boolean, bean: SettingItem) {
-                if (selected) setExpanded(false)
+                if (selected) {
+                    setRVHeight(false)
+                    setExpanded(false)
+                }
             }
 
             override fun onClick(bean: SettingItem) {
@@ -1099,7 +1108,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun newToolCallback(): SettingAdapter.Callback {
         return object : SettingAdapter.Callback {
             override fun onSelect(selected: Boolean, bean: SettingItem) {
-                if (selected) setExpanded(false)
+                if (selected) {
+                    setExpanded(false)
+                    setRVHeight(false)
+                }
             }
 
             override fun onClick(bean: SettingItem) {
@@ -1485,7 +1497,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun newStoreClickCallback(): StoreAdapter.Callback {
         return object : StoreAdapter.Callback {
             override fun onSelect(selected: Boolean, bean: AppItem) {
-                if (selected) setExpanded(false)
+                if (selected) {
+                    setRVHeight(false)
+                    setExpanded(false)
+                }
             }
 
             override fun onClick(bean: AppItem) {
@@ -1585,6 +1600,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         },
         onSelect = { selected, bean ->
             if (selected) {
+                setRVHeight(true)
                 setExpanded(true)
                 try {
                     call?.cancel()
@@ -1610,10 +1626,23 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         onFocus = { hasFocus, bean ->
             /* Handle focus */
             if (hasFocus) {
+                //val itemCount = mBind.header.adapter?.itemCount?:0
+                //mBind.header.scrollToPosition(itemCount-1)
+                setRVHeight(false)
                 setExpanded(false)
             }
         }
     )
+
+    fun setRVHeight(isExpanded: Boolean){
+        isExpanded.yes {
+            //展开
+            mBind.header.width(ViewGroup.LayoutParams.MATCH_PARENT)
+        }.otherwise {
+            //收缩
+            mBind.header.width(5000)
+        }
+    }
 
 
     private fun toastInstallPKApp(name: String, packages: List<PackageName?>?) {
@@ -1641,7 +1670,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun newAppListCallback(): AppListAdapter.Callback {
         return object : AppListAdapter.Callback {
             override fun onSelect(selected: Boolean) {
-                if (selected) setExpanded(false)
+                if (selected) {
+                    setRVHeight(false)
+                    setExpanded(false)
+                }
             }
 
             override fun onClick(bean: ApplicationInfo) {
