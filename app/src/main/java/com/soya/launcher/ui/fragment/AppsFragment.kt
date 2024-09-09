@@ -71,7 +71,7 @@ class AppsFragment : BaseWallPaperFragment<FragmentAppsBinding,BaseViewModel>() 
                 val mIV = findView<ImageView>(R.id.image)
                 val mTitle = findView<TextView>(R.id.title)
                 val mIVSmall = findView<ImageView>(R.id.image_small)
-                val mAppLayout = findView<AppLayout>(R.id.root)
+                val mAppLayout = findView<AppLayout>(R.id.fl_focus)
 
                 val pm = context.packageManager
                 val banner: Drawable? = null
@@ -88,7 +88,7 @@ class AppsFragment : BaseWallPaperFragment<FragmentAppsBinding,BaseViewModel>() 
                 mIV.visibility = if (banner == null) View.GONE else View.VISIBLE
                 mIVSmall.visibility = if (banner == null) View.VISIBLE else View.GONE
 
-                itemView.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                mAppLayout.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
                     itemView.isSelected = hasFocus
                     val animation = AnimationUtils.loadAnimation(
                         context, if (hasFocus) R.anim.zoom_in_middle else R.anim.zoom_out_middle
@@ -97,7 +97,7 @@ class AppsFragment : BaseWallPaperFragment<FragmentAppsBinding,BaseViewModel>() 
                     animation.fillAfter = true
                 }
 
-                itemView.clickNoRepeat {
+                mAppLayout.clickNoRepeat {
                     AndroidSystem.openPackageName(requireContext(), bean.packageName)
                 }
 
