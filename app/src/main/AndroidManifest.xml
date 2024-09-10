@@ -95,6 +95,7 @@
             android:exported="true"
             android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
             android:label="@string/app_name"
+            android:theme="@style/Theme.Main"
             android:launchMode="singleTask"
             android:logo="@drawable/banner"
             android:screenOrientation="landscape">
