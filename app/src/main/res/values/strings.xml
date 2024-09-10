@@ -217,7 +217,6 @@
     <string name="manual_calibration" >手动梯形</string>
     <string name="open_response" >打开</string>
     <string name="close_response" >关闭</string>
-    <string name="close_response" >关闭</string>
     <string name="set_success" >设置成功</string>
     <string name="set_failed" >设置失败</string>
 
