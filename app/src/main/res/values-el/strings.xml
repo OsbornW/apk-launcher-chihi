@@ -186,4 +186,26 @@
     <string name="Please_input">Παρακαλώ εισάγετε τον κωδικό PIN</string>
     <string name="active_the_app">Παρακαλώ εισάγετε τον κωδικό για να ενεργοποιήσετε την εφαρμογή</string>
     <string name="Activate_Now">Ενεργοποίηση τώρα</string>
+
+    <string name="app_text_15" >Διαθέσιμες ενημερώσεις</string>
+    <string name="app_text_16" >Μια ολοκαίνουργια έκδοση κυκλοφόρησε! \Προσθέστε [νέες δυνατότητες], βελτιστοποιήστε [σημεία βελτιστοποίησης] και βελτιώστε την εμπειρία χρήστη σας. Ενημερώστε τώρα και ανακαλύψτε περισσότερες εκπλήξεις!</string>
+    <string name="app_text_17" >Ας το συζητήσουμε την επόμενη φορά.</string>
+    <string name="app_text_18" >για ενημέρωση</string>
+    <string name="app_text_35" >Σε προετοιμασία</string>
+    <string name="app_text_36" >Αποτυχία λήψης</string>
+    <string name="app_text_37" >Έναρξη εγκατάστασης</string>
+    <string name="app_text_38" >Λήψη:% d%%</string>
+
+
+    <string name="auto_response" >Αυτόματη απόκριση</string>
+    <string name="auto_focus" >Αυτόματη εστίαση</string>
+    <string name="auto_entry" >Αυτόματη εισαγωγή οθόνης</string>
+    <string name="projector_method" >Μέθοδος προβολής</string>
+    <string name="screen_zoom" >Κλιμακοποίηση οθόνης</string>
+    <string name="auto_calibrate" >Αυτόματο τραπεζοειδές</string>
+    <string name="manual_calibration" >Χειροκίνητο τραπεζοειδές</string>
+    <string name="open_response" >ανοικτό</string>
+    <string name="close_response" >κλείσιμο</string>
+    <string name="set_success" >Ορισμός επιτυχής</string>
+    <string name="set_failed" >Αποτυχία ρύθμισης</string>
 </resources>

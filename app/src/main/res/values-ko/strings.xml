@@ -187,4 +187,26 @@
     <string name="Please_input">PIN 코드를 입력하십시오.</string>
     <string name="active_the_app">PIN 코드를 입력하여 응용 프로그램을 활성화하십시오.</string>
     <string name="Activate_Now">지금 활성화</string>
+
+    <string name="app_text_15" >사용 가능한 업데이트</string>
+    <string name="app_text_16" >새로운 버전 출시!\n [새로운 기능]을 추가하고 [최적화 포인트]를 최적화하여 \n 사용 환경을 향상시킵니다.지금 업데이트하십시오.\n 더 많은 이벤트가 발견되었습니다!</string>
+    <string name="app_text_17" >다음에 얘기하자</string>
+    <string name="app_text_18" >업데이트</string>
+    <string name="app_text_35" >준비 중</string>
+    <string name="app_text_36" >다운로드 실패</string>
+    <string name="app_text_37" >설치 시작</string>
+    <string name="app_text_38" >다운로드:%d%%</string>
+
+
+    <string name="auto_response" >자동 응답</string>
+    <string name="auto_focus" >자동 초점</string>
+    <string name="auto_entry" >자동 입막</string>
+    <string name="projector_method" >투영 방식</string>
+    <string name="screen_zoom" >화면 크기 조절</string>
+    <string name="auto_calibrate" >자동 사다리꼴</string>
+    <string name="manual_calibration" >수동 사다리꼴</string>
+    <string name="open_response" >열기</string>
+    <string name="close_response" >닫기</string>
+    <string name="set_success" >설정 성공</string>
+    <string name="set_failed" >설정 실패</string>
 </resources>

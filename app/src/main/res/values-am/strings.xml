@@ -189,5 +189,27 @@
     <string name="Activate_Now">አሁን ንቁ</string>
 
 
+    <string name="app_text_15">የሚገኙ እድሳቶች</string>
+    <string name="app_text_16">አዲስ ስሪት ወጥቷል! \n[አዲስ ባህሪ] ታስተካክሏል፣ [ተሻሻለው ነጥብ] ወደድቅ፣ \nማሻሻያዎችን ያስተካክሉ ለማድረግ ዕውቀትዎን ይጨምሩ። አሁን ያስተካክሉ፣ \nተገናኝቷቸውን ይፈልጉ!</string>
+    <string name="app_text_17">ሌላ ጊዜ ይላል</string>
+    <string name="app_text_18">አሻሽል</string>
+    <string name="app_text_35">በማዘጋጀት ላይ</string>
+    <string name="app_text_36">ማውረድ አልተሳካም</string>
+    <string name="app_text_37">መግነቢያ ጀምር</string>
+    <string name="app_text_38">ወረድ: %d%%</string>
+
+    <string name="auto_response">ራስ ሰላምታ</string>
+    <string name="auto_focus">ራስ ትኩረት</string>
+    <string name="auto_entry">ራስ ገቢ</string>
+    <string name="projector_method">መታየት አገባባ</string>
+    <string name="screen_zoom">ስክሪን ታስል</string>
+    <string name="auto_calibrate">ራስ ክታም</string>
+    <string name="manual_calibration">በእጅ ክታም</string>
+    <string name="open_response">ክፍት</string>
+    <string name="close_response">ዝጋ</string>
+    <string name="set_success">ተቀብለ ይህ</string>
+    <string name="set_failed">ተቃወሙ</string>
+
+
 
 </resources>

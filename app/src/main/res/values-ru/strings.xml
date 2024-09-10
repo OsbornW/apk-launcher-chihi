@@ -186,4 +186,26 @@
     <string name="Please_input">Введите PIN - код.</string>
     <string name="active_the_app">Введите PIN - код для активации приложения</string>
     <string name="Activate_Now">Немедленно активируйте</string>
+
+    <string name="app_text_15" >Доступные обновления</string>
+    <string name="app_text_16" >Новая версия в сети! \ n Добавить [новую функцию], оптимизировать [точку оптимизации], \ n улучшить ваш опыт использования. Обновите немедленно, \ n Найти больше сюрпризов!</string>
+    <string name="app_text_17" >В другой раз.</string>
+    <string name="app_text_18" >Обновление</string>
+    <string name="app_text_35" >Готово.</string>
+    <string name="app_text_36" >Ошибка загрузки</string>
+    <string name="app_text_37" >Начать установку</string>
+    <string name="app_text_38" >Скачать:% d%%</string>
+
+
+    <string name="auto_response" >Автоматическая реакция</string>
+    <string name="auto_focus" >Автофокусировка</string>
+    <string name="auto_entry" >Автоматический вход в экран</string>
+    <string name="projector_method" >Проекция</string>
+    <string name="screen_zoom" >Масштаб экрана</string>
+    <string name="auto_calibrate" >автоматическая трапеция</string>
+    <string name="manual_calibration" >Ручная трапеция</string>
+    <string name="open_response" >Открыть</string>
+    <string name="close_response" >Закрыть</string>
+    <string name="set_success" >Настройка выполнена</string>
+    <string name="set_failed" >Ошибка настройки</string>
 </resources>

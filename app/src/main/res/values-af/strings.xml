@@ -195,6 +195,26 @@
     <string name="active_the_app">Voer asseblief die PIN-kode in om die program te aktiveer</string>
     <string name="Activate_Now">Aktiveer Nou</string>
 
+    <string name="app_text_15">Beskikbare Opdatering</string>
+    <string name="app_text_16">Nuwe weergawe beskikbaar! \nVoeg [nuwe funksie] by, optimaliseer [optimaliseringspunt], \nverbeter jou gebruikerservaring. Dateer nou op \nen ontdek meer verrassings!</string>
+    <string name="app_text_17">Sê volgende keer</string>
+    <string name="app_text_18">Opdateer</string>
+    <string name="app_text_35">Besig om voor te berei</string>
+    <string name="app_text_36">Aflaai het misluk</string>
+    <string name="app_text_37">Begin Installeer</string>
+    <string name="app_text_38">Aflaai: %d%%</string>
+
+    <string name="auto_response">Outomatiese Respons</string>
+    <string name="auto_focus">Outomatiese Fokus</string>
+    <string name="auto_entry">Outomatiese Invoer</string>
+    <string name="projector_method">Projektor Metode</string>
+    <string name="screen_zoom">Skerm Inzoem</string>
+    <string name="auto_calibrate">Outomatiese Kalibrasie</string>
+    <string name="manual_calibration">Handmatige Kalibrasie</string>
+    <string name="open_response">Maak Oop</string>
+    <string name="close_response">Maak Toe</string>
+    <string name="set_success">Stel Suksesvol</string>
+    <string name="set_failed">Stel Misluk</string>
 
 
 </resources>

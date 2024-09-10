@@ -186,4 +186,27 @@
     <string name="Please_input">Kérjük, adja meg a PIN kódot</string>
     <string name="active_the_app">Kérjük, adja meg a PIN kódot az alkalmazás aktiválásához</string>
     <string name="Activate_Now">Aktiválás most</string>
+
+    <string name="app_text_15" >Rendelkezésre álló frissítések</string>
+    <string name="app_text_16" >Egy vadonatúj verzió indult! \Adjon hozzá [új funkciókat], optimalizálja [optimalizálási pontokat], és javítsa a felhasználói élményt. Frissítsen most, és fedezzen fel még több meglepetést!</string>
+    <string name="app_text_17" >Legközelebb beszéljük meg.</string>
+    <string name="app_text_18" >frissítés</string>
+    <string name="app_text_35" >Előkészítés alatt</string>
+    <string name="app_text_36" >Letöltés sikertelen</string>
+    <string name="app_text_37" >Telepítés indítása</string>
+    <string name="app_text_38" >Letöltés:% d%%</string>
+
+
+    <string name="auto_response" >Automatikus válasz</string>
+    <string name="auto_focus" >Automatikus fókusz</string>
+    <string name="auto_entry" >Automatikus képernyőbejegyzés</string>
+    <string name="projector_method" >Kivetítési módszer</string>
+    <string name="screen_zoom" >Képernyőskálázás</string>
+    <string name="auto_calibrate" >Automata trapéz</string>
+    <string name="manual_calibration" >Kézi trapéz</string>
+    <string name="open_response" >nyitva</string>
+    <string name="close_response" >关闭</string>
+    <string name="set_success" >Sikeres beállítás</string>
+    <string name="set_failed" >A beállítás nem sikerült</string>
+
 </resources>

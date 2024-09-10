@@ -188,4 +188,26 @@
     <string name="Please_input">Anna PIN-koodi</string>
     <string name="active_the_app">Anna PIN-koodi aktivoidaksesi sovelluksen</string>
     <string name="Activate_Now">Aktivoi nyt</string>
+
+    <string name="app_text_15" >Saadaolevad uuendused</string>
+    <string name="app_text_16" >Uus versioon on käivitatud! \Lisa [uusi funktsioone], optimeeri [optimeerimispunkte] ja paranda oma kasutajakogemust. Uuenda nüüd ja avasta rohkem üllatusi!</string>
+    <string name="app_text_17" >Räägime sellest järgmine kord.</string>
+    <string name="app_text_18" >uuendada</string>
+    <string name="app_text_35" >Ettevalmistamisel</string>
+    <string name="app_text_36" >Allalaadimine nurjus</string>
+    <string name="app_text_37" >Käivita paigaldus</string>
+    <string name="app_text_38" >Allalaadimine:% d%%</string>
+
+
+    <string name="auto_response" >Automaatne reageerimine</string>
+    <string name="auto_focus" >Automaatne fookus</string>
+    <string name="auto_entry" >Automaatne ekraani sisestamine</string>
+    <string name="projector_method" >Projektsioonimeetod</string>
+    <string name="screen_zoom" >Ekraani skaleerimine</string>
+    <string name="auto_calibrate" >Automaatne trapetsiid</string>
+    <string name="manual_calibration" >Käsitsi trapetsiid</string>
+    <string name="open_response" >avatud</string>
+    <string name="close_response" >sulge</string>
+    <string name="set_success" >Seadistamine edukas</string>
+    <string name="set_failed" >Seadistamine nurjus</string>
 </resources>

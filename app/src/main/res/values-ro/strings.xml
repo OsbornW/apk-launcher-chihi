@@ -185,4 +185,27 @@
     <string name="Please_input">Introduceţi codul PIN</string>
     <string name="active_the_app">Introduceți codul PIN pentru a activa aplicația</string>
     <string name="Activate_Now">Activează acum</string>
+
+    <string name="app_text_15" >Actualizări disponibile</string>
+    <string name="app_text_16" >A fost lansată o nouă versiune! \Adăugați [funcții noi], optimizați [puncte de optimizare] și îmbunătățiți experiența utilizatorului. Actualizați acum și descoperiți mai multe surprize!</string>
+    <string name="app_text_17" >Hai să vorbim despre asta data viitoare.</string>
+    <string name="app_text_18" >pentru a actualiza</string>
+    <string name="app_text_35" >În pregătire</string>
+    <string name="app_text_36" >Descărcare eșuată</string>
+    <string name="app_text_37" >Pornește instalarea</string>
+    <string name="app_text_38" >Descărcare:% d%%</string>
+
+
+    <string name="auto_response" >Răspuns automat</string>
+    <string name="auto_focus" >Focalizare automată</string>
+    <string name="auto_entry" >Intrare automată a ecranului</string>
+    <string name="projector_method" >Metoda de proiecție</string>
+    <string name="screen_zoom" >Scalarea ecranului</string>
+    <string name="auto_calibrate" >trapez automat</string>
+    <string name="manual_calibration" >trapez manual</string>
+    <string name="open_response" >deschis</string>
+    <string name="close_response" >închide</string>
+    <string name="set_success" >Setare reușită</string>
+    <string name="set_failed" >Setare eșuată</string>
+
 </resources>

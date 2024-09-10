@@ -187,4 +187,27 @@
     <string name="Please_input">กรุณากรอกรหัส PIN</string>
     <string name="active_the_app">กรุณาใส่รหัส PIN เพื่อเปิดใช้งานแอปพลิเคชัน</string>
     <string name="Activate_Now">เปิดใช้งานทันที</string>
+
+
+    <string name="app_text_15" >อัปเดตที่มีอยู่</string>
+    <string name="app_text_16" >เวอร์ชั่นใหม่เปิดตัวแล้ว! \#n เพิ่ม [คุณสมบัติใหม่], เพิ่มประสิทธิภาพ [จุดเพิ่มประสิทธิภาพ], \#n เพิ่มประสบการณ์การใช้งานของคุณ อัปเดตตอนนี้ \#n ค้นพบความประหลาดใจมากขึ้น!</string>
+    <string name="app_text_17" >ไว้คราวหน้า</string>
+    <string name="app_text_18" >อัพเดท</string>
+    <string name="app_text_35" >ในการเตรียมการ</string>
+    <string name="app_text_36" >การดาวน์โหลดล้มเหลว</string>
+    <string name="app_text_37" >เริ่มการติดตั้ง</string>
+    <string name="app_text_38" >ดาวน์โหลด:%d%%</string>
+
+
+    <string name="auto_response" >การตอบสนองอัตโนมัติ</string>
+    <string name="auto_focus" >โฟกัสอัตโนมัติ</string>
+    <string name="auto_entry" >รายการอัตโนมัติ</string>
+    <string name="projector_method" >วิธีการฉายภาพ</string>
+    <string name="screen_zoom" >ซูมหน้าจอ</string>
+    <string name="auto_calibrate" >สี่เหลี่ยมคางหมูอัตโนมัติ</string>
+    <string name="manual_calibration" >คู่มือ Trapezoidal</string>
+    <string name="open_response" >เปิด</string>
+    <string name="close_response" >ปิด</string>
+    <string name="set_success" >ตั้งค่าสำเร็จ</string>
+    <string name="set_failed" >การตั้งค่าล้มเหลว</string>
 </resources>
