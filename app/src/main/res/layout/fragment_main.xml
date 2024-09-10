@@ -31,6 +31,7 @@
                 android:background="@android:color/transparent"
                 app:layout_scrollFlags="exitUntilCollapsed|scroll">
                 <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_marginTop="@dimen/qb_px_55"
                     android:alpha="0"
                     android:focusable="false"

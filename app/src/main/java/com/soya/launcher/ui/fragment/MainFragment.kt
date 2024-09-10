@@ -10,7 +10,6 @@ import android.hardware.usb.UsbManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
-import android.os.storage.StorageManager
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +36,6 @@ import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
-import com.open.system.SystemUtils
 import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
@@ -46,6 +44,7 @@ import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.downloadApkNopkName
+import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
@@ -91,7 +90,6 @@ import com.soya.launcher.ext.compareSizes
 import com.soya.launcher.ext.convertH27002Json
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.getUpdateList
-import com.soya.launcher.ext.isH6
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isShowUpdate
@@ -106,8 +104,6 @@ import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.ui.activity.AboutActivity
 import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.ChooseGradientActivity
-import com.soya.launcher.ui.activity.GradientActivity
-import com.soya.launcher.ui.activity.InstallModeActivity
 import com.soya.launcher.ui.activity.LoginActivity
 import com.soya.launcher.ui.activity.MainActivity
 import com.soya.launcher.ui.activity.ScaleScreenActivity
@@ -887,22 +883,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private fun setProjectorContent() {
-        //dasdas
-        val arrayObjectAdapter = ArrayObjectAdapter(
-            SettingAdapter(
-                appContext,
-                LayoutInflater.from(appContext),
-                newProjectorCallback(),
-                R.layout.holder_setting_3
-            )
-        )
-        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(
-            itemBridgeAdapter,
-            FocusHighlight.ZOOM_FACTOR_MEDIUM,
-            false
-        )
-        mBind.verticalContent.setNumColumns(4)
+        mBind.verticalContent.setNumColumns(product.projectorColumns())
+        mBind.verticalContent.isFocusSearchDisabled = false
+
         mBind.verticalContent.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_10.dimenValue())
         mBind.verticalContent.setup {
             addType<SettingItem>(R.layout.holder_setting_3)
@@ -929,103 +912,15 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
 
                 rlRoot.clickNoRepeat {
-                    val bean = _data as SettingItem
-                    when (bean.type) {
-                        Projector.TYPE_SETTING -> {
-                            isRK3326().yes {
-                                AndroidSystem.openActivityName(
-                                    requireContext(),
-                                    "com.lei.hxkeystone",
-                                    "com.lei.hxkeystone.ScaleActivity"
-                                )
-                            }.otherwise {
-                                startActivity(
-                                    Intent(
-                                        requireContext(),
-                                        ScaleScreenActivity::class.java
-                                    )
-                                )
-                            }
-                        }
-
-                        Projector.TYPE_PROJECTOR_MODE -> {
-                            when {
-                                isH6() -> {
-                                    startKtxActivity<InstallModeActivity>()
-                                }
-
-                                else -> {
-                                    val success = AndroidSystem.openProjectorMode(requireContext())
-                                    if (!success) toastInstall()
-                                }
-                            }
-
-                        }
-
-                        Projector.TYPE_HDMI -> {
-                            val success = AndroidSystem.openProjectorHDMI(requireContext())
-                            if (!success) toastInstall()
-                        }
-
-                        Projector.TYPE_SCREEN -> {
-                            when {
-                                isH6() -> {
-                                    startKtxActivity<GradientActivity>()
-                                }
-
-                                else -> {
-                                    startActivity(
-                                        Intent(
-                                            requireContext(),
-                                            ChooseGradientActivity::class.java
-                                        )
-                                    )
-                                }
-                            }
-
-
-                        }
-                    }
+                    mViewModel.clickProjectorItem(bean)
                 }
 
             }
         }.models = arrayListOf()
 
-
-        // mBind.horizontalContent!!.setAdapter(itemBridgeAdapter)
         mBind.verticalContent.visibility = View.VISIBLE
         mBind.horizontalContent.visibility = View.GONE
-        val list: MutableList<SettingItem?> = ArrayList()
-        list.add(
-            SettingItem(
-                Projector.TYPE_PROJECTOR_MODE,
-                appContext.getString(R.string.project_mode),
-                R.drawable.baseline_model_training_100
-            )
-        )
-        list.add(
-            SettingItem(
-                Projector.TYPE_SETTING,
-                appContext.getString(R.string.project_crop),
-                R.drawable.baseline_crop_100
-            )
-        )
-        list.add(
-            SettingItem(
-                Projector.TYPE_SCREEN,
-                appContext.getString(R.string.project_gradient),
-                R.drawable.baseline_screenshot_monitor_100
-            )
-        )
-        list.add(
-            SettingItem(
-                Projector.TYPE_HDMI,
-                appContext.getString(R.string.project_hdmi),
-                R.drawable.baseline_settings_input_hdmi_100
-            )
-        )
-        //arrayObjectAdapter.addAll(0, list)
-        mBind.verticalContent.addModels(list)
+        mBind.verticalContent.addModels(product.addProjectorItem())
     }
 
     private fun setToolContent() {
@@ -1075,7 +970,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             override fun onClick(bean: SettingItem) {
                 when (bean.type) {
-                    Projector.TYPE_SETTING -> {
+                    Projector.TYPE_SCREEN_ZOOM -> {
                         isRK3326().yes {
                             AndroidSystem.openActivityName(
                                 requireContext(),
@@ -1097,7 +992,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         if (!success) toastInstall()
                     }
 
-                    Projector.TYPE_SCREEN -> {
+                    Projector.TYPE_KEYSTONE_CORRECTION -> {
                         startActivity(Intent(requireContext(), ChooseGradientActivity::class.java))
                     }
                 }
@@ -1178,7 +1073,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             //startActivity(Intent(requireContext(), HomeGuideGroupGradientActivity::class.java))
 
             // startActivity(Intent(requireContext(), ChooseGradientActivity::class.java))
-            product.openKeystoneCorrection(requireContext())
+            product.openHomeTopKeystoneCorrection(requireContext())
 
 
             /*
@@ -1641,6 +1536,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }.otherwise {
             //收缩
             mBind.header.width(5000)
+            if((mBind.header.adapter?.itemCount ?: 0) > 8){
+                mBind.toolbar.height(com.shudong.lib_dimen.R.dimen.qb_px_110.dimenValue())
+            }else{
+                mBind.toolbar.height(com.shudong.lib_dimen.R.dimen.qb_px_115.dimenValue())
+            }
         }
     }
 

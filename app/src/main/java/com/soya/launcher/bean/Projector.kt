@@ -1,25 +1,20 @@
-package com.soya.launcher.bean;
+package com.soya.launcher.bean
 
-public class Projector {
-    public static final int TYPE_SETTING = 0;
-    public static final int TYPE_HDMI = 1;
-    public static final int TYPE_SCREEN = 2;
-    public static final int TYPE_PROJECTOR_MODE = 3;
-    public static final int TYPE_AUTO_MODE = 4;
+class Projector(val type: Int, val icon: Int) {
+    companion object {
+        const val TYPE_SCREEN_ZOOM: Int = 0 //屏幕切边/屏幕缩放
+        const val TYPE_HDMI: Int = 1    // HDMI
+        const val TYPE_KEYSTONE_CORRECTION: Int = 2  //梯形校正
+        const val TYPE_PROJECTOR_MODE: Int = 3  //投影模式/安装模式
+        const val TYPE_KEYSTONE_CORRECTION_MODE: Int = 4   //开启自动梯形校正
 
-    private final int type;
-    private final int icon;
-
-    public Projector(int type, int icon){
-        this.type = type;
-        this.icon = icon;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public int getIcon() {
-        return icon;
+        /*
+        * P50_H713
+        * */
+        const val TYPE_AUTO_RESPONSE: Int = 5   //自动响应
+        const val TYPE_AUTO_FOCUS: Int = 6   //自动聚焦
+        const val TYPE_AUTO_ENTRY: Int = 7   //自动入幕
+        const val TYPE_AUTO_CALIBRATION: Int = 8   //自动校准
+        const val TYPE_MANUAL_CALIBRATION: Int = 9   //手动校准
     }
 }

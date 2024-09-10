@@ -6,7 +6,6 @@ import com.shudong.lib_base.base.BaseVMFragment
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
-import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.margin
 import com.shudong.lib_base.ext.net.lifecycleLoadingView

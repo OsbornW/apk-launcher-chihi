@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.soya.launcher.BuildConfig
+import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.product.Projector713G
 import com.soya.launcher.product.Projector713M
 import com.soya.launcher.product.ProjectorH6
@@ -35,7 +36,20 @@ sealed interface TVDevice{
     fun switchFragment():Fragment? = null
     fun jumpToAuth(activity: FragmentActivity){}
     fun openFileManager(){}
-    fun openKeystoneCorrection(context:Context){}
+    fun openHomeTopKeystoneCorrection(context:Context){}
+    fun addProjectorItem():MutableList<SettingItem>?=null
+    fun initCalibrationText(isEnable:Boolean,dataList:MutableList<SettingItem?>,result:()->Unit){}
+    fun addCalibrationItem(isEnable:Boolean = false):MutableList<SettingItem>?=null
+    fun openScreenZoom(){}
+    fun openProjectorMode(callback:(isSuccess:Boolean)->Unit){}
+    fun openKeystoneCorrectionOptions(){}
+    fun openManualAutoKeystoneCorrection(){}
+    fun addSettingItem():MutableList<SettingItem>?=null
+    fun openWifi(){}
+    fun openProjector(){}
+    fun openBluetooth(){}
+    fun openMore(){}
+    fun projectorColumns():Int = 0
 }
 
 data object DefaultDevice: TVDevice

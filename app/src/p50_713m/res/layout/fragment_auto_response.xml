@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.hjq.shape.layout.ShapeLinearLayout
+        app:shape_radius="@dimen/qb_px_5"
+        android:id="@+id/ll_response"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        app:shape_solidColor="@color/solid_style_3"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_width="@dimen/qb_px_180"
+        android:layout_height="@dimen/qb_px_160">
+        <FrameLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <ImageView
+                android:id="@+id/image"
+                android:layout_gravity="center"
+                android:src="@drawable/auto"
+                android:scaleType="centerCrop"
+                android:layout_width="@dimen/qb_px_50"
+                android:layout_height="@dimen/qb_px_50"/>
+        </FrameLayout>
+        <com.hjq.shape.view.ShapeTextView
+            app:shape_bottomLeftRadius="@dimen/qb_px_5"
+            app:shape_bottomRightRadius="@dimen/qb_px_5"
+            android:id="@+id/tv_status"
+            android:text="@string/open_response"
+            android:textSize="@dimen/qb_px_sp_15"
+            android:gravity="center"
+            android:layout_gravity="bottom"
+            android:textColor="@color/text_selector_color_1"
+            app:shape_solidColor="@color/ps_color_80"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_43"/>
+    </com.hjq.shape.layout.ShapeLinearLayout>
+
+</RelativeLayout>
+</layout>

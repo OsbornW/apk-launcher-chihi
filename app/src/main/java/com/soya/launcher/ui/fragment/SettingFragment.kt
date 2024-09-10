@@ -18,6 +18,16 @@ import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
+import com.soya.launcher.SETTING_ABOUT
+import com.soya.launcher.SETTING_BLUETOOTH
+import com.soya.launcher.SETTING_DATE
+import com.soya.launcher.SETTING_KEYBOARD
+import com.soya.launcher.SETTING_LAUNGUAGE
+import com.soya.launcher.SETTING_MORE
+import com.soya.launcher.SETTING_NETWORK
+import com.soya.launcher.SETTING_PROJECTOR
+import com.soya.launcher.SETTING_SOUND
+import com.soya.launcher.SETTING_WALLPAPER
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.config.Config
@@ -91,189 +101,9 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding,BaseViewMod
         mBind.content.adapter = itemBridgeAdapter
         mBind.content.setNumColumns(4)
 
-        if (Config.COMPANY == 0) {
-            arrayObjectAdapter.addAll(
-                0, Arrays.asList(
-                    SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
-                    SettingItem(
-                        10,
-                        getString(R.string.bluetooth),
-                        R.drawable.baseline_bluetooth_100
-                    ),
-                    SettingItem(
-                        2,
-                        getString(R.string.pojector),
-                        R.drawable.baseline_cast_connected_100
-                    ),
-                    SettingItem(
-                        1,
-                        getString(R.string.wallpaper),
-                        R.drawable.baseline_wallpaper_100
-                    ),
-                    SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
-                    SettingItem(
-                        4,
-                        getString(R.string.date),
-                        R.drawable.baseline_calendar_month_100
-                    ),
-                    SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
-                    SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)
-                )
-            )
-        } else if (Config.COMPANY == 9) {
-            arrayObjectAdapter.addAll(
-                0, Arrays.asList(
-                    SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
-                    SettingItem(
-                        10,
-                        getString(R.string.bluetooth),
-                        R.drawable.baseline_bluetooth_100
-                    ),
-                    SettingItem(
-                        2,
-                        getString(R.string.pojector),
-                        R.drawable.baseline_cast_connected_100
-                    ),
-                    SettingItem(
-                        1,
-                        getString(R.string.wallpaper),
-                        R.drawable.baseline_wallpaper_100
-                    ),
-                    SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
-                    SettingItem(
-                        4,
-                        getString(R.string.date),
-                        R.drawable.baseline_calendar_month_100
-                    ),
-                    SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
-                    SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)
-                )
-            )
-        } else if (Config.COMPANY == 1) {
-            arrayObjectAdapter.addAll(
-                0, Arrays.asList(
-                    SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
-                    SettingItem(
-                        2,
-                        getString(R.string.pojector),
-                        R.drawable.baseline_cast_connected_100
-                    ),
-                    SettingItem(
-                        1,
-                        getString(R.string.wallpaper),
-                        R.drawable.baseline_wallpaper_100
-                    ),
-                    SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
-                    SettingItem(
-                        4,
-                        getString(R.string.date),
-                        R.drawable.baseline_calendar_month_100
-                    ),
-                    SettingItem(
-                        5,
-                        getString(R.string.bluetooth),
-                        R.drawable.baseline_bluetooth_100
-                    ),
-                    SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
-                    SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)
-                )
-            )
-        } else if (Config.COMPANY == 2) {
-            arrayObjectAdapter.addAll(
-                0, Arrays.asList(
-                    SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
-                    SettingItem(
-                        8,
-                        getString(R.string.sound),
-                        R.drawable.baseline_settings_voice_100
-                    ),
-                    SettingItem(
-                        1,
-                        getString(R.string.wallpaper),
-                        R.drawable.baseline_wallpaper_100
-                    ),
-                    SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
-                    SettingItem(
-                        4,
-                        getString(R.string.date),
-                        R.drawable.baseline_calendar_month_100
-                    ),
-                    SettingItem(
-                        5,
-                        getString(R.string.bluetooth),
-                        R.drawable.baseline_bluetooth_100
-                    ),
-                    SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
-                    SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)
-                )
-            )
-        } else if (Config.COMPANY == 5) {
-            arrayObjectAdapter.addAll(
-                0, Arrays.asList(
-                    SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
-                    SettingItem(
-                        1,
-                        getString(R.string.wallpaper),
-                        R.drawable.baseline_wallpaper_100
-                    ),
-                    SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)
-                )
-            )
-        }else if (Config.COMPANY == 7) {
-            arrayObjectAdapter.addAll(
-                0, Arrays.asList(
-                    SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
-                    SettingItem(
-                        8,
-                        getString(R.string.sound),
-                        R.drawable.baseline_settings_voice_100
-                    ),
-                    SettingItem(
-                        1,
-                        getString(R.string.wallpaper),
-                        R.drawable.baseline_wallpaper_100
-                    ),
-                    SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
-                    SettingItem(
-                        4,
-                        getString(R.string.date),
-                        R.drawable.baseline_calendar_month_100
-                    ),
-                    /*       SettingItem(
-                               5,
-                               getString(R.string.bluetooth),
-                               R.drawable.baseline_bluetooth_100
-                           ),*/
-                    SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
-                    SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)
-                )
-            )
-        }else {
-            arrayObjectAdapter.addAll(
-                0, Arrays.asList(
-                    SettingItem(0, getString(R.string.network), R.drawable.baseline_wifi_100),
-                    SettingItem(
-                        8,
-                        getString(R.string.sound),
-                        R.drawable.baseline_settings_voice_100
-                    ),
-                    SettingItem(
-                        1,
-                        getString(R.string.wallpaper),
-                        R.drawable.baseline_wallpaper_100
-                    ),
-                    SettingItem(3, getString(R.string.language), R.drawable.baseline_translate_100),
-                    SettingItem(
-                        4,
-                        getString(R.string.date),
-                        R.drawable.baseline_calendar_month_100
-                    ),
-                    SettingItem(9, getString(R.string.keyboard), R.drawable.baseline_keyboard_100),
-                    SettingItem(6, getString(R.string.about), R.drawable.baseline_help_100),
-                    SettingItem(7, getString(R.string.more), R.drawable.baseline_more_horiz_100)
-                )
-            )
-        }
+        arrayObjectAdapter.addAll(0,product.addSettingItem())
+
+
     }
 
     fun newCallback(): SettingAdapter.Callback {
@@ -283,41 +113,16 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding,BaseViewMod
 
             override fun onClick(bean: SettingItem) {
                 when (bean.type) {
-                    0 -> if (Config.COMPANY == 3) {
-                        AndroidSystem.openWifiSetting(requireContext())
-                    } else {
-                        startActivity(Intent(requireContext(), WifiListActivity::class.java))
-                    }
-
-                    1 -> startActivity(Intent(requireContext(), WallpaperActivity::class.java))
-                    2 -> if (Config.COMPANY == 0 || Config.COMPANY == 9) {
-                        startActivity(Intent(requireContext(), ProjectorActivity::class.java))
-                    } else if (Config.COMPANY == 1) {
-                        AndroidSystem.openActivityName(requireContext(), "com.qf.keystone.AllActivity")
-                    }
-
-                    3 -> product.openLanguageSetting(requireContext())
-                    4 -> product.openDateSetting(requireContext())
-                    5 -> if (Config.COMPANY == 1 || Config.COMPANY == 2) {
-                        AndroidSystem.openBluetoothSetting2(requireContext())
-                    } else if (Config.COMPANY == 3) {
-                        AndroidSystem.openBluetoothSetting3(requireContext())
-                    }
-
-                    6 -> startActivity(Intent(requireContext(), AboutActivity::class.java))
-                    7 -> if (Config.COMPANY == 0 || Config.COMPANY == 1) {
-                        AndroidSystem.openSystemSetting(requireContext())
-                    } else {
-                        AndroidSystem.openSystemSetting2(requireContext())
-                    }
-
-                    8 -> AndroidSystem.openVoiceSetting(requireContext())
-                    9 -> AndroidSystem.openInputSetting(requireContext())
-                    10 -> if (Config.COMPANY == 9) {
-                        context!!.openBluetoothSettings()
-                    } else {
-                        AndroidSystem.openBluetoothSetting4(requireContext())
-                    }
+                    SETTING_NETWORK -> product.openWifi()
+                    SETTING_WALLPAPER -> startActivity(Intent(requireContext(), WallpaperActivity::class.java))
+                    SETTING_PROJECTOR -> product.openProjector()
+                    SETTING_LAUNGUAGE -> product.openLanguageSetting(requireContext())
+                    SETTING_DATE -> product.openDateSetting(requireContext())
+                    SETTING_BLUETOOTH -> product.openBluetooth()
+                    SETTING_ABOUT -> startActivity(Intent(requireContext(), AboutActivity::class.java))
+                    SETTING_MORE -> product.openMore()
+                    SETTING_SOUND -> AndroidSystem.openVoiceSetting(requireContext())
+                    SETTING_KEYBOARD -> AndroidSystem.openInputSetting(requireContext())
 
                 }
             }

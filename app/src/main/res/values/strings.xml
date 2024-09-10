@@ -208,4 +208,18 @@
     <string name="app_text_38" >下载: %d%%</string>
 
 
+    <string name="auto_response" >自动响应</string>
+    <string name="auto_focus" >自动聚焦</string>
+    <string name="auto_entry" >自动入幕</string>
+    <string name="projector_method" >投影方式</string>
+    <string name="screen_zoom" >屏幕缩放</string>
+    <string name="auto_calibrate" >自动梯形</string>
+    <string name="manual_calibration" >手动梯形</string>
+    <string name="open_response" >打开</string>
+    <string name="close_response" >关闭</string>
+    <string name="close_response" >关闭</string>
+    <string name="set_success" >设置成功</string>
+    <string name="set_failed" >设置失败</string>
+
+
 </resources>
