@@ -86,7 +86,7 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding,BaseViewMod
     private fun setContent() {
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
-                activity,
+                requireContext(),
                 LayoutInflater.from(appContext),
                 newCallback(),
                 R.layout.holder_setting
@@ -108,11 +108,11 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding,BaseViewMod
 
     fun newCallback(): SettingAdapter.Callback {
         return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem) {
+            override fun onSelect(selected: Boolean, bean: SettingItem?) {
             }
 
-            override fun onClick(bean: SettingItem) {
-                when (bean.type) {
+            override fun onClick(bean: SettingItem?) {
+                when (bean?.type) {
                     SETTING_NETWORK -> product.openWifi()
                     SETTING_WALLPAPER -> startActivity(Intent(requireContext(), WallpaperActivity::class.java))
                     SETTING_PROJECTOR -> product.openProjector()

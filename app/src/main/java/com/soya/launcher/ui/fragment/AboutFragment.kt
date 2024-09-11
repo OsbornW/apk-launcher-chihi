@@ -146,11 +146,15 @@ class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,BaseViewModel>(
         )
 
         val arrayObjectAdapter =
-            ArrayObjectAdapter(AboutAdapter(activity, layoutInflater).setCallback { bean ->
-                when (bean.type) {
-                    2 -> AndroidSystem.restoreFactory(requireContext())
+            ArrayObjectAdapter(AboutAdapter(requireContext(), layoutInflater).setCallback (object :AboutAdapter.Callback{
+                override fun onClick(bean: AboutItem?) {
+                    when (bean?.type) {
+                        2 -> AndroidSystem.restoreFactory(requireContext())
+                    }
                 }
-            })
+
+            }))
+
         val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
         mBind.content.adapter = itemBridgeAdapter
         mBind.content.setNumColumns(1)

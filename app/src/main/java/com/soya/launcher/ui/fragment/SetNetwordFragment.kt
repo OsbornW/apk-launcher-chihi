@@ -55,11 +55,11 @@ class SetNetwordFragment : BaseWallPaperFragment<FragmentSetNetwordBinding,BaseV
 
     fun newCallback(): SettingAdapter.Callback {
         return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem) {
+            override fun onSelect(selected: Boolean, bean: SettingItem?) {
             }
 
-            override fun onClick(bean: SettingItem) {
-                when (bean.type) {
+            override fun onClick(bean: SettingItem?) {
+                when (bean?.type) {
                     0 -> AndroidSystem.openDateSetting(requireContext())
                     1 -> AndroidSystem.openWifiSetting(requireContext())
                 }

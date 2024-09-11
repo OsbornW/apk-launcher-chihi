@@ -1,98 +1,83 @@
-package com.soya.launcher.ui.dialog;
+package com.soya.launcher.ui.dialog
 
-import android.app.Dialog;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.view.LayoutInflater
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
 
-import androidx.annotation.NonNull;
+open class TranslucentDialog( val mContext: Context, protected var layoutId: Int) : Dialog(
+    mContext
+) {
+    protected var inflater: LayoutInflater = LayoutInflater.from(mContext)
+    protected var decorView: View? = null
+    protected var uiHandler: Handler = Handler()
 
-public class TranslucentDialog extends Dialog {
+    override fun onCreate(savedInstanceState: Bundle) {
+        super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        setContentView(layoutId)
 
-    protected Context context;
-    protected LayoutInflater inflater;
-    protected View decorView;
-    protected Handler uiHandler;
-    protected int layoutId;
+        val window = window
+        window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-    public TranslucentDialog(@NonNull Context context, int layoutId) {
-        super(context);
-        this.layoutId = layoutId;
-        this.context = context;
-        inflater = LayoutInflater.from(context);
-        uiHandler = new Handler();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(layoutId);
-
-        Window window = getWindow();
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        if (isTorch()){
+        if (isTorch) {
             window.addFlags(
-                    WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
-                            | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                            | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
-                            | WindowManager.LayoutParams.FLAG_DIM_BEHIND
-                            | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-            );
-        }else {
+                WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
+                        or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+                        or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+            )
+        } else {
             window.addFlags(
-                    WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
-                            | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                            | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
-                            | WindowManager.LayoutParams.FLAG_DIM_BEHIND
-                            | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                            | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                            | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                            | WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG
-            );
+                WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
+                        or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+                        or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                        or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        or WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG
+            )
         }
 
-        window.setDimAmount(getDimAmount());
-        if (getAnimation() != -1) window.setWindowAnimations(getAnimation());
+        window.setDimAmount(dimAmount)
+        if (animation != -1) window.setWindowAnimations(animation)
 
-        WindowManager.LayoutParams lp = window.getAttributes();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
-            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        val lp = window.attributes
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            lp.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
-        lp.type =WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        lp.width = getWidth();
-        lp.height = getHeight();
-        window.setAttributes(lp);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        lp.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        lp.width = width
+        lp.height = height
+        window.attributes = lp
+        getWindow()!!.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 
-        decorView = window.getDecorView();
+        decorView = window.decorView
     }
 
-    protected boolean isTorch(){
-        return true;
-    }
+    protected open val isTorch: Boolean
+        get() = true
 
-    protected int getAnimation(){
-        return -1;
-    }
+    protected val animation: Int
+        get() = -1
 
-    protected int getWidth(){
-        return WindowManager.LayoutParams.MATCH_PARENT;
-    }
+    protected val width: Int
+        get() = WindowManager.LayoutParams.MATCH_PARENT
 
-    protected int getHeight(){
-        return WindowManager.LayoutParams.MATCH_PARENT;
-    }
+    protected val height: Int
+        get() = WindowManager.LayoutParams.MATCH_PARENT
 
-    protected float getDimAmount(){
-        return 0.5f;
-    }
+    protected open val dimAmount: Float
+        get() = 0.5f
 }

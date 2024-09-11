@@ -38,7 +38,7 @@ class TimeZoneDialog : SingleDialogFragment() {
         mBlur = view.findViewById(R.id.blur)
         mRootView = view.findViewById(R.id.root)
 
-        mTimeZoneAdapter = TimeZoneAdapter(activity, inflater, ArrayList())
+        mTimeZoneAdapter = TimeZoneAdapter(requireContext(), inflater, ArrayList())
 
         blur(mRootView, mBlur)
     }
@@ -89,7 +89,12 @@ class TimeZoneDialog : SingleDialogFragment() {
                 "当前选中的时区是：${aDefault.displayName}::$select"
 
 
-                mTimeZoneAdapter!!.setCallback { bean -> if (callback != null) callback!!.onClick(bean) }
+                mTimeZoneAdapter!!.setCallback(object :TimeZoneAdapter.Callback{
+                    override fun onClick(bean: SimpleTimeZone?) {
+                        if (callback != null) callback!!.onClick(bean)
+                    }
+
+                })
             }
         }
 

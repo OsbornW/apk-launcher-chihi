@@ -1,180 +1,163 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.FocusHighlight
+import androidx.leanback.widget.FocusHighlightHelper
+import androidx.leanback.widget.HorizontalGridView
+import androidx.leanback.widget.ItemBridgeAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.soya.launcher.R
+import com.soya.launcher.bean.AppItem
+import com.soya.launcher.bean.DivSearch
+import com.soya.launcher.bean.WebItem
 
-import androidx.annotation.NonNull;
-import androidx.leanback.widget.ArrayObjectAdapter;
-import androidx.leanback.widget.FocusHighlight;
-import androidx.leanback.widget.FocusHighlightHelper;
-import androidx.leanback.widget.HorizontalGridView;
-import androidx.leanback.widget.ItemBridgeAdapter;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.soya.launcher.R;
-import com.soya.launcher.bean.AppItem;
-import com.soya.launcher.bean.DivSearch;
-import com.soya.launcher.bean.WebItem;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class FullSearchAdapter extends RecyclerView.Adapter<FullSearchAdapter.Holder> {
-
-    private final Context context;
-    private final LayoutInflater inflater;
-    private Callback callback;
-
-    private final List<DivSearch> dataList;
-
-    public FullSearchAdapter(Context context, LayoutInflater inflater, List<DivSearch> dataList, Callback callback){
-        this.context = context;
-        this.inflater = inflater;
-        this.dataList = dataList;
-        this.callback = callback;
+class FullSearchAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private val dataList: MutableList<DivSearch<*>?>,
+    private var callback: Callback?
+) : RecyclerView.Adapter<FullSearchAdapter.Holder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        return Holder(inflater.inflate(R.layout.holder_full_search, parent, false))
     }
 
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(R.layout.holder_full_search, parent, false));
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        dataList[position]?.let { holder.bind(it) }
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(dataList.get(position));
+    override fun getItemCount(): Int {
+        return dataList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return dataList.size();
+    fun sync(bean: DivSearch<*>) {
+        val index = dataList.indexOf(bean)
+        if (index != -1) notifyItemChanged(index)
     }
 
-    public void sync(DivSearch bean){
-        int index = dataList.indexOf(bean);
-        if (index != -1) notifyItemChanged(index);
+    fun replace(list: MutableList<DivSearch<*>?>) {
+        dataList.clear()
+        dataList.addAll(list)
+        notifyDataSetChanged()
     }
 
-    public void replace(List<DivSearch> list){
-        dataList.clear();
-        dataList.addAll(list);
-        notifyDataSetChanged();
+    fun add(index: Int, bean: DivSearch<*>) {
+        dataList.add(index, bean)
+        notifyDataSetChanged()
     }
 
-    public void add(int index, DivSearch bean){
-        dataList.add(index, bean);
-        notifyDataSetChanged();
-    }
+    inner class Holder(view: View) : RecyclerView.ViewHolder(view) {
+        private val mContentGrid: HorizontalGridView = view.findViewById(R.id.content)
+        private val mTitleView: TextView = view.findViewById(R.id.title)
+        private val mNoneView: View = view.findViewById(R.id.mask)
+        private val mProgressView: View = view.findViewById(R.id.progressBar)
 
-    public class Holder extends RecyclerView.ViewHolder {
-        private final HorizontalGridView mContentGrid;
-        private final TextView mTitleView;
-        private final View mNoneView;
-        private final View mProgressView;
+        fun bind(bean: DivSearch<*>) {
+            mTitleView.text = bean.title
+            when (bean.type) {
+                0 -> {
+                    mContentGrid.visibility = View.VISIBLE
+                    mNoneView.visibility = View.GONE
+                    mProgressView.visibility = View.GONE
+                    setAppContent(bean)
+                }
 
-        public Holder(View view) {
-            super(view);
-            mContentGrid = view.findViewById(R.id.content);
-            mTitleView = view.findViewById(R.id.title);
-            mNoneView = view.findViewById(R.id.mask);
-            mProgressView = view.findViewById(R.id.progressBar);
-        }
+                1 -> if (bean.state == 0) {
+                    mContentGrid.visibility = View.GONE
+                    mProgressView.visibility = View.VISIBLE
+                    mNoneView.visibility = View.GONE
+                } else if (bean.state == 1) {
+                    mContentGrid.visibility = View.GONE
+                    mProgressView.visibility = View.GONE
+                    mNoneView.visibility = View.VISIBLE
+                } else {
+                    mContentGrid.visibility = View.VISIBLE
+                    mProgressView.visibility = View.GONE
+                    mNoneView.visibility = View.GONE
+                    setAppStore(bean)
+                }
 
-        public void bind(DivSearch bean){
-            mTitleView.setText(bean.title);
-            switch (bean.type){
-                case 0:
-                    mContentGrid.setVisibility(View.VISIBLE);
-                    mNoneView.setVisibility(View.GONE);
-                    mProgressView.setVisibility(View.GONE);
-                    setAppContent(bean);
-                    break;
-                case 1:
-                    if (bean.state == 0){
-                        mContentGrid.setVisibility(View.GONE);
-                        mProgressView.setVisibility(View.VISIBLE);
-                        mNoneView.setVisibility(View.GONE);
-                    }else if (bean.state == 1){
-                        mContentGrid.setVisibility(View.GONE);
-                        mProgressView.setVisibility(View.GONE);
-                        mNoneView.setVisibility(View.VISIBLE);
-                    }else {
-                        mContentGrid.setVisibility(View.VISIBLE);
-                        mProgressView.setVisibility(View.GONE);
-                        mNoneView.setVisibility(View.GONE);
-                        setAppStore(bean);
-                    }
-                    break;
-                case 2:
-                    mContentGrid.setVisibility(View.VISIBLE);
-                    mNoneView.setVisibility(View.GONE);
-                    mProgressView.setVisibility(View.GONE);
-                    web(bean);
-                    break;
+                2 -> {
+                    mContentGrid.visibility = View.VISIBLE
+                    mNoneView.visibility = View.GONE
+                    mProgressView.visibility = View.GONE
+                    web(bean)
+                }
             }
         }
 
-        private void setAppContent(DivSearch bean){
-            AppListAdapter adapter = new AppListAdapter(context, inflater, new ArrayList<>(bean.list), R.layout.item_search_apps, new AppListAdapter.Callback() {
-                @Override
-                public void onSelect(boolean selected) {
+        private fun setAppContent(bean: DivSearch<*>) {
+            val adapter = AppListAdapter(
+                context,
+                inflater,
+                (bean.list) as MutableList<ApplicationInfo>,
+                R.layout.item_search_apps,
+                object : AppListAdapter.Callback {
+                    override fun onSelect(selected: Boolean) {
+                    }
 
-                }
+                    override fun onClick(child: ApplicationInfo) {
+                        if (callback != null) callback!!.onClick(bean.type, child)
+                    }
 
-                @Override
-                public void onClick(ApplicationInfo child) {
-                    if (callback != null) callback.onClick(bean.type, child);
-                }
-
-                @Override
-                public void onMenuClick(ApplicationInfo bean) {
-
-                }
-            });
-            mContentGrid.setAdapter(adapter);
-            mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                    override fun onMenuClick(bean: ApplicationInfo) {
+                    }
+                })
+            mContentGrid.adapter = adapter
+            mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
         }
 
-        private void setAppStore(DivSearch bean){
-            AppItemAdapter adapter = new AppItemAdapter(context, inflater, new ArrayList<>(bean.list), R.layout.item_search_apps, new AppItemAdapter.Callback() {
-                @Override
-                public void onSelect(boolean selected) {
+        private fun setAppStore(bean: DivSearch<*>) {
+            val adapter = AppItemAdapter(
+                context,
+                inflater,
+                (bean.list) as MutableList<AppItem>,
+                R.layout.item_search_apps,
+                object : AppItemAdapter.Callback {
+                    override fun onSelect(selected: Boolean) {
+                    }
 
-                }
-
-                @Override
-                public void onClick(AppItem child) {
-                    if (callback != null) callback.onClick(bean.type, child);
-                }
-            });
-            mContentGrid.setAdapter(adapter);
-            mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                    override fun onClick(child: AppItem?) {
+                        if (callback != null) callback!!.onClick(bean.type, child)
+                    }
+                })
+            mContentGrid.adapter = adapter
+            mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
         }
 
-        private void web(DivSearch bean){
-            ArrayObjectAdapter arrayObjectAdapter = new ArrayObjectAdapter(new WebAdapter(context, inflater, new WebAdapter.Callback() {
-                @Override
-                public void onClick(WebItem child) {
-                    if (callback != null) callback.onClick(bean.type, child);
-                }
-            }));
-            ItemBridgeAdapter itemBridgeAdapter = new ItemBridgeAdapter(arrayObjectAdapter);
-            FocusHighlightHelper.setupBrowseItemFocusHighlight(itemBridgeAdapter, FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
-            mContentGrid.setAdapter(itemBridgeAdapter);
-            arrayObjectAdapter.addAll(0, bean.list);
-            mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        private fun web(bean: DivSearch<*>) {
+            val arrayObjectAdapter = ArrayObjectAdapter(
+                WebAdapter(
+                    context,
+                    inflater,object :WebAdapter.Callback{
+                        override fun onClick(child: WebItem?) {
+                            if (callback != null) callback!!.onClick(bean.type, child)
+                        }
+
+                    }
+                ) )
+            val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
+            FocusHighlightHelper.setupBrowseItemFocusHighlight(
+                itemBridgeAdapter,
+                FocusHighlight.ZOOM_FACTOR_MEDIUM,
+                false
+            )
+            mContentGrid.adapter = itemBridgeAdapter
+            arrayObjectAdapter.addAll(0, bean.list)
+            mContentGrid.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
+    fun setCallback(callback: Callback?) {
+        this.callback = callback
     }
 
-    public interface Callback{
-        void onClick(int type, Object bean);
+    interface Callback {
+        fun onClick(type: Int, bean: Any?)
     }
 }

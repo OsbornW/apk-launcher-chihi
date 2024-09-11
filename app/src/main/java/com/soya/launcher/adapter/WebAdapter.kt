@@ -1,72 +1,50 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.leanback.widget.Presenter
+import com.soya.launcher.R
+import com.soya.launcher.bean.WebItem
+import com.soya.launcher.utils.GlideUtils
 
-import androidx.leanback.widget.Presenter;
-
-import com.soya.launcher.R;
-import com.soya.launcher.bean.WebItem;
-import com.soya.launcher.utils.GlideUtils;
-
-public class WebAdapter extends Presenter {
-    private final Context context;
-    private final LayoutInflater inflater;
-
-    private Callback callback;
-
-    public WebAdapter(Context context, LayoutInflater inflater, Callback callback){
-        this.context = context;
-        this.inflater = inflater;
-        this.callback = callback;
+class WebAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private var callback: Callback?
+) : Presenter() {
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
+        return Holder(inflater.inflate(R.layout.holder_web, parent, false))
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent) {
-        return new Holder(inflater.inflate(R.layout.holder_web, parent, false));
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+        val holder = viewHolder as Holder
+        holder.bind(item as WebItem)
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        Holder holder = (Holder) viewHolder;
-        holder.bind((WebItem) item);
+    override fun onUnbindViewHolder(viewHolder: ViewHolder) {
+        val holder = viewHolder as Holder
+        holder.unbind()
     }
 
-    @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
-        Holder holder = (Holder) viewHolder;
-        holder.unbind();
-    }
+    inner class Holder(view: View) : ViewHolder(view) {
+        private val mImageView: ImageView = view.findViewById(R.id.image)
 
-    public class Holder extends ViewHolder {
-        private final ImageView mImageView;
-
-        public Holder(View view) {
-            super(view);
-            mImageView = view.findViewById(R.id.image);
+        fun bind(bean: WebItem) {
+            GlideUtils.bind(context, mImageView, bean.icon)
+            view.setOnClickListener { if (callback != null) callback!!.onClick(bean) }
         }
 
-        public void bind(WebItem bean){
-            GlideUtils.bind(context, mImageView, bean.getIcon());
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (callback != null) callback.onClick(bean);
-                }
-            });
-        }
-
-        public void unbind(){}
+        fun unbind() {}
     }
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
+    fun setCallback(callback: Callback?) {
+        this.callback = callback
     }
 
-    public interface Callback{
-        void onClick(WebItem bean);
+    fun interface Callback {
+        fun onClick(bean: WebItem?)
     }
 }

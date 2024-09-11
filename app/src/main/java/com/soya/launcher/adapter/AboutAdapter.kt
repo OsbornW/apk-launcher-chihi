@@ -1,94 +1,60 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.leanback.widget.Presenter
+import com.soya.launcher.R
+import com.soya.launcher.bean.AboutItem
+import com.soya.launcher.view.MyFrameLayout
 
-import androidx.leanback.widget.Presenter;
+class AboutAdapter(private val context: Context, private val inflater: LayoutInflater) :
+    Presenter() {
+    private var callback: Callback? = null
 
-import com.soya.launcher.R;
-import com.soya.launcher.bean.AboutItem;
-import com.soya.launcher.callback.SelectedCallback;
-import com.soya.launcher.view.MyFrameLayout;
-
-public class AboutAdapter extends Presenter {
-
-    private final Context context;
-    private final LayoutInflater inflater;
-
-    private Callback callback;
-
-    public AboutAdapter(Context context, LayoutInflater inflater){
-        this.context = context;
-        this.inflater = inflater;
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
+        return Holder(inflater.inflate(R.layout.holder_about, parent, false))
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent) {
-        return new Holder(inflater.inflate(R.layout.holder_about, parent, false));
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+        val holder = viewHolder as Holder
+        holder.bind(item as AboutItem)
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        Holder holder = (Holder) viewHolder;
-        holder.bind((AboutItem) item);
+    override fun onUnbindViewHolder(viewHolder: ViewHolder) {
+        val holder = viewHolder as Holder
+        holder.unbind()
     }
 
-    @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
-        Holder holder = (Holder) viewHolder;
-        holder.unbind();
-    }
+    inner class Holder(view: View) : ViewHolder(view) {
+        private val mRootView = view as MyFrameLayout
+        private val mIconView: ImageView = view.findViewById(R.id.icon)
+        private val mTitleView: TextView = view.findViewById(R.id.title)
+        private val mDescView: TextView = view.findViewById(R.id.desc)
 
-    public class Holder extends ViewHolder {
-        private final MyFrameLayout mRootView;
-        private final ImageView mIconView;
-        private final TextView mTitleView;
-        private final TextView mDescView;
+        fun bind(bean: AboutItem) {
+            mIconView.setImageResource(bean.icon)
+            mTitleView.text = bean.title
+            mDescView.text = bean.description
 
+            view.setOnClickListener { if (callback != null) callback!!.onClick(bean) }
 
-        public Holder(View view) {
-            super(view);
-            mRootView = (MyFrameLayout) view;
-            mIconView = view.findViewById(R.id.icon);
-            mTitleView = view.findViewById(R.id.title);
-            mDescView = view.findViewById(R.id.desc);
+            mRootView.setCallback { }
         }
 
-        public void bind(AboutItem bean){
-            mIconView.setImageResource(bean.getIcon());
-            mTitleView.setText(bean.getTitle());
-            mDescView.setText(bean.getDescription());
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (callback != null) callback.onClick(bean);
-                }
-            });
-
-            mRootView.setCallback(new SelectedCallback() {
-                @Override
-                public void onSelect(boolean selected) {
-
-                }
-            });
-        }
-
-        public void unbind(){
-
+        fun unbind() {
         }
     }
 
-    public AboutAdapter setCallback(Callback callback) {
-        this.callback = callback;
-        return this;
+    fun setCallback(callback: Callback?): AboutAdapter {
+        this.callback = callback
+        return this
     }
 
-    public interface Callback{
-        void onClick(AboutItem bean);
+    interface Callback {
+        fun onClick(bean: AboutItem?)
     }
 }

@@ -45,7 +45,7 @@ class ChooseGradientFragment :
         dataList.clear()
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
-                activity,
+                requireContext(),
                 getLayoutInflater(),
                 newProjectorCallback(),
                 R.layout.holder_setting_5
@@ -68,9 +68,9 @@ class ChooseGradientFragment :
 
     private fun newProjectorCallback(): SettingAdapter.Callback {
         return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem) {}
-            override fun onClick(bean: SettingItem) {
-                when (bean.type) {
+            override fun onSelect(selected: Boolean, bean: SettingItem?) {}
+            override fun onClick(bean: SettingItem?) {
+                when (bean?.type) {
                     Projector.TYPE_KEYSTONE_CORRECTION -> {
                         product.openManualAutoKeystoneCorrection()
                     }

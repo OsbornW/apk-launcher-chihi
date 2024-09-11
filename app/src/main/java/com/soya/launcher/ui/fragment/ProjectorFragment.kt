@@ -42,7 +42,7 @@ class ProjectorFragment : BaseWallPaperFragment<FragmentProjectorBinding,HomeVie
     private fun setContent() {
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
-                activity,
+                requireContext(),
                 layoutInflater,
                 newProjectorCallback(),
                 R.layout.holder_setting_4
@@ -61,11 +61,13 @@ class ProjectorFragment : BaseWallPaperFragment<FragmentProjectorBinding,HomeVie
 
     private fun newProjectorCallback(): SettingAdapter.Callback {
         return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem) {
+            override fun onSelect(selected: Boolean, bean: SettingItem?) {
             }
 
-            override fun onClick(bean: SettingItem) {
-                mViewModel.clickProjectorItem(bean)
+            override fun onClick(bean: SettingItem?) {
+                if (bean != null) {
+                    mViewModel.clickProjectorItem(bean)
+                }
             }
         }
     }

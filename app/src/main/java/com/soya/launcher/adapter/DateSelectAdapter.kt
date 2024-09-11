@@ -1,93 +1,68 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.soya.launcher.R
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class DateSelectAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private val dataList: MutableList<Int>,
+    private val callback: Callback?
+) : RecyclerView.Adapter<DateSelectAdapter.Holder>() {
+    private var select: Int? = null
 
-import com.soya.launcher.R;
-
-import java.util.List;
-
-public class DateSelectAdapter extends RecyclerView.Adapter<DateSelectAdapter.Holder> {
-
-    private final Context context;
-    private final LayoutInflater inflater;
-    private final List<Integer> dataList;
-
-    private final Callback callback;
-    private Integer select;
-
-    public DateSelectAdapter(Context context, LayoutInflater inflater, List<Integer> dataList, Callback callback){
-        this.context = context;
-        this.inflater = inflater;
-        this.dataList = dataList;
-        this.callback = callback;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        return Holder(inflater.inflate(R.layout.holder_date_select, parent, false))
     }
 
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(R.layout.holder_date_select, parent, false));
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(dataList[position])
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(dataList.get(position));
+    override fun getItemCount(): Int {
+        return dataList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return dataList.size();
+    fun getSelect(): Int? {
+        return select
     }
 
-    public Integer getSelect() {
-        return select;
+    fun setSelect(select: Int?) {
+        this.select = select
+        notifyItemRangeChanged(0, dataList.size)
     }
 
-    public void setSelect(Integer select) {
-        this.select = select;
-        notifyItemRangeChanged(0, dataList.size());
+    fun getDataList(): List<Int> {
+        return dataList
     }
 
-    public List<Integer> getDataList() {
-        return dataList;
+    fun replace(list: List<Int>?) {
+        dataList.clear()
+        dataList.addAll(list!!)
+        notifyDataSetChanged()
     }
 
-    public void replace(List<Integer> list){
-        dataList.clear();
-        dataList.addAll(list);
-        notifyDataSetChanged();
-    }
+    inner class Holder(view: View) : RecyclerView.ViewHolder(view) {
+        private val mTitleView = view as TextView
 
-    public class Holder extends RecyclerView.ViewHolder {
-        private final TextView mTitleView;
+        fun bind(bean: Int) {
+            mTitleView.isSelected = bean == select
+            mTitleView.text = bean.toString()
 
-        public Holder(View view) {
-            super(view);
-            mTitleView = (TextView) view;
-        }
-
-        public void bind(Integer bean){
-            mTitleView.setSelected(bean.equals(select));
-            mTitleView.setText(String.valueOf(bean));
-
-            mTitleView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    select = bean;
-                    notifyItemRangeChanged(0, dataList.size());
-                    if (callback != null) callback.onClick(bean);
-                }
-            });
+            mTitleView.setOnClickListener {
+                select = bean
+                notifyItemRangeChanged(0, dataList.size)
+                callback?.onClick(bean)
+            }
         }
     }
 
-    public interface Callback{
-        void onClick(Integer bean);
+    interface Callback {
+        fun onClick(bean: Int?)
     }
 }

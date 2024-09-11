@@ -1,48 +1,28 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.soya.launcher.R
+import com.soya.launcher.bean.Ads
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.soya.launcher.R;
-import com.soya.launcher.bean.Ads;
-
-import java.util.List;
-
-public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.Holder> {
-    private final Context context;
-    private final LayoutInflater inflater;
-    private final List<Ads> dataList;
-
-    public BannerAdapter(Context context, LayoutInflater inflater, List<Ads> dataList){
-        this.context = context;
-        this.inflater = inflater;
-        this.dataList = dataList;
+class BannerAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private val dataList: List<Ads>
+) : RecyclerView.Adapter<BannerAdapter.Holder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        return Holder(inflater.inflate(R.layout.holder_banner, parent, false))
     }
 
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(R.layout.holder_banner, parent, false));
+    override fun onBindViewHolder(holder: Holder, position: Int) {
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-
+    override fun getItemCount(): Int {
+        return Int.MAX_VALUE
     }
 
-    @Override
-    public int getItemCount() {
-        return Integer.MAX_VALUE;
-    }
-
-    public class Holder extends RecyclerView.ViewHolder {
-        public Holder(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

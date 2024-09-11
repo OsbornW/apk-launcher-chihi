@@ -1,58 +1,51 @@
-package com.soya.launcher.ui.dialog;
+package com.soya.launcher.ui.dialog
 
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.ViewGroup;
+import android.content.DialogInterface
+import android.os.Bundle
+import android.view.ViewGroup
+import com.soya.launcher.R
 
-import androidx.annotation.NonNull;
+class ProgressDialog : SingleDialogFragment() {
+    private var callback: Callback? = null
 
-import com.soya.launcher.R;
-
-public class ProgressDialog extends SingleDialogFragment{
-    public static final String TAG = "ProgressDialog";
-
-    public static ProgressDialog newInstance() {
-
-        Bundle args = new Bundle();
-
-        ProgressDialog fragment = new ProgressDialog();
-        fragment.setArguments(args);
-        return fragment;
+    override fun getLayout(): Int {
+        return R.layout.dialog_progress
     }
 
-    private Callback callback;
-
-    @Override
-    protected int getLayout() {
-        return R.layout.dialog_progress;
+    override fun canOutSide(): Boolean {
+        return false
     }
 
-    @Override
-    protected boolean canOutSide() {
-        return false;
+    override fun isMaterial(): Boolean {
+        return false
     }
 
-    @Override
-    public boolean isMaterial() {
-        return false;
+    override fun getWidthAndHeight(): IntArray {
+        return intArrayOf(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
-    @Override
-    protected int[] getWidthAndHeight() {
-        return new int[]{ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT};
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        if (callback != null) callback!!.onDismiss()
     }
 
-    @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-        if (callback != null) callback.onDismiss();
+    fun setCallback(callback: Callback?) {
+        this.callback = callback
     }
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
+    interface Callback {
+        fun onDismiss()
     }
 
-    public interface Callback{
-        void onDismiss();
+    companion object {
+        const val TAG: String = "ProgressDialog"
+
+        fun newInstance(): ProgressDialog {
+            val args = Bundle()
+
+            val fragment = ProgressDialog()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

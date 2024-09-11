@@ -1,37 +1,28 @@
-package com.soya.launcher.ui.dialog;
+package com.soya.launcher.ui.dialog
 
-import android.content.Context;
-import android.os.Bundle;
-import android.widget.TextView;
+import android.content.Context
+import android.os.Bundle
+import android.widget.TextView
+import com.soya.launcher.R
 
-import androidx.annotation.NonNull;
+class RemoteDialog( mContext: Context, layoutId: Int) : TranslucentDialog(mContext, layoutId) {
 
-import com.soya.launcher.R;
+    private var mNameView: TextView? = null
 
-public class RemoteDialog extends TranslucentDialog{
-    private TextView mNameView;
-
-    public RemoteDialog(@NonNull Context context, int layoutId) {
-        super(context, layoutId);
+    override fun onCreate(savedInstanceState: Bundle) {
+        super.onCreate(savedInstanceState)
+        mNameView = decorView?.findViewById(R.id.blu_name)
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mNameView = decorView.findViewById(R.id.blu_name);
-    }
+    override val isTorch: Boolean
+        get() = false
 
-    @Override
-    protected boolean isTorch() {
-        return false;
-    }
 
-    @Override
-    protected float getDimAmount() {
-        return 0;
-    }
+    override val dimAmount: Float
+        get() = 0f
 
-    public void setName(String name){
-        if (mNameView != null) mNameView.setText(name);
+
+    fun setName(name: String?) {
+        if (mNameView != null) mNameView!!.text = name
     }
 }

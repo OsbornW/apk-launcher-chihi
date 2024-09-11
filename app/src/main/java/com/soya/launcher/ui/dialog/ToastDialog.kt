@@ -1,138 +1,113 @@
-package com.soya.launcher.ui.dialog;
+package com.soya.launcher.ui.dialog
 
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import com.soya.launcher.R
+import com.soya.launcher.enums.Atts
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+class ToastDialog : SingleDialogFragment() {
+    private var mTextView: TextView? = null
+    private var mConfirmView: View? = null
+    private var mCancelView: View? = null
+    private var mRootView: View? = null
+    private var mBlur: ImageView? = null
 
-import com.soya.launcher.R;
-import com.soya.launcher.config.Config;
-import com.soya.launcher.enums.Atts;
+    private var callback: Callback? = null
 
-public class ToastDialog extends SingleDialogFragment {
-    public static final String TAG = "ToastDialog";
+    private var mode = MODE_DEFAULT
 
-    public static ToastDialog newInstance(String text) {
-        return newInstance(text, MODE_DEFAULT);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mode = arguments!!.getInt(Atts.MODE)
     }
 
-    public static ToastDialog newInstance(String text, int mode) {
-
-        Bundle args = new Bundle();
-        args.putString(Atts.BEAN, text);
-        args.putInt(Atts.MODE, mode);
-        ToastDialog fragment = new ToastDialog();
-        fragment.setArguments(args);
-        return fragment;
+    override fun getLayout(): Int {
+        return R.layout.dialog_toast
     }
 
-    public static final int MODE_DEFAULT = 0;
-    public static final int MODE_CONFIRM = 1;
+    override fun init(inflater: LayoutInflater, view: View) {
+        super.init(inflater, view)
+        mTextView = view.findViewById(R.id.text)
+        mConfirmView = view.findViewById(R.id.confirm)
+        mRootView = view.findViewById(R.id.root)
+        mBlur = view.findViewById(R.id.blur)
+        mCancelView = view.findViewById(R.id.cancel)
 
-    private TextView mTextView;
-    private View mConfirmView;
-    private View mCancelView;
-    private View mRootView;
-    private ImageView mBlur;
+        when (mode) {
+            MODE_CONFIRM -> {
+                mCancelView?.visibility = View.GONE
+                mConfirmView?.visibility = View.VISIBLE
+            }
 
-    private Callback callback;
-
-    private int mode = MODE_DEFAULT;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mode = getArguments().getInt(Atts.MODE);
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.dialog_toast;
-    }
-
-    @Override
-    protected void init(LayoutInflater inflater, View view) {
-        super.init(inflater, view);
-        mTextView = view.findViewById(R.id.text);
-        mConfirmView = view.findViewById(R.id.confirm);
-        mRootView = view.findViewById(R.id.root);
-        mBlur = view.findViewById(R.id.blur);
-        mCancelView = view.findViewById(R.id.cancel);
-       /* if (Config.COMPANY == 0) {
-            mRootView.setBackgroundResource(R.drawable.bg_dialog_2);
-        } else {
-            mRootView.setBackgroundResource(R.drawable.bg_dialog);
-        }*/
-
-        switch (mode) {
-            case MODE_CONFIRM:
-                mCancelView.setVisibility(View.GONE);
-                mConfirmView.setVisibility(View.VISIBLE);
-                break;
-            default:
-                mCancelView.setVisibility(View.VISIBLE);
-                mConfirmView.setVisibility(View.VISIBLE);
+            else -> {
+                mCancelView?.visibility = View.VISIBLE
+                mConfirmView?.visibility = View.VISIBLE
+            }
         }
     }
 
-    @Override
-    protected void initBind(LayoutInflater inflater, View view) {
-        super.initBind(inflater, view);
-        mTextView.setText(getArguments().getString(Atts.BEAN));
-        mConfirmView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                if (callback != null) callback.onClick(1);
-            }
-        });
+    override fun initBind(inflater: LayoutInflater, view: View) {
+        super.initBind(inflater, view)
+        mTextView!!.text = arguments!!.getString(Atts.BEAN)
+        mConfirmView!!.setOnClickListener {
+            dismiss()
+            if (callback != null) callback!!.onClick(1)
+        }
 
-        mCancelView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                if (callback != null) callback.onClick(0);
-            }
-        });
+        mCancelView!!.setOnClickListener {
+            dismiss()
+            if (callback != null) callback!!.onClick(0)
+        }
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        blur(mRootView, mBlur);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        blur(mRootView, mBlur)
     }
 
-    @Override
-    protected int getGravity() {
-        return Gravity.CENTER;
+    override fun getGravity(): Int {
+        return Gravity.CENTER
     }
 
-    @Override
-    public boolean isMaterial() {
-        return false;
+    override fun isMaterial(): Boolean {
+        return false
     }
 
-    @Override
-    protected int[] getWidthAndHeight() {
-        return new int[]{ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT};
+    override fun getWidthAndHeight(): IntArray {
+        return intArrayOf(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
-    @Override
-    protected float getDimAmount() {
-        return 0;
+    override fun getDimAmount(): Float {
+        return 0f
     }
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
+    fun setCallback(callback: Callback?) {
+        this.callback = callback
     }
 
-    public interface Callback {
-        void onClick(int type);
+    interface Callback {
+        fun onClick(type: Int)
+    }
+
+    companion object {
+        const val TAG: String = "ToastDialog"
+
+        @JvmOverloads
+        fun newInstance(text: String?, mode: Int = MODE_DEFAULT): ToastDialog {
+            val args = Bundle()
+            args.putString(Atts.BEAN, text)
+            args.putInt(Atts.MODE, mode)
+            val fragment = ToastDialog()
+            fragment.arguments = args
+            return fragment
+        }
+
+        const val MODE_DEFAULT: Int = 0
+        const val MODE_CONFIRM: Int = 1
     }
 }

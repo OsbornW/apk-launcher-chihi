@@ -50,7 +50,7 @@ class WallpaperFragment : BaseWallPaperFragment<FragmentWallpaperBinding, BaseVi
 
     private fun setContent() {
         mArrayObjectAdapter =
-            ArrayObjectAdapter(WallpaperAdapter(activity, layoutInflater, newWallpaperCallback()))
+            ArrayObjectAdapter(WallpaperAdapter(requireContext(), layoutInflater, newWallpaperCallback()))
         val itemBridgeAdapter = ItemBridgeAdapter(mArrayObjectAdapter)
         FocusHighlightHelper.setupBrowseItemFocusHighlight(
             itemBridgeAdapter,
@@ -65,12 +65,12 @@ class WallpaperFragment : BaseWallPaperFragment<FragmentWallpaperBinding, BaseVi
 
     fun newWallpaperCallback(): WallpaperAdapter.Callback {
         return object : WallpaperAdapter.Callback {
-            override fun onSelect(select: Boolean, bean: Wallpaper) {
-                if (select) GlideUtils.bindBlurCross(activity, mBind.wallpaper, bean.picture, 800)
+            override fun onSelect(select: Boolean, bean: Wallpaper?) {
+                if (select) GlideUtils.bindBlurCross(activity, mBind.wallpaper, bean?.picture, 800)
             }
 
-            override fun onClick(bean: Wallpaper) {
-                PreferencesUtils.setProperty(Atts.WALLPAPER, bean.id)
+            override fun onClick(bean: Wallpaper?) {
+                bean?.id?.let { PreferencesUtils.setProperty(Atts.WALLPAPER, it) }
                 mArrayObjectAdapter!!.notifyArrayItemRangeChanged(0, mArrayObjectAdapter!!.size())
                 //activity!!.sendBroadcast(Intent(IntentAction.ACTION_UPDATE_WALLPAPER))
                 updateWallpaper()

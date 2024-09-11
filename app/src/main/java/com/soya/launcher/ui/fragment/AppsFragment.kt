@@ -151,11 +151,14 @@ class AppsFragment : BaseWallPaperFragment<FragmentAppsBinding,BaseViewModel>() 
 
     private fun menu(bean: ApplicationInfo) {
         val dialog = AppDialog.newInstance(bean)
-        dialog.setCallback {
-            AndroidSystem.openPackageName(
-                requireContext(), bean.packageName
-            )
-        }
+        dialog.setCallback (object :AppDialog.Callback{
+            override fun onOpen() {
+                AndroidSystem.openPackageName(
+                    requireContext(), bean.packageName
+                )
+            }
+
+        })
         dialog.show(childFragmentManager, AppDialog.TAG)
     }
 

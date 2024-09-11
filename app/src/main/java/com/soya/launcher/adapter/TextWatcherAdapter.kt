@@ -1,21 +1,15 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.Editable
+import android.text.TextWatcher
 
-public class TextWatcherAdapter implements TextWatcher {
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+open class TextWatcherAdapter : TextWatcher {
+    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
     }
 
-    @Override
-    public void afterTextChanged(Editable s) {
-
+    override fun afterTextChanged(s: Editable) {
     }
 }

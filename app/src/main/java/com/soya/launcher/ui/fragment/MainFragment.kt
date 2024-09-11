@@ -325,7 +325,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         mBind.header.pivotY = maxVerticalOffset
 
         mStoreAdapter = StoreAdapter(
-            activity,
+            requireContext(),
             getLayoutInflater(),
             CopyOnWriteArrayList(),
             newStoreClickCallback()
@@ -961,15 +961,15 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun newProjectorCallback(): SettingAdapter.Callback {
         return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem) {
+            override fun onSelect(selected: Boolean, bean: SettingItem?) {
                 if (selected) {
                     setRVHeight(false)
                     setExpanded(false)
                 }
             }
 
-            override fun onClick(bean: SettingItem) {
-                when (bean.type) {
+            override fun onClick(bean: SettingItem?) {
+                when (bean?.type) {
                     Projector.TYPE_SCREEN_ZOOM -> {
                         isRK3326().yes {
                             AndroidSystem.openActivityName(
@@ -1002,15 +1002,15 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun newToolCallback(): SettingAdapter.Callback {
         return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem) {
+            override fun onSelect(selected: Boolean, bean: SettingItem?) {
                 if (selected) {
                     setExpanded(false)
                     setRVHeight(false)
                 }
             }
 
-            override fun onClick(bean: SettingItem) {
-                when (bean.type) {
+            override fun onClick(bean: SettingItem?) {
+                when (bean?.type) {
                     Tools.TYPE_HDMI -> AndroidSystem.openPackageName(
                         requireContext(),
                         "com.mediatek.wwtv.tvcenter"
@@ -1391,15 +1391,15 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun newStoreClickCallback(): StoreAdapter.Callback {
         return object : StoreAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: AppItem) {
+            override fun onSelect(selected: Boolean, bean: AppItem?) {
                 if (selected) {
                     setRVHeight(false)
                     setExpanded(false)
                 }
             }
 
-            override fun onClick(bean: AppItem) {
-                if (!TextUtils.isEmpty(bean.appDownLink)) AndroidSystem.jumpAppStore(
+            override fun onClick(bean: AppItem?) {
+                if (!TextUtils.isEmpty(bean?.appDownLink)) AndroidSystem.jumpAppStore(
                     requireContext(),
                     Gson().toJson(bean),
                     null
@@ -1546,15 +1546,18 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
 
     private fun toastInstallPKApp(name: String, packages: List<PackageName?>?) {
-        toastInstallApp(name) { type ->
-            if (type == 1) {
-                val pns = arrayOfNulls<String>(packages?.size ?: 0)
-                for (i in pns.indices) {
-                    pns[i] = packages?.get(i)?.packageName
+        toastInstallApp(name,object :ToastDialog.Callback{
+            override fun onClick(type: Int) {
+                if (type == 1) {
+                    val pns = arrayOfNulls<String>(packages?.size ?: 0)
+                    for (i in pns.indices) {
+                        pns[i] = packages?.get(i)?.packageName
+                    }
+                    AndroidSystem.jumpAppStore(requireContext(), null, pns)
                 }
-                AndroidSystem.jumpAppStore(requireContext(), null, pns)
             }
-        }
+
+        })
     }
 
     private fun deleteAllPic() {
@@ -1597,7 +1600,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun appMenu(bean: ApplicationInfo) {
         val dialog = AppDialog.newInstance(bean)
-        dialog.setCallback { AndroidSystem.openPackageName(requireContext(), bean.packageName) }
+        dialog.setCallback(object :AppDialog.Callback{
+            override fun onOpen() {
+                AndroidSystem.openPackageName(requireContext(), bean.packageName)
+            }
+
+        })
         dialog.show(getChildFragmentManager(), AppDialog.TAG)
     }
 

@@ -217,7 +217,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                     }
 
                 }
-            }?.models = arrayListOf()
+            }.models = arrayListOf()
 
 
         //列表加载进度条是否可见
@@ -262,7 +262,12 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                 .replace(R.id.main_browse_fragment, ChooseWallpaperFragment.newInstance())
                 .addToBackStack(null).commit()
         }
-        mDialog!!.setCallback { connectedTime = -1 }
+        mDialog!!.setCallback(object :ProgressDialog.Callback{
+            override fun onDismiss() {
+                connectedTime = -1
+            }
+
+        })
 
     }
 

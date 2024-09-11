@@ -85,7 +85,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
     private fun setContent() {
         val arrayObjectAdapter = ArrayObjectAdapter(
             SettingAdapter(
-                activity,
+                requireContext(),
                 LayoutInflater.from(appContext),
                 newCallback(),
                 R.layout.holder_setting
@@ -108,9 +108,9 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
     private fun setSlide() {
         mItemAdapter =
-            DateListAdapter(activity, LayoutInflater.from(appContext), itemList, object : DateListAdapter.Callback {
-                override fun onClick(bean: DateItem) {
-                    when (bean.type) {
+            DateListAdapter(requireContext(), LayoutInflater.from(appContext), itemList, object : DateListAdapter.Callback {
+                override fun onClick(bean: DateItem?) {
+                    when (bean?.type) {
                         0 -> changAutoTime(bean)
                         1 -> if (isAutoTime) {
                             val dialog = ToastDialog.newInstance(
@@ -245,11 +245,11 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
     fun newCallback(): SettingAdapter.Callback {
         return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem) {
+            override fun onSelect(selected: Boolean, bean: SettingItem?) {
             }
 
-            override fun onClick(bean: SettingItem) {
-                when (bean.type) {
+            override fun onClick(bean: SettingItem?) {
+                when (bean?.type) {
                     0 -> AndroidSystem.openDateSetting(requireContext())
                     1 -> AndroidSystem.openWifiSetting(requireContext())
                 }

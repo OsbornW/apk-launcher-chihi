@@ -1,72 +1,56 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context
+import android.text.TextUtils
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.soya.launcher.R
+import com.soya.launcher.bean.Weather
+import com.soya.launcher.manager.FilePathMangaer
+import com.soya.launcher.utils.AndroidSystem.getImageForAssets
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.soya.launcher.R;
-import com.soya.launcher.bean.Weather;
-import com.soya.launcher.manager.FilePathMangaer;
-import com.soya.launcher.utils.AndroidSystem;
-
-import java.util.List;
-
-public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.Holder> {
-    private final Context context;
-    private final LayoutInflater inflater;
-    private final List<Weather> dataList;
-
-    public WeatherAdapter(Context context, LayoutInflater inflater, List<Weather> dataList){
-        this.context = context;
-        this.inflater = inflater;
-        this.dataList = dataList;
+class WeatherAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private val dataList: MutableList<Weather>
+) : RecyclerView.Adapter<WeatherAdapter.Holder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        return Holder(inflater.inflate(R.layout.holder_weather, parent, false))
     }
 
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(R.layout.holder_weather, parent, false));
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(dataList[position])
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(dataList.get(position));
+    override fun getItemCount(): Int {
+        return dataList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return dataList.size();
+    fun replace(list: List<Weather>?) {
+        dataList.clear()
+        dataList.addAll(list!!)
+        notifyDataSetChanged()
     }
 
-    public void replace(List<Weather> list){
-        dataList.clear();
-        dataList.addAll(list);
-        notifyDataSetChanged();
-    }
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val mDateView: TextView = itemView.findViewById(R.id.date)
+        private val mIconView: ImageView = itemView.findViewById(R.id.icon)
+        private val mRangeView: TextView = itemView.findViewById(R.id.range)
 
-    public class Holder extends RecyclerView.ViewHolder {
-        private final TextView mDateView;
-        private final ImageView mIconView;
-        private final TextView mRangeView;
-
-        public Holder(@NonNull View itemView) {
-            super(itemView);
-            mDateView = itemView.findViewById(R.id.date);
-            mIconView = itemView.findViewById(R.id.icon);
-            mRangeView = itemView.findViewById(R.id.range);
-        }
-
-        public void bind(Weather bean){
-            mDateView.setText(bean.getDateDes());
-            mIconView.setImageBitmap(AndroidSystem.getImageForAssets(context, FilePathMangaer.getWeatherIcon(bean.getIcon())));
-            if (!TextUtils.isEmpty(bean.getDatetime())) mRangeView.setText(String.format("%.0f℉  %.0f℉", bean.getTempmin(), bean.getTempmax()));
+        fun bind(bean: Weather) {
+            mDateView.text = bean.dateDes
+            mIconView.setImageBitmap(
+                getImageForAssets(
+                    context,
+                    FilePathMangaer.getWeatherIcon(bean.icon)
+                )
+            )
+            if (!TextUtils.isEmpty(bean.datetime)) mRangeView.text =
+                String.format("%.0f℉  %.0f℉", bean.tempmin, bean.tempmax)
         }
     }
 }

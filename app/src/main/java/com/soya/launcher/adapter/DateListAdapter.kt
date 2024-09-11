@@ -1,84 +1,54 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Switch
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.soya.launcher.R
+import com.soya.launcher.bean.DateItem
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.soya.launcher.R;
-import com.soya.launcher.bean.DateItem;
-
-import java.util.List;
-
-public class DateListAdapter extends RecyclerView.Adapter<DateListAdapter.Holder> {
-
-    private final Context context;
-    private final LayoutInflater inflater;
-    private final List<DateItem> dataList;
-
-    private final Callback callback;
-
-    public DateListAdapter(Context context, LayoutInflater inflater, List<DateItem> dataList, Callback callback){
-        this.context = context;
-        this.inflater = inflater;
-        this.callback = callback;
-        this.dataList = dataList;
+class DateListAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private val dataList: List<DateItem>,
+    private val callback: Callback?
+) : RecyclerView.Adapter<DateListAdapter.Holder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        return Holder(inflater.inflate(R.layout.holder_date_list, parent, false))
     }
 
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(R.layout.holder_date_list, parent, false));
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(dataList[position])
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(dataList.get(position));
+    override fun getItemCount(): Int {
+        return dataList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return dataList.size();
-    }
+    inner class Holder(view: View) : RecyclerView.ViewHolder(view) {
+        private val mTitleView: TextView = view.findViewById(R.id.title)
+        private val mDescView: TextView = view.findViewById(R.id.desc)
+        private val mSwitch: Switch = view.findViewById(R.id.switch_item)
 
-    public class Holder extends RecyclerView.ViewHolder {
-        private final TextView mTitleView;
-        private final TextView mDescView;
-        private final Switch mSwitch;
+        fun bind(bean: DateItem) {
+            val index = dataList.indexOf(bean)
+            mTitleView.text = bean.title
+            mDescView.text = bean.description
+            mSwitch.isChecked = bean.isSwitch
+            mSwitch.visibility = if (bean.isUseSwitch) View.VISIBLE else View.GONE
+            mDescView.visibility = if (bean.isUseSwitch) View.GONE else View.VISIBLE
+            mTitleView.isEnabled = !dataList[0].isSwitch || (index != 1 && index != 2)
 
-        public Holder(View view) {
-            super(view);
-            mTitleView = view.findViewById(R.id.title);
-            mDescView = view.findViewById(R.id.desc);
-            mSwitch = view.findViewById(R.id.switch_item);
+            itemView.setOnClickListener { callback?.onClick(bean) }
         }
 
-        public void bind(DateItem bean){
-            int index = dataList.indexOf(bean);
-            mTitleView.setText(bean.getTitle());
-            mDescView.setText(bean.getDescription());
-            mSwitch.setChecked(bean.isSwitch());
-            mSwitch.setVisibility(bean.isUseSwitch() ? View.VISIBLE : View.GONE);
-            mDescView.setVisibility(bean.isUseSwitch() ? View.GONE : View.VISIBLE);
-            mTitleView.setEnabled(!dataList.get(0).isSwitch() || (index != 1 && index != 2));
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (callback != null) callback.onClick(bean);
-                }
-            });
-        }
-
-        public void unbind(){}
+        fun unbind() {}
     }
 
-    public interface Callback{
-        void onClick(DateItem bean);
+    interface Callback {
+        fun onClick(bean: DateItem?)
     }
 }

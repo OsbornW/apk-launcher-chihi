@@ -35,7 +35,7 @@ abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseVi
 
     private fun setContent() {
         val list: MutableList<Language> = ArrayList()
-        val adapter = LanguageAdapter(activity, LayoutInflater.from(appContext), list)
+        val adapter = LanguageAdapter(requireContext(), LayoutInflater.from(appContext), list)
         val arrayObjectAdapter = ArrayObjectAdapter(adapter)
         val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
         mBind.content.adapter = itemBridgeAdapter
@@ -85,7 +85,9 @@ abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseVi
 
     fun newCallback(adapter: ArrayObjectAdapter): LanguageAdapter.Callback {
         return LanguageAdapter.Callback { bean ->
-            onSelectLanguage(bean)
+            if (bean != null) {
+                onSelectLanguage(bean)
+            }
             adapter.notifyArrayItemRangeChanged(0, adapter.size())
         }
     }

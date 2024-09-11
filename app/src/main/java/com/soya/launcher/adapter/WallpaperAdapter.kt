@@ -1,84 +1,54 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.leanback.widget.Presenter
+import com.soya.launcher.R
+import com.soya.launcher.bean.Wallpaper
+import com.soya.launcher.manager.PreferencesManager
+import com.soya.launcher.view.MyFrameLayout
 
-import androidx.leanback.widget.Presenter;
-
-import com.soya.launcher.R;
-import com.soya.launcher.bean.Wallpaper;
-import com.soya.launcher.callback.SelectedCallback;
-import com.soya.launcher.manager.PreferencesManager;
-import com.soya.launcher.view.MyFrameLayout;
-
-public class WallpaperAdapter extends Presenter {
-
-    private final Context context;
-    private final LayoutInflater inflater;
-    private final Callback callback;
-
-    public WallpaperAdapter(Context context, LayoutInflater inflater, Callback callback){
-        this.context = context;
-        this.inflater = inflater;
-        this.callback = callback;
+class WallpaperAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private val callback: Callback?
+) : Presenter() {
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
+        return Holder(inflater.inflate(R.layout.holder_wallpaper, parent, false))
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent) {
-        return new Holder(inflater.inflate(R.layout.holder_wallpaper, parent, false));
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+        val holder = viewHolder as Holder
+        holder.bind(item as Wallpaper)
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        Holder holder = (Holder) viewHolder;
-        holder.bind((Wallpaper) item);
+    override fun onUnbindViewHolder(viewHolder: ViewHolder) {
+        val holder = viewHolder as Holder
+        holder.unbind()
     }
 
-    @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) {
-        Holder holder = (Holder) viewHolder;
-        holder.unbind();
-    }
+    inner class Holder(view: View) : ViewHolder(view) {
+        private val mRootView = view as MyFrameLayout
+        private val mIV: ImageView = view.findViewById(R.id.image)
+        private val mCheckView: View = view.findViewById(R.id.check)
 
-    public class Holder extends ViewHolder {
+        fun bind(bean: Wallpaper) {
+            mRootView.setCallback { selected -> callback?.onSelect(selected, bean) }
 
-        private final MyFrameLayout mRootView;
-        private final ImageView mIV;
-        private final View mCheckView;
-
-        public Holder(View view) {
-            super(view);
-            mRootView = (MyFrameLayout) view;
-            mIV = view.findViewById(R.id.image);
-            mCheckView = view.findViewById(R.id.check);
+            mRootView.setOnClickListener { callback?.onClick(bean) }
+            mIV.setImageResource(bean.picture)
+            mCheckView.visibility =
+                if (bean.id == PreferencesManager.getWallpaper()) View.VISIBLE else View.GONE
         }
 
-        public void bind(Wallpaper bean){
-            mRootView.setCallback(new SelectedCallback() {
-                @Override
-                public void onSelect(boolean selected) {
-                    if (callback != null) callback.onSelect(selected, bean);
-                }
-            });
-
-            mRootView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (callback != null) callback.onClick(bean);
-                }
-            });
-            mIV.setImageResource(bean.picture);
-            mCheckView.setVisibility(bean.id == PreferencesManager.getWallpaper() ? View.VISIBLE : View.GONE);
-        }
-
-        public void unbind(){}
+        fun unbind() {}
     }
 
-    public interface Callback{
-        void onSelect(boolean select, Wallpaper bean);
-        void onClick(Wallpaper bean);
+    interface Callback {
+        fun onSelect(select: Boolean, bean: Wallpaper?)
+        fun onClick(bean: Wallpaper?)
     }
 }

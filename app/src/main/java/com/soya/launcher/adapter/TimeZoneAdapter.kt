@@ -1,102 +1,73 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.soya.launcher.R
+import com.soya.launcher.bean.SimpleTimeZone
+import java.util.TimeZone
 
-import androidx.annotation.NonNull;
-import androidx.leanback.widget.Presenter;
-import androidx.recyclerview.widget.RecyclerView;
+class TimeZoneAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private val dataList: MutableList<SimpleTimeZone>
+) : RecyclerView.Adapter<TimeZoneAdapter.Holder>() {
+    private var select: TimeZone? = null
+    private var callback: Callback? = null
 
-import com.soya.launcher.R;
-import com.soya.launcher.bean.Language;
-import com.soya.launcher.bean.SimpleTimeZone;
-
-import java.util.List;
-import java.util.TimeZone;
-
-public class TimeZoneAdapter extends RecyclerView.Adapter<TimeZoneAdapter.Holder> {
-
-    private final Context context;
-    private final LayoutInflater inflater;
-    private final List<SimpleTimeZone> dataList;
-
-    private TimeZone select;
-    private Callback callback;
-
-    public TimeZoneAdapter(Context context, LayoutInflater inflater, List<SimpleTimeZone> dataList){
-        this.context = context;
-        this.inflater = inflater;
-        this.dataList = dataList;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        return Holder(inflater.inflate(R.layout.holder_time_zone, parent, false))
     }
 
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(R.layout.holder_time_zone, parent, false));
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(dataList[position])
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(dataList.get(position));
+    override fun getItemCount(): Int {
+        return dataList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return dataList.size();
+    fun setSelect(select: TimeZone?) {
+        this.select = select
+        notifyDataSetChanged()
     }
 
-    public void setSelect(TimeZone select) {
-        this.select = select;
-        notifyDataSetChanged();
+    fun replace(list: List<SimpleTimeZone>?) {
+        dataList.clear()
+        dataList.addAll(list!!)
+        notifyDataSetChanged()
     }
 
-    public void replace(List<SimpleTimeZone> list){
-        dataList.clear();
-        dataList.addAll(list);
-        notifyDataSetChanged();
-    }
+    inner class Holder(view: View) : RecyclerView.ViewHolder(view) {
+        private val mTitleView: TextView = view.findViewById(R.id.title)
+        private val mDescView: TextView = view.findViewById(R.id.desc)
+        private val mCheckView: ImageView = view.findViewById(R.id.check)
 
-    public class Holder extends RecyclerView.ViewHolder {
-        private final TextView mTitleView;
-        private final TextView mDescView;
-        private final ImageView mCheckView;
-
-        public Holder(View view) {
-            super(view);
-            mTitleView = view.findViewById(R.id.title);
-            mDescView = view.findViewById(R.id.desc);
-            mCheckView = view.findViewById(R.id.check);
-        }
-
-        public void bind(SimpleTimeZone bean){
-            boolean isSelect = select != null && bean.getZone().getID().equals(select.getID());
-            if(isSelect){
+        fun bind(bean: SimpleTimeZone) {
+            val isSelect = select != null && bean.zone.id == select!!.id
+            if (isSelect) {
             }
-            mTitleView.setText(bean.getName());
-            mDescView.setText(bean.getDesc());
-            mCheckView.setVisibility(isSelect ? View.VISIBLE : View.GONE);
-            mDescView.setVisibility(isSelect ? View.GONE : View.VISIBLE);
+            mTitleView.text = bean.name
+            mDescView.text = bean.desc
+            mCheckView.visibility = if (isSelect) View.VISIBLE else View.GONE
+            mDescView.visibility = if (isSelect) View.GONE else View.VISIBLE
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    select = bean.getZone();
-                    if (callback != null) callback.onClick(bean);
-                }
-            });
+            itemView.setOnClickListener {
+                select = bean.zone
+                if (callback != null) callback!!.onClick(bean)
+            }
         }
     }
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
+    fun setCallback(callback: Callback?) {
+        this.callback = callback
     }
 
-    public interface Callback{
-        void onClick(SimpleTimeZone bean);
+    interface Callback {
+        fun onClick(bean: SimpleTimeZone?)
     }
 }

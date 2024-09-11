@@ -1,124 +1,94 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
+
+import android.content.Context
+import android.text.TextUtils
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.soya.launcher.R
+import com.soya.launcher.bean.AppItem
+import com.soya.launcher.utils.GlideUtils
+import com.soya.launcher.view.MyFrameLayout
 
 
-import android.content.Context;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.leanback.widget.Presenter;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.soya.launcher.R;
-import com.soya.launcher.bean.AppItem;
-import com.soya.launcher.callback.SelectedCallback;
-import com.soya.launcher.utils.GlideUtils;
-import com.soya.launcher.view.MyFrameLayout;
-
-import java.util.List;
-
-public class AppItemAdapter extends RecyclerView.Adapter<AppItemAdapter.Holder> {
-    private final Context context;
-    private final LayoutInflater inflater;
-    private final List<AppItem> dataList;
-    private Callback callback;
-
-    private final int layoutId;
-
-    public AppItemAdapter(Context context, LayoutInflater inflater, List<AppItem> dataList, int layoutId, Callback callback){
-        this.context = context;
-        this.inflater = inflater;
-        this.layoutId = layoutId;
-        this.callback = callback;
-        this.dataList = dataList;
+class AppItemAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private val dataList: MutableList<AppItem>,
+    private val layoutId: Int,
+    private var callback: Callback?
+) : RecyclerView.Adapter<AppItemAdapter.Holder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        return Holder(inflater.inflate(layoutId, parent, false))
     }
 
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(layoutId, parent, false));
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(dataList[position])
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(dataList.get(position));
+    override fun getItemCount(): Int {
+        return dataList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return dataList.size();
+    fun replace(list: List<AppItem>?) {
+        dataList.clear()
+        dataList.addAll(list!!)
+        notifyDataSetChanged()
     }
 
-    public void replace(List<AppItem> list){
-        dataList.clear();
-        dataList.addAll(list);
-        notifyDataSetChanged();
-    }
+    inner class Holder(view: View) : RecyclerView.ViewHolder(view) {
+        private val mIV: ImageView
+        private val mIVSmall: ImageView
+        private val mTitle: TextView
+        private val mRootView: MyFrameLayout
 
-    public class Holder extends RecyclerView.ViewHolder {
-        private final ImageView mIV;
-        private final ImageView mIVSmall;
-        private final TextView mTitle;
-        private final MyFrameLayout mRootView;
-
-        public Holder(View view) {
-            super(view);
-            view.setNextFocusUpId(R.id.header);
-            mIV = view.findViewById(R.id.image);
-            mTitle = view.findViewById(R.id.title);
-            mIVSmall = view.findViewById(R.id.image_small);
-            mRootView = (MyFrameLayout) view;
+        init {
+            view.nextFocusUpId = R.id.header
+            mIV = view.findViewById(R.id.image)
+            mTitle = view.findViewById(R.id.title)
+            mIVSmall = view.findViewById(R.id.image_small)
+            mRootView = view as MyFrameLayout
         }
 
-        public void bind(AppItem bean){
-            View root = itemView.getRootView();
-            mIV.setVisibility(View.GONE);
-            mIVSmall.setVisibility(View.VISIBLE);
-            GlideUtils.bind(context, mIVSmall, TextUtils.isEmpty(bean.getLocalIcon()) ? bean.getAppIcon() : bean.getLocalIcon());
-            mTitle.setText(bean.getAppName());
+        fun bind(bean: AppItem) {
+            val root = itemView.rootView
+            mIV.visibility = View.GONE
+            mIVSmall.visibility = View.VISIBLE
+            GlideUtils.bind(
+                context,
+                mIVSmall,
+                if (TextUtils.isEmpty(bean.localIcon)) bean.appIcon else bean.localIcon
+            )
+            mTitle.text = bean.appName
 
-            itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    mRootView.setSelected(hasFocus);
-                    Animation animation = AnimationUtils.loadAnimation(context, hasFocus ? R.anim.zoom_in_middle : R.anim.zoom_out_middle);
-                    root.startAnimation(animation);
-                    animation.setFillAfter(true);
-                }
-            });
+            itemView.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                mRootView.isSelected = hasFocus
+                val animation = AnimationUtils.loadAnimation(
+                    context, if (hasFocus) R.anim.zoom_in_middle else R.anim.zoom_out_middle
+                )
+                root.startAnimation(animation)
+                animation.fillAfter = true
+            }
 
-            mRootView.setCallback(new SelectedCallback() {
-                @Override
-                public void onSelect(boolean selected) {
-                    if (callback != null) callback.onSelect(selected);
-                }
-            });
+            mRootView.setCallback { selected -> if (callback != null) callback!!.onSelect(selected) }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (callback != null) callback.onClick(bean);
-                }
-            });
+            itemView.setOnClickListener { if (callback != null) callback!!.onClick(bean) }
         }
 
-        public void unbind(){
-
+        fun unbind() {
         }
     }
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
+    fun setCallback(callback: Callback?) {
+        this.callback = callback
     }
 
-    public interface Callback{
-        void onSelect(boolean selected);
-        void onClick(AppItem bean);
+    interface Callback {
+        fun onSelect(selected: Boolean)
+        fun onClick(bean: AppItem?)
     }
 }

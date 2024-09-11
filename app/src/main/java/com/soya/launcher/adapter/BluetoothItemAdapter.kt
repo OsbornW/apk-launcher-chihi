@@ -1,119 +1,88 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.bluetooth.BluetoothDevice;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.open.system.SystemUtils
+import com.soya.launcher.R
+import com.soya.launcher.bean.BluetoothItem
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.open.system.SystemUtils;
-import com.soya.launcher.R;
-import com.soya.launcher.bean.BluetoothItem;
-
-import java.util.List;
-
-public class BluetoothItemAdapter extends RecyclerView.Adapter<BluetoothItemAdapter.Holder> {
-
-    private final Context context;
-    private final LayoutInflater inflater;
-    private final List<BluetoothItem> dataList;
-
-    private final Callback callback;
-
-    public BluetoothItemAdapter(Context context, LayoutInflater inflater, List<BluetoothItem> dataList, Callback callback){
-        this.context = context;
-        this.inflater = inflater;
-        this.dataList = dataList;
-        this.callback = callback;
+class BluetoothItemAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    val dataList: MutableList<BluetoothItem>,
+    private val callback: Callback?
+) : RecyclerView.Adapter<BluetoothItemAdapter.Holder>() {
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        recyclerView.itemAnimator!!.changeDuration = 0
+        recyclerView.itemAnimator!!.removeDuration = 0
     }
 
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        recyclerView.getItemAnimator().setChangeDuration(0);
-        recyclerView.getItemAnimator().setRemoveDuration(0);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        return Holder(inflater.inflate(R.layout.holder_bluetooth, parent, false))
     }
 
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(R.layout.holder_bluetooth, parent, false));
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(dataList[position])
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(dataList.get(position));
+    override fun getItemCount(): Int {
+        return dataList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return dataList.size();
+    fun getBluetoothList(): List<BluetoothItem> {
+        return dataList
     }
 
-    public List<BluetoothItem> getDataList() {
-        return dataList;
+    fun replace(results: List<BluetoothItem>?) {
+        dataList.clear()
+        dataList.addAll(results!!)
+        notifyDataSetChanged()
     }
 
-    public void replace(List<BluetoothItem> results){
-        dataList.clear();
-        dataList.addAll(results);
-        notifyDataSetChanged();
+    fun add(position: Int, list: List<BluetoothItem>) {
+        dataList.addAll(position, list)
+        notifyItemRangeInserted(position, list.size)
     }
 
-    public void add(int position, List<BluetoothItem> list){
-        dataList.addAll(position, list);
-        notifyItemRangeInserted(position, list.size());
+    fun add(list: List<BluetoothItem>) {
+        val size = dataList.size
+        dataList.addAll(list)
+        notifyItemRangeInserted(size, list.size)
     }
 
-    public void add(List<BluetoothItem> list){
-        int size = dataList.size();
-        dataList.addAll(list);
-        notifyItemRangeInserted(size, list.size());
-    }
-
-    public void remove(List<BluetoothItem> list){
-        for (BluetoothItem item : list){
-            int index = dataList.indexOf(item);
+    fun remove(list: List<BluetoothItem>) {
+        for (item in list) {
+            val index = dataList.indexOf(item)
             if (index != -1) {
-                dataList.remove(index);
-                notifyItemRemoved(index);
+                dataList.removeAt(index)
+                notifyItemRemoved(index)
             }
         }
     }
 
-    public class Holder extends RecyclerView.ViewHolder {
-        private final TextView mTitleView;
-        private final TextView mDescView;
-        private final ImageView mCheckView;
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val mTitleView: TextView = itemView.findViewById(R.id.title)
+        private val mDescView: TextView = itemView.findViewById(R.id.desc)
+        private val mCheckView: ImageView = itemView.findViewById(R.id.check)
 
-        public Holder(@NonNull View itemView) {
-            super(itemView);
-            mTitleView = itemView.findViewById(R.id.title);
-            mCheckView = itemView.findViewById(R.id.check);
-            mDescView = itemView.findViewById(R.id.desc);
-        }
+        fun bind(bean: BluetoothItem) {
+            val device = bean.device
+            mTitleView.text = device.name
+            mDescView.visibility = View.GONE
+            mCheckView.visibility =
+                if (SystemUtils.isConnected(bean.device)) View.VISIBLE else View.GONE
 
-        public void bind(BluetoothItem bean){
-            BluetoothDevice device = bean.getDevice();
-            mTitleView.setText(device.getName());
-            mDescView.setVisibility(View.GONE);
-            mCheckView.setVisibility(SystemUtils.isConnected(bean.getDevice()) ? View.VISIBLE : View.GONE);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (callback != null) callback.onClick(bean);
-                }
-            });
+            itemView.setOnClickListener { callback?.onClick(bean) }
         }
     }
 
-    public interface Callback{
-        void onClick(BluetoothItem bean);
+    interface Callback {
+        fun onClick(bean: BluetoothItem?)
     }
 }

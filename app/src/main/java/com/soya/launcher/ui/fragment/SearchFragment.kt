@@ -71,13 +71,13 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
     override fun initView() {
         lifecycleScope.launch {
             mAppItemAdapter = AppItemAdapter(
-                activity,
+                requireContext(),
                 layoutInflater,
                 ArrayList(),
                 R.layout.item_search_apps,
                 newAppClickCallback()
             )
-            mAdapter = FullSearchAdapter(activity, LayoutInflater.from(appContext), ArrayList(), this@SearchFragment)
+            mAdapter = FullSearchAdapter(requireContext(), LayoutInflater.from(appContext), ArrayList(), this@SearchFragment)
             mBind.recommend.addItemDecoration(
                 HSlideMarginDecoration(
                     resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
@@ -169,7 +169,6 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
 
             }
             withContext(Dispatchers.Main) {
-                "刷新适配器1"
                 mAdapter!!.replace(list)
             }
         }
@@ -208,13 +207,13 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
                             if (!isAdded || call?.isCanceled == true || store == null) return
                             if (result?.result == null || result.result.appList == null || result.result.appList.isEmpty()) {
                                 store?.state = 1
-                                lifecycleScope.launch { mAdapter!!.sync(store) }
+                                lifecycleScope.launch { mAdapter!!.sync(store!!) }
 
                             } else {
 
                                 store?.list?.addAll(result.result.appList)
                                 store?.state = 2
-                                lifecycleScope.launch { mAdapter!!.sync(store) }
+                                lifecycleScope.launch { mAdapter!!.sync(store!!) }
 
                             }
                         }
@@ -238,8 +237,8 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
 
     private fun newWebCallback(): WebAdapter.Callback {
         return WebAdapter.Callback { bean ->
-            var url = bean.link
-            when (bean.type) {
+            var url = bean?.link
+            when (bean?.type) {
                 0 -> url += "/search?q=$searchText"
                 1 -> url += "/search?q=$searchText"
                 2 -> url += "/s?wd=$searchText"
@@ -311,8 +310,8 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
             override fun onSelect(selected: Boolean) {
             }
 
-            override fun onClick(bean: AppItem) {
-                if (!TextUtils.isEmpty(bean.appDownLink)) AndroidSystem.jumpAppStore(
+            override fun onClick(bean: AppItem?) {
+                if (!TextUtils.isEmpty(bean?.appDownLink)) AndroidSystem.jumpAppStore(
                     requireContext(),
                     Gson().toJson(bean),
                     null
@@ -335,7 +334,7 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
         return false
     }
 
-    override fun onClick(type: Int, bean: Any) {
+    override fun onClick(type: Int, bean: Any?) {
         when (type) {
             0 -> AndroidSystem.openPackageName(requireContext(), (bean as ApplicationInfo).packageName)
             1 -> AndroidSystem.jumpAppStore(requireContext(), Gson().toJson(bean as AppItem), null)
@@ -398,5 +397,6 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
             return fragment
         }
     }
+
 }
 

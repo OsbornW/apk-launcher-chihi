@@ -1,66 +1,47 @@
-package com.soya.launcher.adapter;
+package com.soya.launcher.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
+import com.soya.launcher.R
+import com.soya.launcher.bean.Ads
+import com.soya.launcher.utils.GlideUtils
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.soya.launcher.R;
-import com.soya.launcher.bean.Ads;
-import com.soya.launcher.utils.GlideUtils;
-
-import java.util.List;
-import java.util.Map;
-
-public class AdsAdapter extends RecyclerView.Adapter<AdsAdapter.Holder> {
-    public static final int TYPE_MIN = 0;
-    public static final int TYPE_MAX = 1;
-    private final Context context;
-    private final LayoutInflater inflater;
-    private final List<Ads> dataList;
-    private final Map<Integer, Integer> layoutMap;
-
-    public AdsAdapter(Context context, LayoutInflater inflater, List<Ads> dataList, Map<Integer, Integer> layoutMap){
-        this.context = context;
-        this.inflater = inflater;
-        this.dataList = dataList;
-        this.layoutMap = layoutMap;
+class AdsAdapter(
+    private val context: Context,
+    private val inflater: LayoutInflater,
+    private val dataList: List<Ads>,
+    private val layoutMap: Map<Int, Int>
+) : RecyclerView.Adapter<AdsAdapter.Holder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        return Holder(inflater.inflate(layoutMap[viewType]!!, parent, false))
     }
 
-    @NonNull
-    @Override
-    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(inflater.inflate(layoutMap.get(viewType), parent, false));
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(dataList[position])
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.bind(dataList.get(position));
+    override fun getItemCount(): Int {
+        return dataList.size
     }
 
-    @Override
-    public int getItemCount() {
-        return dataList.size();
+    override fun getItemViewType(position: Int): Int {
+        return if (dataList[position].spanSize == 2) TYPE_MAX else TYPE_MIN
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return dataList.get(position).getSpanSize() == 2 ? TYPE_MAX : TYPE_MIN;
-    }
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val mImagView: ImageView = itemView.findViewById(R.id.image)
 
-    public class Holder extends RecyclerView.ViewHolder {
-        private final ImageView mImagView;
-        public Holder(@NonNull View itemView) {
-            super(itemView);
-            mImagView = itemView.findViewById(R.id.image);
+        fun bind(bean: Ads) {
+            GlideUtils.bind(context, mImagView, bean.picture)
         }
+    }
 
-        public void bind(Ads bean){
-            GlideUtils.bind(context, mImagView, bean.getPicture());
-        }
+    companion object {
+        const val TYPE_MIN: Int = 0
+        const val TYPE_MAX: Int = 1
     }
 }

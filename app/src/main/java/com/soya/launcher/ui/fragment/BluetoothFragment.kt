@@ -59,16 +59,11 @@ class BluetoothFragment : BaseWallPaperFragment<FragmentBluetoothBinding,BaseVie
 
 
     override fun initView() {
-        mAdapter = BluetoothItemAdapter(activity, LayoutInflater.from(appContext), ArrayList(), this)
+        mAdapter = BluetoothItemAdapter(requireContext(), LayoutInflater.from(appContext), ArrayList(), this)
         mBind.content.adapter = mAdapter
         mBind.content.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-
-
-
-    override fun onClick(bean: BluetoothItem) {
-    }
 
     companion object {
         fun newInstance(): BluetoothFragment {
@@ -78,5 +73,9 @@ class BluetoothFragment : BaseWallPaperFragment<FragmentBluetoothBinding,BaseVie
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun onClick(bean: BluetoothItem?) {
+
     }
 }
