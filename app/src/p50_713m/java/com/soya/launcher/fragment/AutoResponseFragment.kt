@@ -32,6 +32,7 @@ class AutoResponseFragment:BaseWallPaperFragment<FragmentAutoResponseBinding,Bas
     override fun initClick() {
         mBind.apply {
             llResponse.clickNoRepeat {
+                isResponseOpen = SYSTEM_PROPERTY_AUTO_RESPONSE.systemPropertyValueBoolean()
                 isResponseOpen.yes {
                     //进行关闭
                     SYSTEM_PROPERTY_AUTO_RESPONSE.setSystemPropertyValueBoolean(false){
