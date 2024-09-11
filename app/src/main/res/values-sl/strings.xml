@@ -186,4 +186,26 @@
     <string name="Please_input">Prosim vnesite PIN kodo</string>
     <string name="active_the_app">Za aktiviranje aplikacije vnesite PIN kodo</string>
     <string name="Activate_Now">Aktiviraj zdaj</string>
+
+    <string name="app_text_15" >Razpoložljive posodobitve</string>
+    <string name="app_text_16" >Predstavljena je popolnoma nova različica! \Dodajte [nove funkcije], optimizirajte [optimizacijske točke] in izboljšajte uporabniško izkušnjo. Posodobite zdaj in odkrijte več presenečenj!</string>
+    <string name="app_text_17" >Pogovoriva se naslednjič.</string>
+    <string name="app_text_18" >za posodobitev</string>
+    <string name="app_text_35" >V pripravi</string>
+    <string name="app_text_36" >Prenos ni uspel</string>
+    <string name="app_text_37" >Začni namestitev</string>
+    <string name="app_text_38" >Prenos:% d%%</string>
+
+
+    <string name="auto_response" >Samodejni odziv</string>
+    <string name="auto_focus" >Samodejno ostrenje</string>
+    <string name="auto_entry" >Samodejni vnos na zaslon</string>
+    <string name="projector_method" >Metoda projekcije</string>
+    <string name="screen_zoom" >Skaliranje zaslona</string>
+    <string name="auto_calibrate" >Avtomatski trapezoid</string>
+    <string name="manual_calibration" >Ročni trapezoid</string>
+    <string name="open_response" >odprto</string>
+    <string name="close_response" >zapri</string>
+    <string name="set_success" >Nastavitev uspešna</string>
+    <string name="set_failed" >Nastavitev ni uspela</string>
 </resources>

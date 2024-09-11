@@ -198,27 +198,27 @@
     <string name="Activate_Now">Activate Now</string>
 
 
-    <string name="app_text_15" >可用更新</string>
-    <string name="app_text_16" >全新版本上线！\n新增[新功能]，优化[优化点]，\n提升你的使用体验。立即更新，\n发现更多惊喜！</string>
-    <string name="app_text_17" >下次再说</string>
-    <string name="app_text_18" >更新</string>
-    <string name="app_text_35" >准备中</string>
-    <string name="app_text_36" >下载失败</string>
-    <string name="app_text_37" >开始安装</string>
-    <string name="app_text_38" >下载: %d%%</string>
+    <string name="app_text_15" >Available updates</string>
+    <string name="app_text_16" >A brand new version has been launched! \Add [new features], optimize [optimization points], and improve your user experience. Update now and discover more surprises!</string>
+    <string name="app_text_17" >Let\'s talk about it next time</string>
+    <string name="app_text_18" >to update</string>
+    <string name="app_text_35" >In preparation</string>
+    <string name="app_text_36" >Download failed</string>
+    <string name="app_text_37" >Start installation</string>
+    <string name="app_text_38" >Download:% d%%</string>
 
 
-    <string name="auto_response" >自动响应</string>
-    <string name="auto_focus" >自动聚焦</string>
-    <string name="auto_entry" >自动入幕</string>
-    <string name="projector_method" >投影方式</string>
-    <string name="screen_zoom" >屏幕缩放</string>
-    <string name="auto_calibrate" >自动梯形</string>
-    <string name="manual_calibration" >手动梯形</string>
-    <string name="open_response" >打开</string>
-    <string name="close_response" >关闭</string>
-    <string name="set_success" >设置成功</string>
-    <string name="set_failed" >设置失败</string>
+    <string name="auto_response" >Automatic response</string>
+    <string name="auto_focus" >Auto focus</string>
+    <string name="auto_entry" >Automatic screen entry</string>
+    <string name="projector_method" >Projection method</string>
+    <string name="screen_zoom" >Screen scaling</string>
+    <string name="auto_calibrate" >Automatic trapezoid</string>
+    <string name="manual_calibration" >Manual trapezoid</string>
+    <string name="open_response" >open</string>
+    <string name="close_response" >close</string>
+    <string name="set_success" >Setting successful</string>
+    <string name="set_failed" >Setting failed</string>
 
 
 </resources>

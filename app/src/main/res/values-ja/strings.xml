@@ -186,4 +186,26 @@
     <string name="active_the_app">アプリケーションをアクティブ化するためにPINコードを入力してください</string>
     <string name="Activate_Now">今すぐアクティブにする</string>
 
+    <string name="app_text_15" >使用可能な更新</string>
+    <string name="app_text_16" >新バージョンがオンラインに！ n[新機能]を追加し、[最適化ポイント]を最適化し、 n使用体験を向上させます。今すぐ更新して、 nもっとサプライズを発見！</string>
+    <string name="app_text_17" >また今度</string>
+    <string name="app_text_18" >更新</string>
+    <string name="app_text_35" >準備中</string>
+    <string name="app_text_36" >ダウンロードに失敗しました</string>
+    <string name="app_text_37" >インストールの開始</string>
+    <string name="app_text_38" >ダウンロード:%d%%</string>
+
+
+    <string name="auto_response" >自動応答</string>
+    <string name="auto_focus" >オートフォーカス</string>
+    <string name="auto_entry" >自動入幕</string>
+    <string name="projector_method" >投影モード</string>
+    <string name="screen_zoom" >スクリーンズーム</string>
+    <string name="auto_calibrate" >自動台形</string>
+    <string name="manual_calibration" >手動台形</string>
+    <string name="open_response" >開く</string>
+    <string name="close_response" >閉じる</string>
+    <string name="set_success" >設定に成功しました</string>
+    <string name="set_failed" >設定に失敗しました</string>
+
 </resources>

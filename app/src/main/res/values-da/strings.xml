@@ -187,4 +187,26 @@
     <string name="active_the_app">Indtast PIN-koden for at aktivere programmet</string>
     <string name="Activate_Now">Aktivér nu</string>
 
+    <string name="app_text_15" >Tilgængelige opdateringer</string>
+    <string name="app_text_16" >En helt ny version er blevet lanceret! \Tilføj [nye funktioner], optimer [optimeringspunkter], og forbedre din brugeroplevelse. Opdater nu og opdage flere overraskelser!</string>
+    <string name="app_text_17" >Lad os tale om det næste gang</string>
+    <string name="app_text_18" >at opdatere</string>
+    <string name="app_text_35" >Under forberedelse</string>
+    <string name="app_text_36" >Download mislykkedes</string>
+    <string name="app_text_37" >Start installation</string>
+    <string name="app_text_38" >Download:% d%%</string>
+
+
+    <string name="auto_response" >Automatisk respons</string>
+    <string name="auto_focus" >Automatisk fokus</string>
+    <string name="auto_entry" >Automatisk skærmindtastning</string>
+    <string name="projector_method" >Projektionsmetode</string>
+    <string name="screen_zoom" >Skærmskalering</string>
+    <string name="auto_calibrate" >Automatisk trapez</string>
+    <string name="manual_calibration" >Manuel trapez</string>
+    <string name="open_response" >åben</string>
+    <string name="close_response" >luk</string>
+    <string name="set_success" >Indstilling vellykket</string>
+    <string name="set_failed" >Indstilling mislykkedes</string>
+
 </resources>

@@ -186,4 +186,27 @@
     <string name="active_the_app">Proszę wprowadzić kod PIN, aby aktywować aplikację</string>
     <string name="Activate_Now">Aktywuj teraz</string>
 
+
+    <string name="app_text_15" >Dostępne aktualizacje</string>
+    <string name="app_text_16" >Wprowadzono zupełnie nową wersję! \Dodaj [nowe funkcje], optymalizuj [punkty optymalizacji] i popraw doświadczenie użytkownika. Aktualizuj teraz i odkryj więcej niespodzianek!</string>
+    <string name="app_text_17" >Porozmawiajmy o tym następnym razem.</string>
+    <string name="app_text_18" >do aktualizacji</string>
+    <string name="app_text_35" >W trakcie przygotowań</string>
+    <string name="app_text_36" >Pobieranie nie powiodło się</string>
+    <string name="app_text_37" >Uruchom instalację</string>
+    <string name="app_text_38" >Pobierz:% d%%</string>
+
+
+    <string name="auto_response" >Automatyczna odpowiedź</string>
+    <string name="auto_focus" >Automatyczne ostrość</string>
+    <string name="auto_entry" >Automatyczne wprowadzanie ekranu</string>
+    <string name="projector_method" >Metoda projekcji</string>
+    <string name="screen_zoom" >Skalowanie ekranu</string>
+    <string name="auto_calibrate" >Automatyczny trapez</string>
+    <string name="manual_calibration" >Trapez ręczny</string>
+    <string name="open_response" >otwarty</string>
+    <string name="close_response" >zamknij</string>
+    <string name="set_success" >Ustawienie pomyślne</string>
+    <string name="set_failed" >Ustawienie nie powiodło się</string>
+
 </resources>

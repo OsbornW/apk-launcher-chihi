@@ -185,4 +185,26 @@
     <string name="Please_input">Voer de pincode in</string>
     <string name="active_the_app">Voer de pincode in om de applicatie te activeren</string>
     <string name="Activate_Now">Nu activeren</string>
+
+    <string name="app_text_15" >Beschikbare updates</string>
+    <string name="app_text_16" >Een gloednieuwe versie is gelanceerd! \Voeg [nieuwe functies] toe, optimaliseer [optimalisatiepunten] en verbeter uw gebruikerservaring. Update nu en ontdek meer verrassingen!</string>
+    <string name="app_text_17" >Laten we er de volgende keer over praten.</string>
+    <string name="app_text_18" >om bij te werken</string>
+    <string name="app_text_35" >In voorbereiding</string>
+    <string name="app_text_36" >Downloaden mislukt</string>
+    <string name="app_text_37" >Installatie starten</string>
+    <string name="app_text_38" >Downloaden:% d%%</string>
+
+
+    <string name="auto_response" >Automatische reactie</string>
+    <string name="auto_focus" >Automatisch scherpstellen</string>
+    <string name="auto_entry" >Automatische scherminvoer</string>
+    <string name="projector_method" >Projectiemethode</string>
+    <string name="screen_zoom" >Schermschaling</string>
+    <string name="auto_calibrate" >Automatisch trapezium</string>
+    <string name="manual_calibration" >Handtrapezium</string>
+    <string name="open_response" >open</string>
+    <string name="close_response" >sluiten</string>
+    <string name="set_success" >Instelling succesvol</string>
+    <string name="set_failed" >Instelling mislukt</string>
 </resources>

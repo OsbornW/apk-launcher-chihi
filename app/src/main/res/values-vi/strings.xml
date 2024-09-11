@@ -185,4 +185,27 @@
     <string name="Please_input">Vui lòng nhập mã PIN</string>
     <string name="active_the_app">Vui lòng nhập mã PIN để kích hoạt ứng dụng</string>
     <string name="Activate_Now">Kích hoạt ngay</string>
+
+    <string name="app_text_15" >Cập nhật có sẵn</string>
+    <string name="app_text_16" >全新版本上线！\n新增[新功能]，优化[优化点]，\n提升你的使用体验。立即更新，\n发现更多惊喜！</string>
+    <string name="app_text_17" >Để sau đi.</string>
+    <string name="app_text_18" >Cập nhật</string>
+    <string name="app_text_35" >Chuẩn bị</string>
+    <string name="app_text_36" >Tải xuống thất bại</string>
+    <string name="app_text_37" >Bắt đầu cài đặt</string>
+    <string name="app_text_38" >下载: %d%%</string>
+
+
+    <string name="auto_response" >自动响应</string>
+    <string name="auto_focus" >Tự động lấy nét</string>
+    <string name="auto_entry" >自动入幕</string>
+    <string name="projector_method" >Chế độ chiếu</string>
+    <string name="screen_zoom" >Thu phóng màn hình</string>
+    <string name="auto_calibrate" >Tự động Keystone</string>
+    <string name="manual_calibration" >Hướng dẫn sử dụng Keystone</string>
+    <string name="open_response" >Mở</string>
+    <string name="close_response" >Đóng cửa</string>
+    <string name="set_success" >Thiết lập thành công</string>
+    <string name="set_failed" >Thiết lập thất bại</string>
+
 </resources>

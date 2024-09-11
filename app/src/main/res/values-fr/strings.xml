@@ -188,4 +188,26 @@
     <string name="active_the_app">Veuillez entrer le code PIN pour activer l\'application</string>
     <string name="Activate_Now">Activer maintenant</string>
 
+    <string name="app_text_15" >Mises à jour disponibles</string>
+    <string name="app_text_16" >Nouvelle version en ligne! \ n ajouter [nouvelles fonctionnalités], optimiser [points d\'optimisation], \ n améliorer votre expérience d\'utilisation. Mis à jour maintenant, \ n Découvrez plus de surprises!</string>
+    <string name="app_text_17" >Encore une fois la prochaine fois</string>
+    <string name="app_text_18" >Mise à jour</string>
+    <string name="app_text_35" >En préparation</string>
+    <string name="app_text_36" >Le téléchargement a échoué</string>
+    <string name="app_text_37" >Démarrer l\'installation</string>
+    <string name="app_text_38" >Télécharger:% d%</string>
+
+
+    <string name="auto_response" >Réponse automatique</string>
+    <string name="auto_focus" >Mise au point automatique</string>
+    <string name="auto_entry" >Entrée automatique au rideau</string>
+    <string name="projector_method" >Mode de projection</string>
+    <string name="screen_zoom" >Zoom de l\'écran</string>
+    <string name="auto_calibrate" >Trapèze automatique</string>
+    <string name="manual_calibration" >Trapèze manuel</string>
+    <string name="open_response" >Ouvrir</string>
+    <string name="close_response" >Fermé</string>
+    <string name="set_success" >Configurer avec succès</string>
+    <string name="set_failed" >La configuration a échoué</string>
+
 </resources>

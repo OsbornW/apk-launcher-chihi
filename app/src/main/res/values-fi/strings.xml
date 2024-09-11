@@ -186,4 +186,26 @@
     <string name="Please_input">Anna PIN-koodi</string>
     <string name="active_the_app">Anna PIN-koodi aktivoidaksesi sovelluksen</string>
     <string name="Activate_Now">Aktivoi nyt</string>
+
+    <string name="app_text_15" >Saatavilla olevat päivitykset</string>
+    <string name="app_text_16" >Upouusi versio on julkaistu! \Lisää [uusia ominaisuuksia], optimoi [optimointipisteet] ja paranna käyttäjäkokemustasi. Päivitä nyt ja löydä lisää yllätyksiä!</string>
+    <string name="app_text_17" >Puhutaan siitä ensi kerralla.</string>
+    <string name="app_text_18" >päivitettävä</string>
+    <string name="app_text_35" >Valmistelussa</string>
+    <string name="app_text_36" >Lataus epäonnistui</string>
+    <string name="app_text_37" >Käynnistä asennus</string>
+    <string name="app_text_38" >Lataa:% d%%</string>
+
+
+    <string name="auto_response" >Automaattinen vaste</string>
+    <string name="auto_focus" >Automaattinen tarkennus</string>
+    <string name="auto_entry" >Automaattinen näytönsyöttö</string>
+    <string name="projector_method" >Projektiomenetelmä</string>
+    <string name="screen_zoom" >Näytön skaalaus</string>
+    <string name="auto_calibrate" >Automaattinen trapetsiitti</string>
+    <string name="manual_calibration" >Manuaalinen trapetsiitti</string>
+    <string name="open_response" >avoin</string>
+    <string name="close_response" >sulje</string>
+    <string name="set_success" >Asetus onnistui</string>
+    <string name="set_failed" >Asetus epäonnistui</string>
 </resources>

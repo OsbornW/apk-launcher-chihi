@@ -186,4 +186,26 @@
     <string name="active_the_app">Pro aktivaci aplikace zadejte PIN kód</string>
     <string name="Activate_Now">Aktivovat nyní</string>
 
+    <string name="app_text_15" >Налични актуализации</string>
+    <string name="app_text_16" >Започна нова версия! \Добавете [нови функции], оптимизирайте [точки за оптимизация] и подобрете потребителското си преживяване. Актуализирайте сега и открийте още изненади!</string>
+    <string name="app_text_17" >Нека поговорим следващия път.</string>
+    <string name="app_text_18" >за актуализиране</string>
+    <string name="app_text_35" >В подготовка</string>
+    <string name="app_text_36" >Изтеглянето е неуспешно</string>
+    <string name="app_text_37" >Стартиране на инсталацията</string>
+    <string name="app_text_38" >Изтегляне:% d%%</string>
+
+
+    <string name="auto_response" >Автоматичен отговор</string>
+    <string name="auto_focus" >Автоматично фокусиране</string>
+    <string name="auto_entry" >Автоматично въвеждане на екрана</string>
+    <string name="projector_method" >Метод на прогнозиране</string>
+    <string name="screen_zoom" >Скаларане на екрана</string>
+    <string name="auto_calibrate" >Автоматичен трапец</string>
+    <string name="manual_calibration" >Ръчен трапец</string>
+    <string name="open_response" >отворено</string>
+    <string name="close_response" >затваряне</string>
+    <string name="set_success" >Настройката е успешна</string>
+    <string name="set_failed" >Грешка при настройката</string>
+
 </resources>

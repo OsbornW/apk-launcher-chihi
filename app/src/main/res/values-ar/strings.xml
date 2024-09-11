@@ -187,4 +187,26 @@
     <string name="active_the_app">الرجاء إدخال رقم التعريف الشخصي لتنشيط التطبيق</string>
     <string name="Activate_Now">تفعيل فوري</string>
 
+    <string name="app_text_15" >التحديثات المتاحة</string>
+    <string name="app_text_16" >نسخة جديدة على الانترنت ! إضافة ميزات جديدة ، وتحسين نقاط التحسين ، وتحسين تجربة المستخدم الخاص بك . تحديث الآن . . . ن تجد المزيد من المفاجآت !</string>
+    <string name="app_text_17" >في المرة القادمة</string>
+    <string name="app_text_18" >تجديد .</string>
+    <string name="app_text_35" >إعداد</string>
+    <string name="app_text_36" >فشل التحميل</string>
+    <string name="app_text_37" >بدء التثبيت</string>
+    <string name="app_text_38" >تحميل : %d%</string>
+
+
+    <string name="auto_response" >الرد التلقائي</string>
+    <string name="auto_focus" >التركيز التلقائي</string>
+    <string name="auto_entry" >دخول تلقائي</string>
+    <string name="projector_method" >طريقة الإسقاط</string>
+    <string name="screen_zoom" >حجم الشاشة</string>
+    <string name="auto_calibrate" >التلقائي شبه منحرف</string>
+    <string name="manual_calibration" >سلم يدوي</string>
+    <string name="open_response" >فتح .</string>
+    <string name="close_response" >غلق</string>
+    <string name="set_success" >مجموعة ناجحة</string>
+    <string name="set_failed" >فشل الإعداد</string>
+
 </resources>

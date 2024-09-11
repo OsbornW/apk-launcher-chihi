@@ -186,4 +186,26 @@
     <string name="active_the_app">Pro aktivaci aplikace zadejte PIN kód</string>
     <string name="Activate_Now">Aktivovat nyní</string>
 
+    <string name="app_text_15" >Dostupné aktualizace</string>
+    <string name="app_text_16" >Byla spuštěna zbrusu nová verze! \Přidejte [nové funkce], optimalizujte [optimalizační body] a zlepšete uživatelskou zkušenost. Aktualizujte nyní a objevte další překvapení!</string>
+    <string name="app_text_17" >Promluvíme si o tom příště.</string>
+    <string name="app_text_18" >aktualizovat</string>
+    <string name="app_text_35" >V přípravě</string>
+    <string name="app_text_36" >Stahování selhalo</string>
+    <string name="app_text_37" >Spustit instalaci</string>
+    <string name="app_text_38" >Stáhnout:% d%%</string>
+
+
+    <string name="auto_response" >Automatická odezva</string>
+    <string name="auto_focus" >Automatické ostření</string>
+    <string name="auto_entry" >Automatické zadávání obrazovky</string>
+    <string name="projector_method" >Metoda projekce</string>
+    <string name="screen_zoom" >Měřítko obrazovky</string>
+    <string name="auto_calibrate" >Automatický lichoběžník</string>
+    <string name="manual_calibration" >Ruční lichoběžník</string>
+    <string name="open_response" >otevřít</string>
+    <string name="close_response" >zavřít</string>
+    <string name="set_success" >Nastavení úspěšné</string>
+    <string name="set_failed" >Nastavení selhalo</string>
+
 </resources>
