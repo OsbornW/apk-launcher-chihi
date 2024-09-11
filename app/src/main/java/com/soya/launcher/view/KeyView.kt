@@ -1,24 +1,13 @@
-package com.soya.launcher.view;
+package com.soya.launcher.view
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.KeyEvent;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.KeyEvent
+import androidx.appcompat.widget.AppCompatImageView
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
-
-public class KeyView extends AppCompatImageView {
-    public KeyView(@NonNull Context context) {
-        this(context, null);
-    }
-
-    public KeyView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return event.getKeyCode() == 21 || super.onKeyDown(keyCode, event);
+class KeyView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+    AppCompatImageView(context, attrs) {
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        return event.keyCode == 21 || super.onKeyDown(keyCode, event)
     }
 }

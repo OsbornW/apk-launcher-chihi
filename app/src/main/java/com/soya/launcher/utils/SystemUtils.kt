@@ -1,23 +1,21 @@
-package com.soya.launcher.utils;
+package com.soya.launcher.utils
 
-import android.content.Context;
-import android.net.wifi.WifiManager;
-import java.lang.reflect.Method;
+import android.content.Context
+import android.net.wifi.WifiManager
 
-public class SystemUtils {
-
-    public static boolean isApEnable(Context context) {
+object SystemUtils {
+    fun isApEnable(context: Context): Boolean {
         try {
             // 获取 WifiManager 实例
-            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
             // 反射获取 isWifiApEnabled 方法
-            Method method = wifiManager.getClass().getDeclaredMethod("isWifiApEnabled");
-            method.setAccessible(true);
+            val method = wifiManager.javaClass.getDeclaredMethod("isWifiApEnabled")
+            method.isAccessible = true
             // 调用该方法并返回结果
-            return (Boolean) method.invoke(wifiManager);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            return method.invoke(wifiManager) as Boolean
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
         }
     }
 }

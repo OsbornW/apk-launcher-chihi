@@ -69,13 +69,13 @@ abstract class AbsGradientFragment<VDB : FragmentGradientBinding, VM : BaseViewM
     }
    
 
-    override fun onKeyDown(event: KeyEvent) {
+    override fun onKeyDown(event: KeyEvent?) {
         if (mBind.root.measuredWidth == 0 || mBind.root.measuredHeight == 0) return
         if (centerX == 0f || centerY == 0f) {
             syncDetial()
         }
-        val keyCode = event.keyCode
-        val action = event.action
+        val keyCode = event?.keyCode
+        val action = event?.action
         when (keyCode) {
             KeyEvent.KEYCODE_DPAD_UP -> if (action == 0) {
                 if (type == TYPE_LT || type == TYPE_RT) {

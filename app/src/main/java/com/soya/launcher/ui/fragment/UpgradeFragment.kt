@@ -6,10 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -26,7 +23,7 @@ import com.soya.launcher.handler.PermissionHandler
 import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.ui.activity.WifiListActivity
 import com.soya.launcher.ui.dialog.ProgressDialog
-import com.soya.launcher.utils.AppUtils
+import com.soya.launcher.utils.AppUtil
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -110,7 +107,7 @@ class UpgradeFragment : BaseWallPaperFragment<FragmentUpgradeBinding,BaseViewMod
         mDialog!!.show(childFragmentManager, ProgressDialog.TAG)
         exec.execute {
             try {
-                AppUtils.adbInstallApk(savePath)
+                savePath?.let { AppUtil.adbInstallApk(it) }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

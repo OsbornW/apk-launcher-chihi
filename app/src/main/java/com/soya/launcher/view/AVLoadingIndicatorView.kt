@@ -1,136 +1,124 @@
-package com.soya.launcher.view;
+package com.soya.launcher.view
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.view.animation.AnimationUtils;
+import android.annotation.TargetApi
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.Animatable
+import android.graphics.drawable.Drawable
+import android.os.Build
+import android.text.TextUtils
+import android.util.AttributeSet
+import android.view.View
+import android.view.animation.AnimationUtils
+import com.soya.launcher.R
+import com.soya.launcher.indicators.BallPulseIndicator
+import com.soya.launcher.indicators.Indicator
+import kotlin.math.max
+import kotlin.math.min
 
-import com.soya.launcher.R;
-import com.soya.launcher.indicators.BallPulseIndicator;
-import com.soya.launcher.indicators.Indicator;
+class AVLoadingIndicatorView : View {
+    private var mStartTime: Long = -1
 
-public class AVLoadingIndicatorView extends View {
+    private var mPostedHide = false
 
-    private static final String TAG="AVLoadingIndicatorView";
+    private var mPostedShow = false
 
-    private static final BallPulseIndicator DEFAULT_INDICATOR=new BallPulseIndicator();
+    private var mDismissed = false
 
-    private static final int MIN_SHOW_TIME = 500; // ms
-    private static final int MIN_DELAY = 500; // ms
-
-    private long mStartTime = -1;
-
-    private boolean mPostedHide = false;
-
-    private boolean mPostedShow = false;
-
-    private boolean mDismissed = false;
-
-    private final Runnable mDelayedHide = new Runnable() {
-
-        @Override
-        public void run() {
-            mPostedHide = false;
-            mStartTime = -1;
-            setVisibility(View.GONE);
-        }
-    };
-
-    private final Runnable mDelayedShow = new Runnable() {
-
-        @Override
-        public void run() {
-            mPostedShow = false;
-            if (!mDismissed) {
-                mStartTime = System.currentTimeMillis();
-                setVisibility(View.VISIBLE);
-            }
-        }
-    };
-
-    int mMinWidth;
-    int mMaxWidth;
-    int mMinHeight;
-    int mMaxHeight;
-
-    private Indicator mIndicator;
-    private int mIndicatorColor;
-
-    private boolean mShouldStartAnimationDrawable;
-
-    public AVLoadingIndicatorView(Context context) {
-        super(context);
-        init(context, null,0,0);
+    private val mDelayedHide = Runnable {
+        mPostedHide = false
+        mStartTime = -1
+        visibility = GONE
     }
 
-    public AVLoadingIndicatorView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs,0, R.style.AVLoadingIndicatorView);
+    private val mDelayedShow = Runnable {
+        mPostedShow = false
+        if (!mDismissed) {
+            mStartTime = System.currentTimeMillis()
+            visibility = VISIBLE
+        }
     }
 
-    public AVLoadingIndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context, attrs,defStyleAttr,R.style.AVLoadingIndicatorView);
+    var mMinWidth: Int = 0
+    var mMaxWidth: Int = 0
+    var mMinHeight: Int = 0
+    var mMaxHeight: Int = 0
+
+    private var mIndicator: Indicator? = null
+    private var mIndicatorColor = 0
+
+    private var mShouldStartAnimationDrawable = false
+
+    constructor(context: Context) : super(context) {
+        init(context, null, 0, 0)
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init(context, attrs, 0, R.style.AVLoadingIndicatorView)
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        init(context, attrs, defStyleAttr, R.style.AVLoadingIndicatorView)
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public AVLoadingIndicatorView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(context,attrs,defStyleAttr,R.style.AVLoadingIndicatorView);
+    constructor(
+        context: Context,
+        attrs: AttributeSet?,
+        defStyleAttr: Int,
+        defStyleRes: Int
+    ) : super(context, attrs, defStyleAttr, defStyleRes) {
+        init(context, attrs, defStyleAttr, R.style.AVLoadingIndicatorView)
     }
 
-    private void init(Context context,AttributeSet attrs,int defStyleAttr, int defStyleRes) {
-        mMinWidth = 24;
-        mMaxWidth = 48;
-        mMinHeight = 24;
-        mMaxHeight = 48;
+    private fun init(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) {
+        mMinWidth = 24
+        mMaxWidth = 48
+        mMinHeight = 24
+        mMaxHeight = 48
 
-        final TypedArray a = context.obtainStyledAttributes(
-                attrs, R.styleable.AVLoadingIndicatorView, defStyleAttr, defStyleRes);
+        val a = context.obtainStyledAttributes(
+            attrs, R.styleable.AVLoadingIndicatorView, defStyleAttr, defStyleRes
+        )
 
-        mMinWidth = a.getDimensionPixelSize(R.styleable.AVLoadingIndicatorView_minWidth, mMinWidth);
-        mMaxWidth = a.getDimensionPixelSize(R.styleable.AVLoadingIndicatorView_maxWidth, mMaxWidth);
-        mMinHeight = a.getDimensionPixelSize(R.styleable.AVLoadingIndicatorView_minHeight, mMinHeight);
-        mMaxHeight = a.getDimensionPixelSize(R.styleable.AVLoadingIndicatorView_maxHeight, mMaxHeight);
-        String indicatorName=a.getString(R.styleable.AVLoadingIndicatorView_indicatorName);
-        mIndicatorColor=a.getColor(R.styleable.AVLoadingIndicatorView_indicatorColor, Color.WHITE);
-        setIndicator(indicatorName);
-        if (mIndicator==null){
-            setIndicator(DEFAULT_INDICATOR);
+        mMinWidth = a.getDimensionPixelSize(R.styleable.AVLoadingIndicatorView_minWidth, mMinWidth)
+        mMaxWidth = a.getDimensionPixelSize(R.styleable.AVLoadingIndicatorView_maxWidth, mMaxWidth)
+        mMinHeight =
+            a.getDimensionPixelSize(R.styleable.AVLoadingIndicatorView_minHeight, mMinHeight)
+        mMaxHeight =
+            a.getDimensionPixelSize(R.styleable.AVLoadingIndicatorView_maxHeight, mMaxHeight)
+        val indicatorName = a.getString(R.styleable.AVLoadingIndicatorView_indicatorName)
+        mIndicatorColor = a.getColor(R.styleable.AVLoadingIndicatorView_indicatorColor, Color.WHITE)
+        setIndicator(indicatorName)
+        if (mIndicator == null) {
+            indicator = DEFAULT_INDICATOR
         }
-        a.recycle();
+        a.recycle()
     }
 
-    public Indicator getIndicator() {
-        return mIndicator;
-    }
+    var indicator: Indicator?
+        get() = mIndicator
+        set(d) {
+            if (mIndicator !== d) {
+                if (mIndicator != null) {
+                    mIndicator!!.callback = null
+                    unscheduleDrawable(mIndicator)
+                }
 
-    public void setIndicator(Indicator d) {
-        if (mIndicator != d) {
-            if (mIndicator != null) {
-                mIndicator.setCallback(null);
-                unscheduleDrawable(mIndicator);
+                mIndicator = d
+                //need to set indicator color again if you didn't specified when you update the indicator .
+                setIndicatorColor(mIndicatorColor)
+                if (d != null) {
+                    d.callback = this
+                }
+                postInvalidate()
             }
-
-            mIndicator = d;
-            //need to set indicator color again if you didn't specified when you update the indicator .
-            setIndicatorColor(mIndicatorColor);
-            if (d != null) {
-                d.setCallback(this);
-            }
-            postInvalidate();
         }
-    }
 
 
     /**
@@ -145,9 +133,9 @@ public class AVLoadingIndicatorView extends View {
      * setIndicatorColor(getResources().getColor(android.R.color.black))
      * @param color
      */
-    public void setIndicatorColor(int color){
-        this.mIndicatorColor=color;
-        mIndicator.setColor(color);
+    fun setIndicatorColor(color: Int) {
+        this.mIndicatorColor = color
+        mIndicator!!.color = color
     }
 
 
@@ -159,261 +147,270 @@ public class AVLoadingIndicatorView extends View {
      * 2. Class name with full package,like "com.my.android.indicators.SimpleIndicator".
      * @param indicatorName the class must be extend Indicator .
      */
-    public void setIndicator(String indicatorName){
-        if (TextUtils.isEmpty(indicatorName)){
-            return;
+    fun setIndicator(indicatorName: String?) {
+        if (TextUtils.isEmpty(indicatorName)) {
+            return
         }
-        StringBuilder drawableClassName=new StringBuilder();
-        if (!indicatorName.contains(".")){
-            String defaultPackageName=getClass().getPackage().getName();
+        val drawableClassName = StringBuilder()
+        if (!indicatorName!!.contains(".")) {
+            val defaultPackageName = javaClass.getPackage().name
             drawableClassName.append(defaultPackageName)
-                    .append(".indicators")
-                    .append(".");
+                .append(".indicators")
+                .append(".")
         }
-        drawableClassName.append(indicatorName);
+        drawableClassName.append(indicatorName)
         try {
-            Class<?> drawableClass = Class.forName(drawableClassName.toString());
-            Indicator indicator = (Indicator) drawableClass.newInstance();
-            setIndicator(indicator);
-        } catch (ClassNotFoundException e) {
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            val drawableClass = Class.forName(drawableClassName.toString())
+            val indicator = drawableClass.newInstance() as Indicator
+            this.indicator = indicator
+        } catch (e: ClassNotFoundException) {
+        } catch (e: InstantiationException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
         }
     }
 
-    public void smoothToShow(){
-        startAnimation(AnimationUtils.loadAnimation(getContext(),android.R.anim.fade_in));
-        setVisibility(VISIBLE);
+    fun smoothToShow() {
+        startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
+        visibility = VISIBLE
     }
 
-    public void smoothToHide(){
-        startAnimation(AnimationUtils.loadAnimation(getContext(),android.R.anim.fade_out));
-        setVisibility(GONE);
+    fun smoothToHide() {
+        startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_out))
+        visibility = GONE
     }
 
-    public void hide() {
-        mDismissed = true;
-        removeCallbacks(mDelayedShow);
-        long diff = System.currentTimeMillis() - mStartTime;
-        if (diff >= MIN_SHOW_TIME || mStartTime == -1) {
+    fun hide() {
+        mDismissed = true
+        removeCallbacks(mDelayedShow)
+        val diff = System.currentTimeMillis() - mStartTime
+        if (diff >= MIN_SHOW_TIME || mStartTime == -1L) {
             // The progress spinner has been shown long enough
             // OR was not shown yet. If it wasn't shown yet,
             // it will just never be shown.
-            setVisibility(View.GONE);
+            visibility = GONE
         } else {
             // The progress spinner is shown, but not long enough,
             // so put a delayed message in to hide it when its been
             // shown long enough.
             if (!mPostedHide) {
-                postDelayed(mDelayedHide, MIN_SHOW_TIME - diff);
-                mPostedHide = true;
+                postDelayed(mDelayedHide, MIN_SHOW_TIME - diff)
+                mPostedHide = true
             }
         }
     }
 
-    public void show() {
+    fun show() {
         // Reset the start time.
-        mStartTime = -1;
-        mDismissed = false;
-        removeCallbacks(mDelayedHide);
+        mStartTime = -1
+        mDismissed = false
+        removeCallbacks(mDelayedHide)
         if (!mPostedShow) {
-            postDelayed(mDelayedShow, MIN_DELAY);
-            mPostedShow = true;
+            postDelayed(mDelayedShow, MIN_DELAY.toLong())
+            mPostedShow = true
         }
     }
 
-    @Override
-    protected boolean verifyDrawable(Drawable who) {
-        return who == mIndicator
-                || super.verifyDrawable(who);
+    override fun verifyDrawable(who: Drawable): Boolean {
+        return (who === mIndicator
+                || super.verifyDrawable(who))
     }
 
-    void startAnimation() {
-        if (getVisibility() != VISIBLE) {
-            return;
+    fun startAnimation() {
+        if (visibility != VISIBLE) {
+            return
         }
 
-        if (mIndicator instanceof Animatable) {
-            mShouldStartAnimationDrawable = true;
+        if (mIndicator is Animatable) {
+            mShouldStartAnimationDrawable = true
         }
-        postInvalidate();
+        postInvalidate()
     }
 
-    void stopAnimation() {
-        if (mIndicator instanceof Animatable) {
-            mIndicator.stop();
-            mShouldStartAnimationDrawable = false;
+    fun stopAnimation() {
+        if (mIndicator is Animatable) {
+            mIndicator!!.stop()
+            mShouldStartAnimationDrawable = false
         }
-        postInvalidate();
+        postInvalidate()
     }
 
-    @Override
-    public void setVisibility(int v) {
-        if (getVisibility() != v) {
-            super.setVisibility(v);
+    override fun setVisibility(v: Int) {
+        if (visibility != v) {
+            super.setVisibility(v)
             if (v == GONE || v == INVISIBLE) {
-                stopAnimation();
+                stopAnimation()
             } else {
-                startAnimation();
+                startAnimation()
             }
         }
     }
 
-    @Override
-    protected void onVisibilityChanged(View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
+    override fun onVisibilityChanged(changedView: View, visibility: Int) {
+        super.onVisibilityChanged(changedView, visibility)
         if (visibility == GONE || visibility == INVISIBLE) {
-            stopAnimation();
+            stopAnimation()
         } else {
-            startAnimation();
+            startAnimation()
         }
     }
 
-    @Override
-    public void invalidateDrawable(Drawable dr) {
+    override fun invalidateDrawable(dr: Drawable) {
         if (verifyDrawable(dr)) {
-            final Rect dirty = dr.getBounds();
-            final int scrollX = getScrollX() + getPaddingLeft();
-            final int scrollY = getScrollY() + getPaddingTop();
+            val dirty = dr.bounds
+            val scrollX = scrollX + paddingLeft
+            val scrollY = scrollY + paddingTop
 
-            invalidate(dirty.left + scrollX, dirty.top + scrollY,
-                    dirty.right + scrollX, dirty.bottom + scrollY);
+            invalidate(
+                dirty.left + scrollX, dirty.top + scrollY,
+                dirty.right + scrollX, dirty.bottom + scrollY
+            )
         } else {
-            super.invalidateDrawable(dr);
+            super.invalidateDrawable(dr)
         }
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        updateDrawableBounds(w, h);
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        updateDrawableBounds(w, h)
     }
 
-    private void updateDrawableBounds(int w, int h) {
+    private fun updateDrawableBounds(w: Int, h: Int) {
         // onDraw will translate the canvas so we draw starting at 0,0.
         // Subtract out padding for the purposes of the calculations below.
-        w -= getPaddingRight() + getPaddingLeft();
-        h -= getPaddingTop() + getPaddingBottom();
+        var w = w
+        var h = h
+        w -= paddingRight + paddingLeft
+        h -= paddingTop + paddingBottom
 
-        int right = w;
-        int bottom = h;
-        int top = 0;
-        int left = 0;
+        var right = w
+        var bottom = h
+        var top = 0
+        var left = 0
 
         if (mIndicator != null) {
             // Maintain aspect ratio. Certain kinds of animated drawables
             // get very confused otherwise.
-            final int intrinsicWidth = mIndicator.getIntrinsicWidth();
-            final int intrinsicHeight = mIndicator.getIntrinsicHeight();
-            final float intrinsicAspect = (float) intrinsicWidth / intrinsicHeight;
-            final float boundAspect = (float) w / h;
+            val intrinsicWidth = mIndicator!!.intrinsicWidth
+            val intrinsicHeight = mIndicator!!.intrinsicHeight
+            val intrinsicAspect = intrinsicWidth.toFloat() / intrinsicHeight
+            val boundAspect = w.toFloat() / h
             if (intrinsicAspect != boundAspect) {
                 if (boundAspect > intrinsicAspect) {
                     // New width is larger. Make it smaller to match height.
-                    final int width = (int) (h * intrinsicAspect);
-                    left = (w - width) / 2;
-                    right = left + width;
+                    val width = (h * intrinsicAspect).toInt()
+                    left = (w - width) / 2
+                    right = left + width
                 } else {
                     // New height is larger. Make it smaller to match width.
-                    final int height = (int) (w * (1 / intrinsicAspect));
-                    top = (h - height) / 2;
-                    bottom = top + height;
+                    val height = (w * (1 / intrinsicAspect)).toInt()
+                    top = (h - height) / 2
+                    bottom = top + height
                 }
             }
-            mIndicator.setBounds(left, top, right, bottom);
+            mIndicator!!.setBounds(left, top, right, bottom)
         }
     }
 
-    @Override
-    protected synchronized void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        drawTrack(canvas);
+    @Synchronized
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        drawTrack(canvas)
     }
 
-    void drawTrack(Canvas canvas) {
-        final Drawable d = mIndicator;
+    fun drawTrack(canvas: Canvas) {
+        val d: Drawable? = mIndicator
         if (d != null) {
             // Translate canvas so a indeterminate circular progress bar with padding
             // rotates properly in its animation
-            final int saveCount = canvas.save();
+            val saveCount = canvas.save()
 
-            canvas.translate(getPaddingLeft(), getPaddingTop());
+            canvas.translate(paddingLeft.toFloat(), paddingTop.toFloat())
 
-            d.draw(canvas);
-            canvas.restoreToCount(saveCount);
+            d.draw(canvas)
+            canvas.restoreToCount(saveCount)
 
-            if (mShouldStartAnimationDrawable && d instanceof Animatable) {
-                ((Animatable) d).start();
-                mShouldStartAnimationDrawable = false;
+            if (mShouldStartAnimationDrawable && d is Animatable) {
+                (d as Animatable).start()
+                mShouldStartAnimationDrawable = false
             }
         }
     }
 
-    @Override
-    protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int dw = 0;
-        int dh = 0;
+    @Synchronized
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        var dw = 0
+        var dh = 0
 
-        final Drawable d = mIndicator;
+        val d: Drawable? = mIndicator
         if (d != null) {
-            dw = Math.max(mMinWidth, Math.min(mMaxWidth, d.getIntrinsicWidth()));
-            dh = Math.max(mMinHeight, Math.min(mMaxHeight, d.getIntrinsicHeight()));
+            dw = max(
+                mMinWidth.toDouble(),
+                min(mMaxWidth.toDouble(), d.intrinsicWidth.toDouble())
+            ).toInt()
+            dh = max(
+                mMinHeight.toDouble(),
+                min(mMaxHeight.toDouble(), d.intrinsicHeight.toDouble())
+            ).toInt()
         }
 
-        updateDrawableState();
+        updateDrawableState()
 
-        dw += getPaddingLeft() + getPaddingRight();
-        dh += getPaddingTop() + getPaddingBottom();
+        dw += paddingLeft + paddingRight
+        dh += paddingTop + paddingBottom
 
-        final int measuredWidth = resolveSizeAndState(dw, widthMeasureSpec, 0);
-        final int measuredHeight = resolveSizeAndState(dh, heightMeasureSpec, 0);
-        setMeasuredDimension(measuredWidth, measuredHeight);
+        val measuredWidth = resolveSizeAndState(dw, widthMeasureSpec, 0)
+        val measuredHeight = resolveSizeAndState(dh, heightMeasureSpec, 0)
+        setMeasuredDimension(measuredWidth, measuredHeight)
     }
 
-    @Override
-    protected void drawableStateChanged() {
-        super.drawableStateChanged();
-        updateDrawableState();
+    override fun drawableStateChanged() {
+        super.drawableStateChanged()
+        updateDrawableState()
     }
 
-    private void updateDrawableState() {
-        final int[] state = getDrawableState();
-        if (mIndicator != null && mIndicator.isStateful()) {
-            mIndicator.setState(state);
+    private fun updateDrawableState() {
+        val state = drawableState
+        if (mIndicator != null && mIndicator!!.isStateful) {
+            mIndicator!!.setState(state)
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void drawableHotspotChanged(float x, float y) {
-        super.drawableHotspotChanged(x, y);
+    override fun drawableHotspotChanged(x: Float, y: Float) {
+        super.drawableHotspotChanged(x, y)
 
         if (mIndicator != null) {
-            mIndicator.setHotspot(x, y);
+            mIndicator!!.setHotspot(x, y)
         }
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        startAnimation();
-        removeCallbacks();
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        startAnimation()
+        removeCallbacks()
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        stopAnimation();
+    override fun onDetachedFromWindow() {
+        stopAnimation()
         // This should come after stopAnimation(), otherwise an invalidate message remains in the
         // queue, which can prevent the entire view hierarchy from being GC'ed during a rotation
-        super.onDetachedFromWindow();
-        removeCallbacks();
+        super.onDetachedFromWindow()
+        removeCallbacks()
     }
 
-    private void removeCallbacks() {
-        removeCallbacks(mDelayedHide);
-        removeCallbacks(mDelayedShow);
+    private fun removeCallbacks() {
+        removeCallbacks(mDelayedHide)
+        removeCallbacks(mDelayedShow)
     }
 
 
+    companion object {
+        private const val TAG = "AVLoadingIndicatorView"
+
+        private val DEFAULT_INDICATOR = BallPulseIndicator()
+
+        private const val MIN_SHOW_TIME = 500 // ms
+        private const val MIN_DELAY = 500 // ms
+    }
 }

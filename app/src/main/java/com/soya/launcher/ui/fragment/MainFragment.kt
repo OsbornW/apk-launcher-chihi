@@ -113,7 +113,7 @@ import com.soya.launcher.ui.activity.WifiListActivity
 import com.soya.launcher.ui.dialog.AppDialog
 import com.soya.launcher.ui.dialog.ToastDialog
 import com.soya.launcher.utils.AndroidSystem
-import com.soya.launcher.utils.AppUtils
+import com.soya.launcher.utils.AppUtil
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
 import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
@@ -864,7 +864,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
 
     private fun syncTime() {
-        val is24 = AppUtils.is24Display(appContext)
+        val is24 = AppUtil.is24Display(appContext)
         val calendar = Calendar.getInstance()
         val h = calendar[if (is24) Calendar.HOUR_OF_DAY else Calendar.HOUR]
         val m = calendar[Calendar.MINUTE]

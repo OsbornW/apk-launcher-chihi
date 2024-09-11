@@ -1,26 +1,15 @@
-package com.soya.launcher.view;
+package com.soya.launcher.view
 
-import android.content.Context;
-import android.util.AttributeSet;
+import android.content.Context
+import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatTextView
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-public class MyTextView extends androidx.appcompat.widget.AppCompatTextView {
-    public MyTextView(@NonNull Context context) {
-        this(context, null);
+class MyTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+    AppCompatTextView(context, attrs) {
+    override fun setSelected(selected: Boolean) {
     }
 
-    public MyTextView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    @Override
-    public void setSelected(boolean selected) {
-
-    }
-
-    public void setSelected2(boolean selected){
-        super.setSelected(selected);
+    fun setSelected2(selected: Boolean) {
+        super.setSelected(selected)
     }
 }

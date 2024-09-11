@@ -156,7 +156,7 @@ class AppListAdapter(
                 animation.fillAfter = true
             }
             mAppLayout.setListener(AppLayout.EventListener { keyCode, event ->
-                if (callback != null && event.keyCode == KeyEvent.KEYCODE_MENU) {
+                if (callback != null && event?.keyCode == KeyEvent.KEYCODE_MENU) {
                     isSysApp(bean.packageName).no {
                         callback!!.onMenuClick(bean)
                     }

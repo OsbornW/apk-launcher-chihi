@@ -1,33 +1,20 @@
-package com.soya.launcher.view;
+package com.soya.launcher.view
 
-import android.content.Context;
-import android.util.AttributeSet;
+import android.content.Context
+import android.util.AttributeSet
+import androidx.cardview.widget.CardView
+import com.soya.launcher.callback.SelectedCallback
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
+open class MyCardView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+    CardView(context, attrs) {
+    private var callback: SelectedCallback? = null
 
-import com.soya.launcher.callback.SelectedCallback;
-
-public class MyCardView extends CardView {
-
-    private SelectedCallback callback;
-
-    public MyCardView(@NonNull Context context) {
-        this(context, null);
+    override fun setSelected(selected: Boolean) {
+        super.setSelected(selected)
+        if (callback != null) callback!!.onSelect(selected)
     }
 
-    public MyCardView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    @Override
-    public void setSelected(boolean selected) {
-        super.setSelected(selected);
-        if (callback != null) callback.onSelect(selected);
-    }
-
-    public void setCallback(SelectedCallback callback) {
-        this.callback = callback;
+    fun setCallback(callback: SelectedCallback?) {
+        this.callback = callback
     }
 }

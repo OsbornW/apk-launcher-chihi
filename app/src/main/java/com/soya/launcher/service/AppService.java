@@ -10,9 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.soya.launcher.enums.Atts;
 import com.soya.launcher.enums.IntentAction;
-import com.soya.launcher.utils.AppUtils;
 
 public class AppService extends Service {
 

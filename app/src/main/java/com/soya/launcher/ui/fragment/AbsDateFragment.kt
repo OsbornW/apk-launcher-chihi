@@ -9,14 +9,10 @@ import android.provider.Settings.SettingNotFoundException
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.databinding.ViewDataBinding
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
-import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.ItemBridgeAdapter
-import androidx.leanback.widget.VerticalGridView
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
 import com.soya.launcher.BaseWallPaperFragment
@@ -32,7 +28,7 @@ import com.soya.launcher.ui.dialog.TimePickerDialog
 import com.soya.launcher.ui.dialog.TimeZoneDialog
 import com.soya.launcher.ui.dialog.ToastDialog
 import com.soya.launcher.utils.AndroidSystem
-import com.soya.launcher.utils.AppUtils
+import com.soya.launcher.utils.AppUtil
 import java.util.Arrays
 import java.util.Calendar
 import java.util.Locale
@@ -46,7 +42,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val is24 = AppUtils.is24Display(activity)
+        val is24 = AppUtil.is24Display(requireContext())
         itemList.addAll(
             Arrays.asList(
                 DateItem(
@@ -191,7 +187,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
         val dialog = DatePickerDialog.newInstance()
         dialog.setCallback(object : DatePickerDialog.Callback {
             override fun onConfirm(timeMills: Long) {
-                AppUtils.setTime(timeMills)
+                AppUtil.setTime(timeMills)
                 itemList[1].description = date
                 mItemAdapter!!.notifyItemRangeChanged(0, itemList.size)
             }
@@ -202,7 +198,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
     private fun changAutoTime(bean: DateItem) {
         try {
             val isAuto = isAutoTime
-            AppUtils.setAutoDate(activity, !isAuto)
+            AppUtil.setAutoDate(requireContext(), !isAuto)
             bean.description = if (!isAuto) getString(R.string.open) else getString(R.string.close)
             bean.isSwitch = !isAuto
             mItemAdapter!!.notifyItemRangeChanged(itemList.indexOf(bean), itemList.size)
@@ -213,8 +209,8 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
     private fun chang24Display(bean: DateItem) {
         try {
-            val isAuto = AppUtils.is24Display(activity)
-            AppUtils.set24Display(activity, !isAuto)
+            val isAuto = AppUtil.is24Display(requireContext())
+            AppUtil.set24Display(requireContext(), !isAuto)
             bean.description = if (!isAuto) getString(R.string.open) else getString(R.string.close)
             bean.isSwitch = !isAuto
             mItemAdapter!!.notifyItemRangeChanged(itemList.indexOf(bean), itemList.size)
@@ -235,7 +231,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
         val dialog = TimePickerDialog.newInstance()
         dialog.setCallback(object : TimePickerDialog.Callback {
             override fun onConfirm(timeMills: Long) {
-                AppUtils.setTime(timeMills)
+                AppUtil.setTime(timeMills)
                 itemList[2].description = time
                 mItemAdapter!!.notifyItemRangeChanged(0, itemList.size)
             }

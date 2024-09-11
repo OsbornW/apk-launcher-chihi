@@ -196,9 +196,9 @@ class ScaleScreenFragment : BaseWallPaperFragment<FragmentScaleScreenBinding,Bas
         syncScale()
     }
 
-    override fun onKeyDown(event: KeyEvent) {
-        val keyCode = event.keyCode
-        val action = event.action
+    override fun onKeyDown(event: KeyEvent?) {
+        val keyCode = event?.keyCode
+        val action = event?.action
 
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP && action == 0) {
             if (AX > mHwOffsetA!!.x && AX <= 50 + mHwOffsetA!!.x) {

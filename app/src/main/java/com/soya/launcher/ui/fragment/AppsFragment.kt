@@ -102,7 +102,7 @@ class AppsFragment : BaseWallPaperFragment<FragmentAppsBinding,BaseViewModel>() 
                 }
 
                 mAppLayout.setListener(AppLayout.EventListener { keyCode, event ->
-                    if ( event.keyCode == KeyEvent.KEYCODE_MENU) {
+                    if ( event?.keyCode == KeyEvent.KEYCODE_MENU) {
                         isSysApp(bean.packageName).no {
                             //点击了菜单
                             menu(bean)

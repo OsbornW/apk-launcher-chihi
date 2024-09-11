@@ -45,12 +45,12 @@ class RemoteControlFragment : BaseWallPaperFragment<FragmentRemoteControlBinding
         uiHandler = Handler()
         AndroidSystem.setEnableBluetooth(activity, true)
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        BluetoothScannerUtils.startListening(activity, object : BluetoothScannerUtils.Listener() {
+        BluetoothScannerUtils.startListening(requireContext(), object : BluetoothScannerUtils.Listener() {
             @SuppressLint("MissingPermission")
-            override fun onFound(adapter: BluetoothAdapter, devices: List<BluetoothDevice>) {
+            override fun onFound(adapter: BluetoothAdapter?, devices: List<BluetoothDevice?>?) {
                 super.onFound(adapter, devices)
-                val device = devices[0]
-                if (isRemote(device.name) && !SystemUtils.isConnected(device) && !isConnecting) {
+                val device = devices?.get(0)
+                if (isRemote(device!!.name) && !SystemUtils.isConnected(device) && !isConnecting) {
                     isConnecting = true
                     mCacheDevice = device
                 }
@@ -65,7 +65,7 @@ class RemoteControlFragment : BaseWallPaperFragment<FragmentRemoteControlBinding
         activity!!.sendBroadcast(Intent(IntentAction.ACTION_SHOW_REMOTE_DIALOG))
         if (connRunnable != null) connRunnable!!.interrupt()
         if (runnable != null) runnable!!.interrupt()
-        BluetoothScannerUtils.removeListener(activity)
+        BluetoothScannerUtils.removeListener(requireContext())
         exec.shutdownNow()
     }
 

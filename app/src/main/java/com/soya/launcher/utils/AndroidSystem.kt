@@ -132,7 +132,7 @@ object AndroidSystem {
     }
 
     fun isUsePassWifi(bean: ScanResult?): Boolean {
-        return AccessPointState.getScanResultSecurity(bean) !== AccessPointState.OPEN
+        return bean?.let { AccessPointState.getScanResultSecurity(it) } !== AccessPointState.OPEN
     }
 
     @JvmStatic

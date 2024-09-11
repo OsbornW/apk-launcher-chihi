@@ -1,22 +1,12 @@
-package com.soya.launcher.view;
+package com.soya.launcher.view
 
-import android.content.Context;
-import android.graphics.Rect;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
+import android.content.Context
+import android.util.AttributeSet
+import androidx.recyclerview.widget.RecyclerView
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
-
-public class NoFocuRecyclerView extends RecyclerView {
-    public NoFocuRecyclerView(@NonNull Context context) {
-        this(context, null);
-    }
-
-    public NoFocuRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        setEnabled(false);
+class NoFocuRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+    RecyclerView(context, attrs) {
+    init {
+        isEnabled = false
     }
 }

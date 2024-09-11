@@ -1,37 +1,26 @@
-package com.soya.launcher.view;
+package com.soya.launcher.view
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.widget.FrameLayout;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.KeyEvent
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+open class AppLayout : MyFrameLayout {
+    private var listener: EventListener? = null
 
-public class AppLayout extends MyFrameLayout {
+    constructor(context: Context) : super(context, null)
 
-    private EventListener listener;
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    public AppLayout(@NonNull Context context) {
-        super(context, null);
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        if (listener != null) listener!!.onKeyDown(keyCode, event)
+        return super.onKeyUp(keyCode, event)
     }
 
-    public AppLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    fun setListener(listener: EventListener?) {
+        this.listener = listener
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (listener != null) listener.onKeyDown(keyCode, event);
-        return super.onKeyUp(keyCode, event);
-    }
-
-    public void setListener(EventListener listener) {
-        this.listener = listener;
-    }
-
-    public interface EventListener{
-        boolean onKeyDown(int keyCode, KeyEvent event);
+    fun interface EventListener {
+        fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean
     }
 }

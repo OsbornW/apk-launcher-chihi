@@ -128,6 +128,11 @@ class App : Application() {
         AppCacheNet.baseUrl = BuildConfig.BASE_URL
         AppCache.isGuidChageLanguage = false
 
+        MvvmHelper.init(this@App)
+
+        ToastUtils.init(this@App)
+        ContextManager.getInstance().init(this@App)
+
         startKoin {
             androidContext(this@App)
             modules(netModules)
@@ -164,7 +169,7 @@ class App : Application() {
 
         //OkGo.getInstance().setCertificates()
         HttpRequest.init(this)
-        PreferencesUtils.init(this)
+        //PreferencesUtils.init(this)
         if (TextUtils.isEmpty(PreferencesUtils.getString(Atts.UID, ""))) {
             PreferencesUtils.setProperty(Atts.UID, UUID.randomUUID().toString())
         }
@@ -192,11 +197,6 @@ class App : Application() {
         //AndroidSystem.setEnableBluetooth(this, true)
         timeRemote()
 
-
-        MvvmHelper.init(this@App)
-
-        ToastUtils.init(this@App)
-        ContextManager.getInstance().init(this@App)
         //BRV.modelId = BR.m
 
         initMultiLanguage(this)

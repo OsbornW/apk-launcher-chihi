@@ -1,28 +1,27 @@
-package com.soya.launcher.view;
+package com.soya.launcher.view
 
-import android.content.Context;
-import android.util.DisplayMetrics;
+import android.content.Context
+import android.util.DisplayMetrics
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSmoothScroller;
-import androidx.recyclerview.widget.RecyclerView;
+class BannerLinearLayoutManager(context: Context?, orientation: Int, reverseLayout: Boolean) :
+    LinearLayoutManager(context, orientation, reverseLayout) {
+    private val MILLISECONDS_PER_INTH = 2.5f
 
-public class BannerLinearLayoutManager extends LinearLayoutManager {
-    private final float MILLISECONDS_PER_INTH = 2.5f;
-
-    public BannerLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
-        super(context, orientation, reverseLayout);
-    }
-
-    @Override
-    public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-        LinearSmoothScroller smoothScroller = new LinearSmoothScroller(recyclerView.getContext()){
-            @Override
-            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                return MILLISECONDS_PER_INTH / displayMetrics.density;
+    override fun smoothScrollToPosition(
+        recyclerView: RecyclerView,
+        state: RecyclerView.State,
+        position: Int
+    ) {
+        val smoothScroller: LinearSmoothScroller =
+            object : LinearSmoothScroller(recyclerView.context) {
+                override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
+                    return MILLISECONDS_PER_INTH / displayMetrics.density
+                }
             }
-        };
-        smoothScroller.setTargetPosition(position);
-        startSmoothScroll(smoothScroller);
+        smoothScroller.targetPosition = position
+        startSmoothScroll(smoothScroller)
     }
 }

@@ -25,17 +25,21 @@ class BluetoothFragment : BaseWallPaperFragment<FragmentBluetoothBinding,BaseVie
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        BluetoothScannerUtils.startListening(activity, object : BluetoothScannerUtils.Listener() {
-            override fun onFound(adapter: BluetoothAdapter, devices: List<BluetoothDevice>) {
+        BluetoothScannerUtils.startListening(requireContext(), object : BluetoothScannerUtils.Listener() {
+            override fun onFound(adapter: BluetoothAdapter?, devices: List<BluetoothDevice?>?) {
                 super.onFound(adapter, devices)
 
-                val deviceSet = adapter.bondedDevices
+                val deviceSet = adapter?.bondedDevices
                 val map: MutableMap<String, BluetoothDevice> = HashMap()
-                for (device in deviceSet) {
-                    if (!TextUtils.isEmpty(device.name)) map[device.name] = device
+                if (deviceSet != null) {
+                    for (device in deviceSet) {
+                        if (!TextUtils.isEmpty(device.name)) map[device.name] = device
+                    }
                 }
-                for (device in devices) {
-                    if (!TextUtils.isEmpty(device.name)) map[device.name] = device
+                if (devices != null) {
+                    for (device in devices) {
+                        if (!TextUtils.isEmpty(device?.name)) map[device!!.name] = device
+                    }
                 }
 
                 val strings: MutableMap<String, BluetoothItem> = HashMap()
@@ -54,7 +58,7 @@ class BluetoothFragment : BaseWallPaperFragment<FragmentBluetoothBinding,BaseVie
 
     override fun onDestroy() {
         super.onDestroy()
-        BluetoothScannerUtils.removeListener(activity)
+        BluetoothScannerUtils.removeListener(requireContext())
     }
 
 

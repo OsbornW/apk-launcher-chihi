@@ -1,24 +1,15 @@
-package com.soya.launcher.view;
+package com.soya.launcher.view
 
-import android.content.Context;
-import android.util.AttributeSet;
+import android.content.Context
+import android.util.AttributeSet
+import com.soya.launcher.R
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+class LTInstructionView : MyInstructionView {
+    constructor(context: Context) : super(context)
 
-import com.soya.launcher.R;
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-public class LTInstructionView extends MyInstructionView{
-    public LTInstructionView(@NonNull Context context) {
-        super(context);
-    }
-
-    public LTInstructionView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.include_instructions_lt;
+    override fun getLayoutId(): Int {
+        return R.layout.include_instructions_lt
     }
 }
