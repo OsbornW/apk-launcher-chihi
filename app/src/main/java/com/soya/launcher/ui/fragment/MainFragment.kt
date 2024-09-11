@@ -1671,6 +1671,15 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        requireActivity().setTheme(R.style.Theme_Main)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(): MainFragment {
