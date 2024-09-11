@@ -213,67 +213,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     override fun initdata() {
-        //product.addHeaderItem()?.let { items.addAll(it) }
-
-        if (Config.COMPANY != 5) {
-            items.addAll(
-                Arrays.asList(
-                    *arrayOf(
-                        TypeItem(
-                            getString(R.string.app_store),
-                            R.drawable.store,
-                            0,
-                            Types.TYPE_APP_STORE,
-                            TypeItem.TYPE_ICON_IMAGE_RES,
-                            TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                        ),
-
-                        )
-                )
-            )
-
-            items.addAll(
-                Arrays.asList(
-                    *arrayOf(
-                        TypeItem(
-                            getString(R.string.apps),
-                            R.drawable.app_list,
-                            0,
-                            Types.TYPE_MY_APPS,
-                            TypeItem.TYPE_ICON_IMAGE_RES,
-                            TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                        )
-                    )
-                )
-            )
-
-        }
-
-        if (Config.COMPANY == 0 || Config.COMPANY == 9) {
-            items.add(
-                TypeItem(
-                    getString(R.string.pojector),
-                    R.drawable.projector,
-                    0,
-                    Types.TYPE_PROJECTOR,
-                    TypeItem.TYPE_ICON_IMAGE_RES,
-                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                )
-            )
-        }
-        if (Config.COMPANY == 4) {
-            items.add(
-                TypeItem(
-                    getString(R.string.tool),
-                    R.drawable.tool,
-                    0,
-                    Types.TYPE_TOOL,
-                    TypeItem.TYPE_ICON_IMAGE_RES,
-                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                )
-            )
-        }
-
+        product.addHeaderItem()?.let { items.addAll(it) }
 
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)
