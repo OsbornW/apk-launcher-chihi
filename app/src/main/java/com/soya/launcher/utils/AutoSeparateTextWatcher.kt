@@ -15,7 +15,15 @@ class AutoSeparateTextWatcher(
     private val mStringBuffer = StringBuffer()
 
     /** 分割符  */
-    private var separator = ' '
+    var separator = ' '
+        set(value) {
+            val originalText = removeSpecialSeparator(editText, field) // 使用旧的 separator
+            field = value  // 更新 separator
+            if (!TextUtils.isEmpty(originalText)) {
+                editText.setText(originalText)
+                editText.setSelection(editText.text.length)
+            }
+        }
 
     /** 分割符插入位置规则  */
     private var RULES = intArrayOf(3, 4, 4)
@@ -55,7 +63,7 @@ class AutoSeparateTextWatcher(
      * 设置分割符
      * @param separator 分隔符，默认为空格
      */
-    fun setSeparator(separator: Char) {
+    /*fun setSeparator(separator: Char) {
         val originalText = removeSpecialSeparator(
             editText, this.separator
         )
@@ -64,11 +72,8 @@ class AutoSeparateTextWatcher(
             editText.setText(originalText)
             editText.setSelection(editText.text.length)
         }
-    }
+    }*/
 
-    fun getSeparator(): Char {
-        return separator
-    }
 
     /** 更新最大输入长度  */
     private fun setupMaxInputLength() {
