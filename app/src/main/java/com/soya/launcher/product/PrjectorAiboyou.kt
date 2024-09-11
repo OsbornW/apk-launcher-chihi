@@ -21,7 +21,7 @@ import com.soya.launcher.product.base.TVDeviceImpl
 import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.utils.AndroidSystem
 
-open class PrjectorAiboyou: TVDeviceImpl{
+object PrjectorAiboyou: TVDeviceImpl{
     override fun switchFragment() = run {
         sendLiveEventDataDelay(IS_MAIN_CANBACK, false,1000)
         MainFragment.newInstance()
