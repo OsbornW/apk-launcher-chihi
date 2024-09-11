@@ -213,83 +213,18 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     override fun initdata() {
-        if (Config.COMPANY != 5) {
-            items.addAll(
-                Arrays.asList(
-                    *arrayOf(
-                        TypeItem(
-                            getString(R.string.app_store),
-                            R.drawable.store,
-                            0,
-                            Types.TYPE_APP_STORE,
-                            TypeItem.TYPE_ICON_IMAGE_RES,
-                            TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                        ),
-
-                        )
-                )
-            )
-
-            items.addAll(
-                Arrays.asList(
-                    *arrayOf(
-                        TypeItem(
-                            getString(R.string.apps),
-                            R.drawable.app_list,
-                            0,
-                            Types.TYPE_MY_APPS,
-                            TypeItem.TYPE_ICON_IMAGE_RES,
-                            TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                        )
-                    )
-                )
-            )
-
-        }
-
-        if (Config.COMPANY == 0 || Config.COMPANY == 9) {
-            items.add(
-                TypeItem(
-                    getString(R.string.pojector),
-                    R.drawable.projector,
-                    0,
-                    Types.TYPE_PROJECTOR,
-                    TypeItem.TYPE_ICON_IMAGE_RES,
-                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                )
-            )
-        }
-        if (Config.COMPANY == 4) {
-            items.add(
-                TypeItem(
-                    getString(R.string.tool),
-                    R.drawable.tool,
-                    0,
-                    Types.TYPE_TOOL,
-                    TypeItem.TYPE_ICON_IMAGE_RES,
-                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                )
-            )
-        }
-
+        product.addHeaderItem()?.let { items.addAll(it) }
 
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_PACKAGE_ADDED)
         filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
         filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
         filter.addDataScheme("package")
-        activity!!.registerReceiver(receiver, filter)
+        requireActivity().registerReceiver(receiver, filter)
+
         val filter1 = IntentFilter()
-        filter1.addAction(IntentAction.ACTION_UPDATE_WALLPAPER)
         filter1.addAction(IntentAction.ACTION_RESET_SELECT_HOME)
-        filter1.addAction(Intent.ACTION_SCREEN_ON)
-        filter1.addAction(Intent.ACTION_SCREEN_OFF)
-        filter1.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED)
-        filter1.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED)
-        filter1.addAction(UsbManager.ACTION_USB_ACCESSORY_ATTACHED)
-        filter1.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED)
-        filter1.addAction("android.hardware.usb.action.USB_STATE")
-        activity!!.registerReceiver(wallpaperReceiver, filter1)
+        requireActivity().registerReceiver(wallpaperReceiver, filter1)
 
         detectNetStaus()
 
@@ -298,17 +233,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         checkLauncherUpdate()
 
         mBind.header.requestFocus()
-
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).yes {
-                    withContext(Dispatchers.Main) {
-                        //checkVersion()
-                    }
-                }
-            }
-        }
-
 
         mBind.horizontalContent.addItemDecoration(
             HSlideMarginDecoration(
@@ -1248,14 +1172,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         mBind.horizontalContent.visibility = View.VISIBLE
     }
 
-    /* private fun local(filePath: String, direction: Int, columns: Int, layoutId: Int) {
-         val files = AndroidSystem.getAssetsFileNames(activity, filePath)
-         val list: MutableList<Data> = ArrayList(files.size)
-         for (item in files) {
-             list.add(Data(Types.TYPE_UNKNOW, null, "$filePath/$item", Movice.PIC_ASSETS))
-         }
-         setMoviceContent(list, direction, columns, layoutId)
-     }*/
 
     private fun fillHeader() {
         try {
@@ -1477,7 +1393,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
 
                 Types.TYPE_MY_APPS -> {
-                    "开始启动1"
                     val intent = Intent(requireContext(), AppsActivity::class.java)
                     intent.putExtra(Atts.TYPE, bean.type)
                     startActivity(intent)
@@ -1614,23 +1529,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
 
-    private fun checkVersion() {
-        checkVersion(object : ServiceRequest.Callback<VersionResponse> {
-            override fun onCallback(call: Call<*>, status: Int, result: VersionResponse?) {
-                if (!isAdded || call.isCanceled || result == null || result.data == null) return
-                val version = result.data
-                if (version.version > BuildConfig.VERSION_CODE && Config.CHANNEL == version.channel) {
-                    PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, version.version.toInt())
-                    AndroidSystem.jumpUpgrade(requireContext(), version)
-                }
-            }
-        })
-    }
 
     inner class InnerReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
-                IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
                 Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> {
 
                     var infos = AndroidSystem.getUserApps2(appContext)
@@ -1653,9 +1555,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     inner class WallpaperReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
-                IntentAction.ACTION_UPDATE_WALLPAPER -> updateWallpaper()
-                UsbManager.ACTION_USB_DEVICE_ATTACHED -> {}
-                UsbManager.ACTION_USB_DEVICE_DETACHED -> {}
                 IntentAction.ACTION_RESET_SELECT_HOME -> {
                     if (isExpanded) {
                         mBind.header.requestFocus()

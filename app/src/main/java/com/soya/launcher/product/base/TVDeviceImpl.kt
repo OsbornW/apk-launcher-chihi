@@ -23,9 +23,11 @@ import com.soya.launcher.SETTING_PROJECTOR
 import com.soya.launcher.SETTING_WALLPAPER
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.bean.Wallpaper
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.cache.AppCache.WALLPAPERS
+import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.ext.openFileM
 import com.soya.launcher.ui.activity.ChooseGradientActivity
@@ -243,6 +245,20 @@ interface TVDeviceImpl : TVDevice {
             WALLPAPERS.add(Wallpaper(2, R.drawable.wallpaper_21))
             WALLPAPERS.add(Wallpaper(4, R.drawable.wallpaper_24))
             WALLPAPERS.add(Wallpaper(5, R.drawable.wallpaper_25))
+        }
+    }
+
+    override fun addHeaderItem(): MutableList<TypeItem>? {
+        return mutableListOf<TypeItem>().apply {
+            // 投影仪
+            add(TypeItem(
+                appContext.getString(R.string.pojector),
+                R.drawable.projector,
+                0,
+                Types.TYPE_PROJECTOR,
+                TypeItem.TYPE_ICON_IMAGE_RES,
+                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+            ))
         }
     }
 }

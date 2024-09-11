@@ -42,6 +42,7 @@ import com.soya.launcher.utils.BluetoothScannerUtils
 import com.soya.launcher.utils.FileUtils
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.net.di.homeModules
+import com.soya.launcher.product.base.product
 import com.tencent.mmkv.MMKV
 import com.thumbsupec.lib_base.ext.language.initMultiLanguage
 import com.thumbsupec.lib_base.toast.ToastUtils
@@ -126,6 +127,7 @@ class App : Application() {
         com.hs.App.init(this)
         //BRV.modelId = BR.m
         initMultiLanguage(this)
+        product.addWallPaper()
     }
 
 

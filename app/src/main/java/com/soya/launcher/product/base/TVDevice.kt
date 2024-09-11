@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.product.Projector713G
 import com.soya.launcher.product.Projector713M
 import com.soya.launcher.product.ProjectorH6
@@ -51,6 +52,7 @@ sealed interface TVDevice{
     fun openMore(){}
     fun projectorColumns():Int = 0
     fun addWallPaper(){}
+    fun addHeaderItem():MutableList<TypeItem>?=null
 }
 
 data object DefaultDevice: TVDevice
