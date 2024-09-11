@@ -252,24 +252,24 @@ interface TVDeviceImpl : TVDevice {
         return mutableListOf<TypeItem>().apply {
 
             // APP Store
-            TypeItem(
+            add(TypeItem(
                 appContext.getString(R.string.app_store),
                 R.drawable.store,
                 0,
                 Types.TYPE_APP_STORE,
                 TypeItem.TYPE_ICON_IMAGE_RES,
                 TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-            )
+            ))
 
             // Local APP
-            TypeItem(
+            add(TypeItem(
                 appContext.getString(R.string.apps),
                 R.drawable.app_list,
                 0,
                 Types.TYPE_MY_APPS,
                 TypeItem.TYPE_ICON_IMAGE_RES,
                 TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-            )
+            ))
 
 
         }
