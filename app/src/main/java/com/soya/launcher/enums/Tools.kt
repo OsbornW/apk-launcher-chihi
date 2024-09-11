@@ -1,6 +1,8 @@
-package com.soya.launcher.enums;
+package com.soya.launcher.enums
 
-public interface Tools {
-    int TYPE_HDMI = 0;
-    int TYPE_FILE = 1;
+interface Tools {
+    companion object {
+        const val TYPE_HDMI: Int = 0
+        const val TYPE_FILE: Int = 1
+    }
 }

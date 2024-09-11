@@ -130,7 +130,13 @@ android {
     flavorDimensions.add("chihi")
 
     productFlavors {
-
+        // {  713M,P50_713M,713Rk,713RK_G,713G------>0   }
+        // {  aiboyou_projector------>1   }
+        // {  aiboyou_tv------>2   }
+        // {  aiboyou_launcher------>7   }
+        // {  X98K------>3   }
+        // {  H27002------>5   }
+        // {  H6------>9   }
         //宏信(投影仪) 713M
         hongxin_713M {
             applicationId "com.soya.launcher"

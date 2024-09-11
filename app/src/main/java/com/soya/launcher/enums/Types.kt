@@ -1,13 +1,15 @@
-package com.soya.launcher.enums;
+package com.soya.launcher.enums
 
-public interface Types {
-    int TYPE_UNKNOW = -1;
-    int TYPE_APP_STORE = 4;
-    int TYPE_MY_APPS = 5;
-    int TYPE_PROJECTOR = 6;
-    int TYPE_WALLPAPER = 7;
-    int TYPE_MOVICE = 10;
-    int TYPE_TOOL = 11;
-    int TYPE_GOOGLE_PLAY = 12;
-    int TYPE_MEDIA_CENTER = 13;
+interface Types {
+    companion object {
+        const val TYPE_UNKNOW: Int = -1
+        const val TYPE_APP_STORE: Int = 4
+        const val TYPE_MY_APPS: Int = 5
+        const val TYPE_PROJECTOR: Int = 6
+        const val TYPE_WALLPAPER: Int = 7
+        const val TYPE_MOVICE: Int = 10
+        const val TYPE_TOOL: Int = 11
+        const val TYPE_GOOGLE_PLAY: Int = 12
+        const val TYPE_MEDIA_CENTER: Int = 13
+    }
 }

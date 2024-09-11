@@ -50,6 +50,7 @@ sealed interface TVDevice{
     fun openBluetooth(){}
     fun openMore(){}
     fun projectorColumns():Int = 0
+    fun addWallPaper(){}
 }
 
 data object DefaultDevice: TVDevice

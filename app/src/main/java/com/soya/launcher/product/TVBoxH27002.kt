@@ -23,6 +23,8 @@ import com.soya.launcher.SETTING_NETWORK
 import com.soya.launcher.SETTING_PROJECTOR
 import com.soya.launcher.SETTING_WALLPAPER
 import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.bean.Wallpaper
+import com.soya.launcher.cache.AppCache.WALLPAPERS
 import com.soya.launcher.product.base.TVDeviceImpl
 import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.utils.AndroidSystem
@@ -89,6 +91,17 @@ object TVBoxH27002 : TVDeviceImpl {
 
     override fun openMore() {
         currentActivity?.let { AndroidSystem.openSystemSetting2(it) }
+    }
+
+    override fun addWallPaper() {
+        if (WALLPAPERS.isEmpty()) {
+            WALLPAPERS.add(Wallpaper(0, R.drawable.wallpaper_1))
+            WALLPAPERS.add(Wallpaper(1, R.drawable.wallpaper_20))
+            WALLPAPERS.add(Wallpaper(2, R.drawable.wallpaper_21))
+            WALLPAPERS.add(Wallpaper(3, R.drawable.wallpaper_22))
+            WALLPAPERS.add(Wallpaper(4, R.drawable.wallpaper_24))
+            WALLPAPERS.add(Wallpaper(5, R.drawable.wallpaper_25))
+        }
     }
 
 

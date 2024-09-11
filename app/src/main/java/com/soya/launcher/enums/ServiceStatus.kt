@@ -1,7 +1,9 @@
-package com.soya.launcher.enums;
+package com.soya.launcher.enums
 
-public interface ServiceStatus {
-    int STATE_SUCCESS = 0;
-    int STATE_SERVICE_ERROR = 1;
-    int STATE_NET_WORK_ERROR = 2;
+interface ServiceStatus {
+    companion object {
+        const val STATE_SUCCESS: Int = 0
+        const val STATE_SERVICE_ERROR: Int = 1
+        const val STATE_NET_WORK_ERROR: Int = 2
+    }
 }
