@@ -78,7 +78,7 @@
     <string name="date_picker">Dátumválasztók</string>
     <string name="time_picker">Időválasztó</string>
     <string name="year_month_day">% 02d /% 02d /% 02d</string>
-    <string name="hour_minute_second">% 02d:% 02d</string>
+    <string name="hour_minute_second">%02d:%02d</string>
     <string name="is_auto_time_toast">Az idő automatikus beszerzése, a beállításhoz nem támogatott</string>
     <string name="year">év</string>
     <string name="month">hónap</string>

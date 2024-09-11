@@ -78,7 +78,7 @@
     <string name="date_picker">تاريخ محدد</string>
     <string name="time_picker">الوقت محدد</string>
     <string name="year_month_day">% 02d / / % 02d 02d</string>
-    <string name="hour_minute_second">% 02d : %02d</string>
+    <string name="hour_minute_second">%02d:%02d</string>
     <string name="is_auto_time_toast">تلقائيا الحصول على الوقت ، لا تدعم إعدادات</string>
     <string name="year">سنة</string>
     <string name="month">شهر .</string>

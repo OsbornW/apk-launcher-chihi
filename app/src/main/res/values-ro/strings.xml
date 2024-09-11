@@ -78,7 +78,7 @@
     <string name="date_picker">Alegători de date</string>
     <string name="time_picker">Selector de timp</string>
     <string name="year_month_day">% 02d /% 02d /% 02d</string>
-    <string name="hour_minute_second">% 02d:% 02d</string>
+    <string name="hour_minute_second">%02d:%02d</string>
     <string name="is_auto_time_toast">Obține automat timp, nu este acceptat pentru setare</string>
     <string name="year">an</string>
     <string name="month">lună</string>

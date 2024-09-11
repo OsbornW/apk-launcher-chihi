@@ -78,7 +78,7 @@
     <string name="date_picker">Selector de fecha</string>
     <string name="time_picker">Selector de tiempo</string>
     <string name="year_month_day">% 02d /% 02d /% 02d</string>
-    <string name="hour_minute_second">% 02d: + 02d</string>
+    <string name="hour_minute_second">%02d:%02d</string>
     <string name="is_auto_time_toast">Tiempo de adquisición automático, no admite configuración</string>
     <string name="year">Año</string>
     <string name="month">Mes</string>
