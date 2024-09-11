@@ -250,15 +250,28 @@ interface TVDeviceImpl : TVDevice {
 
     override fun addHeaderItem(): MutableList<TypeItem>? {
         return mutableListOf<TypeItem>().apply {
-            // 投影仪
-            add(TypeItem(
-                appContext.getString(R.string.pojector),
-                R.drawable.projector,
+
+            // APP Store
+            TypeItem(
+                appContext.getString(R.string.app_store),
+                R.drawable.store,
                 0,
-                Types.TYPE_PROJECTOR,
+                Types.TYPE_APP_STORE,
                 TypeItem.TYPE_ICON_IMAGE_RES,
                 TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-            ))
+            )
+
+            // Local APP
+            TypeItem(
+                appContext.getString(R.string.apps),
+                R.drawable.app_list,
+                0,
+                Types.TYPE_MY_APPS,
+                TypeItem.TYPE_ICON_IMAGE_RES,
+                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+            )
+
+
         }
     }
 }

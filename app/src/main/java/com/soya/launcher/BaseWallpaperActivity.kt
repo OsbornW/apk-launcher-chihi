@@ -7,6 +7,7 @@ import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.databinding.ActivityBaseWebBinding
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.yes
+import com.soya.launcher.ext.setBlurBackground
 import com.soya.launcher.utils.GlideUtils
 
 open class BaseWallpaperActivity<VDB : ViewDataBinding,VM:BaseViewModel> : BaseVMActivity<VDB ,VM>() {
@@ -20,8 +21,8 @@ open class BaseWallpaperActivity<VDB : ViewDataBinding,VM:BaseViewModel> : BaseV
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isShowWallPaper().yes {
-            GlideUtils.bindBlur(appContext, rootBinding.ivWallpaper, curWallpaper())
-            //rootBinding.layoutBody.setBackgroundResource(R.drawable.wallpaper_22)
+            //GlideUtils.bindBlur(appContext, rootBinding.ivWallpaper, curWallpaper())
+            rootBinding.layoutRoot.setBlurBackground(curWallpaper())
         }
     }
 

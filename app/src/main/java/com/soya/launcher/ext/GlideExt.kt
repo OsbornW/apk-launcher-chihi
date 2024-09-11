@@ -1,7 +1,9 @@
 package com.soya.launcher.ext
 
 import android.graphics.drawable.Drawable
+import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -14,9 +16,11 @@ import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.bumptech.glide.request.transition.Transition
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.global.AppCacheBase.drawableCache
 import com.soya.launcher.GlideApp
 import com.soya.launcher.R
+import jp.wasabeef.glide.transformations.BlurTransformation
 
 fun ImageView.bindImageView(path:Any){
     GlideApp.with(appContext)
@@ -104,3 +108,29 @@ fun ImageView.loadImageWithGlide(
         })
         .into(this)
 }
+
+
+fun View.setBlurBackground(
+    load: Any?,
+    radius: Int = 25,
+    sampling: Int = 8
+) {
+    GlideApp.with(appContext)
+        .load(load)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .override(640, 360)
+        .apply(RequestOptions.bitmapTransform(BlurTransformation(radius, sampling)))
+        .into(object : SimpleTarget<Drawable>() {
+            override fun onResourceReady(
+                resource: Drawable,
+                transition: Transition<in Drawable>?
+            ) {
+                // 当资源加载完成时，返回 `Drawable`
+                // 设置背景
+                this@setBlurBackground.background = resource
+            }
+
+        })
+
+}
+
