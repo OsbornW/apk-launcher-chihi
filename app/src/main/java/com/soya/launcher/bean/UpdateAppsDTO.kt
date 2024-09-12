@@ -19,6 +19,8 @@ data class UpdateAppsDTO(
     val version: String,
     @SerialName("versionCode")
     val versionCode: Int,
+    @SerialName("iconUrl")
+    var iconUrl: String?,
 
     // 是否已安装
     var isInstalled:Boolean = false,

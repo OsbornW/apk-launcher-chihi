@@ -70,7 +70,7 @@ fun getUpdateList(): Boolean {
 
     // 创建包名到版本号的映射
     val versionCodeMap = mutableMapOf<String, Int>()
-    val installedPackageNames = localApps.map { it.packageName }.toSet()
+    //val installedPackageNames = localApps.map { it.packageName }.toSet()
 
     localApps.forEach { app ->
         try {
@@ -85,14 +85,14 @@ fun getUpdateList(): Boolean {
     // 筛选需要更新的应用，移除版本号相同的和本地不存在的 UpdateAppsDTO
     val filteredUpdateApps = updateApps.filterNot { dto ->
         val currentVersionCode = versionCodeMap[dto.packageName]
-        val isNotInstalled = dto.packageName !in installedPackageNames
-        val shouldFilter = currentVersionCode == dto.versionCode || isNotInstalled
+        //val isNotInstalled = dto.packageName !in installedPackageNames
+        //val shouldFilter = currentVersionCode == dto.versionCode || isNotInstalled
+        val shouldFilter = currentVersionCode == dto.versionCode
 
         if (shouldFilter) {
             // 日志记录
             Log.d(
                 "UpdateList", "Filtering out ${dto.packageName}. " +
-                        "Installed: ${!isNotInstalled}, " +
                         "Current Code: $currentVersionCode, DTO Code: ${dto.versionCode}"
             )
         }
@@ -236,6 +236,16 @@ fun openFileM() {
         currentActivity?.startActivity(intent)
     } else {
         Log.e("FileBrower", "FileBrower is not installed on this device.")
+    }
+}
+
+// 扩展函数判断是否安装了指定包名的应用
+fun String.isAppInstalled(): Boolean {
+    return try {
+        appContext.packageManager.getPackageInfo(this, 0)
+        true // 如果找到了应用，返回 true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false // 没找到应用，返回 false
     }
 }
 

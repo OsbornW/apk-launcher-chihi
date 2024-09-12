@@ -19,14 +19,19 @@ import com.shudong.lib_base.ext.downloadApk
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToTypeBean
+import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.FragmentUpdateAppsBinding
+import com.soya.launcher.ext.bindImageView
 import com.soya.launcher.ext.getAppIcon
 import com.soya.launcher.ext.getAppVersionName
+import com.soya.launcher.ext.isAppInstalled
+import com.soya.launcher.ext.loadImageWithGlide
 import com.soya.launcher.ext.silentInstallWithMutex
+import com.soya.launcher.utils.GlideUtils
 import com.soya.launcher.view.FlikerProgressBar
 import kotlinx.coroutines.launch
 import org.raphets.roundimageview.RoundImageView
@@ -48,7 +53,20 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                     val pbUpdate = findView<FlikerProgressBar>(R.id.pb_update)
                     tvAppName.text = dto.appName
                     tvAppDate.text = dto.getFormatDate()
-                    ivAppIcon.setImageDrawable(dto.packageName.getAppIcon())
+                    //dto.iconUrl = "https://hbimg.b0.upaiyun.com/83b258aa7e9f5669ae5787055c0e2463f9809ec965da1-FhXANu_fw658"
+                    dto.iconUrl.isNullOrEmpty().yes {
+                        ivAppIcon.setImageDrawable(dto.packageName.getAppIcon())
+                    }.otherwise {
+                        if(dto.packageName.isAppInstalled()){
+                            ivAppIcon.setImageDrawable(dto.packageName.getAppIcon())
+                        }else{
+                            ivAppIcon.loadImageWithGlide(dto.iconUrl!!){
+                                ivAppIcon.setImageDrawable(dto.packageName.getAppIcon())
+                            }
+                        }
+
+                    }
+
                     tvVersionInfo.text = "${dto.packageName.getAppVersionName()}--->${dto.version}"
                     //pbUpdate.setProgressText(dto.status)
                     llRoot.setOnFocusChangeListener { view, b ->

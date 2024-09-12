@@ -85,7 +85,7 @@ class ChooseGradientFragment :
 
                     Projector.TYPE_AUTO_CALIBRATION -> {
                         setFunction(AUTO_CORRECTION)
-                        PACKAGE_NAME_KEYSTONE_CORRECTION_P50.openApp()
+                        //PACKAGE_NAME_KEYSTONE_CORRECTION_P50.openApp()
                     }
                     Projector.TYPE_MANUAL_CALIBRATION -> {
                         startKtxActivity<GradientActivity>()
