@@ -209,4 +209,8 @@
     <string name="close_response" >닫기</string>
     <string name="set_success" >설정 성공</string>
     <string name="set_failed" >설정 실패</string>
+
+    <string name="auto_response_off" >자동 응답 (0ff)</string>
+    <string name="auto_response_on" >자동 응답 (0n)</string>
+
 </resources>

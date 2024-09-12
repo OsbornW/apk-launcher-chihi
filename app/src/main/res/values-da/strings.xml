@@ -209,4 +209,7 @@
     <string name="set_success" >Indstilling vellykket</string>
     <string name="set_failed" >Indstilling mislykkedes</string>
 
+    <string name="auto_response_off" >Automatisk respons (0ff)</string>
+    <string name="auto_response_on" >Automatisk respons (0n)</string>
+
 </resources>

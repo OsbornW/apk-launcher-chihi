@@ -217,4 +217,8 @@
     <string name="set_failed">Stel Misluk</string>
 
 
+    <string name="auto_response_off">Outomatiese reaksie (Af)</string>
+    <string name="auto_response_on">Outomatiese reaksie (Aan)</string>
+
+
 </resources>

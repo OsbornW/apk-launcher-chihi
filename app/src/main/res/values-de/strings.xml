@@ -209,4 +209,8 @@
     <string name="close_response" >schließen</string>
     <string name="set_success" >Einstellung erfolgreich</string>
     <string name="set_failed" >Einstellung fehlgeschlagen</string>
+
+    <string name="auto_response_off" >Automatisches Ansprechverhalten (0ff)</string>
+    <string name="auto_response_on" >Automatisches Ansprechverhalten (0n)</string>
+
 </resources>

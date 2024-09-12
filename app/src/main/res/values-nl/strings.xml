@@ -207,4 +207,8 @@
     <string name="close_response" >sluiten</string>
     <string name="set_success" >Instelling succesvol</string>
     <string name="set_failed" >Instelling mislukt</string>
+
+    <string name="auto_response_off" >Automatische respons (0ff)</string>
+    <string name="auto_response_on" >Automatische respons (0n)</string>
+
 </resources>

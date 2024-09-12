@@ -209,4 +209,7 @@
     <string name="set_success" >Sikeres beállítás</string>
     <string name="set_failed" >A beállítás nem sikerült</string>
 
+    <string name="auto_response_off" >Automatikus válasz (0ff)</string>
+    <string name="auto_response_on" >Automatikus válasz (0n)</string>
+
 </resources>

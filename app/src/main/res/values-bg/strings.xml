@@ -208,4 +208,7 @@
     <string name="set_success" >Настройката е успешна</string>
     <string name="set_failed" >Грешка при настройката</string>
 
+    <string name="auto_response_off" >Автоматична реакция (0ff)</string>
+    <string name="auto_response_on" >Автоматичен отговор (0n)</string>
+
 </resources>

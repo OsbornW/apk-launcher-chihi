@@ -217,4 +217,8 @@
     <string name="close_response" >关闭</string>
     <string name="set_success" >设置成功</string>
     <string name="set_failed" >设置失败</string>
+
+    <string name="auto_response_off" >自动响应(0ff)</string>
+    <string name="auto_response_on" >自动响应(0n)</string>
+
 </resources>

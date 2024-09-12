@@ -208,4 +208,8 @@
     <string name="close_response" >κλείσιμο</string>
     <string name="set_success" >Ορισμός επιτυχής</string>
     <string name="set_failed" >Αποτυχία ρύθμισης</string>
+
+    <string name="auto_response_off" >Αυτόματη απόκριση (0ff)</string>
+    <string name="auto_response_on" >Αυτόματη απόκριση (0n)</string>
+
 </resources>

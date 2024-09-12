@@ -210,4 +210,9 @@
     <string name="close_response" >ปิด</string>
     <string name="set_success" >ตั้งค่าสำเร็จ</string>
     <string name="set_failed" >การตั้งค่าล้มเหลว</string>
+
+    <string name="auto_response_off" >การตอบสนองอัตโนมัติ (0ff)</string>
+    <string name="auto_response_on" >การตอบสนองอัตโนมัติ (0n)</string>
+
+
 </resources>

@@ -209,4 +209,7 @@
     <string name="set_success" >Ustawienie pomyślne</string>
     <string name="set_failed" >Ustawienie nie powiodło się</string>
 
+    <string name="auto_response_off" >Automatyczna odpowiedź (0ff)</string>
+    <string name="auto_response_on" >Automatyczna odpowiedź (0n)</string>
+
 </resources>

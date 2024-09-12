@@ -210,4 +210,7 @@
     <string name="set_success" >Configurer avec succès</string>
     <string name="set_failed" >La configuration a échoué</string>
 
+
+    <string name="auto_response_off" >Réponse automatique (0ff)</string>
+    <string name="auto_response_on" >Réponse automatique (0n)</string>
 </resources>

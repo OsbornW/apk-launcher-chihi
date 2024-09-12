@@ -210,6 +210,8 @@
     <string name="set_success">ተቀብለ ይህ</string>
     <string name="set_failed">ተቃወሙ</string>
 
+    <string name="auto_response_off">ራስ-ሰር ምላሽ (አጥፋ)</string>
+    <string name="auto_response_on">ራስ-ሰር ምላሽ (አንቀሳቅስ)</string>
 
 
 </resources>

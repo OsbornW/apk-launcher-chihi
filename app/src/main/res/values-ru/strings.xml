@@ -208,4 +208,9 @@
     <string name="close_response" >Закрыть</string>
     <string name="set_success" >Настройка выполнена</string>
     <string name="set_failed" >Ошибка настройки</string>
+
+
+    <string name="auto_response_off" >Автоматический ответ (0ff)</string>
+    <string name="auto_response_on" >Автоматический ответ (0n)</string>
+
 </resources>
