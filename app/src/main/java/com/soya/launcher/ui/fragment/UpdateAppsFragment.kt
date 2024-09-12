@@ -15,6 +15,7 @@ import com.shudong.lib_base.base.BaseVMFragment
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.colorValue
+import com.shudong.lib_base.ext.converDrawable
 import com.shudong.lib_base.ext.downloadApk
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.jsonToBean
@@ -55,7 +56,7 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
                     tvAppDate.text = dto.getFormatDate()
                     //dto.iconUrl = "https://hbimg.b0.upaiyun.com/83b258aa7e9f5669ae5787055c0e2463f9809ec965da1-FhXANu_fw658"
                     dto.iconUrl.isNullOrEmpty().yes {
-                        ivAppIcon.setImageDrawable(dto.packageName.getAppIcon())
+                        ivAppIcon.setImageDrawable(dto.packageName.getAppIcon()?:(R.drawable.ic_launcher_foreground).converDrawable())
                     }.otherwise {
                         if(dto.packageName.isAppInstalled()){
                             ivAppIcon.setImageDrawable(dto.packageName.getAppIcon())
