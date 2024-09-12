@@ -209,4 +209,7 @@
     <string name="set_success" >مجموعة ناجحة</string>
     <string name="set_failed" >فشل الإعداد</string>
 
+    <string name="auto_response_off" >الرد التلقائي</string>
+    <string name="auto_response_on" >الرد التلقائي</string>
+
 </resources>

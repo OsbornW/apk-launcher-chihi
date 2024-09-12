@@ -222,4 +222,7 @@
     <string name="set_failed" >Setting failed</string>
 
 
+    <string name="auto_response_off" >Respuesta automática (0ff)</string>
+    <string name="auto_response_on" >Respuesta automática (0n)</string>
+
 </resources>

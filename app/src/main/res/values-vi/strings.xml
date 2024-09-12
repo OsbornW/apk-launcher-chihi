@@ -208,4 +208,7 @@
     <string name="set_success" >Thiết lập thành công</string>
     <string name="set_failed" >Thiết lập thất bại</string>
 
+    <string name="auto_response_off" >Phản hồi tự động (0ff)</string>
+    <string name="auto_response_on" >Phản hồi tự động (0n)</string>
+
 </resources>

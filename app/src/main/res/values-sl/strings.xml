@@ -208,4 +208,8 @@
     <string name="close_response" >zapri</string>
     <string name="set_success" >Nastavitev uspešna</string>
     <string name="set_failed" >Nastavitev ni uspela</string>
+
+    <string name="auto_response_off" >Samodejni odziv (0ff)</string>
+    <string name="auto_response_on" >Samodejni odziv (0n)</string>
+
 </resources>

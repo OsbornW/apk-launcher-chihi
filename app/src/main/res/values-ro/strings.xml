@@ -208,4 +208,7 @@
     <string name="set_success" >Setare reușită</string>
     <string name="set_failed" >Setare eșuată</string>
 
+    <string name="auto_response_off" >Răspuns automat (0ff)</string>
+    <string name="auto_response_on" >Răspuns automat (0n)</string>
+
 </resources>

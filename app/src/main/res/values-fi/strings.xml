@@ -208,4 +208,9 @@
     <string name="close_response" >sulje</string>
     <string name="set_success" >Asetus onnistui</string>
     <string name="set_failed" >Asetus epäonnistui</string>
+
+
+    <string name="auto_response_off" >Automaattinen vaste (0ff)</string>
+    <string name="auto_response_on" >Automaattinen vaste (0n)</string>
+
 </resources>

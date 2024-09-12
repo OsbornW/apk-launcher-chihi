@@ -209,4 +209,9 @@
     <string name="close_response" >Cierre</string>
     <string name="set_success" >Configuración exitosa</string>
     <string name="set_failed" >Falló la configuración</string>
+
+    <string name="auto_response_off" >Respuesta automática (0ff)</string>
+    <string name="auto_response_on" >Respuesta automática (0n)</string>
+
+
 </resources>

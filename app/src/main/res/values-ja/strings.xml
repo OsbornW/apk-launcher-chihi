@@ -208,4 +208,7 @@
     <string name="set_success" >設定に成功しました</string>
     <string name="set_failed" >設定に失敗しました</string>
 
+    <string name="auto_response_off" >自動応答（0 ff）</string>
+    <string name="auto_response_on" >自動応答（0 n）</string>
+
 </resources>

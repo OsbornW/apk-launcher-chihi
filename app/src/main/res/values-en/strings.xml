@@ -200,15 +200,20 @@
     <string name="app_text_38" >Download:% d%%</string>
 
 
-    <string name="auto_response_off" >Automatic response</string>
-    <string name="auto_focus" >Auto focus</string>
-    <string name="auto_entry" >Automatic screen entry</string>
-    <string name="projector_method" >Projection method</string>
-    <string name="screen_zoom" >Screen scaling</string>
-    <string name="auto_calibrate" >Automatic trapezoid</string>
-    <string name="manual_calibration" >Manual trapezoid</string>
+    <string name="auto_response" >Auto Response</string>
+    <string name="auto_focus" >Auto Focus</string>
+    <string name="auto_entry" >Auto Screen Fitting</string>
+    <string name="projector_method" >Projection Method</string>
+    <string name="screen_zoom" >Screen Percent</string>
+    <string name="auto_calibrate" >Automatic Trapezoid</string>
+    <string name="manual_calibration" >Manual Trapezoid</string>
     <string name="open_response" >open</string>
     <string name="close_response" >close</string>
     <string name="set_success" >Setting successful</string>
     <string name="set_failed" >Setting failed</string>
+
+    <string name="auto_response_off" >Automatic response (0ff)</string>
+    <string name="auto_response_on" >Automatic response (0n)</string>
+
+
 </resources>
