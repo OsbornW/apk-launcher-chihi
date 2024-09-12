@@ -198,7 +198,8 @@
     <string name="app_text_37">መግነቢያ ጀምር</string>
     <string name="app_text_38">ወረድ: %d%%</string>
 
-    <string name="auto_response_off">ራስ ሰላምታ</string>
+    <string name="auto_response_off">ራስ-ሰር ምላሽ (አጥፋ)</string>
+    <string name="auto_response_on">ራስ-ሰር ምላሽ (አንቀሳቅስ)</string>
     <string name="auto_focus">ራስ ትኩረት</string>
     <string name="auto_entry">ራስ ገቢ</string>
     <string name="projector_method">መታየት አገባባ</string>
@@ -210,8 +211,7 @@
     <string name="set_success">ተቀብለ ይህ</string>
     <string name="set_failed">ተቃወሙ</string>
 
-    <string name="auto_response_off">ራስ-ሰር ምላሽ (አጥፋ)</string>
-    <string name="auto_response_on">ራስ-ሰር ምላሽ (አንቀሳቅስ)</string>
+
 
 
 </resources>

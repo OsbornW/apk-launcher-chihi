@@ -205,6 +205,7 @@
     <string name="app_text_38">Aflaai: %d%%</string>
 
     <string name="auto_response_off">Outomatiese Respons</string>
+    <string name="auto_response_on">Outomatiese reaksie (Aan)</string>
     <string name="auto_focus">Outomatiese Fokus</string>
     <string name="auto_entry">Outomatiese Invoer</string>
     <string name="projector_method">Projektor Metode</string>
@@ -217,8 +218,6 @@
     <string name="set_failed">Stel Misluk</string>
 
 
-    <string name="auto_response_off">Outomatiese reaksie (Af)</string>
-    <string name="auto_response_on">Outomatiese reaksie (Aan)</string>
 
 
 </resources>

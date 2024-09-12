@@ -208,8 +208,8 @@
     <string name="app_text_38" >Download:% d%%</string>
 
 
-    <string name="auto_response_off" >Automatic response(Off)</string>
-    <string name="auto_response_on" >Automatic response(On)</string>
+    <string name="auto_response_off" >Automatic Response(Off)</string>
+    <string name="auto_response_on" >Automatic Response(On)</string>
     <string name="auto_focus" >Auto focus</string>
     <string name="auto_entry" >Automatic screen entry</string>
     <string name="projector_method" >Projection method</string>
@@ -222,7 +222,5 @@
     <string name="set_failed" >Setting failed</string>
 
 
-    <string name="auto_response_off" >Respuesta automática (0ff)</string>
-    <string name="auto_response_on" >Respuesta automática (0n)</string>
 
 </resources>
