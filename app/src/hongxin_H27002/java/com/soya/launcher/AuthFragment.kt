@@ -1,4 +1,4 @@
-package com.soya.launcher.fragment
+package com.soya.launcher
 
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.NetworkUtils

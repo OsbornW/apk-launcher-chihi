@@ -18,8 +18,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
-import com.shudong.lib_base.base.BaseVMActivity
-import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.REFRESH_HOME

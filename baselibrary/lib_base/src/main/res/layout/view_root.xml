@@ -1,40 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
-        android:visibility="gone"
-        android:scaleType="fitXY"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/iv_wallpaper"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-    <ViewStub
-        android:id="@+id/stub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inflatedId="@id/stub"
-        android:layout="@layout/layout_titlebar"
-        />
-
     <FrameLayout
         android:id="@+id/layout_body"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-       >
+        android:layout_height="match_parent"/>
 
-    </FrameLayout>
-    </LinearLayout>
 </RelativeLayout>

@@ -113,7 +113,8 @@ fun ImageView.loadImageWithGlide(
 fun View.setBlurBackground(
     load: Any?,
     radius: Int = 25,
-    sampling: Int = 8
+    sampling: Int = 8,
+    callback:(()->Unit)?=null
 ) {
     GlideApp.with(appContext)
         .load(load)
@@ -128,6 +129,7 @@ fun View.setBlurBackground(
                 // 当资源加载完成时，返回 `Drawable`
                 // 设置背景
                 this@setBlurBackground.background = resource
+                callback?.invoke()
             }
 
         })

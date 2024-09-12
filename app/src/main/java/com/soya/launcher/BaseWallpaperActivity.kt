@@ -1,6 +1,8 @@
 package com.soya.launcher
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.shudong.lib_base.base.BaseVMActivity
 import com.shudong.lib_base.base.BaseViewModel
@@ -10,7 +12,8 @@ import com.shudong.lib_base.ext.yes
 import com.soya.launcher.ext.setBlurBackground
 import com.soya.launcher.utils.GlideUtils
 
-open class BaseWallpaperActivity<VDB : ViewDataBinding,VM:BaseViewModel> : BaseVMActivity<VDB ,VM>() {
+open class BaseWallpaperActivity<VDB : ViewDataBinding, VM : BaseViewModel> :
+    BaseVMActivity<VDB, VM>() {
 
     /**
      * 是否显示壁纸
@@ -18,25 +21,27 @@ open class BaseWallpaperActivity<VDB : ViewDataBinding,VM:BaseViewModel> : BaseV
     open fun isShowWallPaper(): Boolean = true
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun initBeforeBaseLayout() {
+        // 设置初始透明背景，防止加载时显示默认背景
         isShowWallPaper().yes {
             //GlideUtils.bindBlur(appContext, rootBinding.ivWallpaper, curWallpaper())
-            rootBinding.layoutRoot.setBlurBackground(curWallpaper())
+            rootBinding.layoutRoot.setBlurBackground(curWallpaper()) {
+                loadLayout()
+            }
         }
     }
+
 
     override fun onResume() {
         super.onResume()
         updateWallPaper()
     }
 
-    fun updateWallPaper(){
+    fun updateWallPaper() {
         val resId = curWallpaper()
-
-        rootBinding.ivWallpaper.drawable?.constantState?.hashCode()?.let {
+        rootBinding.layoutRoot.background?.constantState?.hashCode()?.let {
             if (it != resId.hashCode()) {
-                GlideUtils.bindBlur(appContext, rootBinding.ivWallpaper, resId)
+                rootBinding.layoutRoot.setBlurBackground(resId)
             }
         }
 

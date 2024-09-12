@@ -2,7 +2,6 @@ package com.shudong.lib_base.base
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
@@ -14,9 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.KeyboardUtils
@@ -27,8 +24,6 @@ import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.colorValue
 import com.shudong.lib_base.ext.loading.showLoadingView
 import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
-import com.shudong.lib_base.ext.no
-import com.shudong.lib_base.ext.yes
 import com.thumbsupec.lib_base.ext.language.changeContextLocale
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 import java.lang.reflect.Method
@@ -102,28 +97,18 @@ abstract class BaseActivity<VDB : ViewDataBinding> : FragmentActivity(), BaseVMV
         initBeforeContent()
         super.setContentView(rootBinding.root)
         super.onCreate(savedInstanceState)
+        initBeforeBaseLayout()
         setContentView(mBind.root)
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.navigationBarColor = ContextCompat.getColor(this, com.thumbsupec.lib_res.R.color.color_B7C6D3);
-        }*/
-        //强制竖屏
-       // requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        /*isShowTitlerBar().yes {
-            inflate = rootBinding.stub.inflate()
-            rootBinding.stub.isVisible = true
-            inflate.findViewById<ImageView>(R.id.iv_back).clickNoRepeat {
-                finish()
-            }
-        }*/
+        initPage()
+    }
+
+     fun loadLayout() {
+        setContentView(mBind.root)
         initPage()
     }
 
 
     fun initPage() {
-        /*isUseImmerBar().no {
-            statusBarFitWindow(true)
-        }*/
-
         initView()
         initdata()
         initClick()

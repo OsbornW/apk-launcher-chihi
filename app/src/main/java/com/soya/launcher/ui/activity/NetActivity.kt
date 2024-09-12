@@ -5,19 +5,19 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.blankj.utilcode.util.NetworkUtils
-import com.shudong.lib_base.base.BaseVMActivity
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.yes
+import com.soya.launcher.BaseVMMainActivity
 import com.soya.launcher.databinding.ActivityNetBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class NetActivity : BaseVMActivity<ActivityNetBinding,BaseViewModel>() {
+class NetActivity : BaseVMMainActivity<ActivityNetBinding, BaseViewModel>() {
 
     override fun initView() {
 

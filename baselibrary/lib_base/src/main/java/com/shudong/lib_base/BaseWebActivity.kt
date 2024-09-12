@@ -46,6 +46,7 @@ open class BaseWebActivity : BaseVMActivity<ActivityBaseWebBinding, BaseViewMode
         WebView(this).destroy()
         //changeLanguage(appContext, AppCacheBase.curLanguage)
         super.onCreate(savedInstanceState)
+        loadLayout()
     }
 
     companion object{
