@@ -198,7 +198,7 @@
     <string name="app_text_38" >Download:% d%%</string>
 
 
-    <string name="auto_response" >Automatische Reaktion</string>
+    <string name="auto_response_off" >Automatische Reaktion</string>
     <string name="auto_focus" >Autofokus</string>
     <string name="auto_entry" >Automatische Bildschirmeingabe</string>
     <string name="projector_method" >Projektionsmethode</string>

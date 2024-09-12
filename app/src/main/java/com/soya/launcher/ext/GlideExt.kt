@@ -11,6 +11,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
@@ -112,16 +113,16 @@ fun ImageView.loadImageWithGlide(
 
 fun View.setBlurBackground(
     load: Any?,
-    radius: Int = 25,
-    sampling: Int = 8,
+    radius: Int = 10,
+    sampling: Int = 4,
     callback:(()->Unit)?=null
 ) {
     GlideApp.with(appContext)
         .load(load)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .override(640, 360)
+        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+        .override(320, 180)
         .apply(RequestOptions.bitmapTransform(BlurTransformation(radius, sampling)))
-        .into(object : SimpleTarget<Drawable>() {
+        .into(object : CustomTarget<Drawable>() {
             override fun onResourceReady(
                 resource: Drawable,
                 transition: Transition<in Drawable>?
@@ -132,6 +133,9 @@ fun View.setBlurBackground(
                 callback?.invoke()
             }
 
+            override fun onLoadCleared(placeholder: Drawable?) {
+                // 处理资源清理
+            }
         })
 
 }

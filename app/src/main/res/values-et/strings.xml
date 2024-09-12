@@ -199,7 +199,7 @@
     <string name="app_text_38" >Allalaadimine:% d%%</string>
 
 
-    <string name="auto_response" >Automaatne reageerimine</string>
+    <string name="auto_response_off" >Automaatne reageerimine</string>
     <string name="auto_focus" >Automaatne fookus</string>
     <string name="auto_entry" >Automaatne ekraani sisestamine</string>
     <string name="projector_method" >Projektsioonimeetod</string>

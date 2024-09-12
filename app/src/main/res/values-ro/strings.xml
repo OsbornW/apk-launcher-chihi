@@ -196,7 +196,7 @@
     <string name="app_text_38" >Descărcare:% d%%</string>
 
 
-    <string name="auto_response" >Răspuns automat</string>
+    <string name="auto_response_off" >Răspuns automat</string>
     <string name="auto_focus" >Focalizare automată</string>
     <string name="auto_entry" >Intrare automată a ecranului</string>
     <string name="projector_method" >Metoda de proiecție</string>

@@ -196,7 +196,7 @@
     <string name="app_text_38" >Изтегляне:% d%%</string>
 
 
-    <string name="auto_response" >Автоматичен отговор</string>
+    <string name="auto_response_off" >Автоматичен отговор</string>
     <string name="auto_focus" >Автоматично фокусиране</string>
     <string name="auto_entry" >Автоматично въвеждане на екрана</string>
     <string name="projector_method" >Метод на прогнозиране</string>

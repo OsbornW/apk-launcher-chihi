@@ -200,7 +200,7 @@
     <string name="app_text_38" >Download:% d%%</string>
 
 
-    <string name="auto_response" >Automatic response</string>
+    <string name="auto_response_off" >Automatic response</string>
     <string name="auto_focus" >Auto focus</string>
     <string name="auto_entry" >Automatic screen entry</string>
     <string name="projector_method" >Projection method</string>

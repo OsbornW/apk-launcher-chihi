@@ -197,7 +197,7 @@
     <string name="app_text_38" >Lataa:% d%%</string>
 
 
-    <string name="auto_response" >Automaattinen vaste</string>
+    <string name="auto_response_off" >Automaattinen vaste</string>
     <string name="auto_focus" >Automaattinen tarkennus</string>
     <string name="auto_entry" >Automaattinen näytönsyöttö</string>
     <string name="projector_method" >Projektiomenetelmä</string>

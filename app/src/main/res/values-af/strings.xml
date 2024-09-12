@@ -204,7 +204,7 @@
     <string name="app_text_37">Begin Installeer</string>
     <string name="app_text_38">Aflaai: %d%%</string>
 
-    <string name="auto_response">Outomatiese Respons</string>
+    <string name="auto_response_off">Outomatiese Respons</string>
     <string name="auto_focus">Outomatiese Fokus</string>
     <string name="auto_entry">Outomatiese Invoer</string>
     <string name="projector_method">Projektor Metode</string>

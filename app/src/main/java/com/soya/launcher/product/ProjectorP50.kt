@@ -25,7 +25,7 @@ object ProjectorP50 : TVDeviceImpl {
     override fun addProjectorItem(): MutableList<SettingItem> {
         return mutableListOf<SettingItem>().apply {
             //自动响应
-            add(SettingItem(Projector.TYPE_AUTO_RESPONSE, appContext.getString(R.string.auto_response), R.drawable.icon_auto_response))
+            add(SettingItem(Projector.TYPE_AUTO_RESPONSE, appContext.getString(R.string.auto_response_off), R.drawable.icon_auto_response))
             // 自动聚焦
             add(SettingItem(Projector.TYPE_AUTO_FOCUS, appContext.getString(R.string.auto_focus), R.drawable.icon_auto_focus))
             // 梯形校正

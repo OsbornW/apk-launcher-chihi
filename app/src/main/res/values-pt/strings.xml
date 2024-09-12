@@ -196,7 +196,7 @@
     <string name="app_text_38" >Transferência:% d%%</string>
 
 
-    <string name="auto_response" >Resposta automática</string>
+    <string name="auto_response_off" >Resposta automática</string>
     <string name="auto_focus" >Focagem automática</string>
     <string name="auto_entry" >Entrada automática do ecrã</string>
     <string name="projector_method" >Método de projecção</string>

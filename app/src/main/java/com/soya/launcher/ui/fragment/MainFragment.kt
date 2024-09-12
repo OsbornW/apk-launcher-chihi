@@ -423,28 +423,29 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun checkLauncherUpdate() {
         lifecycleScope.launch {
             delay(3000)
-            mViewModel.reqLauncherVersionInfo().lifecycle(this@MainFragment,{}, isShowError = false){
-                val dto = this
-                dto.downLink.isNullOrEmpty().no {
-                    AppCache.updateInfoForLauncher = dto.jsonToString()
-                    (dto.tip == 1).yes {
-                        //强制更新
-                        dto.downLink?.downloadApkNopkName(this@launch, downloadError = {
+            mViewModel.reqLauncherVersionInfo()
+                .lifecycle(this@MainFragment, {}, isShowError = false) {
+                    val dto = this
+                    dto.downLink.isNullOrEmpty().no {
+                        AppCache.updateInfoForLauncher = dto.jsonToString()
+                        (dto.tip == 1).yes {
+                            //强制更新
+                            dto.downLink?.downloadApkNopkName(this@launch, downloadError = {
 
-                        }, downloadComplete = { str, destPath ->
-                            lifecycleScope.launch {
-                                destPath.silentInstallWithMutex()
+                            }, downloadComplete = { str, destPath ->
+                                lifecycleScope.launch {
+                                    destPath.silentInstallWithMutex()
+                                }
+
+                            }) { progress: Int ->
+
                             }
-
-                        }) { progress: Int ->
-
+                        }.otherwise {
+                            //非强制更新
+                            startKtxActivity<UpdateLauncherActivity>()
                         }
-                    }.otherwise {
-                        //非强制更新
-                        startKtxActivity<UpdateLauncherActivity>()
                     }
                 }
-            }
 
         }
     }
@@ -829,14 +830,25 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     }.otherwise {
                         mTitleView.isSelected = false
                     }
-                    if (b){
+                    if (b) {
                         setRVHeight(false)
                         setExpanded(false)
                     }
                 }
 
                 rlRoot.clickNoRepeat {
-                    mViewModel.clickProjectorItem(bean)
+                    mViewModel.clickProjectorItem(bean) {
+                        val type = it.first
+                        val text = it.second
+                        when (type) {
+                            Projector.TYPE_AUTO_RESPONSE -> {
+                                val tvName =
+                                    mBind.verticalContent.getChildAt(0)
+                                        .findViewById<TextView>(R.id.title)
+                                tvName.text = text.toString()
+                            }
+                        }
+                    }
                 }
 
             }
@@ -1444,16 +1456,16 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
     )
 
-    fun setRVHeight(isExpanded: Boolean){
+    fun setRVHeight(isExpanded: Boolean) {
         isExpanded.yes {
             //展开
             mBind.header.width(ViewGroup.LayoutParams.MATCH_PARENT)
         }.otherwise {
             //收缩
             mBind.header.width(5000)
-            if((mBind.header.adapter?.itemCount ?: 0) > 8){
+            if ((mBind.header.adapter?.itemCount ?: 0) > 8) {
                 mBind.toolbar.height(com.shudong.lib_dimen.R.dimen.qb_px_110.dimenValue())
-            }else{
+            } else {
                 mBind.toolbar.height(com.shudong.lib_dimen.R.dimen.qb_px_115.dimenValue())
             }
         }
@@ -1461,7 +1473,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
 
     private fun toastInstallPKApp(name: String, packages: List<PackageName?>?) {
-        toastInstallApp(name,object :ToastDialog.Callback{
+        toastInstallApp(name, object : ToastDialog.Callback {
             override fun onClick(type: Int) {
                 if (type == 1) {
                     val pns = arrayOfNulls<String>(packages?.size ?: 0)
@@ -1480,7 +1492,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private fun switchMovice(bean: TypeItem) {
-        if((App.MOVIE_MAP[bean.id]?.size ?: 0) > 0){
+        if ((App.MOVIE_MAP[bean.id]?.size ?: 0) > 0) {
             fillMovice(bean)
         }
     }
@@ -1515,7 +1527,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun appMenu(bean: ApplicationInfo) {
         val dialog = AppDialog.newInstance(bean)
-        dialog.setCallback(object :AppDialog.Callback{
+        dialog.setCallback(object : AppDialog.Callback {
             override fun onOpen() {
                 AndroidSystem.openPackageName(requireContext(), bean.packageName)
             }
@@ -1527,7 +1539,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun setExpanded(isExpanded: Boolean) {
         mBind.appBar.setExpanded(isExpanded)
     }
-
 
 
     inner class InnerReceiver : BroadcastReceiver() {

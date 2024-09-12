@@ -197,7 +197,7 @@
     <string name="app_text_38" >Prenos:% d%%</string>
 
 
-    <string name="auto_response" >Samodejni odziv</string>
+    <string name="auto_response_off" >Samodejni odziv</string>
     <string name="auto_focus" >Samodejno ostrenje</string>
     <string name="auto_entry" >Samodejni vnos na zaslon</string>
     <string name="projector_method" >Metoda projekcije</string>

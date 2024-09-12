@@ -196,7 +196,7 @@
     <string name="app_text_38" >下载: %d%%</string>
 
 
-    <string name="auto_response" >自动响应</string>
+    <string name="auto_response_off" >自动响应</string>
     <string name="auto_focus" >Tự động lấy nét</string>
     <string name="auto_entry" >自动入幕</string>
     <string name="projector_method" >Chế độ chiếu</string>

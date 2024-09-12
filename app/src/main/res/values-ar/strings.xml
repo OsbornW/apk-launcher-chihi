@@ -197,7 +197,7 @@
     <string name="app_text_38" >تحميل : %d%</string>
 
 
-    <string name="auto_response" >الرد التلقائي</string>
+    <string name="auto_response_off" >الرد التلقائي</string>
     <string name="auto_focus" >التركيز التلقائي</string>
     <string name="auto_entry" >دخول تلقائي</string>
     <string name="projector_method" >طريقة الإسقاط</string>

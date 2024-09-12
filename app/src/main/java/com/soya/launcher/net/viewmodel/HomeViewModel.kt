@@ -20,7 +20,11 @@ import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.bean.UpdateDto
+import com.soya.launcher.ext.SYSTEM_PROPERTY_AUTO_RESPONSE
+import com.soya.launcher.ext.autoResponseText
 import com.soya.launcher.ext.openApp
+import com.soya.launcher.ext.setAutoResponseProperty
+import com.soya.launcher.ext.systemPropertyValueBoolean
 import com.soya.launcher.net.repository.HomeRepository
 import com.soya.launcher.p50.AUTO_ENTRY
 import com.soya.launcher.p50.AUTO_FOCUS
@@ -81,7 +85,7 @@ class HomeViewModel : BaseViewModel() {
         //}
     }
 
-    fun clickProjectorItem(bean: SettingItem) {
+    fun clickProjectorItem(bean: SettingItem,callback:((Pair<Int,Any>)->Unit)?=null) {
         when (bean.type) {
             Projector.TYPE_SCREEN_ZOOM -> {
                 product.openScreenZoom()
@@ -103,15 +107,16 @@ class HomeViewModel : BaseViewModel() {
             }
             Projector.TYPE_AUTO_RESPONSE->{
                 //自动响应
-                PACKAGE_NAME_AUTO_RESPONSE.openApp()
+                val statusText = setAutoResponseProperty()
+                callback?.invoke(Pair(Projector.TYPE_AUTO_RESPONSE,statusText))
+                //PACKAGE_NAME_AUTO_RESPONSE.openApp()
             }
             Projector.TYPE_AUTO_FOCUS-> setFunction(AUTO_FOCUS){
-                it.yes { showSuccessToast(R.string.set_success.stringValue())
-                }.otherwise { showErrorToast(R.string.set_failed.stringValue()) }}
+                }
             Projector.TYPE_AUTO_ENTRY-> setFunction(AUTO_ENTRY){
-                it.yes { showSuccessToast(R.string.set_success.stringValue())
-                }.otherwise { showErrorToast(R.string.set_failed.stringValue()) }}
+                }
         }
     }
+
 
 }

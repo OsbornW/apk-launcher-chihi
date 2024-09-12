@@ -196,7 +196,7 @@
     <string name="app_text_38" >Scarica:% d%%</string>
 
 
-    <string name="auto_response" >Risposta automatica</string>
+    <string name="auto_response_off" >Risposta automatica</string>
     <string name="auto_focus" >Messa a fuoco automatica</string>
     <string name="auto_entry" >Inserimento automatico dello schermo</string>
     <string name="projector_method" >Metodo di proiezione</string>

@@ -98,8 +98,6 @@ abstract class BaseActivity<VDB : ViewDataBinding> : FragmentActivity(), BaseVMV
         super.setContentView(rootBinding.root)
         super.onCreate(savedInstanceState)
         initBeforeBaseLayout()
-        setContentView(mBind.root)
-        initPage()
     }
 
      fun loadLayout() {

@@ -27,7 +27,7 @@ fun setFunction(function: String, callback: ((Boolean) -> Unit?)? =null) {
     var castmode = -2
     var functest = 0
 
-    //  function：0:标定, 1:全功能, 2:自动对焦, 3:自动入幕&避障
+    //  function：0:标定, 1:全功能, 2:自动对焦, 3:自动入幕&避障  4:自动梯形
     when (function) {
         CALIBRATION -> {
             workmode = 0
@@ -52,6 +52,11 @@ fun setFunction(function: String, callback: ((Boolean) -> Unit?)? =null) {
             if_af = 0
             if_key = 1
             dmode = 3
+        }
+        AUTO_CORRECTION->{
+            if_af = 0
+            if_key = 1
+            dmode = 0
         }
     }
 
@@ -89,3 +94,4 @@ const val CALIBRATION = "CALIBRATION"   //标定，校正
 const val FULL_FUNCTION = "FULL_FUNCTION"   //全功能
 const val AUTO_FOCUS = "AUTO_FOCUS" // 自动对焦
 const val AUTO_ENTRY = "AUTO_ENTRY" //自动入幕/避障
+const val AUTO_CORRECTION = "AUTO_CORRECTION" //自动梯形

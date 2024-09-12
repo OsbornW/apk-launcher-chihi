@@ -2,10 +2,12 @@ package com.soya.launcher.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
+import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.ItemBridgeAdapter
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.otherwise
@@ -66,7 +68,16 @@ class ProjectorFragment : BaseWallPaperFragment<FragmentProjectorBinding,HomeVie
 
             override fun onClick(bean: SettingItem?) {
                 if (bean != null) {
-                    mViewModel.clickProjectorItem(bean)
+                    mViewModel.clickProjectorItem(bean){
+                        val type = it.first
+                        val text = it.second
+                        when(type){
+                            Projector.TYPE_AUTO_RESPONSE->{
+                                val tvName = mBind.content.getChildAt(0).findViewById<TextView>(R.id.title)
+                                tvName.text = text.toString()
+                            }
+                        }
+                    }
                 }
             }
         }

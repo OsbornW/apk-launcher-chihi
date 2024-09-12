@@ -3,7 +3,11 @@ package com.soya.launcher.ext
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.gson.Gson
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.stringValue
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
+import com.soya.launcher.R
 import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.Movice
@@ -45,12 +49,32 @@ fun convertH27002Json():MutableList<TypeItem> = run {
             item.iconName = movie?.iconName
             item.data = movie?.packageNames
             App.MOVIE_MAP.put(item.id, movies)
-
             menus.add(item)
-
         }
     }
-
     menus
+}
 
+fun autoResponseText() = run{
+    val isResponseOpen = SYSTEM_PROPERTY_AUTO_RESPONSE.systemPropertyValueBoolean()
+    isResponseOpen.yes {
+        //当前自动响应是打开的
+        R.string.auto_response_on.stringValue()
+    }.otherwise {
+        //当前自动响应是关闭的
+         R.string.auto_response_off.stringValue()
+    }
+}
+
+fun setAutoResponseProperty() = run{
+    val isResponseOpen = SYSTEM_PROPERTY_AUTO_RESPONSE.systemPropertyValueBoolean()
+    isResponseOpen.yes {
+        //进行关闭
+        SYSTEM_PROPERTY_AUTO_RESPONSE.setSystemPropertyValueBoolean(false)
+        R.string.auto_response_off.stringValue()
+    }.otherwise {
+        //进行打开
+        SYSTEM_PROPERTY_AUTO_RESPONSE.setSystemPropertyValueBoolean(true)
+        R.string.auto_response_on.stringValue()
+    }
 }

@@ -197,7 +197,7 @@
     <string name="app_text_38" >Letöltés:% d%%</string>
 
 
-    <string name="auto_response" >Automatikus válasz</string>
+    <string name="auto_response_off" >Automatikus válasz</string>
     <string name="auto_focus" >Automatikus fókusz</string>
     <string name="auto_entry" >Automatikus képernyőbejegyzés</string>
     <string name="projector_method" >Kivetítési módszer</string>

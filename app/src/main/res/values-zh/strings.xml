@@ -205,7 +205,8 @@
     <string name="app_text_38" >下载: %d%%</string>
 
 
-    <string name="auto_response" >自动响应</string>
+    <string name="auto_response_off" >自动响应(关)</string>
+    <string name="auto_response_on" >自动响应(开)</string>
     <string name="auto_focus" >自动聚焦</string>
     <string name="auto_entry" >自动入幕</string>
     <string name="projector_method" >投影方式</string>

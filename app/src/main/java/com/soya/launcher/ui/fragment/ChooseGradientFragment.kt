@@ -21,6 +21,8 @@ import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.databinding.FragmentChooseGradientBinding
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.openApp
+import com.soya.launcher.p50.AUTO_CORRECTION
+import com.soya.launcher.p50.setFunction
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.GradientActivity
 import com.soya.launcher.utils.AndroidSystem
@@ -81,7 +83,10 @@ class ChooseGradientFragment :
                         setCurMode(!isEnalbe)
                     }
 
-                    Projector.TYPE_AUTO_CALIBRATION -> PACKAGE_NAME_KEYSTONE_CORRECTION_P50.openApp()
+                    Projector.TYPE_AUTO_CALIBRATION -> {
+                        setFunction(AUTO_CORRECTION)
+                        PACKAGE_NAME_KEYSTONE_CORRECTION_P50.openApp()
+                    }
                     Projector.TYPE_MANUAL_CALIBRATION -> {
                         startKtxActivity<GradientActivity>()
                     }

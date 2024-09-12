@@ -198,7 +198,7 @@
     <string name="app_text_38" >다운로드:%d%%</string>
 
 
-    <string name="auto_response" >자동 응답</string>
+    <string name="auto_response_off" >자동 응답</string>
     <string name="auto_focus" >자동 초점</string>
     <string name="auto_entry" >자동 입막</string>
     <string name="projector_method" >투영 방식</string>
