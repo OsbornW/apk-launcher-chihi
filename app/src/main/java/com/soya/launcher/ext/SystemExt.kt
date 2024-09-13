@@ -66,7 +66,7 @@ fun String.getAppVersionName(): String? {
 
 fun getUpdateList(): Boolean {
     val updateApps = AppCache.updateInfo.jsonToTypeBean<MutableList<UpdateAppsDTO>>()
-    val localApps = AndroidSystem.getUserApps2(appContext).toMutableList()
+    val localApps = AndroidSystem.getAllInstalledApps(appContext).toMutableList()
 
     // 创建包名到版本号的映射
     val versionCodeMap = mutableMapOf<String, Int>()
@@ -94,6 +94,11 @@ fun getUpdateList(): Boolean {
             Log.d(
                 "UpdateList", "Filtering out ${dto.packageName}. " +
                         "Current Code: $currentVersionCode, DTO Code: ${dto.versionCode}"
+            )
+        }else{
+            Log.d(
+                "UpdateList", "Filtering out ${dto.packageName}. " +
+                        "Current Code2: $currentVersionCode, DTO Code2: ${dto.versionCode}"
             )
         }
 

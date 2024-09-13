@@ -31,6 +31,7 @@ import android.os.StatFs
 import android.os.SystemClock
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
@@ -602,6 +603,29 @@ object AndroidSystem {
         }
         return result
     }
+
+    fun getAllInstalledApps(context: Context): List<ApplicationInfo> {
+        val packageManager = context.packageManager
+        // 获取所有已安装的应用，包括用户应用和系统应用
+        val apps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+
+        Log.d(
+            "UpdateList", "所有方法 ${apps}. "
+        )
+
+        // 按首次安装时间倒序排序
+        apps.sortByDescending { appInfo ->
+            packageManager.getPackageInfo(appInfo.packageName, 0).firstInstallTime
+        }
+
+        // 过滤掉当前应用
+        val result = apps.filter { it.packageName != BuildConfig.APPLICATION_ID }
+
+        return result
+    }
+
+
+
 
     @JvmStatic
     fun isSystemApp(flags: Int): Boolean {
