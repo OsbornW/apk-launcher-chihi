@@ -22,6 +22,8 @@ import com.shudong.lib_base.global.AppCacheBase.drawableCache
 import com.soya.launcher.GlideApp
 import com.soya.launcher.R
 import jp.wasabeef.glide.transformations.BlurTransformation
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 fun ImageView.bindImageView(path:Any){
     GlideApp.with(appContext)
@@ -138,5 +140,26 @@ fun View.setBlurBackground(
             }
         })
 
+}
+
+
+suspend fun Any.loadBlurDrawable(): Drawable? {
+    return suspendCancellableCoroutine { continuation ->
+        GlideApp.with(appContext)
+            .load(this)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .override(320, 180)
+            .apply(RequestOptions.bitmapTransform(BlurTransformation(10, 4)))
+            .into(object : CustomTarget<Drawable>() {
+                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    continuation.resume(resource)
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    // 可选：处理资源被清除的情况
+                    continuation.resume(null)
+                }
+            })
+    }
 }
 

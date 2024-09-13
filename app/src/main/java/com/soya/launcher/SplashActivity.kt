@@ -36,6 +36,7 @@ import com.thumbsupec.lib_net.http.MyX509TrustManager
 import com.thumbsupec.lib_net.http.getSSLContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -92,10 +93,9 @@ class SplashActivity : BaseVMMainActivity<ActivitySplashBinding, BaseViewModel>(
                     com.hs.App.init(appContext)
                     //BRV.modelId = BR.m
                     initMultiLanguage(appContext)
-                    product.addWallPaper()
                     //"开始应用启动5".e("zengyue3")
                     AppCache.isAppInited = true
-                    finish()
+                    //finish()
                 }
             }
 
@@ -111,7 +111,17 @@ class SplashActivity : BaseVMMainActivity<ActivitySplashBinding, BaseViewModel>(
                     modules(homeModules)
                 }
             }
-            startKtxActivity<MainActivity>()
+
+            while (isActive) { // 确保协程在生命周期内运行
+                delay(100) // 每 100 毫秒检测一次
+                if ( localWallPaperDrawable != null) {
+                    withContext(Dispatchers.Main) { // 在主线程中启动 Activity
+                        startKtxActivity<MainActivity>()
+                        finish()
+                    }
+                    break // 检测到条件满足后退出循环
+                }
+            }
         }
 
 

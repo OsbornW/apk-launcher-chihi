@@ -95,6 +95,11 @@ fun getUpdateList(): Boolean {
                 "UpdateList", "Filtering out ${dto.packageName}. " +
                         "Current Code: $currentVersionCode, DTO Code: ${dto.versionCode}"
             )
+        }else{
+            Log.d(
+                "UpdateList", "Filtering out ${dto.packageName}. " +
+                        "Current Code2: $currentVersionCode, DTO Code2: ${dto.versionCode}"
+            )
         }
 
         shouldFilter

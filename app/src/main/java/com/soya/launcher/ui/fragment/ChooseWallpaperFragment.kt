@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import androidx.fragment.app.FragmentManager
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
@@ -62,10 +63,15 @@ class ChooseWallpaperFragment : BaseWallPaperFragment<FragmentChooseWallpaperBin
                 bean?.id?.let { PreferencesUtils.setProperty(Atts.WALLPAPER, it) }
                 AppCache.isSkipGuid = true
                 mArrayObjectAdapter!!.notifyArrayItemRangeChanged(0, mArrayObjectAdapter!!.size())
-                val intent = Intent(activity, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_browse_fragment, MainFragment.newInstance()).commit();
+
+                val fragmentManager = requireActivity().supportFragmentManager
+                for (i in 0 until fragmentManager.backStackEntryCount) {
+                    fragmentManager.popBackStack()
+                }
+
+                fragmentManager.beginTransaction()
+                    .replace(R.id.main_browse_fragment, MainFragment.newInstance())
+                    .commit()
             }
         }
     }
