@@ -67,14 +67,6 @@ class SplashActivity : BaseVMMainActivity<ActivitySplashBinding, BaseViewModel>(
                     ToastUtils.init(appContext)
                     ContextManager.getInstance().init(appContext)
 
-                    startKoin {
-                        androidContext(appContext)
-                        modules(netModules)
-                        //modules(appLoginModule)
-                        modules(baseModules)
-                        modules(homeModules)
-                    }
-
                     val sslContext = getSSLContext()
                     val sslSocketFactory = sslContext.socketFactory
                     RxHttpPlugins.init(
@@ -110,6 +102,15 @@ class SplashActivity : BaseVMMainActivity<ActivitySplashBinding, BaseViewModel>(
         }
 
         lifecycleScope.launch {
+            if (!AppCache.isAppInited) {
+                startKoin {
+                    androidContext(appContext)
+                    modules(netModules)
+                    //modules(appLoginModule)
+                    modules(baseModules)
+                    modules(homeModules)
+                }
+            }
             startKtxActivity<MainActivity>()
         }
 

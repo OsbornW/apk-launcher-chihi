@@ -156,7 +156,7 @@ android {
         p50_713M {
             applicationId "com.soya.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.x88
+            signingConfig signingConfigs.hongxin
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'

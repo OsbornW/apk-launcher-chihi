@@ -4,18 +4,11 @@
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="android:windowFullscreen">true</item>
        <!-- <item name="colorControlActivated">@color/ico_style_1</item>-->
-        <item name="colorPrimary">@color/default_background</item>
-        <item name="colorPrimaryDark">@color/default_background</item>
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimaryDark">@color/transparent</item>
     </style>
 
     <style name="Theme.MyTv" parent="@style/Theme.Leanback" >
-        <item name="android:windowFullscreen">true</item>
-        <!-- <item name="colorControlActivated">@color/ico_style_1</item>-->
-        <item name="colorPrimary">@color/default_background</item>
-        <item name="colorPrimaryDark">@color/default_background</item>
-    </style>
-
-    <style name="Theme.App" parent="@style/Theme.Leanback" >
         <item name="android:windowFullscreen">true</item>
         <!-- <item name="colorControlActivated">@color/ico_style_1</item>-->
         <item name="colorPrimary">@color/transparent</item>
