@@ -211,8 +211,7 @@
     <string name="set_success" >Setting successful</string>
     <string name="set_failed" >Setting failed</string>
 
-    <string name="auto_response_off" >Automatic Response (0ff)</string>
-    <string name="auto_response_on" >Automatic Response (0n)</string>
-
+    <string name="auto_response_off" >Auto Response (0ff)</string>
+    <string name="auto_response_on" >Auto Response (0n)</string>
 
 </resources>
