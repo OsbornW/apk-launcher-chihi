@@ -212,7 +212,7 @@
     <string name="set_failed" >Setting failed</string>
 
     <string name="auto_response_off" >Automatic Response (0ff)</string>
-    <string name="auto_response_on" >Automatic response (0n)</string>
+    <string name="auto_response_on" >Automatic Response (0n)</string>
 
 
 </resources>

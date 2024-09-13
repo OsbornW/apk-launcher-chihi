@@ -11,15 +11,12 @@ import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.stringValue
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
-import com.soya.launcher.App.Companion.instance
-import com.soya.launcher.GlideApp
 import com.soya.launcher.R
 import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.enums.Types
-import com.thumbsupec.lib_base.toast.ToastUtils.strategy
 import java.io.InputStreamReader
 import java.util.UUID
 

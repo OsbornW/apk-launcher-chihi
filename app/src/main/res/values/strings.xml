@@ -198,29 +198,28 @@
     <string name="Activate_Now">Activate Now</string>
 
 
-    <string name="app_text_15" >Available updates</string>
-    <string name="app_text_16" >A brand new version has been launched! \Add [new features], optimize [optimization points], and improve your user experience. Update now and discover more surprises!</string>
-    <string name="app_text_17" >Let\'s talk about it next time</string>
-    <string name="app_text_18" >to update</string>
-    <string name="app_text_35" >In preparation</string>
-    <string name="app_text_36" >Download failed</string>
-    <string name="app_text_37" >Start installation</string>
-    <string name="app_text_38" >Download:% d%%</string>
+    <string name="app_text_15">Available updates</string>
+    <string name="app_text_16">A brand new version has been launched! \Add [new features], optimize [optimization points], and improve your user experience. Update now and discover more surprises!</string>
+    <string name="app_text_17">Let\'s talk about it next time</string>
+    <string name="app_text_18">to update</string>
+    <string name="app_text_35">In preparation</string>
+    <string name="app_text_36">Download failed</string>
+    <string name="app_text_37">Start installation</string>
+    <string name="app_text_38">Download:% d%%</string>
 
 
-    <string name="auto_response_off" >Automatic Response(Off)</string>
-    <string name="auto_response_on" >Automatic Response(On)</string>
-    <string name="auto_focus" >Auto focus</string>
-    <string name="auto_entry" >Automatic screen entry</string>
-    <string name="projector_method" >Projection method</string>
-    <string name="screen_zoom" >Screen scaling</string>
-    <string name="auto_calibrate" >Automatic trapezoid</string>
-    <string name="manual_calibration" >Manual trapezoid</string>
-    <string name="open_response" >open</string>
-    <string name="close_response" >close</string>
-    <string name="set_success" >Setting successful</string>
-    <string name="set_failed" >Setting failed</string>
-
+    <string name="auto_response_off">Automatic Response(Off)</string>
+    <string name="auto_response_on">Automatic Response(On)</string>
+    <string name="auto_focus">Auto focus</string>
+    <string name="auto_entry">Automatic screen entry</string>
+    <string name="projector_method">Projection method</string>
+    <string name="screen_zoom">Screen scaling</string>
+    <string name="auto_calibrate">Automatic trapezoid</string>
+    <string name="manual_calibration">Manual trapezoid</string>
+    <string name="open_response">open</string>
+    <string name="close_response">close</string>
+    <string name="set_success">Setting successful</string>
+    <string name="set_failed">Setting failed</string>
 
 
 </resources>

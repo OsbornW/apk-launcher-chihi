@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
+import com.shudong.lib_base.ext.MvvmHelper;
 import com.soya.launcher.utils.DeviceUuidFactory;
 import com.google.gson.Gson;
 import com.soya.launcher.App;
@@ -105,7 +106,7 @@ public class ServiceRequest {
         map.put("chihi_type", Config.CHIHI_TYPE);
         map.put("version", String.valueOf(BuildConfig.VERSION_CODE));
         map.put("sdk", String.valueOf(Build.VERSION.SDK_INT));
-        map.put("uuid", String.valueOf(DeviceUuidFactory.getUUID(App.getInstance())));
+        map.put("uuid", String.valueOf(DeviceUuidFactory.getUUID(MvvmHelper.INSTANCE.getApp())));
         map.put("model", Config.MODEL);
         map.put("brand", Build.BRAND);
         map.put("product", Build.PRODUCT);

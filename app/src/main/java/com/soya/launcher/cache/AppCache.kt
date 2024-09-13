@@ -18,4 +18,6 @@ object AppCache {
 
     var WALLPAPERS: MutableList<Wallpaper> by serial(default = mutableListOf())
 
+    var isAppInited:Boolean by serial(default = true)
+
 }

@@ -11,7 +11,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
-import com.soya.launcher.App.Companion.instance
+import com.shudong.lib_base.ext.appContext
 import com.soya.launcher.GlideApp
 import jp.wasabeef.glide.transformations.BlurTransformation
 import java.io.File
@@ -24,7 +24,7 @@ object GlideUtils {
         load: Any?,
         strategy: DiskCacheStrategy? = DiskCacheStrategy.ALL
     ) {
-        GlideApp.with(instance!!)
+        GlideApp.with(appContext)
             .load(load)
             .diskCacheStrategy(strategy!!) //.placeholder(R.drawable.rectangle_solffffff)
             //.error(R.drawable.rectangle_solffffff)
@@ -37,7 +37,7 @@ object GlideUtils {
     }
 
     fun bind(context: Context?, view: ImageView?, load: Any?, duration: Int) {
-        GlideApp.with(instance!!)
+        GlideApp.with(appContext)
             .load(load)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .transition(
@@ -49,7 +49,7 @@ object GlideUtils {
     }
 
     fun bindCrop(context: Context?, view: ImageView?, load: Any?) {
-        GlideApp.with(instance!!)
+        GlideApp.with(appContext)
             .load(load)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .centerCrop()
@@ -70,7 +70,7 @@ object GlideUtils {
         radius: Int = 25,
         sampling: Int = 8
     ) {
-        GlideApp.with(instance!!)
+        GlideApp.with(appContext)
             .load(load)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(placeholder)
@@ -80,7 +80,7 @@ object GlideUtils {
     }
 
     fun bindBlurCross(context: Context?, view: ImageView?, load: Any?, duration: Int) {
-        GlideApp.with(instance!!)
+        GlideApp.with(appContext)
             .load(load)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))

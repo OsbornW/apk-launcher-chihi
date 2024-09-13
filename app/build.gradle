@@ -156,7 +156,7 @@ android {
         p50_713M {
             applicationId "com.soya.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.hongxin
+            signingConfig signingConfigs.x88
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
@@ -324,9 +324,11 @@ android {
     buildTypes {
         release {
             //debuggable true
-            minifyEnabled false
+            minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
             //清理多余的图片资源或raw中没有用到的资源等，一般会和混淆同时使用(和混淆都可以起到一定程度apk瘦身的作用)
-            shrinkResources false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 

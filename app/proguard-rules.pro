@@ -208,3 +208,118 @@
     @Upload.* <methods>;
     @DownloadGroup.* <methods>;
 }
+
+
+
+
+# Xpopup 混淆配置
+-dontwarn com.lxj.xpopup.widget.**
+-keep class com.lxj.xpopup.widget.**{*;}
+
+# kotlinx.serialization混淆配置
+# Keep `Companion` object fields of serializable classes.
+# This avoids serializer lookup through `getDeclaredClasses` as done for named companion objects.
+-if @kotlinx.serialization.Serializable class **
+-keepclassmembers class <1> {
+    static <1>$Companion Companion;
+}
+
+# Keep `serializer()` on companion objects (both default and named) of serializable classes.
+-if @kotlinx.serialization.Serializable class ** {
+    static **$* *;
+}
+-keepclassmembers class <2>$<3> {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# Keep `INSTANCE.serializer()` of serializablLe objects.
+-if @kotlinx.serialization.Serializable class ** {
+    public static ** INSTANCE;
+}
+-keepclassmembers class <1> {
+    public static <1> INSTANCE;
+    kotlinx.serialization.KSerializer serializer(...);
+}
+# @Serializable and @Polymorphic are used at runtime for polymorphic serialization.
+-keepattributes RuntimeVisibleAnnotations,AnnotationDefault
+
+
+# UltimateBarX混淆配置
+-keep class com.zackratos.ultimatebarx.ultimatebarx.** { *; }
+-keep public class * extends androidx.fragment.app.Fragment { *; }
+
+# 实体类混淆配置
+-dontwarn  com.thumbsupec.lib_net.http.entity.**
+-keep class com.thumbsupec.lib_net.http.entity.** { *; }
+-dontwarn  com.thumbsupec.ispruz.lib_entity.**
+-keep class com.thumbsupec.ispruz.lib_entity.** { *; }
+
+-dontwarn  com.thumbsupec.lib_base.entity.**
+-keep class com.thumbsupec.lib_base.entity.** { *; }
+
+-dontwarn  com.thumbsupec.lib_base.db.**
+-keep class com.thumbsupec.lib_base.db.** { *; }
+
+# LiveEventBus混淆
+-dontwarn com.jeremyliao.liveeventbus.**
+-keep class com.jeremyliao.liveeventbus.** { *; }
+-keep class androidx.lifecycle.** { *; }
+-keep class androidx.arch.core.** { *; }
+
+# Viewbinding 如果用的反射就会有混淆问题，需要加入混淆
+-keep class * implements androidx.viewbinding.ViewBinding {
+    *;
+}
+
+# PicSelector
+-keep class com.luck.picture.lib.** { *; }
+
+-keep class com.luck.lib.camerax.** { *; }
+
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }
+
+
+
+# Jpush
+ -dontoptimize
+    -dontpreverify
+
+    -dontwarn cn.jpush.**
+    -keep class cn.jpush.** { *; }
+
+    -dontwarn cn.jiguang.**
+    -keep class cn.jiguang.** { *; }
+
+
+    #Umeng
+    -keep class com.umeng.** {*;}
+
+    -keep class org.repackage.** {*;}
+
+    -keepclassmembers class * {
+       public <init> (org.json.JSONObject);
+    }
+
+    -keepclassmembers enum * {
+        public static **[] values();
+        public static ** valueOf(java.lang.String);
+    }
+
+
+#unit
+-dontwarn  com.thumbsupec.ispruz.lib_unity.**
+-keep class com.thumbsupec.ispruz.lib_unity.** { *; }
+
+-keep class com.unity3d.player.** { *; }
+-keep class com.google.androidgamesdk.** { *; }
+-keep class org.fmod.** { *; }
+-keep class bitter.jnibridge.** { *; }
+-keep class com.onevcat.uniwebview.* { *; }
+-ignorewarnings
+
+
+# DFU Library
+-keep class no.nordicsemi.android.dfu.** { *; }
+

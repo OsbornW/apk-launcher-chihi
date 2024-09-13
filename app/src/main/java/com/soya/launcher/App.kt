@@ -15,6 +15,7 @@ import android.os.Message
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
+import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import com.chihi.m98.hook.JsonSerializeHook
 import com.drake.serialize.serialize.Serialize
 import com.lzy.okgo.OkGo
@@ -23,6 +24,7 @@ import com.shudong.lib_base.ContextManager
 import com.shudong.lib_base.base.viewmodel.baseModules
 import com.shudong.lib_base.ext.MvvmHelper
 import com.shudong.lib_base.ext.d
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
@@ -73,120 +75,16 @@ import java.util.concurrent.TimeUnit
 import java.util.logging.Level
 
 class App : Application() {
-    private var receiver: InnerReceiver? = null
 
     override fun onCreate() {
+        "开始应用启动1".e("zengyue3")
         super.onCreate()
-        instance = this
-
-        MMKV.initialize(this)
-        Serialize.hook = JsonSerializeHook()
-
-        AppCacheNet.baseUrl = BuildConfig.BASE_URL
-        AppCache.isGuidChageLanguage = false
-
+        AppCache.isAppInited = false
         MvvmHelper.init(this@App)
-
-        ToastUtils.init(this@App)
-        ContextManager.getInstance().init(this@App)
-
-        startKoin {
-            androidContext(this@App)
-            modules(netModules)
-            //modules(appLoginModule)
-            modules(baseModules)
-            modules(homeModules)
-        }
-
-        val sslContext = getSSLContext()
-        val sslSocketFactory = sslContext.socketFactory
-        RxHttpPlugins.init(OkHttpClient.Builder()
-            .sslSocketFactory(sslSocketFactory, MyX509TrustManager())
-            .hostnameVerifier { _, _ -> true }
-            .build())
-
-
-        OkGo.init(this)
-
-        // 配置日志拦截器
-        val loggingInterceptor = HttpLoggingInterceptor("zengyue")
-        loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY) // 设置打印级别
-        loggingInterceptor.setColorLevel(Level.INFO) // 设置颜色级别
-        //builder.addInterceptor(loggingInterceptor) // 添加 OkGo 日志拦截器
-
-        OkGo.getInstance().addInterceptor(loggingInterceptor)
-            .setRetryCount(3) // 全局的超时重试次数
-            .setCertificates()
-
-        HttpRequest.init(this)
-        if (TextUtils.isEmpty(PreferencesUtils.getString(Atts.UID, ""))) {
-            PreferencesUtils.setProperty(Atts.UID, UUID.randomUUID().toString())
-        }
-        BluetoothScannerUtils.init(this)
-        initRemote()
-        com.hs.App.init(this)
-        //BRV.modelId = BR.m
-        initMultiLanguage(this)
-        product.addWallPaper()
+        "开始应用启动2".e("zengyue3")
     }
-
-
-    private fun initRemote() {
-        receiver = InnerReceiver()
-        val filter = IntentFilter()
-        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED)
-        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
-        filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
-        filter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)
-        if (Config.COMPANY != 3) {
-            registerReceiver(receiver, filter)
-        }
-    }
-
-    inner class InnerReceiver : BroadcastReceiver() {
-        @SuppressLint("MissingPermission")
-        override fun onReceive(context: Context, intent: Intent) {
-            val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-            //"当前收到的广播是====${intent.action}"
-            when (intent.action) {
-                BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED -> {
-                    val state = intent.getIntExtra(
-                        BluetoothAdapter.EXTRA_CONNECTION_STATE,
-                        BluetoothAdapter.STATE_DISCONNECTED
-                    )
-                    val prevState = intent.getIntExtra(
-                        BluetoothAdapter.EXTRA_PREVIOUS_CONNECTION_STATE,
-                        BluetoothAdapter.STATE_DISCONNECTED
-                    )
-                    when (state) {
-                        2 -> {}
-                        0 -> {
-                            if (prevState == 3) {
-                            }
-                        }
-                    }
-                }
-
-                BluetoothDevice.ACTION_ACL_CONNECTED -> {
-                    if (device!!.type != BluetoothDevice.DEVICE_TYPE_LE) {
-                    }
-                }
-
-                BluetoothDevice.ACTION_ACL_DISCONNECTED -> {
-                    if (device!!.type != BluetoothDevice.DEVICE_TYPE_LE) {
-                    }
-                }
-
-            }
-        }
-    }
-
 
     companion object {
-        @JvmStatic
-        var instance: App? = null
-            private set
-        private val exec = Executors.newCachedThreadPool()
 
         @JvmField
         val MOVIE_MAP: MutableMap<Long, MutableList<Data>> = ConcurrentHashMap()

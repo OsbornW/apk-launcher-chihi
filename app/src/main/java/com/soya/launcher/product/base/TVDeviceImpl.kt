@@ -38,6 +38,7 @@ import com.soya.launcher.ui.activity.ProjectorActivity
 import com.soya.launcher.ui.activity.ScaleScreenActivity
 import com.soya.launcher.ui.activity.SetDateActivity
 import com.soya.launcher.ui.activity.WifiListActivity
+import com.soya.launcher.ui.fragment.FocusFragment
 import com.soya.launcher.ui.fragment.GuideLanguageFragment
 import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.ui.fragment.WelcomeFragment
@@ -62,7 +63,7 @@ interface TVDeviceImpl : TVDevice {
             AppCache.isGuidChageLanguage.yes {
                 GuideLanguageFragment.newInstance()
             }.otherwise {
-                WelcomeFragment.newInstance()
+                FocusFragment.newInstance()
             }
 
         }.otherwise {
