@@ -21,6 +21,7 @@ import com.soya.launcher.R
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.databinding.FragmentAuthBinding
 import com.soya.launcher.ext.getWifiName
+import com.soya.launcher.fragment.AuthViewModel
 import com.soya.launcher.ui.activity.NetActivity
 import com.soya.launcher.ui.dialog.KeyboardDialog
 import com.soya.launcher.utils.AndroidSystem

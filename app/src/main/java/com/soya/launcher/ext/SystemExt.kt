@@ -66,7 +66,7 @@ fun String.getAppVersionName(): String? {
 
 fun getUpdateList(): Boolean {
     val updateApps = AppCache.updateInfo.jsonToTypeBean<MutableList<UpdateAppsDTO>>()
-    val localApps = AndroidSystem.getUserApps2(appContext).toMutableList()
+    val localApps = AndroidSystem.getAllInstalledApps(appContext).toMutableList()
 
     // 创建包名到版本号的映射
     val versionCodeMap = mutableMapOf<String, Int>()
