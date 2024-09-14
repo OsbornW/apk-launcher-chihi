@@ -59,8 +59,6 @@ class SplashActivity : BaseVMMainActivity<ActivitySplashBinding, BaseViewModel>(
             withContext(Dispatchers.IO){
                 if (!AppCache.isAppInited) {
                     //"开始应用启动4".e("zengyue3")
-                    MMKV.initialize(appContext)
-                    Serialize.hook = JsonSerializeHook()
 
                     AppCacheNet.baseUrl = BuildConfig.BASE_URL
                     AppCache.isGuidChageLanguage = false

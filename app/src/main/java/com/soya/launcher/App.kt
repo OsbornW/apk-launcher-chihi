@@ -1,13 +1,17 @@
 package com.soya.launcher
 
 import android.app.Application
+import com.chihi.m98.hook.JsonSerializeHook
+import com.drake.serialize.serialize.Serialize
 import com.shudong.lib_base.ext.MvvmHelper
+import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.e
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.Data
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.ext.loadBlurDrawable
 import com.soya.launcher.product.base.product
+import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,9 +27,13 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        AppCache.isAppInited = false
         MvvmHelper.init(this@App)
+        MMKV.initialize(appContext)
+        Serialize.hook = JsonSerializeHook()
+
         product.addWallPaper()
+
+        AppCache.isAppInited = false
 
         applicationScope.launch {
             val drawable = curWallpaper().loadBlurDrawable()

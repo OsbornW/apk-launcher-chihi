@@ -63,7 +63,7 @@ class ChooseWallpaperFragment : BaseWallPaperFragment<FragmentChooseWallpaperBin
                 bean?.id?.let { PreferencesUtils.setProperty(Atts.WALLPAPER, it) }
                 AppCache.isSkipGuid = true
                 mArrayObjectAdapter!!.notifyArrayItemRangeChanged(0, mArrayObjectAdapter!!.size())
-
+                updateWallpaper()
                 val fragmentManager = requireActivity().supportFragmentManager
                 for (i in 0 until fragmentManager.backStackEntryCount) {
                     fragmentManager.popBackStack()

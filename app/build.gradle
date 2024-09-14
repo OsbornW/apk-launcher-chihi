@@ -154,8 +154,9 @@ android {
         }
 
         p50_713M {
-            applicationId "com.soya.launcher"
+            applicationId "com.chihihx.launcher"
             dimension "chihi"
+            versionCode 60
             signingConfig signingConfigs.hongxin
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用

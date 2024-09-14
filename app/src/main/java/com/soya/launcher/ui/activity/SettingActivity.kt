@@ -11,6 +11,6 @@ import com.soya.launcher.ui.fragment.SettingFragment.Companion.newInstance
 class SettingActivity : BaseWallpaperActivity<ActivityMainBinding,BaseViewModel>() {
 
     override fun initView() {
-        //replaceFragment(newInstance(),R.id.main_browse_fragment)
+        replaceFragment(newInstance(),R.id.main_browse_fragment)
     }
 }
