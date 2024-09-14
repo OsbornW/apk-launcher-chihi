@@ -13,13 +13,14 @@ import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.autoResponseText
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.p50.AUTO_FOCUS
+import com.soya.launcher.p50.FULL_FUNCTION
 import com.soya.launcher.p50.setFunction
 import com.soya.launcher.product.base.TVDeviceImpl
 
 object ProjectorP50 : TVDeviceImpl {
     override fun openFileManager() = PACKAGE_NAME_FILE_MANAGER_713.openApp()
     override fun openHomeTopKeystoneCorrection(context: Context) {
-        setFunction(AUTO_FOCUS)
+        setFunction(FULL_FUNCTION)
         super.openHomeTopKeystoneCorrection(context)
     }
 
