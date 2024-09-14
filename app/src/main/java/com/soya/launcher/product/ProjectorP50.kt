@@ -10,6 +10,7 @@ import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.autoResponseText
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.p50.AUTO_FOCUS
 import com.soya.launcher.p50.setFunction
@@ -25,7 +26,7 @@ object ProjectorP50 : TVDeviceImpl {
     override fun addProjectorItem(): MutableList<SettingItem> {
         return mutableListOf<SettingItem>().apply {
             //自动响应
-            add(SettingItem(Projector.TYPE_AUTO_RESPONSE, appContext.getString(R.string.auto_response_off), R.drawable.icon_auto_response))
+            add(SettingItem(Projector.TYPE_AUTO_RESPONSE, autoResponseText(), R.drawable.icon_auto_response))
             // 自动聚焦
             add(SettingItem(Projector.TYPE_AUTO_FOCUS, appContext.getString(R.string.auto_focus), R.drawable.icon_auto_focus))
             // 梯形校正

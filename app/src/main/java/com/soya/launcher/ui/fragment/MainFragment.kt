@@ -37,6 +37,7 @@ import com.google.gson.stream.JsonReader
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.shudong.lib_base.currentActivity
+import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
 import com.shudong.lib_base.ext.animScale
@@ -182,6 +183,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
         useApps.addAll(filteredList)
+
+        sendLiveEventData(IS_MAIN_CANBACK,false)
     }
 
     override fun initObserver() {

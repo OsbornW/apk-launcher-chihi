@@ -1,5 +1,6 @@
 package com.soya.launcher
 
+import android.graphics.drawable.Drawable
 import com.soya.launcher.cache.AppCache.WALLPAPERS
 import com.soya.launcher.config.Config
 import com.soya.launcher.manager.PreferencesManager
@@ -30,7 +31,7 @@ const val SETTING_SOUND = 8
 const val SETTING_KEYBOARD = 9
 
 
-
+var localWallPaperDrawable:Drawable?=null
 fun defaultId() = if (Config.COMPANY == 0) R.drawable.wallpaper_22 else R.drawable.wallpaper_1
 fun curWallpaper() = run {
     val wallpaperResId =

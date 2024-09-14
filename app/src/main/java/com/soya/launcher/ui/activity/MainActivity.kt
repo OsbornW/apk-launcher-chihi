@@ -48,6 +48,7 @@ import com.soya.launcher.ext.countImagesWithPrefix
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getBasePath
+import com.soya.launcher.localWallPaperDrawable
 import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.net.viewmodel.HomeViewModel
@@ -92,6 +93,10 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     }
 
     override fun initBeforeContent() {
+        if(localWallPaperDrawable!=null){
+            //设置后没效果
+            //window.setBackgroundDrawableResource(R.drawable.wallpaper_1)
+        }
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
