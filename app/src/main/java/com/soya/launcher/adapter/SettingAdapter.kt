@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.leanback.widget.Presenter
+import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.widthAndHeight
 import com.soya.launcher.R
+import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.view.MyFrameLayout
 
@@ -37,6 +40,22 @@ class SettingAdapter(
         private val mTitleView: TextView = view.findViewById(R.id.title)
 
         fun bind(bean: SettingItem) {
+            when (bean.type) {
+                Projector.TYPE_AUTO_CALIBRATION, Projector.TYPE_MANUAL_CALIBRATION -> {
+                    mIV.widthAndHeight(
+                        com.shudong.lib_dimen.R.dimen.qb_px_20.dimenValue(),
+                        com.shudong.lib_dimen.R.dimen.qb_px_20.dimenValue()
+                    )
+
+                }
+
+                else -> {
+                    mIV.widthAndHeight(
+                        com.shudong.lib_dimen.R.dimen.qb_px_50.dimenValue(),
+                        com.shudong.lib_dimen.R.dimen.qb_px_50.dimenValue()
+                    )
+                }
+            }
             mIV.setImageResource(bean.ico)
             mTitleView.text = bean.name
 
