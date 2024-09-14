@@ -52,9 +52,9 @@ object ProjectorP50 : TVDeviceImpl {
     override fun addCalibrationItem(isEnable: Boolean): MutableList<SettingItem> {
         return mutableListOf<SettingItem>().apply {
             //自动梯形
-            add(SettingItem(Projector.TYPE_AUTO_CALIBRATION, appContext.getString(R.string.auto_calibrate), R.drawable.baseline_model_training_100))
+            add(SettingItem(Projector.TYPE_AUTO_CALIBRATION, appContext.getString(R.string.auto_calibrate), R.drawable.icon_auto_at))
             // 手动梯形
-            add(SettingItem(Projector.TYPE_MANUAL_CALIBRATION, appContext.getString(R.string.manual_calibration), R.drawable.baseline_crop_100))
+            add(SettingItem(Projector.TYPE_MANUAL_CALIBRATION, appContext.getString(R.string.manual_calibration), R.drawable.icon_auto_mt))
 
         }
     }
