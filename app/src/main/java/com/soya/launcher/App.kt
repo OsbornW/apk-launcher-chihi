@@ -47,6 +47,15 @@ class App : Application() {
 
         AppCache.isAppInited = false
 
+            startKoin {
+                androidContext(appContext)
+                modules(netModules)
+                modules(baseModules)
+                modules(homeModules)
+
+        }
+
+
         applicationScope.launch {
             val drawable = curWallpaper().loadBlurDrawable()
             localWallPaperDrawable = drawable

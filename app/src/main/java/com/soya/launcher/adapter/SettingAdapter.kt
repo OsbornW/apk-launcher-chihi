@@ -43,8 +43,8 @@ class SettingAdapter(
             when (bean.type) {
                 Projector.TYPE_AUTO_CALIBRATION, Projector.TYPE_MANUAL_CALIBRATION -> {
                     mIV.widthAndHeight(
-                        com.shudong.lib_dimen.R.dimen.qb_px_20.dimenValue(),
-                        com.shudong.lib_dimen.R.dimen.qb_px_20.dimenValue()
+                        com.shudong.lib_dimen.R.dimen.qb_px_70.dimenValue(),
+                        com.shudong.lib_dimen.R.dimen.qb_px_70.dimenValue()
                     )
 
                 }
