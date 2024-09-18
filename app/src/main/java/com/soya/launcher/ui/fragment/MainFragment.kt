@@ -1237,6 +1237,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             val menuList = convertH27002Json()
             header.addAll(1, menuList)
         }
+
+        product.addGameItem()?.let { header.addAll(0, it) }
     }
 
     private fun setDefault() {

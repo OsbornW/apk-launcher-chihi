@@ -5,6 +5,7 @@ import com.soya.launcher.PACKAGE_NAME_FILE_MANAGER_713
 import com.soya.launcher.R
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.convertGameJson
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.product.base.TVDeviceImpl
 
@@ -47,5 +48,7 @@ object Projector713G: TVDeviceImpl {
             )
         }
     }
+
+    override fun addGameItem(): MutableList<TypeItem> = convertGameJson()
 
 }

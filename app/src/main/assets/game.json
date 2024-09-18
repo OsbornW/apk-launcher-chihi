@@ -1,0 +1,46 @@
+{
+  "movies": [
+    {
+      "icon": "header_game",
+      "name": "Game",
+      "iconName": "",
+      "type": 2,
+      "datas": [
+        {
+          "id": "MAME",
+          "url": "MAMEMAME",
+          "imageName": "",
+          "imageUrl": "content_game_1"
+        },
+        {
+          "id": "GBA",
+          "url": "GBAGBA",
+          "imageName": "",
+          "imageUrl": "content_game_2"
+        },
+        {
+          "id": "NES",
+          "url": "NESNES",
+          "imageName": "",
+          "imageUrl": "content_game_3"
+        },
+        {
+          "id": "",
+          "url": "MORE",
+          "imageName": "",
+          "imageUrl": "content_game_4"
+        }
+      ],
+      "packageNames": [
+        {
+          "packageName": "com.nj.boxui",
+          "activityName": ""
+        },
+        {
+          "packageName": "com.nj.boxui",
+          "activityName": ""
+        }
+      ]
+    }
+  ]
+}

@@ -53,6 +53,7 @@ sealed interface TVDevice{
     fun projectorColumns():Int = 0
     fun addWallPaper(){}
     fun addHeaderItem():MutableList<TypeItem>?=null
+    fun addGameItem():MutableList<TypeItem>?=null
 }
 
 data object DefaultDevice: TVDevice

@@ -5,6 +5,7 @@ import com.soya.launcher.PACKAGE_NAME_SCREENZOOM_RK3326
 import com.soya.launcher.R
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.convertGameJson
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.product.base.TVDeviceImpl
 
@@ -47,5 +48,7 @@ object ProjectorRK3326G : TVDeviceImpl{
             )
         }
     }
+
+    override fun addGameItem(): MutableList<TypeItem> = convertGameJson()
 
 }

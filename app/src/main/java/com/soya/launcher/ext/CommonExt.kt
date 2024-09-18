@@ -59,6 +59,45 @@ fun convertH27002Json():MutableList<TypeItem> = run {
     menus
 }
 
+fun convertGameJson():MutableList<TypeItem> = run {
+    val dto = Gson().fromJson(
+        InputStreamReader(
+            appContext.assets.open("game.json")
+        ),
+        HomeInfoDto::class.java
+    )
+
+    val menus: MutableList<TypeItem> = mutableListOf()
+
+    dto.movies?.let {
+        it.forEach { movie ->
+            val movies = mutableListOf<Data>()
+            movie?.datas?.forEach { data->
+                data?.picType = Movice.PIC_NETWORD
+                data?.packageNames = movie.packageNames
+                data?.appName = movie.name
+                if (data != null) {
+                    movies.add(data)
+                }
+            }
+
+            val item = TypeItem(
+                movie?.name,
+                movie?.icon,
+                UUID.randomUUID().leastSignificantBits,
+                Types.TYPE_MOVICE,
+                TypeItem.TYPE_ICON_IMAGE_URL,
+                movie?.type ?: 0
+            )
+            item.iconName = movie?.iconName
+            item.data = movie?.packageNames
+            App.MOVIE_MAP.put(item.id, movies)
+            menus.add(item)
+        }
+    }
+    menus
+}
+
 fun autoResponseText() = run{
     val isResponseOpen = SYSTEM_PROPERTY_AUTO_RESPONSE.systemPropertyValueBoolean()
     isResponseOpen.yes {
