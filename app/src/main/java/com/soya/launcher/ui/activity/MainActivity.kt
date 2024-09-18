@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
+import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
@@ -76,7 +77,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 val reason = intent.getStringExtra("reason")
                 if (reason == "homekey") {
                     // 处理 Home 键按下的逻辑
-                    sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
+                    sendLiveEventData(HOME_EVENT,true)
                 }
             }
         }
@@ -86,7 +87,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_HOME || keyCode == KEYCODE_AVR_POWER) {
             // 处理 Home 键按下的逻辑
-            sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
+            sendLiveEventData(HOME_EVENT,true)
             return true
         }
         return super.onKeyDown(keyCode, event)
@@ -350,7 +351,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         if (canBackPressed) {
             super.onBackPressed()
         } else {
-            sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
+            sendLiveEventData(HOME_EVENT,true)
         }
 
     }

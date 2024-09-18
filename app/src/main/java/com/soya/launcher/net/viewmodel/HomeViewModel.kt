@@ -1,15 +1,20 @@
 package com.soya.launcher.net.viewmodel
 
+import android.content.BroadcastReceiver
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.DeviceUtils
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.currentActivity
+import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.showErrorToast
 import com.shudong.lib_base.ext.showSuccessToast
 import com.shudong.lib_base.ext.stringValue
 import com.shudong.lib_base.ext.yes
+import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.PACKAGE_NAME_AUTO_RESPONSE
@@ -32,8 +37,10 @@ import com.soya.launcher.p50.AUTO_ENTRY
 import com.soya.launcher.p50.AUTO_FOCUS
 import com.soya.launcher.p50.setFunction
 import com.soya.launcher.product.base.product
+import com.soya.launcher.ui.activity.MainActivity
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.toTrim
+import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.flow.Flow
 import org.koin.core.component.inject
 
@@ -128,5 +135,43 @@ class HomeViewModel : BaseViewModel() {
         }
     }
 
+    fun handleActiveCodeData(statusCode:Long,msg:String?){
+        (msg == null).no {
+            ToastUtils.show(msg)
+            AppCacheBase.isActive = false
+            (currentActivity as MainActivity).switchAuthFragment()
+        }.otherwise {
+            when (statusCode) {
+                10000L -> {
+                    AppCacheBase.isActive = true
+                }
+
+                10004L -> {
+                    ToastUtils.show("Invalid PIN, please try again! ")
+                    AppCacheBase.isActive = false
+                    (currentActivity as MainActivity).switchAuthFragment()
+                }
+
+                else -> {
+                    ToastUtils.show("Failed, please try again!")
+                    AppCacheBase.isActive = false
+                    (currentActivity as MainActivity).switchAuthFragment()
+                }
+            }
+        }
+    }
+
+    fun addAppStatusBroadcast(receiver: BroadcastReceiver){
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_PACKAGE_ADDED)
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
+        filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
+        filter.addDataScheme("package")
+        currentActivity?.registerReceiver(receiver, filter)
+    }
+
+    fun removeAppStatusBroadcast(receiver: BroadcastReceiver){
+        currentActivity?.unregisterReceiver(receiver)
+    }
 
 }

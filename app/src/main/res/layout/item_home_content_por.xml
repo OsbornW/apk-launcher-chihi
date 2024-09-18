@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.soya.launcher.view.MyFrameLayoutHouse
-    android:layout_marginLeft="@dimen/qb_px_5"
-    android:layout_marginRight="@dimen/qb_px_5"
+    android:layout_marginHorizontal="@dimen/qb_px_10"
     android:layout_marginTop="@dimen/qb_px_13"
     android:layout_marginBottom="@dimen/qb_px_13"
     xmlns:android="http://schemas.android.com/apk/res/android"

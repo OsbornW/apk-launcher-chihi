@@ -12,6 +12,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.margin
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.TypeItem
@@ -68,7 +72,15 @@ class MainHeaderAdapter(
             }
             itemView.setOnClickListener { callback?.onClick?.invoke(item) }
 
-            root.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            itemView.setOnFocusChangeListener { view, hasFocus ->
+                (position == 0).yes {
+                    hasFocus.yes {
+                        view.margin(leftMargin = com.shudong.lib_dimen.R.dimen.qb_px_15.dimenValue())
+                    }.otherwise {
+                        view.margin(leftMargin = com.shudong.lib_dimen.R.dimen.qb_px_0.dimenValue())
+
+                    }
+                }
                 mCardView.isSelected = hasFocus
                 val animation = AnimationUtils.loadAnimation(
                     context, if (hasFocus) R.anim.zoom_in_max else R.anim.zoom_out_max
@@ -76,6 +88,7 @@ class MainHeaderAdapter(
                 animation.fillAfter = true
                 itemView.startAnimation(animation)
             }
+
 
             mCardView.setCallback { selected -> callback?.onSelect?.invoke(selected, item) }
 

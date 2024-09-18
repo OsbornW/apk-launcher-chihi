@@ -37,6 +37,7 @@ import com.google.gson.stream.JsonReader
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.shudong.lib_base.currentActivity
+import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
@@ -118,6 +119,7 @@ import com.soya.launcher.utils.AppUtil
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
 import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
+import com.shudong.lib_base.ext.net.lifecycleLoadingView
 import com.shudong.lib_base.ext.width
 import com.soya.launcher.ext.silentInstallWithMutex
 import com.soya.launcher.net.viewmodel.HomeViewModel
@@ -146,18 +148,17 @@ import kotlin.math.abs
 
 class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>(),
     AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+
     private val useApps: MutableList<ApplicationInfo> = ArrayList()
     private val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     private val exec = Executors.newCachedThreadPool()
-
     private var uiHandler: Handler? = null
     private var uuid: String? = null
     private val call: Call<*>? = null
     private var homeCall: Call<*>? = null
     private var isReqHome = false
     private var receiver: InnerReceiver? = null
-    private var wallpaperReceiver: WallpaperReceiver? = null
-    private var maxVerticalOffset = 0f
+    private var maxVerticalOffset = com.shudong.lib_dimen.R.dimen.qb_px_60.dimenValue()
     private val items: MutableList<TypeItem> = ArrayList()
     private val targetMenus: MutableList<TypeItem> = ArrayList()
     private var timeRunnable: MyRunnable? = null
@@ -175,31 +176,17 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
 
     override fun initView() {
-        maxVerticalOffset = resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_60)
         uiHandler = Handler()
         receiver = InnerReceiver()
-        wallpaperReceiver = WallpaperReceiver()
         val infos = AndroidSystem.getUserApps2(appContext)
         val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
         useApps.addAll(filteredList)
 
-        sendLiveEventData(IS_MAIN_CANBACK,false)
+        sendLiveEventData(IS_MAIN_CANBACK, false)
     }
 
     override fun initObserver() {
-        this.obseverLiveEvent<Boolean>("refreshdefault") {
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).no {
-                        // 达大厦
-                        withContext(Dispatchers.Main) {
-                            setDefault()
-                        }
-                    }
-                }
-            }
-        }
 
         obseverLiveEvent<Boolean>(UPDATE_HOME_LIST) {
             val path = FilePathMangaer.getJsonPath(appContext) + "/Home.json"
@@ -213,21 +200,25 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         }
 
+        obseverLiveEvent<Boolean>(HOME_EVENT) {
+            if (isExpanded) {
+                mBind.header.requestFocus()
+                mBind.header.scrollToPosition(0)
+            } else {
+                (mBind.header.isFocused).no {
+                    mBind.header.requestFocus()
+                }
+                mBind.header.scrollToPosition(0)
+            }
+        }
+
     }
 
     override fun initdata() {
         product.addHeaderItem()?.let { items.addAll(it) }
 
-        val filter = IntentFilter()
-        filter.addAction(Intent.ACTION_PACKAGE_ADDED)
-        filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
-        filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
-        filter.addDataScheme("package")
-        requireActivity().registerReceiver(receiver, filter)
+        receiver?.let { mViewModel.addAppStatusBroadcast(it) }
 
-        val filter1 = IntentFilter()
-        filter1.addAction(IntentAction.ACTION_RESET_SELECT_HOME)
-        requireActivity().registerReceiver(wallpaperReceiver, filter1)
 
         detectNetStaus()
 
@@ -237,19 +228,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         mBind.header.requestFocus()
 
-        mBind.horizontalContent.addItemDecoration(
-            HSlideMarginDecoration(
-                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
-                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)
-            )
-        )
-        mBind.header.addItemDecoration(
-            HSlideMarginDecoration(
-                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
-                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)
-            )
-        )
-        mBind.header.pivotY = maxVerticalOffset
 
         mStoreAdapter = StoreAdapter(
             requireContext(),
@@ -302,72 +280,16 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
 
         AppCacheBase.isActive.yes {
-            val uniqueID = DeviceUtils.getUniqueDeviceId()
-                .subSequence(0, DeviceUtils.getUniqueDeviceId().length - 1)
-            //激活码
-            val activeCode = AppCacheBase.activeCode
-            val versionValue = 1003
-            // 渠道ID
-            val chanelId = BuildConfig.CHANNEL
-
-            val childChanel = "S10001"
-            // 时间戳
-            val time = System.currentTimeMillis() / 1000
-            // 密码盐
-            val pwd = "TKPCpTVZUvrI"
-            // 待加密的字符串（(d+e+c+b+a+f+密码盐）
-            val toBeEncryptedString =
-                "$chanelId$childChanel$versionValue$activeCode$uniqueID$time$pwd"
-            // 对字符串进行MD5加密
-            val md5String = toBeEncryptedString.md5()
-
-            val params = mapOf(
-                //唯一ID
-                "a" to uniqueID,
-                // 激活码
-                "b" to activeCode.toLong(),
-                // API 版本值
-                "c" to versionValue,
-                //渠道号
-                "d" to chanelId,
-                // 子渠道号
-                "e" to childChanel,
-                // 当前时间戳（秒）
-                "f" to time,
-                // 签名值  md5(d+e+c+b+a+f+密码盐)
-                "s" to md5String,
-            )
-            val jsonObject = JSONObject(params)
-
-            OkGo.post("https://api.freedestop.com/u/client")
-                .tag(this)
-                .upJson(jsonObject.toString())
-                .execute(object : StringCallback() {
-                    override fun onSuccess(s: String?, call: okhttp3.Call?, response: Response?) {
-                        lifecycleScope.launch {
-                            delay(1000)
-                            showLoadingViewDismiss()
-                            val authBean = s?.jsonToBean<AuthBean>()
-                            (authBean?.status == 200).yes {
-                                authBean?.code?.let {
-                                    "开始判断msg==="
-                                    BuildConfig.DEBUG.no {
-                                        it.getResult(authBean.msg)
-                                    }
-
-                                }
-
-                            }.otherwise {
-
-                            }
+            mViewModel.reqCheckActiveCode(AppCacheBase.activeCode)
+                .lifecycle(this@MainFragment, {
+                }, isShowError = false) {
+                    val authDto = this.jsonToBean<AuthBean>()
+                    (authDto.status == 200).yes {
+                        authDto.code.let {
+                            mViewModel.handleActiveCodeData(it, authDto.msg)
                         }
                     }
-
-                    override fun onError(call: okhttp3.Call?, response: Response?, e: Exception?) {
-
-                    }
-
-                })
+                }
 
         }
 
@@ -381,44 +303,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             )
         )
         mBind.notifyRecycler.setAdapter(mNotifyAdapter)
-
-    }
-
-    private fun Long.getResult(msg: String?) {
-        (msg == null).no {
-            ToastUtils.show(msg)
-            AppCacheBase.isActive = false
-            (activity as MainActivity).switchAuthFragment()
-        }.otherwise {
-            when (this) {
-                10000L -> {
-                    AppCacheBase.isActive = true
-                    //showLoadingViewDismiss()
-                    /* ToastUtils.show("Success")
-                     lifecycleScope.launch {
-                         delay(500)
-                         //repeatOnLifecycle(Lifecycle.State.RESUMED){
-                         sendLiveEventData(ACTIVE_SUCCESS, true)
-                         // }
-
-                     }*/
-
-                }
-
-                10004L -> {
-                    ToastUtils.show("Invalid PIN, please try again! ")
-                    AppCacheBase.isActive = false
-                    (activity as MainActivity).switchAuthFragment()
-                }
-
-                else -> {
-                    ToastUtils.show("Failed, please try again!")
-                    AppCacheBase.isActive = false
-                    (activity as MainActivity).switchAuthFragment()
-                }
-            }
-        }
-
 
     }
 
@@ -479,23 +363,14 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             setHeader(header)
             isConnectFirst = true
-            /* if (result.getData().reg_id != null) PreferencesUtils.setProperty(
-                 Atts.RECENTLY_MODIFIED,
-                 result.getData().reg_id
-             )*/
+
             val item = header[0]
             fillMovice(item)
-
-
             delay(2000)
             mBind.setting.clearFocus()
-            //delay(500)
             mBind.header.requestFocus()
-            //requestFocus(mBind.header, 0)
         }
-        /*if (BuildConfig.FLAVOR == "hongxin_H27002") {
-            requestFocus(mBind.header, 500)
-        }*/
+
     }
 
 
@@ -527,8 +402,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         super.onDestroy()
         call?.cancel()
         if (homeCall != null) homeCall!!.cancel()
-        activity!!.unregisterReceiver(receiver)
-        activity!!.unregisterReceiver(wallpaperReceiver)
+        receiver?.let { mViewModel.removeAppStatusBroadcast(it) }
         exec.shutdownNow()
     }
 
@@ -862,107 +736,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         mBind.verticalContent.addModels(product.addProjectorItem())
     }
 
-    private fun setToolContent() {
-        val arrayObjectAdapter = ArrayObjectAdapter(
-            SettingAdapter(
-                appContext,
-                getLayoutInflater(),
-                newToolCallback(),
-                R.layout.holder_setting_3
-            )
-        )
-        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(
-            itemBridgeAdapter,
-            FocusHighlight.ZOOM_FACTOR_MEDIUM,
-            false
-        )
-        mBind.horizontalContent.setAdapter(itemBridgeAdapter)
-        mBind.verticalContent.visibility = View.GONE
-        mBind.horizontalContent.visibility = View.VISIBLE
-        val list: MutableList<SettingItem?> = ArrayList()
-        list.add(
-            SettingItem(
-                Tools.TYPE_HDMI,
-                getString(R.string.project_hdmi),
-                R.drawable.baseline_settings_input_hdmi_100
-            )
-        )
-        list.add(
-            SettingItem(
-                Tools.TYPE_FILE,
-                getString(R.string.file_management),
-                R.drawable.baseline_sd_storage_100_3
-            )
-        )
-        arrayObjectAdapter.addAll(0, list)
-    }
-
-    private fun newProjectorCallback(): SettingAdapter.Callback {
-        return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem?) {
-                if (selected) {
-                    setRVHeight(false)
-                    setExpanded(false)
-                }
-            }
-
-            override fun onClick(bean: SettingItem?) {
-                when (bean?.type) {
-                    Projector.TYPE_SCREEN_ZOOM -> {
-                        isRK3326().yes {
-                            AndroidSystem.openActivityName(
-                                requireContext(),
-                                "com.lei.hxkeystone",
-                                "com.lei.hxkeystone.ScaleActivity"
-                            )
-                        }.otherwise {
-                            startActivity(Intent(activity, ScaleScreenActivity::class.java))
-                        }
-                    }
-
-                    Projector.TYPE_PROJECTOR_MODE -> {
-                        val success = AndroidSystem.openProjectorMode(requireContext())
-                        if (!success) toastInstall()
-                    }
-
-                    Projector.TYPE_HDMI -> {
-                        val success = AndroidSystem.openProjectorHDMI(requireContext())
-                        if (!success) toastInstall()
-                    }
-
-                    Projector.TYPE_KEYSTONE_CORRECTION -> {
-                        startActivity(Intent(requireContext(), ChooseGradientActivity::class.java))
-                    }
-                }
-            }
-        }
-    }
-
-    private fun newToolCallback(): SettingAdapter.Callback {
-        return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem?) {
-                if (selected) {
-                    setExpanded(false)
-                    setRVHeight(false)
-                }
-            }
-
-            override fun onClick(bean: SettingItem?) {
-                when (bean?.type) {
-                    Tools.TYPE_HDMI -> AndroidSystem.openPackageName(
-                        requireContext(),
-                        "com.mediatek.wwtv.tvcenter"
-                    )
-
-                    Tools.TYPE_FILE -> AndroidSystem.openPackageName(
-                        requireContext(),
-                        "com.conocx.fileexplorer"
-                    )
-                }
-            }
-        }
-    }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
         isExpanded = verticalOffset != 0
@@ -971,7 +744,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         mBind.header.scaleY = value
     }
 
-    //var adController:Controller?=null
     override fun onClick(v: View) {
         if (v == mBind.setting) {
             if (Config.COMPANY == 4) {
@@ -979,21 +751,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             } else {
                 startActivity(Intent(requireContext(), SettingActivity::class.java))
             }
-            //loadJar()
-            //requireActivity().initializeAd(rlAD!!,this)
-            //requireActivity().startAd()
 
-            /* Ad.get().setEnableLog(true)
-             if(adController==null){
-                 adController = Ad.get().begin(appContext)
-                     .container(rlAD)
-                     .lifecycleOwner(this)
-                     .start();
-             }else{
-                 adController?.start(rlAD)
-             }*/
-
-            //AndroidSystem.openSystemSetting(getActivity());
         } else if (v == mBind.search) {
             startActivity(Intent(activity, SearchActivity::class.java))
         } else if (v == mBind.wifi) {
@@ -1009,31 +767,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         } else if (v == mBind.hdmi) {
             AndroidSystem.openProjectorHDMI(requireContext())
         } else if (v == mBind.gradient) {
-            //startActivity(Intent(requireContext(), HomeGuideGroupGradientActivity::class.java))
-
-            // startActivity(Intent(requireContext(), ChooseGradientActivity::class.java))
             product.openHomeTopKeystoneCorrection(requireContext())
-
-
-            /*
-            * 判断是否打开了自动校准，否则先打开自动校准
-            * 然后跳转SDK自动校准页面
-            * */
-            // 是否处于自动校准
-            /*  var isAutoCalibration =
-                  ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
-              isAutoCalibration.no {
-                  // 没有打开自动校准
-                  //开启自动校准
-                  ASystemProperties.set("persist.vendor.gsensor.enable", "1")
-              }*/
-
-            //跳转自动校准页面
-            /* AndroidSystem.openActivityName(
-                 requireContext(),
-                 "com.hxdevicetest",
-                 "com.hxdevicetest.CheckGsensorActivity"
-             )*/
 
         }
     }
@@ -1061,10 +795,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 setProjectorContent()
             }
 
-            Types.TYPE_TOOL -> {
-                setToolContent()
-            }
-
             else -> switchMovice(bean)
         }
     }
@@ -1075,13 +805,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private fun toastInstallApp(name: String, callback: ToastDialog.Callback) {
-        "当前的APP名字是=====$name"
-        if (name == null || name == "") {
-            ToastUtils.show("当前APP名字是空的")
-        } else {
-            toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback)
-
-        }
+        toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback)
     }
 
     private fun toast(title: String, mode: Int, callback: ToastDialog.Callback?) {
@@ -1114,14 +838,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun fillMovice(id: Long, dirction: Int, columns: Int, layoutId: Int) {
         setMoviceContent(App.MOVIE_MAP[id], dirction, columns, layoutId)
-        //requestHome()
     }
 
     private fun requestHome() {
         if (isReqHome || isConnectFirst) return
         isReqHome = true
         sendLiveEventData(REFRESH_HOME, true)
-        // homeCall = HttpRequest.getHomeContents(newMoviceListCallback())
     }
 
     private fun fillApps(replace: Boolean, isAttach: Boolean) {
@@ -1130,9 +852,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             var infos = AndroidSystem.getUserApps2(appContext)
             val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
-            /*if (infos.size > 8) {
-                infos = infos.subList(0, 8)
-            }*/
             useApps.addAll(filteredList)
         }
         if (isAttach) setAppContent(useApps)
@@ -1453,8 +1172,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         onFocus = { hasFocus, bean ->
             /* Handle focus */
             if (hasFocus) {
-                //val itemCount = mBind.header.adapter?.itemCount?:0
-                //mBind.header.scrollToPosition(itemCount-1)
                 setRVHeight(false)
                 setExpanded(false)
             }
@@ -1558,41 +1275,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         mAppListAdapter?.refresh(filteredList.toMutableList())
                         useApps.clear()
                         useApps.addAll(mAppListAdapter?.getDataList()!!)
-
-                    }
-
-
-                }
-
-            }
-        }
-    }
-
-    inner class WallpaperReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            when (intent.action) {
-                IntentAction.ACTION_RESET_SELECT_HOME -> {
-                    if (isExpanded) {
-                        mBind.header.requestFocus()
-                        mBind.header.scrollToPosition(0)
-                    } else {
-                        (mBind.header.isFocused).no {
-                            mBind.header.requestFocus()
-                        }
-                        mBind.header.scrollToPosition(0)
                     }
                 }
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        requireActivity().setTheme(R.style.Theme_Main)
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     companion object {
