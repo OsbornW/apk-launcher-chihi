@@ -35,6 +35,7 @@ import com.thumbsupec.lib_net.di.netModules
 import com.thumbsupec.lib_net.http.MyX509TrustManager
 import com.thumbsupec.lib_net.http.getSSLContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -53,9 +54,12 @@ class SplashActivity : BaseVMMainActivity<ActivitySplashBinding, BaseViewModel>(
         initApp()
     }
 
+    var job:Job?=null
+    var job1:Job?=null
     private fun initApp() {
         //delay(1000)
-        lifecycleScope.launch {
+        job?.cancel()
+        job = lifecycleScope.launch {
             withContext(Dispatchers.IO){
                 if (!AppCache.isAppInited) {
                     //"开始应用启动4".e("zengyue3")
@@ -99,8 +103,8 @@ class SplashActivity : BaseVMMainActivity<ActivitySplashBinding, BaseViewModel>(
 
         }
 
-        lifecycleScope.launch {
-
+        job1?.cancel()
+        job1 = lifecycleScope.launch {
             while (isActive) { // 确保协程在生命周期内运行
                 delay(100) // 每 100 毫秒检测一次
                 if ( localWallPaperDrawable != null) {
@@ -112,9 +116,6 @@ class SplashActivity : BaseVMMainActivity<ActivitySplashBinding, BaseViewModel>(
                 }
             }
         }
-
-
-
     }
 
 }
