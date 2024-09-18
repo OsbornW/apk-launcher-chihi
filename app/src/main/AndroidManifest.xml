@@ -82,12 +82,11 @@
         android:preserveLegacyExternalStorage="true"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyTv"
+        android:theme="@style/Theme.Splash"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         android:directBootAware="true">
         <activity
-            android:theme="@style/Theme.Splash"
             android:name=".SplashActivity"
             android:exported="true" >
 

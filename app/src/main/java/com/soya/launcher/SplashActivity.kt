@@ -100,15 +100,6 @@ class SplashActivity : BaseVMMainActivity<ActivitySplashBinding, BaseViewModel>(
         }
 
         lifecycleScope.launch {
-            if (!AppCache.isAppInited) {
-                startKoin {
-                    androidContext(appContext)
-                    modules(netModules)
-                    //modules(appLoginModule)
-                    modules(baseModules)
-                    modules(homeModules)
-                }
-            }
 
             while (isActive) { // 确保协程在生命周期内运行
                 delay(100) // 每 100 毫秒检测一次

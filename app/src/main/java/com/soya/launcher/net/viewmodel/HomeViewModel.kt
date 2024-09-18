@@ -14,6 +14,7 @@ import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.PACKAGE_NAME_AUTO_RESPONSE
 import com.soya.launcher.R
+import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.Projector
@@ -25,12 +26,14 @@ import com.soya.launcher.ext.autoResponseText
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.ext.setAutoResponseProperty
 import com.soya.launcher.ext.systemPropertyValueBoolean
+import com.soya.launcher.net.repository.AuthRepository
 import com.soya.launcher.net.repository.HomeRepository
 import com.soya.launcher.p50.AUTO_ENTRY
 import com.soya.launcher.p50.AUTO_FOCUS
 import com.soya.launcher.p50.setFunction
 import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.AndroidSystem
+import com.soya.launcher.utils.toTrim
 import kotlinx.coroutines.flow.Flow
 import org.koin.core.component.inject
 
@@ -45,6 +48,7 @@ import org.koin.core.component.inject
 class HomeViewModel : BaseViewModel() {
 
     private val repository: HomeRepository by inject()
+    private val authRepository: AuthRepository by inject()
     //private val repositoryLocal: HomeLocalRepository by inject()
 
     val firmwareModelMacData = MutableLiveData<Pair<String, String>>()
@@ -66,6 +70,12 @@ class HomeViewModel : BaseViewModel() {
             "product" to Build.PRODUCT,
         )
     )
+
+    fun reqCheckActiveCode(activeCode: String): Flow<String> = authRepository.reqCheckActiveCode(
+        AuthParamsDto(activeCode.replace('-', ' ').toTrim())
+    )
+
+
 
 
     fun handleContentClick(bean: Data,successInvoke:(isSuccess:Boolean)->Unit) {

@@ -14,6 +14,7 @@ import com.shudong.lib_base.ext.yes
 import com.soya.launcher.ext.loadBlurDrawable
 import com.soya.launcher.ext.setBlurBackground
 import com.soya.launcher.utils.GlideUtils
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 open class BaseWallpaperActivity<VDB : ViewDataBinding, VM : BaseViewModel> :
@@ -43,15 +44,21 @@ open class BaseWallpaperActivity<VDB : ViewDataBinding, VM : BaseViewModel> :
     }
 
 
+    var job:Job?=null
     fun updateWallPaper() {
-        lifecycleScope.launch {
+        job?.cancel()
+        job = lifecycleScope.launch {
             val resId = curWallpaper()
             val drawable = resId.loadBlurDrawable()
             localWallPaperDrawable = drawable
+
             rootBinding.layoutRoot.background?.constantState?.hashCode()?.let {
                 if (it != resId.hashCode()) {
                     rootBinding.layoutRoot.background = localWallPaperDrawable
                 }
+            }
+            if(rootBinding.layoutRoot.background==null){
+                rootBinding.layoutRoot.background = localWallPaperDrawable
             }
         }
 
