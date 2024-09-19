@@ -1238,7 +1238,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             header.addAll(1, menuList)
         }
 
-        product.addGameItem()?.let { header.addAll(0, it) }
+
     }
 
     private fun setDefault() {
@@ -1253,7 +1253,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             val header = fillData(result)
             header.addAll(items)
             addProduct5TypeItem(header)
-
+            product.addGameItem()?.let { header.addAll(0, it) }
             setHeader(header)
 
         } catch (e: Exception) {
