@@ -33,6 +33,7 @@ import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.yes
+import com.shudong.lib_base.finishAllActivityExceptMain
 import com.soya.launcher.App
 import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
@@ -76,6 +77,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 val reason = intent.getStringExtra("reason")
                 if (reason == "homekey") {
                     // 处理 Home 键按下的逻辑
+                    finishAllActivityExceptMain()
                     sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
                 }
             }
@@ -86,6 +88,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_HOME || keyCode == KEYCODE_AVR_POWER) {
             // 处理 Home 键按下的逻辑
+            finishAllActivityExceptMain()
             sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
             return true
         }
