@@ -90,13 +90,7 @@
             android:name=".SplashActivity"
             android:exported="true" >
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.HOME" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-            </intent-filter>
+
 
         </activity>
         <!-- 自定义元数据 -->
@@ -118,6 +112,14 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="landscape">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
 
         </activity>
         <activity

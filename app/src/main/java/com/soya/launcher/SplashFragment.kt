@@ -1,0 +1,116 @@
+package com.soya.launcher
+
+import android.os.Bundle
+import android.text.TextUtils
+import androidx.lifecycle.lifecycleScope
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.interceptor.HttpLoggingInterceptor
+import com.shudong.lib_base.ContextManager
+import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.replaceFragment
+import com.shudong.lib_base.ext.startKtxActivity
+import com.soya.launcher.cache.AppCache
+import com.soya.launcher.databinding.ActivitySplashBinding
+import com.soya.launcher.enums.Atts
+import com.soya.launcher.http.HttpRequest
+import com.soya.launcher.product.base.product
+import com.soya.launcher.ui.activity.MainActivity
+import com.soya.launcher.ui.fragment.FocusFragment
+import com.soya.launcher.utils.PreferencesUtils
+import com.thumbsupec.lib_base.ext.language.initMultiLanguage
+import com.thumbsupec.lib_base.toast.ToastUtils
+import com.thumbsupec.lib_net.AppCacheNet
+import com.thumbsupec.lib_net.http.MyX509TrustManager
+import com.thumbsupec.lib_net.http.getSSLContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import rxhttp.RxHttpPlugins
+import java.util.UUID
+import java.util.logging.Level
+
+class SplashFragment:BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>() {
+    override fun initView() {
+        //"开始应用启动3".e("zengyue3")
+        initApp()
+    }
+
+    var job: Job?=null
+    var job1: Job?=null
+    private fun initApp() {
+        //delay(1000)
+        job?.cancel()
+        job = lifecycleScope.launch {
+            withContext(Dispatchers.IO){
+                if (!AppCache.isAppInited) {
+                    //"开始应用启动4".e("zengyue3")
+
+                    AppCacheNet.baseUrl = BuildConfig.BASE_URL
+                    AppCache.isGuidChageLanguage = false
+
+                    ToastUtils.init(appContext)
+                    ContextManager.getInstance().init(appContext)
+
+                    val sslContext = getSSLContext()
+                    val sslSocketFactory = sslContext.socketFactory
+                    RxHttpPlugins.init(
+                        OkHttpClient.Builder()
+                            .sslSocketFactory(sslSocketFactory, MyX509TrustManager())
+                            .hostnameVerifier { _, _ -> true }
+                            .build())
+                    OkGo.init(appContext)
+                    // 配置日志拦截器
+                    val loggingInterceptor = HttpLoggingInterceptor("zengyue")
+                    loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY) // 设置打印级别
+                    loggingInterceptor.setColorLevel(Level.INFO) // 设置颜色级别
+                    //builder.addInterceptor(loggingInterceptor) // 添加 OkGo 日志拦截器
+
+                    OkGo.getInstance().addInterceptor(loggingInterceptor)
+                        .setRetryCount(3) // 全局的超时重试次数
+                        .setCertificates()
+
+                    HttpRequest.init(appContext)
+                    if (TextUtils.isEmpty(PreferencesUtils.getString(Atts.UID, ""))) {
+                        PreferencesUtils.setProperty(Atts.UID, UUID.randomUUID().toString())
+                    }
+                    com.hs.App.init(appContext)
+                    //BRV.modelId = BR.m
+                    initMultiLanguage(appContext)
+                    //"开始应用启动5".e("zengyue3")
+                    AppCache.isAppInited = true
+                    //finish()
+                }
+            }
+
+        }
+
+        job1?.cancel()
+        job1 = lifecycleScope.launch {
+            while (isActive) { // 确保协程在生命周期内运行
+                delay(100) // 每 100 毫秒检测一次
+                if ( localWallPaperDrawable != null) {
+                    withContext(Dispatchers.Main) { // 在主线程中启动 Activity
+                        product.switchFragment()?.let { requireActivity().replaceFragment(it, R.id.main_browse_fragment) }
+                    }
+                    break // 检测到条件满足后退出循环
+                }
+            }
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): SplashFragment {
+            val args = Bundle()
+
+            val fragment = SplashFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+}

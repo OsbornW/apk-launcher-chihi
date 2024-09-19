@@ -37,6 +37,7 @@ import com.shudong.lib_base.finishAllActivityExceptMain
 import com.soya.launcher.App
 import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
+import com.soya.launcher.SplashFragment
 import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.cache.AppCache
@@ -77,7 +78,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 val reason = intent.getStringExtra("reason")
                 if (reason == "homekey") {
                     // 处理 Home 键按下的逻辑
-                    finishAllActivityExceptMain()
+                    //finishAllActivityExceptMain()
                     sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
                 }
             }
@@ -88,7 +89,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_HOME || keyCode == KEYCODE_AVR_POWER) {
             // 处理 Home 键按下的逻辑
-            finishAllActivityExceptMain()
+            //finishAllActivityExceptMain()
             sendBroadcast(Intent(IntentAction.ACTION_RESET_SELECT_HOME))
             return true
         }
@@ -340,7 +341,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
 
     private fun commit() {
-        product.switchFragment()?.let { replaceFragment(it, R.id.main_browse_fragment) }
+        replaceFragment(SplashFragment.newInstance(), R.id.main_browse_fragment)
     }
 
     fun switchAuthFragment() {
