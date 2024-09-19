@@ -22,10 +22,15 @@ import com.soya.launcher.R
 import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeInfoDto
+import com.soya.launcher.bean.PackageName
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.bean.UpdateDto
+import com.soya.launcher.config.Config
+import com.soya.launcher.enums.Atts
+import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.SYSTEM_PROPERTY_AUTO_RESPONSE
 import com.soya.launcher.ext.autoResponseText
 import com.soya.launcher.ext.openApp
@@ -37,6 +42,7 @@ import com.soya.launcher.p50.AUTO_ENTRY
 import com.soya.launcher.p50.AUTO_FOCUS
 import com.soya.launcher.p50.setFunction
 import com.soya.launcher.product.base.product
+import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.MainActivity
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.toTrim
@@ -172,6 +178,107 @@ class HomeViewModel : BaseViewModel() {
 
     fun removeAppStatusBroadcast(receiver: BroadcastReceiver){
         currentActivity?.unregisterReceiver(receiver)
+    }
+
+    fun clickHeaderItem(bean:TypeItem,toastCallback:(name:String?,packages:List<PackageName>?)->Unit){
+        when (bean.type) {
+            Types.TYPE_MOVICE -> {
+                val packages = bean.data
+                //"当前名字是====${packages.size}===${packages[0].packageName}"
+                val packagesBean = packages?.get(0)
+                when {
+                    packagesBean?.packageName?.contains("com.amazon.amazonvideo.livingroom") == true -> {
+
+                        if (Config.COMPANY == 5) {
+                            currentActivity?.let {
+                                AndroidSystem.openActivityName(
+                                    it,
+                                    "com.amazon.avod.thirdpartyclient",
+                                    "com.amazon.avod.thirdpartyclient.LauncherActivity"
+                                )
+                            }
+
+                        } else {
+                            val success =
+                                currentActivity?.let {
+                                    AndroidSystem.jumpPlayer(
+                                        it,
+                                        packages, null)
+                                }
+                            if (!success!!) {
+                                toastCallback.invoke(bean.name,packages)
+                            } else {
+
+                            }
+                        }
+                    }
+
+                    packagesBean?.packageName?.contains("youtube") == true -> {
+
+                        if (Config.COMPANY == 5) {
+                            currentActivity?.let {
+                                AndroidSystem.openPackageName(
+                                    it,
+                                    "com.google.android.apps.youtube.creator"
+                                )
+                            }
+                        } else {
+                            val success =
+                                currentActivity?.let { AndroidSystem.jumpPlayer(it, packages, null) }
+                            if (!success!!) {
+                                toastCallback.invoke(bean.name,packages)
+                            } else {
+
+                            }
+                        }
+                    }
+
+                    else -> {
+                        try {
+                            val success =
+                                packages?.let {
+                                    currentActivity?.let { it1 ->
+                                        AndroidSystem.jumpPlayer(
+                                            it1,
+                                            it, null)
+                                    }
+                                }
+                            if (!success!!) {
+                                toastCallback.invoke(bean.name,packages)
+
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            //ToastUtils.show("")
+                        }
+                    }
+                }
+
+
+            }
+
+            Types.TYPE_APP_STORE -> {
+                val success = currentActivity?.let { AndroidSystem.jumpAppStore(it) }
+                if (!success!!){
+                    toastCallback.invoke(null,null)
+                }
+            }
+
+            Types.TYPE_MY_APPS -> {
+                val intent = Intent(currentActivity, AppsActivity::class.java)
+                intent.putExtra(Atts.TYPE, bean.type)
+                currentActivity?.startActivity(intent)
+            }
+
+            Types.TYPE_GOOGLE_PLAY -> {
+                currentActivity?.let { AndroidSystem.openPackageName(it, "com.android.vending") }
+            }
+
+            Types.TYPE_MEDIA_CENTER -> {
+                currentActivity?.let { AndroidSystem.openPackageName(it, "com.explorer") }
+
+            }
+        }
     }
 
 }

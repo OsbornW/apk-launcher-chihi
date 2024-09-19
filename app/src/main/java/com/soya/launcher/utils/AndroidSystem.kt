@@ -128,7 +128,7 @@ object AndroidSystem {
             canvas.drawBitmap(bitmap, rect, Rect(0, 0, bit.width, bit.height), Paint())
             canvas.drawARGB(95, 168, 168, 168)
             //bit = Bitmap.createScaledBitmap(bit, (int) (lp.width * 0.7f), (int) (lp.height * 0.7f), false);
-            GlideUtils.bindBlur(context, blur, bit, blur.drawable, 12, 8)
+            GlideUtils.bindBlur( blur, bit, blur.drawable, 12, 8)
         }
     }
 

@@ -1,78 +1,33 @@
-package com.soya.launcher.bean;
+package com.soya.launcher.bean
 
-import java.io.Serializable;
-import java.util.List;
+import java.io.Serializable
 
-public class TypeItem implements Serializable {
-    public static final int TYPE_ICON_IMAGE_RES = 0;
-    public static final int TYPE_ICON_IMAGE_URL = 1;
-    public static final int TYPE_ICON_ASSETS = 2;
-    public static final int TYPE_LAYOUT_STYLE_UNKNOW = -1;
-    public static final int TYPE_LAYOUT_STYLE_1 = 0;
-    public static final int TYPE_LAYOUT_STYLE_2 = 1;
+class TypeItem(
+    val name: String,
+    var icon: Any,
+    val id: Long,
+    val type: Int,
+    iconType: Int,
+    layoutType: Int
+) : Serializable {
+    var iconType: Int = TYPE_ICON_IMAGE_RES
+    var layoutType: Int = TYPE_LAYOUT_STYLE_UNKNOW
+    var iconName: String? = null
+    var data: List<PackageName>? = null
+    var itemPosition: Int = 0
 
-    private int iconType = TYPE_ICON_IMAGE_RES;
-    private int layoutType = TYPE_LAYOUT_STYLE_UNKNOW;
-    private final String name;
-    private Object icon;
-    private String iconName;
-    private final long id;
-    private final int type;
-    private List<PackageName> data;
-
-    public TypeItem(String name, Object icon, long id, int type, int iconType, int layoutType){
-        this.name = name;
-        this.icon = icon;
-        this.id = id;
-        this.type = type;
-        this.iconType = iconType;
-        this.layoutType = layoutType;
-    }
-
-    public List<PackageName> getData() {
-        return data;
-    }
-
-    public void setData(List<PackageName> data) {
-        this.data = data;
-    }
-
-    public void setIcon(Object icon) {
-        this.icon = icon;
+    init {
+        this.iconType = iconType
+        this.layoutType = layoutType
     }
 
 
-
-    public String getIconName() {
-        return iconName;
-    }
-
-    public void setIconName(String iconName) {
-        this.iconName = iconName;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public Object getIcon() {
-        return icon;
-    }
-
-    public int getIconType() {
-        return iconType;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public int getLayoutType() {
-        return layoutType;
+    companion object {
+        const val TYPE_ICON_IMAGE_RES: Int = 0
+        const val TYPE_ICON_IMAGE_URL: Int = 1
+        const val TYPE_ICON_ASSETS: Int = 2
+        const val TYPE_LAYOUT_STYLE_UNKNOW: Int = -1
+        const val TYPE_LAYOUT_STYLE_1: Int = 0
+        const val TYPE_LAYOUT_STYLE_2: Int = 1
     }
 }

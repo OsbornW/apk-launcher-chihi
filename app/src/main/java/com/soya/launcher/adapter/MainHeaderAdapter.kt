@@ -34,7 +34,6 @@ class MainHeaderAdapter(
     private val items: MutableList<TypeItem>,
     private val callback: HeaderCallback?
 ) : RecyclerView.Adapter<MainHeaderAdapter.Holder>() {
-    private val selectItem = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(inflater.inflate(R.layout.item_home_header, parent, false))
@@ -95,7 +94,7 @@ class MainHeaderAdapter(
             when (item.iconType) {
                 TypeItem.TYPE_ICON_IMAGE_RES -> mIV.setImageResource((item.icon as Int))
                 TypeItem.TYPE_ICON_ASSETS -> GlideUtils.bind(
-                    context, mIV, FileUtils.readAssets(
+                     mIV, FileUtils.readAssets(
                         context, item.icon as String
                     )
                 )
@@ -120,14 +119,14 @@ class MainHeaderAdapter(
                                 cacheList.remove(item.icon)
                                 AppCache.homeData = HomeDataList(cacheList)
 
-                                if(item.iconName!=null && item.iconName.isNotEmpty()){
+                                if( !item.iconName.isNullOrEmpty()){
                                     mIV.setImageDrawable(context.getDrawableByName(item.iconName.toString()))
                                 }
                             }
                         } else {
                             // 轮询直到有缓存 Drawable
 
-                            if(item.iconName!=null && item.iconName.isNotEmpty()){
+                            if(!item.iconName.isNullOrEmpty()){
                                 mIV.setImageDrawable(context.getDrawableByName(item.iconName.toString()))
                             }
                             startPollingForCache(mIV,item.icon.toString())
@@ -159,7 +158,7 @@ class MainHeaderAdapter(
                 if (cacheFile?.exists()==true&&AppCache.isAllDownload) {
                     // 使用缓存的 Drawable
 
-                    GlideUtils.bind(context, mIV, cacheFile)
+                    GlideUtils.bind( mIV, cacheFile)
                 } else if (attempts < maxAttempts) {
                     attempts++
                     handler.postDelayed(this, pollingInterval)

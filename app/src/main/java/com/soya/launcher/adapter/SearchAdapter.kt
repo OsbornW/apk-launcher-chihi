@@ -38,13 +38,13 @@ class SearchAdapter(
         fun bind(bean: Movice) {
             when (bean.picType) {
                 Movice.PIC_ASSETS -> GlideUtils.bind(
-                    context, mIV, getImageFromAssetsFile(
+                     mIV, getImageFromAssetsFile(
                         context, bean.picture
                     )
                 )
 
-                Movice.PIC_NETWORD -> GlideUtils.bind(context, mIV, bean.picture)
-                else -> GlideUtils.bind(context, mIV, R.drawable.transparent)
+                Movice.PIC_NETWORD -> GlideUtils.bind( mIV, bean.picture)
+                else -> GlideUtils.bind( mIV, R.drawable.transparent)
             }
             mTitleView.text = bean.title
             view.setOnClickListener { callback?.onClick(bean) }

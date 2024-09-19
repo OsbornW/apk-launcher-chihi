@@ -59,7 +59,6 @@ class AppItemAdapter(
             mIV.visibility = View.GONE
             mIVSmall.visibility = View.VISIBLE
             GlideUtils.bind(
-                context,
                 mIVSmall,
                 if (TextUtils.isEmpty(bean.localIcon)) bean.appIcon else bean.localIcon
             )

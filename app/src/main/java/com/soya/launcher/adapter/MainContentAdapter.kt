@@ -82,7 +82,7 @@ class MainContentAdapter(
                 Movice.PIC_ASSETS -> {
 
                     GlideUtils.bind(
-                        context, mIV, FileUtils.readAssets(
+                         mIV, FileUtils.readAssets(
                             context, item.imageUrl as String
                         )
                     )
@@ -144,7 +144,7 @@ class MainContentAdapter(
                     }
                 }
 
-                else -> GlideUtils.bind(context, mIV, R.drawable.transparent)
+                else -> GlideUtils.bind( mIV, R.drawable.transparent)
             }
             flRoot?.setOnClickListener(View.OnClickListener {
                 "我点击了".e("zengyue1")
@@ -183,7 +183,7 @@ class MainContentAdapter(
                 if (cacheFile != null && cacheFile.exists() && AppCache.isAllDownload) {
                     // 使用缓存的 Drawable
 
-                    GlideUtils.bind(context, mIV, cacheFile)
+                    GlideUtils.bind( mIV, cacheFile)
                 } else if (attempts < maxAttempts) {
                     attempts++
                     handler.postDelayed(this, pollingInterval)

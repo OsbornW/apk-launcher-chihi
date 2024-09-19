@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="m"
+            type="com.soya.launcher.bean.TypeItem" />
+    </data>
 <com.soya.launcher.view.MyCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    item_home_header_focus="@{m}"
     app:cardCornerRadius="@dimen/qb_px_8"
     app:cardBackgroundColor="@color/solid_style_2"
     app:cardUseCompatPadding="false"
@@ -17,7 +24,8 @@
     android:layout_marginVertical="@dimen/qb_px_10"
     android:layout_width="@dimen/qb_px_200"
     android:layout_height="@dimen/qb_px_180">
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
+        item_home_header_img="@{m}"
         android:background="#3d3d3d"
         android:id="@+id/image"
         android:scaleType="centerCrop"
@@ -25,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <TextView
+        android:text="@{m.name}"
         android:id="@+id/title"
         android:textSize="@dimen/qb_px_sp_17"
         android:gravity="center"
@@ -34,3 +43,4 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/qb_px_35"/>
 </com.soya.launcher.view.MyCardView>
+</layout>
