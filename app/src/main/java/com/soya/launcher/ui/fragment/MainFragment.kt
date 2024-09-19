@@ -1469,7 +1469,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             //收缩
             mBind.header.width(5000)
             if ((mBind.header.adapter?.itemCount ?: 0) > 8) {
-                mBind.toolbar.height(com.shudong.lib_dimen.R.dimen.qb_px_110.dimenValue())
+                if((mBind.header.adapter?.itemCount ?: 0) ==9){
+                    mBind.toolbar.height(com.shudong.lib_dimen.R.dimen.qb_px_110.dimenValue())
+                }else{
+                    mBind.toolbar.height(com.shudong.lib_dimen.R.dimen.qb_px_105.dimenValue())
+                }
+
             } else {
                 mBind.toolbar.height(com.shudong.lib_dimen.R.dimen.qb_px_115.dimenValue())
             }
