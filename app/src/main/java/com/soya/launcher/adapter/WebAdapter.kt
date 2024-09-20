@@ -33,7 +33,7 @@ class WebAdapter(
         private val mImageView: ImageView = view.findViewById(R.id.image)
 
         fun bind(bean: WebItem) {
-            GlideUtils.bind(context, mImageView, bean.icon)
+            GlideUtils.bind( mImageView, bean.icon)
             view.setOnClickListener { if (callback != null) callback!!.onClick(bean) }
         }
 

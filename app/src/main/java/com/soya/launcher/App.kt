@@ -2,6 +2,7 @@ package com.soya.launcher
 
 import android.app.Application
 import com.chihi.m98.hook.JsonSerializeHook
+import com.drake.brv.utils.BRV
 import com.drake.serialize.serialize.Serialize
 import com.shudong.lib_base.base.viewmodel.baseModules
 import com.shudong.lib_base.ext.MvvmHelper
@@ -42,6 +43,7 @@ class App : Application() {
             modules(baseModules)
             modules(homeModules)
         }
+        BRV.modelId = BR.m
 
         product.addWallPaper()
 

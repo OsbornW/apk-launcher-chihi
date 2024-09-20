@@ -66,7 +66,7 @@ class WallpaperFragment : BaseWallPaperFragment<FragmentWallpaperBinding, BaseVi
     fun newWallpaperCallback(): WallpaperAdapter.Callback {
         return object : WallpaperAdapter.Callback {
             override fun onSelect(select: Boolean, bean: Wallpaper?) {
-                if (select) GlideUtils.bindBlurCross(activity, mBind.wallpaper, bean?.picture, 800)
+                if (select) GlideUtils.bindBlurCross( mBind.wallpaper, bean?.picture, 800)
             }
 
             override fun onClick(bean: Wallpaper?) {

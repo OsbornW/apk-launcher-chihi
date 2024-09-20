@@ -15,7 +15,7 @@ open class MyFrameLayout : ShapeFrameLayout {
 
     override fun setSelected(selected: Boolean) {
         super.setSelected(selected)
-        if (callback != null) callback!!.onSelect(selected)
+         callback?.onSelect(selected)
     }
 
     fun setCallback(callback: SelectedCallback?) {

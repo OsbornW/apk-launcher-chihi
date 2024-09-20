@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
 import android.text.TextUtils
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.databinding.ViewDataBinding
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
@@ -30,6 +32,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.NetworkUtils
 import com.drake.brv.utils.addModels
+import com.drake.brv.utils.bindingAdapter
+import com.drake.brv.utils.linear
+import com.drake.brv.utils.models
+import com.drake.brv.utils.mutable
+import com.drake.brv.utils.setDifferModels
 import com.drake.brv.utils.setup
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
@@ -37,6 +44,7 @@ import com.google.gson.stream.JsonReader
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.callback.StringCallback
 import com.shudong.lib_base.currentActivity
+import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
@@ -45,6 +53,7 @@ import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.downloadApkNopkName
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
@@ -61,11 +70,7 @@ import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
 import com.soya.launcher.adapter.AppListAdapter
-import com.soya.launcher.adapter.MainContentAdapter
-import com.soya.launcher.adapter.MainHeaderAdapter
-import com.soya.launcher.adapter.NotifyAdapter
 import com.soya.launcher.adapter.SettingAdapter
-import com.soya.launcher.adapter.StoreAdapter
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Data
@@ -118,14 +123,31 @@ import com.soya.launcher.utils.AppUtil
 import com.soya.launcher.utils.PreferencesUtils
 import com.soya.launcher.utils.md5
 import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
+import com.shudong.lib_base.ext.net.lifecycleLoadingView
 import com.shudong.lib_base.ext.width
+import com.soya.launcher.LAYOUTTYPE_HOME_GAME
+import com.soya.launcher.LAYOUTTYPE_HOME_LANDSCAPE
+import com.soya.launcher.callback.SelectedCallback
+import com.soya.launcher.databinding.HolderAppStoreBinding
+import com.soya.launcher.databinding.HolderSetting3Binding
+import com.soya.launcher.databinding.ItemHomeContentLanBinding
+import com.soya.launcher.databinding.ItemHomeContentPorBinding
+import com.soya.launcher.databinding.ItemHomeHeaderBinding
+import com.soya.launcher.databinding.ItemHomeLocalappsBinding
+import com.soya.launcher.ext.refresh
+import com.soya.launcher.ext.refreshAppList
 import com.soya.launcher.ext.silentInstallWithMutex
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.UpdateAppsActivity
 import com.soya.launcher.ui.activity.UpdateLauncherActivity
+import com.soya.launcher.utils.isSysApp
+import com.soya.launcher.view.AppLayout
+import com.soya.launcher.view.MyFrameLayout
+import com.soya.launcher.view.MyFrameLayoutHouse
 import com.soya.launcher.view.RelativeLayoutHouse
 import com.thumbsupec.lib_base.toast.ToastUtils
+import dalvik.system.ZipPathValidator.setCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -146,60 +168,36 @@ import kotlin.math.abs
 
 class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>(),
     AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
-    private val useApps: MutableList<ApplicationInfo> = ArrayList()
+
     private val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     private val exec = Executors.newCachedThreadPool()
-
     private var uiHandler: Handler? = null
     private var uuid: String? = null
     private val call: Call<*>? = null
     private var homeCall: Call<*>? = null
     private var isReqHome = false
     private var receiver: InnerReceiver? = null
-    private var wallpaperReceiver: WallpaperReceiver? = null
-    private var maxVerticalOffset = 0f
+    private var maxVerticalOffset = com.shudong.lib_dimen.R.dimen.qb_px_60.dimenValue()
     private val items: MutableList<TypeItem> = ArrayList()
     private val targetMenus: MutableList<TypeItem> = ArrayList()
     private var timeRunnable: MyRunnable? = null
     private var isConnectFirst = false
     private var isFullAll = false
     private var isNetworkAvailable = false
-    private var mMainHeaderAdapter: MainHeaderAdapter? = null
-    private var mHMainContentAdapter: MainContentAdapter? = null
-    private var mVMainContentAdapter: MainContentAdapter? = null
-    private var mAppListAdapter: AppListAdapter? = null
-    private var mStoreAdapter: StoreAdapter? = null
     private var requestTime = System.currentTimeMillis()
     private var isExpanded = false
-    lateinit var mNotifyAdapter: NotifyAdapter
 
 
     override fun initView() {
-        maxVerticalOffset = resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_60)
         uiHandler = Handler()
         receiver = InnerReceiver()
-        wallpaperReceiver = WallpaperReceiver()
         val infos = AndroidSystem.getUserApps2(appContext)
         val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
-        useApps.addAll(filteredList)
-
-        sendLiveEventData(IS_MAIN_CANBACK,false)
+        sendLiveEventData(IS_MAIN_CANBACK, false)
     }
 
     override fun initObserver() {
-        this.obseverLiveEvent<Boolean>("refreshdefault") {
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    (NetworkUtils.isConnected() && NetworkUtils.isAvailable()).no {
-                        // 达大厦
-                        withContext(Dispatchers.Main) {
-                            setDefault()
-                        }
-                    }
-                }
-            }
-        }
 
         obseverLiveEvent<Boolean>(UPDATE_HOME_LIST) {
             val path = FilePathMangaer.getJsonPath(appContext) + "/Home.json"
@@ -213,21 +211,33 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         }
 
+        obseverLiveEvent<Boolean>(HOME_EVENT) {
+            if (isExpanded) {
+                mBind.header.requestFocus()
+                mBind.header.apply {
+                    postDelayed({
+                        scrollToPosition(0)
+                    },0)
+                }
+            } else {
+                (mBind.header.isFocused).no {
+                    mBind.header.requestFocus()
+                }
+                mBind.header.apply {
+                    postDelayed({
+                        scrollToPosition(0)
+                    },0)
+                }
+            }
+        }
+
     }
 
     override fun initdata() {
         product.addHeaderItem()?.let { items.addAll(it) }
 
-        val filter = IntentFilter()
-        filter.addAction(Intent.ACTION_PACKAGE_ADDED)
-        filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
-        filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
-        filter.addDataScheme("package")
-        requireActivity().registerReceiver(receiver, filter)
+        receiver?.let { mViewModel.addAppStatusBroadcast(it) }
 
-        val filter1 = IntentFilter()
-        filter1.addAction(IntentAction.ACTION_RESET_SELECT_HOME)
-        requireActivity().registerReceiver(wallpaperReceiver, filter1)
 
         detectNetStaus()
 
@@ -237,189 +247,226 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         mBind.header.requestFocus()
 
-        mBind.horizontalContent.addItemDecoration(
-            HSlideMarginDecoration(
-                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
-                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)
-            )
-        )
-        mBind.header.addItemDecoration(
-            HSlideMarginDecoration(
-                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
-                resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_2)
-            )
-        )
-        mBind.header.pivotY = maxVerticalOffset
+        mBind.header.pivotY = maxVerticalOffset.toFloat()
 
-        mStoreAdapter = StoreAdapter(
-            requireContext(),
-            getLayoutInflater(),
-            CopyOnWriteArrayList(),
-            newStoreClickCallback()
-        )
-        mNotifyAdapter = NotifyAdapter(
-            appContext,
-            LayoutInflater.from(appContext),
-            CopyOnWriteArrayList(),
-            if (Config.COMPANY == 3) R.layout.holder_notify else R.layout.holder_notify_2
-        )
-        mMainHeaderAdapter =
-            MainHeaderAdapter(
-                appContext,
-                LayoutInflater.from(appContext),
-                CopyOnWriteArrayList(),
-                headerCallback
-            )
+        initHeader()
+        initContentForHorizontal()
+        initContentForVertical()
 
-        mBind.header.setAdapter(mMainHeaderAdapter)
-
-        mHMainContentAdapter =
-            MainContentAdapter(
-                appContext,
-                LayoutInflater.from(appContext),
-                CopyOnWriteArrayList(),
-                contentClick
-            )
-
-
-        mVMainContentAdapter =
-            MainContentAdapter(
-                appContext,
-                LayoutInflater.from(appContext),
-                CopyOnWriteArrayList(),
-                contentClick
-            )
-        mAppListAdapter = AppListAdapter(
-            appContext,
-            getLayoutInflater(),
-            CopyOnWriteArrayList(),
-            R.layout.item_home_localapps,
-            newAppListCallback()
-        )
         mBind.hdmi.visibility =
             if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
         mBind.gradient.visibility =
             if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
 
         AppCacheBase.isActive.yes {
-            val uniqueID = DeviceUtils.getUniqueDeviceId()
-                .subSequence(0, DeviceUtils.getUniqueDeviceId().length - 1)
-            //激活码
-            val activeCode = AppCacheBase.activeCode
-            val versionValue = 1003
-            // 渠道ID
-            val chanelId = BuildConfig.CHANNEL
-
-            val childChanel = "S10001"
-            // 时间戳
-            val time = System.currentTimeMillis() / 1000
-            // 密码盐
-            val pwd = "TKPCpTVZUvrI"
-            // 待加密的字符串（(d+e+c+b+a+f+密码盐）
-            val toBeEncryptedString =
-                "$chanelId$childChanel$versionValue$activeCode$uniqueID$time$pwd"
-            // 对字符串进行MD5加密
-            val md5String = toBeEncryptedString.md5()
-
-            val params = mapOf(
-                //唯一ID
-                "a" to uniqueID,
-                // 激活码
-                "b" to activeCode.toLong(),
-                // API 版本值
-                "c" to versionValue,
-                //渠道号
-                "d" to chanelId,
-                // 子渠道号
-                "e" to childChanel,
-                // 当前时间戳（秒）
-                "f" to time,
-                // 签名值  md5(d+e+c+b+a+f+密码盐)
-                "s" to md5String,
-            )
-            val jsonObject = JSONObject(params)
-
-            OkGo.post("https://api.freedestop.com/u/client")
-                .tag(this)
-                .upJson(jsonObject.toString())
-                .execute(object : StringCallback() {
-                    override fun onSuccess(s: String?, call: okhttp3.Call?, response: Response?) {
-                        lifecycleScope.launch {
-                            delay(1000)
-                            showLoadingViewDismiss()
-                            val authBean = s?.jsonToBean<AuthBean>()
-                            (authBean?.status == 200).yes {
-                                authBean?.code?.let {
-                                    "开始判断msg==="
-                                    BuildConfig.DEBUG.no {
-                                        it.getResult(authBean.msg)
-                                    }
-
-                                }
-
-                            }.otherwise {
-
-                            }
+            mViewModel.reqCheckActiveCode(AppCacheBase.activeCode)
+                .lifecycle(this@MainFragment, {
+                }, isShowError = false) {
+                    val authDto = this.jsonToBean<AuthBean>()
+                    (authDto.status == 200).yes {
+                        authDto.code.let {
+                            mViewModel.handleActiveCodeData(it, authDto.msg)
                         }
                     }
-
-                    override fun onError(call: okhttp3.Call?, response: Response?, e: Exception?) {
-
-                    }
-
-                })
+                }
 
         }
 
 
         fillHeader()
-        mBind.notifyRecycler.setLayoutManager(
-            LinearLayoutManager(
-                appContext,
-                RecyclerView.HORIZONTAL,
-                false
-            )
-        )
-        mBind.notifyRecycler.setAdapter(mNotifyAdapter)
+
+        mBind.notifyRecycler.linear(RecyclerView.HORIZONTAL).setup {
+            addType<Notify>(R.layout.holder_notify_2)
+        }.models = arrayListOf()
 
     }
 
-    private fun Long.getResult(msg: String?) {
-        (msg == null).no {
-            ToastUtils.show(msg)
-            AppCacheBase.isActive = false
-            (activity as MainActivity).switchAuthFragment()
-        }.otherwise {
-            when (this) {
-                10000L -> {
-                    AppCacheBase.isActive = true
-                    //showLoadingViewDismiss()
-                    /* ToastUtils.show("Success")
-                     lifecycleScope.launch {
-                         delay(500)
-                         //repeatOnLifecycle(Lifecycle.State.RESUMED){
-                         sendLiveEventData(ACTIVE_SUCCESS, true)
-                         // }
-
-                     }*/
-
-                }
-
-                10004L -> {
-                    ToastUtils.show("Invalid PIN, please try again! ")
-                    AppCacheBase.isActive = false
-                    (activity as MainActivity).switchAuthFragment()
-                }
-
-                else -> {
-                    ToastUtils.show("Failed, please try again!")
-                    AppCacheBase.isActive = false
-                    (activity as MainActivity).switchAuthFragment()
+    private fun initContentForVertical() {
+        mBind.verticalContent.setup {
+            addType<Data> {
+                when (layoutType) {
+                    LAYOUTTYPE_HOME_LANDSCAPE -> R.layout.item_home_content_lan
+                    LAYOUTTYPE_HOME_GAME -> R.layout.item_home_content_game
+                    else -> -1
                 }
             }
-        }
+            addType<SettingItem>(R.layout.holder_setting_3)
+            onBind {
+
+                when (_data) {
+                    is Data -> {
+                        val dto = getModel<Data>()
+                        val flRoot = findView<MyFrameLayoutHouse>(R.id.fl_root)
+                        flRoot.apply {
+                            setCallback {
+                                if (it) {
+                                    setRVHeight(false)
+                                    setExpanded(false)
+                                }
+                            }
+                            clickNoRepeat {
+                                mViewModel.handleContentClick(dto) {
+                                    if (!it) {
+                                        toastInstallPKApp(dto.appName ?: "", dto.packageNames)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    else -> {
+                        val binding = getBinding<HolderSetting3Binding>()
+                        val dto = getModel<SettingItem>()
+                        binding.rlRoot.apply {
+                            setOnFocusChangeListener { view, b ->
+                                view.animScale(b, 1.15f)
+                                b.yes {
+                                    binding.title.isSelected = true
+                                }.otherwise {
+                                    binding.title.isSelected = false
+                                }
+                                if (b) {
+                                    setRVHeight(false)
+                                    setExpanded(false)
+                                }
+                            }
+
+                            clickNoRepeat {
+                                mViewModel.clickProjectorItem(dto) {
+                                    val type = it.first
+                                    val text = it.second
+                                    when (type) {
+                                        Projector.TYPE_AUTO_RESPONSE -> {
+                                            val tvName =
+                                                mBind.verticalContent.getChildAt(0)
+                                                    .findViewById<TextView>(R.id.title)
+                                            tvName.text = text.toString()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
 
+            }
+        }.models = arrayListOf()
+    }
+
+    private fun initContentForHorizontal() {
+        mBind.horizontalContent.setup {
+            addType<Data>(R.layout.item_home_content_por)
+            addType<ApplicationInfo>(R.layout.item_home_localapps)
+            addType<AppItem>(R.layout.holder_app_store)
+            onBind {
+                when (_data) {
+                    is Data -> {
+                        val binding = getBinding<ItemHomeContentPorBinding>()
+                        val dto = getModel<Data>()
+                        binding.flRoot.apply {
+                            setCallback {
+                                if (it) {
+                                    setRVHeight(false)
+                                    setExpanded(false)
+                                }
+                            }
+                            clickNoRepeat {
+                                mViewModel.handleContentClick(dto) {
+                                    if (!it) {
+                                        toastInstallPKApp(dto.appName ?: "", dto.packageNames)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    is ApplicationInfo -> {
+                        val dto = getModel<ApplicationInfo>()
+                        val binding = getBinding<ItemHomeLocalappsBinding>()
+                        binding.root.setCallback {
+                            if (it) {
+                                setRVHeight(false)
+                                setExpanded(false)
+                            }
+                        }
+                        binding.root.setListener(AppLayout.EventListener { keyCode, event ->
+                            if (event?.keyCode == KeyEvent.KEYCODE_MENU) {
+                                isSysApp(dto.packageName).no {
+
+                                    val dialog = AppDialog.newInstance(dto)
+                                    dialog.setCallback(object : AppDialog.Callback {
+                                        override fun onOpen() {
+                                            currentActivity?.let {
+                                                AndroidSystem.openPackageName(
+                                                    it,
+                                                    dto.packageName
+                                                )
+                                            }
+                                        }
+
+                                    })
+                                    dialog.show(childFragmentManager, AppDialog.TAG)
+                                }
+                                return@EventListener false
+                            }
+                            true
+                        })
+                    }
+
+                    is AppItem -> {
+                        val data = getModel<AppItem>()
+                        (itemView as MyFrameLayout).setCallback {
+                            it.yes {
+                                setRVHeight(false)
+                                setExpanded(false)
+                            }
+                        }
+                        itemView.clickNoRepeat {
+                            if (!TextUtils.isEmpty(data.appDownLink)) AndroidSystem.jumpAppStore(
+                                requireContext(),
+                                Gson().toJson(data),
+                                null
+                            )
+                        }
+                    }
+                }
+
+
+            }
+        }.models = arrayListOf()
+    }
+
+    private fun initHeader() {
+        mBind.header.setup {
+            addType<TypeItem>(R.layout.item_home_header)
+            onBind {
+                val binding = getBinding<ItemHomeHeaderBinding>()
+                val dto = getModel<TypeItem>()
+                binding.root.setCallback {
+                    if (it) {
+                        setRVHeight(true)
+                        setExpanded(true)
+                        try {
+                            call?.cancel()
+                            uuid = UUID.randomUUID().toString()
+                            work(uuid!!, dto)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+                itemView.clickNoRepeat {
+                    mViewModel.clickHeaderItem(dto) { name, packages ->
+                        (name == null).yes {
+                            toastInstall()
+                        }.otherwise {
+                            toastInstallPKApp(dto.name, packages)
+                        }
+                    }
+                }
+            }
+        }.models = arrayListOf()
     }
 
 
@@ -479,23 +526,14 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             setHeader(header)
             isConnectFirst = true
-            /* if (result.getData().reg_id != null) PreferencesUtils.setProperty(
-                 Atts.RECENTLY_MODIFIED,
-                 result.getData().reg_id
-             )*/
+
             val item = header[0]
             fillMovice(item)
-
-
             delay(2000)
             mBind.setting.clearFocus()
-            //delay(500)
             mBind.header.requestFocus()
-            //requestFocus(mBind.header, 0)
         }
-        /*if (BuildConfig.FLAVOR == "hongxin_H27002") {
-            requestFocus(mBind.header, 500)
-        }*/
+
     }
 
 
@@ -527,8 +565,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         super.onDestroy()
         call?.cancel()
         if (homeCall != null) homeCall!!.cancel()
-        activity!!.unregisterReceiver(receiver)
-        activity!!.unregisterReceiver(wallpaperReceiver)
+        receiver?.let { mViewModel.removeAppStatusBroadcast(it) }
         exec.shutdownNow()
     }
 
@@ -548,15 +585,25 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         syncNotify()
         startLoopTime()
 
-        var infos = AndroidSystem.getUserApps2(appContext)
-        val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+        (mBind.horizontalContent.mutable.size > 0).yes {
+            val areAllApplicationInfo =
+                mBind.horizontalContent.mutable.all { it is ApplicationInfo }
+            areAllApplicationInfo.yes {
+                var infos = AndroidSystem.getUserApps2(appContext)
+                val filteredList =
+                    infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
-        if (filteredList.size != mAppListAdapter?.getDataList()?.size) {
-            mAppListAdapter?.refresh(filteredList.toMutableList())
-            useApps.clear()
-            useApps.addAll(filteredList)
+                val oldList = mBind.horizontalContent.mutable as MutableList<ApplicationInfo>
 
+                if (filteredList.size != oldList.size) {
+                    mBind.horizontalContent.bindingAdapter.refreshAppList(
+                        oldList,
+                        filteredList.toMutableList()
+                    )
+                }
+            }
         }
+
 
     }
 
@@ -619,7 +666,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun setHeader(items: List<TypeItem>) {
         targetMenus.clear()
         targetMenus.addAll(items)
-        mMainHeaderAdapter!!.replace(items)
+        items.forEachIndexed { index, typeItem ->
+            typeItem.itemPosition = index
+        }
+        mBind.header.setDifferModels(items)
 
     }
 
@@ -640,19 +690,22 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
         when (direction) {
             1 -> {
-                mBind.horizontalContent.setAdapter(mHMainContentAdapter)
-                mHMainContentAdapter!!.setLayoutId(layoutId)
+                mBind.horizontalContent.models = list
                 mBind.verticalContent.visibility = View.GONE
                 mBind.horizontalContent.visibility = View.VISIBLE
-                mHMainContentAdapter!!.replace(list)
             }
 
             0, 2 -> {
                 if (list?.size ?: 0 > columns * 2) {
                     list = list?.subList(0, columns * 2)
                 }
-                mBind.verticalContent.setAdapter(mVMainContentAdapter)
-                mVMainContentAdapter!!.setLayoutId(layoutId)
+
+                list?.forEach {
+                    it.layoutType = direction
+                }
+
+                mBind.verticalContent.models = list
+
                 mBind.verticalContent.visibility = View.VISIBLE
                 mBind.horizontalContent.visibility = View.GONE
                 mBind.verticalContent.setNumColumns(columns)
@@ -662,7 +715,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     )
                 }
 
-                mVMainContentAdapter!!.replace(list)
             }
 
         }
@@ -735,14 +787,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 requestHome()
             }
 
-
-            /*if (AndroidSystem.isEthernetConnected(appContext)) {
-                mBind.wifi!!.setImageResource(R.drawable.baseline_lan_100)
-            } else {
-                mBind.wifi!!.setImageResource(if (isNetworkAvailable) R.drawable.baseline_wifi_100 else R.drawable.baseline_wifi_off_100)
-            }*/
-            //if (Config.COMPANY == 3) {
-
             val notifies: MutableList<Notify> = ArrayList()
             if (Config.COMPANY == 3) {
                 if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(
@@ -762,9 +806,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 notifies.add(Notify(R.drawable.baseline_usb_100, 0))
             }
 
-            /*for (i in 0 until deviceHashMap.size) {
-                    notifies.add(Notify(R.drawable.baseline_usb_100))
-             }*/
             if (com.soya.launcher.utils.SystemUtils.isApEnable(appContext)) notifies.add(
                 Notify(
                     R.drawable.baseline_wifi_tethering_100_2,
@@ -772,21 +813,19 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 )
             )
 
-
             val isInsertSDCard = requireActivity().isSDCard()
 
             isInsertSDCard.yes {
                 notifies.add(Notify(R.drawable.baseline_sd_storage_100, 1))
             }
-            /*for (volume in storageManager.storageVolumes) {
-                    if (!volume.isEmulated) notifies.add(Notify(R.drawable.baseline_sd_storage_100))
-            }*/
-            if (notifies.size != mNotifyAdapter.getDataList().size) {
-                mNotifyAdapter.refresh(notifies)
+
+            if (notifies.size != mBind.notifyRecycler.mutable.size) {
+                mBind.notifyRecycler.bindingAdapter.refresh(
+                    (mBind.notifyRecycler.mutable) as MutableList<Notify>,
+                    notifies
+                )
             }
 
-
-            //}
         })
     }
 
@@ -804,8 +843,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private fun setAppContent(list: List<ApplicationInfo>) {
-        mAppListAdapter!!.replace(list)
-        mBind.horizontalContent.setAdapter(mAppListAdapter)
+        mBind.horizontalContent.models = list
         mBind.verticalContent.visibility = View.GONE
         mBind.horizontalContent.visibility = View.VISIBLE
     }
@@ -815,154 +853,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         mBind.verticalContent.isFocusSearchDisabled = false
 
         mBind.verticalContent.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_10.dimenValue())
-        mBind.verticalContent.setup {
-            addType<SettingItem>(R.layout.holder_setting_3)
-            onBind {
-                val mIV = findView<ImageView>(R.id.image)
-                val mTitleView = findView<TextView>(R.id.title)
-                val rlRoot = findView<RelativeLayoutHouse>(R.id.rl_root)
-
-                val bean = _data as SettingItem
-                mIV.setImageResource(bean.ico)
-                mTitleView.text = bean.name
-
-                rlRoot.setOnFocusChangeListener { view, b ->
-                    view.animScale(b, 1.15f)
-                    b.yes {
-                        mTitleView.isSelected = true
-                    }.otherwise {
-                        mTitleView.isSelected = false
-                    }
-                    if (b) {
-                        setRVHeight(false)
-                        setExpanded(false)
-                    }
-                }
-
-                rlRoot.clickNoRepeat {
-                    mViewModel.clickProjectorItem(bean) {
-                        val type = it.first
-                        val text = it.second
-                        when (type) {
-                            Projector.TYPE_AUTO_RESPONSE -> {
-                                val tvName =
-                                    mBind.verticalContent.getChildAt(0)
-                                        .findViewById<TextView>(R.id.title)
-                                tvName.text = text.toString()
-                            }
-                        }
-                    }
-                }
-
-            }
-        }.models = arrayListOf()
 
         mBind.verticalContent.visibility = View.VISIBLE
         mBind.horizontalContent.visibility = View.GONE
-        mBind.verticalContent.addModels(product.addProjectorItem())
+        mBind.verticalContent.models = product.addProjectorItem()
     }
 
-    private fun setToolContent() {
-        val arrayObjectAdapter = ArrayObjectAdapter(
-            SettingAdapter(
-                appContext,
-                getLayoutInflater(),
-                newToolCallback(),
-                R.layout.holder_setting_3
-            )
-        )
-        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(
-            itemBridgeAdapter,
-            FocusHighlight.ZOOM_FACTOR_MEDIUM,
-            false
-        )
-        mBind.horizontalContent.setAdapter(itemBridgeAdapter)
-        mBind.verticalContent.visibility = View.GONE
-        mBind.horizontalContent.visibility = View.VISIBLE
-        val list: MutableList<SettingItem?> = ArrayList()
-        list.add(
-            SettingItem(
-                Tools.TYPE_HDMI,
-                getString(R.string.project_hdmi),
-                R.drawable.baseline_settings_input_hdmi_100
-            )
-        )
-        list.add(
-            SettingItem(
-                Tools.TYPE_FILE,
-                getString(R.string.file_management),
-                R.drawable.baseline_sd_storage_100_3
-            )
-        )
-        arrayObjectAdapter.addAll(0, list)
-    }
-
-    private fun newProjectorCallback(): SettingAdapter.Callback {
-        return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem?) {
-                if (selected) {
-                    setRVHeight(false)
-                    setExpanded(false)
-                }
-            }
-
-            override fun onClick(bean: SettingItem?) {
-                when (bean?.type) {
-                    Projector.TYPE_SCREEN_ZOOM -> {
-                        isRK3326().yes {
-                            AndroidSystem.openActivityName(
-                                requireContext(),
-                                "com.lei.hxkeystone",
-                                "com.lei.hxkeystone.ScaleActivity"
-                            )
-                        }.otherwise {
-                            startActivity(Intent(activity, ScaleScreenActivity::class.java))
-                        }
-                    }
-
-                    Projector.TYPE_PROJECTOR_MODE -> {
-                        val success = AndroidSystem.openProjectorMode(requireContext())
-                        if (!success) toastInstall()
-                    }
-
-                    Projector.TYPE_HDMI -> {
-                        val success = AndroidSystem.openProjectorHDMI(requireContext())
-                        if (!success) toastInstall()
-                    }
-
-                    Projector.TYPE_KEYSTONE_CORRECTION -> {
-                        startActivity(Intent(requireContext(), ChooseGradientActivity::class.java))
-                    }
-                }
-            }
-        }
-    }
-
-    private fun newToolCallback(): SettingAdapter.Callback {
-        return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem?) {
-                if (selected) {
-                    setExpanded(false)
-                    setRVHeight(false)
-                }
-            }
-
-            override fun onClick(bean: SettingItem?) {
-                when (bean?.type) {
-                    Tools.TYPE_HDMI -> AndroidSystem.openPackageName(
-                        requireContext(),
-                        "com.mediatek.wwtv.tvcenter"
-                    )
-
-                    Tools.TYPE_FILE -> AndroidSystem.openPackageName(
-                        requireContext(),
-                        "com.conocx.fileexplorer"
-                    )
-                }
-            }
-        }
-    }
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
         isExpanded = verticalOffset != 0
@@ -971,7 +867,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         mBind.header.scaleY = value
     }
 
-    //var adController:Controller?=null
     override fun onClick(v: View) {
         if (v == mBind.setting) {
             if (Config.COMPANY == 4) {
@@ -979,21 +874,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             } else {
                 startActivity(Intent(requireContext(), SettingActivity::class.java))
             }
-            //loadJar()
-            //requireActivity().initializeAd(rlAD!!,this)
-            //requireActivity().startAd()
 
-            /* Ad.get().setEnableLog(true)
-             if(adController==null){
-                 adController = Ad.get().begin(appContext)
-                     .container(rlAD)
-                     .lifecycleOwner(this)
-                     .start();
-             }else{
-                 adController?.start(rlAD)
-             }*/
-
-            //AndroidSystem.openSystemSetting(getActivity());
         } else if (v == mBind.search) {
             startActivity(Intent(activity, SearchActivity::class.java))
         } else if (v == mBind.wifi) {
@@ -1009,31 +890,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         } else if (v == mBind.hdmi) {
             AndroidSystem.openProjectorHDMI(requireContext())
         } else if (v == mBind.gradient) {
-            //startActivity(Intent(requireContext(), HomeGuideGroupGradientActivity::class.java))
-
-            // startActivity(Intent(requireContext(), ChooseGradientActivity::class.java))
             product.openHomeTopKeystoneCorrection(requireContext())
-
-
-            /*
-            * 判断是否打开了自动校准，否则先打开自动校准
-            * 然后跳转SDK自动校准页面
-            * */
-            // 是否处于自动校准
-            /*  var isAutoCalibration =
-                  ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
-              isAutoCalibration.no {
-                  // 没有打开自动校准
-                  //开启自动校准
-                  ASystemProperties.set("persist.vendor.gsensor.enable", "1")
-              }*/
-
-            //跳转自动校准页面
-            /* AndroidSystem.openActivityName(
-                 requireContext(),
-                 "com.hxdevicetest",
-                 "com.hxdevicetest.CheckGsensorActivity"
-             )*/
 
         }
     }
@@ -1041,7 +898,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun work(flag: String, bean: TypeItem) {
         uiHandler!!.postDelayed({
             if (flag == uuid) {
-
                 selectWork(bean)
             }
         }, 220)
@@ -1050,7 +906,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun selectWork(bean: TypeItem) {
         when (bean.type) {
             Types.TYPE_MY_APPS -> {
-                fillApps(false, true)
+                fillApps(true)
             }
 
             Types.TYPE_APP_STORE -> {
@@ -1059,10 +915,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             Types.TYPE_PROJECTOR -> {
                 setProjectorContent()
-            }
-
-            Types.TYPE_TOOL -> {
-                setToolContent()
             }
 
             else -> switchMovice(bean)
@@ -1075,13 +927,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private fun toastInstallApp(name: String, callback: ToastDialog.Callback) {
-        "当前的APP名字是=====$name"
-        if (name == null || name == "") {
-            ToastUtils.show("当前APP名字是空的")
-        } else {
-            toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback)
-
-        }
+        toast(getString(R.string.place_install, name), ToastDialog.MODE_DEFAULT, callback)
     }
 
     private fun toast(title: String, mode: Int, callback: ToastDialog.Callback?) {
@@ -1114,28 +960,22 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun fillMovice(id: Long, dirction: Int, columns: Int, layoutId: Int) {
         setMoviceContent(App.MOVIE_MAP[id], dirction, columns, layoutId)
-        //requestHome()
     }
 
     private fun requestHome() {
         if (isReqHome || isConnectFirst) return
         isReqHome = true
         sendLiveEventData(REFRESH_HOME, true)
-        // homeCall = HttpRequest.getHomeContents(newMoviceListCallback())
     }
 
-    private fun fillApps(replace: Boolean, isAttach: Boolean) {
-        if (replace) {
-            useApps.clear()
-            var infos = AndroidSystem.getUserApps2(appContext)
-            val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+    private fun fillApps(isAttach: Boolean) {
 
-            /*if (infos.size > 8) {
-                infos = infos.subList(0, 8)
-            }*/
-            useApps.addAll(filteredList)
+        var infos = AndroidSystem.getUserApps2(appContext)
+        val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+
+        if (isAttach) {
+            setAppContent(filteredList)
         }
-        if (isAttach) setAppContent(useApps)
     }
 
     private fun fillAppStore() {
@@ -1181,8 +1021,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private fun setStoreContent(list: List<AppItem>) {
-        mStoreAdapter!!.replace(list)
-        mBind.horizontalContent.setAdapter(mStoreAdapter)
+
+        mBind.horizontalContent.models = list
+
         mBind.verticalContent.visibility = View.GONE
         mBind.horizontalContent.visibility = View.VISIBLE
     }
@@ -1238,7 +1079,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             header.addAll(1, menuList)
         }
 
-
     }
 
     private fun setDefault() {
@@ -1253,7 +1093,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             val header = fillData(result)
             header.addAll(items)
             addProduct5TypeItem(header)
+
             product.addGameItem()?.let { header.addAll(0, it) }
+
             setHeader(header)
 
         } catch (e: Exception) {
@@ -1286,8 +1128,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
 
                 val item = TypeItem(
-                    bean?.name,
-                    bean?.icon,
+                    bean?.name ?: "",
+                    bean?.icon ?: "",
                     UUID.randomUUID().leastSignificantBits,
                     Types.TYPE_MOVICE,
                     iconType,
@@ -1322,144 +1164,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         return menus
     }
 
-    private fun newStoreClickCallback(): StoreAdapter.Callback {
-        return object : StoreAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: AppItem?) {
-                if (selected) {
-                    setRVHeight(false)
-                    setExpanded(false)
-                }
-            }
-
-            override fun onClick(bean: AppItem?) {
-                if (!TextUtils.isEmpty(bean?.appDownLink)) AndroidSystem.jumpAppStore(
-                    requireContext(),
-                    Gson().toJson(bean),
-                    null
-                )
-            }
-        }
-    }
-
-    val headerCallback = HeaderCallback(
-        onClick = { bean ->
-            when (bean.type) {
-                Types.TYPE_MOVICE -> {
-                    val packages = bean.data
-                    "当前名字是====${packages.size}===${packages[0].packageName}"
-                    when {
-                        packages[0].packageName?.contains("com.amazon.amazonvideo.livingroom") == true -> {
-
-                            if (Config.COMPANY == 5) {
-                                AndroidSystem.openActivityName(
-                                    requireContext(),
-                                    "com.amazon.avod.thirdpartyclient",
-                                    "com.amazon.avod.thirdpartyclient.LauncherActivity"
-                                )
-
-                            } else {
-                                val success =
-                                    AndroidSystem.jumpPlayer(requireContext(), packages, null)
-                                if (!success) {
-                                    toastInstallPKApp(bean.name, packages)
-                                } else {
-
-                                }
-                            }
-                        }
-
-                        packages[0].packageName?.contains("youtube") == true -> {
-
-                            if (Config.COMPANY == 5) {
-                                AndroidSystem.openPackageName(
-                                    requireContext(),
-                                    "com.google.android.apps.youtube.creator"
-                                )
-                            } else {
-                                val success =
-                                    AndroidSystem.jumpPlayer(requireContext(), packages, null)
-                                if (!success) {
-                                    toastInstallPKApp(bean.name, packages)
-                                } else {
-
-                                }
-                            }
-                        }
-
-                        else -> {
-                            try {
-                                val success =
-                                    AndroidSystem.jumpPlayer(requireContext(), packages, null)
-                                if (!success) {
-                                    toastInstallPKApp(bean.name, packages)
-
-                                }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                //ToastUtils.show("")
-                            }
-                        }
-                    }
-
-
-                }
-
-                Types.TYPE_APP_STORE -> {
-                    val success = AndroidSystem.jumpAppStore(requireContext())
-                    if (!success) toastInstall()
-                }
-
-                Types.TYPE_MY_APPS -> {
-                    val intent = Intent(requireContext(), AppsActivity::class.java)
-                    intent.putExtra(Atts.TYPE, bean.type)
-                    startActivity(intent)
-                }
-
-                Types.TYPE_GOOGLE_PLAY -> {
-                    AndroidSystem.openPackageName(requireContext(), "com.android.vending")
-                }
-
-                Types.TYPE_MEDIA_CENTER -> {
-                    AndroidSystem.openPackageName(requireContext(), "com.explorer")
-
-                }
-            }
-        },
-        onSelect = { selected, bean ->
-            if (selected) {
-                setRVHeight(true)
-                setExpanded(true)
-                try {
-                    call?.cancel()
-                    uuid = UUID.randomUUID().toString()
-                    work(uuid!!, bean)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    )
-
-    val contentClick = ContentCallback(
-        onClick = { bean ->
-            /* Handle click */
-            mViewModel.handleContentClick(bean) {
-                if (!it) {
-                    toastInstallPKApp(bean.appName ?: "", bean.packageNames)
-                }
-            }
-
-        },
-        onFocus = { hasFocus, bean ->
-            /* Handle focus */
-            if (hasFocus) {
-                //val itemCount = mBind.header.adapter?.itemCount?:0
-                //mBind.header.scrollToPosition(itemCount-1)
-                setRVHeight(false)
-                setExpanded(false)
-            }
-        }
-    )
 
     fun setRVHeight(isExpanded: Boolean) {
         isExpanded.yes {
@@ -1507,6 +1211,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
     }
 
+    //dasdas
     private fun newAppListCallback(): AppListAdapter.Callback {
         return object : AppListAdapter.Callback {
             override fun onSelect(selected: Boolean) {
@@ -1556,48 +1261,27 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             when (intent.action) {
                 Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> {
 
-                    var infos = AndroidSystem.getUserApps2(appContext)
-                    val filteredList =
-                        infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
-                    if (filteredList.size != mAppListAdapter?.getDataList()?.size) {
-                        mAppListAdapter?.refresh(filteredList.toMutableList())
-                        useApps.clear()
-                        useApps.addAll(mAppListAdapter?.getDataList()!!)
+                    val areAllApplicationInfo =
+                        mBind.horizontalContent.mutable.all { it is ApplicationInfo }
+                    areAllApplicationInfo.yes {
+                        var infos = AndroidSystem.getUserApps2(appContext)
+                        val filteredList =
+                            infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
-                    }
+                        val oldList =
+                            mBind.horizontalContent.mutable as MutableList<ApplicationInfo>
 
-
-                }
-
-            }
-        }
-    }
-
-    inner class WallpaperReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            when (intent.action) {
-                IntentAction.ACTION_RESET_SELECT_HOME -> {
-                    if (isExpanded) {
-                        mBind.header.requestFocus()
-                        mBind.header.scrollToPosition(0)
-                    } else {
-                        (mBind.header.isFocused).no {
-                            mBind.header.requestFocus()
+                        if (filteredList.size != oldList.size) {
+                            mBind.horizontalContent.bindingAdapter.refreshAppList(
+                                mBind.horizontalContent.mutable as MutableList<ApplicationInfo>,
+                                filteredList.toMutableList()
+                            )
                         }
-                        mBind.header.scrollToPosition(0)
+
                     }
                 }
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        requireActivity().setTheme(R.style.Theme_Main)
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     companion object {

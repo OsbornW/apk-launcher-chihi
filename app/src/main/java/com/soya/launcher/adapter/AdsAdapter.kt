@@ -36,7 +36,7 @@ class AdsAdapter(
         private val mImagView: ImageView = itemView.findViewById(R.id.image)
 
         fun bind(bean: Ads) {
-            GlideUtils.bind(context, mImagView, bean.picture)
+            GlideUtils.bind( mImagView, bean.picture)
         }
     }
 

@@ -17,16 +17,13 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 import java.io.File
 
 object GlideUtils {
-    @JvmOverloads
     fun bind(
-        context: Context?,
         view: ImageView?,
         load: Any?,
-        strategy: DiskCacheStrategy? = DiskCacheStrategy.ALL
     ) {
         GlideApp.with(appContext)
             .load(load)
-            .diskCacheStrategy(strategy!!) //.placeholder(R.drawable.rectangle_solffffff)
+            .diskCacheStrategy(DiskCacheStrategy.ALL) //.placeholder(R.drawable.rectangle_solffffff)
             //.error(R.drawable.rectangle_solffffff)
             .transition(
                 DrawableTransitionOptions.with(
@@ -36,7 +33,7 @@ object GlideUtils {
             .into(view!!)
     }
 
-    fun bind(context: Context?, view: ImageView?, load: Any?, duration: Int) {
+    fun bind( view: ImageView?, load: Any?, duration: Int) {
         GlideApp.with(appContext)
             .load(load)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -48,7 +45,7 @@ object GlideUtils {
             .into(view!!)
     }
 
-    fun bindCrop(context: Context?, view: ImageView?, load: Any?) {
+    fun bindCrop( view: ImageView?, load: Any?) {
         GlideApp.with(appContext)
             .load(load)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -63,7 +60,6 @@ object GlideUtils {
 
     @JvmOverloads
     fun bindBlur(
-        context: Context?,
         view: ImageView?,
         load: Any?,
         placeholder: Drawable? = null,
@@ -79,7 +75,7 @@ object GlideUtils {
             .into(view!!)
     }
 
-    fun bindBlurCross(context: Context?, view: ImageView?, load: Any?, duration: Int) {
+    fun bindBlurCross( view: ImageView?, load: Any?, duration: Int) {
         GlideApp.with(appContext)
             .load(load)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -92,8 +88,8 @@ object GlideUtils {
             .into(view!!)
     }
 
-    fun download(context: Context?, url: Any?, listener: DownloadListener?) {
-        GlideApp.with(context!!).downloadOnly().load(url).diskCacheStrategy(DiskCacheStrategy.DATA)
+    fun download( url: Any?, listener: DownloadListener?) {
+        GlideApp.with(appContext).downloadOnly().load(url).diskCacheStrategy(DiskCacheStrategy.DATA)
             .addListener(object : RequestListener<File?> {
                 override fun onLoadFailed(
                     e: GlideException?,

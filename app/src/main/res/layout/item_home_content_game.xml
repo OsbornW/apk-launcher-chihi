@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="m"
+            type="com.soya.launcher.bean.Data" />
+    </data>
 <com.soya.launcher.view.MyFrameLayoutHouse
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,6 +16,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.soya.launcher.view.MyFrameLayoutHouse
+        item_home_content_focus="@{m}"
         android:nextFocusUp="@id/header"
         android:clickable="true"
         android:id="@+id/fl_root"
@@ -31,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
+                item_home_content_loading="@{m}"
                 android:id="@+id/tv_loadding"
                 android:text="@string/loading"
                 android:layout_gravity="center"
@@ -39,11 +47,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <ImageView
+                item_home_content_img="@{m}"
                 android:id="@+id/image"
                 android:scaleType="fitXY"
                 android:layout_width="@dimen/qb_px_205"
                 android:layout_height="@dimen/qb_px_180"/>
             <TextView
+                item_home_content_name="@{m}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/qb_px_sp_18"
                 android:id="@+id/tv_name"
@@ -57,3 +67,4 @@
         </com.soya.launcher.view.MyCardView>
     </com.soya.launcher.view.MyFrameLayoutHouse>
 </com.soya.launcher.view.MyFrameLayoutHouse>
+</layout>

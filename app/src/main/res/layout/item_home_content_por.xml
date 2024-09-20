@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="m"
+            type="com.soya.launcher.bean.Data" />
+    </data>
 <com.soya.launcher.view.MyFrameLayoutHouse
-    android:layout_marginLeft="@dimen/qb_px_5"
-    android:layout_marginRight="@dimen/qb_px_5"
+    android:layout_marginHorizontal="@dimen/qb_px_10"
     android:layout_marginTop="@dimen/qb_px_13"
     android:layout_marginBottom="@dimen/qb_px_13"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,6 +17,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
     <com.soya.launcher.view.MyFrameLayoutHouse
+        item_home_content_focus="@{m}"
         android:nextFocusUp="@id/header"
         android:id="@+id/fl_root"
         android:clickable="true"
@@ -25,7 +31,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <com.soya.launcher.view.MyCardView
-
             app:cardCornerRadius="@dimen/qb_px_5"
             app:cardBackgroundColor="@color/solid_style_2"
             app:cardElevation="0dp"
@@ -34,6 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
+                item_home_content_loading="@{m}"
                 android:text="@string/loading"
                 android:layout_gravity="center"
                 android:textSize="@dimen/qb_px_sp_11"
@@ -41,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <ImageView
+                item_home_content_img="@{m}"
                 android:id="@+id/image"
                 android:scaleType="centerCrop"
                 android:layout_width="@dimen/qb_px_130"
@@ -48,3 +55,5 @@
         </com.soya.launcher.view.MyCardView>
     </com.soya.launcher.view.MyFrameLayoutHouse>
 </com.soya.launcher.view.MyFrameLayoutHouse>
+
+</layout>

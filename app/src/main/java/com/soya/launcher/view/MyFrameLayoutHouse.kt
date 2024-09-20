@@ -14,11 +14,6 @@ class MyFrameLayoutHouse @JvmOverloads constructor(
     private var startY: Float = 0f
     private val CLICK_THRESHOLD = 10 // 设定一个点击阈值
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-/*        if (event?.action == MotionEvent.ACTION_DOWN) {
-            performClick()
-            return true
-        }
-        return super.onTouchEvent(event)*/
 
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
