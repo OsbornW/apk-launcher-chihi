@@ -34,7 +34,9 @@ import com.blankj.utilcode.util.NetworkUtils
 import com.drake.brv.utils.addModels
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.linear
+import com.drake.brv.utils.models
 import com.drake.brv.utils.mutable
+import com.drake.brv.utils.setDifferModels
 import com.drake.brv.utils.setup
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
@@ -68,8 +70,6 @@ import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
 import com.soya.launcher.adapter.AppListAdapter
-import com.soya.launcher.adapter.MainContentAdapter
-import com.soya.launcher.adapter.MainHeaderAdapter
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AuthBean
@@ -125,8 +125,11 @@ import com.soya.launcher.utils.md5
 import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
 import com.shudong.lib_base.ext.net.lifecycleLoadingView
 import com.shudong.lib_base.ext.width
+import com.soya.launcher.LAYOUTTYPE_HOME_GAME
+import com.soya.launcher.LAYOUTTYPE_HOME_LANDSCAPE
 import com.soya.launcher.callback.SelectedCallback
 import com.soya.launcher.databinding.HolderAppStoreBinding
+import com.soya.launcher.databinding.HolderSetting3Binding
 import com.soya.launcher.databinding.ItemHomeContentLanBinding
 import com.soya.launcher.databinding.ItemHomeContentPorBinding
 import com.soya.launcher.databinding.ItemHomeHeaderBinding
@@ -166,7 +169,6 @@ import kotlin.math.abs
 class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>(),
     AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
 
-    private val useApps: MutableList<ApplicationInfo> = ArrayList()
     private val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
     private val exec = Executors.newCachedThreadPool()
     private var uiHandler: Handler? = null
@@ -182,10 +184,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private var isConnectFirst = false
     private var isFullAll = false
     private var isNetworkAvailable = false
-    private var mMainHeaderAdapter: MainHeaderAdapter? = null
-    private var mHMainContentAdapter: MainContentAdapter? = null
-    private var mVMainContentAdapter: MainContentAdapter? = null
-    private var mAppListAdapter: AppListAdapter? = null
     private var requestTime = System.currentTimeMillis()
     private var isExpanded = false
 
@@ -195,8 +193,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         receiver = InnerReceiver()
         val infos = AndroidSystem.getUserApps2(appContext)
         val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
-
-        useApps.addAll(filteredList)
 
         sendLiveEventData(IS_MAIN_CANBACK, false)
     }
@@ -218,12 +214,20 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         obseverLiveEvent<Boolean>(HOME_EVENT) {
             if (isExpanded) {
                 mBind.header.requestFocus()
-                mBind.header.scrollToPosition(0)
+                mBind.header.apply {
+                    postDelayed({
+                        scrollToPosition(0)
+                    },0)
+                }
             } else {
                 (mBind.header.isFocused).no {
                     mBind.header.requestFocus()
                 }
-                mBind.header.scrollToPosition(0)
+                mBind.header.apply {
+                    postDelayed({
+                        scrollToPosition(0)
+                    },0)
+                }
             }
         }
 
@@ -245,73 +249,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         mBind.header.pivotY = maxVerticalOffset.toFloat()
 
+        initHeader()
+        initContentForHorizontal()
+        initContentForVertical()
 
-        mBind.header.setup {
-            addType<TypeItem>(R.layout.item_home_header)
-            onBind {
-                val binding = getBinding<ItemHomeHeaderBinding>()
-                val dto = getModel<TypeItem>()
-                binding.root.setCallback{
-                    if (it) {
-                        setRVHeight(true)
-                        setExpanded(true)
-                        try {
-                            call?.cancel()
-                            uuid = UUID.randomUUID().toString()
-                            work(uuid!!, dto)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-                itemView.clickNoRepeat {
-                    mViewModel.clickHeaderItem(dto){name,packages->
-                        (name==null).yes {
-                            toastInstall()
-                        }.otherwise {
-                            toastInstallPKApp(dto.name, packages)
-                        }
-                    }
-                }
-                //dasdas
-            }
-        }.models = arrayListOf()
-
-        mMainHeaderAdapter =
-            MainHeaderAdapter(
-                appContext,
-                LayoutInflater.from(appContext),
-                CopyOnWriteArrayList(),
-                headerCallback
-            )
-
-        //mBind.header.setAdapter(mMainHeaderAdapter)
-
-
-
-        mHMainContentAdapter =
-            MainContentAdapter(
-                appContext,
-                LayoutInflater.from(appContext),
-                CopyOnWriteArrayList(),
-                contentClick
-            )
-
-
-        mVMainContentAdapter =
-            MainContentAdapter(
-                appContext,
-                LayoutInflater.from(appContext),
-                CopyOnWriteArrayList(),
-                contentClick
-            )
-        mAppListAdapter = AppListAdapter(
-            appContext,
-            getLayoutInflater(),
-            CopyOnWriteArrayList(),
-            R.layout.item_home_localapps,
-            newAppListCallback()
-        )
         mBind.hdmi.visibility =
             if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
         mBind.gradient.visibility =
@@ -338,6 +279,194 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             addType<Notify>(R.layout.holder_notify_2)
         }.models = arrayListOf()
 
+    }
+
+    private fun initContentForVertical() {
+        mBind.verticalContent.setup {
+            addType<Data> {
+                when (layoutType) {
+                    LAYOUTTYPE_HOME_LANDSCAPE -> R.layout.item_home_content_lan
+                    LAYOUTTYPE_HOME_GAME -> R.layout.item_home_content_game
+                    else -> -1
+                }
+            }
+            addType<SettingItem>(R.layout.holder_setting_3)
+            onBind {
+
+                when (_data) {
+                    is Data -> {
+                        val dto = getModel<Data>()
+                        val flRoot = findView<MyFrameLayoutHouse>(R.id.fl_root)
+                        flRoot.apply {
+                            setCallback {
+                                if (it) {
+                                    setRVHeight(false)
+                                    setExpanded(false)
+                                }
+                            }
+                            clickNoRepeat {
+                                mViewModel.handleContentClick(dto) {
+                                    if (!it) {
+                                        toastInstallPKApp(dto.appName ?: "", dto.packageNames)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    else -> {
+                        val binding = getBinding<HolderSetting3Binding>()
+                        val dto = getModel<SettingItem>()
+                        binding.rlRoot.apply {
+                            setOnFocusChangeListener { view, b ->
+                                view.animScale(b, 1.15f)
+                                b.yes {
+                                    binding.title.isSelected = true
+                                }.otherwise {
+                                    binding.title.isSelected = false
+                                }
+                                if (b) {
+                                    setRVHeight(false)
+                                    setExpanded(false)
+                                }
+                            }
+
+                            clickNoRepeat {
+                                mViewModel.clickProjectorItem(dto) {
+                                    val type = it.first
+                                    val text = it.second
+                                    when (type) {
+                                        Projector.TYPE_AUTO_RESPONSE -> {
+                                            val tvName =
+                                                mBind.verticalContent.getChildAt(0)
+                                                    .findViewById<TextView>(R.id.title)
+                                            tvName.text = text.toString()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        }.models = arrayListOf()
+    }
+
+    private fun initContentForHorizontal() {
+        mBind.horizontalContent.setup {
+            addType<Data>(R.layout.item_home_content_por)
+            addType<ApplicationInfo>(R.layout.item_home_localapps)
+            addType<AppItem>(R.layout.holder_app_store)
+            onBind {
+                when (_data) {
+                    is Data -> {
+                        val binding = getBinding<ItemHomeContentPorBinding>()
+                        val dto = getModel<Data>()
+                        binding.flRoot.apply {
+                            setCallback {
+                                if (it) {
+                                    setRVHeight(false)
+                                    setExpanded(false)
+                                }
+                            }
+                            clickNoRepeat {
+                                mViewModel.handleContentClick(dto) {
+                                    if (!it) {
+                                        toastInstallPKApp(dto.appName ?: "", dto.packageNames)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    is ApplicationInfo -> {
+                        val dto = getModel<ApplicationInfo>()
+                        val binding = getBinding<ItemHomeLocalappsBinding>()
+                        binding.root.setCallback {
+                            if (it) {
+                                setRVHeight(false)
+                                setExpanded(false)
+                            }
+                        }
+                        binding.root.setListener(AppLayout.EventListener { keyCode, event ->
+                            if (event?.keyCode == KeyEvent.KEYCODE_MENU) {
+                                isSysApp(dto.packageName).no {
+
+                                    val dialog = AppDialog.newInstance(dto)
+                                    dialog.setCallback(object : AppDialog.Callback {
+                                        override fun onOpen() {
+                                            currentActivity?.let {
+                                                AndroidSystem.openPackageName(
+                                                    it,
+                                                    dto.packageName
+                                                )
+                                            }
+                                        }
+
+                                    })
+                                    dialog.show(childFragmentManager, AppDialog.TAG)
+                                }
+                                return@EventListener false
+                            }
+                            true
+                        })
+                    }
+
+                    is AppItem -> {
+                        val data = getModel<AppItem>()
+                        (itemView as MyFrameLayout).setCallback {
+                            it.yes {
+                                setRVHeight(false)
+                                setExpanded(false)
+                            }
+                        }
+                        itemView.clickNoRepeat {
+                            if (!TextUtils.isEmpty(data.appDownLink)) AndroidSystem.jumpAppStore(
+                                requireContext(),
+                                Gson().toJson(data),
+                                null
+                            )
+                        }
+                    }
+                }
+
+
+            }
+        }.models = arrayListOf()
+    }
+
+    private fun initHeader() {
+        mBind.header.setup {
+            addType<TypeItem>(R.layout.item_home_header)
+            onBind {
+                val binding = getBinding<ItemHomeHeaderBinding>()
+                val dto = getModel<TypeItem>()
+                binding.root.setCallback {
+                    if (it) {
+                        setRVHeight(true)
+                        setExpanded(true)
+                        try {
+                            call?.cancel()
+                            uuid = UUID.randomUUID().toString()
+                            work(uuid!!, dto)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+                itemView.clickNoRepeat {
+                    mViewModel.clickHeaderItem(dto) { name, packages ->
+                        (name == null).yes {
+                            toastInstall()
+                        }.otherwise {
+                            toastInstallPKApp(dto.name, packages)
+                        }
+                    }
+                }
+            }
+        }.models = arrayListOf()
     }
 
 
@@ -456,17 +585,24 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         syncNotify()
         startLoopTime()
 
-        var infos = AndroidSystem.getUserApps2(appContext)
-        val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+        (mBind.horizontalContent.mutable.size > 0).yes {
+            val areAllApplicationInfo =
+                mBind.horizontalContent.mutable.all { it is ApplicationInfo }
+            areAllApplicationInfo.yes {
+                var infos = AndroidSystem.getUserApps2(appContext)
+                val filteredList =
+                    infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
-        if(mBind.horizontalContent.adapter!=null){
-            val oldList = mBind.horizontalContent.mutable as MutableList<ApplicationInfo>
+                val oldList = mBind.horizontalContent.mutable as MutableList<ApplicationInfo>
 
-            if (filteredList.size != oldList.size) {
-                mBind.horizontalContent.bindingAdapter.refreshAppList(oldList, filteredList.toMutableList())
+                if (filteredList.size != oldList.size) {
+                    mBind.horizontalContent.bindingAdapter.refreshAppList(
+                        oldList,
+                        filteredList.toMutableList()
+                    )
+                }
             }
         }
-
 
 
     }
@@ -533,8 +669,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         items.forEachIndexed { index, typeItem ->
             typeItem.itemPosition = index
         }
-        mBind.header.addModels(items)
-       // mMainHeaderAdapter!!.replace(items)
+        mBind.header.setDifferModels(items)
 
     }
 
@@ -555,39 +690,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
         when (direction) {
             1 -> {
-
-                //dasdasdasd
-                mBind.horizontalContent.setup {
-                    addType<Data>(R.layout.item_home_content_por)
-                    onBind {
-                        //dasdas
-                        val binding = getBinding<ItemHomeContentPorBinding>()
-                        val dto = getModel<Data>()
-                        binding.flRoot.apply {
-                            setCallback{
-                                if (it) {
-                                    setRVHeight(false)
-                                    setExpanded(false)
-                                }
-                            }
-                            clickNoRepeat {
-                                mViewModel.handleContentClick(dto) {
-                                    if (!it) {
-                                        toastInstallPKApp(dto.appName ?: "", dto.packageNames)
-                                    }
-                                }
-                            }
-                        }
-
-
-                    }
-                }.models = list
-
-                //mBind.horizontalContent.setAdapter(mHMainContentAdapter)
-                //mHMainContentAdapter!!.setLayoutId(layoutId)
+                mBind.horizontalContent.models = list
                 mBind.verticalContent.visibility = View.GONE
                 mBind.horizontalContent.visibility = View.VISIBLE
-                //mHMainContentAdapter!!.replace(list)
             }
 
             0, 2 -> {
@@ -595,38 +700,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     list = list?.subList(0, columns * 2)
                 }
 
-                mBind.verticalContent.setup {
-                    addType<Data>{
-                        when(direction){
-                            0->R.layout.item_home_content_lan
-                            else->R.layout.item_home_content_game
-                        }
-                    }
-                    onBind {
-                        val flRoot = findView<MyFrameLayoutHouse>(R.id.fl_root)
+                list?.forEach {
+                    it.layoutType = direction
+                }
 
-                        //val binding = getBinding<ItemHomeContentPorBinding>()
-                        val dto = getModel<Data>()
-                        flRoot.apply {
-                            setCallback{
-                                if (it) {
-                                    setRVHeight(false)
-                                    setExpanded(false)
-                                }
-                            }
-                            clickNoRepeat {
-                                mViewModel.handleContentClick(dto) {
-                                    if (!it) {
-                                        toastInstallPKApp(dto.appName ?: "", dto.packageNames)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }.models = list
+                mBind.verticalContent.models = list
 
-                //mBind.verticalContent.setAdapter(mVMainContentAdapter)
-                //mVMainContentAdapter!!.setLayoutId(layoutId)
                 mBind.verticalContent.visibility = View.VISIBLE
                 mBind.horizontalContent.visibility = View.GONE
                 mBind.verticalContent.setNumColumns(columns)
@@ -636,7 +715,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     )
                 }
 
-               // mVMainContentAdapter!!.replace(list)
             }
 
         }
@@ -709,14 +787,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 requestHome()
             }
 
-
-            /*if (AndroidSystem.isEthernetConnected(appContext)) {
-                mBind.wifi!!.setImageResource(R.drawable.baseline_lan_100)
-            } else {
-                mBind.wifi!!.setImageResource(if (isNetworkAvailable) R.drawable.baseline_wifi_100 else R.drawable.baseline_wifi_off_100)
-            }*/
-            //if (Config.COMPANY == 3) {
-
             val notifies: MutableList<Notify> = ArrayList()
             if (Config.COMPANY == 3) {
                 if (bluetoothAdapter != null && bluetoothAdapter.isEnabled) notifies.add(
@@ -750,7 +820,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             }
 
             if (notifies.size != mBind.notifyRecycler.mutable.size) {
-                mBind.notifyRecycler.bindingAdapter.refresh((mBind.notifyRecycler.mutable)as MutableList<Notify>,notifies)
+                mBind.notifyRecycler.bindingAdapter.refresh(
+                    (mBind.notifyRecycler.mutable) as MutableList<Notify>,
+                    notifies
+                )
             }
 
         })
@@ -770,42 +843,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private fun setAppContent(list: List<ApplicationInfo>) {
-        mBind.horizontalContent.setup {
-            addType<ApplicationInfo>(R.layout.item_home_localapps)
-            onBind {
-                val dto = getModel<ApplicationInfo>()
-                val binding = getBinding<ItemHomeLocalappsBinding>()
-                binding.root.setCallback{
-                    if (it) {
-                        setRVHeight(false)
-                        setExpanded(false)
-                    }
-                }
-                binding.root.setListener(AppLayout.EventListener { keyCode, event ->
-                    if (event?.keyCode == KeyEvent.KEYCODE_MENU) {
-                        isSysApp(dto.packageName).no {
-
-                            val dialog = AppDialog.newInstance(dto)
-                            dialog.setCallback(object : AppDialog.Callback {
-                                override fun onOpen() {
-                                    currentActivity?.let {
-                                        AndroidSystem.openPackageName(
-                                            it,
-                                            dto.packageName)
-                                    }
-                                }
-
-                            })
-                            dialog.show(childFragmentManager, AppDialog.TAG)
-                        }
-                        return@EventListener false
-                    }
-                    true
-                })
-            }
-        }.models = list
-       // mAppListAdapter!!.replace(list)
-        //mBind.horizontalContent.setAdapter(mAppListAdapter)
+        mBind.horizontalContent.models = list
         mBind.verticalContent.visibility = View.GONE
         mBind.horizontalContent.visibility = View.VISIBLE
     }
@@ -815,51 +853,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         mBind.verticalContent.isFocusSearchDisabled = false
 
         mBind.verticalContent.updatePadding(top = com.shudong.lib_dimen.R.dimen.qb_px_10.dimenValue())
-        mBind.verticalContent.setup {
-            addType<SettingItem>(R.layout.holder_setting_3)
-            onBind {
-                val mIV = findView<ImageView>(R.id.image)
-                val mTitleView = findView<TextView>(R.id.title)
-                val rlRoot = findView<RelativeLayoutHouse>(R.id.rl_root)
-
-                val bean = _data as SettingItem
-                mIV.setImageResource(bean.ico)
-                mTitleView.text = bean.name
-
-                rlRoot.setOnFocusChangeListener { view, b ->
-                    view.animScale(b, 1.15f)
-                    b.yes {
-                        mTitleView.isSelected = true
-                    }.otherwise {
-                        mTitleView.isSelected = false
-                    }
-                    if (b) {
-                        setRVHeight(false)
-                        setExpanded(false)
-                    }
-                }
-
-                rlRoot.clickNoRepeat {
-                    mViewModel.clickProjectorItem(bean) {
-                        val type = it.first
-                        val text = it.second
-                        when (type) {
-                            Projector.TYPE_AUTO_RESPONSE -> {
-                                val tvName =
-                                    mBind.verticalContent.getChildAt(0)
-                                        .findViewById<TextView>(R.id.title)
-                                tvName.text = text.toString()
-                            }
-                        }
-                    }
-                }
-
-            }
-        }.models = arrayListOf()
 
         mBind.verticalContent.visibility = View.VISIBLE
         mBind.horizontalContent.visibility = View.GONE
-        mBind.verticalContent.addModels(product.addProjectorItem())
+        mBind.verticalContent.models = product.addProjectorItem()
     }
 
 
@@ -901,7 +898,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun work(flag: String, bean: TypeItem) {
         uiHandler!!.postDelayed({
             if (flag == uuid) {
-
                 selectWork(bean)
             }
         }, 220)
@@ -910,7 +906,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun selectWork(bean: TypeItem) {
         when (bean.type) {
             Types.TYPE_MY_APPS -> {
-                fillApps(false, true)
+                fillApps(true)
             }
 
             Types.TYPE_APP_STORE -> {
@@ -972,15 +968,14 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         sendLiveEventData(REFRESH_HOME, true)
     }
 
-    private fun fillApps(replace: Boolean, isAttach: Boolean) {
-        if (replace) {
-            useApps.clear()
-            var infos = AndroidSystem.getUserApps2(appContext)
-            val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+    private fun fillApps(isAttach: Boolean) {
 
-            useApps.addAll(filteredList)
+        var infos = AndroidSystem.getUserApps2(appContext)
+        val filteredList = infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+
+        if (isAttach) {
+            setAppContent(filteredList)
         }
-        if (isAttach) setAppContent(useApps)
     }
 
     private fun fillAppStore() {
@@ -1027,26 +1022,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun setStoreContent(list: List<AppItem>) {
 
-        mBind.horizontalContent.setup {
-            addType<AppItem>(R.layout.holder_app_store)
-            onBind {
-                val binding = getBinding<HolderAppStoreBinding>()
-                val data = getModel<AppItem>()
-                (itemView as MyFrameLayout).setCallback {
-                    it.yes {
-                        setRVHeight(false)
-                        setExpanded(false)
-                    }
-                }
-                itemView.clickNoRepeat {
-                    if (!TextUtils.isEmpty(data.appDownLink)) AndroidSystem.jumpAppStore(
-                        requireContext(),
-                        Gson().toJson(data),
-                        null
-                    )
-                }
-            }
-        }.models = list
+        mBind.horizontalContent.models = list
 
         mBind.verticalContent.visibility = View.GONE
         mBind.horizontalContent.visibility = View.VISIBLE
@@ -1152,8 +1128,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
 
                 val item = TypeItem(
-                    bean?.name?:"",
-                    bean?.icon?:"",
+                    bean?.name ?: "",
+                    bean?.icon ?: "",
                     UUID.randomUUID().leastSignificantBits,
                     Types.TYPE_MOVICE,
                     iconType,
@@ -1188,129 +1164,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         return menus
     }
 
-
-    val headerCallback = HeaderCallback(
-        onClick = { bean ->
-            when (bean.type) {
-                Types.TYPE_MOVICE -> {
-                    val packages = bean.data
-                    //"当前名字是====${packages.size}===${packages[0].packageName}"
-                    val packagesBean = packages?.get(0)
-                    when {
-                        packagesBean?.packageName?.contains("com.amazon.amazonvideo.livingroom") == true -> {
-
-                            if (Config.COMPANY == 5) {
-                                AndroidSystem.openActivityName(
-                                    requireContext(),
-                                    "com.amazon.avod.thirdpartyclient",
-                                    "com.amazon.avod.thirdpartyclient.LauncherActivity"
-                                )
-
-                            } else {
-                                val success =
-                                    AndroidSystem.jumpPlayer(requireContext(), packages, null)
-                                if (!success) {
-                                    toastInstallPKApp(bean.name, packages)
-                                } else {
-
-                                }
-                            }
-                        }
-
-                        packagesBean?.packageName?.contains("youtube") == true -> {
-
-                            if (Config.COMPANY == 5) {
-                                AndroidSystem.openPackageName(
-                                    requireContext(),
-                                    "com.google.android.apps.youtube.creator"
-                                )
-                            } else {
-                                val success =
-                                    AndroidSystem.jumpPlayer(requireContext(), packages, null)
-                                if (!success) {
-                                    toastInstallPKApp(bean.name, packages)
-                                } else {
-
-                                }
-                            }
-                        }
-
-                        else -> {
-                            try {
-                                val success =
-                                    packages?.let {
-                                        AndroidSystem.jumpPlayer(requireContext(),
-                                            it, null)
-                                    }
-                                if (!success!!) {
-                                    toastInstallPKApp(bean.name, packages)
-
-                                }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                //ToastUtils.show("")
-                            }
-                        }
-                    }
-
-
-                }
-
-                Types.TYPE_APP_STORE -> {
-                    val success = AndroidSystem.jumpAppStore(requireContext())
-                    if (!success) toastInstall()
-                }
-
-                Types.TYPE_MY_APPS -> {
-                    val intent = Intent(requireContext(), AppsActivity::class.java)
-                    intent.putExtra(Atts.TYPE, bean.type)
-                    startActivity(intent)
-                }
-
-                Types.TYPE_GOOGLE_PLAY -> {
-                    AndroidSystem.openPackageName(requireContext(), "com.android.vending")
-                }
-
-                Types.TYPE_MEDIA_CENTER -> {
-                    AndroidSystem.openPackageName(requireContext(), "com.explorer")
-
-                }
-            }
-        },
-        onSelect = { selected, bean ->
-            if (selected) {
-                setRVHeight(true)
-                setExpanded(true)
-                try {
-                    call?.cancel()
-                    uuid = UUID.randomUUID().toString()
-                    work(uuid!!, bean)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    )
-
-    //dasdasdas
-    val contentClick = ContentCallback(
-        onClick = { bean ->
-            /* Handle click */
-            mViewModel.handleContentClick(bean) {
-                if (!it) {
-                    toastInstallPKApp(bean.appName ?: "", bean.packageNames)
-                }
-            }
-
-        },
-        onFocus = { hasFocus, bean ->
-            /* Handle focus */
-            if (hasFocus) {
-                setRVHeight(false)
-                setExpanded(false)
-            }
-        }
-    )
 
     fun setRVHeight(isExpanded: Boolean) {
         isExpanded.yes {
@@ -1403,15 +1256,23 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             when (intent.action) {
                 Intent.ACTION_PACKAGE_ADDED, Intent.ACTION_PACKAGE_REMOVED, Intent.ACTION_PACKAGE_REPLACED -> {
 
-                    var infos = AndroidSystem.getUserApps2(appContext)
-                    val filteredList =
-                        infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
+                    val areAllApplicationInfo =
+                        mBind.horizontalContent.mutable.all { it is ApplicationInfo }
+                    areAllApplicationInfo.yes {
+                        var infos = AndroidSystem.getUserApps2(appContext)
+                        val filteredList =
+                            infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
-                    val oldList = mBind.horizontalContent.mutable as MutableList<ApplicationInfo>
+                        val oldList =
+                            mBind.horizontalContent.mutable as MutableList<ApplicationInfo>
 
-                    if (filteredList.size != oldList.size) {
-                       // mAppListAdapter?.refresh(filteredList.toMutableList())
-                        mBind.horizontalContent.bindingAdapter.refreshAppList(mBind.horizontalContent.mutable as MutableList<ApplicationInfo>, filteredList.toMutableList())
+                        if (filteredList.size != oldList.size) {
+                            mBind.horizontalContent.bindingAdapter.refreshAppList(
+                                mBind.horizontalContent.mutable as MutableList<ApplicationInfo>,
+                                filteredList.toMutableList()
+                            )
+                        }
+
                     }
                 }
             }

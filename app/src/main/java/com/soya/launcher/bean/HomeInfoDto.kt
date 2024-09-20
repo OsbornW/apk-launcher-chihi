@@ -44,6 +44,7 @@ data class Data(
     var packageNames: List<PackageName>?,
     @SerialName("appName")
     var appName: String?,
+    var layoutType: Int = 0,
 )
 
 @Serializable

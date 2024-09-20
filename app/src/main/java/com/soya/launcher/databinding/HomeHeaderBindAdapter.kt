@@ -33,9 +33,9 @@ object HomeHeaderBindAdapter {
         view.setOnFocusChangeListener { view, hasFocus ->
             (dto.itemPosition == 0).yes {
                 hasFocus.yes {
-                    view.margin(leftMargin = com.shudong.lib_dimen.R.dimen.qb_px_15.dimenValue())
+                    //view.margin(leftMargin = com.shudong.lib_dimen.R.dimen.qb_px_15.dimenValue())
                 }.otherwise {
-                    view.margin(leftMargin = com.shudong.lib_dimen.R.dimen.qb_px_0.dimenValue())
+                    //view.margin(leftMargin = com.shudong.lib_dimen.R.dimen.qb_px_0.dimenValue())
 
                 }
             }

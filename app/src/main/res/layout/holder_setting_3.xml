@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="m"
+            type="com.soya.launcher.bean.SettingItem" />
+    </data>
 <com.soya.launcher.view.MyFrameLayoutHouse
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -31,6 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp">
                     <ImageView
+                        item_projector_icon="@{m}"
                         android:id="@+id/image"
                         android:layout_gravity="center"
                         android:src="@drawable/baseline_wifi_100"
@@ -39,6 +46,7 @@
                         android:layout_height="@dimen/qb_px_100"/>
                 </FrameLayout>
                 <TextView
+                    item_projector_name="@{m}"
                     android:paddingHorizontal="@dimen/qb_px_10"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
@@ -46,7 +54,7 @@
                     android:marqueeRepeatLimit="marquee_forever"
                     android:singleLine="true"
                     android:id="@+id/title"
-                    android:text="WIFI"
+                    tools:text="WIFI"
                     android:textSize="@dimen/qb_px_sp_15"
                     android:gravity="center"
                     android:layout_gravity="bottom"
@@ -60,3 +68,4 @@
     </com.soya.launcher.view.RelativeLayoutHouse>
 
 </com.soya.launcher.view.MyFrameLayoutHouse>
+</layout>

@@ -31,6 +31,15 @@ const val SETTING_SOUND = 8
 const val SETTING_KEYBOARD = 9
 
 
+
+const val LAYOUTTYPE_HOME_PORTRAIT = 1
+const val LAYOUTTYPE_HOME_LANDSCAPE = 0
+const val LAYOUTTYPE_HOME_GAME = 2
+//const val LAYOUTTYPE_HOME_APPSTORE = 11
+//const val LAYOUTTYPE_HOME_APPLIST = 12
+//const val LAYOUTTYPE_HOME_PROJECTOR = 13
+
+
 var localWallPaperDrawable:Drawable?=null
 fun defaultId() = if (Config.COMPANY == 0) R.drawable.wallpaper_22 else R.drawable.wallpaper_1
 fun curWallpaper() = run {
