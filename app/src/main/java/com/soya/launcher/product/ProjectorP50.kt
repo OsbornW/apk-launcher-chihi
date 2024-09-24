@@ -15,29 +15,66 @@ import com.soya.launcher.ext.openApp
 import com.soya.launcher.p50.AUTO_FOCUS
 import com.soya.launcher.p50.FULL_FUNCTION
 import com.soya.launcher.p50.setFunction
+import com.soya.launcher.p50.setFunctionCorrectionAndFocus
 import com.soya.launcher.product.base.TVDeviceImpl
 
 object ProjectorP50 : TVDeviceImpl {
     override fun openFileManager() = PACKAGE_NAME_FILE_MANAGER_713.openApp()
     override fun openHomeTopKeystoneCorrection(context: Context) {
-        setFunction(FULL_FUNCTION)
+        setFunctionCorrectionAndFocus()
         super.openHomeTopKeystoneCorrection(context)
     }
 
     override fun addProjectorItem(): MutableList<SettingItem> {
         return mutableListOf<SettingItem>().apply {
             //自动响应
-            add(SettingItem(Projector.TYPE_AUTO_RESPONSE, autoResponseText(), R.drawable.icon_auto_response))
+            add(
+                SettingItem(
+                    Projector.TYPE_AUTO_RESPONSE,
+                    autoResponseText(),
+                    R.drawable.icon_auto_response
+                )
+            )
             // 自动聚焦
-            add(SettingItem(Projector.TYPE_AUTO_FOCUS, appContext.getString(R.string.auto_focus), R.drawable.icon_auto_focus))
+            add(
+                SettingItem(
+                    Projector.TYPE_AUTO_FOCUS,
+                    appContext.getString(R.string.auto_focus),
+                    R.drawable.icon_auto_focus
+                )
+            )
             // 梯形校正
-            add(SettingItem(Projector.TYPE_KEYSTONE_CORRECTION, appContext.getString(R.string.project_gradient), R.drawable.baseline_screenshot_monitor_100))
+            add(
+                SettingItem(
+                    Projector.TYPE_KEYSTONE_CORRECTION,
+                    appContext.getString(R.string.project_gradient),
+                    R.drawable.baseline_screenshot_monitor_100
+                )
+            )
             // 自动入幕
-            add(SettingItem(Projector.TYPE_AUTO_ENTRY, appContext.getString(R.string.auto_entry), R.drawable.icon_auto_entry))
+            add(
+                SettingItem(
+                    Projector.TYPE_AUTO_ENTRY,
+                    appContext.getString(R.string.auto_entry),
+                    R.drawable.icon_auto_entry
+                )
+            )
             // 投影方式
-            add(SettingItem(Projector.TYPE_PROJECTOR_MODE, appContext.getString(R.string.projector_method), R.drawable.baseline_model_training_100))
+            add(
+                SettingItem(
+                    Projector.TYPE_PROJECTOR_MODE,
+                    appContext.getString(R.string.projector_method),
+                    R.drawable.baseline_model_training_100
+                )
+            )
             // 屏幕缩放
-            add(SettingItem(Projector.TYPE_SCREEN_ZOOM, appContext.getString(R.string.screen_zoom), R.drawable.baseline_crop_100))
+            add(
+                SettingItem(
+                    Projector.TYPE_SCREEN_ZOOM,
+                    appContext.getString(R.string.screen_zoom),
+                    R.drawable.baseline_crop_100
+                )
+            )
         }
     }
 
@@ -52,51 +89,68 @@ object ProjectorP50 : TVDeviceImpl {
     override fun addCalibrationItem(isEnable: Boolean): MutableList<SettingItem> {
         return mutableListOf<SettingItem>().apply {
             //自动梯形
-            add(SettingItem(Projector.TYPE_AUTO_CALIBRATION, appContext.getString(R.string.auto_calibrate), R.drawable.icon_auto_at))
+            add(
+                SettingItem(
+                    Projector.TYPE_AUTO_CALIBRATION,
+                    appContext.getString(R.string.auto_calibrate),
+                    R.drawable.icon_auto_at
+                )
+            )
             // 手动梯形
-            add(SettingItem(Projector.TYPE_MANUAL_CALIBRATION, appContext.getString(R.string.manual_calibration), R.drawable.icon_auto_mt))
+            add(
+                SettingItem(
+                    Projector.TYPE_MANUAL_CALIBRATION,
+                    appContext.getString(R.string.manual_calibration),
+                    R.drawable.icon_auto_mt
+                )
+            )
 
         }
     }
 
-    override fun openProjectorMode(callback: (isSuccess: Boolean) -> Unit) = PACKAGE_NAME_PROJECTOR_MODE_P50.openApp()
-    override fun openScreenZoom()  = PACKAGE_NAME_SCREEN_ZOOM_P50.openApp()
+    override fun openProjectorMode(callback: (isSuccess: Boolean) -> Unit) =
+        PACKAGE_NAME_PROJECTOR_MODE_P50.openApp()
 
-    override fun projectorColumns(): Int  = 3
+    override fun openScreenZoom() = PACKAGE_NAME_SCREEN_ZOOM_P50.openApp()
+
+    override fun projectorColumns(): Int = 3
 
     override fun addHeaderItem(): MutableList<TypeItem> {
         return mutableListOf<TypeItem>().apply {
 
             // APP Store
-            add(TypeItem(
-                appContext.getString(R.string.app_store),
-                R.drawable.store,
-                0,
-                Types.TYPE_APP_STORE,
-                TypeItem.TYPE_ICON_IMAGE_RES,
-                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-            ))
+            add(
+                TypeItem(
+                    appContext.getString(R.string.app_store),
+                    R.drawable.store,
+                    0,
+                    Types.TYPE_APP_STORE,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                )
+            )
 
             // Local APP
-            add(TypeItem(
-                appContext.getString(R.string.apps),
-                R.drawable.app_list,
-                0,
-                Types.TYPE_MY_APPS,
-                TypeItem.TYPE_ICON_IMAGE_RES,
-                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-            )
+            add(
+                TypeItem(
+                    appContext.getString(R.string.apps),
+                    R.drawable.app_list,
+                    0,
+                    Types.TYPE_MY_APPS,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                )
             )
             // 投影仪
             add(
                 TypeItem(
-                appContext.getString(R.string.pojector),
-                R.drawable.projector,
-                0,
-                Types.TYPE_PROJECTOR,
-                TypeItem.TYPE_ICON_IMAGE_RES,
-                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-            )
+                    appContext.getString(R.string.pojector),
+                    R.drawable.projector,
+                    0,
+                    Types.TYPE_PROJECTOR,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                )
             )
         }
     }

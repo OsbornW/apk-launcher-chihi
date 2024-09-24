@@ -80,6 +80,39 @@ fun setFunction(function: String, callback: ((Boolean) -> Unit?)? =null) {
     }
 }
 
+fun setFunctionCorrectionAndFocus(callback: ((Boolean) -> Unit?)? =null) {
+    if (isServiceRunning(appContext, "com.hysd.hyscreen.VAF2S")) {
+        return
+    }
+
+    var workmode = 1
+    var if_af = 1
+    var if_key = 1
+    var dmode = 0
+    var castmode = -2
+    var functest = 0
+
+
+    try {
+        val intent = Intent()
+        intent.setComponent(ComponentName("com.hysd.hyscreen", "com.hysd.hyscreen.VAF2S"))
+        intent.putExtra("mode", workmode)   // 0 标定 1 工作 2 缩放联动
+        intent.putExtra("afswitch", if_af)  //对焦开关 1 打开 0 关闭
+        intent.putExtra("keyswitch", if_key)    //梯形开关 1 打开，0 关闭
+        intent.putExtra("dmode", dmode)    // 0 梯形 1 梯形+幕布 2 梯形+避障 3 梯形+幕布+避障 4 对焦+入幕
+        intent.putExtra("castmode", castmode)
+        intent.putExtra("test", functest)
+        appContext.startService(intent)
+        callback?.invoke(true)
+    } catch (e: Exception) {
+        callback?.invoke(false)
+        Log.w(
+            "zengyue",
+            "gsensor Launch " + " com.hysd.hyscreen" + " Fail with Message: " + e.message
+        )
+    }
+}
+
 fun isServiceRunning(context: Context, serviceName: String): Boolean {
     val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     for (service in am.getRunningServices(Int.MAX_VALUE)) {
