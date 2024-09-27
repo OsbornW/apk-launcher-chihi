@@ -126,7 +126,7 @@
             android:name=".ui.activity.SearchActivity"
             android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ui.activity.SettingActivity"
             android:screenOrientation="landscape" />

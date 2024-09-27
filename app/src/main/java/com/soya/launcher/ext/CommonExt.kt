@@ -1,13 +1,6 @@
 package com.soya.launcher.ext
 
 import android.content.pm.ApplicationInfo
-import android.widget.Adapter
-import android.widget.ImageView
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.drake.brv.BindingAdapter
 import com.google.gson.Gson
 import com.shudong.lib_base.ext.appContext
@@ -250,3 +243,4 @@ fun BindingAdapter.refreshAppList(oldList: MutableList<ApplicationInfo>,newList:
         }
     }
 }
+

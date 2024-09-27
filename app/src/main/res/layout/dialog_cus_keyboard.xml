@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<com.hjq.shape.layout.ShapeRelativeLayout
+    android:id="@+id/ll_dialog"
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/qb_px_240"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/qb_px_20"
+    app:shape_solidColor="#161616">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="horizontal">
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:layout_marginLeft="@dimen/qb_px_60"
+           android:layout_gravity="center_vertical"
+           android:id="@+id/rv_number"
+           android:layout_width="0dp"
+           android:layout_weight="0.7"
+           android:layout_height="wrap_content"/>
+       <View
+           android:layout_width="@dimen/qb_px_40"
+           android:layout_height="wrap_content"
+           />
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:layout_marginRight="@dimen/qb_px_60"
+           android:layout_gravity="center_vertical"
+           android:id="@+id/rv_letter"
+           android:layout_width="0dp"
+           android:layout_weight="2"
+           android:layout_height="wrap_content"/>
+
+   </LinearLayout>
+
+</com.hjq.shape.layout.ShapeRelativeLayout>
+</RelativeLayout>

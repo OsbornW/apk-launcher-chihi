@@ -105,7 +105,11 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     override fun onStart() {
         super.onStart()
-        fetchHomeData()
+        lifecycleScope.launch {
+            delay(300)
+            fetchHomeData()
+        }
+
     }
 
 

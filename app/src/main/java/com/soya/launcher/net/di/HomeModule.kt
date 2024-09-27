@@ -7,6 +7,7 @@ import com.soya.launcher.net.repository.AuthRepository
 import com.soya.launcher.net.repository.HomeLocalRepository
 import com.soya.launcher.net.repository.HomeRepository
 import com.soya.launcher.net.viewmodel.HomeViewModel
+import com.soya.launcher.net.viewmodel.KeyBoardViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -35,4 +36,9 @@ private val homeNetModule = module {
 val homeViewModel = module {
     viewModel { HomeViewModel() }
 }
-val homeModules = listOf(homeNetModule, homeViewModel)
+
+val keyboardViewModel = module {
+    viewModel { KeyBoardViewModel() }
+}
+
+val homeModules = listOf(homeNetModule, homeViewModel,keyboardViewModel)

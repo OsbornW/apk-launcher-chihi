@@ -1,20 +1,24 @@
 package com.soya.launcher.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.isRepeatExcute
 import com.shudong.lib_base.ext.no
 import com.soya.launcher.App
@@ -33,9 +37,14 @@ import com.soya.launcher.databinding.FragmentSearchBinding
 import com.soya.launcher.decoration.HSlideMarginDecoration
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.deleteLastChar
+import com.soya.launcher.ext.deletePreviousChar
+import com.soya.launcher.ext.moveCursorLeft
+import com.soya.launcher.ext.moveCursorRight
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.response.AppListResponse
+import com.soya.launcher.pop.showKeyBoardDialog
 import com.soya.launcher.ui.dialog.KeyboardDialog
 import com.soya.launcher.ui.dialog.KeyboardDialog.Companion.newInstance
 import com.soya.launcher.ui.dialog.ToastDialog
@@ -49,7 +58,7 @@ import okhttp3.FormBody
 import retrofit2.Call
 import java.util.Locale
 
-class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel>(),
+class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewModel>(),
     View.OnClickListener, OnEditorActionListener,
     FullSearchAdapter.Callback {
 
@@ -77,7 +86,12 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
                 R.layout.item_search_apps,
                 newAppClickCallback()
             )
-            mAdapter = FullSearchAdapter(requireContext(), LayoutInflater.from(appContext), ArrayList(), this@SearchFragment)
+            mAdapter = FullSearchAdapter(
+                requireContext(),
+                LayoutInflater.from(appContext),
+                ArrayList(),
+                this@SearchFragment
+            )
             mBind.recommend.addItemDecoration(
                 HSlideMarginDecoration(
                     resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
@@ -88,52 +102,57 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
     }
 
     override fun initdata() {
-        mBind.divSearch.setOnClickListener(this)
-        mBind.editQuery.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-                // 取消之前的防抖动任务
-                debounceJob?.cancel()
-
-                // 启动一个新的防抖动任务
-                debounceJob = lifecycleScope.launch {
-                    delay(800)
-                    if (!s.isNullOrEmpty()) {
-                        search()
-                    }
+        mBind.editQuery.apply {
+            setOnFocusChangeListener { view, b ->
+                if (b&&!requireActivity().isFinishing) {
+                    showKeyboard()
                 }
-
             }
-        })
+
+            onConfirmClick = {
+                showKeyboard()
+            }
+
+            addTextChangedListener(object : TextWatcherAdapter() {
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+                    // 取消之前的防抖动任务
+                    debounceJob?.cancel()
+
+                    // 启动一个新的防抖动任务
+                    debounceJob = lifecycleScope.launch {
+                        delay(800)
+                        if (!s.isNullOrEmpty()) {
+                            search()
+                        }
+                    }
+
+                }
+            })
+
+        }
+
+
 
         lifecycleScope.launch {
             mBind.recommend.adapter = mAppItemAdapter
             mBind.content.adapter = mAdapter
             val word = arguments!!.getString(Atts.WORD)
             if (!TextUtils.isEmpty(word)) {
-                mBind.editQuery.text = word
+                mBind.editQuery.setText(word)
                 search()
             }
 
             fillAppStore()
         }
 
+        mBind.editQuery.apply { post { requestFocus() } }
+
     }
 
 
     // 声明一个全局变量来持有协程作业
     private var debounceJob: Job? = null
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mBind.divSearch.apply { post { requestFocus() } }
-        lifecycleScope.launch {
-            delay(300)
-            showKeyboard()
-        }
-
-    }
 
 
 
@@ -336,7 +355,11 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
 
     override fun onClick(type: Int, bean: Any?) {
         when (type) {
-            0 -> AndroidSystem.openPackageName(requireContext(), (bean as ApplicationInfo).packageName)
+            0 -> AndroidSystem.openPackageName(
+                requireContext(),
+                (bean as ApplicationInfo).packageName
+            )
+
             1 -> AndroidSystem.jumpAppStore(requireContext(), Gson().toJson(bean as AppItem), null)
             2 -> webClick(bean as WebItem)
         }
@@ -377,14 +400,36 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding,BaseViewModel
 
     override fun onClick(v: View) {
         if (v == mBind.divSearch) {
-            showKeyboard()
+            //showKeyboard()
         }
     }
 
     private fun showKeyboard() {
-        val dialog = newInstance()
+        /*val dialog = newInstance()
         dialog.setTargetView(mBind.editQuery)
-        dialog.show(childFragmentManager, KeyboardDialog.TAG)
+        dialog.show(childFragmentManager, KeyboardDialog.TAG)*/
+        showKeyBoardDialog {
+            inputChange {
+                //字符输入
+                mBind.editQuery.append(it)
+            }
+            charDelete {
+                //字符删除
+                mBind.editQuery.deletePreviousChar()
+            }
+            inputSpace {
+                //输入空格
+                mBind.editQuery.append(" ")
+            }
+            leftArrow {
+                //左箭头
+                mBind.editQuery.moveCursorLeft()
+            }
+            rightArrow {
+                //右箭头
+                mBind.editQuery.moveCursorRight()
+            }
+        }
     }
 
     companion object {

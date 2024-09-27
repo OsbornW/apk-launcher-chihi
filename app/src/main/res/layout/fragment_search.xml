@@ -12,15 +12,13 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <com.soya.launcher.view.InterceptLinearLayout
+            <com.hjq.shape.layout.ShapeLinearLayout
+                app:shape_radius="@dimen/qb_px_8"
+                app:shape_solidColor="#1A000000"
                 android:id="@+id/div_search"
                 android:layout_marginTop="@dimen/qb_px_26"
                 android:layout_marginBottom="@dimen/qb_px_16"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/menu_item_2"
                 android:orientation="horizontal"
                 android:layout_width="@dimen/qb_px_350"
                 android:layout_height="@dimen/qb_px_40">
@@ -32,22 +30,23 @@
                     android:src="@drawable/baseline_search_100"
                     android:layout_width="@dimen/qb_px_35"
                     android:layout_height="@dimen/qb_px_35"/>
-                <TextView
+                <com.soya.launcher.view.CustomEditText
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:id="@+id/edit_query"
                     android:hint="@string/search"
-                    android:imeOptions="actionSearch"
                     android:background="@color/transparent"
                     android:gravity="center_vertical"
                     android:textColor="@color/text_color_style_1"
                     android:textSize="@dimen/qb_px_sp_16"
                     android:layout_gravity="center_vertical"
                     android:maxLines="1"
-                    android:inputType="text"
+                    android:inputType="none"
                     android:paddingLeft="@dimen/qb_px_8"
                     android:paddingRight="@dimen/qb_px_8"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
-            </com.soya.launcher.view.InterceptLinearLayout>
+            </com.hjq.shape.layout.ShapeLinearLayout>
             <FrameLayout
                 android:layout_weight="1"
                 android:layout_width="match_parent"
