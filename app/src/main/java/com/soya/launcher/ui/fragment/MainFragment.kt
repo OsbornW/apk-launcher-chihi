@@ -222,7 +222,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     val authDto = this.jsonToBean<AuthBean>()
                     (authDto.status == 200).yes {
                         authDto.code.let {
-                            mViewModel.handleActiveCodeData(it, authDto.msg)
+                            BuildConfig.DEBUG.no { mViewModel.handleActiveCodeData(it, authDto.msg) }
                         }
                     }
                 }
@@ -473,22 +473,22 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun setNetData(result: HomeInfoDto) {
 
         lifecycleScope.launch {
-            mBind.setting.requestFocus()
+           // mBind.setting.requestFocus()
 
             val header = fillData(result)
             header.addAll(items)
 
             addProduct5TypeItem(header)
-            delay(1500)
+            //delay(1500)
 
             setHeader(header)
             isConnectFirst = true
 
             val item = header[0]
             fillMovice(item)
-            delay(2000)
-            mBind.setting.clearFocus()
-            mBind.header.requestFocus()
+            //delay(2000)
+            //mBind.setting.clearFocus()
+            //mBind.header.requestFocus()
         }
 
     }

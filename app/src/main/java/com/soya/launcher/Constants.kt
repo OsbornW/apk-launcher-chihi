@@ -8,7 +8,7 @@ import com.soya.launcher.utils.GlideUtils
 
 const val FLAVOUR_H6 = "flavour_h6"
 const val PACKAGE_NAME_FILE_MANAGER_713 = "com.softwinner.TvdFileManager"
-const val CLASS_NAME_AUTHFRAGMENT = "com.soya.launcher.fragment.AuthFragment"
+const val CLASS_NAME_AUTHFRAGMENT = "com.soya.launcher.AuthFragment"
 const val PACKAGE_NAME_SCREENZOOM_RK3326 = "com.lei.hxkeystone/com.lei.hxkeystone.ScaleActivity"
 const val PACKAGE_NAME_AUTO_RESPONSE = "com.soya.launcher/com.soya.launcher.activity.AutoResponseActivity"
 const val PACKAGE_NAME_PROJECTOR_MODE_P50 = "com.android.tv.settings/com.android.tv.settings.display.ProjectionActivity"

@@ -149,6 +149,7 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, AuthViewModel>() {
             testCode().no {
                 mViewModel.reqCheckActiveCode(mBind.etActiveCode.text.toString())
                     .lifecycleLoadingView(this@AuthFragment, {
+                        ToastUtils.show(getString(R.string.Failed_please))
                     }) {
                         val authDto = this.jsonToBean<AuthBean>()
                         (authDto.status == 200).yes {

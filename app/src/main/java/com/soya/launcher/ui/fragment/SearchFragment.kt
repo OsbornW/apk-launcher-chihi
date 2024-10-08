@@ -405,10 +405,10 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewMode
     }
 
     private fun showKeyboard() {
-        /*val dialog = newInstance()
+        val dialog = newInstance()
         dialog.setTargetView(mBind.editQuery)
-        dialog.show(childFragmentManager, KeyboardDialog.TAG)*/
-        showKeyBoardDialog {
+        dialog.show(childFragmentManager, KeyboardDialog.TAG)
+        /*showKeyBoardDialog {
             inputChange {
                 //字符输入
                 mBind.editQuery.append(it)
@@ -429,7 +429,7 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewMode
                 //右箭头
                 mBind.editQuery.moveCursorRight()
             }
-        }
+        }*/
     }
 
     companion object {
