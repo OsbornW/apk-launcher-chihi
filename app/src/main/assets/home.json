@@ -206,11 +206,11 @@
         },
         {
           "activityName": "",
-          "packageName": "com.netflix.ninja"
+          "packageName": "com.netflix.mediaclient"
         },
         {
           "activityName": "",
-          "packageName": "com.netflix.mediaclient"
+          "packageName": "com.netflix.ninja"
         }
       ],
       "type": 1
