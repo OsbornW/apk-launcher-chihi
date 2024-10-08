@@ -157,7 +157,7 @@ android {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
             versionCode 60
-            signingConfig signingConfigs.new_701
+            signingConfig signingConfigs.hongxin
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
@@ -324,7 +324,7 @@ android {
 
     buildTypes {
         release {
-            debuggable false
+            debuggable true
             minifyEnabled true
             //Zipalign优化
             zipAlignEnabled true

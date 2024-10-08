@@ -27,6 +27,7 @@ import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.FragmentAppsBinding
+import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.dialog.AppDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.isSysApp
@@ -134,9 +135,9 @@ class AppsFragment : BaseWallPaperFragment<FragmentAppsBinding,BaseViewModel>() 
     }
 
     private fun setContent(list: List<ApplicationInfo>) {
-       // val filteredList = list.toMutableList().let { product.filterRepeatApps(it) } ?:list
-        if(list.size!=mBind.content.mutable.size){
-            mBind.content.models = list
+        val filteredList = list.toMutableList().let { product.filterRepeatApps(it) } ?:list
+        if(filteredList.size!=mBind.content.mutable.size){
+            mBind.content.models = filteredList
             mBind.content.apply {
                 postDelayed({
                     requestFocus()

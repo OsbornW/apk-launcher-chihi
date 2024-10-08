@@ -1,6 +1,7 @@
 package com.soya.launcher.product
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import com.shudong.lib_base.ext.appContext
 import com.soya.launcher.PACKAGE_NAME_FILE_MANAGER_713
 import com.soya.launcher.PACKAGE_NAME_PROJECTOR_MODE_P50
@@ -153,6 +154,17 @@ object ProjectorP50 : TVDeviceImpl {
                 )
             )
         }
+    }
+
+
+    override fun filterRepeatApps(list: MutableList<ApplicationInfo>): MutableList<ApplicationInfo> {
+        val excludedPackageNames = setOf(
+            "com.hysd.hyscreen",
+        )
+
+        return list.filterNot { appInfo ->
+            excludedPackageNames.contains(appInfo.packageName ?: "")
+        }.toMutableList()
     }
 
 }
