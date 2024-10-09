@@ -1168,45 +1168,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
     }
 
-    //dasdas
-    private fun newAppListCallback(): AppListAdapter.Callback {
-        return object : AppListAdapter.Callback {
-            override fun onSelect(selected: Boolean) {
-                if (selected) {
-                    setRVHeight(false)
-                    setExpanded(false)
-                }
-            }
 
-            override fun onClick(bean: ApplicationInfo) {
-                try {
-                    openApp(bean)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-
-            }
-
-            override fun onMenuClick(bean: ApplicationInfo) {
-                appMenu(bean)
-            }
-        }
-    }
-
-    private fun openApp(bean: ApplicationInfo) {
-        AndroidSystem.openPackageName(requireContext(), bean.packageName)
-    }
-
-    private fun appMenu(bean: ApplicationInfo) {
-        val dialog = AppDialog.newInstance(bean)
-        dialog.setCallback(object : AppDialog.Callback {
-            override fun onOpen() {
-                AndroidSystem.openPackageName(requireContext(), bean.packageName)
-            }
-
-        })
-        dialog.show(getChildFragmentManager(), AppDialog.TAG)
-    }
 
     private fun setExpanded(isExpanded: Boolean) {
         mBind.appBar.setExpanded(isExpanded)

@@ -269,6 +269,23 @@ android {
             buildConfigField "String", "MODEL", '"001"'
         }
 
+        XHSX {
+            applicationId "com.1-topbox.launcher"
+            dimension "chihi"
+            versionCode 1
+            versionName "1.1"
+            manifestPlaceholders = [share_uid: ""]
+            signingConfig signingConfigs.AiBY
+            // 自定义buildConfig.java中的变量供代码中使用
+            buildConfigField "String", "BASE_URL", '"https://la.pm2za.cc/"'
+            buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.pm2za.cc/"'
+            buildConfigField "String", "COMPANY", '"7"'
+            buildConfigField "String", "APP_ID", '"launcher"'
+            buildConfigField "String", "CHANNEL", '"LA29101"'
+            buildConfigField "String", "CHIHI_TYPE", '"XHSX"'
+            buildConfigField "String", "MODEL", '"XHSX"'
+        }
+
 
         // X98K (TV)
         yxt_X98K {
