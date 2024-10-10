@@ -58,3 +58,4 @@ fun String.setSystemPropertyValueBoolean(value: Boolean, callback: ((Boolean) ->
 
 
 const val SYSTEM_PROPERTY_AUTO_RESPONSE = "persist.vendor.auto_focus.hysd"   //自动响应（false为关闭）
+const val SYSTEM_PROPERTY_IS_GAME = "vendor.chichi.game"   //是否（true为Game版本）
