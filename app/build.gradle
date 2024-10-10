@@ -270,11 +270,11 @@ android {
         }
 
         XHSX {
-            applicationId "com.1-topbox.launcher"
+            applicationId "com.topbox.launcher"
             dimension "chihi"
             versionCode 1
             versionName "1.1"
-            manifestPlaceholders = [share_uid: ""]
+            manifestPlaceholders = [share_uid: "android.uid.system"]
             signingConfig signingConfigs.AiBY
             // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://la.pm2za.cc/"'
@@ -309,9 +309,9 @@ android {
             applicationId "com.soya.h27002"
             minSdk 22
             dimension "chihi"
-            //manifestPlaceholders = [share_uid: ""]
+            manifestPlaceholders = [share_uid: ""]
             //manifestPlaceholders = [share_uid: "android.uid.system"]
-            signingConfig signingConfigs.new_701
+            //signingConfig signingConfigs.new_701
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'

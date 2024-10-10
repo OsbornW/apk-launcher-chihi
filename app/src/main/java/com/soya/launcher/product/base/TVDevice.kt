@@ -74,7 +74,7 @@ object Channel{
 
     const val AIBOYOUTV_TV22001 = "aiboyou_launcher"
     const val PROJECTOR_P50_C = "p50_713M"
-    const val TVBox_XHSX_C = "tvbox_xhsx"
+    const val TVBox_XHSX_C = "XHSX"
 }
 
 val product : TVDevice =
