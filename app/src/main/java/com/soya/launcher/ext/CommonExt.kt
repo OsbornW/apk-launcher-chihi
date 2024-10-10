@@ -244,3 +244,5 @@ fun BindingAdapter.refreshAppList(oldList: MutableList<ApplicationInfo>,newList:
     }
 }
 
+fun isGame() = SYSTEM_PROPERTY_IS_GAME.systemPropertyValueBoolean()
+

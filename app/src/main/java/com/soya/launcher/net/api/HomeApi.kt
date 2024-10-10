@@ -30,6 +30,7 @@ interface HomeApi : BaseApi {
     suspend fun reqHomeInfo(
         @Query("req_id") reqId: String,
         @Query("channel") channel: String,
+        @Query("launch_type") launchType: Int? = null, // launchType 是可选参数，默认值为 null
     ): HomeInfoDto
 
     @GET(Update_INFO)

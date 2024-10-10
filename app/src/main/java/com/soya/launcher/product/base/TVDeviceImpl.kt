@@ -275,4 +275,6 @@ interface TVDeviceImpl : TVDevice {
 
         }
     }
+
+    override fun isGameRes(): Int?  = null
 }

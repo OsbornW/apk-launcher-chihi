@@ -18,42 +18,6 @@ android {
             java.srcDirs = ['src/hongxin_H27002/java']
         }
 
-        hongxin_713M {
-            java.srcDirs = ['src/hongxin_713M/java']
-        }
-
-        hongxin_713RK {
-            java.srcDirs = ['src/hongxin_713RK/java']
-        }
-
-        hongxin_713G {
-            java.srcDirs = ['src/hongxin_713G/java']
-        }
-
-        hongxin_713RK_G {
-            java.srcDirs = ['src/hongxin_713RK_G/java']
-        }
-
-
-        aiboyou_projector {
-            java.srcDirs = ['src/aiboyou_projector/java']
-        }
-
-        aiboyou_tv {
-            java.srcDirs = ['src/aiboyou_tv/java']
-        }
-
-        yxt_X98K {
-            java.srcDirs = ['src/yxt_x98k/java']
-        }
-
-        H6 {
-            java.srcDirs = ['src/h6/java']
-        }
-        aiboyou_launcher {
-            java.srcDirs = ['src/aiboyou_launcher/java']
-        }
-
         p50_713M {
             java.srcDirs = ['src/p50_713m/java']
         }
@@ -138,10 +102,10 @@ android {
         // {  H27002------>5   }
         // {  H6------>9   }
         //宏信(投影仪) 713M
-        hongxin_713M {
+        hongxin_713_M_G {
             applicationId "com.soya.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.hongxin
+            signingConfig signingConfigs.x88
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
@@ -202,25 +166,7 @@ android {
             buildConfigField "String", "MODEL", '"3326G"'
         }
 
-        //宏信(GAME) 713G
-        hongxin_713G {
-            applicationId "com.chihihx.launcher_game"
-            dimension "chihi"
-            //signingConfig signingConfigs.hongxin
-            //signingConfig signingConfigs.new_701
-            signingConfig signingConfigs.x88
-            versionCode 56
-            versionName "1.57"
-            manifestPlaceholders = [share_uid: "android.uid.system"]
-            // 自定义buildConfig.java中的变量供代码中使用
-            buildConfigField "String", "BASE_URL", '"https://la.keencloud.work/"'
-            buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.keencloud.work/"'
-            buildConfigField "String", "COMPANY", '"0"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LG27001"'
-            buildConfigField "String", "CHIHI_TYPE", '"H713G"'
-            buildConfigField "String", "MODEL", '"713G"'
-        }
+
 
         // 爱泊优(投影仪)
         aiboyou_projector {

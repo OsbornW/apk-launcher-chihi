@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.DeviceUtils
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.currentActivity
+import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.showErrorToast
@@ -45,6 +46,7 @@ import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.MainActivity
 import com.soya.launcher.utils.AndroidSystem
+import com.soya.launcher.utils.MacTool
 import com.soya.launcher.utils.toTrim
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.flow.Flow
@@ -81,6 +83,7 @@ class HomeViewModel : BaseViewModel() {
             "model" to BuildConfig.MODEL,
             "brand" to Build.BRAND,
             "product" to Build.PRODUCT,
+            "mac" to (MacTool.getMac(appContext)?:""),
         )
     )
 
