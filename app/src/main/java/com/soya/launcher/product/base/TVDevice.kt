@@ -54,6 +54,7 @@ sealed interface TVDevice{
     fun addWallPaper(){}
     fun addHeaderItem():MutableList<TypeItem>?=null
     fun addGameItem():MutableList<TypeItem>?=null
+    fun isGameRes():Int?=null
 }
 
 data object DefaultDevice: TVDevice

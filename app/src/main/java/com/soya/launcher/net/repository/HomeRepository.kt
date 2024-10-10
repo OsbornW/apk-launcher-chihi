@@ -7,6 +7,7 @@ import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.bean.UpdateDto
 import com.soya.launcher.net.api.HomeApi
+import com.soya.launcher.product.base.product
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -21,7 +22,7 @@ import kotlinx.coroutines.flow.flow
 class HomeRepository(private val api: HomeApi): BaseRepository(api) {
 
     fun reqHomeInfo(): Flow<HomeInfoDto> = flow {
-        emit(api.reqHomeInfo("0", BuildConfig.CHANNEL))
+        emit(api.reqHomeInfo("0", BuildConfig.CHANNEL, product.isGameRes()))
     }
 
     fun reqUpdateInfo(): Flow<MutableList<UpdateAppsDTO>> = flow {
