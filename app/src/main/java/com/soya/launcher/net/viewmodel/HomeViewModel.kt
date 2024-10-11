@@ -34,6 +34,7 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.SYSTEM_PROPERTY_AUTO_RESPONSE
 import com.soya.launcher.ext.autoResponseText
+import com.soya.launcher.ext.getMacAddress
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.ext.setAutoResponseProperty
 import com.soya.launcher.ext.systemPropertyValueBoolean
@@ -83,7 +84,7 @@ class HomeViewModel : BaseViewModel() {
             "model" to BuildConfig.MODEL,
             "brand" to Build.BRAND,
             "product" to Build.PRODUCT,
-            "mac" to (MacTool.getMac(appContext)?:""),
+            "mac" to (getMacAddress()?:""),
         )
     )
 

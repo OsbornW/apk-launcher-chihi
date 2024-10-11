@@ -11,6 +11,8 @@ object AppCache {
     var updateInfo:String by serial()
     var updateInfoForLauncher:String by serial()
     var reqId:Int by serial(0)
+    var isGame:Boolean by serial(false)
+    var isReload:Boolean by serial(false)
     var homeData: HomeDataList by serial(default = HomeDataList(mutableMapOf()))
     var isAllDownload:Boolean by serial(default = false)
     var isSkipGuid:Boolean by serial(default = false)   //是否跳过引导页

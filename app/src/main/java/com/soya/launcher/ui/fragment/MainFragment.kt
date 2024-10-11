@@ -40,6 +40,7 @@ import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.downloadApkNopkName
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.height
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
@@ -168,6 +169,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         }
 
+
         obseverLiveEvent<Boolean>(HOME_EVENT) {
             if (isExpanded) {
                 mBind.header.requestFocus()
@@ -201,6 +203,22 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         startRepeatingTask()
 
         checkLauncherUpdate()
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
+                repeat(20){
+                    delay(500)
+                    "开始循环了哦".e("zengyue3")
+                    if (AppCache.isReload ) {
+                        "开始设置默认了哦".e("zengyue3")
+                        setDefault()
+                        AppCache.isReload = false
+                        return@repeatOnLifecycle
+                    }
+                }
+
+            }
+        }
 
         mBind.header.requestFocus()
 
@@ -473,6 +491,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun setNetData(result: HomeInfoDto) {
 
         lifecycleScope.launch {
+            "开始设置网络数据".e("zengyue3")
            // mBind.setting.requestFocus()
 
             val header = fillData(result)
@@ -486,7 +505,13 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             val item = header[0]
             fillMovice(item)
-            //delay(2000)
+            //delay(500)
+            mBind.header.requestFocus()
+            mBind.header.apply {
+                postDelayed({
+                    scrollToPosition(0)
+                },0)
+            }
             //mBind.setting.clearFocus()
             //mBind.header.requestFocus()
         }
@@ -995,6 +1020,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     HomeInfoDto::class.java
                 )
                 if (compareSizes(result)) {
+                    "我加载的是网络的资源".e("zengyue3")
                     val header = fillData(result)
                     header.addAll(items)
                     addProduct5TypeItem(header)
@@ -1006,14 +1032,16 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         }, 500)
                     }
                 } else {
-
+                    "我加载的是默认的资源1".e("zengyue3")
                     setDefault()
                 }
 
             } else {
+                "我加载的是默认的资源2".e("zengyue3")
                 setDefault()
             }
         } catch (e: Exception) {
+            "我加载的是默认的资源3".e("zengyue3")
             setDefault()
         }
     }
@@ -1040,7 +1068,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun setDefault() {
         try {
-
             val result = Gson().fromJson(
                 InputStreamReader(
                     appContext.assets.open("home.json")

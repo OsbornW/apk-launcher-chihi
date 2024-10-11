@@ -51,6 +51,7 @@ import com.soya.launcher.ext.countImagesWithPrefix
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getBasePath
+import com.soya.launcher.ext.isGame
 import com.soya.launcher.localWallPaperDrawable
 import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.manager.PreferencesManager
@@ -79,7 +80,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 val reason = intent.getStringExtra("reason")
                 if (reason == "homekey") {
                     // 处理 Home 键按下的逻辑
-                    sendLiveEventData(HOME_EVENT,true)
+                    sendLiveEventData(HOME_EVENT, true)
                 }
             }
         }
@@ -89,14 +90,14 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_HOME || keyCode == KEYCODE_AVR_POWER) {
             // 处理 Home 键按下的逻辑
-            sendLiveEventData(HOME_EVENT,true)
+            sendLiveEventData(HOME_EVENT, true)
             return true
         }
         return super.onKeyDown(keyCode, event)
     }
 
     override fun initBeforeContent() {
-        if(localWallPaperDrawable!=null){
+        if (localWallPaperDrawable != null) {
             //设置后没效果
             //window.setBackgroundDrawableResource(R.drawable.wallpaper_1)
         }
@@ -107,6 +108,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         super.onStart()
         lifecycleScope.launch {
             delay(300)
+            "执行网络请求1".e("zengyue3")
             fetchHomeData()
         }
 
@@ -115,6 +117,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     private var fetchJob: Job? = null
     private fun fetchHomeData(isRefresh: Boolean = false) {
+        "执行网络请求".e("zengyue3")
         // 取消之前的任务（如果存在）
         isHandleUpdateList = false
         fetchJob?.cancel()
@@ -122,10 +125,18 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
         }, isShowError = false) {
             val dto = this
+            val file = File(FilePathMangaer.getJsonPath(appContext) + "/Home.json")
+            if ((dto.reqId ?: 0) != AppCache.reqId || AppCache.isGame != isGame()) {
+                "进入判断了".e("zengyue3")
+                if(file.exists())AppCache.isReload = true
+
+            }
             dto.jsonToString().exportToJson("Home.json")
 
+
             if (isRefresh) {
-                if ((dto.reqId ?: 0) != AppCache.reqId) {
+                if ((dto.reqId ?: 0) != AppCache.reqId || AppCache.isGame != isGame()) {
+                    deleteAllPic()
                     startCoroutineScope(dto)
                 }
             } else {
@@ -139,14 +150,15 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     private fun startCoroutineScope(dto: HomeInfoDto) {
         fetchJob = lifecycleScope.launch {
-            if ((dto.reqId ?: 0) != AppCache.reqId || !compareSizes(dto)) {
+            if ((dto.reqId ?: 0) != AppCache.reqId || !compareSizes(dto)|| AppCache.isGame != isGame()) {
                 withContext(Dispatchers.IO) {
-                    if ((dto.reqId ?: 0) != AppCache.reqId) {
+                    if ((dto.reqId ?: 0) != AppCache.reqId|| AppCache.isGame != isGame()) {
                         AppCache.isAllDownload = false
                         deleteAllPic()
                     }
 
                     AppCache.reqId = dto.reqId ?: 0
+                    AppCache.isGame = isGame()
                     startPicTask(this)
                 }
 
@@ -337,7 +349,8 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             it.bindNew()
         }
         this.obseverLiveEvent<Boolean>(REFRESH_HOME) {
-            fetchHomeData(true)
+            "执行网络请求2".e("zengyue3")
+           // fetchHomeData(true)
         }
 
     }
@@ -357,7 +370,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         if (canBackPressed) {
             super.onBackPressed()
         } else {
-            sendLiveEventData(HOME_EVENT,true)
+            sendLiveEventData(HOME_EVENT, true)
         }
 
     }
