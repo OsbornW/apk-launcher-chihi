@@ -4,6 +4,7 @@
     <!-- Project -->
     <string name="search">căutare</string>
     <string name="setting">înființat</string>
+
     <string name="wifi">WIFI</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="language">limba</string>
@@ -26,6 +27,7 @@
     <string name="update">actualizare</string>
     <string name="tool">unealtă</string>
     <string name="file_management">Gestionarea fișierelor</string>
+
     <string name="monday">unu</string>
     <string name="tuesday">două</string>
     <string name="wednesday">trei</string>
@@ -33,6 +35,7 @@
     <string name="friday">cinci</string>
     <string name="saturday">şase</string>
     <string name="sunday">zi</string>
+
     <string name="network">rețea</string>
     <string name="keyboard">tastatură</string>
     <string name="place_waiting">Vă rugăm să așteptați un moment</string>
@@ -67,6 +70,7 @@
     <string name="choose_wallpaper">Alege fundalul implicit</string>
     <string name="click_to_setting">Faceți clic pe OK pentru a seta</string>
     <string name="or_skip">Sau sări peste execuție</string>
+
     <string name="hulu">Hulu</string>
     <string name="max">Max</string>
     <string name="prime_video">Video prim</string>
@@ -96,6 +100,7 @@
     <string name="set_netword_title">Configurează conexiunea la rețeaua de sistem</string>
     <string name="remote_control_connect">Asocierea telecomenzii Bluetooth</string>
     <string name="project_crop">Tăiere ecran</string>
+    <string name="Image_Mode">Mod imagine</string>
     <string name="project_gradient">Aliniere trapezoidală</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Mod de proiecție</string>
@@ -136,6 +141,7 @@
     <string name="sound">voce</string>
     <string name="remote_control">Telecomandă</string>
     <string name="device_id">ID dispozitiv</string>
+
     <string name="waiting">Aşteaptă</string>
     <string name="download_fail_mask">Descărcare eșuată</string>
     <string name="install_failed">Instalare eșuată</string>
@@ -159,12 +165,15 @@
     <string name="uninstall_failed">Dezinstalare eșuată</string>
     <string name="done">complet</string>
     <string name="saved">Salvat</string>
+
     <string name="disconnect_net">Deconectează</string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
 
     <string name="available_updates">Actualizări disponibile</string>
     <string name="No_prompt_yet">Deocamdată nu mai solicit.</string>
     <string name="Cancell">anulează</string>
     <string name="Finish">complet</string>
+
     <string name="Installation_Complete">instalarea este finalizată</string>
     <string name="Installation_failed">Instalare eșuată</string>
     <string name="Installation_Errors">eroare de instalare</string>
@@ -172,19 +181,23 @@
     <string name="download">Descărcare %d%%</string>
     <string name="Download_failed">Descărcare eșuată</string>
     <string name="update1">pentru a actualiza</string>
+
     <string name="The_author_of_The_New_York_Times">Așteaptă instalarea</string>
-    <string name="The_author">Instalație în curs de desfășurare</string>
+
 
     <string name="Activating">Activare</string>
     <string name="Success">succes</string>
     <string name="Failed_please">Eşuat, vă rugăm să încercaţi din nou!</string>
     <string name="Invalid_PIN">Codul PIN nu este valid, vă rugăm să încercați din nou!</string>
     <string name="The_input">Intrarea nu poate fi goală</string>
+    <string name="The_author">Instalație în curs de desfășurare</string>
+
 
     <string name="System_activation">Activarea sistemului</string>
     <string name="Please_input">Introduceţi codul PIN</string>
     <string name="active_the_app">Introduceți codul PIN pentru a activa aplicația</string>
     <string name="Activate_Now">Activează acum</string>
+
 
     <string name="app_text_15" >Actualizări disponibile</string>
     <string name="app_text_16" >A fost lansată o nouă versiune! \Adăugați [funcții noi], optimizați [puncte de optimizare] și îmbunătățiți experiența utilizatorului. Actualizați acum și descoperiți mai multe surprize!</string>
@@ -196,6 +209,8 @@
     <string name="app_text_38" >Descărcare:% d%%</string>
 
 
+    <string name="auto_response_off" >Răspuns automat (0ff)</string>
+    <string name="auto_response_on" >Răspuns automat (0n)</string>
     <string name="auto_focus" >Focalizare automată</string>
     <string name="auto_entry" >Intrare automată a ecranului</string>
     <string name="projector_method" >Metoda de proiecție</string>
@@ -207,7 +222,5 @@
     <string name="set_success" >Setare reușită</string>
     <string name="set_failed" >Setare eșuată</string>
 
-    <string name="auto_response_off" >Răspuns automat (0ff)</string>
-    <string name="auto_response_on" >Răspuns automat (0n)</string>
 
 </resources>

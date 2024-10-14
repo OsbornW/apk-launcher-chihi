@@ -4,6 +4,7 @@
     <!-- Project -->
     <string name="search">검색</string>
     <string name="setting">설치</string>
+
     <string name="wifi">무선 네트워크</string>
     <string name="bluetooth">블루투스</string>
     <string name="language">언어</string>
@@ -26,6 +27,7 @@
     <string name="update">업데이트</string>
     <string name="tool">도구</string>
     <string name="file_management">파일 관리</string>
+
     <string name="monday">하나</string>
     <string name="tuesday">둘</string>
     <string name="wednesday">셋</string>
@@ -33,6 +35,7 @@
     <string name="friday">다섯</string>
     <string name="saturday">여섯</string>
     <string name="sunday">일</string>
+
     <string name="network">인터넷</string>
     <string name="keyboard">키보드</string>
     <string name="place_waiting">잠시만요</string>
@@ -67,6 +70,7 @@
     <string name="choose_wallpaper">기본 배경 그림 선택</string>
     <string name="click_to_setting">확인을 클릭하여 설정</string>
     <string name="or_skip">또는 실행 건너뛰기</string>
+
     <string name="hulu">Hulu</string>
     <string name="max">막스</string>
     <string name="prime_video">Prime 비디오</string>
@@ -96,6 +100,7 @@
     <string name="set_netword_title">시스템 네트워크 연결 설정</string>
     <string name="remote_control_connect">Bluetooth 리모컨 페어링</string>
     <string name="project_crop">화면 절단 모서리</string>
+    <string name="Image_Mode">이미지 모드</string>
     <string name="project_gradient">사다리꼴이 비교적 바르다</string>
     <string name="project_hdmi">HD 멀티미디어 인터페이스(High Definition Multimedia Interface)</string>
     <string name="project_mode">투영 모드</string>
@@ -136,6 +141,7 @@
     <string name="sound">소리</string>
     <string name="remote_control">리모컨</string>
     <string name="device_id">장치 ID</string>
+
     <string name="waiting">대기 중</string>
     <string name="download_fail_mask">다운로드 실패</string>
     <string name="install_failed">설치 실패</string>
@@ -159,13 +165,15 @@
     <string name="uninstall_failed">제거 실패</string>
     <string name="done">완료</string>
     <string name="saved">저장됨</string>
+
     <string name="disconnect_net">연결 해제</string>
-    <string name="ethernet">이더넷이 연결되어 있어 Wi-Fi를 사용할 수 없습니다. </string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
 
     <string name="available_updates">사용 가능한 업데이트</string>
     <string name="No_prompt_yet">잠시 프롬프트하지 않음</string>
     <string name="Cancell">취소</string>
     <string name="Finish">완료</string>
+
     <string name="Installation_Complete">설치 완료</string>
     <string name="Installation_failed">설치 실패</string>
     <string name="Installation_Errors">설치 오류</string>
@@ -173,8 +181,8 @@
     <string name="download">다운로드 %d%%</string>
     <string name="Download_failed">다운로드 실패</string>
     <string name="update1">업데이트</string>
+
     <string name="The_author_of_The_New_York_Times">설치 대기 중</string>
-    <string name="The_author">설치 중</string>
 
 
     <string name="Activating">활성화 중...</string>
@@ -182,11 +190,14 @@
     <string name="Failed_please">실패, 다시 시도하십시오!</string>
     <string name="Invalid_PIN">PIN 코드가 잘못되었습니다. 다시 시도하십시오!</string>
     <string name="The_input">입력은 비워둘 수 없습니다.</string>
+    <string name="The_author">설치 중</string>
+
 
     <string name="System_activation">시스템 활성화</string>
     <string name="Please_input">PIN 코드를 입력하십시오.</string>
     <string name="active_the_app">PIN 코드를 입력하여 응용 프로그램을 활성화하십시오.</string>
     <string name="Activate_Now">지금 활성화</string>
+
 
     <string name="app_text_15" >사용 가능한 업데이트</string>
     <string name="app_text_16" >새로운 버전 출시!\n [새로운 기능]을 추가하고 [최적화 포인트]를 최적화하여 \n 사용 환경을 향상시킵니다.지금 업데이트하십시오.\n 더 많은 이벤트가 발견되었습니다!</string>
@@ -198,6 +209,8 @@
     <string name="app_text_38" >다운로드:%d%%</string>
 
 
+    <string name="auto_response_off" >자동 응답 (0ff)</string>
+    <string name="auto_response_on" >자동 응답 (0n)</string>
     <string name="auto_focus" >자동 초점</string>
     <string name="auto_entry" >자동 입막</string>
     <string name="projector_method" >투영 방식</string>
@@ -209,7 +222,5 @@
     <string name="set_success" >설정 성공</string>
     <string name="set_failed" >설정 실패</string>
 
-    <string name="auto_response_off" >자동 응답 (0ff)</string>
-    <string name="auto_response_on" >자동 응답 (0n)</string>
 
 </resources>

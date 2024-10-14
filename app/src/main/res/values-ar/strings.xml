@@ -4,6 +4,7 @@
     <!-- Project -->
     <string name="search">بحث .</string>
     <string name="setting">ضبط</string>
+
     <string name="wifi">شبكة لاسلكية</string>
     <string name="bluetooth">البلوتوث</string>
     <string name="language">لغة</string>
@@ -26,6 +27,7 @@
     <string name="update">تجديد .</string>
     <string name="tool">أداة .</string>
     <string name="file_management">إدارة الوثائق</string>
+
     <string name="monday">واحد</string>
     <string name="tuesday">ر</string>
     <string name="wednesday">ثلاثة</string>
@@ -33,6 +35,7 @@
     <string name="friday">خمسة .</string>
     <string name="saturday">ستة .</string>
     <string name="sunday">اليوم .</string>
+
     <string name="network">شبكة</string>
     <string name="keyboard">لوحة المفاتيح .</string>
     <string name="place_waiting">لحظة من فضلك</string>
@@ -67,6 +70,7 @@
     <string name="choose_wallpaper">اختيار خلفية الافتراضي</string>
     <string name="click_to_setting">انقر فوق موافق على الإعداد</string>
     <string name="or_skip">أو تخطي التنفيذ</string>
+
     <string name="hulu">هولو</string>
     <string name="max">ماكس</string>
     <string name="prime_video">رئيس الفيديو</string>
@@ -96,6 +100,7 @@
     <string name="set_netword_title">وضع نظام اتصال الشبكة</string>
     <string name="remote_control_connect">بلوتوث التحكم عن بعد الاقتران</string>
     <string name="project_crop">قطع حافة الشاشة</string>
+    <string name="Image_Mode">نمط الصورة</string>
     <string name="project_gradient">شبه منحرف أكثر إيجابية</string>
     <string name="project_hdmi">واجهة الوسائط المتعددة عالية الوضوح</string>
     <string name="project_mode">نمط الإسقاط</string>
@@ -136,6 +141,7 @@
     <string name="sound">صوت .</string>
     <string name="remote_control">جهاز التحكم عن بعد</string>
     <string name="device_id">معرف الجهاز</string>
+
     <string name="waiting">في انتظار</string>
     <string name="download_fail_mask">فشل التحميل</string>
     <string name="install_failed">فشل التثبيت</string>
@@ -159,12 +165,15 @@
     <string name="uninstall_failed">فشل التثبيت</string>
     <string name="done">اكتمل</string>
     <string name="saved">حفظ</string>
+
     <string name="disconnect_net">قطع الاتصال</string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
 
     <string name="available_updates">التحديثات المتاحة</string>
     <string name="No_prompt_yet">لا أذكر</string>
     <string name="Cancell">ألغى</string>
     <string name="Finish">اكتمل</string>
+
     <string name="Installation_Complete">تركيب كامل</string>
     <string name="Installation_failed">فشل التثبيت</string>
     <string name="Installation_Errors">تركيب خطأ</string>
@@ -172,8 +181,8 @@
     <string name="download">تحميل %d%%</string>
     <string name="Download_failed">فشل التحميل</string>
     <string name="update1">تجديد .</string>
+
     <string name="The_author_of_The_New_York_Times">في انتظار التثبيت</string>
-    <string name="The_author">تركيب</string>
 
 
     <string name="Activating">تفعيل .</string>
@@ -181,11 +190,14 @@
     <string name="Failed_please">فشل ، يرجى المحاولة مرة أخرى !</string>
     <string name="Invalid_PIN">دبوس غير صالح ، يرجى المحاولة مرة أخرى !</string>
     <string name="The_input">لا يمكن إدخال فارغة</string>
+    <string name="The_author">تركيب</string>
+
 
     <string name="System_activation">تفعيل النظام</string>
     <string name="Please_input">الرجاء إدخال رقم التعريف الشخصي</string>
     <string name="active_the_app">الرجاء إدخال رقم التعريف الشخصي لتنشيط التطبيق</string>
     <string name="Activate_Now">تفعيل فوري</string>
+
 
     <string name="app_text_15" >التحديثات المتاحة</string>
     <string name="app_text_16" >نسخة جديدة على الانترنت ! إضافة ميزات جديدة ، وتحسين نقاط التحسين ، وتحسين تجربة المستخدم الخاص بك . تحديث الآن . . . ن تجد المزيد من المفاجآت !</string>
@@ -197,6 +209,8 @@
     <string name="app_text_38" >تحميل : %d%</string>
 
 
+    <string name="auto_response_off" >الرد التلقائي</string>
+    <string name="auto_response_on" >الرد التلقائي</string>
     <string name="auto_focus" >التركيز التلقائي</string>
     <string name="auto_entry" >دخول تلقائي</string>
     <string name="projector_method" >طريقة الإسقاط</string>
@@ -208,7 +222,5 @@
     <string name="set_success" >مجموعة ناجحة</string>
     <string name="set_failed" >فشل الإعداد</string>
 
-    <string name="auto_response_off" >الرد التلقائي</string>
-    <string name="auto_response_on" >الرد التلقائي</string>
 
 </resources>

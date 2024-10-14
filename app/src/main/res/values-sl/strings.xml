@@ -4,6 +4,7 @@
     <!-- Project -->
     <string name="search">iskanje</string>
     <string name="setting">nastavitev</string>
+
     <string name="wifi">WIFI</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="language">jezik</string>
@@ -26,6 +27,7 @@
     <string name="update">posodobitev</string>
     <string name="tool">orodje</string>
     <string name="file_management">upravljanje datotek</string>
+
     <string name="monday">ena</string>
     <string name="tuesday">dve</string>
     <string name="wednesday">tri</string>
@@ -33,6 +35,7 @@
     <string name="friday">pet</string>
     <string name="saturday">šest</string>
     <string name="sunday">dan</string>
+
     <string name="network">omrežje</string>
     <string name="keyboard">tipkovnica</string>
     <string name="place_waiting">Prosim, počakajte trenutek.</string>
@@ -67,6 +70,7 @@
     <string name="choose_wallpaper">Izberite privzeto ozadje</string>
     <string name="click_to_setting">Kliknite V redu, da nastavite</string>
     <string name="or_skip">Ali preskoči izvedbo</string>
+
     <string name="hulu">Hulu</string>
     <string name="max">Maks.</string>
     <string name="prime_video">Glavni video</string>
@@ -96,6 +100,7 @@
     <string name="set_netword_title">Nastavite sistemsko omrežno povezavo</string>
     <string name="remote_control_connect">Seznanitev daljinskega upravljalnika Bluetooth</string>
     <string name="project_crop">Obrezovanje zaslona</string>
+    <string name="Image_Mode">Slikovni način</string>
     <string name="project_gradient">Trapezoidna poravnava</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Način projekcije</string>
@@ -136,6 +141,7 @@
     <string name="sound">glas</string>
     <string name="remote_control">Daljinski upravljalnik</string>
     <string name="device_id">ID naprave</string>
+
     <string name="waiting">Čakanje</string>
     <string name="download_fail_mask">Prenos ni uspel</string>
     <string name="install_failed">Namestitev ni uspela</string>
@@ -159,12 +165,15 @@
     <string name="uninstall_failed">Odstranitev ni uspela</string>
     <string name="done">končano</string>
     <string name="saved">Shranjeno</string>
+
     <string name="disconnect_net">Prekini povezavo</string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
 
     <string name="available_updates">Razpoložljive posodobitve</string>
     <string name="No_prompt_yet">Zaenkrat ne pozivam.</string>
     <string name="Cancell">prekliči</string>
     <string name="Finish">končano</string>
+
     <string name="Installation_Complete">namestitev je končana</string>
     <string name="Installation_failed">Namestitev ni uspela</string>
     <string name="Installation_Errors">napaka pri namestitvi</string>
@@ -172,8 +181,8 @@
     <string name="download">Prenos %d%%</string>
     <string name="Download_failed">Prenos ni uspel</string>
     <string name="update1">za posodobitev</string>
+
     <string name="The_author_of_The_New_York_Times">Čakamo na namestitev</string>
-    <string name="The_author">Namestitev v teku</string>
 
 
     <string name="Activating">Aktiviranje</string>
@@ -181,11 +190,14 @@
     <string name="Failed_please">Ni uspelo, prosim poskusite znova!</string>
     <string name="Invalid_PIN">PIN koda je neveljavna, poskusite znova!</string>
     <string name="The_input">Vnos ne more biti prazen</string>
+    <string name="The_author">Namestitev v teku</string>
+
 
     <string name="System_activation">Aktivacija sistema</string>
     <string name="Please_input">Prosim vnesite PIN kodo</string>
     <string name="active_the_app">Za aktiviranje aplikacije vnesite PIN kodo</string>
     <string name="Activate_Now">Aktiviraj zdaj</string>
+
 
     <string name="app_text_15" >Razpoložljive posodobitve</string>
     <string name="app_text_16" >Predstavljena je popolnoma nova različica! \Dodajte [nove funkcije], optimizirajte [optimizacijske točke] in izboljšajte uporabniško izkušnjo. Posodobite zdaj in odkrijte več presenečenj!</string>
@@ -197,6 +209,8 @@
     <string name="app_text_38" >Prenos:% d%%</string>
 
 
+    <string name="auto_response_off" >Samodejni odziv (0ff)</string>
+    <string name="auto_response_on" >Samodejni odziv (0n)</string>
     <string name="auto_focus" >Samodejno ostrenje</string>
     <string name="auto_entry" >Samodejni vnos na zaslon</string>
     <string name="projector_method" >Metoda projekcije</string>
@@ -208,7 +222,5 @@
     <string name="set_success" >Nastavitev uspešna</string>
     <string name="set_failed" >Nastavitev ni uspela</string>
 
-    <string name="auto_response_off" >Samodejni odziv (0ff)</string>
-    <string name="auto_response_on" >Samodejni odziv (0n)</string>
 
 </resources>

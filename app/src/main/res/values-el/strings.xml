@@ -4,6 +4,7 @@
     <!-- Project -->
     <string name="search">αναζήτηση</string>
     <string name="setting">ρύθμιση</string>
+
     <string name="wifi">WIFI</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="language">γλώσσα</string>
@@ -26,6 +27,7 @@
     <string name="update">ενημέρωση</string>
     <string name="tool">εργαλείο</string>
     <string name="file_management">διαχείριση αρχείων</string>
+
     <string name="monday">ένα</string>
     <string name="tuesday">δύο</string>
     <string name="wednesday">τρία</string>
@@ -33,6 +35,7 @@
     <string name="friday">πέντε</string>
     <string name="saturday">έξι</string>
     <string name="sunday">ημέρα</string>
+
     <string name="network">δίκτυο</string>
     <string name="keyboard">πληκτρολόγιο</string>
     <string name="place_waiting">Παρακαλώ περιμένετε ένα λεπτό</string>
@@ -67,6 +70,7 @@
     <string name="choose_wallpaper">Επιλογή προεπιλεγμένης ταπετσαρίας</string>
     <string name="click_to_setting">Κάντε κλικ στο κουμπί για να ορίσετε</string>
     <string name="or_skip">Ή παραλείψτε την εκτέλεση.</string>
+
     <string name="hulu">Χολού.</string>
     <string name="max">Max</string>
     <string name="prime_video">Πρωτότυπο βίντεο</string>
@@ -96,6 +100,7 @@
     <string name="set_netword_title">Ρύθμιση σύνδεσης δικτύου συστήματος</string>
     <string name="remote_control_connect">Σύνδεση τηλεχειρισμού Bluetooth</string>
     <string name="project_crop">Περικοπή οθόνης</string>
+    <string name="Image_Mode">Λειτουργία εικόνας</string>
     <string name="project_gradient">Τραπεζοειδής ευθυγράμμιση</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Λειτουργία προβολής</string>
@@ -136,6 +141,7 @@
     <string name="sound">φωνή</string>
     <string name="remote_control">Τηλεχειριστήριο</string>
     <string name="device_id">Αναγνωριστικό συσκευής</string>
+
     <string name="waiting">Περιμένουμε</string>
     <string name="download_fail_mask">Αποτυχία λήψης</string>
     <string name="install_failed">Αποτυχία εγκατάστασης</string>
@@ -159,11 +165,15 @@
     <string name="uninstall_failed">Αποτυχία απεγκατάστασης</string>
     <string name="done">πλήρης</string>
     <string name="saved">Αποθήκευση</string>
+
     <string name="disconnect_net">Αποσύνδεση</string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
+
     <string name="available_updates">Διαθέσιμες ενημερώσεις</string>
     <string name="No_prompt_yet">Δεν ζητάω προς το παρόν</string>
     <string name="Cancell">ακύρωση</string>
     <string name="Finish">πλήρης</string>
+
     <string name="Installation_Complete">η εγκατάσταση ολοκληρώθηκε</string>
     <string name="Installation_failed">Αποτυχία εγκατάστασης</string>
     <string name="Installation_Errors">σφάλμα εγκατάστασης</string>
@@ -171,9 +181,8 @@
     <string name="download">Λήψη %d%%</string>
     <string name="Download_failed">Αποτυχία λήψης</string>
     <string name="update1">για ενημέρωση</string>
-    <string name="The_author_of_The_New_York_Times">Αναμονή εγκατάστασης</string>
-    <string name="The_author">Εγκατάσταση σε εξέλιξη</string>
 
+    <string name="The_author_of_The_New_York_Times">Αναμονή εγκατάστασης</string>
 
 
     <string name="Activating">Ενεργοποίηση</string>
@@ -181,11 +190,14 @@
     <string name="Failed_please">Αποτυχία, παρακαλώ προσπαθήστε ξανά!</string>
     <string name="Invalid_PIN">Ο κωδικός είναι άκυρος, δοκιμάστε ξανά!</string>
     <string name="The_input">Η είσοδος δεν μπορεί να είναι κενή</string>
+    <string name="The_author">Εγκατάσταση σε εξέλιξη</string>
+
 
     <string name="System_activation">Ενεργοποίηση συστήματος</string>
     <string name="Please_input">Παρακαλώ εισάγετε τον κωδικό PIN</string>
     <string name="active_the_app">Παρακαλώ εισάγετε τον κωδικό για να ενεργοποιήσετε την εφαρμογή</string>
     <string name="Activate_Now">Ενεργοποίηση τώρα</string>
+
 
     <string name="app_text_15" >Διαθέσιμες ενημερώσεις</string>
     <string name="app_text_16" >Μια ολοκαίνουργια έκδοση κυκλοφόρησε! \Προσθέστε [νέες δυνατότητες], βελτιστοποιήστε [σημεία βελτιστοποίησης] και βελτιώστε την εμπειρία χρήστη σας. Ενημερώστε τώρα και ανακαλύψτε περισσότερες εκπλήξεις!</string>
@@ -197,6 +209,8 @@
     <string name="app_text_38" >Λήψη:% d%%</string>
 
 
+    <string name="auto_response_off" >Αυτόματη απόκριση (0ff)</string>
+    <string name="auto_response_on" >Αυτόματη απόκριση (0n)</string>
     <string name="auto_focus" >Αυτόματη εστίαση</string>
     <string name="auto_entry" >Αυτόματη εισαγωγή οθόνης</string>
     <string name="projector_method" >Μέθοδος προβολής</string>
@@ -208,7 +222,5 @@
     <string name="set_success" >Ορισμός επιτυχής</string>
     <string name="set_failed" >Αποτυχία ρύθμισης</string>
 
-    <string name="auto_response_off" >Αυτόματη απόκριση (0ff)</string>
-    <string name="auto_response_on" >Αυτόματη απόκριση (0n)</string>
 
 </resources>

@@ -4,6 +4,7 @@
     <!-- Project -->
     <string name="search">wyszukiwanie</string>
     <string name="setting">ustawić</string>
+
     <string name="wifi">WIFI</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="language">język</string>
@@ -26,6 +27,7 @@
     <string name="update">aktualizacja</string>
     <string name="tool">narzędzie</string>
     <string name="file_management">zarządzanie plikami</string>
+
     <string name="monday">jeden</string>
     <string name="tuesday">dwa</string>
     <string name="wednesday">trzy</string>
@@ -33,6 +35,7 @@
     <string name="friday">pięć</string>
     <string name="saturday">sześć</string>
     <string name="sunday">dzień</string>
+
     <string name="network">sieć</string>
     <string name="keyboard">klawiatura</string>
     <string name="place_waiting">Proszę poczekać chwilę.</string>
@@ -67,6 +70,7 @@
     <string name="choose_wallpaper">Wybierz domyślną tapetę</string>
     <string name="click_to_setting">Kliknij OK, aby ustawić</string>
     <string name="or_skip">Albo pominąć egzekucję</string>
+
     <string name="hulu">HuluCity in California USA</string>
     <string name="max">Maks.</string>
     <string name="prime_video">Nagranie główne</string>
@@ -96,6 +100,7 @@
     <string name="set_netword_title">Konfiguracja połączenia sieciowego systemu</string>
     <string name="remote_control_connect">Koprowanie pilota Bluetooth</string>
     <string name="project_crop">Przycinanie ekranu</string>
+    <string name="Image_Mode">Tryb obrazu</string>
     <string name="project_gradient">Wyrównanie trapezoidalne</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Tryb projekcji</string>
@@ -136,6 +141,7 @@
     <string name="sound">głos</string>
     <string name="remote_control">Zdalne sterowanie</string>
     <string name="device_id">Identyfikator urządzenia</string>
+
     <string name="waiting">Czekanie</string>
     <string name="download_fail_mask">Pobieranie nie powiodło się</string>
     <string name="install_failed">Instalacja nie powiodła się</string>
@@ -159,12 +165,15 @@
     <string name="uninstall_failed">Niepowiodło się odinstalowanie</string>
     <string name="done">kompletny</string>
     <string name="saved">Zapisane</string>
+
     <string name="disconnect_net">Odłącz</string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
 
     <string name="available_updates">Dostępne aktualizacje</string>
     <string name="No_prompt_yet">Nie proszę na razie</string>
     <string name="Cancell">anuluj</string>
     <string name="Finish">kompletny</string>
+
     <string name="Installation_Complete">instalacja zakończona</string>
     <string name="Installation_failed">Instalacja nie powiodła się</string>
     <string name="Installation_Errors">błąd instalacji</string>
@@ -172,14 +181,17 @@
     <string name="download">Pobierz %d%%</string>
     <string name="Download_failed">Pobieranie nie powiodło się</string>
     <string name="update1">do aktualizacji</string>
+
     <string name="The_author_of_The_New_York_Times">Czekanie na instalację</string>
-    <string name="The_author">Instalacja w toku</string>
+
 
     <string name="Activating">Aktywacja</string>
     <string name="Success">sukces</string>
     <string name="Failed_please">Nieudało się, spróbuj ponownie!</string>
     <string name="Invalid_PIN">Kod PIN jest nieprawidłowy, spróbuj ponownie!</string>
     <string name="The_input">Wejście nie może być puste</string>
+    <string name="The_author">Instalacja w toku</string>
+
 
     <string name="System_activation">Aktywacja systemu</string>
     <string name="Please_input">Proszę wprowadzić kod PIN</string>
@@ -197,6 +209,8 @@
     <string name="app_text_38" >Pobierz:% d%%</string>
 
 
+    <string name="auto_response_off" >Automatyczna odpowiedź (0ff)</string>
+    <string name="auto_response_on" >Automatyczna odpowiedź (0n)</string>
     <string name="auto_focus" >Automatyczne ostrość</string>
     <string name="auto_entry" >Automatyczne wprowadzanie ekranu</string>
     <string name="projector_method" >Metoda projekcji</string>
@@ -208,7 +222,5 @@
     <string name="set_success" >Ustawienie pomyślne</string>
     <string name="set_failed" >Ustawienie nie powiodło się</string>
 
-    <string name="auto_response_off" >Automatyczna odpowiedź (0ff)</string>
-    <string name="auto_response_on" >Automatyczna odpowiedź (0n)</string>
 
 </resources>

@@ -4,6 +4,7 @@
     <!-- Project -->
     <string name="search">zoeken</string>
     <string name="setting">ingesteld</string>
+
     <string name="wifi">WIFI</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="language">taal</string>
@@ -26,6 +27,7 @@
     <string name="update">update</string>
     <string name="tool">gereedschap</string>
     <string name="file_management">bestandsbeheer</string>
+
     <string name="monday">één</string>
     <string name="tuesday">twee</string>
     <string name="wednesday">drie</string>
@@ -33,6 +35,7 @@
     <string name="friday">vijf</string>
     <string name="saturday">zes</string>
     <string name="sunday">dag</string>
+
     <string name="network">netwerk</string>
     <string name="keyboard">toetsenbord</string>
     <string name="place_waiting">Wacht alstublieft even.</string>
@@ -67,6 +70,7 @@
     <string name="choose_wallpaper">Standaard achtergrond selecteren</string>
     <string name="click_to_setting">Klik op OK om in te stellen</string>
     <string name="or_skip">Of de uitvoering overslaan</string>
+
     <string name="hulu">HuluName</string>
     <string name="max">Max</string>
     <string name="prime_video">Prime video</string>
@@ -96,6 +100,7 @@
     <string name="set_netword_title">Systeemnetwerkverbinding instellen</string>
     <string name="remote_control_connect">Koppeling met Bluetooth-afstandsbediening</string>
     <string name="project_crop">Scherm bijsnijden</string>
+    <string name="Image_Mode">Beeldmodus</string>
     <string name="project_gradient">Trapezoïde uitlijning</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Projectiemodus</string>
@@ -136,6 +141,7 @@
     <string name="sound">stem</string>
     <string name="remote_control">Afstandsbediening</string>
     <string name="device_id">Apparaat-ID</string>
+
     <string name="waiting">Wachten</string>
     <string name="download_fail_mask">Downloaden mislukt</string>
     <string name="install_failed">Installatie mislukt</string>
@@ -159,11 +165,15 @@
     <string name="uninstall_failed">Verwijderen mislukt</string>
     <string name="done">compleet</string>
     <string name="saved">Opgeslagen</string>
+
     <string name="disconnect_net">Verbinding verbreken</string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
+
     <string name="available_updates">Beschikbare updates</string>
     <string name="No_prompt_yet">Voorlopig niet gevraagd</string>
     <string name="Cancell">annuleren</string>
     <string name="Finish">compleet</string>
+
     <string name="Installation_Complete">installatie is voltooid</string>
     <string name="Installation_failed">Installatie mislukt</string>
     <string name="Installation_Errors">installatiefout</string>
@@ -171,8 +181,8 @@
     <string name="download">Download %d%%</string>
     <string name="Download_failed">Downloaden mislukt</string>
     <string name="update1">om bij te werken</string>
+
     <string name="The_author_of_The_New_York_Times">Wachten op installatie</string>
-    <string name="The_author">Installatie in uitvoering</string>
 
 
     <string name="Activating">Activeren</string>
@@ -180,11 +190,14 @@
     <string name="Failed_please">Mislukt, probeer het alsjeblieft opnieuw!</string>
     <string name="Invalid_PIN">De pincode is ongeldig, probeer het opnieuw!</string>
     <string name="The_input">Invoer kan niet leeg zijn</string>
+    <string name="The_author">Installatie in uitvoering</string>
+
 
     <string name="System_activation">Systeemactivering</string>
     <string name="Please_input">Voer de pincode in</string>
     <string name="active_the_app">Voer de pincode in om de applicatie te activeren</string>
     <string name="Activate_Now">Nu activeren</string>
+
 
     <string name="app_text_15" >Beschikbare updates</string>
     <string name="app_text_16" >Een gloednieuwe versie is gelanceerd! \Voeg [nieuwe functies] toe, optimaliseer [optimalisatiepunten] en verbeter uw gebruikerservaring. Update nu en ontdek meer verrassingen!</string>
@@ -196,6 +209,8 @@
     <string name="app_text_38" >Downloaden:% d%%</string>
 
 
+    <string name="auto_response_off" >Automatische respons (0ff)</string>
+    <string name="auto_response_on" >Automatische respons (0n)</string>
     <string name="auto_focus" >Automatisch scherpstellen</string>
     <string name="auto_entry" >Automatische scherminvoer</string>
     <string name="projector_method" >Projectiemethode</string>
@@ -207,7 +222,5 @@
     <string name="set_success" >Instelling succesvol</string>
     <string name="set_failed" >Instelling mislukt</string>
 
-    <string name="auto_response_off" >Automatische respons (0ff)</string>
-    <string name="auto_response_on" >Automatische respons (0n)</string>
 
 </resources>

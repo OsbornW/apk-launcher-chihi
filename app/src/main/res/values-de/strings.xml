@@ -4,6 +4,7 @@
     <!-- Project -->
     <string name="search">Suche</string>
     <string name="setting">einrichten</string>
+
     <string name="wifi">WIFI</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="language">Sprache</string>
@@ -26,6 +27,7 @@
     <string name="update">Update</string>
     <string name="tool">Werkzeug</string>
     <string name="file_management">Dateiverwaltung</string>
+
     <string name="monday">eine</string>
     <string name="tuesday">zwei</string>
     <string name="wednesday">drei</string>
@@ -33,6 +35,7 @@
     <string name="friday">fünf</string>
     <string name="saturday">sechs</string>
     <string name="sunday">Tag</string>
+
     <string name="network">Netzwerk</string>
     <string name="keyboard">Tastatur</string>
     <string name="place_waiting">Bitte warten Sie einen Moment</string>
@@ -67,6 +70,7 @@
     <string name="choose_wallpaper">Standardtapete auswählen</string>
     <string name="click_to_setting">Klicken Sie auf OK, um festzulegen</string>
     <string name="or_skip">Oder Ausführung überspringen</string>
+
     <string name="hulu">HuluCity in Germany</string>
     <string name="max">Max.</string>
     <string name="prime_video">Prime Video</string>
@@ -96,6 +100,7 @@
     <string name="set_netword_title">Systemnetzwerkverbindung einrichten</string>
     <string name="remote_control_connect">Kopplung der Bluetooth-Fernbedienung</string>
     <string name="project_crop">Bildschirmbeschneiden</string>
+    <string name="Image_Mode">Bildmodus</string>
     <string name="project_gradient">Trapezförmige Ausrichtung</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Projektionsmodus</string>
@@ -136,6 +141,7 @@
     <string name="sound">Stimme</string>
     <string name="remote_control">Fernbedienung</string>
     <string name="device_id">Geräte-ID</string>
+
     <string name="waiting">Warten</string>
     <string name="download_fail_mask">Download fehlgeschlagen</string>
     <string name="install_failed">Installation fehlgeschlagen</string>
@@ -159,13 +165,15 @@
     <string name="uninstall_failed">Deinstallieren fehlgeschlagen</string>
     <string name="done">komplett</string>
     <string name="saved">Gespeichert</string>
+
     <string name="disconnect_net">Trennen</string>
-    <string name="ethernet">Ethernet ist verbunden, WLAN kann nicht verwendet werden</string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
 
     <string name="available_updates">Verfügbare Updates</string>
     <string name="No_prompt_yet">Keine Aufforderung im Moment</string>
     <string name="Cancell">Abbrechen</string>
     <string name="Finish">komplett</string>
+
     <string name="Installation_Complete">Installation abgeschlossen</string>
     <string name="Installation_failed">Installation fehlgeschlagen</string>
     <string name="Installation_Errors">Installationsfehler</string>
@@ -173,8 +181,8 @@
     <string name="download">Download %d%%</string>
     <string name="Download_failed">Download fehlgeschlagen</string>
     <string name="update1">zu aktualisieren</string>
+
     <string name="The_author_of_The_New_York_Times">Warten auf Installation</string>
-    <string name="The_author">Installation in Bearbeitung</string>
 
 
     <string name="Activating">Aktivieren</string>
@@ -182,11 +190,14 @@
     <string name="Failed_please">Fehlgeschlagen, bitte versuchen Sie es erneut!</string>
     <string name="Invalid_PIN">Der PIN-Code ist ungültig, bitte versuchen Sie es erneut!</string>
     <string name="The_input">Eingabe kann nicht leer sein</string>
+    <string name="The_author">Installation in Bearbeitung</string>
+
 
     <string name="System_activation">Systemaktivierung</string>
     <string name="Please_input">Bitte geben Sie den PIN-Code ein</string>
     <string name="active_the_app">Bitte geben Sie den PIN-Code ein, um die Anwendung zu aktivieren</string>
     <string name="Activate_Now">Jetzt aktivieren</string>
+
 
     <string name="app_text_15" >Verfügbare Updates</string>
     <string name="app_text_16" >Eine brandneue Version wurde veröffentlicht! \Fügen Sie [neue Funktionen] hinzu, optimieren Sie [Optimierungspunkte] und verbessern Sie Ihre Benutzererfahrung. Aktualisieren Sie jetzt und entdecken Sie weitere Überraschungen!</string>
@@ -198,6 +209,8 @@
     <string name="app_text_38" >Download:% d%%</string>
 
 
+    <string name="auto_response_off" >Automatisches Ansprechverhalten (0ff)</string>
+    <string name="auto_response_on" >Automatisches Ansprechverhalten (0n)</string>
     <string name="auto_focus" >Autofokus</string>
     <string name="auto_entry" >Automatische Bildschirmeingabe</string>
     <string name="projector_method" >Projektionsmethode</string>
@@ -209,7 +222,5 @@
     <string name="set_success" >Einstellung erfolgreich</string>
     <string name="set_failed" >Einstellung fehlgeschlagen</string>
 
-    <string name="auto_response_off" >Automatisches Ansprechverhalten (0ff)</string>
-    <string name="auto_response_on" >Automatisches Ansprechverhalten (0n)</string>
 
 </resources>

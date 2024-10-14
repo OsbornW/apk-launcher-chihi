@@ -4,6 +4,7 @@
     <!-- Project -->
     <string name="search">Tìm kiếm</string>
     <string name="setting">Thiết lập</string>
+
     <string name="wifi">Mạng không dây</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="language">Ngôn ngữ</string>
@@ -26,6 +27,7 @@
     <string name="update">Cập nhật</string>
     <string name="tool">Công cụ</string>
     <string name="file_management">Quản lý tập tin</string>
+
     <string name="monday">Một</string>
     <string name="tuesday">Hai</string>
     <string name="wednesday">Ba</string>
@@ -33,6 +35,7 @@
     <string name="friday">Năm.</string>
     <string name="saturday">Sáu</string>
     <string name="sunday">Ngày</string>
+
     <string name="network">Mạng lưới</string>
     <string name="keyboard">Bàn phím</string>
     <string name="place_waiting">Xin chờ một chút.</string>
@@ -67,6 +70,7 @@
     <string name="choose_wallpaper">Chọn hình nền mặc định</string>
     <string name="click_to_setting">Nhấn OK để thiết lập</string>
     <string name="or_skip">hoặc bỏ qua thực thi</string>
+
     <string name="hulu">Hulu</string>
     <string name="max">Max.</string>
     <string name="prime_video">Video của Prime</string>
@@ -96,6 +100,7 @@
     <string name="set_netword_title">Thiết lập kết nối mạng hệ thống</string>
     <string name="remote_control_connect">Ghép nối điều khiển từ xa Bluetooth</string>
     <string name="project_crop">Màn hình cắt cạnh</string>
+    <string name="Image_Mode">Chế độ ảnh</string>
     <string name="project_gradient">Hình thang tương đối</string>
     <string name="project_hdmi">Giao diện đa phương tiện HD (High Definition Multimedia Interface)</string>
     <string name="project_mode">Chế độ chiếu</string>
@@ -136,6 +141,7 @@
     <string name="sound">Âm thanh</string>
     <string name="remote_control">Điều khiển từ xa</string>
     <string name="device_id">ID thiết bị</string>
+
     <string name="waiting">Đang chờ</string>
     <string name="download_fail_mask">Tải xuống thất bại</string>
     <string name="install_failed">Cài đặt thất bại</string>
@@ -159,12 +165,15 @@
     <string name="uninstall_failed">Gỡ cài đặt thất bại</string>
     <string name="done">Hoàn thành</string>
     <string name="saved">Đã lưu</string>
+
     <string name="disconnect_net">Ngắt kết nối</string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
 
     <string name="available_updates">Cập nhật có sẵn</string>
     <string name="No_prompt_yet">Tạm thời không nhắc</string>
     <string name="Cancell">Hủy bỏ</string>
     <string name="Finish">Hoàn thành</string>
+
     <string name="Installation_Complete">Cài đặt xong</string>
     <string name="Installation_failed">Cài đặt thất bại</string>
     <string name="Installation_Errors">Lỗi cài đặt</string>
@@ -172,19 +181,23 @@
     <string name="download">Tải %d%%</string>
     <string name="Download_failed">Tải xuống thất bại</string>
     <string name="update1">Cập nhật</string>
+
     <string name="The_author_of_The_New_York_Times">Chờ cài đặt</string>
-    <string name="The_author">Đang cài đặt</string>
+
 
     <string name="Activating">Kích hoạt......</string>
     <string name="Success">Thành công</string>
     <string name="Failed_please">Thất bại, vui lòng thử lại!</string>
     <string name="Invalid_PIN">Mã PIN không hợp lệ, vui lòng thử lại!</string>
     <string name="The_input">Input không thể để trống</string>
+    <string name="The_author">Đang cài đặt</string>
+
 
     <string name="System_activation">Kích hoạt hệ thống</string>
     <string name="Please_input">Vui lòng nhập mã PIN</string>
     <string name="active_the_app">Vui lòng nhập mã PIN để kích hoạt ứng dụng</string>
     <string name="Activate_Now">Kích hoạt ngay</string>
+
 
     <string name="app_text_15" >Cập nhật có sẵn</string>
     <string name="app_text_16" >全新版本上线！\n新增[新功能]，优化[优化点]，\n提升你的使用体验。立即更新，\n发现更多惊喜！</string>
@@ -196,6 +209,8 @@
     <string name="app_text_38" >下载: %d%%</string>
 
 
+    <string name="auto_response_off" >Phản hồi tự động (0ff)</string>
+    <string name="auto_response_on" >Phản hồi tự động (0n)</string>
     <string name="auto_focus" >Tự động lấy nét</string>
     <string name="auto_entry" >自动入幕</string>
     <string name="projector_method" >Chế độ chiếu</string>
@@ -207,7 +222,5 @@
     <string name="set_success" >Thiết lập thành công</string>
     <string name="set_failed" >Thiết lập thất bại</string>
 
-    <string name="auto_response_off" >Phản hồi tự động (0ff)</string>
-    <string name="auto_response_on" >Phản hồi tự động (0n)</string>
 
 </resources>
