@@ -76,6 +76,25 @@ object ProjectorP50 : TVDeviceImpl {
                     R.drawable.baseline_crop_100
                 )
             )
+
+            // 图像模式
+            add(
+                SettingItem(
+                    Projector.TYPE_IMAGE_MODE,
+                    appContext.getString(R.string.image_mode),
+                    R.drawable.icon_pic_mode
+                )
+            )
+
+            // HDMI
+            add(
+                SettingItem(
+                    Projector.TYPE_HDMI,
+                    appContext.getString(R.string.project_hdmi),
+                    R.drawable.baseline_settings_input_hdmi_100
+                )
+            )
+
         }
     }
 
@@ -114,7 +133,7 @@ object ProjectorP50 : TVDeviceImpl {
 
     override fun openScreenZoom() = PACKAGE_NAME_SCREEN_ZOOM_P50.openApp()
 
-    override fun projectorColumns(): Int = 3
+    override fun projectorColumns(): Int = 4
 
     override fun addHeaderItem(): MutableList<TypeItem> {
         return mutableListOf<TypeItem>().apply {

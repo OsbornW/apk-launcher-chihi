@@ -19,6 +19,7 @@ import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.PACKAGE_NAME_AUTO_RESPONSE
+import com.soya.launcher.PACKAGE_NAME_IMAGE_MODE
 import com.soya.launcher.R
 import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.Data
@@ -142,6 +143,9 @@ class HomeViewModel : BaseViewModel() {
                 }
             Projector.TYPE_AUTO_ENTRY-> setFunction(AUTO_ENTRY){
                 }
+            Projector.TYPE_IMAGE_MODE -> {
+                PACKAGE_NAME_IMAGE_MODE.openApp()
+            }
         }
     }
 

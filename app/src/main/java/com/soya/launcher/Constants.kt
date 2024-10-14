@@ -17,6 +17,7 @@ const val PACKAGE_NAME_KEYSTONE_CORRECTION_P50 = "com.android.tv.settings/com.an
 const val PACKAGE_NAME_AUTO_KEYSTONE_CORRECTION = "com.hxdevicetest/com.hxdevicetest.CheckGsensorActivity"
 const val PACKAGE_NAME_AUTO_KEYSTONE_CORRECTION_RK3326 = "com.lei.hxkeystone/com.lei.hxkeystone.CheckGsensorActivity"
 const val PACKAGE_NAME_Manual_KEYSTONE_CORRECTION_RK3326 = "com.lei.hxkeystone/com.lei.hxkeystone.FourPoint"
+const val PACKAGE_NAME_IMAGE_MODE = "com.android.tv.settings/com.android.tv.settings.display.PQModeActivity"
 
 
 const val SETTING_NETWORK = 0

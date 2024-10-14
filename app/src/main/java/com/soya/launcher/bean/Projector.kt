@@ -16,5 +16,6 @@ class Projector(val type: Int, val icon: Int) {
         const val TYPE_AUTO_ENTRY: Int = 7   //自动入幕
         const val TYPE_AUTO_CALIBRATION: Int = 8   //自动校准
         const val TYPE_MANUAL_CALIBRATION: Int = 9   //手动校准
+        const val TYPE_IMAGE_MODE: Int = 10   //图像模式
     }
 }
