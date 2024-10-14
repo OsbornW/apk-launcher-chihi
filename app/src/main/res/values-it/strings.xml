@@ -100,7 +100,7 @@
     <string name="set_netword_title">Configura la connessione di rete di sistema</string>
     <string name="remote_control_connect">Abbinamento del telecomando Bluetooth</string>
     <string name="project_crop">Taglio dello schermo</string>
-    <string name="Image_Mode">Modalità immagine</string>
+    <string name="image_mode">Modalità immagine</string>
     <string name="project_gradient">Allineamento trapezoidale</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Modalità proiezione</string>

@@ -100,7 +100,7 @@
     <string name="set_netword_title">Opsæt systemnetværksforbindelse</string>
     <string name="remote_control_connect">Bluetooth fjernbetjening parring</string>
     <string name="project_crop">Skærmtrimning</string>
-    <string name="Image_Mode">Billedtilstand</string>
+    <string name="image_mode">Billedtilstand</string>
     <string name="project_gradient">Trapezoid justering</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Projektionstilstand</string>

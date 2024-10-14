@@ -4,6 +4,7 @@
     <!-- Project -->
     <string name="search">Търсене</string>
     <string name="setting">настройване</string>
+
     <string name="wifi">WIFI</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="language">език</string>
@@ -26,6 +27,7 @@
     <string name="update">актуализация</string>
     <string name="tool">инструмент</string>
     <string name="file_management">управление на файлове</string>
+
     <string name="monday">едно</string>
     <string name="tuesday">две</string>
     <string name="wednesday">три</string>
@@ -33,6 +35,7 @@
     <string name="friday">пет</string>
     <string name="saturday">шест</string>
     <string name="sunday">ден</string>
+
     <string name="network">мрежа</string>
     <string name="keyboard">клавиатура</string>
     <string name="place_waiting">Моля изчакайте малко.</string>
@@ -67,6 +70,7 @@
     <string name="choose_wallpaper">Избор на тапет по подразбиране</string>
     <string name="click_to_setting">Щракнете върху ОК, за да зададете</string>
     <string name="or_skip">Или пропуснете изпълнението</string>
+
     <string name="hulu">Хулу</string>
     <string name="max">Макс.</string>
     <string name="prime_video">Преминаване на видео</string>
@@ -96,6 +100,7 @@
     <string name="set_netword_title">Настройване на системна мрежова връзка</string>
     <string name="remote_control_connect">Свързване с дистанционно управление с Bluetooth</string>
     <string name="project_crop">Изрязване на екрана</string>
+    <string name="image_mode">Режим на изображение</string>
     <string name="project_gradient">Трапезоидно подравняване</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Режим на прожекция</string>
@@ -136,6 +141,7 @@
     <string name="sound">глас</string>
     <string name="remote_control">Дистанционно управление</string>
     <string name="device_id">ИД на устройството</string>
+
     <string name="waiting">Чакаме</string>
     <string name="download_fail_mask">Изтеглянето е неуспешно</string>
     <string name="install_failed">Неуспешно инсталиране</string>
@@ -159,12 +165,15 @@
     <string name="uninstall_failed">Деинсталирането е неуспешно</string>
     <string name="done">завършен</string>
     <string name="saved">Записано</string>
+
     <string name="disconnect_net">Прекъсване на връзката</string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
 
     <string name="available_updates">Налични актуализации</string>
     <string name="No_prompt_yet">Засега не ме подканва.</string>
     <string name="Cancell">отмяна</string>
     <string name="Finish">завършен</string>
+
     <string name="Installation_Complete">инсталацията е завършена</string>
     <string name="Installation_failed">Неуспешно инсталиране</string>
     <string name="Installation_Errors">грешка при инсталирането</string>
@@ -172,19 +181,23 @@
     <string name="download">Изтегляне %d%%</string>
     <string name="Download_failed">Изтеглянето е неуспешно</string>
     <string name="update1">за актуализиране</string>
+
     <string name="The_author_of_The_New_York_Times">Изчакване на инсталацията</string>
-    <string name="The_author">Инсталацията е в ход</string>
+
 
     <string name="Activating">Aktivuji</string>
     <string name="Success">úspěch</string>
     <string name="Failed_please">Selhalo, zkuste to prosím znovu!</string>
     <string name="Invalid_PIN">PIN kód je neplatný, zkuste to prosím znovu!</string>
     <string name="The_input">Vstup nemůže být prázdný</string>
+    <string name="The_author">Инсталацията е в ход</string>
+
 
     <string name="System_activation">Aktivace systému</string>
     <string name="Please_input">Zadejte prosím PIN kód</string>
     <string name="active_the_app">Pro aktivaci aplikace zadejte PIN kód</string>
     <string name="Activate_Now">Aktivovat nyní</string>
+
 
     <string name="app_text_15" >Налични актуализации</string>
     <string name="app_text_16" >Започна нова версия! \Добавете [нови функции], оптимизирайте [точки за оптимизация] и подобрете потребителското си преживяване. Актуализирайте сега и открийте още изненади!</string>
@@ -196,6 +209,8 @@
     <string name="app_text_38" >Изтегляне:% d%%</string>
 
 
+    <string name="auto_response_off" >Автоматична реакция (0ff)</string>
+    <string name="auto_response_on" >Автоматичен отговор (0n)</string>
     <string name="auto_focus" >Автоматично фокусиране</string>
     <string name="auto_entry" >Автоматично въвеждане на екрана</string>
     <string name="projector_method" >Метод на прогнозиране</string>
@@ -207,7 +222,5 @@
     <string name="set_success" >Настройката е успешна</string>
     <string name="set_failed" >Грешка при настройката</string>
 
-    <string name="auto_response_off" >Автоматична реакция (0ff)</string>
-    <string name="auto_response_on" >Автоматичен отговор (0n)</string>
 
 </resources>

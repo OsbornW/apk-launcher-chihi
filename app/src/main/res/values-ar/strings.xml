@@ -100,7 +100,7 @@
     <string name="set_netword_title">وضع نظام اتصال الشبكة</string>
     <string name="remote_control_connect">بلوتوث التحكم عن بعد الاقتران</string>
     <string name="project_crop">قطع حافة الشاشة</string>
-    <string name="Image_Mode">نمط الصورة</string>
+    <string name="image_mode">نمط الصورة</string>
     <string name="project_gradient">شبه منحرف أكثر إيجابية</string>
     <string name="project_hdmi">واجهة الوسائط المتعددة عالية الوضوح</string>
     <string name="project_mode">نمط الإسقاط</string>

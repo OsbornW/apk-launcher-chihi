@@ -100,7 +100,7 @@
     <string name="set_netword_title">Configurează conexiunea la rețeaua de sistem</string>
     <string name="remote_control_connect">Asocierea telecomenzii Bluetooth</string>
     <string name="project_crop">Tăiere ecran</string>
-    <string name="Image_Mode">Mod imagine</string>
+    <string name="image_mode">Mod imagine</string>
     <string name="project_gradient">Aliniere trapezoidală</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Mod de proiecție</string>

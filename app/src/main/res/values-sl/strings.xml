@@ -100,7 +100,7 @@
     <string name="set_netword_title">Nastavite sistemsko omrežno povezavo</string>
     <string name="remote_control_connect">Seznanitev daljinskega upravljalnika Bluetooth</string>
     <string name="project_crop">Obrezovanje zaslona</string>
-    <string name="Image_Mode">Slikovni način</string>
+    <string name="image_mode">Slikovni način</string>
     <string name="project_gradient">Trapezoidna poravnava</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Način projekcije</string>

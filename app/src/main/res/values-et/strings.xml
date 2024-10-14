@@ -100,7 +100,7 @@
     <string name="set_netword_title">Süsteemivõrguühenduse seadistamine</string>
     <string name="remote_control_connect">Bluetoothi kaugjuhtimispuldi sidumine</string>
     <string name="project_crop">Ekraani trimmimine</string>
-    <string name="Image_Mode">Pildirežiim</string>
+    <string name="image_mode">Pildirežiim</string>
     <string name="project_gradient">Trapesoidne joondamine</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Projektsioonirežiim</string>

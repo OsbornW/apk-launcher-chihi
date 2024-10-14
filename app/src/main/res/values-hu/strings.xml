@@ -100,7 +100,7 @@
     <string name="set_netword_title">Rendszerhálózati kapcsolat beállítása</string>
     <string name="remote_control_connect">Bluetooth távirányító párosítása</string>
     <string name="project_crop">Képernyővágás</string>
-    <string name="Image_Mode">Képmód</string>
+    <string name="image_mode">Képmód</string>
     <string name="project_gradient">Trapezoid igazítás</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Kivetítési mód</string>

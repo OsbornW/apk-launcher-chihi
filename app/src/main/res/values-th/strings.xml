@@ -100,7 +100,7 @@
     <string name="set_netword_title">ตั้งค่าการเชื่อมต่อเครือข่ายระบบ</string>
     <string name="remote_control_connect">การจับคู่การควบคุมระยะไกลบลูทู ธ</string>
     <string name="project_crop">ตัดขอบหน้าจอ</string>
-    <string name="Image_Mode">โหมดภาพ</string>
+    <string name="image_mode">โหมดภาพ</string>
     <string name="project_gradient">สี่เหลี่ยมคางหมูเป็นบวก</string>
     <string name="project_hdmi">อินเทอร์เฟซมัลติมีเดียความละเอียดสูง (High Definition Multimedia Interface)</string>
     <string name="project_mode">โหมดฉายภาพ</string>

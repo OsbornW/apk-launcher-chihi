@@ -100,7 +100,7 @@
     <string name="set_netword_title">Systeemnetwerkverbinding instellen</string>
     <string name="remote_control_connect">Koppeling met Bluetooth-afstandsbediening</string>
     <string name="project_crop">Scherm bijsnijden</string>
-    <string name="Image_Mode">Beeldmodus</string>
+    <string name="image_mode">Beeldmodus</string>
     <string name="project_gradient">Trapezoïde uitlijning</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Projectiemodus</string>

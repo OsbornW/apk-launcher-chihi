@@ -100,7 +100,7 @@
     <string name="set_netword_title">Thiết lập kết nối mạng hệ thống</string>
     <string name="remote_control_connect">Ghép nối điều khiển từ xa Bluetooth</string>
     <string name="project_crop">Màn hình cắt cạnh</string>
-    <string name="Image_Mode">Chế độ ảnh</string>
+    <string name="image_mode">Chế độ ảnh</string>
     <string name="project_gradient">Hình thang tương đối</string>
     <string name="project_hdmi">Giao diện đa phương tiện HD (High Definition Multimedia Interface)</string>
     <string name="project_mode">Chế độ chiếu</string>

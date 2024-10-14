@@ -100,7 +100,7 @@
     <string name="set_netword_title">設定系統網絡連接</string>
     <string name="remote_control_connect">藍牙遙控器配對</string>
     <string name="project_crop">荧幕切邊</string>
-    <string name="Image_Mode">影像模式</string>
+    <string name="image_mode">影像模式</string>
     <string name="project_gradient">梯形較正</string>
     <string name="project_hdmi">高清多媒體介面（High Definition Multimedia Interface）</string>
     <string name="project_mode">投影模式</string>

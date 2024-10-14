@@ -100,7 +100,7 @@
     <string name="set_netword_title">Aseta järjestelmäverkkoyhteys</string>
     <string name="remote_control_connect">Bluetooth-kaukosäätimen pariliitos</string>
     <string name="project_crop">Näytön trimmaus</string>
-    <string name="Image_Mode">Kuvatila</string>
+    <string name="image_mode">Kuvatila</string>
     <string name="project_gradient">Trapetsoidinen kohdistus</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Projektiotila</string>

@@ -100,7 +100,7 @@
     <string name="set_netword_title">Konfiguracja połączenia sieciowego systemu</string>
     <string name="remote_control_connect">Koprowanie pilota Bluetooth</string>
     <string name="project_crop">Przycinanie ekranu</string>
-    <string name="Image_Mode">Tryb obrazu</string>
+    <string name="image_mode">Tryb obrazu</string>
     <string name="project_gradient">Wyrównanie trapezoidalne</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Tryb projekcji</string>

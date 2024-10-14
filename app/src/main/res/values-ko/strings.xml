@@ -100,7 +100,7 @@
     <string name="set_netword_title">시스템 네트워크 연결 설정</string>
     <string name="remote_control_connect">Bluetooth 리모컨 페어링</string>
     <string name="project_crop">화면 절단 모서리</string>
-    <string name="Image_Mode">이미지 모드</string>
+    <string name="image_mode">이미지 모드</string>
     <string name="project_gradient">사다리꼴이 비교적 바르다</string>
     <string name="project_hdmi">HD 멀티미디어 인터페이스(High Definition Multimedia Interface)</string>
     <string name="project_mode">투영 모드</string>

@@ -100,7 +100,7 @@
     <string name="set_netword_title">Ρύθμιση σύνδεσης δικτύου συστήματος</string>
     <string name="remote_control_connect">Σύνδεση τηλεχειρισμού Bluetooth</string>
     <string name="project_crop">Περικοπή οθόνης</string>
-    <string name="Image_Mode">Λειτουργία εικόνας</string>
+    <string name="image_mode">Λειτουργία εικόνας</string>
     <string name="project_gradient">Τραπεζοειδής ευθυγράμμιση</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Λειτουργία προβολής</string>

@@ -100,7 +100,7 @@
     <string name="set_netword_title">Настройка сетевого подключения системы</string>
     <string name="remote_control_connect">Пара пультов дистанционного управления Bluetooth</string>
     <string name="project_crop">Обрезка экрана</string>
-    <string name="Image_Mode">Режим изображения</string>
+    <string name="image_mode">Режим изображения</string>
     <string name="project_gradient">Трапеция правильная</string>
     <string name="project_hdmi">Мультимедийный интерфейс высокой четкости (High Definition Multimedia Interface)</string>
     <string name="project_mode">Проекционный режим</string>

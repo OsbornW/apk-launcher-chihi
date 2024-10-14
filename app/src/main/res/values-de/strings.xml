@@ -100,7 +100,7 @@
     <string name="set_netword_title">Systemnetzwerkverbindung einrichten</string>
     <string name="remote_control_connect">Kopplung der Bluetooth-Fernbedienung</string>
     <string name="project_crop">Bildschirmbeschneiden</string>
-    <string name="Image_Mode">Bildmodus</string>
+    <string name="image_mode">Bildmodus</string>
     <string name="project_gradient">Trapezförmige Ausrichtung</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Projektionsmodus</string>

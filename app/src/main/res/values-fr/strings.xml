@@ -100,7 +100,7 @@
     <string name="set_netword_title">Configurer la connexion réseau du système</string>
     <string name="remote_control_connect">Paire de télécommande Bluetooth</string>
     <string name="project_crop">Découpe d\'écran</string>
-    <string name="Image_Mode">Mode image</string>
+    <string name="image_mode">Mode image</string>
     <string name="project_gradient">Trapèze plus positif</string>
     <string name="project_hdmi">Interface multimédia haute définition (High Definition Multimedia Interface)</string>
     <string name="project_mode">Mode de projection</string>

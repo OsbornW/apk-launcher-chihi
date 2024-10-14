@@ -100,7 +100,7 @@
     <string name="set_netword_title">Configurar a ligação à rede do sistema</string>
     <string name="remote_control_connect">Emparelhamento do controlo remoto Bluetooth</string>
     <string name="project_crop">Aparar o ecrã</string>
-    <string name="Image_Mode">Modo de Imagem</string>
+    <string name="image_mode">Modo de Imagem</string>
     <string name="project_gradient">Alinhamento trapezoidal</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Modo de projecção</string>

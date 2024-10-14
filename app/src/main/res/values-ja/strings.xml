@@ -100,7 +100,7 @@
     <string name="set_netword_title">システムネットワーク接続の設定</string>
     <string name="remote_control_connect">Bluetoothリモコンのペアリング</string>
     <string name="project_crop">スクリーンエッジ</string>
-    <string name="Image_Mode">画像モード</string>
+    <string name="image_mode">画像モード</string>
     <string name="project_gradient">台形が正である</string>
     <string name="project_hdmi">HDマルチメディアインタフェース（High Definition Multimedia Interface）</string>
     <string name="project_mode">投影モード</string>

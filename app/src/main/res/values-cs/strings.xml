@@ -100,7 +100,7 @@
     <string name="set_netword_title">Nastavení systémového připojení k síti</string>
     <string name="remote_control_connect">Párování dálkového ovladače Bluetooth</string>
     <string name="project_crop">Ořezání obrazovky</string>
-    <string name="Image_Mode">Režim obrazu</string>
+    <string name="image_mode">Režim obrazu</string>
     <string name="project_gradient">Trapezové zarovnání</string>
     <string name="project_hdmi">HDMI</string>
     <string name="project_mode">Režim projekce</string>
