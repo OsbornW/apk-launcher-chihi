@@ -100,7 +100,7 @@
     <string name="set_netword_title">Set up the system network connection</string>
     <string name="remote_control_connect">Bluetooth remote control pairing</string>
     <string name="project_crop">Screen Zoom</string>
-    <string name="image_mode">Image Mode</string>
+    <string name="image_mode">Picture Mode</string>
     <string name="project_gradient">Keystone Correction</string>
     <string name="project_hdmi">HDMI IN</string>
     <string name="project_mode">Projection Mode</string>
