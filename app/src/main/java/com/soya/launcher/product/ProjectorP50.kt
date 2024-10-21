@@ -13,9 +13,6 @@ import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.autoResponseText
 import com.soya.launcher.ext.openApp
-import com.soya.launcher.p50.AUTO_FOCUS
-import com.soya.launcher.p50.FULL_FUNCTION
-import com.soya.launcher.p50.setFunction
 import com.soya.launcher.p50.setFunctionCorrectionAndFocus
 import com.soya.launcher.product.base.TVDeviceImpl
 
@@ -23,7 +20,7 @@ object ProjectorP50 : TVDeviceImpl {
     override fun openFileManager() = PACKAGE_NAME_FILE_MANAGER_713.openApp()
     override fun openHomeTopKeystoneCorrection(context: Context) {
         setFunctionCorrectionAndFocus()
-        super.openHomeTopKeystoneCorrection(context)
+        //super.openHomeTopKeystoneCorrection(context)
     }
 
     override fun addProjectorItem(): MutableList<SettingItem> {
