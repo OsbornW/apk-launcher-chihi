@@ -154,6 +154,8 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.activity.GradientActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.activity.SetDateActivity"

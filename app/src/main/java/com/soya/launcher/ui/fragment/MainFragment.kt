@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ApplicationInfo
 import android.hardware.usb.UsbManager
 import android.os.Bundle
@@ -195,7 +196,14 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     override fun initdata() {
         product.addHeaderItem()?.let { items.addAll(it) }
 
-        receiver?.let { mViewModel.addAppStatusBroadcast(it) }
+        //receiver?.let { mViewModel.addAppStatusBroadcast(it) }
+
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_PACKAGE_ADDED)
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
+        filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
+        filter.addDataScheme("package")
+       requireContext().registerReceiver(receiver, filter)
 
 
         detectNetStaus()
@@ -208,9 +216,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 repeat(20){
                     delay(500)
-                    "开始循环了哦".e("zengyue3")
                     if (AppCache.isReload ) {
-                        "开始设置默认了哦".e("zengyue3")
                         setDefault()
                         AppCache.isReload = false
                         return@repeatOnLifecycle
@@ -547,7 +553,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         super.onDestroy()
         call?.cancel()
         if (homeCall != null) homeCall!!.cancel()
-        receiver?.let { mViewModel.removeAppStatusBroadcast(it) }
+        //receiver?.let { mViewModel.removeAppStatusBroadcast(it) }
+        requireContext().unregisterReceiver(receiver)
         exec.shutdownNow()
     }
 
