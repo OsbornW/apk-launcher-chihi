@@ -130,7 +130,6 @@
         <activity
             android:name=".ui.activity.SettingActivity"
             android:exported="true"
-            android:launchMode="singleInstance"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.activity.AppsActivity"
