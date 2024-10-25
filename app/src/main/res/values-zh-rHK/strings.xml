@@ -1,0 +1,226 @@
+<resources>
+    <string name="app_name">嗨嗨案頭</string>
+
+    <!-- Project -->
+    <string name="search">蒐索</string>
+    <string name="setting">設定</string>
+
+    <string name="wifi">無線網路</string>
+    <string name="bluetooth">藍牙</string>
+    <string name="language">語言</string>
+    <string name="date">時間</string>
+    <string name="system">系統</string>
+    <string name="about">關於</string>
+    <string name="account">賬戶</string>
+    <string name="recommend_for_you">為您推薦（%d）</string>
+    <string name="apps">軟件清單</string>
+    <string name="netflix">網飛公司</string>
+    <string name="disney">迪士尼+</string>
+    <string name="operate">操作</string>
+    <string name="youtube">YouTube</string>
+    <string name="app_store">應用商店</string>
+    <string name="recommend_city">推薦都市（%d）</string>
+    <string name="calendar_format">%02d/%02d/%02d</string>
+    <string name="date_des">周%s %02d月%02d日</string>
+    <string name="place_install_app">請安裝相關App</string>
+    <string name="pojector">投影儀</string>
+    <string name="update">更新</string>
+    <string name="tool">工具</string>
+    <string name="file_management">文件管理</string>
+
+    <string name="monday">一</string>
+    <string name="tuesday">二</string>
+    <string name="wednesday">三</string>
+    <string name="thursday">四</string>
+    <string name="friday">五</string>
+    <string name="saturday">六</string>
+    <string name="sunday">日</string>
+
+    <string name="network">網絡</string>
+    <string name="keyboard">鍵盤</string>
+    <string name="place_waiting">請稍等</string>
+    <string name="password">密碼</string>
+    <string name="login">登入</string>
+    <string name="open">打開</string>
+    <string name="uninstall">卸載</string>
+    <string name="close">關閉</string>
+    <string name="version">版本：</string>
+    <string name="wallpaper">桌面</string>
+    <string name="upgrade">陞級</string>
+    <string name="storage">存儲空間</string>
+    <string name="android_tv_os_version">Android系統版本</string>
+    <string name="software_version">應用程序版本</string>
+    <string name="storage_total_mask">總容量：%.02fGB</string>
+    <string name="already_latest_version">已經是最新版本</string>
+    <string name="launcher">啟動器</string>
+    <string name="loading">加載中</string>
+    <string name="cancel">取消</string>
+    <string name="download_progress">下載中（%.1f %%）</string>
+    <string name="download_fail">下載失敗，請重試</string>
+    <string name="upgrade_now">下載已完成，請點擊安裝</string>
+    <string name="tip_upgrade">提示：%s</string>
+    <string name="install">安裝</string>
+    <string name="retry">重試</string>
+    <string name="focus_guide">請調整投影儀焦點，直至畫面清晰</string>
+    <string name="next">下一步</string>
+    <string name="set_language">設定系統默認語言</string>
+    <string name="set_date">設定系統當前時間</string>
+    <string name="set_gradient">設定投影儀梯度</string>
+    <string name="confirm">確認</string>
+    <string name="choose_wallpaper">選擇默認桌面</string>
+    <string name="click_to_setting">點擊確定進行設定</string>
+    <string name="or_skip">或跳過執行</string>
+
+    <string name="hulu">Hulu</string>
+    <string name="max">馬克斯</string>
+    <string name="prime_video">Prime視頻</string>
+    <string name="more">更多</string>
+    <string name="left">左</string>
+    <string name="right">右</string>
+    <string name="up">上</string>
+    <string name="down">下</string>
+    <string name="date_picker">日期選擇器</string>
+    <string name="time_picker">時間選擇器</string>
+    <string name="year_month_day">%02d/%02d/%02d</string>
+    <string name="hour_minute_second">%02d:%02d</string>
+    <string name="is_auto_time_toast">自動獲取時間，不支持設定</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hour">時</string>
+    <string name="minute">分</string>
+    <string name="second">秒</string>
+    <string name="remote_toast_1">1.長按遙控器方向左右鍵3秒，直至紅燈閃爍即進入配對模式</string>
+    <string name="remote_toast_2">2.配對會自動進行，請等待5秒</string>
+    <string name="remote_toast_3">3.當提示已成功完成配對遙控器即可</string>
+    <string name="remote_toast_4">4.如果連接不成功請重複第一步，再短按一下方向鍵</string>
+    <string name="auto_time_title">自動確定日期和時間</string>
+    <string name="set_date_title">設定日期</string>
+    <string name="set_time_title">設定時間</string>
+    <string name="set_netword_title">設定系統網絡連接</string>
+    <string name="remote_control_connect">藍牙遙控器配對</string>
+    <string name="project_crop">荧幕切邊</string>
+    <string name="image_mode">影像模式</string>
+    <string name="project_gradient">梯形較正</string>
+    <string name="project_hdmi">高清多媒體介面（High Definition Multimedia Interface）</string>
+    <string name="project_mode">投影模式</string>
+    <string name="long_ok_next_action">長按*OK鍵*執行下一步</string>
+    <string name="click_ok_changer_dir">選點</string>
+    <string name="click_menu_reset">重置</string>
+    <string name="vertical_dir">垂直方向</string>
+    <string name="horizontal_dir">水准方向</string>
+    <string name="edit_wifi_pass">輸入WIFI密碼</string>
+    <string name="clean">清除</string>
+    <string name="connect_netword">連接網路</string>
+    <string name="connect">連接</string>
+    <string name="unsave">取消保存</string>
+    <string name="saved_networks">已保存的網路</string>
+    <string name="signal_low">很弱</string>
+    <string name="signal_middle">良好</string>
+    <string name="signal_strong">極强</string>
+    <string name="tip">提示</string>
+    <string name="unable_to_wifi">無法連接至%s</string>
+    <string name="connected_to_net">連接互聯網</string>
+    <string name="ip_address">IP地址</string>
+    <string name="signal_strength">信號強度</string>
+    <string name="connected">已連接</string>
+    <string name="connecting">連接中</string>
+    <string name="blu_connected_fail">藍牙連接已斷開</string>
+    <string name="blu_connected_success">藍牙連接已成功</string>
+    <string name="set_the_screen_trimming">設定荧幕切邊</string>
+    <string name="use_website_search">使用網站搜索</string>
+    <string name="app_list">應用程序</string>
+    <string name="no_data">沒有發現數據</string>
+    <string name="place_install">請安裝%s</string>
+    <string name="set_bluetooth_connected">設定藍牙連接</string>
+    <string name="searching">蒐索中</string>
+    <string name="pairing_mark">正在配對%s</string>
+    <string name="pairing_fail">無法配對%s</string>
+    <string name="pairing_success">完成配對%s</string>
+    <string name="time_display">使用24小時制</string>
+    <string name="sound">聲音</string>
+    <string name="remote_control">遙控器</string>
+    <string name="device_id">設備ID</string>
+
+    <string name="waiting">等待中</string>
+    <string name="download_fail_mask">下載失敗</string>
+    <string name="install_failed">安裝失敗</string>
+    <string name="installed">安裝成功</string>
+    <string name="installing">安裝中</string>
+    <string name="notice">通知</string>
+    <string name="remove_notify_apk_download">執行</string>
+    <string name="remove">移除</string>
+    <string name="time_zone">時區</string>
+    <string name="factory_reset">恢復出廠設定</string>
+    <string name="auto">自動</string>
+    <string name="auto_calibration">水准校準</string>
+    <string name="manual">手動校準</string>
+    <string name="guide_group_gradient_tip_next">更正已經完成。 如果需要調整，請選擇手動； 否則，請選擇“下一步”</string>
+    <string name="guide_group_gradient_tip_done">更正已經完成。 如果需要調整，請選擇手動； 否則，請選擇“完成”</string>
+    <string name="manual_text">手動</string>
+    <string name="skip">跳過</string>
+    <string name="manual_gradient_tip">自動校正已關閉，您可以進入投影設定，選擇“梯形校正”並將其切換回自動以供進一步使用。</string>
+    <string name="uninstalling">卸載中</string>
+    <string name="uninstalled">卸載成功</string>
+    <string name="uninstall_failed">卸載失敗</string>
+    <string name="done">完成</string>
+    <string name="saved">已保存</string>
+
+    <string name="disconnect_net">斷開連接</string>
+    <string name="ethernet" translatable="false">Ethernet is connected, WiFi is not available</string>
+
+    <string name="available_updates">可用更新</string>
+    <string name="No_prompt_yet">暫不提示</string>
+    <string name="Cancell">取消</string>
+    <string name="Finish">完成</string>
+
+    <string name="Installation_Complete">安裝完成</string>
+    <string name="Installation_failed">安裝失敗</string>
+    <string name="Installation_Errors">安裝錯誤</string>
+    <string name="In_preparation">準備中</string>
+    <string name="download">下載 %d%%</string>
+    <string name="Download_failed">下載失敗</string>
+    <string name="update1">更新</string>
+
+    <string name="The_author_of_The_New_York_Times">等待安裝</string>
+
+
+    <string name="Activating">啟動中…</string>
+    <string name="Success">激活成功</string>
+    <string name="Failed_please">失敗，請重試！</string>
+    <string name="Invalid_PIN">PIN碼無效，請重試！</string>
+    <string name="The_input">輸入不能為空</string>
+    <string name="The_author">安裝中</string>
+
+
+    <string name="System_activation">系統啟動</string>
+    <string name="Please_input">請輸入PIN碼</string>
+    <string name="active_the_app">請輸入PIN碼以啟動應用程序</string>
+    <string name="Activate_Now">立即啟動</string>
+
+
+    <string name="app_text_15" >可用更新</string>
+    <string name="app_text_16" >全新版本上線！ \n新增[新功能]，優化[優化點]，\n提升你的使用體驗。 立即更新，\n發現更多驚喜！</string>
+    <string name="app_text_17" >下次再說</string>
+    <string name="app_text_18" >更新</string>
+    <string name="app_text_35" >準備中</string>
+    <string name="app_text_36" >下載失敗</string>
+    <string name="app_text_37" >開始安裝</string>
+    <string name="app_text_38" >下載：%d%%</string>
+
+
+    <string name="auto_response_off" >自動響應（0ff）</string>
+    <string name="auto_response_on" >自動響應（0n）</string>
+    <string name="auto_focus" >自動聚焦</string>
+    <string name="auto_entry" >自動入幕</string>
+    <string name="projector_method" >投影管道</string>
+    <string name="screen_zoom" >荧幕縮放</string>
+    <string name="auto_calibrate" >自動梯形</string>
+    <string name="manual_calibration" >手動梯形</string>
+    <string name="open_response" >打開</string>
+    <string name="close_response" >關閉</string>
+    <string name="set_success" >設定成功</string>
+    <string name="set_failed" >設定失敗</string>
+
+
+</resources>
