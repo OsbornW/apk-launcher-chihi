@@ -82,7 +82,7 @@
         android:preserveLegacyExternalStorage="true"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Splash"
+        android:theme="@style/Theme.MyTv"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         android:directBootAware="true">
@@ -108,9 +108,10 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:banner="@drawable/banner"
+            android:theme="@style/Theme.Splash"
             android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
             android:exported="true"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
             android:screenOrientation="landscape">
 
             <intent-filter>
@@ -156,7 +157,6 @@
         <activity
             android:name=".ui.activity.GradientActivity"
             android:exported="true"
-            android:launchMode="singleInstance"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.activity.SetDateActivity"
