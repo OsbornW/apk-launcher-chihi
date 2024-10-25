@@ -173,20 +173,21 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         obseverLiveEvent<Boolean>(HOME_EVENT) {
             if (isExpanded) {
+                // 下面放大了
                 mBind.header.requestFocus()
-                mBind.header.apply {
-                    postDelayed({
-                        scrollToPosition(0)
-                    },0)
-                }
+
             } else {
+                //上面放大了
                 (mBind.header.isFocused).no {
                     mBind.header.requestFocus()
                 }
                 mBind.header.apply {
-                    postDelayed({
-                        scrollToPosition(0)
-                    },0)
+                    if(selectedPosition!=0){
+                        postDelayed({
+                            scrollToPosition(0)
+                        },0)
+                    }
+
                 }
             }
         }
