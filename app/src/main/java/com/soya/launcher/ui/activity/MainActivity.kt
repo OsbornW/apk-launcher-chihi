@@ -1,20 +1,12 @@
 package com.soya.launcher.ui.activity
 
-import android.content.ActivityNotFoundException
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_AVR_POWER
-import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.registerReceiver
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
@@ -28,36 +20,28 @@ import com.shudong.lib_base.ext.downloadPic
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
-import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.yes
-import com.shudong.lib_base.finishAllActivityExceptMain
-import com.soya.launcher.App
 import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
 import com.soya.launcher.SplashFragment
 import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.cache.AppCache
-import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.ActivityMainBinding
-import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.ext.bindNew
 import com.soya.launcher.ext.compareSizes
-import com.soya.launcher.ext.countImagesWithPrefix
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getBasePath
 import com.soya.launcher.ext.isGame
 import com.soya.launcher.localWallPaperDrawable
 import com.soya.launcher.manager.FilePathMangaer
-import com.soya.launcher.manager.PreferencesManager
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
-import com.soya.launcher.utils.GlideUtils
 import com.soya.launcher.utils.getFileNameFromUrl
 import com.soya.launcher.utils.toTrim
 import kotlinx.coroutines.CoroutineScope
@@ -322,6 +306,16 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             registerReceiver(homeReceiver, IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
             commit()
         }
+
+       /* lifecycleScope.launch {
+
+            while (true) {
+                delay(3000)
+                isHome()
+                //"当前是否在桌面：：：${isHome()}".e("zengyue3")
+            }
+
+        }*/
 
     }
 
