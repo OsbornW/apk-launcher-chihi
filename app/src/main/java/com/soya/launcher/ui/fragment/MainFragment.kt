@@ -172,26 +172,36 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
 
         obseverLiveEvent<Boolean>(HOME_EVENT) {
-            if (isExpanded) {
-                // 下面放大了
-                mBind.header.requestFocus()
-
-            } else {
-                //上面放大了
-                (mBind.header.isFocused).no {
+            it.yes {
+                // true 表示处理Home事件
+                backToHeadFirst()
+            }.otherwise {
+                // false 表示处理返回事件
+                if (isExpanded) {
+                    // 下面放大了
                     mBind.header.requestFocus()
-                }
-                mBind.header.apply {
-                    if(selectedPosition!=0){
-                        postDelayed({
-                            scrollToPosition(0)
-                        },0)
-                    }
-
+                } else {
+                    //上面放大了
+                    backToHeadFirst()
                 }
             }
+
         }
 
+    }
+
+    private fun backToHeadFirst() {
+        (mBind.header.isFocused).no {
+            mBind.header.requestFocus()
+        }
+        mBind.header.apply {
+            if(selectedPosition!=0){
+                postDelayed({
+                    scrollToPosition(0)
+                },0)
+            }
+
+        }
     }
 
     override fun initdata() {

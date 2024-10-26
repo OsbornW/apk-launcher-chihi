@@ -364,7 +364,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         if (canBackPressed) {
             super.onBackPressed()
         } else {
-            sendLiveEventData(HOME_EVENT, true)
+            sendLiveEventData(HOME_EVENT, false)
         }
 
     }
