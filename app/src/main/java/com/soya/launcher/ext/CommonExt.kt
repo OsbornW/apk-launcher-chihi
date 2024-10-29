@@ -1,6 +1,7 @@
 package com.soya.launcher.ext
 
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import com.drake.brv.BindingAdapter
 import com.google.gson.Gson
 import com.shudong.lib_base.ext.appContext
@@ -245,4 +246,26 @@ fun BindingAdapter.refreshAppList(oldList: MutableList<ApplicationInfo>,newList:
 }
 
 fun isGame() = SYSTEM_PROPERTY_IS_GAME.systemPropertyValueBoolean()
+
+
+// 定义要查找的包名列表
+private val targetPackages = listOf(
+    "com.waxrain.airplayer2",      // airpin
+    "com.apowersoft.mirror.tv",    // 傲软
+    "com.allwinnertech.platinum.media", // DLNA
+    "com.softwinner.miracastReceiver"   // Miracast
+)
+
+// 扩展函数：查找指定包名的应用列表
+fun findScreenCastApps(): List<ApplicationInfo> {
+    val packageManager = appContext.packageManager
+    return targetPackages.mapNotNull { packageName ->
+        try {
+            // 尝试获取指定包名的应用信息
+            packageManager.getApplicationInfo(packageName, 0)
+        } catch (e: PackageManager.NameNotFoundException) {
+            null // 如果找不到应用，则返回 null
+        }
+    }
+}
 

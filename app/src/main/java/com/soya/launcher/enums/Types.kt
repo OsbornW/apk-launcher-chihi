@@ -9,5 +9,6 @@ interface Types {
         const val TYPE_MOVICE: Int = 10     // 视频电影
         const val TYPE_GOOGLE_PLAY: Int = 12    //google play(注册码)
         const val TYPE_MEDIA_CENTER: Int = 13   // mediacenter(注册码)
+        const val TYPE_ScreenCast: Int = 14   // P50投屏功能
     }
 }

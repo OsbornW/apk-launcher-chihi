@@ -579,19 +579,16 @@ object AndroidSystem {
     }
 
     fun getUserApps2(context: Context): List<ApplicationInfo> {
-        var apps: LauncherApps? = null
-        apps = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        var apps: LauncherApps? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             context.getSystemService(LauncherApps::class.java)
         } else {
             context.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
         }
         val launchers = apps!!.getActivityList(null, Process.myUserHandle())
 
-        Collections.sort(launchers) { o1: LauncherActivityInfo, o2: LauncherActivityInfo -> (o2.firstInstallTime - o1.firstInstallTime).toInt() }
+        launchers.sortWith { o1: LauncherActivityInfo, o2: LauncherActivityInfo -> (o2.firstInstallTime - o1.firstInstallTime).toInt() }
 
         val result: MutableList<ApplicationInfo> = ArrayList()
-
-
 
         for (launcher in launchers) {
             val packageName = launcher.applicationInfo.packageName
@@ -599,8 +596,7 @@ object AndroidSystem {
                 result.add(launcher.applicationInfo)
             }
         }
-        for (item in result) {
-        }
+
         return result
     }
 

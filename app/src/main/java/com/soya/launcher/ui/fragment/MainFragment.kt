@@ -83,6 +83,7 @@ import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.compareSizes
 import com.soya.launcher.ext.convertH27002Json
 import com.soya.launcher.ext.deleteAllImages
+import com.soya.launcher.ext.findScreenCastApps
 import com.soya.launcher.ext.getUpdateList
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
@@ -913,12 +914,23 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 fillAppStore()
             }
 
+            Types.TYPE_ScreenCast -> {
+                setScreenCastData()
+            }
+
             Types.TYPE_PROJECTOR -> {
                 setProjectorContent()
             }
 
             else -> switchMovice(bean)
         }
+    }
+
+    private fun setScreenCastData() {
+        findScreenCastApps().let { mBind.horizontalContent.models = it }
+
+        mBind.verticalContent.visibility = View.GONE
+        mBind.horizontalContent.visibility = View.VISIBLE
     }
 
 

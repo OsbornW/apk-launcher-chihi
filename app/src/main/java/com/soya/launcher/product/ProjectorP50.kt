@@ -158,6 +158,18 @@ object ProjectorP50 : TVDeviceImpl {
                     TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
                 )
             )
+
+            // 投屏功能
+            add(
+                TypeItem(
+                    appContext.getString(R.string.screencast),
+                    R.drawable.screencast,
+                    0,
+                    Types.TYPE_ScreenCast,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                )
+            )
             // 投影仪
             add(
                 TypeItem(
