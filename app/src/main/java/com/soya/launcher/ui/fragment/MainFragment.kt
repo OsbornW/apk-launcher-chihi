@@ -590,7 +590,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             val areAllApplicationInfo =
                 mBind.horizontalContent.mutable.all { it is ApplicationInfo }
             areAllApplicationInfo.yes {
-                var infos = AndroidSystem.getUserApps2(appContext)
+                var infos = isAppStoreSelect.yes { AndroidSystem.getUserApps2(appContext) }.otherwise {
+                    findScreenCastApps()
+                }
                 val filteredList =
                     infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
@@ -904,13 +906,16 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }, 220)
     }
 
+    var isAppStoreSelect = false
     private fun selectWork(bean: TypeItem) {
+        isAppStoreSelect = false
         when (bean.type) {
             Types.TYPE_MY_APPS -> {
                 fillApps(true)
             }
 
             Types.TYPE_APP_STORE -> {
+                isAppStoreSelect = true
                 fillAppStore()
             }
 
@@ -1240,7 +1245,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     val areAllApplicationInfo =
                         mBind.horizontalContent.mutable.all { it is ApplicationInfo }
                     areAllApplicationInfo.yes {
-                        var infos = AndroidSystem.getUserApps2(appContext)
+                        var infos = isAppStoreSelect.yes { AndroidSystem.getUserApps2(appContext) }.otherwise {
+                            findScreenCastApps()
+                        }
                         val filteredList =
                             infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
