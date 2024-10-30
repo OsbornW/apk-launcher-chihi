@@ -908,18 +908,18 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     var isAppStoreSelect = false
     private fun selectWork(bean: TypeItem) {
-        isAppStoreSelect = false
         when (bean.type) {
             Types.TYPE_MY_APPS -> {
+                isAppStoreSelect = true
                 fillApps(true)
             }
 
             Types.TYPE_APP_STORE -> {
-                isAppStoreSelect = true
                 fillAppStore()
             }
 
             Types.TYPE_ScreenCast -> {
+                isAppStoreSelect = false
                 setScreenCastData()
             }
 
