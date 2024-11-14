@@ -32,7 +32,7 @@ class KeyBoardViewModel : BaseViewModel() {
      */
     fun addLowerCase(isUpper: Boolean): MutableList<KeyBoardDto> {
         val keyBoardDtos = mutableListOf<KeyBoardDto>()
-        arrayListOf("a", "b", "c", "d", "e", "f", "g").apply {
+        arrayListOf("q", "w", "e", "r", "t", "y", "u").apply {
             forEach {
                 keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_LETTER, it, null))
             }
@@ -54,7 +54,7 @@ class KeyBoardViewModel : BaseViewModel() {
         )
 
 
-        arrayListOf("h", "i", "j", "k", "l", "m", "n").apply {
+        arrayListOf("a", "s", "d", "f", "g", "h", "j").apply {
             forEach {
                 keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_LETTER, it, null))
             }
@@ -63,7 +63,7 @@ class KeyBoardViewModel : BaseViewModel() {
         keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_OK, "完成", null))
 
 
-        arrayListOf("o", "p", "q", "r", "s", "t", "u").apply {
+        arrayListOf("z", "x", "c", "v", "b", "n", "m").apply {
             forEach {
                 keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_LETTER, it, null))
             }
@@ -72,7 +72,7 @@ class KeyBoardViewModel : BaseViewModel() {
 
 
 
-        arrayListOf("v", "w", "x", "y", "z").apply {
+        arrayListOf("i", "o", "p", "k", "l").apply {
             forEach {
                 keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_LETTER, it, null))
             }

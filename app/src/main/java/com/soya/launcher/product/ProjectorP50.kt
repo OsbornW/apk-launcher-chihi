@@ -195,4 +195,6 @@ object ProjectorP50 : TVDeviceImpl {
         }.toMutableList()
     }
 
+    override fun isShowPageTitle() = false
+
 }

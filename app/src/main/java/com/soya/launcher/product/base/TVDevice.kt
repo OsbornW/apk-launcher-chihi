@@ -55,6 +55,7 @@ sealed interface TVDevice{
     fun addHeaderItem():MutableList<TypeItem>?=null
     fun addGameItem():MutableList<TypeItem>?=null
     fun isGameRes():Int?=null
+    fun isShowPageTitle() = true
 }
 
 data object DefaultDevice: TVDevice

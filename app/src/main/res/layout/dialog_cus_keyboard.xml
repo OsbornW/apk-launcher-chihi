@@ -20,19 +20,19 @@
        android:orientation="horizontal">
 
        <androidx.recyclerview.widget.RecyclerView
-           android:layout_marginLeft="@dimen/qb_px_60"
+           android:layout_marginLeft="@dimen/qb_px_40"
            android:layout_gravity="center_vertical"
            android:id="@+id/rv_number"
            android:layout_width="0dp"
-           android:layout_weight="0.7"
+           android:layout_weight="0.8"
            android:layout_height="wrap_content"/>
        <View
-           android:layout_width="@dimen/qb_px_40"
+           android:layout_width="@dimen/qb_px_30"
            android:layout_height="wrap_content"
            />
 
        <androidx.recyclerview.widget.RecyclerView
-           android:layout_marginRight="@dimen/qb_px_60"
+           android:layout_marginRight="@dimen/qb_px_40"
            android:layout_gravity="center_vertical"
            android:id="@+id/rv_letter"
            android:layout_width="0dp"

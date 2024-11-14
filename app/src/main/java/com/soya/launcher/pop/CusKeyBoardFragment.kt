@@ -99,6 +99,7 @@ class CusKeyBoardFragment : DialogFragment() {
                                 //切换到特殊字符
                                 keyBoardDtos = mViewModel.addHalfWidth()
                                 models = keyBoardDtos
+                                binding.rvLetter.apply { post { requestFocus() } }
                             }
 
                             KEYBOARD_TYPE_CASE -> {
@@ -145,6 +146,7 @@ class CusKeyBoardFragment : DialogFragment() {
             }.models = keyBoardDtos
         }
         setKeyBoardLitsener()
+        binding.rvLetter.apply { post { requestFocus() } }
     }
 
     private fun setKeyBoardLitsener() {

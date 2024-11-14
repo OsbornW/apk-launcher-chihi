@@ -907,28 +907,35 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     var isAppStoreSelect = false
+    var curType = -1
+    var curId = -1L
     private fun selectWork(bean: TypeItem) {
-        when (bean.type) {
-            Types.TYPE_MY_APPS -> {
-                isAppStoreSelect = true
-                fillApps(true)
-            }
+        if(curType!=bean.type||curId!==bean.id){
+            when (bean.type) {
+                Types.TYPE_MY_APPS -> {
+                    isAppStoreSelect = true
+                    fillApps(true)
+                }
 
-            Types.TYPE_APP_STORE -> {
-                fillAppStore()
-            }
+                Types.TYPE_APP_STORE -> {
+                    fillAppStore()
+                }
 
-            Types.TYPE_ScreenCast -> {
-                isAppStoreSelect = false
-                setScreenCastData()
-            }
+                Types.TYPE_ScreenCast -> {
+                    isAppStoreSelect = false
+                    setScreenCastData()
+                }
 
-            Types.TYPE_PROJECTOR -> {
-                setProjectorContent()
-            }
+                Types.TYPE_PROJECTOR -> {
+                    setProjectorContent()
+                }
 
-            else -> switchMovice(bean)
+                else -> switchMovice(bean)
+            }
+            curType = bean.type
+            curId = bean.id
         }
+
     }
 
     private fun setScreenCastData() {
