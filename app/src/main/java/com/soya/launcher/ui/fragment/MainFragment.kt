@@ -1216,11 +1216,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         toastInstallApp(name, object : ToastDialog.Callback {
             override fun onClick(type: Int) {
                 if (type == 1) {
-                    val pns = arrayOfNulls<String>(packages?.size ?: 0)
-                    for (i in pns.indices) {
-                        pns[i] = packages?.get(i)?.packageName
-                    }
-                    AndroidSystem.jumpAppStore(requireContext(), null, pns)
+                    AndroidSystem.jumpAppStore(requireContext(), null, packages?.get(0)?.packageName)
                 }
             }
 

@@ -16,10 +16,10 @@ import androidx.fragment.app.FragmentActivity
     }*/
 
 
-fun FragmentActivity.showKeyBoardDialog(builderActions: CusKeyBoardFragment.Builder.() -> Unit) {
-    CusKeyBoardFragment.Builder(supportFragmentManager).apply(builderActions).show()
+fun FragmentActivity.showKeyBoardDialog(builderActions: CusKeyBoardFragment.() -> Unit) {
+    CusKeyBoardFragment().apply(builderActions).show(supportFragmentManager,"CusKeyBoardFragment")
 }
 
-fun Fragment.showKeyBoardDialog(builderActions: CusKeyBoardFragment.Builder.() -> Unit) {
-    CusKeyBoardFragment.Builder(childFragmentManager).apply(builderActions).show()
+fun Fragment.showKeyBoardDialog(builderActions: CusKeyBoardFragment.() -> Unit) {
+    CusKeyBoardFragment().apply(builderActions).show(childFragmentManager,"CusKeyBoardFragment")
 }

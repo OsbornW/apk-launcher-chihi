@@ -1,24 +1,18 @@
 package com.soya.launcher.ui.fragment
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.leanback.widget.HorizontalGridView
-import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
-import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.isRepeatExcute
 import com.shudong.lib_base.ext.no
 import com.soya.launcher.App
@@ -37,7 +31,6 @@ import com.soya.launcher.databinding.FragmentSearchBinding
 import com.soya.launcher.decoration.HSlideMarginDecoration
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.Types
-import com.soya.launcher.ext.deleteLastChar
 import com.soya.launcher.ext.deletePreviousChar
 import com.soya.launcher.ext.moveCursorLeft
 import com.soya.launcher.ext.moveCursorRight
@@ -45,8 +38,6 @@ import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.response.AppListResponse
 import com.soya.launcher.pop.showKeyBoardDialog
-import com.soya.launcher.ui.dialog.KeyboardDialog
-import com.soya.launcher.ui.dialog.KeyboardDialog.Companion.newInstance
 import com.soya.launcher.ui.dialog.ToastDialog
 import com.soya.launcher.utils.AndroidSystem
 import kotlinx.coroutines.Dispatchers
@@ -405,30 +396,8 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewMode
     }
 
     private fun showKeyboard() {
-        /*val dialog = newInstance()
-        dialog.setTargetView(mBind.editQuery)
-        dialog.show(childFragmentManager, KeyboardDialog.TAG)*/
         showKeyBoardDialog {
-            inputChange {
-                //字符输入
-                mBind.editQuery.append(it)
-            }
-            charDelete {
-                //字符删除
-                mBind.editQuery.deletePreviousChar()
-            }
-            inputSpace {
-                //输入空格
-                mBind.editQuery.append(" ")
-            }
-            leftArrow {
-                //左箭头
-                mBind.editQuery.moveCursorLeft()
-            }
-            rightArrow {
-                //右箭头
-                mBind.editQuery.moveCursorRight()
-            }
+            editTextData.value = mBind.editQuery
         }
     }
 

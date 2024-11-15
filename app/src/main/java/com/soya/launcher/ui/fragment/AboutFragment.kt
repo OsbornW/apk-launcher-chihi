@@ -10,71 +10,74 @@ import android.widget.TextView
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
+import androidx.lifecycle.lifecycleScope
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
+import com.shudong.lib_base.ext.downloadApkNopkName
+import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.jsonToString
+import com.shudong.lib_base.ext.net.lifecycle
+import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.startKtxActivity
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
 import com.soya.launcher.adapter.AboutAdapter
 import com.soya.launcher.bean.AboutItem
+import com.soya.launcher.cache.AppCache
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.FragmentAboutBinding
 import com.soya.launcher.enums.Atts
+import com.soya.launcher.ext.silentInstallWithMutex
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.response.VersionResponse
+import com.soya.launcher.net.viewmodel.HomeViewModel
+import com.soya.launcher.ui.activity.UpdateLauncherActivity
 import com.soya.launcher.ui.dialog.ProgressDialog
 import com.soya.launcher.ui.dialog.ToastDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.PreferencesUtils
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Call
 
-class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,BaseViewModel>(),
+class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(),
     View.OnClickListener {
 
-    private var uiHandler: Handler? = null
-
-    private var call: Call<*>? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        uiHandler = Handler()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (call != null) call!!.cancel()
-    }
-
-
+    private var updateJob:Job?=null
     override fun initView() {
         mBind.layout.title.text = getString(R.string.about)
 
         mBind.upgrade.clickNoRepeat (2000){
             val dialog = ProgressDialog.newInstance()
             dialog.show(childFragmentManager, ProgressDialog.TAG)
-            call =
-                HttpRequest.checkVersion { call: Call<*>, status: Int, response: VersionResponse? ->
-                    dialog.dismiss()
-                    if (!isAdded || call.isCanceled || response == null || response.data == null) {
-                        val toastDialog = ToastDialog.newInstance(
-                            getString(R.string.already_latest_version),
-                            ToastDialog.MODE_CONFIRM
-                        )
-                        toastDialog.show(childFragmentManager, ToastDialog.TAG)
-                        return@checkVersion
+
+
+            updateJob?.cancel()
+            updateJob = lifecycleScope.launch {
+                mViewModel.reqLauncherVersionInfo()
+                    .lifecycle(this@AboutFragment, {
+                        dialog.dismiss()
+                    }, isShowError = false) {
+                        dialog.dismiss()
+                        val dto = this
+                        dto.downLink.isNullOrEmpty().no {
+                            AppCache.updateInfoForLauncher = dto.jsonToString()
+
+                                //非强制更新
+                                startKtxActivity<UpdateLauncherActivity>()
+                        }.otherwise {
+                            val toastDialog = ToastDialog.newInstance(
+                                getString(R.string.already_latest_version),
+                                ToastDialog.MODE_CONFIRM
+                            )
+                            toastDialog.show(childFragmentManager, ToastDialog.TAG)
+                        }
                     }
-                    val result = response.data
-                    if (result.version > BuildConfig.VERSION_CODE && Config.CHANNEL == result.channel) {
-                        PreferencesUtils.setProperty(Atts.UPGRADE_VERSION, result.version.toInt())
-                        AndroidSystem.jumpUpgrade(requireContext(), result)
-                    } else {
-                        val toastDialog = ToastDialog.newInstance(
-                            getString(R.string.already_latest_version),
-                            ToastDialog.MODE_CONFIRM
-                        )
-                        toastDialog.show(childFragmentManager, ToastDialog.TAG)
-                    }
-                }
+
+            }
         }
     }
 

@@ -38,6 +38,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.core.role.RoleManagerCompat
 import com.google.gson.Gson
 import com.open.system.SystemUtils
+import com.shudong.lib_base.ext.e
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
 import com.soya.launcher.bean.PackageName
@@ -435,7 +436,7 @@ object AndroidSystem {
     fun jumpAppStore(
         context: Context,
         data: String? = null,
-        packageName: Array<String?>? = null
+        packageName: String? = null
     ): Boolean {
         var success = false
         val infos = getAppStores(context)
@@ -450,7 +451,7 @@ object AndroidSystem {
                         .setClassName(info.applicationInfo.packageName, Config.STORE_CLASS_NAME)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     intent.putExtra(Atts.BEAN, data)
-                    intent.putExtra(Atts.PACKAGE_NAME, packageName)
+                    intent.putExtra(Atts.PACKAGE_NAME, arrayOf(packageName))
                     context.startActivity(intent)
                 }
                 success = true

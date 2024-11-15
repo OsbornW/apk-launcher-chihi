@@ -32,6 +32,6 @@ abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> 
         super.onViewCreated(view, savedInstanceState)
         val titleLayout = view.findViewById<View>(R.id.layout) // 获取包含的布局
         titleLayout?.visibility = if (product.isShowPageTitle()) View.VISIBLE else View.INVISIBLE
-        //titleLayout?.isVisible = product.isShowPageTitle()
+        titleLayout?.isVisible = product.isShowPageTitle()
     }
 }

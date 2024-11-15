@@ -4,6 +4,7 @@ import android.util.Log
 import com.blankj.utilcode.util.GsonUtils
 import com.thumbsupec.lib_net.http.entity.IResponseData
 import com.thumbsupec.lib_net.http.entity.ResultEntity
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -37,66 +38,69 @@ abstract class BaseResponseAuthBodyConverter(val type: Type) :
         isLenient = true
     }
 
-    fun isValidResponse(response: IResponseData<JsonElement>): Boolean {
-        return response.data() != null&& response.getRequestCode() == REQUEST_SUCCESS||response.getRequestCode() == REQUEST_FAILED
-    }
 
 
     abstract fun getResultClass(): KClass<out IResponseData<JsonElement>>
 
+    @OptIn(ExperimentalSerializationApi::class)
     override fun convert(value: ResponseBody): Any? {
         val valueString = value.string()
+        Log.e("chihi_error", "返回的数据：${valueString}" )
 
-        val kSerializer: KSerializer<Any> = serializer(getResultClass().java)
-        var result: IResponseData<JsonElement> =
-            json.decodeFromString(kSerializer, valueString) as IResponseData<JsonElement>
+        // 直接解析 valueString 为 JsonElement
+        val jsonElement = Json.parseToJsonElement(valueString)
 
+        // 判断是否包含 code, msg, data
+        if (jsonElement is JsonObject) {
+            val jsonObject = jsonElement.jsonObject
 
-        // 检查是否包含 `code`, `msg`, `data` 结构
-        if (!isValidResponse(result)) {
-            // 如果不包含，将整个返回的数据塞给 `data`
-            Log.e("zengyue2", "convert: 没有包含code data结构" )
-            val structuredData = mapOf(
-                "code" to REQUEST_SUCCESS, // 可以使用默认值或者其他逻辑
-                "msg" to "Response structure does not match expected format",
-                "data" to valueString
-            )
+            // 判断是否包含 "code", "msg", "data" 这几个字段
+            val containsRequiredFields = jsonObject.containsKey("code") &&
+                    jsonObject.containsKey("msg") &&
+                    jsonObject.containsKey("data")
 
-            val jsonStr = GsonUtils.toJson(structuredData)
+            var result: IResponseData<JsonElement> = json.decodeFromString(
+                serializer(getResultClass().java), valueString
+            ) as IResponseData<JsonElement>
 
-            result =
-                json.decodeFromString(kSerializer, jsonStr) as IResponseData<JsonElement>
-
-            val data = result.data()
-
-            return json.decodeFromString(serializer(type), json.encodeToString(data))
-        } else {
-            // 正常处理逻辑
-            Log.e("zengyue2", "convert: 包含code data结构" )
-            when (result.getRequestCode()) {
-                REQUEST_SUCCESS -> {
-                    val data = result.data()
-                    return if (data == null) {
-                        json.decodeFromString(serializer(type), checkType(type))
-                    } else {
-                        json.decodeFromString(serializer(type), json.encodeToString(data))
+            if (containsRequiredFields) {
+                // 如果包含 code, msg, data，继续处理
+                // 进一步处理正常响应
+                when (result.getRequestCode()) {
+                    REQUEST_SUCCESS -> {
+                        val data = result.data()
+                        return if (data == null) {
+                            Log.e("chihi_error", "data是null")
+                            json.decodeFromString(serializer(type), checkType(type))
+                        } else {
+                            Log.e("chihi_error", "data不为null")
+                            json.decodeFromString(serializer(type), json.encodeToString(data))
+                        }
                     }
+                    else -> throw handlerErrorCode(result.getRequestCode(), result.getRequestMessage())
                 }
-
-                else -> throw handlerErrorCode(result.getRequestCode(), result.getRequestMessage())
+            }else {
+                // 如果不包含这些字段，直接处理为结构错误
+                Log.e("chihi_error", "convert: 没有包含code msg data结构")
+                val structuredData = mapOf(
+                    "code" to REQUEST_SUCCESS, // 使用默认值或者其他逻辑
+                    "msg" to "Response structure does not match expected format",
+                    "data" to valueString
+                )
+                val jsonStr = GsonUtils.toJson(structuredData)
+                result= json.decodeFromString(serializer(getResultClass().java), jsonStr) as IResponseData<JsonElement>
+                val data = result.data()
+                return json.decodeFromString(serializer(type), json.encodeToString(data))
             }
+        }else {
+            // 如果返回的数据不是JsonObject格式，直接处理为结构错误
+            Log.e("chihi_error", "返回数据格式不正确")
+            throw IllegalArgumentException("返回数据格式不正确")
         }
     }
 
     abstract fun handlerErrorCode(errorCode: Int, msg: String): Exception
 
-    private fun IResponseData<JsonElement>.jsonElementContainsRequiredFields(): Boolean {
-        return this.data()?.jsonObject?.let { jsonObject ->
-            jsonObject.containsKey("code") && jsonObject.containsKey("msg") && jsonObject.containsKey(
-                "data"
-            )
-        } ?: false
-    }
 
     private fun checkType(type: Type): String {
         return when (type) {

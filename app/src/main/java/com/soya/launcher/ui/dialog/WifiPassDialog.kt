@@ -7,18 +7,21 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.internal.ViewUtils.showKeyboard
 import com.soya.launcher.R
-import com.soya.launcher.ui.dialog.KeyboardDialog.Companion.newInstance
+import com.soya.launcher.pop.showKeyBoardDialog
+import com.soya.launcher.view.CustomEditText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
     var wifiName = ""
-    private var mEditText: TextView? = null
+    private var mEditText: CustomEditText? = null
     private var mCloseView: View? = null
     private var mCleanView: View? = null
     private var mConfirmView: View? = null
@@ -40,26 +43,29 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
         wifiName = arguments?.getString("wifiname").toString()
 
         if (wifiName == "WIFI-5G") {
-            mEditText!!.text = "chen888888a"
+            mEditText!!.setText("chen888888a")
         } else if (wifiName == "WIFI") {
-            mEditText!!.text = "chen888888a"
+            mEditText!!.setText("chen888888a")
         } else if (wifiName == "wuyun") {
-            mEditText!!.text = "Boss888888"
+            mEditText!!.setText("Boss888888")
         } else if (wifiName == "wuyun-5G") {
-            mEditText!!.text = "Boss888888"
+            mEditText!!.setText("Boss888888")
+        }
+
+        mEditText?.apply {
+            onConfirmClick = {
+                showKeyBoardDialog {
+                    editTextData.value = mEditText
+                }
+            }
+
         }
 
         lifecycleScope.launch {
             delay(600)
-            val dialog = newInstance()
-            dialog.setTargetView(mEditText)
-            dialog.setCallback(object : KeyboardDialog.Callback {
-                override fun onClose() {
-                    setRootGravity(Gravity.CENTER)
-                }
-            })
-            setRootGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL)
-            dialog.show(getChildFragmentManager(), KeyboardDialog.TAG)
+            showKeyBoardDialog {
+                editTextData.value = mEditText
+            }
         }
 
     }
@@ -108,23 +114,13 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
         if (v == mCloseView) {
             dismiss()
         } else if (v == mCleanView) {
-            mEditText!!.text = ""
+            mEditText!!.setText("")
         } else if (v == mConfirmView) {
             val text = mEditText!!.text.toString()
             if (callback != null && !TextUtils.isEmpty(text)) {
                 callback!!.onConfirm(text)
                 dismiss()
             }
-        } else if (v == mEditText) {
-            val dialog = newInstance()
-            dialog.setTargetView(mEditText)
-            dialog.setCallback(object : KeyboardDialog.Callback {
-                override fun onClose() {
-                    setRootGravity(Gravity.CENTER)
-                }
-            })
-            setRootGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL)
-            dialog.show(getChildFragmentManager(), KeyboardDialog.TAG)
         }
     }
 
@@ -142,13 +138,13 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
     fun setDefaultPwd(wifiName: String?) {
         if (wifiName != null && mEditText != null) {
             if (wifiName == "WIFI-5G") {
-                mEditText!!.text = "chen888888a"
+                mEditText!!.setText("chen888888a")
             } else if (wifiName == "WIFI") {
-                mEditText!!.text = "chen888888a"
+                mEditText!!.setText("chen888888a")
             } else if (wifiName == "wuyun") {
-                mEditText!!.text = "Boss888888"
+                mEditText!!.setText("Boss888888")
             } else if (wifiName == "wuyun-5G") {
-                mEditText!!.text = "Boss888888"
+                mEditText!!.setText("Boss888888")
             }
         }
     }

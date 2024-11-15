@@ -6,7 +6,7 @@ object Config {
     var UPDATE_PACKAGE_NAME: String = "com.soya.launcher.upgrade"
     var UPDATE_CLASS_NAME: String = "com.soya.launcher.upgrade.UpgradeActivity"
 
-    var STORE_PACKAGE_NAME: String = "com.soya.store"
+    var STORE_PACKAGE_NAME: String = "com.android.fungo"
     var STORE_CLASS_NAME: String = "com.soya.store.ui.activity.AppDetailActivity"
 
     //修改渠道信息，修改build.gradle

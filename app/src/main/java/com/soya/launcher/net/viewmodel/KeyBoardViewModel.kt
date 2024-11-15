@@ -1,6 +1,7 @@
 package com.soya.launcher.net.viewmodel
 
 import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.stringValue
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.bean.KeyBoardDto
@@ -60,7 +61,7 @@ class KeyBoardViewModel : BaseViewModel() {
             }
         }
 
-        keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_OK, "完成", null))
+        keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_OK, R.string.finish.stringValue(), null))
 
 
         arrayListOf("z", "x", "c", "v", "b", "n", "m").apply {
@@ -137,7 +138,7 @@ class KeyBoardViewModel : BaseViewModel() {
             }
         }
 
-        keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_BACK_LETTER, "返回", null))
+        keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_BACK_LETTER, R.string.back.stringValue(), null))
 
 
         arrayListOf(":", "'", "\"", "-", "<", ">").apply {
@@ -167,7 +168,7 @@ class KeyBoardViewModel : BaseViewModel() {
                 R.drawable.keyboard_right_arrow,
             )
         )
-        keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_OK, "完成", null))
+        keyBoardDtos.add(KeyBoardDto(KEYBOARD_TYPE_OK, R.string.finish.stringValue(), null))
 
         return keyBoardDtos
     }

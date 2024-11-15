@@ -33,7 +33,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/qb_px_100">
-                <TextView
+                <com.soya.launcher.view.CustomEditText
                     android:layout_gravity="center"
                     android:id="@+id/edit_pass"
                     android:background="@drawable/menu_item_2"

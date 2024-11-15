@@ -223,6 +223,8 @@
     <string name="set_failed" >設定失敗</string>
 
     <string name="screencast">鏡像功能</string>
+    <string name="finish">完成</string>
+    <string name="back">返回</string>
 
 
 </resources>

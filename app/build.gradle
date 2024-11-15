@@ -337,6 +337,8 @@ android {
         buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
         buildConfigField "String", "APP_ID", '"launcher"'
         buildConfigField "String", "USER_ID", '"62"'
+        buildConfigField "String", "APPSTORE_APP_ID", '"com.android.fungo"'
+        buildConfigField "String", "APPSTORE_APPDETAIL_NAME", '"com.soya.store.ui.activity.AppDetailActivity"'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

@@ -8,8 +8,10 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.drake.brv.utils.grid
@@ -32,7 +34,11 @@ import com.soya.launcher.bean.KeyBoardDto.Companion.KEYBOARD_TYPE_SPACE
 import com.soya.launcher.bean.KeyBoardDto.Companion.KEYBOARD_TYPE_SWITCH_Special_Characters
 import com.soya.launcher.databinding.DialogCusKeyboardBinding
 import com.soya.launcher.databinding.ItemCusKeyboardBinding
+import com.soya.launcher.ext.deletePreviousChar
+import com.soya.launcher.ext.moveCursorLeft
+import com.soya.launcher.ext.moveCursorRight
 import com.soya.launcher.net.viewmodel.KeyBoardViewModel
+import com.soya.launcher.ui.dialog.CusKeyboard.Companion.fragment
 import org.koin.android.ext.android.inject
 
 /**
@@ -45,6 +51,7 @@ class CusKeyBoardFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     private val mViewModel: KeyBoardViewModel by inject()
+    private var editText:EditText?=null
 
 
     override fun onCreateView(
@@ -56,11 +63,15 @@ class CusKeyBoardFragment : DialogFragment() {
     }
 
     lateinit var keyBoardDtos: MutableList<KeyBoardDto>
+    val editTextData = MutableLiveData<EditText>()
     var isUpper = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         keyBoardDtos = mViewModel.addLowerCase(false)
+        editTextData.observe(this){
+            editText = it
+        }
         binding.rvNumber.apply {
             grid(3).setup {
                 addType<KeyBoardDto>(R.layout.item_cus_keyboard)
@@ -70,7 +81,8 @@ class CusKeyBoardFragment : DialogFragment() {
                         when (item.keyboardType) {
                             KEYBOARD_TYPE_NUM -> {
                                 // 字符输入
-                                inputChangeAction?.invoke(item.keyboardChar!!)
+                                //inputChangeAction?.invoke(item.keyboardChar!!)
+                                editText?.append(item.keyboardChar!!)
                             }
                         }
                     }
@@ -92,7 +104,8 @@ class CusKeyBoardFragment : DialogFragment() {
                         when (item.keyboardType) {
                             KEYBOARD_TYPE_LETTER, KEYBOARD_TYPE_HALF_CHAR -> {
                                 //字符输入
-                                inputChangeAction?.invoke(item.keyboardChar!!)
+                                //inputChangeAction?.invoke(item.keyboardChar!!)
+                                editText?.append(item.keyboardChar!!)
                             }
 
                             KEYBOARD_TYPE_SWITCH_Special_Characters -> {
@@ -115,24 +128,28 @@ class CusKeyBoardFragment : DialogFragment() {
                             }
                             KEYBOARD_TYPE_DEL->{
                                 //删除字符
-                                charDeleteAction?.invoke()
+                                //charDeleteAction?.invoke()
+                                editText?.deletePreviousChar()
                             }
                             KEYBOARD_TYPE_OK->{
                                 //完成
                                 dismiss()
-                                inputCompleteAction?.invoke()
+                                //inputCompleteAction?.invoke()
                             }
                             KEYBOARD_TYPE_SPACE->{
                                 // 空格
-                                inputSpaceAction?.invoke()
+                                //inputSpaceAction?.invoke()
+                                editText?.append(" ")
                             }
                             KEYBOARD_TYPE_LEFT_ARROW->{
                                 // 左箭头
-                                leftArrowAction?.invoke()
+                                //leftArrowAction?.invoke()
+                                editText?.moveCursorLeft()
                             }
                             KEYBOARD_TYPE_RIGHT_ARROW->{
                                 // 右箭头
-                                rightArrowAction?.invoke()
+                                //rightArrowAction?.invoke()
+                                editText?.moveCursorRight()
                             }
                             KEYBOARD_TYPE_BACK_LETTER->{
                                 // 返回字母键盘
@@ -156,7 +173,8 @@ class CusKeyBoardFragment : DialogFragment() {
                     // 返回 0 表示该按键没有可显示的字符
                     when (keyCode) {
                         KeyEvent.KEYCODE_DEL -> {
-                            charDeleteAction?.invoke()
+                            //charDeleteAction?.invoke()
+                            editText?.deletePreviousChar()
                         }
 
                         else -> {}
@@ -165,10 +183,14 @@ class CusKeyBoardFragment : DialogFragment() {
                     //表示有字符的（需要单独处理一下空格，因为空格默认执行了enter键的功能）
                     when (keyCode) {
                         KeyEvent.KEYCODE_SPACE -> {
-                            inputSpaceAction?.invoke()
+                            //inputSpaceAction?.invoke()
+                            editText?.append(" ")
                         }
 
-                        else -> inputChangeAction?.invoke(event.displayLabel.toString())
+                        else -> {
+                            editText?.append(event.displayLabel.toString())
+                            //inputChangeAction?.invoke(event.displayLabel.toString())
+                        }
                     }
                 }
             }
@@ -212,68 +234,5 @@ class CusKeyBoardFragment : DialogFragment() {
         _binding = null
     }
 
-    private var inputChangeAction: ((text: String) -> Unit)? = null  //字符输入回调
-    private var charDeleteAction: (() -> Unit)? = null //删除
-    private var inputCompleteAction: (() -> Unit)? = null //完成
-    private var inputSpaceAction: (() -> Unit)? = null //空格
-    private var leftArrowAction: (() -> Unit)? = null //左箭头
-    private var rightArrowAction: (() -> Unit)? = null //右箭头
 
-    // 链式调用的 Builder 模式
-    class Builder(private val fragmentManager: FragmentManager) {
-        private val fragment = CusKeyBoardFragment()
-
-        /**
-         * 输入字符后回调
-         */
-        fun inputChange(action: (text: String) -> Unit): Builder {
-            fragment.inputChangeAction = action
-            return this
-        }
-
-        /**
-         * 删除
-         */
-        fun charDelete(action: () -> Unit): Builder {
-            fragment.charDeleteAction = action
-            return this
-        }
-
-        /**
-         * 完成
-         */
-        fun inputComplete(action: () -> Unit): Builder {
-            fragment.inputCompleteAction = action
-            return this
-        }
-
-        /**
-         * 空格
-         */
-        fun inputSpace(action: () -> Unit): Builder {
-            fragment.inputSpaceAction = action
-            return this
-        }
-
-        /**
-         * 左箭头
-         */
-        fun leftArrow(action: () -> Unit): Builder {
-            fragment.leftArrowAction = action
-            return this
-        }
-
-        /**
-         * 右箭头
-         */
-        fun rightArrow(action: () -> Unit): Builder {
-            fragment.rightArrowAction = action
-            return this
-        }
-
-
-        fun show() {
-            fragment.show(fragmentManager, "CustomDialogFragment")
-        }
-    }
 }
