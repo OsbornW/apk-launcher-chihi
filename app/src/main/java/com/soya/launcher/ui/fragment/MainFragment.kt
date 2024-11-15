@@ -36,6 +36,7 @@ import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
+import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.animScale
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
@@ -187,6 +188,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
             }
 
+        }
+
+        obseverLiveEvent<Boolean>(UPDATE_WALLPAPER_EVENT){
+            updateWallpaper()
         }
 
     }

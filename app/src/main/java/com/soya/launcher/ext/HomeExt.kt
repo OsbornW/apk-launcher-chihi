@@ -15,7 +15,7 @@ import com.shudong.lib_base.ext.appContext
     val mActivityManager = appContext.getSystemService(ACTIVITY_SERVICE) as ActivityManager
     val rti = mActivityManager.getRunningTasks(3)
     rti.forEach {
-        //Log.e("zengyue4", "当前的任务栈=" + it.topActivity!!.packageName)
+        Log.e("chihi_error", "当前的任务栈=" + it.topActivity!!.className)
     }
     return getHomes().contains(rti[0].topActivity!!.packageName)
 }

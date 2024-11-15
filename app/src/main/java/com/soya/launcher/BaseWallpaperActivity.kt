@@ -38,29 +38,37 @@ open class BaseWallpaperActivity<VDB : ViewDataBinding, VM : BaseViewModel> :
         }
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
+        updateWallPaper()
+    }*/
+
+    override fun onStart() {
+        super.onStart()
         updateWallPaper()
     }
 
 
     var job:Job?=null
+    var lastResId = 0
     fun updateWallPaper() {
-        job?.cancel()
-        job = lifecycleScope.launch {
-            val resId = curWallpaper()
-            val drawable = resId.loadBlurDrawable()
-            localWallPaperDrawable = drawable
+        if(lastResId!= curWallpaper()){
+            job?.cancel()
+            job = lifecycleScope.launch {
+                val resId = curWallpaper()
+                val drawable = resId.loadBlurDrawable()
+                localWallPaperDrawable = drawable
 
-            rootBinding.layoutRoot.background?.constantState?.hashCode()?.let {
-                if (it != resId.hashCode()) {
+                rootBinding.layoutRoot.background?.let {
                     rootBinding.layoutRoot.background = localWallPaperDrawable
                 }
-            }
-            if(rootBinding.layoutRoot.background==null){
-                rootBinding.layoutRoot.background = localWallPaperDrawable
+                if(rootBinding.layoutRoot.background==null){
+                    rootBinding.layoutRoot.background = localWallPaperDrawable
+                }
+                lastResId = resId
             }
         }
+
 
 
 

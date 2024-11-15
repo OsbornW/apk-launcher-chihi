@@ -11,7 +11,10 @@ import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.ItemBridgeAdapter
 import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.obseverLiveEvent
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.SETTING_ABOUT
@@ -42,6 +45,13 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
         super.onCreate(savedInstanceState)
         initLauncher()
 
+    }
+
+    override fun initObserver() {
+        obseverLiveEvent<Boolean>(UPDATE_WALLPAPER_EVENT){
+            "我要开始更新了".e("chihi_error")
+            updateWallpaper()
+        }
     }
 
 

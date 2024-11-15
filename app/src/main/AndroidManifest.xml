@@ -112,6 +112,7 @@
             android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
             android:exported="true"
             android:launchMode="singleTask"
+            android:taskAffinity="com.soya.launcher.ui.activity.MainActivity"
             android:screenOrientation="landscape">
 
             <intent-filter>
@@ -131,7 +132,6 @@
         <activity
             android:name=".ui.activity.SettingActivity"
             android:exported="true"
-            android:launchMode="singleTask"
             android:taskAffinity="com.soya.launcher.ui.activity.SettingActivity"
             android:screenOrientation="landscape" />
         <activity
@@ -169,12 +169,8 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.activity.WifiListActivity"
-            android:enabled="true"
-            android:exported="true"
             android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".ui.activity.ScaleScreenActivity"

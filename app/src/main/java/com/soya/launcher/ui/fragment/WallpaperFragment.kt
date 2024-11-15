@@ -13,6 +13,8 @@ import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
 import com.shudong.lib_base.base.BaseVMFragment
 import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
+import com.shudong.lib_base.ext.sendLiveEventData
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
@@ -74,6 +76,7 @@ class WallpaperFragment : BaseWallPaperFragment<FragmentWallpaperBinding, BaseVi
                 mArrayObjectAdapter!!.notifyArrayItemRangeChanged(0, mArrayObjectAdapter!!.size())
                 //activity!!.sendBroadcast(Intent(IntentAction.ACTION_UPDATE_WALLPAPER))
                 updateWallpaper()
+                sendLiveEventData(UPDATE_WALLPAPER_EVENT,true)
             }
         }
     }

@@ -38,6 +38,7 @@ import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getBasePath
 import com.soya.launcher.ext.isGame
+import com.soya.launcher.ext.isHome
 import com.soya.launcher.localWallPaperDrawable
 import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.net.viewmodel.HomeViewModel
@@ -97,6 +98,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         }
 
     }
+
 
 
     private var fetchJob: Job? = null
@@ -307,7 +309,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             commit()
         }
 
-       /* lifecycleScope.launch {
+        lifecycleScope.launch {
 
             while (true) {
                 delay(3000)
@@ -315,7 +317,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 //"当前是否在桌面：：：${isHome()}".e("zengyue3")
             }
 
-        }*/
+        }
 
     }
 
