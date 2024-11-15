@@ -468,26 +468,6 @@ object AndroidSystem {
         return success
     }
 
-    fun jumpUpgrade(context: Context, version: Version) {
-        try {
-            version.appName = context.getString(R.string.app_name)
-            version.activity = MainActivity::class.java.name
-            version.packageName = BuildConfig.APPLICATION_ID
-            val gson = Gson()
-            val info = findPackageInfo(context, Config.UPDATE_PACKAGE_NAME)
-            if (info != null) {
-                val intent = Intent(Intent.ACTION_MAIN).setClassName(
-                    Config.UPDATE_PACKAGE_NAME,
-                    Config.UPDATE_CLASS_NAME
-                )
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                intent.putExtra(Atts.BEAN, gson.toJson(version))
-                context.startActivity(intent)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
     fun jumpVideoApp(context: Context, packages: List<PackageName>?, url: String?): Boolean {
         var success = false
