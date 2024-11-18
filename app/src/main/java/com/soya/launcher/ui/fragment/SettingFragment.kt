@@ -43,9 +43,7 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
 
 
     override fun initObserver() {
-        obseverLiveEvent<Boolean>(UPDATE_WALLPAPER_EVENT){
-            updateWallpaper()
-        }
+
         obseverLiveEvent<Boolean>(LANGUAGE_CHANGED){
             mBind.content.apply {
                 post {
@@ -62,7 +60,6 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
         setContent()
         mBind.content.apply {
             post {
-                "初始化选中".e("chihi_error")
                 requestFocus()
             }
         }

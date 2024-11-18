@@ -4,7 +4,9 @@ import android.content.res.Configuration
 import androidx.fragment.app.Fragment
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.LANGUAGE_CHANGED
+import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.sendLiveEventDataDelay
 import com.soya.launcher.BaseWallpaperActivity
@@ -22,7 +24,13 @@ class SettingActivity : BaseWallpaperActivity<ActivityMainBinding,BaseViewModel>
         super.onConfigurationChanged(newConfig)
         // 检测语言变化
         if (newConfig.locale != null) {
-            sendLiveEventDataDelay(LANGUAGE_CHANGED,true,500)
+            sendLiveEventDataDelay(LANGUAGE_CHANGED,true)
+        }
+    }
+
+    override fun initObserver() {
+        obseverLiveEvent<Boolean>(UPDATE_WALLPAPER_EVENT){
+            updateWallPaper()
         }
     }
 }

@@ -75,7 +75,7 @@ class WallpaperFragment : BaseWallPaperFragment<FragmentWallpaperBinding, BaseVi
                 bean?.id?.let { PreferencesUtils.setProperty(Atts.WALLPAPER, it) }
                 mArrayObjectAdapter!!.notifyArrayItemRangeChanged(0, mArrayObjectAdapter!!.size())
                 //activity!!.sendBroadcast(Intent(IntentAction.ACTION_UPDATE_WALLPAPER))
-                updateWallpaper()
+                //updateWallpaper()
                 sendLiveEventData(UPDATE_WALLPAPER_EVENT,true)
             }
         }

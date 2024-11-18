@@ -112,7 +112,6 @@
             android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
             android:exported="true"
             android:launchMode="singleTask"
-            android:taskAffinity="com.soya.launcher.ui.activity.MainActivity"
             android:screenOrientation="landscape">
 
             <intent-filter>
