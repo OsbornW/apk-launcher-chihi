@@ -45,7 +45,6 @@ abstract class BaseResponseAuthBodyConverter(val type: Type) :
     @OptIn(ExperimentalSerializationApi::class)
     override fun convert(value: ResponseBody): Any? {
         val valueString = value.string()
-        Log.e("chihi_error", "返回的数据：${valueString}" )
 
         // 直接解析 valueString 为 JsonElement
         val jsonElement = Json.parseToJsonElement(valueString)
@@ -70,10 +69,8 @@ abstract class BaseResponseAuthBodyConverter(val type: Type) :
                     REQUEST_SUCCESS -> {
                         val data = result.data()
                         return if (data == null) {
-                            Log.e("chihi_error", "data是null")
                             json.decodeFromString(serializer(type), checkType(type))
                         } else {
-                            Log.e("chihi_error", "data不为null")
                             json.decodeFromString(serializer(type), json.encodeToString(data))
                         }
                     }
@@ -94,7 +91,6 @@ abstract class BaseResponseAuthBodyConverter(val type: Type) :
             }
         }else {
             // 如果返回的数据不是JsonObject格式，直接处理为结构错误
-            Log.e("chihi_error", "返回数据格式不正确")
             throw IllegalArgumentException("返回数据格式不正确")
         }
     }

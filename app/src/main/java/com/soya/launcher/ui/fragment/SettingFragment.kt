@@ -1,7 +1,5 @@
 package com.soya.launcher.ui.fragment
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +8,14 @@ import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.FocusHighlightHelper
 import androidx.leanback.widget.ItemBridgeAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.LANGUAGE_CHANGED
 import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.isRepeatExcute
+import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
@@ -30,7 +32,6 @@ import com.soya.launcher.SETTING_WALLPAPER
 import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.databinding.FragmentSettingBinding
-import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.handler.PermissionHandler
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.AboutActivity
@@ -38,19 +39,20 @@ import com.soya.launcher.ui.activity.WallpaperActivity
 import com.soya.launcher.utils.AndroidSystem
 
 class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewModel>() {
-    private var launcher: ActivityResultLauncher<*>? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initLauncher()
-
-    }
 
     override fun initObserver() {
         obseverLiveEvent<Boolean>(UPDATE_WALLPAPER_EVENT){
-            "我要开始更新了".e("chihi_error")
             updateWallpaper()
+        }
+        obseverLiveEvent<Boolean>(LANGUAGE_CHANGED){
+            mBind.content.apply {
+                post {
+                    initdata()
+                    scrollToPosition(4)
+                }
+            }
         }
     }
 
@@ -60,16 +62,12 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
         setContent()
         mBind.content.apply {
             post {
+                "初始化选中".e("chihi_error")
                 requestFocus()
             }
         }
     }
 
-    private fun initLauncher() {
-        launcher = PermissionHandler.createPermissionsWithIntent(
-            this
-        ) { }
-    }
 
     private fun setContent() {
         val arrayObjectAdapter = ArrayObjectAdapter(
@@ -93,6 +91,8 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
 
 
     }
+
+
 
     fun newCallback(): SettingAdapter.Callback {
         return object : SettingAdapter.Callback {
