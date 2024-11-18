@@ -15,6 +15,7 @@ import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
+import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.downloadPic
 import com.shudong.lib_base.ext.e
@@ -347,6 +348,10 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         this.obseverLiveEvent<Boolean>(REFRESH_HOME) {
             "执行网络请求2".e("zengyue3")
            // fetchHomeData(true)
+        }
+
+        obseverLiveEvent<Boolean>(UPDATE_WALLPAPER_EVENT){
+            updateWallPaper()
         }
 
     }
