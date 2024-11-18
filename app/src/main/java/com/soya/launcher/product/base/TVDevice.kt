@@ -17,6 +17,7 @@ import com.soya.launcher.product.ProjectorP50
 import com.soya.launcher.product.TVBox22001
 import com.soya.launcher.product.ProjectorRK3326G
 import com.soya.launcher.product.TVBoxAiboyou
+import com.soya.launcher.product.TVBoxX98KM
 import com.soya.launcher.product.TVBoxXHSX
 import com.soya.launcher.product.base.Channel.AIBOYOUPROJECTOR
 import com.soya.launcher.product.base.Channel.AIBOYOUTV
@@ -26,6 +27,7 @@ import com.soya.launcher.product.base.Channel.PROJECTOR_H6_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_P50_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_RK3326G_C
 import com.soya.launcher.product.base.Channel.PROJECTOR_RK3326_C
+import com.soya.launcher.product.base.Channel.TVBoxX98K_M
 import com.soya.launcher.product.base.Channel.TVBox_H27002_C
 import com.soya.launcher.product.base.Channel.TVBox_X98K_C
 import com.soya.launcher.product.base.Channel.TVBox_XHSX_C
@@ -74,6 +76,7 @@ object Channel{
     const val AIBOYOUTV_TV22001 = "aiboyou_launcher"
     const val PROJECTOR_P50_C = "p50_713M"
     const val TVBox_XHSX_C = "XHSX"
+    const val TVBoxX98K_M = "X98K_M"
 }
 
 val product : TVDevice =
@@ -89,5 +92,6 @@ val product : TVDevice =
         AIBOYOUTV_TV22001 -> TVBox22001
         PROJECTOR_P50_C -> ProjectorP50
         TVBox_XHSX_C -> TVBoxXHSX
+        TVBoxX98K_M -> TVBoxX98KM
         else -> DefaultDevice
     }

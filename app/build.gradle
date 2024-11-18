@@ -125,7 +125,7 @@ android {
         }
 
         p50_713M {
-            applicationId "com.chihihx.launcher"
+            applicationId "com.soya.launcher"
             dimension "chihi"
             versionCode 60
             signingConfig signingConfigs.x88
@@ -156,7 +156,7 @@ android {
         }
 
         hongxin_713RK_G {
-            applicationId "com.chihihx.launcher_game"
+            applicationId "com.soya.launcher_game"
             dimension "chihi"
             signingConfig signingConfigs.hongxin_rk3326
             //signingConfig signingConfigs.new_701
@@ -222,6 +222,23 @@ android {
             buildConfigField "String", "MODEL", '"001"'
         }
 
+        //X98K (TV)
+        X98K_M {
+            applicationId "com.1-chihiyxt.launcher"
+            dimension "chihi"
+            versionCode 1
+            versionName "1.0"
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            signingConfig signingConfigs.yxt
+            // 自定义buildConfig.java中的变量供代码中使用
+            buildConfigField "String", "BASE_URL", '"https://la.firehub.work/"'
+            buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.firehub.work/"'
+            buildConfigField "String", "COMPANY", '"3"'
+            buildConfigField "String", "APP_ID", '"launcher"'
+            buildConfigField "String", "CHANNEL", '"LA23002"'
+            buildConfigField "String", "CHIHI_TYPE", '"X98K_M"'
+            buildConfigField "String", "MODEL", '"X98K_M"'
+        }
         XHSX {
             applicationId "com.topbox.launcher"
             dimension "chihi"
