@@ -5,12 +5,16 @@ import com.shudong.lib_base.base.viewmodel.BaseApi
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.HomeInfoDto
+import com.soya.launcher.bean.SearchDto
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.bean.UpdateDto
 import com.soya.launcher.net.CHECK_ACTIVE_CODE
 import com.soya.launcher.net.CHECK_VERSION
 import com.soya.launcher.net.HOME_INFO
+import com.soya.launcher.net.SEARCH_APPLIST
 import retrofit2.http.Body
+import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -43,6 +47,13 @@ interface HomeApi : BaseApi {
     suspend fun reqVersionInfo(
         @QueryMap map: MutableMap<String, Any>,
     ): UpdateDto
+
+    @FormUrlEncoded
+    @POST(SEARCH_APPLIST)
+    suspend fun reqSearchAppList(
+        @FieldMap map: MutableMap<String, Any>,
+        @QueryMap map1: MutableMap<String, Any>
+    ): SearchDto
 
 
 }

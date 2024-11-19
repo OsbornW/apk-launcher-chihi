@@ -45,53 +45,41 @@ abstract class BaseResponseAuthBodyConverter(val type: Type) :
     @OptIn(ExperimentalSerializationApi::class)
     override fun convert(value: ResponseBody): Any? {
         val valueString = value.string()
+        Log.d("chihi_debug", "JSON Response: $valueString")
 
-        // 直接解析 valueString 为 JsonElement
-        val jsonElement = Json.parseToJsonElement(valueString)
+        return try {
+            val jsonElement = Json.parseToJsonElement(valueString)
+            if (jsonElement !is JsonObject) {
+                throw IllegalArgumentException("Expected a JSON object but got ${jsonElement::class}")
+            }
 
-        // 判断是否包含 code, msg, data
-        if (jsonElement is JsonObject) {
             val jsonObject = jsonElement.jsonObject
-
-            // 判断是否包含 "code", "msg", "data" 这几个字段
             val containsRequiredFields = jsonObject.containsKey("code") &&
                     jsonObject.containsKey("msg") &&
                     jsonObject.containsKey("data")
 
-            var result: IResponseData<JsonElement> = json.decodeFromString(
-                serializer(getResultClass().java), valueString
-            ) as IResponseData<JsonElement>
-
-            if (containsRequiredFields) {
-                // 如果包含 code, msg, data，继续处理
-                // 进一步处理正常响应
-                when (result.getRequestCode()) {
-                    REQUEST_SUCCESS -> {
-                        val data = result.data()
-                        return if (data == null) {
-                            json.decodeFromString(serializer(type), checkType(type))
-                        } else {
-                            json.decodeFromString(serializer(type), json.encodeToString(data))
-                        }
-                    }
-                    else -> throw handlerErrorCode(result.getRequestCode(), result.getRequestMessage())
+            val result: IResponseData<JsonElement> = if (containsRequiredFields) {
+                json.decodeFromString(serializer(getResultClass().java), valueString) as IResponseData<JsonElement>
+            } else {
+                Log.e("chihi_error", "Invalid response structure")
+                // 构造默认结构
+                object : IResponseData<JsonElement> {
+                    override fun getRequestCode() = REQUEST_SUCCESS
+                    override fun getRequestMessage() = "Response structure does not match expected format"
+                    override fun data() = Json.parseToJsonElement(valueString)
                 }
-            }else {
-                // 如果不包含这些字段，直接处理为结构错误
-                Log.e("chihi_error", "convert: 没有包含code msg data结构")
-                val structuredData = mapOf(
-                    "code" to REQUEST_SUCCESS, // 使用默认值或者其他逻辑
-                    "msg" to "Response structure does not match expected format",
-                    "data" to valueString
-                )
-                val jsonStr = GsonUtils.toJson(structuredData)
-                result= json.decodeFromString(serializer(getResultClass().java), jsonStr) as IResponseData<JsonElement>
-                val data = result.data()
-                return json.decodeFromString(serializer(type), json.encodeToString(data))
             }
-        }else {
-            // 如果返回的数据不是JsonObject格式，直接处理为结构错误
-            throw IllegalArgumentException("返回数据格式不正确")
+
+            // 解析 data 为目标类型
+            val data = result.data()
+            if (data == null) {
+                json.decodeFromString(serializer(type), checkType(type))
+            } else {
+                json.decodeFromJsonElement(serializer(type), data)
+            }
+        } catch (e: Exception) {
+            Log.e("chihi_error", "Failed to process JSON response", e)
+            throw e
         }
     }
 
