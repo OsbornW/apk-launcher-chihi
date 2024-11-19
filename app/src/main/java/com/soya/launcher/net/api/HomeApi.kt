@@ -53,7 +53,7 @@ interface HomeApi : BaseApi {
     suspend fun reqSearchAppList(
         @FieldMap map: MutableMap<String, Any>,
         @QueryMap map1: MutableMap<String, Any>
-    ): SearchDto
+    ): String
 
 
 }

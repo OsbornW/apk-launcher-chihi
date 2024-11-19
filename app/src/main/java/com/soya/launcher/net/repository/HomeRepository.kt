@@ -37,7 +37,7 @@ class HomeRepository(private val api: HomeApi): BaseRepository(api) {
     fun reqSearchAppList(
         map: MutableMap<String, Any>,
         map1: MutableMap<String, Any>
-    ): Flow<SearchDto> = flow {
+    ): Flow<String> = flow {
         emit(api.reqSearchAppList(map, map1))
     }
 

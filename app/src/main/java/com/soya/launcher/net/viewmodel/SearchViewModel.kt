@@ -14,7 +14,7 @@ class SearchViewModel:BaseViewModel() {
         keyWords: String,
         appColumnId: String = "",
         pageSize: Int = 50
-    ): Flow<SearchDto> = repository.reqSearchAppList(
+    ): Flow<String> = repository.reqSearchAppList(
         hashMapOf("userId" to 62, "keyword" to keyWords, "appColumnId" to appColumnId),
         hashMapOf("pageNo" to 1, "pageSize" to pageSize),
     )
