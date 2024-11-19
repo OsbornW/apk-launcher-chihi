@@ -85,7 +85,7 @@ val product : TVDevice =
         PROJECTOR_RK3326_C -> ProjectorRK3326
         PROJECTOR_RK3326G_C -> ProjectorRK3326G
         TVBox_H27002_C -> TVBoxH27002
-        TVBox_X98K_C -> TVBoxX98K
+        TVBox_X98K_C -> TVBoxX98K()
         PROJECTOR_H6_C-> ProjectorH6
         AIBOYOUTV -> TVBoxAiboyou
         AIBOYOUPROJECTOR -> PrjectorAiboyou

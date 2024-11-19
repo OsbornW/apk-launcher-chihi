@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.drake.brv.utils.grid
 import com.drake.brv.utils.models
 import com.drake.brv.utils.mutable
+import com.drake.brv.utils.setDifferModels
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
@@ -137,8 +138,9 @@ class AppsFragment : BaseWallPaperFragment<FragmentAppsBinding,BaseViewModel>() 
     private fun setContent(list: List<ApplicationInfo>) {
         val filteredList = list.toMutableList().let { product.filterRepeatApps(it) } ?:list
         if(filteredList.size!=mBind.content.mutable.size){
-            mBind.content.models = filteredList
+            mBind.content.setDifferModels(filteredList)
             mBind.content.apply {
+                scrollToPosition(0)
                 postDelayed({
                     requestFocus()
                     layoutManager?.findViewByPosition(0)?.requestFocus()

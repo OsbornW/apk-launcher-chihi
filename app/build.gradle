@@ -224,7 +224,7 @@ android {
 
         //X98K (TV)
         X98K_M {
-            applicationId "com.1-chihiyxt.launcher"
+            applicationId "com.chihiyxt.launcher"
             dimension "chihi"
             versionCode 1
             versionName "1.0"
@@ -238,6 +238,7 @@ android {
             buildConfigField "String", "CHANNEL", '"LA23002"'
             buildConfigField "String", "CHIHI_TYPE", '"X98K_M"'
             buildConfigField "String", "MODEL", '"X98K_M"'
+            buildConfigField "String", "APPSTORE_APP_ID", '"com.chihiyxt.store"'
         }
         XHSX {
             applicationId "com.topbox.launcher"

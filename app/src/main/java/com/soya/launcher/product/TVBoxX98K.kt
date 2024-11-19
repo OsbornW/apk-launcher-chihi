@@ -5,15 +5,25 @@ import android.content.Intent
 import android.provider.Settings
 import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
+import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.sendLiveEventDataDelay
 import com.soya.launcher.R
+import com.soya.launcher.SETTING_ABOUT
+import com.soya.launcher.SETTING_DATE
+import com.soya.launcher.SETTING_KEYBOARD
+import com.soya.launcher.SETTING_LAUNGUAGE
+import com.soya.launcher.SETTING_MORE
+import com.soya.launcher.SETTING_NETWORK
+import com.soya.launcher.SETTING_SOUND
+import com.soya.launcher.SETTING_WALLPAPER
+import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.Wallpaper
 import com.soya.launcher.cache.AppCache.WALLPAPERS
 import com.soya.launcher.product.base.TVDeviceImpl
 import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.utils.AndroidSystem
 
-data object TVBoxX98K : TVDeviceImpl {
+ open class TVBoxX98K : TVDeviceImpl {
     /**
      *
      * 跳转系统时间设置页面
@@ -34,6 +44,39 @@ data object TVBoxX98K : TVDeviceImpl {
         MainFragment.newInstance()
     }
 
+    override fun addSettingItem(): MutableList<SettingItem> {
+        return mutableListOf<SettingItem>().apply {
+            add(SettingItem(SETTING_NETWORK, appContext.getString(R.string.network), R.drawable.baseline_wifi_100))
+
+            add(
+                SettingItem(
+                    SETTING_SOUND,
+                    appContext.getString(R.string.sound),
+                    R.drawable.baseline_settings_voice_100
+                )
+            )
+            add(
+                SettingItem(
+                    SETTING_WALLPAPER,
+                    appContext.getString(R.string.wallpaper),
+                    R.drawable.baseline_wallpaper_100
+                )
+            )
+            add(SettingItem(SETTING_LAUNGUAGE, appContext.getString(R.string.language), R.drawable.baseline_translate_100))
+            add(
+                SettingItem(
+                    SETTING_DATE,
+                    appContext.getString(R.string.date),
+                    R.drawable.baseline_calendar_month_100
+                )
+            )
+
+            add(SettingItem(SETTING_KEYBOARD, appContext.getString(R.string.keyboard), R.drawable.baseline_keyboard_100))
+            add(SettingItem(SETTING_ABOUT, appContext.getString(R.string.about), R.drawable.baseline_help_100))
+            add(SettingItem(SETTING_MORE, appContext.getString(R.string.more), R.drawable.baseline_more_horiz_100))
+        }
+    }
+
     override fun openWifi() {
         currentActivity?.let { AndroidSystem.openWifiSetting(it) }
     }
@@ -45,6 +88,10 @@ data object TVBoxX98K : TVDeviceImpl {
     override fun openMore() {
         currentActivity?.let { AndroidSystem.openSystemSetting2(it) }
     }
+
+     override fun openFileManager() {
+
+     }
 
 
     override fun addWallPaper() {

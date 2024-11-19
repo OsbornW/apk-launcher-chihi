@@ -367,13 +367,4 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     }
 
 
-    override fun onBackPressed() {
-        if (canBackPressed) {
-            super.onBackPressed()
-        } else {
-            sendLiveEventData(HOME_EVENT, false)
-        }
-
-    }
-
 }
