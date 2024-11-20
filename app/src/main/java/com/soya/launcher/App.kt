@@ -7,7 +7,6 @@ import com.drake.serialize.serialize.Serialize
 import com.shudong.lib_base.base.viewmodel.baseModules
 import com.shudong.lib_base.ext.MvvmHelper
 import com.shudong.lib_base.ext.appContext
-import com.shudong.lib_base.ext.e
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.Data
 import com.soya.launcher.cache.AppCache
@@ -20,7 +19,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import java.util.Arrays

@@ -93,6 +93,16 @@ class HomeViewModel : BaseViewModel() {
         AuthParamsDto(activeCode.replace('-', ' ').toTrim())
     )
 
+    fun reqSearchAppList(
+        keyWords: String = "",
+        appColumnId: String = "",
+        pageSize: Int = 50,
+        tag:String = ""
+    ): Flow<String> = repository.reqSearchAppList(
+        hashMapOf("userId" to 62, "keyword" to keyWords, "appColumnId" to appColumnId,"tag" to tag),
+        hashMapOf("pageNo" to 1, "pageSize" to pageSize),
+    )
+
 
 
 

@@ -61,7 +61,6 @@ import com.soya.launcher.BuildConfig
 import com.soya.launcher.LAYOUTTYPE_HOME_GAME
 import com.soya.launcher.LAYOUTTYPE_HOME_LANDSCAPE
 import com.soya.launcher.R
-import com.soya.launcher.adapter.AppListAdapter
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Data
@@ -71,6 +70,7 @@ import com.soya.launcher.bean.MyRunnable
 import com.soya.launcher.bean.Notify
 import com.soya.launcher.bean.PackageName
 import com.soya.launcher.bean.Projector
+import com.soya.launcher.bean.SearchDto
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.cache.AppCache
@@ -1023,25 +1023,21 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
-                if (emptys.isEmpty()) {
-                    for (i in 0..9) emptys.add(AppItem())
-                }
                 setStoreContent(emptys)
-                if (!isFullAll && false) {
-                    HttpRequest.getAppList(object : AppServiceRequest.Callback<AppListResponse> {
-                        override fun onCallback(
-                            call: Call<*>,
-                            status: Int,
-                            result: AppListResponse?
-                        ) {
-                            isFullAll = false
-                            if (!isAdded || call.isCanceled || result == null || result.result == null || result.result.appList == null || result.result.appList.isEmpty()) return
-                            if (mBind.header.selectedPosition == -1 || mBind.header.selectedPosition > targetMenus.size - 1 || targetMenus[mBind.header.selectedPosition].type != Types.TYPE_APP_STORE) return
-                            App.APP_STORE_ITEMS.addAll(result.result.appList)
+                mViewModel.reqSearchAppList(
+                    tag = "hot", pageSize = 20)
+                    .lifecycle(this@MainFragment, {
+                    }) {
+                        val dto = this.jsonToBean<SearchDto>()
+                        //"当前获取的数据是：${dto.code}==${dto.msg}==${dto.result?.appList?.size}".e("chihi_error")
+                        if((dto.result?.appList?.size ?: 0) > 0){
+                            dto.result?.appList?.let { App.APP_STORE_ITEMS.addAll(it) }
+
                             setStoreContent(App.APP_STORE_ITEMS)
                         }
-                    }, Config.USER_ID, null, "hot", null, 1, 20)
-                }
+
+                    }
+
             }
         } else {
             setStoreContent(App.APP_STORE_ITEMS)

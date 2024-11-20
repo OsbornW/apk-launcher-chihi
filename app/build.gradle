@@ -229,7 +229,7 @@ android {
             versionCode 1
             versionName "1.0"
             manifestPlaceholders = [share_uid: "android.uid.system"]
-            signingConfig signingConfigs.yxt
+            signingConfig signingConfigs.x88
             // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://la.firehub.work/"'
             buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.firehub.work/"'
@@ -239,6 +239,7 @@ android {
             buildConfigField "String", "CHIHI_TYPE", '"X98K_M"'
             buildConfigField "String", "MODEL", '"X98K_M"'
             buildConfigField "String", "APPSTORE_APP_ID", '"com.chihiyxt.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME", '"com.soya.store.ui.activity.AppDetailActivity"'
         }
         XHSX {
             applicationId "com.topbox.launcher"

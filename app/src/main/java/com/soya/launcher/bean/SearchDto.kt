@@ -16,7 +16,7 @@ data class SearchDto(
 @Serializable
 data class Result(
     @SerialName("appList")
-    val appList: List<App?>?
+    val appList: MutableList<AppItem>?
 )
 
 @Serializable

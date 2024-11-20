@@ -11,9 +11,10 @@ import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
-import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.isRepeatExcute
+import com.shudong.lib_base.ext.jsonToBean
+import com.shudong.lib_base.ext.net.lifecycle
 import com.shudong.lib_base.ext.no
 import com.soya.launcher.App
 import com.soya.launcher.BaseWallPaperFragment
@@ -25,18 +26,17 @@ import com.soya.launcher.adapter.WebAdapter
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.DivSearch
 import com.soya.launcher.bean.Movice
+import com.soya.launcher.bean.SearchDto
 import com.soya.launcher.bean.WebItem
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.FragmentSearchBinding
 import com.soya.launcher.decoration.HSlideMarginDecoration
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.Types
-import com.soya.launcher.ext.deletePreviousChar
-import com.soya.launcher.ext.moveCursorLeft
-import com.soya.launcher.ext.moveCursorRight
 import com.soya.launcher.http.AppServiceRequest
 import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.http.response.AppListResponse
+import com.soya.launcher.net.viewmodel.SearchViewModel
 import com.soya.launcher.pop.showKeyBoardDialog
 import com.soya.launcher.ui.dialog.ToastDialog
 import com.soya.launcher.utils.AndroidSystem
@@ -49,7 +49,7 @@ import okhttp3.FormBody
 import retrofit2.Call
 import java.util.Locale
 
-class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewModel>(),
+class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewModel>(),
     View.OnClickListener, OnEditorActionListener,
     FullSearchAdapter.Callback {
 
@@ -58,14 +58,7 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewMode
 
     private var store: DivSearch<Any>? = null
     private var searchText: String? = null
-    private var call: Call<*>? = null
-    private var appCall: Call<*>? = null
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (call != null) call!!.cancel()
-        if (appCall != null) appCall!!.cancel()
-    }
 
 
     override fun initView() {
@@ -167,7 +160,7 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewMode
                     }
                 }
 
-                if (!apps.isEmpty()) list.add(DivSearch(0, getString(R.string.app_list), apps, 3))
+                if (apps.isNotEmpty()) list.add(DivSearch(0, getString(R.string.app_list), apps, 3))
 
                 val webItems: MutableList<Any?> = ArrayList()
                 webItems.add(WebItem(0, "Bing", R.drawable.edge, "https://cn.bing.com"))
@@ -184,56 +177,28 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewMode
         }
         lifecycleScope.launch {
 
-            withContext(Dispatchers.IO) {
-                if (call != null) call!!.cancel()
-            }
+
             withContext(Dispatchers.Main) {
 
                 mBind.content.visibility = View.VISIBLE
             }
 
+            mViewModel.reqSearchAppList(mBind.editQuery.text.toString())
+                .lifecycle(this@SearchFragment, {
+                }) {
+                    val dto = this.jsonToBean<SearchDto>()
+                    //"当前获取的数据是：${dto.code}==${dto.msg}==${dto.result?.appList?.size}".e("chihi_error")
+                    if((dto.result?.appList?.size ?: 0) > 0){
 
-            withContext(Dispatchers.IO) {
-                call =
-                    HttpRequest.getAppList(object : AppServiceRequest.Callback<AppListResponse?> {
-                        override fun onCallback(
-                            call: Call<*>?,
-                            status: Int,
-                            result: AppListResponse?
-                        ) {
-                            val request = call?.request()
-                            // 打印请求方法和URL
+                        dto.result?.appList?.let { store?.list?.addAll(it) }
+                        store?.state = 2
+                        lifecycleScope.launch { mAdapter!!.sync(store!!) }
+                    }else{
+                        store?.state = 1
+                        lifecycleScope.launch { mAdapter!!.sync(store!!) }
+                    }
 
-                            // 打印 @FieldMap 参数信息
-                            if (request?.method == "POST") {
-                                val requestBody = request.body
-                                if (requestBody is FormBody) {
-                                    for (i in 0 until requestBody.size) {
-
-                                    }
-                                }
-                            }
-
-                            if (!isAdded || call?.isCanceled == true || store == null) return
-                            if (result?.result == null || result.result.appList == null || result.result.appList.isEmpty()) {
-                                store?.state = 1
-                                lifecycleScope.launch { mAdapter!!.sync(store!!) }
-
-                            } else {
-
-                                store?.list?.addAll(result.result.appList)
-                                store?.state = 2
-                                lifecycleScope.launch { mAdapter!!.sync(store!!) }
-
-                            }
-                        }
-
-
-                    }, Config.USER_ID, null, null, searchText, 1, 50)
-
-            }
-
-
+                }
 
             withContext(Dispatchers.Main) {
 
@@ -270,25 +235,21 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewMode
             withContext(Dispatchers.IO) {
 
                 if (App.APP_SEARCH_STORE_ITEMS.isEmpty()) {
-                    val emptys: MutableList<AppItem> = ArrayList()
-                    for (i in 0..9) emptys.add(AppItem())
-                    setStoreContent(emptys)
-                    appCall = HttpRequest.getAppList(object :
-                        AppServiceRequest.Callback<AppListResponse?> {
-                        override fun onCallback(
-                            call: Call<*>?,
-                            status: Int,
-                            result: AppListResponse?
-                        ) {
-                            if (!isAdded || call?.isCanceled == true || result == null || result.result == null || result.result.appList == null || result.result.appList.isEmpty()) return
 
-                            App.APP_SEARCH_STORE_ITEMS.addAll(result.result.appList)
+                    mViewModel.reqSearchAppList(mBind.editQuery.text.toString(),
+                        "81", 20)
+                        .lifecycle(this@SearchFragment, {
+                        }) {
+                            val dto = this.jsonToBean<SearchDto>()
+                            //"当前获取的数据是：${dto.code}==${dto.msg}==${dto.result?.appList?.size}".e("chihi_error")
+                            if((dto.result?.appList?.size ?: 0) > 0){
+                                dto.result?.appList?.let { App.APP_SEARCH_STORE_ITEMS.addAll(it) }
 
-                            setStoreContent(App.APP_SEARCH_STORE_ITEMS)
+                                setStoreContent(App.APP_SEARCH_STORE_ITEMS)
+                            }
+
                         }
 
-
-                    }, Config.USER_ID, "81", null, null, 1, 20)
                 } else {
                     setStoreContent(App.APP_SEARCH_STORE_ITEMS)
                 }
@@ -296,6 +257,8 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewMode
 
             }
         }
+
+
 
     }
 
@@ -359,7 +322,6 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, BaseViewMode
     private fun search() {
 
         val text = mBind.editQuery.text.toString()
-        if (call != null) call!!.cancel()
         if (!TextUtils.isEmpty(text)) {
             searchText = text
             isRepeatExcute().no {

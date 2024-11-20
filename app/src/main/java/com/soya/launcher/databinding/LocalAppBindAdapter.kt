@@ -8,19 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.shudong.lib_base.currentActivity
-import com.shudong.lib_base.ext.MvvmHelper.app
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.no
 import com.soya.launcher.R
-import com.soya.launcher.bean.AppItem
-import com.soya.launcher.bean.Notify
-import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.dialog.AppDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.isSysApp
 import com.soya.launcher.view.AppLayout
-import com.soya.launcher.view.MyFrameLayoutHouse
 
 object LocalAppBindAdapter {
 
