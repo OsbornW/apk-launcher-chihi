@@ -398,31 +398,12 @@ dependencies {
     )
 
     implementation 'androidx.leanback:leanback:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'androidx.core:core-role:1.0.0'
-    implementation 'androidx.test.ext:junit:1.1.5'
-    implementation 'jp.wasabeef:glide-transformations:4.3.0'
-    implementation 'me.laoyuyu.aria:core:3.8.16'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.lzy.net:okgo:2.1.4'
-    implementation 'com.github.bumptech.glide:glide:4.16.0'
-    implementation 'com.github.bumptech.glide:annotations:4.16.0'
-    implementation "com.github.bumptech.glide:okhttp3-integration:4.16.0"
+    implementation 'androidx.leanback:leanback-preference:1.0.0'
+
     //这个是让注解生效的
     kapt 'com.github.bumptech.glide:compiler:4.16.0'
-    //implementation 'androidx.core:core-ktx:+'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.activity:activity:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
-    annotationProcessor 'me.laoyuyu.aria:compiler:3.8.16'
 
     api project(path: ':baselibrary:lib_base')
-    implementation 'androidx.leanback:leanback-preference:1.0.0'
-    implementation 'com.arasthel:spannedgridlayoutmanager:3.0.2'
 
 }
 

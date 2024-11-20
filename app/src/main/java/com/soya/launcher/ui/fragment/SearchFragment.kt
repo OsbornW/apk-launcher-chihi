@@ -28,14 +28,10 @@ import com.soya.launcher.bean.DivSearch
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.SearchDto
 import com.soya.launcher.bean.WebItem
-import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.FragmentSearchBinding
 import com.soya.launcher.decoration.HSlideMarginDecoration
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.Types
-import com.soya.launcher.http.AppServiceRequest
-import com.soya.launcher.http.HttpRequest
-import com.soya.launcher.http.response.AppListResponse
 import com.soya.launcher.net.viewmodel.SearchViewModel
 import com.soya.launcher.pop.showKeyBoardDialog
 import com.soya.launcher.ui.dialog.ToastDialog
@@ -45,8 +41,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.FormBody
-import retrofit2.Call
 import java.util.Locale
 
 class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewModel>(),

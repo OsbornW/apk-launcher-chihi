@@ -6,19 +6,6 @@
     </style>
 
 
-    <style name="SwitchButtonStyle_1"  >
-        <item name="android:layout_width">@dimen/qb_px_40</item>
-        <item name="android:layout_height">@dimen/qb_px_22</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="kswThumbDrawable">@drawable/ios_thumb_selector2</item>
-        <item name="kswBackDrawable">@drawable/ios_back_drawable_white_2</item>
-        <item name="kswAnimationDuration">300</item>
-        <item name="kswThumbRangeRatio">2.2</item>
-        <item name="kswThumbWidth">@dimen/qb_px_20</item>
-        <item name="kswThumbHeight">@dimen/qb_px_20</item>
-
-    </style>
-
 
     <!-- 自定义验证码输入框-->
     <declare-styleable name="VerificationCodeView">

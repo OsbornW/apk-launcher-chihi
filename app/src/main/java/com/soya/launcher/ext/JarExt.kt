@@ -1,15 +1,8 @@
 package com.soya.launcher.ext
 
-import android.os.Build
 import com.shudong.lib_base.ext.appContext
-import com.shudong.lib_base.ext.e
 import dalvik.system.DexClassLoader
 import java.io.File
-import java.net.URL
-import java.net.URLClassLoader
-import org.java_websocket.client.WebSocketClient
-import org.java_websocket.handshake.ServerHandshake
-import java.net.URI
 
 
 fun loadJarAndCreateWebSocketClient(jarPath: String) {

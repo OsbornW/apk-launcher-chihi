@@ -93,9 +93,6 @@ import com.soya.launcher.ext.isUDisk
 import com.soya.launcher.ext.refresh
 import com.soya.launcher.ext.refreshAppList
 import com.soya.launcher.ext.silentInstallWithMutex
-import com.soya.launcher.http.AppServiceRequest
-import com.soya.launcher.http.HttpRequest
-import com.soya.launcher.http.response.AppListResponse
 import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product

@@ -2,25 +2,17 @@ package com.soya.launcher.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ItemBridgeAdapter
-import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
-import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
-import com.shudong.lib_base.ext.downloadApkNopkName
-import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
-import com.shudong.lib_base.ext.yes
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
@@ -29,19 +21,13 @@ import com.soya.launcher.bean.AboutItem
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.FragmentAboutBinding
-import com.soya.launcher.enums.Atts
-import com.soya.launcher.ext.silentInstallWithMutex
-import com.soya.launcher.http.HttpRequest
-import com.soya.launcher.http.response.VersionResponse
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.ui.activity.UpdateLauncherActivity
 import com.soya.launcher.ui.dialog.ProgressDialog
 import com.soya.launcher.ui.dialog.ToastDialog
 import com.soya.launcher.utils.AndroidSystem
-import com.soya.launcher.utils.PreferencesUtils
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import retrofit2.Call
 
 class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(),
     View.OnClickListener {

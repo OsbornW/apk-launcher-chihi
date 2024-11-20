@@ -35,19 +35,13 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
-import androidx.core.role.RoleManagerCompat
-import com.google.gson.Gson
 import com.open.system.SystemUtils
-import com.shudong.lib_base.ext.e
 import com.soya.launcher.BuildConfig
-import com.soya.launcher.R
 import com.soya.launcher.bean.PackageName
-import com.soya.launcher.bean.Version
 import com.soya.launcher.config.Config
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
 import com.soya.launcher.ext.isRK3326
-import com.soya.launcher.ui.activity.MainActivity
 import java.io.IOException
 import java.util.Collections
 import java.util.Locale
@@ -258,23 +252,6 @@ object AndroidSystem {
         context.startActivity(intent)
     }
 
-    fun setDefaultLauncher(context: Context, launcher: ActivityResultLauncher<Any>): Boolean {
-        var success = false
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val manager = context.getSystemService(RoleManager::class.java)
-                launcher.launch(manager.createRequestRoleIntent(RoleManagerCompat.ROLE_HOME))
-            } else {
-                val intent = Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
-                context.startActivity(intent)
-            }
-            success = true
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            return success
-        }
-    }
 
     fun openDateSetting(context: Context) {
         val intent = Intent(Settings.ACTION_DATE_SETTINGS)

@@ -39,8 +39,5 @@ include ':baselibrary:lib_dimen'
 include ':baselibrary:lib_base'
 include ':baselibrary:lib_depend'
 include ':baselibrary:lib_res'
-include ':baselibrary:wheel_common'
-include ':baselibrary:wheel_picker'
-include ':baselibrary:wheel_view'
 include ':baselibrary:lib_net'
 

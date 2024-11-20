@@ -16,13 +16,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        kapt {
-            arguments {
-                //arg("AROUTER_MODULE_NAME", project.getName())
-                arg("room.schemaLocation",
-                        "$projectDir/schemas".toString())
-            }
-        }
     }
 
     buildTypes {
@@ -50,9 +43,5 @@ dependencies {
     api project(path: ':baselibrary:lib_dimen')
     api project(path: ':baselibrary:lib_res')
     api project(path: ':baselibrary:lib_net')
-    //api project(path: ':baselibrary:lib_umeng')
-    api project(path: ':baselibrary:wheel_picker')
-    //api project(path: ':baselibrary:lib_bdmap')
-    kapt "androidx.room:room-compiler:$room_ktx"
     kapt "com.github.liujingxing.rxhttp:rxhttp-compiler:3.0.0"
 }

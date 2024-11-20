@@ -1,8 +1,5 @@
 package com.shudong.lib_base.base
 
-import android.util.Log
-import androidx.camera.camera2.Camera2Config
-import androidx.camera.core.CameraXConfig
 import androidx.multidex.MultiDexApplication
 
 /**
@@ -14,7 +11,4 @@ import androidx.multidex.MultiDexApplication
  * @PACKAGE_NAME:  com.thumbsupec.lib_base.base
  */
 
-open class LibAPP: MultiDexApplication(), CameraXConfig.Provider {
-    override fun getCameraXConfig() = CameraXConfig.Builder.fromConfig(Camera2Config.defaultConfig())
-        .setMinimumLoggingLevel(Log.ERROR).build()
-}
+open class LibAPP: MultiDexApplication()

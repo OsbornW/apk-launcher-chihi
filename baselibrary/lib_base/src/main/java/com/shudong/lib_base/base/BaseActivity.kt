@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,10 +24,9 @@ import com.shudong.lib_base.ext.colorValue
 import com.shudong.lib_base.ext.loading.showLoadingView
 import com.shudong.lib_base.ext.loading.showLoadingViewDismiss
 import com.thumbsupec.lib_base.ext.language.changeContextLocale
-import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 import java.lang.reflect.Method
 import java.lang.reflect.ParameterizedType
-import java.util.*
+import java.util.Locale
 
 /**
  *
@@ -115,7 +113,7 @@ abstract class BaseActivity<VDB : ViewDataBinding> : FragmentActivity(), BaseVMV
     }
 
     fun statusBarFitWindow(isFitWindow: Boolean) {
-        when (isFitWindow) {
+       /* when (isFitWindow) {
             true -> statusBarOnly {
                 fitWindow = true
                 colorRes = com.shudong.lib_res.R.color.color_white
@@ -125,7 +123,7 @@ abstract class BaseActivity<VDB : ViewDataBinding> : FragmentActivity(), BaseVMV
                 transparent()
                 light = true
             }
-        }
+        }*/
 
     }
 

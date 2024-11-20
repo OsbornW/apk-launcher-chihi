@@ -1,4 +1,4 @@
-package com.soya.launcher.http.response;
+package com.soya.launcher.bean;
 
 import com.soya.launcher.bean.HomeItem;
 

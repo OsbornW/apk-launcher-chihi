@@ -36,7 +36,7 @@ private fun getHomes(): List<String> {
     )
     for (ri in resolveInfo) {
         names.add(ri.activityInfo.packageName)
-        Log.e("vvvvvvvvvvvv", "name=" + ri.activityInfo.packageName)
+        //Log.e("vvvvvvvvvvvv", "name=" + ri.activityInfo.packageName)
     }
     return names
 }

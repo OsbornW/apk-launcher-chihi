@@ -37,16 +37,8 @@ android {
 dependencies {
     api "androidx.core:core-ktx:$core_ktx"
     api "androidx.appcompat:appcompat:$appcompat"
-    api "androidx.constraintlayout:constraintlayout:$constraintlayout"
     api "com.google.android.material:material:$material"
     api 'androidx.multidex:multidex:2.0.1'
-    api "androidx.room:room-ktx:$room_ktx"
-    api "androidx.room:room-runtime:$room_ktx"
-    kapt "androidx.room:room-compiler:$room_ktx"
-    api "androidx.work:work-runtime-ktx:2.7.1"
-
-    //api project(path: ':baselibrary:lib_res')
-    //api project(path: ':baselibrary:lib_dimen')
 
     // https://github.com/InsertKoinIO/koin
     api "io.insert-koin:koin-android:$koin_android"
@@ -54,98 +46,41 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:$retrofit"
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor/5.0.0-alpha.10
     api "com.squareup.okhttp3:logging-interceptor:$ok_http3"
-    //api "com.squareup.okhttp3:okhttp:$ok_http3"
+
     api "com.blankj:utilcodex:$utilcodex"
     // https://github.com/Kotlin/kotlinx.serialization
     api "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_serialization"
-    // https://github.com/Zackratos/UltimateBarX
-    api "com.gitee.zackratos:UltimateBarX:$UltimateBarX"
+
     // https://github.com/liangjingkanji/Serialize
     api "com.github.liangjingkanji:Serialize:$mmkv_ktx"
     // https://github.com/getActivity/ShapeView
     api "com.github.getActivity:ShapeView:$ShapeView"
-    // https://github.com/zrq1060/SpanBuilder
-    api "io.github.zrq1060:spans:$spans"
+
     // https://github.com/li-xiaojun/XPopup
     api "com.github.li-xiaojun:XPopup:$XPopup"
-    // https://github.com/scwang90/SmartRefreshLayout(核心必须依赖)
-    api "io.github.scwang90:refresh-layout-kernel:$smart_refresh"
-    // 经典刷新头
-    api "io.github.scwang90:refresh-header-classics:$smart_refresh"
-    api  "io.github.scwang90:refresh-footer-classics:$smart_refresh"
+
+
     // https://github.com/liangjingkanji/BRV
     api "com.github.liangjingkanji:BRV:$BRV"
-    // https://github.com/airbnb/lottie-android
-    api "com.airbnb.android:lottie:$lottie_android"
-    // https://github.com/coil-kt/coil
-    api "io.coil-kt:coil:2.3.0"
-    // https://github.com/youth5201314/banner
-    api 'io.github.youth5201314:banner:2.2.2'
-    // https://github.com/li-xiaojun/FlycoTabLayout
-    api 'com.github.li-xiaojun:FlycoTabLayout:2.0.6'
-    // https://github.com/guolindev/PermissionX
-    api 'com.guolindev.permissionx:permissionx:1.7.1'
+
 
     api "com.github.liujingxing.rxhttp:rxhttp:3.0.0"
     // ksp/kapt/annotationProcessor choose one
     kapt "com.github.liujingxing.rxhttp:rxhttp-compiler:3.0.0"
 
-    api  'com.lzp.dslanimator:dslanimator:1.0.2'
-    api 'com.github.lihangleo2:ShadowLayout:3.3.2'
     api 'io.github.jeremyliao:live-event-bus-x:1.8.0'
 
-    // https://github.com/liangjingkanji/soft-input-event
-    //api 'com.github.liangjingkanji:soft-input-event:1.0.9'
-
-    // PictureSelector 基础 (必须)
-    api 'io.github.lucksiege:pictureselector:v3.10.7'
-    // 图片压缩 (按需引入)
-    api 'io.github.lucksiege:compress:v3.10.7'
-    // 图片裁剪
-    api 'io.github.lucksiege:ucrop:v3.10.7'
-    // 自定义相机 (按需引入)
-    api 'io.github.lucksiege:camerax:v3.10.7'
     api 'com.github.Justson.AgentWeb:agentweb-core:v5.0.6-androidx'
     api 'com.lcodecorex:tkrefreshlayout:1.0.7'
-    // https://github.com/NordicSemiconductor/Android-DFU-Library
-    // 适用于 ZIP格式的固件文件升级
-   // api 'no.nordicsemi.android:dfu:1.9.0'
-    //api 'com.yanzhenjie.recyclerview:x:1.3.2'
 
-    //api 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
-
-
-    api 'com.github.angcyo.DslTablayout:TabLayout:3.5.4'
-    api 'com.github.angcyo.DslTablayout:ViewPager2Delegate:3.5.4'
-
-    api 'com.github.bingoogolapple:BGAPhotoPicker-Android:2.0.3'
-    api 'com.github.bingoogolapple:BGABaseAdapter-Android:2.0.1'
-    api 'com.github.bumptech.glide:glide:4.10.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
-
-    api 'com.github.LuckyCodeer:TagLayout:1.0.5'
-
-    api 'com.github.bingoogolapple.BGAQRCode-Android:zxing:1.3.8'
-
-    api 'de.hdodenhof:circleimageview:3.1.0'
-
-    // 基础依赖包，必须要依赖
-    api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
-   // kotlin扩展（可选）
-    api 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
+    api 'com.github.bumptech.glide:glide:4.16.0'
+    api 'jp.wasabeef:glide-transformations:4.3.0'
+    api "com.github.bumptech.glide:okhttp3-integration:4.16.0"
 
     api 'org.raphets:roundimageview:1.2.0'
+    api 'com.google.code.gson:gson:2.10.1'
 
 
-    api 'com.github.getActivity:XXPermissions:18.3'
-
-    api 'com.github.getActivity:EasyWindow:10.3'
-
-    //api 'org.java-websocket:Java-WebSocket:1.5.4'
-    api 'com.github.0xZhangKe:WebSocketDemo:3.1'
-
-    api 'io.github.youth5201314:banner:2.2.3'
-    //api 'com.alibaba:fastjson:2.0.28'
 
 
 

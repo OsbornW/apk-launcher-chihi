@@ -63,7 +63,7 @@
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="@dimen/dp_0"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"/>
                 <TextView
                     android:clickable="true"
@@ -74,7 +74,7 @@
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="@dimen/dp_0"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"/>
                 <TextView
                     android:id="@+id/retry"
@@ -84,7 +84,7 @@
                     android:textColor="@color/text_color_style_1"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_width="@dimen/dp_0"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>

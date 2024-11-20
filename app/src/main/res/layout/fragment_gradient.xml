@@ -87,7 +87,7 @@
             <androidx.cardview.widget.CardView
                 app:cardBackgroundColor="@color/transparent"
                 app:cardElevation="0dp"
-                app:cardCornerRadius="@dimen/dp_5"
+                app:cardCornerRadius="@dimen/qb_px_5"
                 android:layout_margin="@dimen/qb_px_6"
                 app:cardUseCompatPadding="false"
                 android:layout_width="wrap_content"

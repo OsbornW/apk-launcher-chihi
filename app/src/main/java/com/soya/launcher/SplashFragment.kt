@@ -3,20 +3,14 @@ package com.soya.launcher
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.lifecycle.lifecycleScope
-import com.lzy.okgo.OkGo
-import com.lzy.okgo.interceptor.HttpLoggingInterceptor
 import com.shudong.lib_base.ContextManager
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.replaceFragment
-import com.shudong.lib_base.ext.startKtxActivity
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.ActivitySplashBinding
 import com.soya.launcher.enums.Atts
-import com.soya.launcher.http.HttpRequest
 import com.soya.launcher.product.base.product
-import com.soya.launcher.ui.activity.MainActivity
-import com.soya.launcher.ui.fragment.FocusFragment
 import com.soya.launcher.utils.PreferencesUtils
 import com.thumbsupec.lib_base.ext.language.initMultiLanguage
 import com.thumbsupec.lib_base.toast.ToastUtils
@@ -32,7 +26,6 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import rxhttp.RxHttpPlugins
 import java.util.UUID
-import java.util.logging.Level
 
 class SplashFragment:BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>() {
     override fun initView() {
@@ -63,18 +56,8 @@ class SplashFragment:BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>
                             .sslSocketFactory(sslSocketFactory, MyX509TrustManager())
                             .hostnameVerifier { _, _ -> true }
                             .build())
-                    OkGo.init(appContext)
-                    // 配置日志拦截器
-                    val loggingInterceptor = HttpLoggingInterceptor("zengyue")
-                    loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY) // 设置打印级别
-                    loggingInterceptor.setColorLevel(Level.INFO) // 设置颜色级别
-                    //builder.addInterceptor(loggingInterceptor) // 添加 OkGo 日志拦截器
 
-                    OkGo.getInstance().addInterceptor(loggingInterceptor)
-                        .setRetryCount(3) // 全局的超时重试次数
-                        .setCertificates()
 
-                    HttpRequest.init(appContext)
                     if (TextUtils.isEmpty(PreferencesUtils.getString(Atts.UID, ""))) {
                         PreferencesUtils.setProperty(Atts.UID, UUID.randomUUID().toString())
                     }

@@ -12,7 +12,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.internal.ViewUtils.showKeyboard
 import com.soya.launcher.R
 import com.soya.launcher.pop.showKeyBoardDialog
 import com.soya.launcher.view.CustomEditText

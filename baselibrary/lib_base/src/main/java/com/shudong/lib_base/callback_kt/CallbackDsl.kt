@@ -1,7 +1,5 @@
 package com.thumbsupec.lib_base.cllback_kt
 
-import com.shudong.lib_base.callback_kt.BannerAdapter
-
 
 /**
  *
@@ -26,8 +24,8 @@ fun viewStatus(callback: GlobalLayout.() -> Unit):GlobalLayout{
     return callBack
 }
 
-fun <T> bannerAdapter(list:MutableList<T>, callback: BannerAdapter<T>.() -> Unit):BannerAdapter<T>{
+/*fun <T> bannerAdapter(list:MutableList<T>, callback: BannerAdapter<T>.() -> Unit):BannerAdapter<T>{
     val callBack = object : BannerAdapter<T>(list){}
     callBack.callback()
     return callBack
-}
+}*/

@@ -2,9 +2,6 @@ package com.shudong.lib_base.databinding
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import com.shudong.lib_base.ext.loadFileRadius
-import com.shudong.lib_base.ext.loadRadius
-import java.io.File
 
 object CusBindAdapterBase {
 
@@ -20,14 +17,6 @@ object CusBindAdapterBase {
 
     }
 
-    @BindingAdapter(value = ["imgLocal"])
-    @JvmStatic
-    fun loadLocalResource(iv: ImageView, path: String?) {
-        path?.let {
-            iv.loadFileRadius(path)
-        }
-
-    }
 
 
 

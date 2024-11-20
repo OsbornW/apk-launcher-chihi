@@ -1,24 +1,13 @@
 package com.soya.launcher.h27002
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.gson.Gson
-import com.shudong.lib_base.ext.no
-import com.soya.launcher.App
-import com.soya.launcher.BuildConfig
-import com.soya.launcher.bean.Movice
-import com.soya.launcher.bean.TypeItem
-import com.soya.launcher.config.Config
-import com.soya.launcher.enums.Types
-import com.soya.launcher.ext.isRK3326
-import com.soya.launcher.http.response.HomeResponse
+import com.soya.launcher.bean.HomeResponse
 import com.soya.launcher.manager.FilePathMangaer
 import java.io.FileReader
-import java.util.UUID
 
-fun Context.defaultResource():HomeResponse.Inner?{
+fun Context.defaultResource(): HomeResponse.Inner?{
     try {
         val data = Gson().fromJson(
             FileReader(
