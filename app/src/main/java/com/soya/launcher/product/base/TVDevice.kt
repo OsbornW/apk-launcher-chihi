@@ -7,30 +7,18 @@ import androidx.fragment.app.FragmentActivity
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
+import com.soya.launcher.product.PrjectorAiboyou
 import com.soya.launcher.product.Projector713_M_G
 import com.soya.launcher.product.ProjectorH6
+import com.soya.launcher.product.ProjectorP50
 import com.soya.launcher.product.ProjectorRK3326
+import com.soya.launcher.product.ProjectorRK3326G
+import com.soya.launcher.product.TVBox22001
+import com.soya.launcher.product.TVBoxAiboyou
 import com.soya.launcher.product.TVBoxH27002
 import com.soya.launcher.product.TVBoxX98K
-import com.soya.launcher.product.PrjectorAiboyou
-import com.soya.launcher.product.ProjectorP50
-import com.soya.launcher.product.TVBox22001
-import com.soya.launcher.product.ProjectorRK3326G
-import com.soya.launcher.product.TVBoxAiboyou
 import com.soya.launcher.product.TVBoxX98KM
 import com.soya.launcher.product.TVBoxXHSX
-import com.soya.launcher.product.base.Channel.AIBOYOUPROJECTOR
-import com.soya.launcher.product.base.Channel.AIBOYOUTV
-import com.soya.launcher.product.base.Channel.AIBOYOUTV_TV22001
-import com.soya.launcher.product.base.Channel.PROJECTOR_713M_C
-import com.soya.launcher.product.base.Channel.PROJECTOR_H6_C
-import com.soya.launcher.product.base.Channel.PROJECTOR_P50_C
-import com.soya.launcher.product.base.Channel.PROJECTOR_RK3326G_C
-import com.soya.launcher.product.base.Channel.PROJECTOR_RK3326_C
-import com.soya.launcher.product.base.Channel.TVBoxX98K_M
-import com.soya.launcher.product.base.Channel.TVBox_H27002_C
-import com.soya.launcher.product.base.Channel.TVBox_X98K_C
-import com.soya.launcher.product.base.Channel.TVBox_XHSX_C
 
 sealed interface TVDevice{
     fun openDateSetting(context: Context){}
@@ -62,36 +50,23 @@ sealed interface TVDevice{
 
 data object DefaultDevice: TVDevice
 
-object Channel{
-     const val PROJECTOR_713M_C = "hongxin_713_M_G"
-     const val PROJECTOR_RK3326_C = "hongxin_713RK"
-     const val PROJECTOR_RK3326G_C = "hongxin_713RK_G"
-     const val TVBox_H27002_C = "hongxin_H27002"
-     const val TVBox_X98K_C = "yxt_X98K"
 
-    const val PROJECTOR_H6_C = "H6"
-    const val AIBOYOUTV = "aiboyou_tv"
-    const val AIBOYOUPROJECTOR = "aiboyou_projector"
+val channelMap = mapOf(
+    BuildConfig.FLAVOR_NAME_LAUNCHER_713M_G to Projector713_M_G,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_713RK to ProjectorRK3326,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_713RK_G to ProjectorRK3326G,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_H27002 to TVBoxH27002,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_X98K to TVBoxX98K(),
+    BuildConfig.FLAVOR_NAME_LAUNCHER_X98K_M to TVBoxX98KM,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_H6 to ProjectorH6,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_AIBOYOU_TV to TVBoxAiboyou,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_AIBOYOU_PROJECTOR to PrjectorAiboyou,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER to TVBox22001,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_P50 to ProjectorP50,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_XHSX to TVBoxXHSX
+)
 
-    const val AIBOYOUTV_TV22001 = "aiboyou_launcher"
-    const val PROJECTOR_P50_C = "p50_713M"
-    const val TVBox_XHSX_C = "XHSX"
-    const val TVBoxX98K_M = "X98K_M"
-}
+val product: TVDevice = channelMap[BuildConfig.FLAVOR_NAME]?:DefaultDevice
 
-val product : TVDevice =
-    when (BuildConfig.FLAVOR) {
-        PROJECTOR_713M_C -> Projector713_M_G
-        PROJECTOR_RK3326_C -> ProjectorRK3326
-        PROJECTOR_RK3326G_C -> ProjectorRK3326G
-        TVBox_H27002_C -> TVBoxH27002
-        TVBox_X98K_C -> TVBoxX98K()
-        PROJECTOR_H6_C-> ProjectorH6
-        AIBOYOUTV -> TVBoxAiboyou
-        AIBOYOUPROJECTOR -> PrjectorAiboyou
-        AIBOYOUTV_TV22001 -> TVBox22001
-        PROJECTOR_P50_C -> ProjectorP50
-        TVBox_XHSX_C -> TVBoxXHSX
-        TVBoxX98K_M -> TVBoxX98KM
-        else -> DefaultDevice
-    }
+
+

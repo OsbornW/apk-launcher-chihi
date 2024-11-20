@@ -138,6 +138,7 @@ android {
             buildConfigField "String", "CHANNEL", '"P50_H713M"'
             buildConfigField "String", "CHIHI_TYPE", '"P50_H713M"'
             buildConfigField "String", "MODEL", '"P50_713M"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_P50}\""
         }
 
         hongxin_713RK {
@@ -153,6 +154,7 @@ android {
             buildConfigField "String", "CHANNEL", '"RK3326M"'
             buildConfigField "String", "CHIHI_TYPE", '"3326M"'
             buildConfigField "String", "MODEL", '"3326M"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713RK}\""
         }
 
         hongxin_713RK_G {
@@ -171,6 +173,7 @@ android {
             buildConfigField "String", "CHANNEL", '"RK3326G"'
             buildConfigField "String", "CHIHI_TYPE", '"3326G"'
             buildConfigField "String", "MODEL", '"3326G"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713RK_G}\""
         }
 
 
@@ -188,6 +191,7 @@ android {
             buildConfigField "String", "CHANNEL", '"LA22001"'
             buildConfigField "String", "CHIHI_TYPE", '"PROJECTOR_001"'
             buildConfigField "String", "MODEL", '"001"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_PROJECTOR}\""
         }
 
         //爱泊优(TV)
@@ -203,6 +207,7 @@ android {
             buildConfigField "String", "CHANNEL", '"LA22001"'
             buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
             buildConfigField "String", "MODEL", '"001"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_TV}\""
         }
 
 
@@ -220,6 +225,7 @@ android {
             buildConfigField "String", "CHANNEL", '"TV22001"'
             buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
             buildConfigField "String", "MODEL", '"001"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER}\""
         }
 
         //X98K (TV)
@@ -238,8 +244,9 @@ android {
             buildConfigField "String", "CHANNEL", '"LA23002"'
             buildConfigField "String", "CHIHI_TYPE", '"X98K_M"'
             buildConfigField "String", "MODEL", '"X98K_M"'
-            buildConfigField "String", "APPSTORE_APP_ID", '"com.chihiyxt.store"'
-            buildConfigField "String", "APPSTORE_APPDETAIL_NAME", '"com.soya.store.ui.activity.AppDetailActivity"'
+            buildConfigField "String", "APPSTORE_APP_ID", "\"${APPSTORE_APP_ID_X98K_M}\""
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME", "\"${APPSTORE_APPDETAIL_NAME_X98K_M}\""
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_X98K_M}\""
         }
         XHSX {
             applicationId "com.topbox.launcher"
@@ -256,6 +263,7 @@ android {
             buildConfigField "String", "CHANNEL", '"LA29101"'
             buildConfigField "String", "CHIHI_TYPE", '"XHSX"'
             buildConfigField "String", "MODEL", '"XHSX"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_XHSX}\""
         }
 
 
@@ -274,6 +282,7 @@ android {
             buildConfigField "String", "CHANNEL", '"LA23001"'
             buildConfigField "String", "CHIHI_TYPE", '"X98K"'
             buildConfigField "String", "MODEL", '"X98K"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_X98K}\""
         }
 
         //激活码项目
@@ -292,6 +301,7 @@ android {
             buildConfigField "String", "CHANNEL", '"LA27002"'
             buildConfigField "String", "CHIHI_TYPE", '"H27002"'
             buildConfigField "String", "MODEL", '"H27002"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_H27002}\""
         }
 
         H6 {
@@ -307,6 +317,7 @@ android {
             buildConfigField "String", "CHANNEL", '"LA28001"'
             buildConfigField "String", "CHIHI_TYPE", '"H6"'
             buildConfigField "String", "MODEL", '"H6"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_H6}\""
         }
 
     }
@@ -356,8 +367,38 @@ android {
         buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
         buildConfigField "String", "APP_ID", '"launcher"'
         buildConfigField "String", "USER_ID", '"62"'
-        buildConfigField "String", "APPSTORE_APP_ID", '"com.android.fungo"'
-        buildConfigField "String", "APPSTORE_APPDETAIL_NAME", '"com.soya.store.ui.activity.AppDetailActivity"'
+        buildConfigField "String", "APPSTORE_APP_ID", "\"${APPSTORE_APP_ID_713M_G}\""
+        buildConfigField "String", "APPSTORE_APPDETAIL_NAME", "\"${APPSTORE_APPDETAIL_NAME_713M_G}\""
+
+        buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713M_G}\""
+        manifestPlaceholders = [share_uid: ""]
+
+
+        /**
+         *
+         * 渠道名称
+         * */
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713M_G", "\"${FLAVOR_NAME_LAUNCHER_713M_G}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713RK", "\"${FLAVOR_NAME_LAUNCHER_713RK}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713RK_G", "\"${FLAVOR_NAME_LAUNCHER_713RK_G}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_H27002", "\"${FLAVOR_NAME_LAUNCHER_H27002}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X98K", "\"${FLAVOR_NAME_LAUNCHER_X98K}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X98K_M", "\"${FLAVOR_NAME_LAUNCHER_X98K_M}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_H6", "\"${FLAVOR_NAME_LAUNCHER_H6}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_AIBOYOU_TV", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_TV}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_AIBOYOU_PROJECTOR", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_PROJECTOR}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_P50", "\"${FLAVOR_NAME_LAUNCHER_P50}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_XHSX", "\"${FLAVOR_NAME_LAUNCHER_XHSX}\""
+
+        /**
+         *
+         * appstore跳转配置
+         * */
+        buildConfigField "String", "APPSTORE_APP_ID_713M_G", "\"${APPSTORE_APP_ID_713M_G}\""
+        buildConfigField "String", "APPSTORE_APPDETAIL_NAME_713M_G", "\"${APPSTORE_APPDETAIL_NAME_713M_G}\""
+        buildConfigField "String", "APPSTORE_APP_ID_X98K_M", "\"${APPSTORE_APP_ID_X98K_M}\""
+        buildConfigField "String", "APPSTORE_APPDETAIL_NAME_X98K_M", "\"${APPSTORE_APPDETAIL_NAME_X98K_M}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
