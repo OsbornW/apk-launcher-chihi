@@ -14,6 +14,7 @@
             android:id="@+id/layout"/>
         <com.soya.launcher.view.NoDragVerticalGridView
             android:id="@+id/content"
+            android:layout_gravity="center_vertical"
             android:paddingLeft="@dimen/qb_px_10"
             android:paddingRight="@dimen/qb_px_10"
             android:layout_width="match_parent"

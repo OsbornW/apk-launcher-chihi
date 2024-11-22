@@ -173,9 +173,7 @@
         <activity
             android:name=".ui.activity.ScaleScreenActivity"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".ui.activity.BluetoothActivity"
-            android:screenOrientation="landscape" />
+
         <activity
             android:name=".ui.activity.ChooseGradientActivity"
             android:screenOrientation="landscape" />

@@ -1,6 +1,7 @@
 package com.soya.launcher.ext
 
 import android.widget.EditText
+import com.soya.launcher.callback.TextWatcherBuilder
 
 // 光标向左移动
 fun EditText.moveCursorLeft() {
@@ -29,4 +30,9 @@ fun EditText.deletePreviousChar() {
         editableText.delete(currentPosition - 1, currentPosition)
         this.setSelection(currentPosition - 1)
     }
+}
+
+fun EditText.addTextWatcher(builder: TextWatcherBuilder.() -> Unit) {
+    val watcher = TextWatcherBuilder().apply(builder)
+    this.addTextChangedListener(watcher)
 }

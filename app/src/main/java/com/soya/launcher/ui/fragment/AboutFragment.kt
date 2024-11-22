@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.lifecycle.lifecycleScope
+import com.drake.brv.utils.addModels
+import com.drake.brv.utils.setup
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
@@ -16,7 +18,6 @@ import com.shudong.lib_base.ext.startKtxActivity
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
-import com.soya.launcher.adapter.AboutAdapter
 import com.soya.launcher.bean.AboutItem
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.config.Config
@@ -134,20 +135,20 @@ class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(
             )
         )
 
-        val arrayObjectAdapter =
-            ArrayObjectAdapter(AboutAdapter(requireContext(), layoutInflater).setCallback (object :AboutAdapter.Callback{
-                override fun onClick(bean: AboutItem?) {
-                    when (bean?.type) {
+        mBind.content.setup {
+            addType<AboutItem>(R.layout.holder_about)
+            onBind {
+                val dto = getModel<AboutItem>()
+                itemView.clickNoRepeat {
+                    when (dto.type) {
                         2 -> AndroidSystem.restoreFactory(requireContext())
                     }
                 }
+            }
+        }
 
-            }))
-
-        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
-        mBind.content.adapter = itemBridgeAdapter
         mBind.content.setNumColumns(1)
-        arrayObjectAdapter.addAll(0, list)
+        mBind.content.addModels(list)
         mBind.content.requestFocus()
         mBind.content.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
     }

@@ -45,8 +45,8 @@ fun <T> Flow<T>.lifecycle(
     errorCallback: ((t: Throwable) -> Unit)? = null,
     isShowError: Boolean = true,
     callback: T.() -> Unit
-) {
-    base.lifecycleScope.launch(Dispatchers.Main) {
+) :Job{
+    return base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycle.flowOn(Dispatchers.IO).onCompletion {
         }.catch { t ->
             isShowError.yes {
@@ -104,8 +104,8 @@ fun <T> Flow<T>.lifecycle(
     errorCallback: ((t: Throwable) -> Unit)? = null,
     isShowError: Boolean = true,
     callback: T.() -> Unit
-) {
-    base.lifecycleScope.launch(Dispatchers.Main) {
+) :Job{
+    return base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycle.flowOn(Dispatchers.IO).onCompletion {
         }.catch { t ->
             isShowError.yes {

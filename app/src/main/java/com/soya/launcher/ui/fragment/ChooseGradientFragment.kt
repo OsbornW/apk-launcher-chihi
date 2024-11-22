@@ -2,30 +2,26 @@ package com.soya.launcher.ui.fragment
 
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.leanback.widget.ArrayObjectAdapter
-import androidx.leanback.widget.FocusHighlight
-import androidx.leanback.widget.FocusHighlightHelper
+import android.view.animation.AnimationUtils
 import androidx.leanback.widget.ItemBridgeAdapter
+import com.drake.brv.utils.addModels
+import com.drake.brv.utils.setup
 import com.open.system.ASystemProperties
 import com.shudong.lib_base.base.BaseViewModel
-import com.shudong.lib_base.currentActivity
-import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.clickNoRepeat
+import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.startKtxActivity
-import com.shudong.lib_base.ext.yes
+import com.shudong.lib_base.ext.widthAndHeight
 import com.soya.launcher.BaseWallPaperFragment
-import com.soya.launcher.PACKAGE_NAME_KEYSTONE_CORRECTION_P50
 import com.soya.launcher.R
-import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.databinding.FragmentChooseGradientBinding
-import com.soya.launcher.ext.isRK3326
-import com.soya.launcher.ext.openApp
+import com.soya.launcher.databinding.HolderSetting5Binding
 import com.soya.launcher.p50.AUTO_CORRECTION
 import com.soya.launcher.p50.setFunction
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.GradientActivity
-import com.soya.launcher.utils.AndroidSystem
 
 class ChooseGradientFragment :
     BaseWallPaperFragment<FragmentChooseGradientBinding, BaseViewModel>() {
@@ -45,55 +41,76 @@ class ChooseGradientFragment :
 
     private fun setContent() {
         dataList.clear()
-        val arrayObjectAdapter = ArrayObjectAdapter(
-            SettingAdapter(
-                requireContext(),
-                getLayoutInflater(),
-                newProjectorCallback(),
-                R.layout.holder_setting_5
-            )
-        )
-        itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(
-            itemBridgeAdapter,
-            FocusHighlight.ZOOM_FACTOR_LARGE,
-            false
-        )
-        mBind.content.setAdapter(itemBridgeAdapter)
+
+        mBind.content.setup {
+            addType<SettingItem>(R.layout.holder_setting_5)
+            onBind {
+                val binding = getBinding<HolderSetting5Binding>()
+                val dto = getModel<SettingItem>()
+
+                when (dto.type) {
+                    Projector.TYPE_AUTO_CALIBRATION, Projector.TYPE_MANUAL_CALIBRATION -> {
+                        binding.image.widthAndHeight(
+                            com.shudong.lib_dimen.R.dimen.qb_px_70.dimenValue(),
+                            com.shudong.lib_dimen.R.dimen.qb_px_70.dimenValue()
+                        )
+
+                    }
+
+                    else -> {
+                        binding.image.widthAndHeight(
+                            com.shudong.lib_dimen.R.dimen.qb_px_50.dimenValue(),
+                            com.shudong.lib_dimen.R.dimen.qb_px_50.dimenValue()
+                        )
+                    }
+                }
+                itemView.setOnFocusChangeListener { v, hasFocus ->
+                    binding.title.isSelected = hasFocus
+                    val animation = AnimationUtils.loadAnimation(
+                        v.context, if (hasFocus) R.anim.zoom_in_max else R.anim.zoom_out_max
+                    )
+                    v.startAnimation(animation)
+                    animation.fillAfter = true
+                }
+                itemView.clickNoRepeat {
+                    clickItem(dto)
+                }
+
+            }
+        }
+
+
         mBind.content.setNumColumns(2)
         mBind.content.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
         val isEnalbe = ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
         dataList.clear()
         product.addCalibrationItem(isEnalbe)?.let { dataList.addAll(it) }
-        arrayObjectAdapter.addAll(0, dataList)
+        mBind.content.addModels(dataList)
     }
 
-    private fun newProjectorCallback(): SettingAdapter.Callback {
-        return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem?) {}
-            override fun onClick(bean: SettingItem?) {
-                when (bean?.type) {
-                    Projector.TYPE_KEYSTONE_CORRECTION -> {
-                        product.openManualAutoKeystoneCorrection()
-                    }
+    private fun clickItem(bean: SettingItem) {
+        when (bean.type) {
+            Projector.TYPE_KEYSTONE_CORRECTION -> {
+                product.openManualAutoKeystoneCorrection()
+            }
 
-                    Projector.TYPE_KEYSTONE_CORRECTION_MODE -> {
-                        var isEnalbe =
-                            ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
-                        setCurMode(!isEnalbe)
-                    }
+            Projector.TYPE_KEYSTONE_CORRECTION_MODE -> {
+                var isEnalbe =
+                    ASystemProperties.getInt("persist.vendor.gsensor.enable", 0) == 1
+                setCurMode(!isEnalbe)
+            }
 
-                    Projector.TYPE_AUTO_CALIBRATION -> {
-                        setFunction(AUTO_CORRECTION)
-                        //PACKAGE_NAME_KEYSTONE_CORRECTION_P50.openApp()
-                    }
-                    Projector.TYPE_MANUAL_CALIBRATION -> {
-                        startKtxActivity<GradientActivity>()
-                    }
-                }
+            Projector.TYPE_AUTO_CALIBRATION -> {
+                setFunction(AUTO_CORRECTION)
+                //PACKAGE_NAME_KEYSTONE_CORRECTION_P50.openApp()
+            }
+            Projector.TYPE_MANUAL_CALIBRATION -> {
+                startKtxActivity<GradientActivity>()
             }
         }
     }
+
+
 
     private fun setCurMode(isEnalbe: Boolean) {
         product.initCalibrationText(isEnalbe, dataList) {

@@ -25,7 +25,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-fun ImageView.bindImageView(path:Any){
+fun ImageView.bindImageView(path: Any) {
     GlideApp.with(appContext)
         .load(path)
         //.placeholder(placeHolderRes) // 设置占位符
@@ -77,12 +77,9 @@ fun ImageView.loadImageWithGlide(
 ) {
     Glide.with(appContext)
         .load(load)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        //.placeholder(R.drawable.rectangle_solffffff)
-        //.error(R.drawable.rectangle_solffffff)
-        .transition(DrawableTransitionOptions.with(
-            DrawableCrossFadeFactory.Builder(250).setCrossFadeEnabled(true).build()
-        ))
+        .diskCacheStrategy(DiskCacheStrategy.NONE) // 不缓存任何内容
+        .skipMemoryCache(true) // 跳过内存缓存
+        .dontTransform() // 不做任何缩放或转换
         .listener(object : RequestListener<Drawable> {
             override fun onLoadFailed(
                 e: GlideException?,
@@ -90,10 +87,8 @@ fun ImageView.loadImageWithGlide(
                 target: Target<Drawable>,
                 isFirstResource: Boolean
             ): Boolean {
-                // 调用回调处理错误
                 errorCallback(e)
-                // 可以显示自定义的错误图或者进行其他处理
-                return true // 返回 false 以让 Glide 继续处理错误图
+                return true
             }
 
             override fun onResourceReady(
@@ -103,13 +98,11 @@ fun ImageView.loadImageWithGlide(
                 dataSource: DataSource,
                 isFirstResource: Boolean
             ): Boolean {
-                // 处理加载成功的情况
-                return false // 返回 false 以让 Glide 继续处理资源
+                return false
             }
-
-
         })
         .into(this)
+
 }
 
 
@@ -117,7 +110,7 @@ fun View.setBlurBackground(
     load: Any?,
     radius: Int = 10,
     sampling: Int = 4,
-    callback:(()->Unit)?=null
+    callback: (() -> Unit)? = null
 ) {
     GlideApp.with(appContext)
         .load(load)
@@ -151,7 +144,10 @@ suspend fun Any.loadBlurDrawable(): Drawable? {
             .override(320, 180)
             .apply(RequestOptions.bitmapTransform(BlurTransformation(10, 4)))
             .into(object : CustomTarget<Drawable>() {
-                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                override fun onResourceReady(
+                    resource: Drawable,
+                    transition: Transition<in Drawable>?
+                ) {
                     continuation.resume(resource)
                 }
 

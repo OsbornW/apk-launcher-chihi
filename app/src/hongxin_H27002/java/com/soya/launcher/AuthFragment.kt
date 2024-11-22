@@ -22,11 +22,10 @@ import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.databinding.FragmentAuthBinding
 import com.soya.launcher.ext.getWifiName
 import com.soya.launcher.fragment.AuthViewModel
+import com.soya.launcher.pop.showKeyBoardDialog
 import com.soya.launcher.ui.activity.NetActivity
-import com.soya.launcher.ui.dialog.KeyboardDialog
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AutoSeparateTextWatcher
-import com.soya.launcher.utils.showKeyboard
 import com.soya.launcher.utils.toTrim
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.delay
@@ -79,13 +78,12 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, AuthViewModel>() {
 
 
     fun showKB() {
-        showKeyboard {
-            setTargetView(mBind.etActiveCode)
-            keboardHide {
-                setToCenter()
-            }
-
-            inputCompleted {
+        showKeyBoardDialog {
+            editTextData.value = mBind.etActiveCode
+            inputCompleteAction {
+                keboardHide {
+                    setToCenter()
+                }
                 mBind.llActive.post {
                     it.yes {
                         mBind.tvActive.apply {
@@ -98,11 +96,11 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, AuthViewModel>() {
                     }.otherwise {
                         ToastUtils.show(getString(R.string.The_input))//输入不能为空
                     }
-
-
                 }
+
             }
-        }.show(childFragmentManager, KeyboardDialog.TAG)
+        }
+
     }
 
     override fun initClick() {
@@ -174,22 +172,23 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, AuthViewModel>() {
         when (wifiName) {
             "WIFI-5G", "WIFI", "wuyun", "wuyun-5G", "WIFI-test" -> {
                 if (activeCode == "11111111") {
-                    mBind.etActiveCode.isFocusable  = false
-                    mBind.etActiveCode.isFocusableInTouchMode  = false
+                    mBind.etActiveCode.isFocusable = false
+                    mBind.etActiveCode.isFocusableInTouchMode = false
                     mBind.etActiveCode.isEnabled = false
                     AppCacheBase.isActive = true
                     ToastUtils.show(getString(R.string.Success))
                     lifecycleScope.launch {
-                       delay(500)
+                        delay(500)
                         sendLiveEventData(ACTIVE_SUCCESS, true)
                     }
                     return true
                 }
             }
-            "<unknown ssid>"->{
+
+            "<unknown ssid>" -> {
                 if (activeCode == "18074674") {
-                    mBind.etActiveCode.isFocusable  = false
-                    mBind.etActiveCode.isFocusableInTouchMode  = false
+                    mBind.etActiveCode.isFocusable = false
+                    mBind.etActiveCode.isFocusableInTouchMode = false
                     mBind.etActiveCode.isEnabled = false
                     AppCacheBase.isActive = true
                     ToastUtils.show(getString(R.string.Success))
@@ -210,8 +209,8 @@ class AuthFragment : BaseVMFragment<FragmentAuthBinding, AuthViewModel>() {
         }.otherwise {
             when (this) {
                 10000L -> {
-                    mBind.etActiveCode.isFocusable  = false
-                    mBind.etActiveCode.isFocusableInTouchMode  = false
+                    mBind.etActiveCode.isFocusable = false
+                    mBind.etActiveCode.isFocusableInTouchMode = false
                     mBind.etActiveCode.isEnabled = false
                     AppCacheBase.isActive = true
                     ToastUtils.show(getString(R.string.Success))

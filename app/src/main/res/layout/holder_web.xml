@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="m"
+            type="com.soya.launcher.bean.WebItem" />
+    </data>
 <com.soya.launcher.view.MyFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:focusable="true"
+    item_search_webfocus="@{m}"
     android:focusableInTouchMode="true"
     android:layout_gravity="center"
     android:layout_width="wrap_content"
@@ -19,6 +26,7 @@
         android:layout_width="@dimen/qb_px_106"
         android:layout_height="@dimen/qb_px_60">
         <ImageView
+            item_search_webicon="@{m}"
             android:layout_gravity="center"
             android:id="@+id/image"
             android:scaleType="centerCrop"
@@ -26,3 +34,4 @@
             android:layout_height="@dimen/qb_px_40"/>
     </com.soya.launcher.view.MyCardView>
 </com.soya.launcher.view.MyFrameLayout>
+</layout>

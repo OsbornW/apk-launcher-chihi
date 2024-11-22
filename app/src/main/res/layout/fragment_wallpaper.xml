@@ -10,10 +10,11 @@
             android:id="@+id/wallpaper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:src="@drawable/wallpaper_1" />
 
         <LinearLayout
+            android:id="@+id/ll_root"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false"

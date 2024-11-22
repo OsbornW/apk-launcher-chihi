@@ -9,7 +9,6 @@ import com.shudong.lib_base.ext.sendLiveEventData
 import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
 import com.soya.launcher.databinding.ActivityMainBinding
-import com.soya.launcher.ui.fragment.BluetoothFragment
 import com.soya.launcher.ui.fragment.ChooseGradientFragment.Companion.newInstance
 
 class ChooseGradientActivity : BaseWallpaperActivity<ActivityMainBinding,BaseViewModel>() {

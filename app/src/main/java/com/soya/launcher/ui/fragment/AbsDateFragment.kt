@@ -8,26 +8,18 @@ import android.provider.Settings
 import android.provider.Settings.SettingNotFoundException
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.leanback.widget.ArrayObjectAdapter
-import androidx.leanback.widget.FocusHighlight
-import androidx.leanback.widget.FocusHighlightHelper
-import androidx.leanback.widget.ItemBridgeAdapter
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.adapter.DateListAdapter
-import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.DateItem
-import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.SimpleTimeZone
 import com.soya.launcher.databinding.FragmentSetDateBinding
 import com.soya.launcher.ui.dialog.DatePickerDialog
 import com.soya.launcher.ui.dialog.TimePickerDialog
 import com.soya.launcher.ui.dialog.TimeZoneDialog
 import com.soya.launcher.ui.dialog.ToastDialog
-import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.AppUtil
 import java.util.Arrays
 import java.util.Calendar
@@ -73,34 +65,11 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
         }
         mBind.next.setOnClickListener(this)
 
-        setContent()
         setSlide()
     }
 
 
-    private fun setContent() {
-        val arrayObjectAdapter = ArrayObjectAdapter(
-            SettingAdapter(
-                requireContext(),
-                LayoutInflater.from(appContext),
-                newCallback(),
-                R.layout.holder_setting
-            )
-        )
-        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(
-            itemBridgeAdapter,
-            FocusHighlight.ZOOM_FACTOR_MEDIUM,
-            false
-        )
-        mBind.content.adapter = itemBridgeAdapter
-        mBind.content.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        arrayObjectAdapter.addAll(
-            0,
-            listOf(SettingItem(1, getString(R.string.network), R.drawable.baseline_wifi_100))
-        )
-    }
 
     private fun setSlide() {
         mItemAdapter =
@@ -239,19 +208,6 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
         dialog.show(childFragmentManager, TimePickerDialog.TAG)
     }
 
-    fun newCallback(): SettingAdapter.Callback {
-        return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem?) {
-            }
-
-            override fun onClick(bean: SettingItem?) {
-                when (bean?.type) {
-                    0 -> AndroidSystem.openDateSetting(requireContext())
-                    1 -> AndroidSystem.openWifiSetting(requireContext())
-                }
-            }
-        }
-    }
 
     override fun onClick(v: View) {
         if (v == mBind.next) {
@@ -262,9 +218,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
     }
 
 
-    protected fun showWifi(show: Boolean) {
-        mBind.content.visibility = if (show) View.VISIBLE else View.GONE
-    }
+
 
     protected fun showNext(show: Boolean) {
         mBind.next.visibility = if (show) View.VISIBLE else View.GONE

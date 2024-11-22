@@ -64,6 +64,7 @@ import com.soya.launcher.R
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Data
+import com.soya.launcher.bean.DivSearch
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.MyRunnable
@@ -111,6 +112,7 @@ import com.soya.launcher.utils.isSysApp
 import com.soya.launcher.view.AppLayout
 import com.soya.launcher.view.MyFrameLayout
 import com.soya.launcher.view.MyFrameLayoutHouse
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -147,6 +149,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private var requestTime = System.currentTimeMillis()
     private var isExpanded = false
 
+    override val shouldSetPaddingTop: Boolean = false
 
     override fun initView() {
         uiHandler = Handler()
@@ -612,12 +615,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     }
 
-    override fun onStart() {
+    /*override fun onStart() {
         super.onStart()
         syncTime()
         syncNotify()
         startLoopTime()
-    }
+    }*/
 
 
     override fun initClick() {
@@ -1214,7 +1217,41 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         toastInstallApp(name, object : ToastDialog.Callback {
             override fun onClick(type: Int) {
                 if (type == 1) {
-                    AndroidSystem.jumpAppStore(requireContext(), null, packages?.get(0)?.packageName)
+                    if((packages?.size ?: 0) > 1){
+
+                        lifecycleScope.launch {
+                            for (pkg in packages!!) {
+                                val packageName = pkg?.packageName ?: continue // 如果包名为空，跳过
+                                try {
+                                    // 发起请求并等待结果
+                                    val result = CompletableDeferred<SearchDto>()
+                                    mViewModel.reqSearchAppList(keyWords = packageName)
+                                        .lifecycle(this@MainFragment, errorCallback = { throwable ->
+                                            result.completeExceptionally(throwable) // 如果出错，标记失败
+                                        }) {
+                                            val dto = this.jsonToBean<SearchDto>()
+                                            result.complete(dto) // 正常完成请求
+                                        }
+
+                                    val dto = result.await() // 等待请求结果
+
+                                    // 判断请求结果
+                                    if ((dto.result?.appList?.size ?: 0) > 0) {
+                                        "找到有效结果，包名: $packageName".e("Search")
+                                        AndroidSystem.jumpAppStore(requireContext(), null, packages.get(0)?.packageName)
+                                        break // 退出循环
+                                    } else {
+                                        "无效结果，包名: $packageName".e("Search")
+                                    }
+                                } catch (e: Exception) {
+                                    // 捕获异常，继续处理下一个包
+                                    "请求失败，包名: $packageName, 异常: ${e.message}".e("Search")
+                                }
+                            }
+                        }
+
+                    }else AndroidSystem.jumpAppStore(requireContext(), null, packages?.get(0)?.packageName)
+
                 }
             }
 

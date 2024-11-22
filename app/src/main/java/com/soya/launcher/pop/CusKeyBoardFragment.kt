@@ -1,5 +1,6 @@
 package com.soya.launcher.pop
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -38,7 +39,7 @@ import com.soya.launcher.ext.deletePreviousChar
 import com.soya.launcher.ext.moveCursorLeft
 import com.soya.launcher.ext.moveCursorRight
 import com.soya.launcher.net.viewmodel.KeyBoardViewModel
-import com.soya.launcher.ui.dialog.CusKeyboard.Companion.fragment
+import com.soya.launcher.utils.toTrim
 import org.koin.android.ext.android.inject
 
 /**
@@ -134,7 +135,7 @@ class CusKeyBoardFragment : DialogFragment() {
                             KEYBOARD_TYPE_OK->{
                                 //完成
                                 dismiss()
-                                //inputCompleteAction?.invoke()
+                                inputCompleteAction?.invoke(editText?.text.toString().toTrim().length>1)
                             }
                             KEYBOARD_TYPE_SPACE->{
                                 // 空格
@@ -164,6 +165,28 @@ class CusKeyBoardFragment : DialogFragment() {
         }
         setKeyBoardLitsener()
         binding.rvLetter.apply { post { requestFocus() } }
+    }
+
+    private var inputCompleteAction: ((isNotEmpty:Boolean) -> Unit)? = null  //
+    /**
+     *
+     */
+    fun inputCompleteAction(action: (isNotEmpty:Boolean) -> Unit) {
+        inputCompleteAction = action
+    }
+
+    private var keboardHide: (() -> Unit)? = null
+
+    /**
+     * 键盘隐藏
+     */
+    fun keboardHide(listener: (() -> Unit)?) {
+        keboardHide = listener
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        keboardHide?.invoke()
     }
 
     private fun setKeyBoardLitsener() {

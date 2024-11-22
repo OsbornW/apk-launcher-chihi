@@ -14,6 +14,9 @@ import androidx.leanback.widget.VerticalGridView
 import com.shudong.lib_base.base.BaseVMFragment
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
+import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.padding
 import com.shudong.lib_base.ext.sendLiveEventData
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BaseWallpaperActivity
@@ -24,6 +27,7 @@ import com.soya.launcher.cache.AppCache.WALLPAPERS
 import com.soya.launcher.databinding.FragmentWallpaperBinding
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.IntentAction
+import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.GlideUtils
 import com.soya.launcher.utils.PreferencesUtils
 import kotlinx.serialization.json.JsonNull.content
@@ -31,11 +35,15 @@ import kotlinx.serialization.json.JsonNull.content
 class WallpaperFragment : BaseWallPaperFragment<FragmentWallpaperBinding, BaseViewModel>() {
 
     private var mArrayObjectAdapter: ArrayObjectAdapter? = null
+    override val shouldSetPaddingTop: Boolean = false
 
     override fun initView() {
        mBind.apply {
            layout.title.text = getString(R.string.wallpaper)
        }
+
+        val isShowTitle = product.isShowPageTitle()
+        isShowTitle.no { mBind.llRoot.padding(topPadding = com.shudong.lib_dimen.R.dimen.qb_px_15.dimenValue()) }
     }
 
     override fun initdata() {

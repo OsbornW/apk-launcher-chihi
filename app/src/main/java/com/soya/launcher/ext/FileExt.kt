@@ -151,5 +151,5 @@ fun compareSizes(homeInfo: HomeInfoDto): Boolean {
     // 比较计算得到的大小与目录下图片的总数量
     "计算出来的大小:::$expectedSize::::$actualSize".e("zengyue")
 
-    return expectedSize == actualSize
+    return actualSize>=expectedSize
 }

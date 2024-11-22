@@ -14,7 +14,6 @@ class SetDateFragment : AbsDateFragment<FragmentSetDateBinding,BaseViewModel>() 
     override fun initView() {
         super.initView()
         showNext(false)
-        showWifi(false)
     }
 
 

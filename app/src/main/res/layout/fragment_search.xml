@@ -63,6 +63,7 @@
                     android:layout_height="match_parent"/>
             </FrameLayout>
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
                 android:orientation="vertical"
                 android:layout_marginBottom="@dimen/qb_px_16"
                 android:layout_marginLeft="@dimen/qb_px_26"

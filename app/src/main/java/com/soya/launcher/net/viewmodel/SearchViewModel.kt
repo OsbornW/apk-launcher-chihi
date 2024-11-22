@@ -1,6 +1,7 @@
 package com.soya.launcher.net.viewmodel
 
 import com.shudong.lib_base.base.BaseViewModel
+import com.soya.launcher.BuildConfig
 import com.soya.launcher.bean.SearchDto
 import com.soya.launcher.net.repository.HomeRepository
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +17,7 @@ class SearchViewModel:BaseViewModel() {
         pageSize: Int = 50
     ): Flow<String> = repository.reqSearchAppList(
         hashMapOf("userId" to 62, "keyword" to keyWords, "appColumnId" to appColumnId),
-        hashMapOf("pageNo" to 1, "pageSize" to pageSize),
+        hashMapOf("pageNo" to 1, "pageSize" to pageSize,"channel" to BuildConfig.CHANNEL),
     )
 
 }

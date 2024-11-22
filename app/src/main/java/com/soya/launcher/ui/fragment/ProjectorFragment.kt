@@ -1,33 +1,24 @@
 package com.soya.launcher.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import android.widget.TextView
-import android.widget.Toast
-import androidx.leanback.widget.ArrayObjectAdapter
-import androidx.leanback.widget.FocusHighlight
-import androidx.leanback.widget.FocusHighlightHelper
-import androidx.leanback.widget.HorizontalGridView
-import androidx.leanback.widget.ItemBridgeAdapter
-import com.shudong.lib_base.base.BaseViewModel
-import com.shudong.lib_base.ext.otherwise
-import com.shudong.lib_base.ext.startKtxActivity
-import com.shudong.lib_base.ext.yes
+import com.drake.brv.utils.addModels
+import com.drake.brv.utils.setup
+import com.shudong.lib_base.ext.clickNoRepeat
+import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.margin
+import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.padding
+import com.shudong.lib_base.ext.widthAndHeight
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
-import com.soya.launcher.adapter.SettingAdapter
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.databinding.FragmentProjectorBinding
-import com.soya.launcher.ext.isH6
-import com.soya.launcher.ext.isRK3326
+import com.soya.launcher.databinding.HolderSetting4Binding
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
-import com.soya.launcher.ui.activity.ChooseGradientActivity
-import com.soya.launcher.ui.activity.GradientActivity
-import com.soya.launcher.ui.activity.InstallModeActivity
-import com.soya.launcher.ui.activity.ScaleScreenActivity
-import com.soya.launcher.utils.AndroidSystem
 
 class ProjectorFragment : BaseWallPaperFragment<FragmentProjectorBinding,HomeViewModel>() {
 
@@ -37,51 +28,69 @@ class ProjectorFragment : BaseWallPaperFragment<FragmentProjectorBinding,HomeVie
         setContent()
 
         mBind.content.apply { post { requestFocus() } }
+        val isShowTitle = product.isShowPageTitle()
+        isShowTitle.no { mBind.root.padding(topPadding = com.shudong.lib_dimen.R.dimen.qb_px_25.dimenValue()) }
     }
 
 
 
     private fun setContent() {
-        val arrayObjectAdapter = ArrayObjectAdapter(
-            SettingAdapter(
-                requireContext(),
-                layoutInflater,
-                newProjectorCallback(),
-                R.layout.holder_setting_4
-            )
-        )
-        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(
-            itemBridgeAdapter,
-            FocusHighlight.ZOOM_FACTOR_LARGE,
-            false
-        )
-        mBind.content.adapter = itemBridgeAdapter
-        mBind.content.setNumColumns(product.projectorColumns())
-        arrayObjectAdapter.addAll(0, product.addProjectorItem())
-    }
 
-    private fun newProjectorCallback(): SettingAdapter.Callback {
-        return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem?) {
-            }
+        mBind.content.setup {
+            addType<SettingItem>(R.layout.holder_setting_4)
+            onBind {
+                val binding = getBinding<HolderSetting4Binding>()
+                val dto = getModel<SettingItem>()
 
-            override fun onClick(bean: SettingItem?) {
-                if (bean != null) {
-                    mViewModel.clickProjectorItem(bean){
-                        val type = it.first
-                        val text = it.second
-                        when(type){
-                            Projector.TYPE_AUTO_RESPONSE->{
-                                val tvName = mBind.content.getChildAt(0).findViewById<TextView>(R.id.title)
-                                tvName.text = text.toString()
-                            }
-                        }
+                when (dto.type) {
+                    Projector.TYPE_AUTO_CALIBRATION, Projector.TYPE_MANUAL_CALIBRATION -> {
+                        binding.image.widthAndHeight(
+                            com.shudong.lib_dimen.R.dimen.qb_px_70.dimenValue(),
+                            com.shudong.lib_dimen.R.dimen.qb_px_70.dimenValue()
+                        )
+
+                    }
+
+                    else -> {
+                        binding.image.widthAndHeight(
+                            com.shudong.lib_dimen.R.dimen.qb_px_50.dimenValue(),
+                            com.shudong.lib_dimen.R.dimen.qb_px_50.dimenValue()
+                        )
                     }
                 }
+                itemView.setOnFocusChangeListener { v, hasFocus ->
+                    binding.title.isSelected = hasFocus
+                    val animation = AnimationUtils.loadAnimation(
+                        v.context, if (hasFocus) R.anim.zoom_in_max else R.anim.zoom_out_max
+                    )
+                    v.startAnimation(animation)
+                    animation.fillAfter = true
+                }
+                itemView.clickNoRepeat {
+                    clickItem(dto)
+                }
+
             }
         }
+
+        mBind.content.setNumColumns(product.projectorColumns())
+        mBind.content.addModels(product.addProjectorItem())
     }
+
+    private fun clickItem(bean: SettingItem) {
+
+            mViewModel.clickProjectorItem(bean){
+                val type = it.first
+                val text = it.second
+                when(type){
+                    Projector.TYPE_AUTO_RESPONSE->{
+                        val tvName = mBind.content.getChildAt(0).findViewById<TextView>(R.id.title)
+                        tvName.text = text.toString()
+                    }
+                }
+        }
+    }
+
 
     companion object {
         @JvmStatic

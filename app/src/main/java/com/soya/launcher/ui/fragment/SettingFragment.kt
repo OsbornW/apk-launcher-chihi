@@ -2,21 +2,18 @@ package com.soya.launcher.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import androidx.activity.result.ActivityResultLauncher
-import androidx.leanback.widget.ArrayObjectAdapter
-import androidx.leanback.widget.FocusHighlight
-import androidx.leanback.widget.FocusHighlightHelper
-import androidx.leanback.widget.ItemBridgeAdapter
-import androidx.recyclerview.widget.RecyclerView
+import android.view.View
+import android.view.animation.AnimationUtils
+import com.drake.brv.utils.addModels
+import com.drake.brv.utils.setup
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.LANGUAGE_CHANGED
-import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
-import com.shudong.lib_base.ext.appContext
-import com.shudong.lib_base.ext.e
-import com.shudong.lib_base.ext.isRepeatExcute
+import com.shudong.lib_base.ext.clickNoRepeat
+import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.margin
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
+import com.shudong.lib_base.ext.widthAndHeight
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.SETTING_ABOUT
@@ -29,10 +26,10 @@ import com.soya.launcher.SETTING_NETWORK
 import com.soya.launcher.SETTING_PROJECTOR
 import com.soya.launcher.SETTING_SOUND
 import com.soya.launcher.SETTING_WALLPAPER
-import com.soya.launcher.adapter.SettingAdapter
+import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.databinding.FragmentSettingBinding
-import com.soya.launcher.handler.PermissionHandler
+import com.soya.launcher.databinding.HolderSettingBinding
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.AboutActivity
 import com.soya.launcher.ui.activity.WallpaperActivity
@@ -54,6 +51,13 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val rootView = view
+        val isShowTitle = product.isShowPageTitle()
+        isShowTitle.no { rootView.margin(topMargin = com.shudong.lib_dimen.R.dimen.qb_px_20.dimenValue()) }
+    }
+
 
     override fun initdata() {
         mBind.layout.title.text = getString(R.string.setting)
@@ -67,64 +71,79 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
 
 
     private fun setContent() {
-        val arrayObjectAdapter = ArrayObjectAdapter(
-            SettingAdapter(
-                requireContext(),
-                LayoutInflater.from(appContext),
-                newCallback(),
-                R.layout.holder_setting
-            )
-        )
-        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
-        FocusHighlightHelper.setupBrowseItemFocusHighlight(
-            itemBridgeAdapter,
-            FocusHighlight.ZOOM_FACTOR_LARGE,
-            false
-        )
-        mBind.content.adapter = itemBridgeAdapter
-        mBind.content.setNumColumns(4)
+        mBind.content.setup {
+            addType<SettingItem>(R.layout.holder_setting)
+            onBind {
+                val binding = getBinding<HolderSettingBinding>()
+                val dto = getModel<SettingItem>()
 
-        arrayObjectAdapter.addAll(0, product.addSettingItem())
-
-
-    }
-
-
-
-    fun newCallback(): SettingAdapter.Callback {
-        return object : SettingAdapter.Callback {
-            override fun onSelect(selected: Boolean, bean: SettingItem?) {
-            }
-
-            override fun onClick(bean: SettingItem?) {
-                when (bean?.type) {
-                    SETTING_NETWORK -> product.openWifi()
-                    SETTING_WALLPAPER -> startActivity(
-                        Intent(
-                            requireContext(),
-                            WallpaperActivity::class.java
+                when (dto.type) {
+                    Projector.TYPE_AUTO_CALIBRATION, Projector.TYPE_MANUAL_CALIBRATION -> {
+                        binding.image.widthAndHeight(
+                            com.shudong.lib_dimen.R.dimen.qb_px_70.dimenValue(),
+                            com.shudong.lib_dimen.R.dimen.qb_px_70.dimenValue()
                         )
-                    )
 
-                    SETTING_PROJECTOR -> product.openProjector()
-                    SETTING_LAUNGUAGE -> product.openLanguageSetting(requireContext())
-                    SETTING_DATE -> product.openDateSetting(requireContext())
-                    SETTING_BLUETOOTH -> product.openBluetooth()
-                    SETTING_ABOUT -> startActivity(
-                        Intent(
-                            requireContext(),
-                            AboutActivity::class.java
+                    }
+
+                    else -> {
+                        binding.image.widthAndHeight(
+                            com.shudong.lib_dimen.R.dimen.qb_px_50.dimenValue(),
+                            com.shudong.lib_dimen.R.dimen.qb_px_50.dimenValue()
                         )
-                    )
-
-                    SETTING_MORE -> product.openMore()
-                    SETTING_SOUND -> AndroidSystem.openVoiceSetting(requireContext())
-                    SETTING_KEYBOARD -> AndroidSystem.openInputSetting(requireContext())
-
+                    }
                 }
+                itemView.setOnFocusChangeListener { v, hasFocus ->
+                    binding.title.isSelected = hasFocus
+                    val animation = AnimationUtils.loadAnimation(
+                        v.context, if (hasFocus) R.anim.zoom_in_max else R.anim.zoom_out_max
+                    )
+                    v.startAnimation(animation)
+                    animation.fillAfter = true
+                }
+                itemView.clickNoRepeat {
+                    clickItem(dto)
+                }
+
             }
         }
+
+        mBind.content.setNumColumns(4)
+
+        mBind.content.addModels(product.addSettingItem())
+
     }
+
+
+    private fun clickItem(bean: SettingItem?){
+        when (bean?.type) {
+            SETTING_NETWORK -> product.openWifi()
+            SETTING_WALLPAPER -> startActivity(
+                Intent(
+                    requireContext(),
+                    WallpaperActivity::class.java
+                )
+            )
+
+            SETTING_PROJECTOR -> product.openProjector()
+            SETTING_LAUNGUAGE -> product.openLanguageSetting(requireContext())
+            SETTING_DATE -> product.openDateSetting(requireContext())
+            SETTING_BLUETOOTH -> product.openBluetooth()
+            SETTING_ABOUT -> startActivity(
+                Intent(
+                    requireContext(),
+                    AboutActivity::class.java
+                )
+            )
+
+            SETTING_MORE -> product.openMore()
+            SETTING_SOUND -> AndroidSystem.openVoiceSetting(requireContext())
+            SETTING_KEYBOARD -> AndroidSystem.openInputSetting(requireContext())
+
+        }
+    }
+
+
 
 
     companion object {

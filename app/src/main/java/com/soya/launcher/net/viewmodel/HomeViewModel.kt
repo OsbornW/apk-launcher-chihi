@@ -100,7 +100,7 @@ class HomeViewModel : BaseViewModel() {
         tag:String = ""
     ): Flow<String> = repository.reqSearchAppList(
         hashMapOf("userId" to 62, "keyword" to keyWords, "appColumnId" to appColumnId,"tag" to tag),
-        hashMapOf("pageNo" to 1, "pageSize" to pageSize),
+        hashMapOf("pageNo" to 1, "pageSize" to pageSize,"channel" to BuildConfig.CHANNEL),
     )
 
 

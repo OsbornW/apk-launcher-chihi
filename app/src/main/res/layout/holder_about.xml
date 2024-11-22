@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="m"
+            type="com.soya.launcher.bean.AboutItem" />
+    </data>
 <com.soya.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
@@ -19,12 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
+            item_about_icon="@{m}"
             android:id="@+id/icon"
             android:layout_gravity="center_vertical"
             android:src="@drawable/baseline_settings_100"
             android:layout_width="@dimen/qb_px_20"
             android:layout_height="@dimen/qb_px_20"/>
         <TextView
+            item_about_title="@{m}"
             android:id="@+id/title"
             android:textSize="@dimen/qb_px_sp_15"
             android:textColor="@color/text_color_style_1"
@@ -34,6 +42,7 @@
             android:layout_width="@dimen/qb_px_0"
             android:layout_height="wrap_content"/>
         <TextView
+            item_about_desc="@{m}"
             android:id="@+id/desc"
             android:textSize="@dimen/qb_px_sp_14"
             android:layout_gravity="center_vertical"
@@ -41,3 +50,4 @@
             android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.soya.launcher.view.MyFrameLayout>
+</layout>

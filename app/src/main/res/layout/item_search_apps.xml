@@ -1,65 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.soya.launcher.view.AppLayoutHouse
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root"
-    android:clickable="true"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_marginTop="@dimen/qb_px_10"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <com.soya.launcher.view.MyCardView
-        app:cardCornerRadius="@dimen/qb_px_5"
-        app:cardBackgroundColor="@color/transparent"
-        app:cardElevation="@dimen/qb_px_0"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/qb_px_5"
+<layout>
+
+    <data>
+
+        <variable
+            name="m"
+            type="Object" />
+    </data>
+
+    <com.soya.launcher.view.AppLayoutHouse xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/root"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <FrameLayout
-                android:background="@color/solid_style_10"
-                android:layout_width="@dimen/qb_px_96"
-                android:layout_height="@dimen/qb_px_57">
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-                <ImageView
-                    android:id="@+id/image_small"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true"
-                    android:layout_width="@dimen/qb_px_36"
-                    android:layout_height="@dimen/qb_px_36"/>
-            </FrameLayout>
-            <FrameLayout
-                android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:clickable="true"
+        item_search_focus="@{m}"
+        item_search_click="@{m}"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <com.soya.launcher.view.MyCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/qb_px_5"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardCornerRadius="@dimen/qb_px_5"
+            app:cardElevation="@dimen/qb_px_0">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/qb_px_30">
-                <TextView
-                    android:id="@+id/title"
-                    android:text="Google play"
-                    android:textSize="@dimen/qb_px_sp_10"
-                    android:paddingLeft="@dimen/qb_px_5"
-                    android:paddingRight="@dimen/qb_px_5"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textColor="@color/text_selector_color_1"
-                    android:background="@drawable/light_item"
-                    android:layout_gravity="center"
-                    android:gravity="center"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="@dimen/qb_px_96"
+                    android:layout_height="@dimen/qb_px_57"
+                    android:background="@color/solid_style_10">
+
+                    <ImageView
+                        android:id="@+id/image"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        item_search_icon="@{m}"
+                        android:id="@+id/image_small"
+                        android:layout_width="@dimen/qb_px_36"
+                        android:layout_height="@dimen/qb_px_36"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop" />
+                </FrameLayout>
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </FrameLayout>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.soya.launcher.view.MyCardView>
-</com.soya.launcher.view.AppLayoutHouse>
+                    android:layout_height="@dimen/qb_px_30"
+                    android:orientation="vertical">
+
+                    <TextView
+                        item_search_text="@{m}"
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@drawable/light_item"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingLeft="@dimen/qb_px_5"
+                        android:paddingRight="@dimen/qb_px_5"
+                        android:text="Google play"
+                        android:textColor="@color/text_selector_color_1"
+                        android:textSize="@dimen/qb_px_sp_10" />
+                </FrameLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.soya.launcher.view.MyCardView>
+    </com.soya.launcher.view.AppLayoutHouse>
+</layout>

@@ -4,14 +4,16 @@ import android.annotation.SuppressLint
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
-import android.widget.TextView.OnEditorActionListener
+import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.leanback.widget.HorizontalGridView
 import androidx.lifecycle.lifecycleScope
-import com.google.gson.Gson
-import com.shudong.lib_base.ext.appContext
+import com.drake.brv.utils.models
+import com.drake.brv.utils.mutable
+import com.drake.brv.utils.setup
+import com.shudong.lib_base.ext.clickNoRepeat
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.isRepeatExcute
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.net.lifecycle
@@ -19,19 +21,15 @@ import com.shudong.lib_base.ext.no
 import com.soya.launcher.App
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
-import com.soya.launcher.adapter.AppItemAdapter
-import com.soya.launcher.adapter.FullSearchAdapter
-import com.soya.launcher.adapter.TextWatcherAdapter
-import com.soya.launcher.adapter.WebAdapter
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.DivSearch
-import com.soya.launcher.bean.Movice
 import com.soya.launcher.bean.SearchDto
 import com.soya.launcher.bean.WebItem
 import com.soya.launcher.databinding.FragmentSearchBinding
+import com.soya.launcher.databinding.HolderFullSearchBinding
 import com.soya.launcher.decoration.HSlideMarginDecoration
 import com.soya.launcher.enums.Atts
-import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.addTextWatcher
 import com.soya.launcher.net.viewmodel.SearchViewModel
 import com.soya.launcher.pop.showKeyBoardDialog
 import com.soya.launcher.ui.dialog.ToastDialog
@@ -43,33 +41,61 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
-class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewModel>(),
-    View.OnClickListener, OnEditorActionListener,
-    FullSearchAdapter.Callback {
+class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewModel>() {
 
-    private var mAdapter: FullSearchAdapter? = null
-    private var mAppItemAdapter: AppItemAdapter? = null
 
     private var store: DivSearch<Any>? = null
     private var searchText: String? = null
 
 
-
     override fun initView() {
         lifecycleScope.launch {
-            mAppItemAdapter = AppItemAdapter(
-                requireContext(),
-                layoutInflater,
-                ArrayList(),
-                R.layout.item_search_apps,
-                newAppClickCallback()
-            )
-            mAdapter = FullSearchAdapter(
-                requireContext(),
-                LayoutInflater.from(appContext),
-                ArrayList(),
-                this@SearchFragment
-            )
+            mBind.recommend.setup {
+                addType<AppItem>(R.layout.item_search_apps)
+            }
+
+            mBind.content.setup {
+                addType<DivSearch<*>>(R.layout.holder_full_search)
+                onBind {
+                    val dto = getModel<DivSearch<*>>()
+                    val binding = getBinding<HolderFullSearchBinding>()
+
+                    when (dto.type) {
+                        0 -> {
+                            binding.content.isVisible = true
+                            binding.mask.isVisible = false
+                            binding.progressBar.isVisible = false
+                            setAppContent(dto as DivSearch<ApplicationInfo>, binding.content)
+                        }
+
+                        1 -> if (dto.state == 0) {
+                            binding.content.isVisible = false
+                            binding.mask.isVisible = false
+                            binding.progressBar.isVisible = true
+
+                        } else if (dto.state == 1) {
+                            binding.content.isVisible = false
+                            binding.mask.isVisible = true
+                            binding.progressBar.isVisible = false
+
+                        } else {
+                            binding.content.isVisible = true
+                            binding.mask.isVisible = false
+                            binding.progressBar.isVisible = false
+                            setAppStore(dto as DivSearch<AppItem>, binding.content)
+                        }
+
+                        2 -> {
+                            binding.content.isVisible = true
+                            binding.mask.isVisible = false
+                            binding.progressBar.isVisible = false
+                            webData(dto as DivSearch<WebItem>, binding.content)
+                        }
+                    }
+
+                }
+            }
+
             mBind.recommend.addItemDecoration(
                 HSlideMarginDecoration(
                     resources.getDimension(com.shudong.lib_dimen.R.dimen.qb_px_10),
@@ -79,10 +105,40 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
         }
     }
 
+    private fun webData(dto: DivSearch<WebItem>, content: HorizontalGridView) {
+        content.setup {
+            addType<WebItem>(R.layout.holder_web)
+            onBind {
+                val dto = getModel<WebItem>()
+                itemView.clickNoRepeat {
+                    webClick(dto)
+                }
+            }
+        }
+        content.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+        content.models = dto.list
+    }
+
+    private fun setAppStore(dto: DivSearch<AppItem>, content: HorizontalGridView) {
+        content.setup {
+            addType<AppItem>(R.layout.item_search_apps)
+        }
+        content.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+        content.models = dto.list
+    }
+
+    private fun setAppContent(dto: DivSearch<ApplicationInfo>, content: HorizontalGridView) {
+        content.setup {
+            addType<ApplicationInfo>(R.layout.item_search_apps)
+        }
+        content.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+        content.models = dto.list
+    }
+
     override fun initdata() {
         mBind.editQuery.apply {
             setOnFocusChangeListener { view, b ->
-                if (b&&!requireActivity().isFinishing) {
+                if (b && !requireActivity().isFinishing) {
                     showKeyboard()
                 }
             }
@@ -91,9 +147,8 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
                 showKeyboard()
             }
 
-            addTextChangedListener(object : TextWatcherAdapter() {
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
+            addTextWatcher {
+                onTextChanged { s, _, _, _ ->
                     // 取消之前的防抖动任务
                     debounceJob?.cancel()
 
@@ -104,17 +159,14 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
                             search()
                         }
                     }
-
                 }
-            })
+            }
 
         }
 
 
 
         lifecycleScope.launch {
-            mBind.recommend.adapter = mAppItemAdapter
-            mBind.content.adapter = mAdapter
             val word = arguments!!.getString(Atts.WORD)
             if (!TextUtils.isEmpty(word)) {
                 mBind.editQuery.setText(word)
@@ -133,7 +185,7 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
     private var debounceJob: Job? = null
 
 
-
+    var searchJob: Job? = null
     private fun replace() {
         val list: MutableList<DivSearch<*>?> = ArrayList()
 
@@ -166,7 +218,7 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
 
             }
             withContext(Dispatchers.Main) {
-                mAdapter!!.replace(list)
+                mBind.content.models = list
             }
         }
         lifecycleScope.launch {
@@ -177,26 +229,34 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
                 mBind.content.visibility = View.VISIBLE
             }
 
-            mViewModel.reqSearchAppList(mBind.editQuery.text.toString())
+            searchJob?.cancel()
+            searchJob = mViewModel.reqSearchAppList(mBind.editQuery.text.toString())
                 .lifecycle(this@SearchFragment, {
                 }) {
                     val dto = this.jsonToBean<SearchDto>()
                     //"当前获取的数据是：${dto.code}==${dto.msg}==${dto.result?.appList?.size}".e("chihi_error")
-                    if((dto.result?.appList?.size ?: 0) > 0){
+                    if ((dto.result?.appList?.size ?: 0) > 0) {
 
                         dto.result?.appList?.let { store?.list?.addAll(it) }
                         store?.state = 2
-                        lifecycleScope.launch { mAdapter!!.sync(store!!) }
-                    }else{
+                        lifecycleScope.launch {
+                            val dataList = mBind.content.mutable as MutableList<DivSearch<*>>
+                            val index = dataList.indexOf(store!!)
+                            if (index != -1) mBind.content.adapter?.notifyItemChanged(index)
+                        }
+                    } else {
                         store?.state = 1
-                        lifecycleScope.launch { mAdapter!!.sync(store!!) }
+                        lifecycleScope.launch {
+                            val dataList = mBind.content.mutable as MutableList<DivSearch<*>>
+                            val index = dataList.indexOf(store!!)
+                            if (index != -1) mBind.content.adapter?.notifyItemChanged(index)
+                        }
                     }
 
                 }
 
             withContext(Dispatchers.Main) {
-
-                mAdapter!!.replace(list)
+                mBind.content.models = list
             }
 
 
@@ -204,24 +264,6 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
 
     }
 
-    private fun newWebCallback(): WebAdapter.Callback {
-        return WebAdapter.Callback { bean ->
-            var url = bean?.link
-            when (bean?.type) {
-                0 -> url += "/search?q=$searchText"
-                1 -> url += "/search?q=$searchText"
-                2 -> url += "/s?wd=$searchText"
-                3 -> url += "/search/?text=$searchText"
-            }
-            val infos = AndroidSystem.queryBrowareLauncher(requireContext(), url)
-            if (infos.isEmpty()) {
-                toastInstall()
-                return@Callback
-            }
-            val intent = AndroidSystem.openWebUrl(url)
-            activity!!.startActivity(intent)
-        }
-    }
 
     private fun fillAppStore() {
         lifecycleScope.launch {
@@ -230,13 +272,15 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
 
                 if (App.APP_SEARCH_STORE_ITEMS.isEmpty()) {
 
-                    mViewModel.reqSearchAppList(mBind.editQuery.text.toString(),
-                        "81", 20)
+                    mViewModel.reqSearchAppList(
+                        mBind.editQuery.text.toString(),
+                        "81", 20
+                    )
                         .lifecycle(this@SearchFragment, {
                         }) {
                             val dto = this.jsonToBean<SearchDto>()
                             //"当前获取的数据是：${dto.code}==${dto.msg}==${dto.result?.appList?.size}".e("chihi_error")
-                            if((dto.result?.appList?.size ?: 0) > 0){
+                            if ((dto.result?.appList?.size ?: 0) > 0) {
                                 dto.result?.appList?.let { App.APP_SEARCH_STORE_ITEMS.addAll(it) }
 
                                 setStoreContent(App.APP_SEARCH_STORE_ITEMS)
@@ -253,7 +297,6 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
         }
 
 
-
     }
 
     @SuppressLint("StringFormatInvalid")
@@ -261,7 +304,7 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
                 mBind.recommendTitle.text = getString(R.string.recommend_for_you, list.size)
-                mAppItemAdapter!!.replace(list)
+                mBind.recommend.models = list
             }
         }
 
@@ -272,46 +315,6 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
         dialog.show(childFragmentManager, ToastDialog.TAG)
     }
 
-    private fun newAppClickCallback(): AppItemAdapter.Callback {
-        return object : AppItemAdapter.Callback {
-            override fun onSelect(selected: Boolean) {
-            }
-
-            override fun onClick(bean: AppItem?) {
-                if (!TextUtils.isEmpty(bean?.appDownLink)) AndroidSystem.jumpAppStore(
-                    requireContext(),
-                    Gson().toJson(bean),
-                    null
-                )
-            }
-        }
-    }
-
-    private val placeholdings: List<Movice>
-        get() {
-            val movices: MutableList<Movice> = ArrayList()
-            for (i in 0..19) {
-                movices.add(Movice(Types.TYPE_UNKNOW, null, "empty", Movice.PIC_PLACEHOLDING))
-            }
-            return movices
-        }
-
-    override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent): Boolean {
-        //search()
-        return false
-    }
-
-    override fun onClick(type: Int, bean: Any?) {
-        when (type) {
-            0 -> AndroidSystem.openPackageName(
-                requireContext(),
-                (bean as ApplicationInfo).packageName
-            )
-
-            1 -> AndroidSystem.jumpAppStore(requireContext(), Gson().toJson(bean as AppItem), null)
-            2 -> webClick(bean as WebItem)
-        }
-    }
 
     private fun search() {
 
@@ -345,11 +348,6 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
         activity!!.startActivity(intent)
     }
 
-    override fun onClick(v: View) {
-        if (v == mBind.divSearch) {
-            //showKeyboard()
-        }
-    }
 
     private fun showKeyboard() {
         showKeyBoardDialog {

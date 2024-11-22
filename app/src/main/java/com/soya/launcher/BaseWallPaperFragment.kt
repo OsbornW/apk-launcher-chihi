@@ -9,6 +9,10 @@ import com.shudong.lib_base.base.BaseFragment
 import com.shudong.lib_base.base.BaseVMFragment
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.currentActivity
+import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.margin
+import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.product.base.product
 import java.lang.reflect.ParameterizedType
 
@@ -23,6 +27,9 @@ import java.lang.reflect.ParameterizedType
 abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> :
     BaseVMFragment<VDB, VM>() {
 
+    // 是否设置 paddingTop，默认 true
+    open val shouldSetPaddingTop: Boolean = true
+
     fun updateWallpaper() {
         val act = currentActivity as BaseWallpaperActivity<*, *>?
         act?.updateWallPaper()
@@ -30,8 +37,14 @@ abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val isShowTitle = product.isShowPageTitle()
+        val rootView = view
         val titleLayout = view.findViewById<View>(R.id.layout) // 获取包含的布局
-        titleLayout?.visibility = if (product.isShowPageTitle()) View.VISIBLE else View.INVISIBLE
-        titleLayout?.isVisible = product.isShowPageTitle()
+        if (titleLayout!=null){
+            shouldSetPaddingTop.yes { isShowTitle.no { rootView.margin(topMargin = com.shudong.lib_dimen.R.dimen.qb_px_12.dimenValue()) } }
+
+            titleLayout.isVisible = isShowTitle
+        }
+
     }
 }

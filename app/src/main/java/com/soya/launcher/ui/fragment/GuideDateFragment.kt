@@ -13,7 +13,6 @@ class GuideDateFragment : AbsDateFragment<FragmentSetDateBinding,BaseViewModel>(
     override fun initView() {
         super.initView()
         showNext(true)
-        showWifi(false)
     }
 
     companion object {

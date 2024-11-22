@@ -83,6 +83,28 @@ fun View.margin(
 }
 
 
+fun View.padding(
+    leftPadding: Int = Int.MAX_VALUE,
+    topPadding: Int = Int.MAX_VALUE,
+    rightPadding: Int = Int.MAX_VALUE,
+    bottomPadding: Int = Int.MAX_VALUE
+): View {
+    // 动画效果（可选）
+    TransitionManager.beginDelayedTransition(this.parent as ViewGroup)
+
+    // 获取当前的 padding 值
+    val currentLeft = if (leftPadding != Int.MAX_VALUE) leftPadding else paddingLeft
+    val currentTop = if (topPadding != Int.MAX_VALUE) topPadding else paddingTop
+    val currentRight = if (rightPadding != Int.MAX_VALUE) rightPadding else paddingRight
+    val currentBottom = if (bottomPadding != Int.MAX_VALUE) bottomPadding else paddingBottom
+
+    // 设置 padding
+    setPadding(currentLeft, currentTop, currentRight, currentBottom)
+
+    return this
+}
+
+
 /**
  * 设置View的高度
  */

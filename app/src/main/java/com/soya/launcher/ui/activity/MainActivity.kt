@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_AVR_POWER
 import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
+import com.blankj.utilcode.util.NetworkUtils
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
@@ -19,8 +20,10 @@ import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.downloadPic
 import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.isRepeatExcute
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
+import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.replaceFragment
@@ -94,7 +97,6 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         super.onStart()
         lifecycleScope.launch {
             delay(300)
-            "执行网络请求1".e("zengyue3")
             fetchHomeData()
         }
 
@@ -103,18 +105,28 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
 
     private var fetchJob: Job? = null
+    private var errorJob: Job? = null
     private fun fetchHomeData(isRefresh: Boolean = false) {
-        "执行网络请求".e("zengyue3")
         // 取消之前的任务（如果存在）
         isHandleUpdateList = false
         fetchJob?.cancel()
+        errorJob?.cancel()
         mViewModel.reqHomeInfo().lifecycle(this, errorCallback = {
+            errorJob = lifecycleScope.launch(Dispatchers.Main) {
+                while (true) {
+                    if(NetworkUtils.isConnected()){
+                        fetchHomeData()
+                    }
+                    delay(2000)
+
+                }
+
+            }
 
         }, isShowError = false) {
             val dto = this
             val file = File(FilePathMangaer.getJsonPath(appContext) + "/Home.json")
             if ((dto.reqId ?: 0) != AppCache.reqId || AppCache.isGame != isGame()) {
-                "进入判断了".e("zengyue3")
                 if(file.exists())AppCache.isReload = true
 
             }
@@ -189,24 +201,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
 
                     result.movies?.forEachIndexed { index, homeItem ->
-                        when (homeItem?.name) {
-                            "Youtube", "Disney+", "Hulu", "Prime video" -> {
-                                "头数量：${result.movies.size}::当前的子数量是====8".e("zengyue")
 
-                            }
-
-                            "Google play", "media center" -> {
-                                "头数量：${result.movies.size}::当前的子数量是====0".e("zengyue")
-
-                            }
-
-                            else -> {
-                                "头数量：${result.movies.size}::当前的子数量是====${homeItem?.datas?.size}".e(
-                                    "zengyue"
-                                )
-
-                            }
-                        }
                         val destPath =
                             "${"header".getBasePath()}/header_${homeItem?.name}_${index}_${(homeItem?.icon as String).getFileNameFromUrl()}"
 
@@ -310,7 +305,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             commit()
         }
 
-        lifecycleScope.launch {
+        /*lifecycleScope.launch {
 
             while (true) {
                 delay(3000)
@@ -318,7 +313,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 //"当前是否在桌面：：：${isHome()}".e("zengyue3")
             }
 
-        }
+        }*/
 
     }
 
@@ -366,5 +361,13 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         product.jumpToAuth(this)
     }
 
+    override fun onBackPressed() {
+        if (canBackPressed) {
+            super.onBackPressed()
+        } else {
+            sendLiveEventData(HOME_EVENT, false)
+        }
+
+    }
 
 }
