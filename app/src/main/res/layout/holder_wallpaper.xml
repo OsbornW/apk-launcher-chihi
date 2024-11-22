@@ -1,38 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.soya.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:clickable="true"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.cardview.widget.CardView
-        app:cardCornerRadius="@dimen/qb_px_8"
-        app:cardUseCompatPadding="false"
-        app:cardBackgroundColor="@color/solid_style_1"
-        android:layout_marginLeft="@dimen/qb_px_8"
-        android:layout_marginRight="@dimen/qb_px_8"
-        android:layout_marginTop="@dimen/qb_px_13"
-        android:layout_marginBottom="@dimen/qb_px_8"
+<layout>
+
+    <data>
+
+        <variable
+            name="m"
+            type="com.soya.launcher.bean.Wallpaper" />
+    </data>
+
+    <com.soya.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:clickable="true"
+        android:id="@+id/root"
+        item_wallpaper_focus="@{m}"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="@dimen/qb_px_240"
-            android:layout_height="@dimen/qb_px_135"
-            android:scaleType="centerCrop" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/qb_px_8"
+            android:layout_marginTop="@dimen/qb_px_13"
+            android:layout_marginRight="@dimen/qb_px_8"
+            android:layout_marginBottom="@dimen/qb_px_8"
+            app:cardBackgroundColor="@color/solid_style_1"
+            app:cardCornerRadius="@dimen/qb_px_8"
+            app:cardUseCompatPadding="false">
 
-        <ImageView
-            android:id="@+id/check"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/qb_px_10"
-            android:background="@drawable/rect_solid_100dp_alpha_2"
-            android:src="@drawable/baseline_check_100"
-            android:padding="@dimen/qb_px_6"
-            android:layout_width="@dimen/qb_px_23"
-            android:layout_height="@dimen/qb_px_23"/>
-    </androidx.cardview.widget.CardView>
-</com.soya.launcher.view.MyFrameLayout>
+            <ImageView
+                item_wallpaper_icon="@{m}"
+                android:id="@+id/image"
+                android:layout_width="@dimen/qb_px_240"
+                android:layout_height="@dimen/qb_px_135"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                item_wallpaper_check="@{m}"
+                android:id="@+id/check"
+                android:layout_width="@dimen/qb_px_23"
+                android:layout_height="@dimen/qb_px_23"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="@dimen/qb_px_10"
+                android:background="@drawable/rect_solid_100dp_alpha_2"
+                android:padding="@dimen/qb_px_6"
+                android:src="@drawable/baseline_check_100" />
+        </androidx.cardview.widget.CardView>
+    </com.soya.launcher.view.MyFrameLayout>
+</layout>

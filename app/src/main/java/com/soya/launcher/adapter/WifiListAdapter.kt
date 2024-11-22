@@ -122,14 +122,7 @@ class WifiListAdapter(
         fun bind(bean: WifiItem) {
             val result = bean.item
             val usePass = AndroidSystem.isUsePassWifi(result)
-            val isConnect = result.SSID == connectSSID
-            //mStatusView.text = if (bean.isSave) context.getString(R.string.saved) else ""
 
-            /*if (bean.isSave||isConnect){
-                dataList.remove(bean)
-                notifyDataSetChanged()
-            }*/
-            //if (isConnect) mStatusView.text = context.getString(R.string.connected)
             mTitleView.text = result.SSID
             mLockView.visibility = if (usePass) View.VISIBLE else View.GONE
             when (WifiManager.calculateSignalLevel(bean.item.level, 5)) {
@@ -141,9 +134,6 @@ class WifiListAdapter(
         }
     }
 
-    private fun cleanSSID(ssid: String): String {
-        return ssid.replaceFirst("^\"".toRegex(), "").replaceFirst("\"$".toRegex(), "")
-    }
 
     interface Callback {
         fun onClick(bean: WifiItem?)

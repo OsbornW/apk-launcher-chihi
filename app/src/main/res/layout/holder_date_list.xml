@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="m"
+            type="com.soya.launcher.bean.DateItem" />
+    </data>
 <com.soya.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
@@ -24,6 +30,7 @@
             android:layout_width="@dimen/qb_px_4"
             android:layout_height="@dimen/qb_px_4"/>
         <TextView
+            android:text="@{m.title}"
             android:id="@+id/title"
             android:textSize="@dimen/qb_px_sp_14"
             android:textColor="@color/text_enable_style_1"
@@ -37,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
+                item_date_desc="@{m}"
                 android:textColor="@color/white"
                 android:id="@+id/desc"
                 android:textSize="@dimen/qb_px_sp_12"
@@ -44,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <Switch
+                item_date_switch="@{m}"
                 android:id="@+id/switch_item"
                 android:clickable="false"
                 android:layout_width="wrap_content"
@@ -51,3 +60,4 @@
         </FrameLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.soya.launcher.view.MyFrameLayout>
+</layout>

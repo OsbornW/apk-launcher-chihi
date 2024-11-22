@@ -8,14 +8,16 @@ import android.provider.Settings
 import android.provider.Settings.SettingNotFoundException
 import android.view.LayoutInflater
 import android.view.View
+import com.drake.brv.utils.setup
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.clickNoRepeat
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
-import com.soya.launcher.adapter.DateListAdapter
 import com.soya.launcher.bean.DateItem
 import com.soya.launcher.bean.SimpleTimeZone
 import com.soya.launcher.databinding.FragmentSetDateBinding
+import com.soya.launcher.databinding.HolderDateListBinding
 import com.soya.launcher.ui.dialog.DatePickerDialog
 import com.soya.launcher.ui.dialog.TimePickerDialog
 import com.soya.launcher.ui.dialog.TimeZoneDialog
@@ -28,7 +30,6 @@ import java.util.TimeZone
 
 abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel> : BaseWallPaperFragment<VDB,VM>(), View.OnClickListener {
 
-    private var mItemAdapter: DateListAdapter? = null
 
     private val itemList: MutableList<DateItem> = ArrayList()
 
@@ -72,11 +73,15 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
 
     private fun setSlide() {
-        mItemAdapter =
-            DateListAdapter(requireContext(), LayoutInflater.from(appContext), itemList, object : DateListAdapter.Callback {
-                override fun onClick(bean: DateItem?) {
-                    when (bean?.type) {
-                        0 -> changAutoTime(bean)
+        mBind.slide.setup {
+            addType<DateItem>(R.layout.holder_date_list)
+            onBind {
+                val binding = getBinding<HolderDateListBinding>()
+                val dto = getModel<DateItem>()
+                binding.title.isEnabled = !(models as MutableList<DateItem>)[0].isSwitch || (modelPosition != 1 && modelPosition != 2)
+                itemView.clickNoRepeat {
+                    when (dto.type) {
+                        0 -> changAutoTime(dto)
                         1 -> if (isAutoTime) {
                             val dialog = ToastDialog.newInstance(
                                 getString(R.string.is_auto_time_toast),
@@ -97,12 +102,13 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
                             openTimePicker()
                         }
 
-                        3 -> chang24Display(bean)
-                        4 -> openTimeZone(bean)
+                        3 -> chang24Display(dto)
+                        4 -> openTimeZone(dto)
                     }
                 }
-            })
-        mBind.slide.adapter = mItemAdapter
+            }
+        }.models = itemList
+
         mBind.slide.selectedPosition = 0
     }
 
@@ -121,7 +127,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
                 item.description = bean.desc
                 itemList[1].description = date
                 itemList[2].description = time
-                mItemAdapter!!.notifyDataSetChanged()
+                mBind.slide.adapter?.notifyDataSetChanged()
                 dialog.dismiss()
             }
         })
@@ -158,7 +164,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
             override fun onConfirm(timeMills: Long) {
                 AppUtil.setTime(timeMills)
                 itemList[1].description = date
-                mItemAdapter!!.notifyItemRangeChanged(0, itemList.size)
+                mBind.slide.adapter?.notifyItemRangeChanged(0, itemList.size)
             }
         })
         dialog.show(childFragmentManager, DatePickerDialog.TAG)
@@ -170,7 +176,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
             AppUtil.setAutoDate(requireContext(), !isAuto)
             bean.description = if (!isAuto) getString(R.string.open) else getString(R.string.close)
             bean.isSwitch = !isAuto
-            mItemAdapter!!.notifyItemRangeChanged(itemList.indexOf(bean), itemList.size)
+            mBind.slide.adapter?.notifyItemRangeChanged(itemList.indexOf(bean), itemList.size)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -182,7 +188,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
             AppUtil.set24Display(requireContext(), !isAuto)
             bean.description = if (!isAuto) getString(R.string.open) else getString(R.string.close)
             bean.isSwitch = !isAuto
-            mItemAdapter!!.notifyItemRangeChanged(itemList.indexOf(bean), itemList.size)
+            mBind.slide.adapter?.notifyItemRangeChanged(itemList.indexOf(bean), itemList.size)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -202,7 +208,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
             override fun onConfirm(timeMills: Long) {
                 AppUtil.setTime(timeMills)
                 itemList[2].description = time
-                mItemAdapter!!.notifyItemRangeChanged(0, itemList.size)
+                mBind.slide.adapter?.notifyItemRangeChanged(0, itemList.size)
             }
         })
         dialog.show(childFragmentManager, TimePickerDialog.TAG)

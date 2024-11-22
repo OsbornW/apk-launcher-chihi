@@ -8,17 +8,24 @@ import androidx.databinding.ViewDataBinding
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.leanback.widget.VerticalGridView
+import com.drake.brv.utils.addModels
+import com.drake.brv.utils.mutable
+import com.drake.brv.utils.setup
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.clickNoRepeat
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
-import com.soya.launcher.adapter.LanguageAdapter
 import com.soya.launcher.bean.Language
+import com.soya.launcher.bean.SimpleTimeZone
 import com.soya.launcher.databinding.FragmentSetLanguageBinding
+import com.soya.launcher.databinding.HolderLanguageBinding
+import com.soya.launcher.databinding.HolderTimeZoneBinding
 import java.util.Collections
 import java.util.Locale
 
-abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseViewModel> : BaseWallPaperFragment<VDB,VM>(), View.OnClickListener {
+abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseViewModel> :
+    BaseWallPaperFragment<VDB, VM>(), View.OnClickListener {
 
 
     override fun initView() {
@@ -31,14 +38,24 @@ abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseVi
     }
 
 
-
-
+    private var selectIndex = 0
     private fun setContent() {
+        mBind.content.setup {
+            addType<Language>(R.layout.holder_language)
+            onBind {
+                val dto = getModel<Language>()
+                val binding = getBinding<HolderLanguageBinding>()
+                val isSelect = modelPosition == selectIndex
+                binding.check.visibility = if (isSelect) View.VISIBLE else View.GONE
+                binding.desc.visibility = if (isSelect) View.GONE else View.VISIBLE
+                itemView.clickNoRepeat {
+                    selectIndex = modelPosition
+                    onSelectLanguage(dto)
+                    notifyItemRangeChanged(0, mBind.content.mutable.size)
+                }
+            }
+        }
         val list: MutableList<Language> = ArrayList()
-        val adapter = LanguageAdapter(requireContext(), LayoutInflater.from(appContext), list)
-        val arrayObjectAdapter = ArrayObjectAdapter(adapter)
-        val itemBridgeAdapter = ItemBridgeAdapter(arrayObjectAdapter)
-        mBind.content.adapter = itemBridgeAdapter
         mBind.content.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
 
         val locales = Resources.getSystem().assets.locales
@@ -53,13 +70,6 @@ abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseVi
             strings.add(language)
         }
 
-
-        /*List<MyLocaleInfo> localeInfos = SystemUtils.getSystemLocaleInfos(getActivity(), false);
-        for (int i = 0; i < localeInfos.size(); i++){
-            Locale locale = localeInfos.get(i).getLocale();
-            String name = locale.getDisplayName(locale);
-            list.add(new Language(name, locale.getDisplayLanguage(), locale));
-        }*/
         list.sortWith { o1, o2 -> o1.name.compareTo(o2.name) }
 
         var selectLauncher = 0
@@ -75,21 +85,9 @@ abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseVi
             }
         }
         val select = if (selectCountry != 0) selectCountry else selectLauncher
-        adapter.setSelect(select)
-
-        adapter.setCallback(newCallback(arrayObjectAdapter))
-
-        arrayObjectAdapter.addAll(0, list)
+        selectIndex = select
+        mBind.content.addModels(list)
         mBind.content.selectedPosition = select
-    }
-
-    fun newCallback(adapter: ArrayObjectAdapter): LanguageAdapter.Callback {
-        return LanguageAdapter.Callback { bean ->
-            if (bean != null) {
-                onSelectLanguage(bean)
-            }
-            adapter.notifyArrayItemRangeChanged(0, adapter.size())
-        }
     }
 
 

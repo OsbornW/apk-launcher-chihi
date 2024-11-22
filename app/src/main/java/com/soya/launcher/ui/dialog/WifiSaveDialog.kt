@@ -9,49 +9,35 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
+import com.soya.launcher.databinding.DialogWifiSaveBinding
 import com.soya.launcher.enums.Atts
 
-class WifiSaveDialog : SingleDialogFragment(), View.OnClickListener {
-    private var mCloseView: View? = null
-    private var mCleanView: View? = null
-    private var mConfirmView: View? = null
-    private var mNameView: TextView? = null
-    private var mRootView: View? = null
-    private var mBlur: ImageView? = null
-    private var callback: Callback? = null
-    override fun getLayout(): Int {
-        return R.layout.dialog_wifi_save
-    }
+class WifiSaveDialog : SingleDialogFragment<DialogWifiSaveBinding>(), View.OnClickListener {
 
-    var okText = ""
-    override fun init(inflater: LayoutInflater, view: View) {
-        super.init(inflater, view)
-        mCleanView = view.findViewById(R.id.clean)
-        mCloseView = view.findViewById(R.id.close)
-        mConfirmView = view.findViewById(R.id.confirm)
-        mNameView = view.findViewById(R.id.wifi_name)
-        mRootView = view.findViewById(R.id.root)
-        mBlur = view.findViewById(R.id.blur)
-        mNameView?.text = arguments!!.getString(Atts.BEAN)
+    private var callback: Callback? = null
+
+
+    override fun init( view: View) {
+
+        binding.wifiName.text = arguments!!.getString(Atts.BEAN)
         (arguments!!.getString("oktext")).toString().isNotEmpty().yes {
-            (mConfirmView as TextView).setText(arguments!!.getString("oktext"))
+            binding.confirm.text = arguments!!.getString("oktext")
         }
 
-        blur(mRootView, mBlur)
+        blur(binding.root, binding.blur)
 
     }
 
 
-    override fun initBefore(inflater: LayoutInflater, view: View) {
-        super.initBefore(inflater, view)
-        mCleanView!!.setOnClickListener(this)
-        mCloseView!!.setOnClickListener(this)
-        mConfirmView!!.setOnClickListener(this)
+    override fun initBefore( view: View) {
+        binding.clean.setOnClickListener(this)
+        binding.close.setOnClickListener(this)
+        binding.confirm.setOnClickListener(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mConfirmView!!.requestFocus()
+        binding.confirm.requestFocus()
 
     }
 
@@ -60,14 +46,14 @@ class WifiSaveDialog : SingleDialogFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        if (v == mCloseView) {
+        if (v == binding.close) {
             dismiss()
-        } else if (v == mCleanView) {
+        } else if (v == binding.clean) {
             if (callback != null) {
                 callback!!.onClick(-1)
                 dismiss()
             }
-        } else if (v == mConfirmView) {
+        } else if (v == binding.confirm) {
             if (callback != null) {
                 callback!!.onClick(0)
                 dismiss()
@@ -83,8 +69,8 @@ class WifiSaveDialog : SingleDialogFragment(), View.OnClickListener {
         return false
     }
 
-    override fun getWidthAndHeight(): IntArray {
-        return intArrayOf(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    override fun getWidthAndHeight(): Pair<Int,Int> {
+        return ViewGroup.LayoutParams.MATCH_PARENT to ViewGroup.LayoutParams.MATCH_PARENT
     }
 
     override fun getDimAmount(): Float {

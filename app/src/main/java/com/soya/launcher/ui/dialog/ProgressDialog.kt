@@ -4,13 +4,12 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.ViewGroup
 import com.soya.launcher.R
+import com.soya.launcher.databinding.DialogProgressBinding
 
-class ProgressDialog : SingleDialogFragment() {
+class ProgressDialog : SingleDialogFragment<DialogProgressBinding>() {
     private var callback: Callback? = null
 
-    override fun getLayout(): Int {
-        return R.layout.dialog_progress
-    }
+
 
     override fun canOutSide(): Boolean {
         return false
@@ -20,8 +19,8 @@ class ProgressDialog : SingleDialogFragment() {
         return false
     }
 
-    override fun getWidthAndHeight(): IntArray {
-        return intArrayOf(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    override fun getWidthAndHeight(): Pair<Int,Int> {
+        return ViewGroup.LayoutParams.MATCH_PARENT to ViewGroup.LayoutParams.MATCH_PARENT
     }
 
     override fun onDismiss(dialog: DialogInterface) {

@@ -12,49 +12,38 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
+import com.blankj.utilcode.util.SnackbarUtils.dismiss
 import com.soya.launcher.R
+import com.soya.launcher.databinding.DialogWifiPassBinding
 import com.soya.launcher.pop.showKeyBoardDialog
 import com.soya.launcher.view.CustomEditText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
+class WifiPassDialog : SingleDialogFragment<DialogWifiPassBinding>(), View.OnClickListener {
     var wifiName = ""
-    private var mEditText: CustomEditText? = null
-    private var mCloseView: View? = null
-    private var mCleanView: View? = null
-    private var mConfirmView: View? = null
-    private var mRootView: View? = null
-    private var mBlur: ImageView? = null
+   
     private var callback: Callback? = null
-    override fun getLayout(): Int {
-        return R.layout.dialog_wifi_pass
-    }
 
-    override fun init(inflater: LayoutInflater, view: View) {
-        super.init(inflater, view)
-        mEditText = view.findViewById(R.id.edit_pass)
-        mCleanView = view.findViewById(R.id.clean)
-        mCloseView = view.findViewById(R.id.close)
-        mConfirmView = view.findViewById(R.id.confirm)
-        mRootView = view.findViewById(R.id.root)
-        mBlur = view.findViewById(R.id.blur)
+
+    override fun init(view: View) {
+       
         wifiName = arguments?.getString("wifiname").toString()
 
         if (wifiName == "WIFI-5G") {
-            mEditText!!.setText("chen888888a")
+            binding.editPass.setText("chen888888a")
         } else if (wifiName == "WIFI") {
-            mEditText!!.setText("chen888888a")
+            binding.editPass.setText("chen888888a")
         } else if (wifiName == "wuyun") {
-            mEditText!!.setText("Boss888888")
+            binding.editPass.setText("Boss888888")
         } else if (wifiName == "wuyun-5G") {
-            mEditText!!.setText("Boss888888")
+            binding.editPass.setText("Boss888888")
         }
 
-        mEditText?.apply {
+        binding.editPass.apply {
             onConfirmClick = {
                 showKeyBoardDialog {
-                    editTextData.value = mEditText
+                    editTextData.value = binding.editPass
                 }
             }
 
@@ -63,19 +52,18 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
         lifecycleScope.launch {
             delay(600)
             showKeyBoardDialog {
-                editTextData.value = mEditText
+                editTextData.value = binding.editPass
             }
         }
 
     }
 
-    override fun initBefore(inflater: LayoutInflater, view: View) {
-        super.initBefore(inflater, view)
-        mCleanView!!.setOnClickListener(this)
-        mCloseView!!.setOnClickListener(this)
-        mConfirmView!!.setOnClickListener(this)
-        mEditText!!.setOnClickListener(this)
-        mEditText!!.setOnEditorActionListener { textView, i, keyEvent ->
+    override fun initBefore( view: View) {
+        binding.clean.setOnClickListener(this)
+        binding.close.setOnClickListener(this)
+        binding.confirm.setOnClickListener(this)
+        binding.editPass.setOnClickListener(this)
+        binding.editPass.setOnEditorActionListener { textView, i, keyEvent ->
             val text = textView.text.toString()
             setRootGravity(Gravity.CENTER)
             if (callback != null) callback!!.onConfirm(text)
@@ -86,8 +74,8 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mEditText!!.requestFocus()
-        blur(mRootView, mBlur)
+        binding.editPass.requestFocus()
+        blur(binding.root, binding.blur)
     }
 
     override fun getGravity(): Int {
@@ -98,11 +86,9 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
         return false
     }
 
-    override fun getWidthAndHeight(): IntArray {
-        return intArrayOf(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
+    override fun getWidthAndHeight(): Pair<Int,Int> {
+        return ViewGroup.LayoutParams.MATCH_PARENT to ViewGroup.LayoutParams.MATCH_PARENT
+
     }
 
     override fun getDimAmount(): Float {
@@ -110,12 +96,12 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        if (v == mCloseView) {
+        if (v == binding.close) {
             dismiss()
-        } else if (v == mCleanView) {
-            mEditText!!.setText("")
-        } else if (v == mConfirmView) {
-            val text = mEditText!!.text.toString()
+        } else if (v == binding.clean) {
+            binding.editPass.setText("")
+        } else if (v == binding.confirm) {
+            val text = binding.editPass.text.toString()
             if (callback != null && !TextUtils.isEmpty(text)) {
                 callback!!.onConfirm(text)
                 dismiss()
@@ -124,10 +110,10 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
     }
 
     fun setRootGravity(gravity: Int) {
-        val lp = mRootView!!.layoutParams as FrameLayout.LayoutParams
+        val lp = binding.root.layoutParams as FrameLayout.LayoutParams
         lp.gravity = gravity
-        mRootView!!.layoutParams = lp
-        blur(mRootView, mBlur)
+        binding.root.layoutParams = lp
+        blur(binding.root, binding.blur)
     }
 
     fun setCallback(callback: Callback?) {
@@ -135,15 +121,15 @@ class WifiPassDialog : SingleDialogFragment(), View.OnClickListener {
     }
 
     fun setDefaultPwd(wifiName: String?) {
-        if (wifiName != null && mEditText != null) {
+        if (wifiName != null && binding.editPass != null) {
             if (wifiName == "WIFI-5G") {
-                mEditText!!.setText("chen888888a")
+                binding.editPass.setText("chen888888a")
             } else if (wifiName == "WIFI") {
-                mEditText!!.setText("chen888888a")
+                binding.editPass.setText("chen888888a")
             } else if (wifiName == "wuyun") {
-                mEditText!!.setText("Boss888888")
+                binding.editPass.setText("Boss888888")
             } else if (wifiName == "wuyun-5G") {
-                mEditText!!.setText("Boss888888")
+                binding.editPass.setText("Boss888888")
             }
         }
     }

@@ -10,20 +10,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.soya.launcher.R
+import com.soya.launcher.databinding.DialogAppBinding
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.utils.AndroidSystem.isSystemApp
 import com.soya.launcher.utils.AndroidSystem.uninstallPackage
 
-class AppDialog : SingleDialogFragment(), View.OnClickListener {
-    private var mCloseView: View? = null
-    private var mDeleteView: View? = null
-    private var mOpenView: View? = null
+class AppDialog : SingleDialogFragment<DialogAppBinding>(), View.OnClickListener {
 
-    private var mIV: ImageView? = null
-    private var mNameView: TextView? = null
-    private var mVersionView: TextView? = null
-    private var mBlur: ImageView? = null
-    private var mRootView: View? = null
 
     private var info: ApplicationInfo? = null
 
@@ -34,52 +27,39 @@ class AppDialog : SingleDialogFragment(), View.OnClickListener {
         info = arguments!!.getParcelable(Atts.BEAN)
     }
 
-    override fun getLayout(): Int {
-        return R.layout.dialog_app
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mOpenView!!.requestFocus()
+        binding.open.requestFocus()
     }
 
-    override fun init(inflater: LayoutInflater, view: View) {
-        super.init(inflater, view)
-        mCloseView = view.findViewById(R.id.close)
-        mDeleteView = view.findViewById(R.id.delete)
-        mOpenView = view.findViewById(R.id.open)
-        mIV = view.findViewById(R.id.icon)
-        mNameView = view.findViewById(R.id.name)
-        mVersionView = view.findViewById(R.id.version)
-        mBlur = view.findViewById(R.id.blur)
-        mRootView = view.findViewById(R.id.root)
+    override fun init(view: View) {
 
-        blur(mRootView, mBlur)
+        blur(binding.root, binding.blur)
     }
 
-    override fun initBefore(inflater: LayoutInflater, view: View) {
-        super.initBefore(inflater, view)
-        mDeleteView!!.visibility =
+    override fun initBefore(view: View) {
+        binding.delete.visibility =
             if (isSystemApp(info!!.flags)) View.GONE else View.VISIBLE
-        mCloseView!!.setOnClickListener(this)
-        mDeleteView!!.setOnClickListener(this)
-        mOpenView!!.setOnClickListener(this)
+        binding.close.setOnClickListener(this)
+        binding.delete.setOnClickListener(this)
+        binding.open.setOnClickListener(this)
     }
 
-    override fun initBind(inflater: LayoutInflater, view: View) {
-        super.initBind(inflater, view)
+    override fun initBind( view: View) {
         try {
             val pm = activity!!.packageManager
-            mIV!!.setImageDrawable(info!!.loadIcon(pm))
-            mNameView!!.text = info!!.loadLabel(pm)
-            mVersionView!!.text = pm.getPackageInfo(info!!.packageName, 0).versionName
+            binding.icon.setImageDrawable(info!!.loadIcon(pm))
+            binding.name.text = info!!.loadLabel(pm)
+            binding.version.text = pm.getPackageInfo(info!!.packageName, 0).versionName
         } catch (e: PackageManager.NameNotFoundException) {
             throw RuntimeException(e)
         }
     }
 
-    override fun getWidthAndHeight(): IntArray {
-        return intArrayOf(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    override fun getWidthAndHeight(): Pair<Int,Int> {
+        return ViewGroup.LayoutParams.MATCH_PARENT to ViewGroup.LayoutParams.MATCH_PARENT
     }
 
     override fun getDimAmount(): Float {
@@ -95,14 +75,14 @@ class AppDialog : SingleDialogFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        if (v == mCloseView) {
+        if (v == binding.close) {
             dismiss()
-        } else if (v == mDeleteView) {
+        } else if (v == binding.delete) {
             //UninstallDialog.newInstance(info).show(getActivity().getSupportFragmentManager(), UninstallDialog.TAG);
 
             uninstallPackage(activity!!, info!!.packageName)
             dismiss()
-        } else if (v == mOpenView) {
+        } else if (v == binding.open) {
             if (callback != null) callback!!.onOpen()
             dismiss()
         }

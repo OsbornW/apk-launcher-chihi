@@ -8,14 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.soya.launcher.R
+import com.soya.launcher.databinding.DialogToastBinding
 import com.soya.launcher.enums.Atts
 
-class ToastDialog : SingleDialogFragment() {
-    private var mTextView: TextView? = null
-    private var mConfirmView: View? = null
-    private var mCancelView: View? = null
-    private var mRootView: View? = null
-    private var mBlur: ImageView? = null
+class ToastDialog : SingleDialogFragment<DialogToastBinding>() {
+
 
     private var callback: Callback? = null
 
@@ -26,40 +23,32 @@ class ToastDialog : SingleDialogFragment() {
         mode = arguments!!.getInt(Atts.MODE)
     }
 
-    override fun getLayout(): Int {
-        return R.layout.dialog_toast
-    }
 
-    override fun init(inflater: LayoutInflater, view: View) {
-        super.init(inflater, view)
-        mTextView = view.findViewById(R.id.text)
-        mConfirmView = view.findViewById(R.id.confirm)
-        mRootView = view.findViewById(R.id.root)
-        mBlur = view.findViewById(R.id.blur)
-        mCancelView = view.findViewById(R.id.cancel)
+
+    override fun init( view: View) {
+
 
         when (mode) {
             MODE_CONFIRM -> {
-                mCancelView?.visibility = View.GONE
-                mConfirmView?.visibility = View.VISIBLE
+                binding.cancel.visibility = View.GONE
+                binding.confirm.visibility = View.VISIBLE
             }
 
             else -> {
-                mCancelView?.visibility = View.VISIBLE
-                mConfirmView?.visibility = View.VISIBLE
+                binding.cancel.visibility = View.VISIBLE
+                binding.confirm.visibility = View.VISIBLE
             }
         }
     }
 
-    override fun initBind(inflater: LayoutInflater, view: View) {
-        super.initBind(inflater, view)
-        mTextView!!.text = arguments!!.getString(Atts.BEAN)
-        mConfirmView!!.setOnClickListener {
+    override fun initBind(view: View) {
+        binding.text.text = arguments!!.getString(Atts.BEAN)
+        binding.confirm.setOnClickListener {
             dismiss()
             if (callback != null) callback!!.onClick(1)
         }
 
-        mCancelView!!.setOnClickListener {
+        binding.cancel.setOnClickListener {
             dismiss()
             if (callback != null) callback!!.onClick(0)
         }
@@ -67,7 +56,7 @@ class ToastDialog : SingleDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        blur(mRootView, mBlur)
+        blur(binding.root, binding.blur)
     }
 
     override fun getGravity(): Int {
@@ -78,8 +67,8 @@ class ToastDialog : SingleDialogFragment() {
         return false
     }
 
-    override fun getWidthAndHeight(): IntArray {
-        return intArrayOf(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    override fun getWidthAndHeight(): Pair<Int,Int> {
+        return ViewGroup.LayoutParams.MATCH_PARENT to ViewGroup.LayoutParams.MATCH_PARENT
     }
 
     override fun getDimAmount(): Float {

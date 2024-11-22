@@ -1,139 +1,137 @@
-package com.soya.launcher.ui.dialog;
+package com.soya.launcher.ui.dialog
 
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
+import android.os.Bundle
+import android.view.*
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.viewbinding.ViewBinding
+import com.soya.launcher.R
+import com.soya.launcher.utils.AndroidSystem
+import java.lang.reflect.ParameterizedType
+import kotlin.reflect.KClass
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+abstract class SingleDialogFragment<VB : ViewBinding> : DialogFragment() {
 
-import com.soya.launcher.R;
-import com.soya.launcher.utils.AndroidSystem;
-
-public abstract class SingleDialogFragment extends DialogFragment {
-    public static final int NO_ANIMATION = -1;
-
-    protected abstract int getLayout();
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        /*
-            设置全屏
-            setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-         */
-        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Dialog);
+    companion object {
+        const val NO_ANIMATION = -1
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayout(), container, false);
-        init(inflater, view);
-        initBefore(inflater, view);
-        initBind(inflater, view);
-        return view;
+    protected lateinit var binding: VB
+        private set
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, android.R.style.Theme_Dialog)
     }
 
-    protected void init(LayoutInflater inflater, View view){}
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // 初始化 ViewBinding
+        binding = initViewBinding(inflater, container)
+        init(binding.root)
+        initBefore(binding.root)
+        initBind(binding.root)
+        return binding.root
+    }
 
-    protected void initBefore(LayoutInflater inflater, View view){}
+    /**
+     * 自动初始化 ViewBinding
+     */
+    @Suppress("UNCHECKED_CAST")
+    private fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
+        val bindingClass = (javaClass.genericSuperclass as? ParameterizedType)
+            ?.actualTypeArguments
+            ?.firstOrNull() as? Class<VB>
+            ?: throw IllegalStateException("Cannot find ViewBinding class.")
+        val method = bindingClass.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
+        return method.invoke(null, inflater, container, false) as VB
+    }
 
-    protected void initBind(LayoutInflater inflater, View view){}
+    protected open fun init(view: View) {}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Window window = getDialog().getWindow();
-        window.setBackgroundDrawable(isMaterial() ? getResources().getDrawable(R.drawable.dialog_material_radius_white_background, Resources.getSystem().newTheme()) : getResources().getDrawable(R.drawable.dialog_material_transparent_background, Resources.getSystem().newTheme()));
-        window.setGravity(getGravity());
-        if (getAnimation() != NO_ANIMATION){
-            window.setWindowAnimations(getAnimation());
+    protected open fun initBefore(view: View) {}
+
+    protected open fun initBind(view: View) {}
+
+    override fun onResume() {
+        super.onResume()
+        dialog?.window?.let { window ->
+            window.setBackgroundDrawable(getBackgroundDrawable())
+            window.setGravity(getGravity())
+            if (getAnimation() != NO_ANIMATION) {
+                window.setWindowAnimations(getAnimation())
+            }
+            window.setDimAmount(getDimAmount())
+            dialog?.setCanceledOnTouchOutside(canOutSide())
+            val params = window.attributes
+            val (width, height) = getWidthAndHeight()
+            params.width = width
+            params.height = height
+            window.attributes = params
         }
-        window.setDimAmount(getDimAmount());
-        getDialog().setCanceledOnTouchOutside(canOutSide());
-        WindowManager.LayoutParams lp = window.getAttributes();
-        lp.width = getWidthAndHeight()[0];
-        lp.height = getWidthAndHeight()[1];
-        window.setAttributes(lp);
     }
 
-    public boolean isMaterial() {
-        return false;
+    private fun getBackgroundDrawable(): Drawable? {
+        return ResourcesCompat.getDrawable(
+            resources,
+            if (isMaterial()) R.drawable.dialog_material_radius_white_background
+            else R.drawable.dialog_material_transparent_background,
+            requireContext().theme
+        )
     }
 
-    @Override
-    public void show(FragmentManager manager, String tag) {
-        FragmentTransaction ft = manager.beginTransaction();
-        ft.add(this, tag);
-        ft.commitAllowingStateLoss();
+    protected fun blur(root: View, blur: ImageView) {
+        activity?.let { activity ->
+            val decorView = activity.window.decorView
+            AndroidSystem.blur(activity, decorView, root, blur)
+        }
     }
 
-    protected void blur(View root, ImageView blur){
-        View decorView = getActivity().getWindow().getDecorView();
-        AndroidSystem.blur(getActivity(), decorView, root, blur);
+    protected fun setVisible(view: View, show: Boolean) {
+        view.visibility = if (show) View.VISIBLE else View.GONE
     }
 
-    protected View[] getClickViews(){
-        return null;
+    fun toast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
+        Toast.makeText(activity, msg, duration).show()
     }
 
-    protected void setVisible(View view, boolean show){
-        view.setVisibility(show ? View.VISIBLE : View.GONE);
+    fun getThis(): Fragment = this
+
+    protected open fun getWidthAndHeight(): Pair<Int, Int> {
+        return ViewGroup.LayoutParams.MATCH_PARENT to ViewGroup.LayoutParams.WRAP_CONTENT
     }
 
-    public void toast(String msg, int duration){
-        Toast.makeText(getActivity(), msg, duration).show();
+    fun setDimAmount(dimAmount: Float) {
+        dialog?.window?.setDimAmount(dimAmount)
     }
 
-    public void toast(String msg){
-        toast(msg, Toast.LENGTH_SHORT);
+    fun standShow(manager: FragmentManager) {
+        show(manager, javaClass.name)
     }
 
-    public Fragment getThis(){
-        return this;
+    protected open fun getDimAmount(): Float = 0.5f
+
+    protected open fun getAnimation(): Int = NO_ANIMATION
+
+    protected open fun getGravity(): Int = Gravity.CENTER
+
+    protected open fun canOutSide(): Boolean = false
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        val transaction: FragmentTransaction = manager.beginTransaction()
+        transaction.add(this, tag)
+        transaction.commitAllowingStateLoss()
     }
 
-    protected int[] getWidthAndHeight() {
-        return new int[]{
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        };
-    }
-
-    public void setDimAmount(float val){
-        Window window = getDialog().getWindow();
-        window.setDimAmount(val);
-    }
-
-    public void standShow(FragmentManager manager){
-        show(manager, getClass().getName());
-    }
-
-    protected float getDimAmount() {
-        return 0.5f;
-    }
-
-    public int getAnimation(){
-        return NO_ANIMATION;
-    }
-
-    protected int getGravity() {
-        return Gravity.CENTER;
-    }
-
-    protected boolean canOutSide() {
-        return false;
-    }
+    protected open fun isMaterial(): Boolean = false
 }

@@ -7,40 +7,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.leanback.widget.HorizontalGridView
+import com.drake.brv.utils.models
+import com.drake.brv.utils.mutable
+import com.drake.brv.utils.setup
+import com.shudong.lib_base.ext.clickNoRepeat
 import com.soya.launcher.R
-import com.soya.launcher.adapter.DateSelectAdapter
+import com.soya.launcher.databinding.DialogDatePickerBinding
+import com.soya.launcher.databinding.HolderDateSelectBinding
 import java.util.Calendar
 
-class DatePickerDialog : SingleDialogFragment(), View.OnClickListener {
+class DatePickerDialog : SingleDialogFragment<DialogDatePickerBinding>(), View.OnClickListener {
     private val calendar: Calendar = Calendar.getInstance()
 
-    private var mYearGrid: HorizontalGridView? = null
-    private var mMonthGrid: HorizontalGridView? = null
-    private var mDayGrid: HorizontalGridView? = null
-    private var mCancelView: View? = null
-    private var mConfirmView: View? = null
-    private var mBlur: ImageView? = null
-    private var mRootView: View? = null
 
-    private var mYearAdapter: DateSelectAdapter? = null
-    private var mMonthAdapter: DateSelectAdapter? = null
-    private var mDayAdapter: DateSelectAdapter? = null
+
 
     private var callback: Callback? = null
 
-    override fun getLayout(): Int {
-        return R.layout.dialog_date_picker
-    }
 
-    override fun init(inflater: LayoutInflater, view: View) {
-        super.init(inflater, view)
-        mYearGrid = view.findViewById(R.id.year)
-        mMonthGrid = view.findViewById(R.id.month)
-        mDayGrid = view.findViewById(R.id.day)
-        mCancelView = view.findViewById(R.id.cancel)
-        mConfirmView = view.findViewById(R.id.confirm)
-        mBlur = view.findViewById(R.id.blur)
-        mRootView = view.findViewById(R.id.root)
+
+    private var selectIndexYear: Int? = null
+    private var selectIndexMonth: Int? = null
+    private var selectIndexDay: Int? = null
+    override fun init( view: View) {
 
         val years: MutableList<Int> = ArrayList()
         for (i in 0..299) {
@@ -50,44 +39,83 @@ class DatePickerDialog : SingleDialogFragment(), View.OnClickListener {
         for (i in 1..12) {
             months.add(i)
         }
-        mYearAdapter = DateSelectAdapter(activity!!, inflater, years, newYearCallback())
-        mMonthAdapter = DateSelectAdapter(activity!!, inflater, months, newMonthCallback())
-        mDayAdapter = DateSelectAdapter(activity!!, inflater, ArrayList(), newDayCallback())
+        binding.year.setup {
+            addType<Int>(R.layout.holder_date_select)
+            onBind {
+                val dto = getModel<Int>()
+                val binding = getBinding<HolderDateSelectBinding>()
+                binding.title.isSelected = dto == selectIndexYear
+                binding.title.text = dto.toString()
+                itemView.clickNoRepeat {
+                    selectIndexYear = dto
+                    notifyItemRangeChanged(0, mutable.size)
+                    calendar[Calendar.YEAR] = dto
+                    syncDay()
+                }
+            }
+        }.models = years
+
+        binding.month.setup {
+            addType<Int>(R.layout.holder_date_select)
+            onBind {
+                val dto = getModel<Int>()
+                val binding = getBinding<HolderDateSelectBinding>()
+                binding.title.isSelected = dto == selectIndexMonth
+                binding.title.text = dto.toString()
+                itemView.clickNoRepeat {
+                    selectIndexMonth = dto
+                    notifyItemRangeChanged(0, mutable.size)
+                    calendar[Calendar.MONTH] = dto - 1
+                    syncDay()
+                }
+            }
+        }.models = months
+
+        binding.day.setup {
+            addType<Int>(R.layout.holder_date_select)
+            onBind {
+                val dto = getModel<Int>()
+                val binding = getBinding<HolderDateSelectBinding>()
+                binding.title.isSelected = dto == selectIndexDay
+                binding.title.text = dto.toString()
+                itemView.clickNoRepeat {
+                    selectIndexDay = dto
+                    notifyItemRangeChanged(0, mutable.size)
+                    calendar[Calendar.DAY_OF_MONTH] = dto
+                }
+            }
+        }
+
     }
 
-    override fun initBefore(inflater: LayoutInflater, view: View) {
-        super.initBefore(inflater, view)
-        mCancelView!!.setOnClickListener(this)
-        mConfirmView!!.setOnClickListener(this)
+    override fun initBefore( view: View) {
+        binding.cancel.setOnClickListener(this)
+        binding.confirm.setOnClickListener(this)
     }
 
-    override fun initBind(inflater: LayoutInflater, view: View) {
-        super.initBind(inflater, view)
+    override fun initBind(view: View) {
         val yearIndex = calendar[Calendar.YEAR] - 1900
         val monthIndex = calendar[Calendar.MONTH]
         val dayIndex = calendar[Calendar.DAY_OF_MONTH] - 1
 
-        mYearGrid!!.adapter = mYearAdapter
-        mMonthGrid!!.adapter = mMonthAdapter
-        mDayGrid!!.adapter = mDayAdapter
 
-        mYearGrid!!.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
-        mMonthGrid!!.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
-        mDayGrid!!.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+        binding.year.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+        binding.month.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+        binding.day.setRowHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        mYearGrid!!.selectedPosition = yearIndex
-        mMonthGrid!!.selectedPosition = monthIndex
+        binding.year.selectedPosition = yearIndex
+        binding.month.selectedPosition = monthIndex
         syncDay()
-        mDayGrid!!.selectedPosition = dayIndex
+        binding.day.selectedPosition = dayIndex
 
-        mYearAdapter!!.setSelect(mYearAdapter!!.getDataList()[mYearGrid!!.selectedPosition])
-        mMonthAdapter!!.setSelect(mMonthAdapter!!.getDataList()[mMonthGrid!!.selectedPosition])
-        mDayAdapter!!.setSelect(mDayAdapter!!.getDataList()[mDayGrid!!.selectedPosition])
+        selectIndexYear = binding.year.mutable[binding.year.selectedPosition] as Int?
+        selectIndexMonth = binding.year.mutable[binding.month.selectedPosition] as Int?
+        selectIndexDay = binding.year.mutable[binding.day.selectedPosition] as Int?
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        blur(mRootView, mBlur)
+        blur(binding.root, binding.blur)
     }
 
     override fun getGravity(): Int {
@@ -98,39 +126,15 @@ class DatePickerDialog : SingleDialogFragment(), View.OnClickListener {
         return false
     }
 
-    override fun getWidthAndHeight(): IntArray {
-        return intArrayOf(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    override fun getWidthAndHeight(): Pair<Int,Int> {
+        return ViewGroup.LayoutParams.MATCH_PARENT to ViewGroup.LayoutParams.MATCH_PARENT
     }
 
     override fun getDimAmount(): Float {
         return 0f
     }
 
-    private fun newYearCallback(): DateSelectAdapter.Callback {
-        return object : DateSelectAdapter.Callback {
-            override fun onClick(bean: Int?) {
-                calendar[Calendar.YEAR] = bean!!
-                syncDay()
-            }
-        }
-    }
 
-    private fun newMonthCallback(): DateSelectAdapter.Callback {
-        return object : DateSelectAdapter.Callback {
-            override fun onClick(bean: Int?) {
-                calendar[Calendar.MONTH] = bean!! - 1
-                syncDay()
-            }
-        }
-    }
-
-    private fun newDayCallback(): DateSelectAdapter.Callback {
-        return object : DateSelectAdapter.Callback {
-            override fun onClick(bean: Int?) {
-                calendar[Calendar.DAY_OF_MONTH] = bean!!
-            }
-        }
-    }
 
     private fun syncDay() {
         val max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
@@ -138,13 +142,13 @@ class DatePickerDialog : SingleDialogFragment(), View.OnClickListener {
         for (i in 1..max) {
             days.add(i)
         }
-        mDayAdapter!!.replace(days)
+        binding.day.models = days
     }
 
     override fun onClick(v: View) {
-        if (v == mCancelView) {
+        if (v == binding.cancel) {
             dismiss()
-        } else if (v == mConfirmView) {
+        } else if (v == binding.confirm) {
             if (callback != null) callback!!.onConfirm(calendar.timeInMillis)
             dismiss()
         }
@@ -169,3 +173,4 @@ class DatePickerDialog : SingleDialogFragment(), View.OnClickListener {
         }
     }
 }
+

@@ -5,46 +5,51 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.os.HandlerCompat.postDelayed
 import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.lifecycleScope
+import com.drake.brv.utils.addModels
+import com.drake.brv.utils.setup
+import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.e
 import com.soya.launcher.R
-import com.soya.launcher.adapter.TimeZoneAdapter
 import com.soya.launcher.bean.SimpleTimeZone
+import com.soya.launcher.databinding.DialogTimeZoneBinding
+import com.soya.launcher.databinding.HolderTimeZoneBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Collections
 import java.util.TimeZone
 
-class TimeZoneDialog : SingleDialogFragment() {
-    private var mContentGrid: VerticalGridView? = null
-
-    private var mTimeZoneAdapter: TimeZoneAdapter? = null
-
-    private var mBlur: ImageView? = null
-    private var mRootView: View? = null
+class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
 
     private var callback: Callback? = null
 
 
-    override fun getLayout(): Int {
-        return R.layout.dialog_time_zone
+
+    private var select: TimeZone? = null
+    override fun init(view: View) {
+
+        binding.content.setup {
+            addType<SimpleTimeZone>(R.layout.holder_time_zone)
+            onBind {
+                val dto = getModel<SimpleTimeZone>()
+                val binding  = getBinding<HolderTimeZoneBinding>()
+                val isSelect = select != null && dto.zone.id == select!!.id
+                binding.check.visibility = if (isSelect) View.VISIBLE else View.GONE
+                binding.desc.visibility = if (isSelect) View.GONE else View.VISIBLE
+                itemView.clickNoRepeat {
+                    select = dto.zone
+                    if (callback != null) callback!!.onClick(dto)
+                }
+            }
+        }
+
+        blur(binding.root, binding.blur)
     }
 
-    override fun init(inflater: LayoutInflater, view: View) {
-        super.init(inflater, view)
-        mContentGrid = view.findViewById(R.id.content)
-        mBlur = view.findViewById(R.id.blur)
-        mRootView = view.findViewById(R.id.root)
-
-        mTimeZoneAdapter = TimeZoneAdapter(requireContext(), inflater, ArrayList())
-
-        blur(mRootView, mBlur)
-    }
-
-    override fun initBind(inflater: LayoutInflater, view: View) {
-        super.initBind(inflater, view)
+    override fun initBind(view: View) {
 
         lifecycleScope.launch {
            /* withContext(Dispatchers.Main){
@@ -73,28 +78,18 @@ class TimeZoneDialog : SingleDialogFragment() {
                 }
             }
             withContext(Dispatchers.Main){
-                mTimeZoneAdapter!!.replace(list)
-                mContentGrid!!.adapter = mTimeZoneAdapter
-                mContentGrid!!.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+                binding.content.addModels(list)
+                binding.content.setColumnWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
 
-                mContentGrid!!.apply {
+                binding.content.apply {
                    postDelayed({
                        "开始执行"
                        scrollToPosition(select)
-                       //mContentGrid!!.selectedPosition = select
-                       //mTimeZoneAdapter!!.setSelect(aDefault)
                    },0)
                 }
 
                 "当前选中的时区是：${aDefault.displayName}::$select"
 
-
-                mTimeZoneAdapter!!.setCallback(object :TimeZoneAdapter.Callback{
-                    override fun onClick(bean: SimpleTimeZone?) {
-                        if (callback != null) callback!!.onClick(bean)
-                    }
-
-                })
             }
         }
 
@@ -102,6 +97,7 @@ class TimeZoneDialog : SingleDialogFragment() {
 
 
     }
+
 
     override fun getDimAmount(): Float {
         return 0f
