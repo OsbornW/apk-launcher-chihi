@@ -275,6 +275,19 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         mBind.notifyRecycler.linear(RecyclerView.HORIZONTAL).setup {
             addType<Notify>(R.layout.holder_notify_2)
+            onBind {
+                product.isBlueDisableClick().yes {
+                    val dto = getModel<Notify>()
+                    (dto.type==3).yes {
+                        itemView.isFocusable = false
+                        itemView.isFocusableInTouchMode = false
+                    }.otherwise {
+                        itemView.isFocusable = true
+                        itemView.isFocusableInTouchMode = true
+                    }
+                }
+
+            }
         }.models = arrayListOf()
 
     }
@@ -825,6 +838,16 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             isInsertSDCard.yes {
                 notifies.add(Notify(R.drawable.baseline_sd_storage_100, 1))
+            }
+
+            product.isBlueDisableClick().yes {
+                if(notifies.size==1&&notifies[0].type==3){
+                    // 禁止子控件获取焦点
+                    mBind.notifyRecycler.descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
+                }else{
+                    // 恢复子控件获取焦点
+                    mBind.notifyRecycler.descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS
+                }
             }
 
             if (notifies.size != mBind.notifyRecycler.mutable.size) {

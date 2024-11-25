@@ -9,15 +9,24 @@ import com.soya.launcher.utils.GlideUtils
 const val FLAVOUR_H6 = "flavour_h6"
 const val PACKAGE_NAME_FILE_MANAGER_713 = "com.softwinner.TvdFileManager"
 const val CLASS_NAME_AUTHFRAGMENT = "com.soya.launcher.AuthFragment"
-const val PACKAGE_NAME_SCREENZOOM_RK3326 = "com.lei.hxkeystone/com.lei.hxkeystone.ScaleActivity"
-const val PACKAGE_NAME_AUTO_RESPONSE = "com.soya.launcher/com.soya.launcher.activity.AutoResponseActivity"
-const val PACKAGE_NAME_PROJECTOR_MODE_P50 = "com.android.tv.settings/com.android.tv.settings.display.ProjectionActivity"
-const val PACKAGE_NAME_SCREEN_ZOOM_P50 = "com.softwinner.tcorrection/com.softwinner.tcorrection.ScaleActivity"
-const val PACKAGE_NAME_KEYSTONE_CORRECTION_P50 = "com.android.tv.settings/com.android.tv.settings.display.AutoCorrectionActivity"
-const val PACKAGE_NAME_AUTO_KEYSTONE_CORRECTION = "com.hxdevicetest/com.hxdevicetest.CheckGsensorActivity"
-const val PACKAGE_NAME_AUTO_KEYSTONE_CORRECTION_RK3326 = "com.lei.hxkeystone/com.lei.hxkeystone.CheckGsensorActivity"
-const val PACKAGE_NAME_Manual_KEYSTONE_CORRECTION_RK3326 = "com.lei.hxkeystone/com.lei.hxkeystone.FourPoint"
-const val PACKAGE_NAME_IMAGE_MODE = "com.android.tv.settings/com.android.tv.settings.display.PQModeActivity"
+const val PACKAGE_NAME_SCREENZOOM_RK3326 = "com.lei.hxkeystone/.ScaleActivity"
+const val PACKAGE_NAME_AUTO_RESPONSE = "com.soya.launcher/.activity.AutoResponseActivity"
+const val PACKAGE_NAME_PROJECTOR_MODE_P50 = "com.android.tv.settings/.display.ProjectionActivity"
+const val PACKAGE_NAME_SCREEN_ZOOM_P50 = "com.softwinner.tcorrection/.ScaleActivity"
+const val PACKAGE_NAME_KEYSTONE_CORRECTION_P50 = "com.android.tv.settings/.display.AutoCorrectionActivity"
+const val PACKAGE_NAME_AUTO_KEYSTONE_CORRECTION = "com.hxdevicetest/.CheckGsensorActivity"
+const val PACKAGE_NAME_AUTO_KEYSTONE_CORRECTION_RK3326 = "com.lei.hxkeystone/.CheckGsensorActivity"
+const val PACKAGE_NAME_Manual_KEYSTONE_CORRECTION_RK3326 = "com.lei.hxkeystone/.FourPoint"
+const val PACKAGE_NAME_IMAGE_MODE = "com.android.tv.settings/.display.PQModeActivity"
+
+// X98K_M系统时间页面
+const val PACKAGE_NAME_X98KM_TIME = "com.android.tv.settings/.system.DateTimeActivity"
+// X98K_M系统语言页面
+const val PACKAGE_NAME_X98KM_LANGUAGE = "com.android.tv.settings/.system.LanguageActivity"
+// X98K_M系统声音页面
+const val PACKAGE_NAME_X98KM_SOUND = "com.android.tv.settings/.device.displaysound.DisplaySoundActivity"
+// X98K_M系统文件管理器页面
+const val PACKAGE_NAME_X98KM_FILEMANAGER = "com.droidlogic.FileBrower/.FileBrower"
 
 
 const val SETTING_NETWORK = 0

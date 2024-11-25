@@ -162,35 +162,46 @@ fun String.openAppInGooglePlay(context:Context) {
 }
 
 
-fun String.openApp(result: ((Boolean) -> Unit?)? = null) {
+
+fun String.openApp(result: ((Boolean) -> Unit)? = null) {
     val packageManager = appContext.packageManager
-    val parts = this.split("/")
 
-    if (parts.size == 2) {
-        val packageName = parts[0]
-        val activityClassName = parts[1]
-        val intent = Intent().setClassName(packageName, activityClassName)
-        currentActivity?.startActivity(intent)
-        result?.invoke(true)
-    } else {
-        val packageName = this
-        val intent = packageManager.getLaunchIntentForPackage(packageName)
-        if (intent != null) {
-            currentActivity?.startActivity(intent)
-            result?.invoke(true)
-        } else {
-            // 如果找不到启动 Intent，尝试打开应用商店页面
+    // 检查是否为 `packageName/.activityName` 格式
+    if (this.contains("/")) {
+        val parts = this.split("/")
+        if (parts.size == 2) {
+            val packageName = parts[0]
+            val activityClassName = if (parts[1].startsWith(".")) {
+                // 如果 activityName 以 "." 开头，自动补全完整路径
+                packageName + parts[1]
+            } else {
+                parts[1]
+            }
+            val intent = Intent().setClassName(packageName, activityClassName)
             try {
-
-                result?.invoke(false)
-            } catch (e: android.content.ActivityNotFoundException) {
-                // 如果没有应用商店应用，打开网页版
-
+                currentActivity?.startActivity(intent)
+                result?.invoke(true)
+            } catch (e: Exception) {
                 result?.invoke(false)
             }
+            return
         }
     }
+
+    // 否则，尝试直接启动应用
+    val intent = packageManager.getLaunchIntentForPackage(this)
+    if (intent != null) {
+        try {
+            currentActivity?.startActivity(intent)
+            result?.invoke(true)
+        } catch (e: Exception) {
+            result?.invoke(false)
+        }
+    } else {
+        result?.invoke(false)
+    }
 }
+
 
 fun String.openApp1(result: (Boolean) -> Unit) {
     val packageManager = appContext.packageManager

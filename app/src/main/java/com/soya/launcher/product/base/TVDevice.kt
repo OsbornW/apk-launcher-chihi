@@ -46,6 +46,9 @@ sealed interface TVDevice{
     fun addGameItem():MutableList<TypeItem>?=null
     fun isGameRes():Int?=null
     fun isShowPageTitle() = true
+    fun openSound(){}
+    fun isBlueDisableClick() = false
+
 }
 
 data object DefaultDevice: TVDevice

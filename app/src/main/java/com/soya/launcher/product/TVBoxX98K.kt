@@ -105,4 +105,6 @@ import com.soya.launcher.utils.AndroidSystem
         }
     }
 
+     override fun isBlueDisableClick() = true
+
 }
