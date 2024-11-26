@@ -89,9 +89,6 @@ import com.soya.launcher.utils.AndroidSystem
         currentActivity?.let { AndroidSystem.openSystemSetting2(it) }
     }
 
-     override fun openFileManager() {
-
-     }
 
 
     override fun addWallPaper() {

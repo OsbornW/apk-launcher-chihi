@@ -235,7 +235,8 @@ android {
             versionCode 1
             versionName "1.0"
             manifestPlaceholders = [share_uid: "android.uid.system"]
-            signingConfig signingConfigs.x88
+            //signingConfig signingConfigs.x88
+            signingConfig signingConfigs.yxt
             // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://la.firehub.work/"'
             buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.firehub.work/"'

@@ -210,8 +210,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <androidx.recyclerview.widget.RecyclerView
-                        android:focusableInTouchMode="false"
-                        android:focusable="false"
                         android:layout_marginRight="@dimen/qb_px_200"
                         android:id="@+id/notify_recycler"
                         android:layout_gravity="right|center_vertical"

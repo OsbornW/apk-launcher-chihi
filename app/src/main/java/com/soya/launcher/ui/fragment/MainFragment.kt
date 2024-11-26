@@ -844,9 +844,13 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 if(notifies.size==1&&notifies[0].type==3){
                     // 禁止子控件获取焦点
                     mBind.notifyRecycler.descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
+                    mBind.notifyRecycler.isFocusable = false
+                    mBind.notifyRecycler.isFocusableInTouchMode = false
                 }else{
                     // 恢复子控件获取焦点
                     mBind.notifyRecycler.descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS
+                    mBind.notifyRecycler.isFocusable = true
+                    mBind.notifyRecycler.isFocusableInTouchMode = true
                 }
             }
 
