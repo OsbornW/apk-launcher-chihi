@@ -887,7 +887,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             startActivity(Intent(activity, SearchActivity::class.java))
         } else if (v == mBind.wifi) {
             if (Config.COMPANY == 3 || Config.COMPANY == 4) {
-                AndroidSystem.openWifiSetting(requireContext())
+                startActivity(Intent(activity, WifiListActivity::class.java))
+                //AndroidSystem.openWifiSetting(requireContext())
             } else {
                 startActivity(Intent(activity, WifiListActivity::class.java))
             }

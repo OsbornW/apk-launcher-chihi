@@ -4,12 +4,12 @@ import android.os.Bundle
 import com.shudong.lib_base.base.BaseViewModel
 import com.soya.launcher.databinding.FragmentWifiListBinding
 
-object GuideWifiListFragment : AbsWifiListFragment<FragmentWifiListBinding, BaseViewModel>() {
+object WifiGuidFragment : AbsWifiListFragment<FragmentWifiListBinding, BaseViewModel>() {
     @JvmStatic
-    fun newInstance(): GuideWifiListFragment {
+    fun newInstance(): WifiGuidFragment {
         val args = Bundle()
 
-        val fragment = GuideWifiListFragment
+        val fragment = WifiGuidFragment
         fragment.arguments = args
         return fragment
     }

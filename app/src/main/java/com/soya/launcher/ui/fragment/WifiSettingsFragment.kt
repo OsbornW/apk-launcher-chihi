@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.shudong.lib_base.base.BaseViewModel
 import com.soya.launcher.databinding.FragmentWifiListBinding
 
-class WifiListFragment : AbsWifiListFragment<FragmentWifiListBinding,BaseViewModel>() {
+class WifiSettingsFragment : AbsWifiListFragment<FragmentWifiListBinding,BaseViewModel>() {
     override fun initView() {
         super.initView()
         showNext(false)
@@ -16,10 +16,10 @@ class WifiListFragment : AbsWifiListFragment<FragmentWifiListBinding,BaseViewMod
     }
 
     companion object {
-        fun newInstance(): WifiListFragment {
+        fun newInstance(): WifiSettingsFragment {
             val args = Bundle()
 
-            val fragment = WifiListFragment()
+            val fragment = WifiSettingsFragment()
             fragment.arguments = args
             return fragment
         }

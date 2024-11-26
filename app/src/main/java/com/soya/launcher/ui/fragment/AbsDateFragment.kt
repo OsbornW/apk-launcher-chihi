@@ -6,11 +6,9 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.provider.Settings.SettingNotFoundException
-import android.view.LayoutInflater
 import android.view.View
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.base.BaseViewModel
-import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
@@ -218,7 +216,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
     override fun onClick(v: View) {
         if (v == mBind.next) {
             activity!!.supportFragmentManager.beginTransaction()
-                .replace(R.id.main_browse_fragment, GuideWifiListFragment.newInstance())
+                .replace(R.id.main_browse_fragment, WifiGuidFragment.newInstance())
                 .addToBackStack(null).commit()
         }
     }

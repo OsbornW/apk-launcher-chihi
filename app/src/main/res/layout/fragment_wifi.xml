@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/qb_px_20"
+        tools:context=".ui.fragment.WifiFragment">
+
+        <!-- 标题 -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="网络和互联网"
+            android:textColor="@color/white"
+            android:textSize="@dimen/qb_px_sp_24" />
+
+        <!-- 主内容 -->
+        <LinearLayout
+            android:layout_width="@dimen/qb_px_300"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/qb_px_20"
+            android:orientation="vertical">
+
+            <!-- 无线局域网切换 -->
+            <com.hjq.shape.layout.ShapeRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/qb_px_12"
+                android:paddingVertical="@dimen/qb_px_10"
+                app:shape_radius="@dimen/qb_px_8"
+                app:shape_solidColor="@color/color_BABABA">
+
+                <TextView
+                    android:id="@+id/tvWiFiLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="无线局域网"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_sp_14" />
+
+                <com.shudong.lib_base.view.switchbutton.SwitchButton
+                    android:id="@+id/sbWiFiToggle"
+                    android:layout_width="@dimen/qb_px_40"
+                    android:layout_height="@dimen/qb_px_18"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    style="@style/SwitchButtonUser_2" />
+            </com.hjq.shape.layout.ShapeRelativeLayout>
+
+            <!-- 当前连接的网络 -->
+            <com.hjq.shape.layout.ShapeRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/qb_px_12"
+                android:paddingVertical="@dimen/qb_px_10"
+                app:shape_radius="@dimen/qb_px_8"
+                app:shape_solidColor="@color/color_BABABA">
+
+                <ImageView
+                    android:id="@+id/ivConnectedIcon"
+                    android:layout_width="@dimen/qb_px_20"
+                    android:layout_height="@dimen/qb_px_20"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_wifi_100" />
+
+                <LinearLayout
+                    android:id="@+id/llConnectedInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/ivConnectedIcon"
+                    android:layout_marginStart="@dimen/qb_px_8"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvConnectedWiFiName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="wifi名字"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/qb_px_sp_14" />
+
+                    <TextView
+                        android:id="@+id/tvConnectedStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="已连接"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/qb_px_sp_12" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivLockIcon"
+                    android:layout_width="@dimen/qb_px_20"
+                    android:layout_height="@dimen/qb_px_20"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_lock_100" />
+            </com.hjq.shape.layout.ShapeRelativeLayout>
+
+            <!-- 我的网络 -->
+            <TextView
+                android:id="@+id/tvMyNetwork"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的网络"
+                android:textColor="@color/white"
+                android:textSize="@dimen/qb_px_sp_12" />
+
+            <com.soya.launcher.view.CustomVerticalGridView
+                android:id="@+id/rvSavedWiFi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 其他网络 -->
+            <TextView
+                android:id="@+id/tvOtherNetwork"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="其他网络"
+                android:textColor="@color/white"
+                android:textSize="@dimen/qb_px_sp_12" />
+
+            <androidx.leanback.widget.VerticalGridView
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:id="@+id/rvOtherWiFi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
