@@ -1265,7 +1265,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                                     // 判断请求结果
                                     if ((dto.result?.appList?.size ?: 0) > 0) {
                                         "找到有效结果，包名: $packageName".e("Search")
-                                        AndroidSystem.jumpAppStore(requireContext(), null, packages.get(0)?.packageName)
+                                        AndroidSystem.jumpAppStore(requireContext(), null, pkg.packageName)
                                         break // 退出循环
                                     } else {
                                         "无效结果，包名: $packageName".e("Search")
