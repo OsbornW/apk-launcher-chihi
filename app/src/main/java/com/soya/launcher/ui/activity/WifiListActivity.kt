@@ -11,7 +11,7 @@ import com.soya.launcher.ui.fragment.WifiSettingsFragment
 class WifiListActivity : BaseWallpaperActivity<ActivityMainBinding, BaseViewModel>() {
 
     override fun initView() {
-        replaceFragment(WifiFragment.newInstance(), R.id.main_browse_fragment)
+        replaceFragment(WifiSettingsFragment.newInstance(), R.id.main_browse_fragment)
     }
 
 }

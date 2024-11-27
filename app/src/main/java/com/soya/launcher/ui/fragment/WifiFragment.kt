@@ -9,9 +9,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.drake.brv.utils.addModels
+import com.drake.brv.utils.linear
 import com.drake.brv.utils.mutable
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.e
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.bean.NetworkType
@@ -26,27 +28,23 @@ import kotlinx.coroutines.launch
 class WifiFragment : BaseWallPaperFragment<FragmentWifiBinding,WifiViewModel>() {
 
     private lateinit var wifiManager: WifiManager
+    private var focusedSSID: String = ""
+
+
     override fun initView() {
         // 初始化 WifiManager
         wifiManager = appContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        //setRVSaveHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) { // 在 STARTED 和 RESUMED 生命周期时执行
-                var previousNetworks: MutableList<WifiNetwork>? = null
-                var previousSavedNetworks: MutableList<WifiNetwork>? = null
                 while (isActive) {
-                    val otherWorks = mViewModel.getWifiNetworks(wifiManager)
-                    // 如果列表有变化，更新 UI
-
-                    if (otherWorks != previousNetworks) {
-                        previousNetworks = otherWorks.toMutableList()
-                        updateData(otherWorks.toMutableList(),mBind.rvOtherWiFi)
-                    }
+                    mViewModel.getFilteredNetWorks(wifiManager)
                     delay(3000)
                 }
             }
         }
 
-        mBind.rvSavedWiFi.setup {
+        mBind.rvSavedWiFi.linear().setup {
             addType<WifiNetwork>(R.layout.item_wifi)
             onBind {
                 val dto = getModel<WifiNetwork>()
@@ -92,109 +90,37 @@ class WifiFragment : BaseWallPaperFragment<FragmentWifiBinding,WifiViewModel>() 
 
     }
 
+    override fun initObserver() {
+        mViewModel.updateSavedNetworksData.observe(this){
+            updateData(it,mBind.rvSavedWiFi)
+        }
+        mViewModel.updateOtherNetworksData.observe(this){
+            updateData(it,mBind.rvOtherWiFi)
+        }
+    }
+
+
+    fun setRVSaveHeight(height: Int) {
+        mBind.apply {
+            mBind.rvSavedWiFi.post {
+                mBind.rvSavedWiFi.layoutParams?.height = height
+                mBind.rvSavedWiFi.requestLayout() // 强制重新布局
+            }
+        }
+    }
 
 
     fun updateData(newList: MutableList<WifiNetwork>,rvList:VerticalGridView) {
 
         val oldList = rvList.mutable as MutableList<WifiNetwork>
+        "当前的旧集合的个数是：${oldList.size}::,新集合的个数是：${newList.size}".e("chihi_error")
         if(oldList.size==0){
             rvList.addModels(newList)
         }else{
-            updateNewData(oldList,newList,rvList)
+            mViewModel.updateNewData(oldList,newList,rvList,focusedSSID)
         }
 
     }
-
-    fun updateNewData(
-        oldList: MutableList<WifiNetwork>,
-        newList: MutableList<WifiNetwork>,
-        rvList: VerticalGridView
-    ) {
-        val sortedNewList = newList.sortedWith(
-            compareByDescending<WifiNetwork> { it.signalStrength }
-                .thenBy { it.ssid }
-        ) // 按信号强度降序、SSID升序
-
-        val updatedIndexes = mutableListOf<Pair<Int, Int>>() // 记录 (旧索引, 新索引)
-        val alreadyProcessed = mutableSetOf<String>() // 跟踪已处理的 SSID
-
-
-        // 1. 更新已存在的项
-        sortedNewList.forEachIndexed { newIndex, newItem ->
-            val existingIndex = oldList.indexOfFirst { it.ssid == newItem.ssid }
-            if (existingIndex != -1) {
-                // 如果存在，更新 Bean 数据
-                val existingItem = oldList[existingIndex]
-                if (existingItem.signalStrength != newItem.signalStrength) {
-                    existingItem.signalStrength = newItem.signalStrength
-                    rvList.adapter?.notifyItemChanged(existingIndex)
-                }
-                updatedIndexes.add(Pair(existingIndex, newIndex))
-                alreadyProcessed.add(newItem.ssid)
-            }
-        }
-
-        // 2. 找到新增的项并插入
-        sortedNewList.forEachIndexed { newIndex, newItem ->
-            if (!alreadyProcessed.contains(newItem.ssid)) {
-                oldList.add(newIndex, newItem)
-                rvList.adapter?.notifyItemInserted(newIndex)
-                alreadyProcessed.add(newItem.ssid)
-            }
-        }
-
-        // 3. 删除不存在的项
-        val toRemoveIndexes = oldList.withIndex()
-            .filter { (index, oldItem) -> !sortedNewList.any { it.ssid == oldItem.ssid } }
-            .map { it.index }
-            .sortedDescending()
-        toRemoveIndexes.forEach { index ->
-            oldList.removeAt(index)
-            rvList.adapter?.notifyItemRemoved(index)
-        }
-
-        // 4. 根据新顺序调整已存在项的位置
-        updatedIndexes.forEach { (oldIndex, newIndex) ->
-            if (newIndex != -1 && newIndex != oldIndex && oldIndex < oldList.size) {
-                val item = oldList.removeAt(oldIndex.coerceAtMost(oldList.size - 1))
-                oldList.add(newIndex.coerceAtMost(oldList.size), item)
-                rvList.adapter?.notifyItemMoved(oldIndex, newIndex)
-            }
-        }
-
-        // 5. 焦点保持
-        val newFocusedPosition = oldList.indexOfFirst { it.ssid == focusedSSID }
-        //"当前新的索引：$newFocusedPosition 对应的SSID是：${focusedSSID}".e("chihi_error")
-
-        if (newFocusedPosition != RecyclerView.NO_POSITION) {
-            rvList.scrollToPosition(newFocusedPosition)
-
-            // 确保布局完成后再请求焦点
-            rvList.post {
-                rvList.layoutManager?.findViewByPosition(newFocusedPosition)?.requestFocus()
-            }
-        }
-
-
-    }
-
-
-
-
-
-
-
-
-
-    private var focusedSSID: String = ""
-
-
-
-
-
-
-
-
 
     companion object {
         @JvmStatic

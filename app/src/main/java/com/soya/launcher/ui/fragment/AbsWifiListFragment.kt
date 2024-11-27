@@ -514,7 +514,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                     dialog.show(getChildFragmentManager(), WifiSaveDialog.TAG)
                 } else if (usePass) {
                     val dialog = WifiPassDialog.newInstance(getNoDoubleQuotationSSID(wifiItem.item.SSID))
-                    dialog.setDefaultPwd(getNoDoubleQuotationSSID(wifiItem.item.SSID))
+                    //dialog.setDefaultPwd(getNoDoubleQuotationSSID(wifiItem.item.SSID))
                     dialog.setCallback(object :WifiPassDialog.Callback{
                         override fun onConfirm(text: String) {
                             wifiItem.isSave = true

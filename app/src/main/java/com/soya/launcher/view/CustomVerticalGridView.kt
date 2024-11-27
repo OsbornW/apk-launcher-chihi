@@ -12,35 +12,32 @@ class CustomVerticalGridView @JvmOverloads constructor(
 ) : VerticalGridView(context, attrs, defStyleAttr) {
 
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
-        if (adapter == null || adapter!!.itemCount == 0) {
-            // 没有数据时设置高度为 0
-            val zeroHeightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY)
-            super.onMeasure(widthSpec, zeroHeightSpec)
-        } else {
-            // 如果是 wrap_content 模式
-            if (MeasureSpec.getMode(heightSpec) == MeasureSpec.AT_MOST) {
-                val gridLayoutManager = layoutManager as? GridLayoutManager
-                val spanCount = gridLayoutManager?.spanCount ?: 1
-                val itemHeight = calculateItemHeight() // 获取每个 item 的高度
+        val widthMode = MeasureSpec.getMode(widthSpec)
+        val heightMode = MeasureSpec.getMode(heightSpec)
+
+        // 首先测量宽度
+        super.onMeasure(widthSpec, heightSpec)
+
+        // 如果是 wrap_content 模式，计算高度
+        if (heightMode == MeasureSpec.AT_MOST) {
+            val layoutManager = layoutManager as? GridLayoutManager
+            val spanCount = layoutManager?.spanCount ?: 1
+
+            // 获取第一个子项的高度来估算总高度
+            val firstChild = getChildAt(0)
+            val itemHeight = firstChild?.measuredHeight ?: 0
+
+            if (itemHeight > 0) {
                 val itemCount = adapter?.itemCount ?: 0
+                val rows = Math.ceil(itemCount.toDouble() / spanCount).toInt()
 
-                // 计算内容的高度：每列的 item 数量 * 每个 item 的高度
-                val totalHeight = itemHeight * Math.ceil(itemCount.toDouble() / spanCount).toInt()
+                // 计算总高度（每列的高度 * 行数）
+                val totalHeight = rows * itemHeight
 
-                // 根据计算出的内容高度来设置高度
+                // 设置测量的高度
                 val heightSpecWrap = MeasureSpec.makeMeasureSpec(totalHeight, MeasureSpec.AT_MOST)
                 super.onMeasure(widthSpec, heightSpecWrap)
-            } else {
-                // 其他情况下，直接使用传递的 heightSpec
-                super.onMeasure(widthSpec, heightSpec)
             }
         }
     }
-
-    // 获取每个 item 的高度，可以根据你的 item 的布局进行测量
-    private fun calculateItemHeight(): Int {
-        val firstItem = getChildAt(0) ?: return 0
-        return firstItem.measuredHeight
-    }
 }
-
