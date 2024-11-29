@@ -124,6 +124,7 @@ android {
             buildConfigField "String", "MODEL", '"713M"'
         }
 
+
         p50_713M {
             applicationId "com.soya.launcher"
             dimension "chihi"
@@ -267,6 +268,26 @@ android {
             buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_XHSX}\""
         }
 
+        hongxin_713_smartTV {
+            applicationId "com.chihihx.launcher"
+            dimension "chihi"
+            signingConfig signingConfigs.AiBY
+            versionCode 1 //正式出货版本
+            versionName "1.0"
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            buildConfigField "String", "BASE_URL", '"https://la.keencloud.work/"'
+            buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.keencloud.work/"'
+            buildConfigField "String", "COMPANY", '"10"'
+            buildConfigField "String", "APP_ID", '"launcher"'
+            buildConfigField "String", "CHANNEL", '"TV27001"'
+            buildConfigField "String", "CHIHI_TYPE", '"H713_smartTV"'
+            buildConfigField "String", "MODEL", '"713_smartTV"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihim.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihim.store.ui.activity.AppDetailActivity"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713TVBox}\""
+        }
+
 
         // X98K (TV)
         yxt_X98K {
@@ -391,6 +412,7 @@ android {
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER}\""
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_P50", "\"${FLAVOR_NAME_LAUNCHER_P50}\""
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_XHSX", "\"${FLAVOR_NAME_LAUNCHER_XHSX}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713TVBox", "\"${FLAVOR_NAME_LAUNCHER_713TVBox}\""
 
         /**
          *
