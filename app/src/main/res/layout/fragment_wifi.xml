@@ -29,6 +29,10 @@
 
             <!-- 无线局域网切换 -->
             <com.hjq.shape.layout.ShapeRelativeLayout
+                android:id="@+id/rl_wifi"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                app:shape_solidFocusedColor="@color/red"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/qb_px_12"
@@ -63,7 +67,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/qb_px_sp_12" />
 
-            <com.soya.launcher.view.CustomVerticalGridView
+            <androidx.leanback.widget.VerticalGridView
                 android:id="@+id/rvSavedWiFi"
                 app:focusOutFront="true"
                 app:focusOutEnd="true"

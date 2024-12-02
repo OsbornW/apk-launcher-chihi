@@ -11,8 +11,10 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.SnackbarUtils.dismiss
+import com.shudong.lib_base.ext.clickNoRepeat
 import com.soya.launcher.R
 import com.soya.launcher.databinding.DialogWifiPassBinding
 import com.soya.launcher.pop.showKeyBoardDialog
@@ -20,25 +22,32 @@ import com.soya.launcher.view.CustomEditText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class WifiPassDialog : SingleDialogFragment<DialogWifiPassBinding>(), View.OnClickListener {
+class WifiPassDialog : SingleDialogFragment<DialogWifiPassBinding>() {
     var wifiName = ""
    
     private var callback: Callback? = null
 
 
+    val textTitleData = MutableLiveData<String>()
+    val textWifiNameData = MutableLiveData<String>()
     override fun init(view: View) {
-       
-        wifiName = arguments?.getString("wifiname").toString()
 
-        if (wifiName == "WIFI-5G") {
-            binding.editPass.setText("chen888888a")
-        } else if (wifiName == "WIFI") {
-            binding.editPass.setText("chen888888a")
-        } else if (wifiName == "wuyun") {
-            binding.editPass.setText("Boss888888")
-        } else if (wifiName == "wuyun-5G") {
-            binding.editPass.setText("Boss888888")
+
+        textTitleData.observe(this){
+            binding.tvTitle.text = it
         }
+        textWifiNameData.observe(this){
+            binding.editPass.setText(
+                when(wifiName){
+                    "WIFI-5G","WIFI"->"chen888888a"
+                    "wuyun-5G","wuyun"->"Boss888888"
+                    else->""
+                }
+            )
+        }
+
+
+
 
         binding.editPass.apply {
             onConfirmClick = {
@@ -49,6 +58,26 @@ class WifiPassDialog : SingleDialogFragment<DialogWifiPassBinding>(), View.OnCli
 
         }
 
+        binding.close.clickNoRepeat {
+            closeAction?.invoke()
+            dismiss()
+        }
+        binding.clean.clickNoRepeat {
+            cleanAction?.invoke()
+            binding.editPass.setText("")
+            dismiss()
+        }
+        binding.confirm.clickNoRepeat {
+            val pwd = binding.editPass.text.toString()
+            if (!TextUtils.isEmpty(pwd)) {
+                confirmAction?.invoke(pwd)
+                dismiss()
+            }
+
+        }
+
+
+
         lifecycleScope.launch {
             delay(600)
             showKeyBoardDialog {
@@ -58,19 +87,21 @@ class WifiPassDialog : SingleDialogFragment<DialogWifiPassBinding>(), View.OnCli
 
     }
 
-    override fun initBefore( view: View) {
-        binding.clean.setOnClickListener(this)
-        binding.close.setOnClickListener(this)
-        binding.confirm.setOnClickListener(this)
-        binding.editPass.setOnClickListener(this)
-        binding.editPass.setOnEditorActionListener { textView, i, keyEvent ->
-            val text = textView.text.toString()
-            setRootGravity(Gravity.CENTER)
-            if (callback != null) callback!!.onConfirm(text)
-            dismiss()
-            false
-        }
+    private var closeAction: (() -> Unit)? = null  //
+    fun closeAction(action: () -> Unit) {
+        closeAction = action
     }
+
+    private var cleanAction: (() -> Unit)? = null  //
+    fun cleanAction(action: () -> Unit) {
+        cleanAction = action
+    }
+
+    private var confirmAction: ((pwd:String) -> Unit)? = null  //
+    fun confirmAction(action: (pwd:String) -> Unit) {
+        confirmAction = action
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -95,19 +126,6 @@ class WifiPassDialog : SingleDialogFragment<DialogWifiPassBinding>(), View.OnCli
         return 0f
     }
 
-    override fun onClick(v: View) {
-        if (v == binding.close) {
-            dismiss()
-        } else if (v == binding.clean) {
-            binding.editPass.setText("")
-        } else if (v == binding.confirm) {
-            val text = binding.editPass.text.toString()
-            if (callback != null && !TextUtils.isEmpty(text)) {
-                callback!!.onConfirm(text)
-                dismiss()
-            }
-        }
-    }
 
     fun setRootGravity(gravity: Int) {
         val lp = binding.root.layoutParams as FrameLayout.LayoutParams
@@ -120,19 +138,6 @@ class WifiPassDialog : SingleDialogFragment<DialogWifiPassBinding>(), View.OnCli
         this.callback = callback
     }
 
-    fun setDefaultPwd(wifiName: String?) {
-        if (wifiName != null && binding.editPass != null) {
-            if (wifiName == "WIFI-5G") {
-                binding.editPass.setText("chen888888a")
-            } else if (wifiName == "WIFI") {
-                binding.editPass.setText("chen888888a")
-            } else if (wifiName == "wuyun") {
-                binding.editPass.setText("Boss888888")
-            } else if (wifiName == "wuyun-5G") {
-                binding.editPass.setText("Boss888888")
-            }
-        }
-    }
 
     interface Callback {
         fun onConfirm(text: String)

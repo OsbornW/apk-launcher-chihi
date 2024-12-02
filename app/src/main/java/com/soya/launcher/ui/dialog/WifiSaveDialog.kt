@@ -7,33 +7,77 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
+import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.databinding.DialogWifiSaveBinding
 import com.soya.launcher.enums.Atts
 
-class WifiSaveDialog : SingleDialogFragment<DialogWifiSaveBinding>(), View.OnClickListener {
+class WifiSaveDialog : SingleDialogFragment<DialogWifiSaveBinding>() {
 
     private var callback: Callback? = null
 
+    val textTitleData = MutableLiveData<String>()
+    val textContentData = MutableLiveData<String>()
+    val textCloseData = MutableLiveData<String>()
+    val textCleanData = MutableLiveData<String>()
+    val textConfirmData = MutableLiveData<String>()
 
     override fun init( view: View) {
 
-        binding.wifiName.text = arguments!!.getString(Atts.BEAN)
-        (arguments!!.getString("oktext")).toString().isNotEmpty().yes {
-            binding.confirm.text = arguments!!.getString("oktext")
+        textTitleData.observe(this){
+            binding.tvTitle.text = it
+        }
+        textContentData.observe(this){
+            binding.wifiName.text = it
+        }
+
+        textCloseData.observe(this){
+            binding.close.text = it
+        }
+
+        textCleanData.observe(this){
+            binding.clean.text = it
+        }
+
+        textConfirmData.observe(this){
+            binding.confirm.text = it
+        }
+
+        binding.close.clickNoRepeat {
+            closeAction?.invoke()
+            dismiss()
+        }
+        binding.clean.clickNoRepeat {
+            cleanAction?.invoke()
+            dismiss()
+        }
+        binding.confirm.clickNoRepeat {
+            confirmAction?.invoke()
+            dismiss()
         }
 
         blur(binding.root, binding.blur)
 
     }
 
-
-    override fun initBefore( view: View) {
-        binding.clean.setOnClickListener(this)
-        binding.close.setOnClickListener(this)
-        binding.confirm.setOnClickListener(this)
+    private var closeAction: (() -> Unit)? = null  //
+    fun closeAction(action: () -> Unit) {
+        closeAction = action
     }
+
+    private var cleanAction: (() -> Unit)? = null  //
+    fun cleanAction(action: () -> Unit) {
+        cleanAction = action
+    }
+
+    private var confirmAction: (() -> Unit)? = null  //
+    fun confirmAction(action: () -> Unit) {
+        confirmAction = action
+    }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,21 +89,6 @@ class WifiSaveDialog : SingleDialogFragment<DialogWifiSaveBinding>(), View.OnCli
         this.callback = callback
     }
 
-    override fun onClick(v: View) {
-        if (v == binding.close) {
-            dismiss()
-        } else if (v == binding.clean) {
-            if (callback != null) {
-                callback!!.onClick(-1)
-                dismiss()
-            }
-        } else if (v == binding.confirm) {
-            if (callback != null) {
-                callback!!.onClick(0)
-                dismiss()
-            }
-        }
-    }
 
     override fun getGravity(): Int {
         return Gravity.CENTER
