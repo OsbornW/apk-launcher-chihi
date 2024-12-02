@@ -137,7 +137,7 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
             )
 
             SETTING_MORE -> product.openMore()
-            SETTING_SOUND -> AndroidSystem.openVoiceSetting(requireContext())
+            SETTING_SOUND -> product.openSound()
             SETTING_KEYBOARD -> AndroidSystem.openInputSetting(requireContext())
 
         }

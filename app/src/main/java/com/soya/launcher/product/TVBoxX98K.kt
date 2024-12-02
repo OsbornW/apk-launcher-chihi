@@ -89,9 +89,6 @@ import com.soya.launcher.utils.AndroidSystem
         currentActivity?.let { AndroidSystem.openSystemSetting2(it) }
     }
 
-     override fun openFileManager() {
-
-     }
 
 
     override fun addWallPaper() {
@@ -104,5 +101,7 @@ import com.soya.launcher.utils.AndroidSystem
             WALLPAPERS.add(Wallpaper(5, R.drawable.wallpaper_25))
         }
     }
+
+     override fun isBlueDisableClick() = true
 
 }

@@ -275,6 +275,19 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         mBind.notifyRecycler.linear(RecyclerView.HORIZONTAL).setup {
             addType<Notify>(R.layout.holder_notify_2)
+            onBind {
+                product.isBlueDisableClick().yes {
+                    val dto = getModel<Notify>()
+                    (dto.type==3).yes {
+                        itemView.isFocusable = false
+                        itemView.isFocusableInTouchMode = false
+                    }.otherwise {
+                        itemView.isFocusable = true
+                        itemView.isFocusableInTouchMode = true
+                    }
+                }
+
+            }
         }.models = arrayListOf()
 
     }
@@ -827,6 +840,20 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 notifies.add(Notify(R.drawable.baseline_sd_storage_100, 1))
             }
 
+            product.isBlueDisableClick().yes {
+                if(notifies.size==1&&notifies[0].type==3){
+                    // 禁止子控件获取焦点
+                    mBind.notifyRecycler.descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
+                    mBind.notifyRecycler.isFocusable = false
+                    mBind.notifyRecycler.isFocusableInTouchMode = false
+                }else{
+                    // 恢复子控件获取焦点
+                    mBind.notifyRecycler.descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS
+                    mBind.notifyRecycler.isFocusable = true
+                    mBind.notifyRecycler.isFocusableInTouchMode = true
+                }
+            }
+
             if (notifies.size != mBind.notifyRecycler.mutable.size) {
                 mBind.notifyRecycler.bindingAdapter.refresh(
                     (mBind.notifyRecycler.mutable) as MutableList<Notify>,
@@ -1239,7 +1266,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                                     // 判断请求结果
                                     if ((dto.result?.appList?.size ?: 0) > 0) {
                                         "找到有效结果，包名: $packageName".e("Search")
-                                        AndroidSystem.jumpAppStore(requireContext(), null, packages.get(0)?.packageName)
+                                        AndroidSystem.jumpAppStore(requireContext(), null, pkg.packageName)
                                         break // 退出循环
                                     } else {
                                         "无效结果，包名: $packageName".e("Search")

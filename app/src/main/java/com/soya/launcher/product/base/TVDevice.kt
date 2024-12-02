@@ -19,6 +19,7 @@ import com.soya.launcher.product.TVBoxH27002
 import com.soya.launcher.product.TVBoxX98K
 import com.soya.launcher.product.TVBoxX98KM
 import com.soya.launcher.product.TVBoxXHSX
+import com.soya.launcher.product.TVBox_713
 
 sealed interface TVDevice{
     fun openDateSetting(context: Context){}
@@ -46,6 +47,9 @@ sealed interface TVDevice{
     fun addGameItem():MutableList<TypeItem>?=null
     fun isGameRes():Int?=null
     fun isShowPageTitle() = true
+    fun openSound(){}
+    fun isBlueDisableClick() = false
+
 }
 
 data object DefaultDevice: TVDevice
@@ -63,7 +67,8 @@ val channelMap = mapOf(
     BuildConfig.FLAVOR_NAME_LAUNCHER_AIBOYOU_PROJECTOR to PrjectorAiboyou,
     BuildConfig.FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER to TVBox22001,
     BuildConfig.FLAVOR_NAME_LAUNCHER_P50 to ProjectorP50,
-    BuildConfig.FLAVOR_NAME_LAUNCHER_XHSX to TVBoxXHSX
+    BuildConfig.FLAVOR_NAME_LAUNCHER_XHSX to TVBoxXHSX,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_713TVBox to TVBox_713
 )
 
 val product: TVDevice = channelMap[BuildConfig.FLAVOR_NAME]?:DefaultDevice

@@ -277,4 +277,8 @@ interface TVDeviceImpl : TVDevice {
     }
 
     override fun isGameRes(): Int?  = null
+
+    override fun openSound() {
+        currentActivity?.let { AndroidSystem.openVoiceSetting(it) }
+    }
 }
