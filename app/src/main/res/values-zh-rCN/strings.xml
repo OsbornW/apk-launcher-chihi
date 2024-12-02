@@ -226,5 +226,10 @@
     <string name="finish">完成</string>
     <string name="back">返回</string>
 
+    <string name="display">显示</string>
+    <string name="input_method">输入法</string>
+    <string name="mouse">鼠标</string>
+    <string name="memory">内存</string>
+
 
 </resources>
