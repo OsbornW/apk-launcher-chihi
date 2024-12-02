@@ -51,6 +51,14 @@ class MoreFragment : BaseWallPaperFragment<FragmentMoreBinding, BaseViewModel>()
     }
 
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val rootView = view
+        val isShowTitle = product.isShowPageTitle()
+        isShowTitle.no { rootView.margin(topMargin = com.shudong.lib_dimen.R.dimen.qb_px_20.dimenValue()) }
+
+        mBind.layout.title.text = getString(R.string.more)
+    }
 
     override fun initdata() {
         setContent()
