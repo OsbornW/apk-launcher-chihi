@@ -1,5 +1,6 @@
 package com.soya.launcher.ext
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -8,6 +9,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
 import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.appContext
@@ -263,6 +265,23 @@ fun String.isAppInstalled(): Boolean {
     } catch (e: PackageManager.NameNotFoundException) {
         false // 没找到应用，返回 false
     }
+}
+
+// 扩展函数：获取内存信息（总内存 / 剩余内存）
+fun getMemoryInfo(): String {
+    val activityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val memoryInfo = ActivityManager.MemoryInfo()
+    activityManager.getMemoryInfo(memoryInfo)
+
+    val totalMemory = memoryInfo.totalMem
+    val availableMemory = memoryInfo.availMem
+
+    // 将字节数转换为 GB，并保留两位小数
+    val totalMemoryGB = totalMemory.toDouble() / (1024 * 1024 * 1024)  // 转换为 GB
+    val availableMemoryGB = availableMemory.toDouble() / (1024 * 1024 * 1024)  // 转换为 GB
+
+    // 格式化为 21.2GB/128GB 形式
+    return String.format("%.2fGB/%.2fGB", availableMemoryGB, totalMemoryGB)
 }
 
 

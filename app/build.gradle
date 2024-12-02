@@ -271,7 +271,7 @@ android {
         hongxin_713_smartTV {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.AiBY
+            signingConfig signingConfigs.x88
             versionCode 1 //正式出货版本
             versionName "1.0"
             manifestPlaceholders = [share_uid: "android.uid.system"]
@@ -463,6 +463,10 @@ dependencies {
 
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.leanback:leanback-preference:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.activity:activity:1.9.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
 
     //这个是让注解生效的
     kapt 'com.github.bumptech.glide:compiler:4.16.0'

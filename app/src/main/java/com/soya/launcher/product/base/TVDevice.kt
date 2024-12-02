@@ -49,6 +49,8 @@ sealed interface TVDevice{
     fun isShowPageTitle() = true
     fun openSound(){}
     fun isBlueDisableClick() = false
+    fun isJumpGuidGradient() = true
+    fun addMoreItem():MutableList<SettingItem>?=null
 
 }
 

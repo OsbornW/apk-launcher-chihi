@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.drake.brv.utils.addModels
+import com.drake.brv.utils.grid
+import com.drake.brv.utils.linear
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.LANGUAGE_CHANGED
@@ -30,6 +32,7 @@ import com.soya.launcher.SETTING_SOUND
 import com.soya.launcher.SETTING_WALLPAPER
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
+import com.soya.launcher.databinding.FragmentMoreBinding
 import com.soya.launcher.databinding.FragmentSettingBinding
 import com.soya.launcher.databinding.HolderSettingBinding
 import com.soya.launcher.ext.openApp
@@ -38,32 +41,18 @@ import com.soya.launcher.ui.activity.AboutActivity
 import com.soya.launcher.ui.activity.WallpaperActivity
 import com.soya.launcher.utils.AndroidSystem
 
-class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewModel>() {
+class MoreFragment : BaseWallPaperFragment<FragmentMoreBinding, BaseViewModel>() {
 
 
 
     override fun initObserver() {
 
-        obseverLiveEvent<Boolean>(LANGUAGE_CHANGED){
-            mBind.content.apply {
-                post {
-                    initdata()
-                    scrollToPosition(4)
-                }
-            }
-        }
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val rootView = view
-        val isShowTitle = product.isShowPageTitle()
-        isShowTitle.no { rootView.margin(topMargin = com.shudong.lib_dimen.R.dimen.qb_px_20.dimenValue()) }
-    }
 
 
     override fun initdata() {
-        mBind.layout.title.text = getString(R.string.setting)
         setContent()
         mBind.content.apply {
             post {
@@ -80,22 +69,6 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
                 val binding = getBinding<HolderSettingBinding>()
                 val dto = getModel<SettingItem>()
 
-                when (dto.type) {
-                    Projector.TYPE_AUTO_CALIBRATION, Projector.TYPE_MANUAL_CALIBRATION -> {
-                        binding.image.widthAndHeight(
-                            com.shudong.lib_dimen.R.dimen.qb_px_70.dimenValue(),
-                            com.shudong.lib_dimen.R.dimen.qb_px_70.dimenValue()
-                        )
-
-                    }
-
-                    else -> {
-                        binding.image.widthAndHeight(
-                            com.shudong.lib_dimen.R.dimen.qb_px_50.dimenValue(),
-                            com.shudong.lib_dimen.R.dimen.qb_px_50.dimenValue()
-                        )
-                    }
-                }
                 itemView.setOnFocusChangeListener { v, hasFocus ->
                     binding.title.isSelected = hasFocus
                     val animation = AnimationUtils.loadAnimation(
@@ -111,9 +84,9 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
             }
         }
 
-        mBind.content.setNumColumns(4)
+        mBind.content.setNumColumns(3)
 
-        mBind.content.addModels(product.addSettingItem())
+        mBind.content.addModels(product.addMoreItem())
 
     }
 
@@ -152,10 +125,10 @@ class SettingFragment : BaseWallPaperFragment<FragmentSettingBinding, BaseViewMo
 
     companion object {
         @JvmStatic
-        fun newInstance(): SettingFragment {
+        fun newInstance(): MoreFragment {
             val args = Bundle()
 
-            val fragment = SettingFragment()
+            val fragment = MoreFragment()
             fragment.arguments = args
             return fragment
         }

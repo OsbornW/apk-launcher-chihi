@@ -6,6 +6,9 @@ import android.view.View
 import androidx.fragment.app.FragmentManager
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.isRepeatExcute
+import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.R
 import com.soya.launcher.bean.Language
@@ -13,6 +16,7 @@ import com.soya.launcher.cache.AppCache
 import com.soya.launcher.cache.AppCache.isGuidChageLanguage
 import com.soya.launcher.databinding.FragmentSetLanguageBinding
 import com.soya.launcher.enums.Atts
+import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.PreferencesUtils
 
@@ -41,7 +45,7 @@ class GuideLanguageFragment : AbsLanguageFragment<FragmentSetLanguageBinding,Bas
     }
 
 
-    val fragmentTag = GuideGroupGradientFragment::class.java.name
+    var fragmentTag = GuideDateFragment::class.java.name
 
     private fun jump() {
         val fManager = activity!!.supportFragmentManager
@@ -53,20 +57,27 @@ class GuideLanguageFragment : AbsLanguageFragment<FragmentSetLanguageBinding,Bas
             return
         }*/
 
+       /* product.isJumpGuidGradient().no { fragmentTag = GuideDateFragment::class.java.name }
         for (i in fManager.backStackEntryCount - 1 downTo 0) {
             val entry = fManager.getBackStackEntryAt(i)
             if (entry.name == fragmentTag) {
                 fManager.popBackStack(entry.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 break
             }
-        }
+        }*/
 
+        val fragment = product.isJumpGuidGradient().yes { GuideGroupGradientFragment.newInstance() }.otherwise { GuideDateFragment.newInstance() }
 
         // 否则，执行替换操作，并将新的 Fragment 添加到回退栈中
-        fManager.beginTransaction()
-            .replace(R.id.main_browse_fragment, GuideGroupGradientFragment.newInstance(), fragmentTag)
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
+
+            if (fManager.findFragmentByTag(fragmentTag) == null) {
+                fManager.beginTransaction()
+                    .replace(R.id.main_browse_fragment, fragment)
+                    //.addToBackStack(null)
+                    .commit()
+            }
+
+
     }
 
 

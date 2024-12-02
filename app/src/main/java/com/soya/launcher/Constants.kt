@@ -28,6 +28,9 @@ const val PACKAGE_NAME_X98KM_SOUND = "com.android.tv.settings/.device.displaysou
 // X98K_M系统文件管理器页面
 const val PACKAGE_NAME_X98KM_FILEMANAGER = "com.droidlogic.FileBrower/.FileBrower"
 
+// 713 Box分辨率设置页面
+const val PACKAGE_NAME_713_BOX_DISPLAY = "com.android.tv.settings/.device.display.DisplayActivity"
+
 
 const val SETTING_NETWORK = 0
 const val SETTING_WALLPAPER = 1
@@ -39,6 +42,7 @@ const val SETTING_ABOUT = 6
 const val SETTING_MORE = 7
 const val SETTING_SOUND = 8
 const val SETTING_KEYBOARD = 9
+const val SETTING_DISPLAY = 10
 
 
 

@@ -126,6 +126,7 @@
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/rl_gridient"
                             android:layout_marginLeft="@dimen/qb_px_6"
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
@@ -148,6 +149,34 @@
                                 android:focusable="true"
                                 android:focusableInTouchMode="true"
                                 android:src="@drawable/baseline_screenshot_monitor_100" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_display_parent"
+                            android:layout_marginLeft="@dimen/qb_px_6"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <com.hjq.shape.layout.ShapeRelativeLayout
+                                android:id="@+id/rl_display"
+                                android:layout_width="@dimen/qb_px_40"
+                                android:layout_height="@dimen/qb_px_40"
+                                android:visibility="invisible"
+                                app:shape="oval"
+                                app:shape_solidColor="#80625356" />
+
+                            <com.soya.launcher.view.ImageViewHouse
+                                android:layout_centerInParent="true"
+                                android:id="@+id/iv_display"
+                                android:layout_width="@dimen/qb_px_25"
+                                android:layout_height="@dimen/qb_px_25"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:scaleType="fitXY"
+                                android:focusableInTouchMode="true"
+                                android:src="@drawable/icon_display" />
 
                         </RelativeLayout>
 

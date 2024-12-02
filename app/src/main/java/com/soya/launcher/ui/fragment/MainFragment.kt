@@ -60,6 +60,7 @@ import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.LAYOUTTYPE_HOME_GAME
 import com.soya.launcher.LAYOUTTYPE_HOME_LANDSCAPE
+import com.soya.launcher.PACKAGE_NAME_713_BOX_DISPLAY
 import com.soya.launcher.R
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AuthBean
@@ -91,6 +92,7 @@ import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isShowUpdate
 import com.soya.launcher.ext.isUDisk
+import com.soya.launcher.ext.openApp
 import com.soya.launcher.ext.refresh
 import com.soya.launcher.ext.refreshAppList
 import com.soya.launcher.ext.silentInstallWithMutex
@@ -253,8 +255,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         mBind.hdmi.visibility =
             if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
-        mBind.gradient.visibility =
+        mBind.rlGridient.visibility =
             if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
+
+        mBind.rlDisplayParent.visibility =
+            if (Config.COMPANY == 10 ) View.VISIBLE else View.GONE
 
         AppCacheBase.isActive.yes {
             mViewModel.reqCheckActiveCode(AppCacheBase.activeCode)
@@ -647,6 +652,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         mBind.help.setOnClickListener(this)
         mBind.hdmi.setOnClickListener(this)
         mBind.gradient.setOnClickListener(this)
+        mBind.ivDisplay.setOnClickListener(this)
 
     }
 
@@ -661,6 +667,13 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             mBind.gradient.let {
                 it.setOnFocusChangeListener { view, b ->
                     if (b) projection.isVisible = true else projection.visibility = View.INVISIBLE
+
+                }
+            }
+
+            mBind.ivDisplay.let {
+                it.setOnFocusChangeListener { view, b ->
+                    if (b) rlDisplay.isVisible = true else rlDisplay.visibility = View.INVISIBLE
 
                 }
             }
@@ -927,6 +940,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             AndroidSystem.openProjectorHDMI(requireContext())
         } else if (v == mBind.gradient) {
             product.openHomeTopKeystoneCorrection(requireContext())
+
+        }else if (v == mBind.ivDisplay) {
+            PACKAGE_NAME_713_BOX_DISPLAY.openApp()
 
         }
     }

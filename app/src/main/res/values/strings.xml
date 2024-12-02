@@ -225,8 +225,11 @@
     <string name="screencast">Mirror &amp; Cast</string>
     <string name="finish">Done</string>
     <string name="back">Back</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="display">Display</string>
+    <string name="input_method">Input Method</string>
+    <string name="mouse">Mouse</string>
+    <string name="memory">Memory</string>
 
 
 </resources>

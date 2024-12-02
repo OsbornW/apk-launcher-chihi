@@ -2,6 +2,7 @@ package com.soya.launcher.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import androidx.leanback.widget.VerticalGridView
 import androidx.recyclerview.widget.GridLayoutManager
 
@@ -39,5 +40,13 @@ class CustomVerticalGridView @JvmOverloads constructor(
                 super.onMeasure(widthSpec, heightSpecWrap)
             }
         }
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+        if (event?.action == MotionEvent.ACTION_MOVE) {
+            // 返回 true 以拦截触摸事件，禁止拖拽
+            return true
+        }
+        return super.dispatchTouchEvent(event)
     }
 }

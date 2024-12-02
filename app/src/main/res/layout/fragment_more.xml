@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingVertical="@dimen/qb_px_120"
+    android:paddingHorizontal="@dimen/qb_px_20"
+    android:clickable="true">
+
+
+        <com.soya.launcher.view.CustomVerticalGridView
+            android:id="@+id/content"
+            android:layout_centerInParent="true"
+            android:paddingLeft="@dimen/qb_px_10"
+            android:paddingRight="@dimen/qb_px_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+</RelativeLayout>
+
+</layout>

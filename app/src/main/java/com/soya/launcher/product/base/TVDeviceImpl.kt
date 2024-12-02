@@ -21,6 +21,7 @@ import com.soya.launcher.SETTING_MORE
 import com.soya.launcher.SETTING_NETWORK
 import com.soya.launcher.SETTING_PROJECTOR
 import com.soya.launcher.SETTING_WALLPAPER
+import com.soya.launcher.bean.MoreConstants
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
@@ -112,6 +113,33 @@ interface TVDeviceImpl : TVDevice {
                     Projector.TYPE_HDMI,
                     appContext.getString(R.string.project_hdmi),
                     R.drawable.baseline_settings_input_hdmi_100
+                )
+            )
+        }
+    }
+
+    override fun addMoreItem(): MutableList<SettingItem>? {
+        return mutableListOf<SettingItem>().apply {
+
+            add(
+                SettingItem(
+                    MoreConstants.TYPE_SOUND,
+                    appContext.getString(R.string.sound),
+                    R.drawable.baseline_settings_voice_100
+                )
+            )
+            add(
+                SettingItem(
+                    MoreConstants.TYPE_INPUT_METHOD,
+                    appContext.getString(R.string.input_method),
+                    R.drawable.icon_input_method
+                )
+            )
+            add(
+                SettingItem(
+                    MoreConstants.TYPE_MOUSE,
+                    appContext.getString(R.string.mouse),
+                    R.drawable.icon_mouse
                 )
             )
         }

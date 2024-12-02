@@ -22,6 +22,7 @@ import com.soya.launcher.bean.AboutItem
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.FragmentAboutBinding
+import com.soya.launcher.ext.getMemoryInfo
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.ui.activity.UpdateLauncherActivity
 import com.soya.launcher.ui.dialog.ProgressDialog
@@ -116,6 +117,16 @@ class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(
                 BuildConfig.VERSION_NAME
             )
         )
+
+        list.add(
+            AboutItem(
+                0,
+                R.drawable.icon_memory,
+                getString(R.string.memory),
+                getMemoryInfo()
+            )
+        )
+
         if (Config.COMPANY == 0) list.add(
             AboutItem(
                 2,
