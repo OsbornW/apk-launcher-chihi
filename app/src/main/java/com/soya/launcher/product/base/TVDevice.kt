@@ -9,6 +9,7 @@ import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.product.PrjectorAiboyou
 import com.soya.launcher.product.Projector713_M_G
+import com.soya.launcher.product.Projector713_M_G_Test
 import com.soya.launcher.product.ProjectorH6
 import com.soya.launcher.product.ProjectorP50
 import com.soya.launcher.product.ProjectorRK3326
@@ -58,7 +59,8 @@ data object DefaultDevice: TVDevice
 
 
 val channelMap = mapOf(
-    BuildConfig.FLAVOR_NAME_LAUNCHER_713M_G to Projector713_M_G,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_713M_G to Projector713_M_G(),
+    BuildConfig.FLAVOR_NAME_LAUNCHER_713_TEST to Projector713_M_G_Test,
     BuildConfig.FLAVOR_NAME_LAUNCHER_713RK to ProjectorRK3326,
     BuildConfig.FLAVOR_NAME_LAUNCHER_713RK_G to ProjectorRK3326G,
     BuildConfig.FLAVOR_NAME_LAUNCHER_H27002 to TVBoxH27002,

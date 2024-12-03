@@ -124,6 +124,22 @@ android {
             buildConfigField "String", "MODEL", '"713M"'
         }
 
+        hongxin_713_M_G_test {
+            applicationId "com.soya.launcher_test"
+            dimension "chihi"
+            signingConfig signingConfigs.hongxin
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"0"'
+            buildConfigField "String", "APP_ID", '"launcher"'
+            buildConfigField "String", "CHANNEL", '"TE27001"'
+            buildConfigField "String", "CHIHI_TYPE", '"H713M_Test"'
+            buildConfigField "String", "MODEL", '"713M_Test"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713_TEST}\""
+        }
+
 
         p50_713M {
             applicationId "com.soya.launcher"
@@ -413,6 +429,7 @@ android {
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_P50", "\"${FLAVOR_NAME_LAUNCHER_P50}\""
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_XHSX", "\"${FLAVOR_NAME_LAUNCHER_XHSX}\""
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713TVBox", "\"${FLAVOR_NAME_LAUNCHER_713TVBox}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713_TEST", "\"${FLAVOR_NAME_LAUNCHER_713_TEST}\""
 
         /**
          *

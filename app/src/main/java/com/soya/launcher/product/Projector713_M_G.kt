@@ -12,7 +12,7 @@ import com.soya.launcher.ext.isGame
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.product.base.TVDeviceImpl
 
-object Projector713_M_G : TVDeviceImpl {
+open class Projector713_M_G : TVDeviceImpl {
     override fun openFileManager() = PACKAGE_NAME_FILE_MANAGER_713.openApp()
 
     override fun addHeaderItem(): MutableList<TypeItem> {
