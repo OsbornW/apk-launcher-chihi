@@ -16,7 +16,6 @@ import com.soya.launcher.enums.Atts
 
 class WifiSaveDialog : SingleDialogFragment<DialogWifiSaveBinding>() {
 
-    private var callback: Callback? = null
 
     val textTitleData = MutableLiveData<String>()
     val textContentData = MutableLiveData<String>()
@@ -85,9 +84,6 @@ class WifiSaveDialog : SingleDialogFragment<DialogWifiSaveBinding>() {
 
     }
 
-    fun setCallback(callback: Callback?) {
-        this.callback = callback
-    }
 
 
     override fun getGravity(): Int {

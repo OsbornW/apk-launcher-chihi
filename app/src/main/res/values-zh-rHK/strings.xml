@@ -231,5 +231,9 @@
     <string name="mouse">滑鼠</string>
     <string name="memory">內存</string>
 
+    <string name="connected_wifi_tip">已連接的網絡</string>
+    <string name="saved_wifi_tip">已保存的網絡</string>
+    <string name="wifi_password_prompt">輸入 %1$s 的密碼</string>
+
 
 </resources>

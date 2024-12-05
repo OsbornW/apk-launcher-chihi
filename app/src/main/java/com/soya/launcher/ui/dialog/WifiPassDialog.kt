@@ -23,15 +23,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class WifiPassDialog : SingleDialogFragment<DialogWifiPassBinding>() {
-    var wifiName = ""
-   
-    private var callback: Callback? = null
 
+    var wifiName = ""
 
     val textTitleData = MutableLiveData<String>()
     val textWifiNameData = MutableLiveData<String>()
     override fun init(view: View) {
-
 
         textTitleData.observe(this){
             binding.tvTitle.text = it
@@ -134,9 +131,6 @@ class WifiPassDialog : SingleDialogFragment<DialogWifiPassBinding>() {
         blur(binding.root, binding.blur)
     }
 
-    fun setCallback(callback: Callback?) {
-        this.callback = callback
-    }
 
 
     interface Callback {

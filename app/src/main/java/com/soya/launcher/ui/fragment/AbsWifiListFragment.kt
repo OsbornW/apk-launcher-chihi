@@ -45,7 +45,12 @@ import com.soya.launcher.R
 import com.soya.launcher.adapter.WifiListAdapter
 import com.soya.launcher.bean.WifiItem
 import com.soya.launcher.databinding.FragmentWifiListBinding
+import com.soya.launcher.ext.connectToSavedWiFi
+import com.soya.launcher.ext.connectToWiFi
+import com.soya.launcher.ext.disconnectCurrentWifi
 import com.soya.launcher.ext.isGreaterThanLollipop
+import com.soya.launcher.pop.showWifiPWDDialog
+import com.soya.launcher.pop.showWifiSavedDialog
 import com.soya.launcher.ui.dialog.ProgressDialog
 import com.soya.launcher.ui.dialog.ToastDialog
 import com.soya.launcher.ui.dialog.WifiPassDialog
@@ -75,9 +80,9 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mWifiManager = activity!!.getSystemService(WifiManager::class.java)
+            mWifiManager = requireActivity().getSystemService(WifiManager::class.java)
         }else{
-            mWifiManager = context!!.getSystemService(Context.WIFI_SERVICE) as WifiManager?
+            mWifiManager = requireContext().getSystemService(Context.WIFI_SERVICE) as WifiManager?
         }
         mDialog = ProgressDialog.newInstance()
         uiHandler = Handler()
@@ -85,7 +90,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
         val intentFilter = IntentFilter()
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
         intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)
-        activity!!.registerReceiver(receiver, intentFilter)
+        requireActivity().registerReceiver(receiver, intentFilter)
 
         lifecycleScope.launch {
             repeatWithDelay(Int.MAX_VALUE,1800){
@@ -106,7 +111,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
     override fun onDestroy() {
         super.onDestroy()
         exec.shutdownNow()
-        activity!!.unregisterReceiver(receiver)
+        requireActivity().unregisterReceiver(receiver)
     }
 
   
@@ -123,29 +128,33 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
     @SuppressLint("MissingPermission")
     override fun initView() {
         mAdapter =
-            WifiListAdapter(activity!!, LayoutInflater.from(appContext), CopyOnWriteArrayList(), useNext(), newCallback())
+            WifiListAdapter(requireActivity(), LayoutInflater.from(appContext), CopyOnWriteArrayList(), useNext(), newCallback())
         mAdapter!!.replace(fillterWifi(mWifiManager!!.scanResults))
 
 
         mBind.wifiConnected.let {
             it.clickNoRepeat {
-                val info = mWifiManager!!.connectionInfo
-                val dialog = WifiSaveDialog.newInstance(info.ssid,R.string.disconnect_net.stringValue())
-                dialog.setCallback(object :WifiSaveDialog.Callback{
-                    override fun onClick(type: Int) {
-                        when (type) {
-                            0 -> {
-                                mWifiManager?.disableNetwork(info!!.networkId)
-                            }
 
-                            -1 -> {
-                                mWifiManager!!.removeNetwork(info!!.networkId)
-                            }
-                        }
+                val info = mWifiManager!!.connectionInfo
+
+                val title =  R.string.connected_wifi_tip.stringValue()
+                val rightText =  R.string.disconnect_net.stringValue()
+                val middleText = R.string.unsave.stringValue()
+                showWifiSavedDialog {
+                    textTitleData.value = title
+                    textContentData.value = info.ssid
+                    textConfirmData.value = rightText
+                    textCleanData.value = middleText
+                    confirmAction {
+                        mWifiManager?.disableNetwork(info!!.networkId)
                     }
 
-                })
-                dialog.show(getChildFragmentManager(), WifiSaveDialog.TAG)
+                    cleanAction {
+                        mWifiManager!!.removeNetwork(info!!.networkId)
+                    }
+
+                }
+
             }
         }
 
@@ -258,7 +267,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
 
         }
         mBind.next.setOnClickListener {
-            activity!!.supportFragmentManager.beginTransaction()
+            requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.main_browse_fragment, ChooseWallpaperFragment.newInstance())
                 .addToBackStack(null).commit()
         }
@@ -487,54 +496,58 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                 val item = map[bean.SSID]
                 val isSave = item != null
                 if (isSave) {
-                    val dialog = WifiSaveDialog.newInstance(bean.SSID,"")
-                    dialog.setCallback (object :WifiSaveDialog.Callback{
-                        override fun onClick(type: Int) {
+
+                    val title =  R.string.saved_wifi_tip.stringValue()
+                    val rightText =  R.string.connect.stringValue()
+                    val middleText = R.string.unsave.stringValue()
+                    showWifiSavedDialog {
+                        textTitleData.value = title
+                        textContentData.value = bean.SSID
+                        textConfirmData.value = rightText
+                        textCleanData.value = middleText
+                        confirmAction {
                             val index = mAdapter!!.getDataList().indexOf(wifiItem)
-                            when (type) {
-                                0 -> {
-                                    isGreaterThanLollipop().yes {
-                                        connect(bean, item!!.networkId)
-                                    }.otherwise {
-                                        context?.let { connectTo21_netId(it,bean, item!!.networkId) }
-                                    }
-
-                                    wifiItem.isSave = true
-                                }
-
-                                -1 -> {
-                                    mWifiManager!!.removeNetwork(item!!.networkId)
-                                    wifiItem.isSave = false
-                                }
+                            isGreaterThanLollipop().yes {
+                                connect(bean, item!!.networkId)
+                            }.otherwise {
+                                context?.let { connectTo21_netId(it,bean, item!!.networkId) }
                             }
+
+                            wifiItem.isSave = true
                             if (index != -1) mAdapter!!.notifyItemChanged(index)
                         }
 
-                    })
-                    dialog.show(getChildFragmentManager(), WifiSaveDialog.TAG)
+                        cleanAction {
+                            val index = mAdapter!!.getDataList().indexOf(wifiItem)
+                            mWifiManager!!.removeNetwork(item!!.networkId)
+                            wifiItem.isSave = false
+                            if (index != -1) mAdapter!!.notifyItemChanged(index)
+                        }
+
+                    }
+
+
                 } else if (usePass) {
-                    val dialog = WifiPassDialog.newInstance(getNoDoubleQuotationSSID(wifiItem.item.SSID))
-                    //dialog.setDefaultPwd(getNoDoubleQuotationSSID(wifiItem.item.SSID))
-                    dialog.setCallback(object :WifiPassDialog.Callback{
-                        override fun onConfirm(text: String) {
+                    showWifiPWDDialog {
+                        textTitleData.value = appContext.getString(R.string.wifi_password_prompt,
+                            wifiItem.item.SSID
+                        )
+                        confirmAction {
                             wifiItem.isSave = true
                             val index = mAdapter!!.getDataList().indexOf(wifiItem)
                             if (index != -1){
                                 mAdapter?.getDataList()?.removeAt(index)
                                 mAdapter?.notifyItemRemoved(index)
                             }
-                            //if (index != -1) mAdapter!!.notifyItemChanged(index)
                             isGreaterThanLollipop().yes {
-                                connect(bean, text)
+                                connect(bean, it)
                             }.otherwise {
-                                context?.let { connectTo_21(it,bean, text) }
+                                context?.let { context->connectTo_21(context,bean, it) }
                             }
-                            //connect(bean, text)
-
                         }
+                    }
 
-                    })
-                    dialog.show(getChildFragmentManager(), WifiPassDialog.TAG)
+
                 } else {
                     wifiItem.isSave = true
                     val index = mAdapter!!.getDataList().indexOf(wifiItem)
@@ -572,57 +585,60 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                 val item = map[bean.SSID]
                 val isSave = item != null
                 if (isSave) {
-                    val dialog = WifiSaveDialog.newInstance(bean.SSID,"")
-                    dialog.setCallback (object :WifiSaveDialog.Callback{
-                        override fun onClick(type: Int) {
+
+
+                    val title =  R.string.saved_wifi_tip.stringValue()
+                    val rightText =  R.string.connect.stringValue()
+                    val middleText = R.string.unsave.stringValue()
+                    showWifiSavedDialog {
+                        textTitleData.value = title
+                        textContentData.value = bean.SSID
+                        textConfirmData.value = rightText
+                        textCleanData.value = middleText
+                        confirmAction {
                             val index = mBind.rvSavedWifi.mutable.indexOf(wifiItem)
-                            when (type) {
-                                0 -> {
-                                    isGreaterThanLollipop().yes {
-                                        connect(bean, item!!.networkId)
-                                    }.otherwise {
-                                        context?.let { connectTo21_netId(it,bean, item!!.networkId) }
-                                    }
-                                    wifiItem.isSave = true
-                                }
-
-                                -1 -> {
-                                    mWifiManager!!.removeNetwork(item!!.networkId)
-                                    wifiItem.isSave = false
-                                    if (index != -1){
-                                        mBind.rvSavedWifi.mutable.removeAt(index)
-                                        mBind.rvSavedWifi.adapter?.notifyItemRemoved(index)
-                                    }
-
-                                    //mBind.rvSavedWifi?.adapter?.notifyDataSetChanged()
-
-                                    //mBind.rvSavedWifi?.mutable?.clear()
-                                    //mBind.rvSavedWifi?.adapter?.notifyDataSetChanged()
-
-                                    setRVSaveHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
-
-                                }
+                            isGreaterThanLollipop().yes {
+                                connect(bean, item!!.networkId)
+                            }.otherwise {
+                                context?.let { connectTo21_netId(it,bean, item!!.networkId) }
                             }
+                            wifiItem.isSave = true
+                            if (index != -1) mAdapter!!.notifyItemChanged(index)
                         }
 
-                    })
-                    dialog.show(getChildFragmentManager(), WifiSaveDialog.TAG)
+                        cleanAction {
+                            val index = mAdapter!!.getDataList().indexOf(wifiItem)
+                            mWifiManager!!.removeNetwork(item!!.networkId)
+                            wifiItem.isSave = false
+                            if (index != -1){
+                                mBind.rvSavedWifi.mutable.removeAt(index)
+                                mBind.rvSavedWifi.adapter?.notifyItemRemoved(index)
+                            }
+
+                            setRVSaveHeight(RecyclerView.LayoutParams.WRAP_CONTENT)
+                        }
+
+                    }
+
+
                 } else if (usePass) {
-                    val dialog = WifiPassDialog.newInstance(getNoDoubleQuotationSSID(wifiItem.item.SSID))
-                    dialog.setCallback (object :WifiPassDialog.Callback{
-                        override fun onConfirm(text: String) {
+                    showWifiPWDDialog {
+                        textTitleData.value = appContext.getString(R.string.wifi_password_prompt,
+                            wifiItem.item.SSID
+                        )
+                        confirmAction {
                             wifiItem.isSave = true
                             val index = mBind.rvSavedWifi.mutable.indexOf(wifiItem)
                             if (index != -1) mBind.rvSavedWifi.adapter!!.notifyItemChanged(index)
                             isGreaterThanLollipop().yes {
-                                connect(bean, text)
+                                connect(bean, it)
                             }.otherwise {
-                                context?.let { connectTo_21(it,bean, text) }
+                                context?.let {context-> connectTo_21(context,bean, it) }
                             }
                         }
+                    }
 
-                    })
-                    dialog.show(getChildFragmentManager(), WifiPassDialog.TAG)
+
                 } else {
                     wifiItem.isSave = true
                     val index = mBind.rvSavedWifi.mutable.indexOf(wifiItem)

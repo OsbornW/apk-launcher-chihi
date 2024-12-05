@@ -18,6 +18,9 @@ import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.widthAndHeight
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.PACKAGE_NAME_713_BOX_DISPLAY
+import com.soya.launcher.PACKAGE_NAME_713_BOX_INPUT_METHOD
+import com.soya.launcher.PACKAGE_NAME_713_BOX_MOUSE
+import com.soya.launcher.PACKAGE_NAME_713_BOX_SOUND
 import com.soya.launcher.R
 import com.soya.launcher.SETTING_ABOUT
 import com.soya.launcher.SETTING_BLUETOOTH
@@ -30,6 +33,7 @@ import com.soya.launcher.SETTING_NETWORK
 import com.soya.launcher.SETTING_PROJECTOR
 import com.soya.launcher.SETTING_SOUND
 import com.soya.launcher.SETTING_WALLPAPER
+import com.soya.launcher.bean.MoreConstants
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.databinding.FragmentMoreBinding
@@ -101,29 +105,9 @@ class MoreFragment : BaseWallPaperFragment<FragmentMoreBinding, BaseViewModel>()
 
     private fun clickItem(bean: SettingItem?){
         when (bean?.type) {
-            SETTING_NETWORK -> product.openWifi()
-            SETTING_WALLPAPER -> startActivity(
-                Intent(
-                    requireContext(),
-                    WallpaperActivity::class.java
-                )
-            )
-
-            SETTING_PROJECTOR -> product.openProjector()
-            SETTING_LAUNGUAGE -> product.openLanguageSetting(requireContext())
-            SETTING_DATE -> product.openDateSetting(requireContext())
-            SETTING_BLUETOOTH -> product.openBluetooth()
-            SETTING_ABOUT -> startActivity(
-                Intent(
-                    requireContext(),
-                    AboutActivity::class.java
-                )
-            )
-
-            SETTING_MORE -> product.openMore()
-            SETTING_SOUND -> product.openSound()
-            SETTING_KEYBOARD -> AndroidSystem.openInputSetting(requireContext())
-            SETTING_DISPLAY -> PACKAGE_NAME_713_BOX_DISPLAY.openApp()
+            MoreConstants.TYPE_MOUSE -> PACKAGE_NAME_713_BOX_MOUSE.openApp()
+            MoreConstants.TYPE_SOUND -> PACKAGE_NAME_713_BOX_SOUND.openApp()
+            MoreConstants.TYPE_INPUT_METHOD -> PACKAGE_NAME_713_BOX_INPUT_METHOD.openApp()
 
         }
     }

@@ -30,6 +30,10 @@ const val PACKAGE_NAME_X98KM_FILEMANAGER = "com.droidlogic.FileBrower/.FileBrowe
 
 // 713 Box分辨率设置页面
 const val PACKAGE_NAME_713_BOX_DISPLAY = "com.android.tv.settings/.device.display.DisplayActivity"
+const val PACKAGE_NAME_713_BOX_BLUETOOTH = "com.android.tv.settings/.bluetooth.BluetoothActivity"
+const val PACKAGE_NAME_713_BOX_MOUSE = "com.android.tv.settings/.device.input.MouseModeActivity"
+const val PACKAGE_NAME_713_BOX_SOUND = "com.android.tv.settings/.device.sound.SoundActivity"
+const val PACKAGE_NAME_713_BOX_INPUT_METHOD = "com.android.tv.settings/.inputmethod.KeyboardActivity"
 
 
 const val SETTING_NETWORK = 0
