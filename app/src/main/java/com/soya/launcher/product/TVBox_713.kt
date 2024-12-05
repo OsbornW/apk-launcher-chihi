@@ -63,17 +63,7 @@ object TVBox_713 : TVDeviceImpl {
                     TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
                 )
             )
-            // 投影仪
-            add(
-                TypeItem(
-                    appContext.getString(R.string.pojector),
-                    R.drawable.projector,
-                    0,
-                    Types.TYPE_PROJECTOR,
-                    TypeItem.TYPE_ICON_IMAGE_RES,
-                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                )
-            )
+
         }
     }
 
