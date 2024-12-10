@@ -12,4 +12,6 @@ import com.soya.launcher.ext.isGame
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.product.base.TVDeviceImpl
 
-object Projector713_M_G_Test : Projector713_M_G()
+object Projector713_M_G_Test : Projector713_M_G(){
+    override fun isShowDefaultVideoApp() = false
+}
