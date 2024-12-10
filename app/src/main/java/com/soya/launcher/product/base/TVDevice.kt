@@ -9,6 +9,7 @@ import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
 import com.soya.launcher.product.PrjectorAiboyou
 import com.soya.launcher.product.Projector713_M_G
+import com.soya.launcher.product.Projector713_M_G_2X
 import com.soya.launcher.product.Projector713_M_G_Test
 import com.soya.launcher.product.ProjectorH6
 import com.soya.launcher.product.ProjectorP50
@@ -52,6 +53,7 @@ sealed interface TVDevice{
     fun isBlueDisableClick() = false
     fun isJumpGuidGradient() = true
     fun addMoreItem():MutableList<SettingItem>?=null
+    fun isShowDefaultVideoApp():Boolean = true
 
 }
 
@@ -72,7 +74,8 @@ val channelMap = mapOf(
     BuildConfig.FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER to TVBox22001,
     BuildConfig.FLAVOR_NAME_LAUNCHER_P50 to ProjectorP50,
     BuildConfig.FLAVOR_NAME_LAUNCHER_XHSX to TVBoxXHSX,
-    BuildConfig.FLAVOR_NAME_LAUNCHER_713TVBox to TVBox_713
+    BuildConfig.FLAVOR_NAME_LAUNCHER_713TVBox to TVBox_713,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_713M_G_2X to Projector713_M_G_2X
 )
 
 val product: TVDevice = channelMap[BuildConfig.FLAVOR_NAME]?:DefaultDevice

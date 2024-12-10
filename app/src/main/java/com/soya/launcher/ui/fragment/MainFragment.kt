@@ -1161,11 +1161,27 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 ),
                 HomeInfoDto::class.java
             )
+
             val header = fillData(result)
             header.addAll(items)
             addProduct5TypeItem(header)
 
+            product.isShowDefaultVideoApp().no {
+                for (index in header.indices.reversed()) { // 倒序遍历索引
+                    when(header[index].name){
+                        "Youtube","Netflix"->{
+                        }
+                        else->{
+                           header.removeAt(index)
+                        }
+                    }
+                }
+                header.addAll(items)
+            }
+
             product.addGameItem()?.let { header.addAll(0, it) }
+
+
 
             setHeader(header)
 
