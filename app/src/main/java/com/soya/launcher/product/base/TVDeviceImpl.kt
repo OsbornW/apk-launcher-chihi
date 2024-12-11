@@ -6,6 +6,7 @@ import com.open.system.ASystemProperties
 import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.sendLiveEventDataDelay
@@ -205,6 +206,7 @@ interface TVDeviceImpl : TVDevice {
 
     override fun openKeystoneCorrectionOptions() {
         currentActivity?.let {
+            "我要跳转到梯形校正了哦".e("chihi_error")
             it.startKtxActivity<ChooseGradientActivity>()
         }
     }

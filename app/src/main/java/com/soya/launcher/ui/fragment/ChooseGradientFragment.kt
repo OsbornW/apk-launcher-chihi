@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.leanback.widget.ItemBridgeAdapter
 import com.drake.brv.utils.addModels
+import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.setup
 import com.open.system.ASystemProperties
 import com.shudong.lib_base.base.BaseViewModel
@@ -26,7 +27,6 @@ import com.soya.launcher.ui.activity.GradientActivity
 class ChooseGradientFragment :
     BaseWallPaperFragment<FragmentChooseGradientBinding, BaseViewModel>() {
     private val dataList: MutableList<SettingItem?> = mutableListOf()
-    private var itemBridgeAdapter: ItemBridgeAdapter? = null
 
 
     override fun initView() {
@@ -114,7 +114,10 @@ class ChooseGradientFragment :
 
     private fun setCurMode(isEnalbe: Boolean) {
         product.initCalibrationText(isEnalbe, dataList) {
-            itemBridgeAdapter!!.notifyDataSetChanged()
+            dataList.forEachIndexed { index, settingItem ->
+                mBind.content.bindingAdapter.notifyItemChanged(index)
+            }
+
         }
     }
 

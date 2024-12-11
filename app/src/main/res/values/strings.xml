@@ -234,6 +234,7 @@
     <string name="connected_wifi_tip">Connected Network</string>
     <string name="saved_wifi_tip">Saved Network</string>
     <string name="wifi_password_prompt">Enter the password for %1$s</string>
+    <string name="cant_set_previous_time">Cannot set past time</string>
 
 
 </resources>

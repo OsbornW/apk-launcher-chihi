@@ -10,6 +10,8 @@ import android.view.View
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
+import com.shudong.lib_base.ext.showErrorToast
+import com.shudong.lib_base.ext.stringValue
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.bean.DateItem
@@ -160,9 +162,37 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
         val dialog = DatePickerDialog.newInstance()
         dialog.setCallback(object : DatePickerDialog.Callback {
             override fun onConfirm(timeMills: Long) {
-                AppUtil.setTime(timeMills)
-                itemList[1].description = date
-                mBind.slide.adapter?.notifyItemRangeChanged(0, itemList.size)
+                val currentTimeMillis = System.currentTimeMillis()
+
+                // 获取当前时间的年、月、日
+                val currentCalendar = Calendar.getInstance()
+                currentCalendar.timeInMillis = currentTimeMillis
+                val currentYear = currentCalendar.get(Calendar.YEAR)
+                val currentMonth = currentCalendar.get(Calendar.MONTH)
+                val currentDay = currentCalendar.get(Calendar.DAY_OF_MONTH)
+
+                // 获取设置时间的年、月、日
+                val timeCalendar = Calendar.getInstance()
+                timeCalendar.timeInMillis = timeMills
+                val timeYear = timeCalendar.get(Calendar.YEAR)
+                val timeMonth = timeCalendar.get(Calendar.MONTH)
+                val timeDay = timeCalendar.get(Calendar.DAY_OF_MONTH)
+
+                // 判断是否是同一天
+                if (currentYear == timeYear && currentMonth == timeMonth && currentDay == timeDay) {
+                    // 如果是同一天，继续处理其他逻辑
+
+                } else {
+                    // 如果不是同一天，提示用户不能设置为过去的时间
+                    if(timeMills<currentTimeMillis){
+                        showErrorToast(R.string.cant_set_previous_time.stringValue())
+                    }else{
+                        AppUtil.setTime(timeMills)
+                        itemList[1].description = date
+                        mBind.slide.adapter?.notifyItemRangeChanged(0, itemList.size)
+                    }
+                }
+
             }
         })
         dialog.show(childFragmentManager, DatePickerDialog.TAG)
@@ -194,7 +224,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
     private val isAutoTime: Boolean
         get() = try {
-            Settings.Global.getInt(activity!!.contentResolver, Settings.Global.AUTO_TIME) == 1
+            Settings.Global.getInt(requireActivity().contentResolver, Settings.Global.AUTO_TIME) == 1
         } catch (e: SettingNotFoundException) {
             false
         }
@@ -204,9 +234,40 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
         val dialog = TimePickerDialog.newInstance()
         dialog.setCallback(object : TimePickerDialog.Callback {
             override fun onConfirm(timeMills: Long) {
-                AppUtil.setTime(timeMills)
-                itemList[2].description = time
-                mBind.slide.adapter?.notifyItemRangeChanged(0, itemList.size)
+
+                val currentTimeMillis = System.currentTimeMillis()
+
+                // 获取当前时间的年、月、日
+                val currentCalendar = Calendar.getInstance()
+                currentCalendar.timeInMillis = currentTimeMillis
+                val currentHour = currentCalendar.get(Calendar.HOUR)
+                val currentMinute = currentCalendar.get(Calendar.MINUTE)
+                val currentSecond = currentCalendar.get(Calendar.SECOND)
+
+                // 获取设置时间的年、月、日
+                val timeCalendar = Calendar.getInstance()
+                timeCalendar.timeInMillis = timeMills
+                val timeHour = timeCalendar.get(Calendar.HOUR)
+                val timeMinute = timeCalendar.get(Calendar.MINUTE)
+                //val timeSecond = timeCalendar.get(Calendar.SECOND)
+
+                // 判断是否是同一天
+                if (currentHour == timeHour && currentMinute == timeMinute ) {
+                    // 如果是同一分钟，继续处理其他逻辑
+
+                } else {
+                    // 如果不是同一分钟，提示用户不能设置为过去的时间
+                    if(timeMills<currentTimeMillis){
+                        showErrorToast(R.string.cant_set_previous_time.stringValue())
+                    }else{
+                        AppUtil.setTime(timeMills)
+                        itemList[2].description = time
+                        mBind.slide.adapter?.notifyItemRangeChanged(0, itemList.size)
+                    }
+
+                }
+
+
             }
         })
         dialog.show(childFragmentManager, TimePickerDialog.TAG)
@@ -215,7 +276,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
     override fun onClick(v: View) {
         if (v == mBind.next) {
-            activity!!.supportFragmentManager.beginTransaction()
+            requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.main_browse_fragment, WifiGuidFragment.newInstance())
                 .addToBackStack(null).commit()
         }

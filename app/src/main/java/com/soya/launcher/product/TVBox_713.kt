@@ -141,4 +141,5 @@ object TVBox_713 : TVDeviceImpl {
         currentActivity?.let { it.startKtxActivity<MoreActivity>() }
     }
 
+    override fun isShowMemoryInfo() = true
 }

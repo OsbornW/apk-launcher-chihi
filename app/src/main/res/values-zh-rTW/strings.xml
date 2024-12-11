@@ -234,6 +234,7 @@
     <string name="connected_wifi_tip">已連接的網絡</string>
     <string name="saved_wifi_tip">已保存的網絡</string>
     <string name="wifi_password_prompt">輸入 %1$s 的密碼</string>
+    <string name="cant_set_previous_time">不能設定過去的時間</string>
 
 
 </resources>

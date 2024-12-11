@@ -54,6 +54,7 @@ sealed interface TVDevice{
     fun isJumpGuidGradient() = true
     fun addMoreItem():MutableList<SettingItem>?=null
     fun isShowDefaultVideoApp():Boolean = true
+    fun isShowMemoryInfo() = false
 
 }
 

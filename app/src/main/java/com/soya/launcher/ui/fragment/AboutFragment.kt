@@ -15,6 +15,7 @@ import com.shudong.lib_base.ext.net.lifecycle
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.R
@@ -24,6 +25,7 @@ import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.FragmentAboutBinding
 import com.soya.launcher.ext.getMemoryInfo
 import com.soya.launcher.net.viewmodel.HomeViewModel
+import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.UpdateLauncherActivity
 import com.soya.launcher.ui.dialog.ProgressDialog
 import com.soya.launcher.ui.dialog.ToastDialog
@@ -118,14 +120,17 @@ class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(
             )
         )
 
-        list.add(
-            AboutItem(
-                0,
-                R.drawable.icon_memory,
-                getString(R.string.memory),
-                getMemoryInfo()
+        product.isShowMemoryInfo().yes {
+            list.add(
+                AboutItem(
+                    0,
+                    R.drawable.icon_memory,
+                    getString(R.string.memory),
+                    getMemoryInfo()
+                )
             )
-        )
+        }
+
 
         if (Config.COMPANY == 0) list.add(
             AboutItem(

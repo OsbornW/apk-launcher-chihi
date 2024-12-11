@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import com.drake.brv.utils.addModels
+import com.drake.brv.utils.grid
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
