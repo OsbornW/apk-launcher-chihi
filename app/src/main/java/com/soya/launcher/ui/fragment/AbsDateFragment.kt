@@ -18,6 +18,7 @@ import com.soya.launcher.bean.DateItem
 import com.soya.launcher.bean.SimpleTimeZone
 import com.soya.launcher.databinding.FragmentSetDateBinding
 import com.soya.launcher.databinding.HolderDateListBinding
+import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.ui.dialog.DatePickerDialog
 import com.soya.launcher.ui.dialog.TimePickerDialog
 import com.soya.launcher.ui.dialog.TimeZoneDialog
@@ -28,7 +29,8 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
 
-abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel> : BaseWallPaperFragment<VDB,VM>(), View.OnClickListener {
+abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel> :
+    BaseWallPaperFragment<VDB, VM>(), View.OnClickListener {
 
 
     private val itemList: MutableList<DateItem> = ArrayList()
@@ -70,15 +72,14 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
     }
 
 
-
-
     private fun setSlide() {
         mBind.slide.setup {
             addType<DateItem>(R.layout.holder_date_list)
             onBind {
                 val binding = getBinding<HolderDateListBinding>()
                 val dto = getModel<DateItem>()
-                binding.title.isEnabled = !(models as MutableList<DateItem>)[0].isSwitch || (modelPosition != 1 && modelPosition != 2)
+                binding.title.isEnabled =
+                    !(models as MutableList<DateItem>)[0].isSwitch || (modelPosition != 1 && modelPosition != 2)
                 itemView.clickNoRepeat {
                     when (dto.type) {
                         0 -> changAutoTime(dto)
@@ -184,9 +185,9 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
                 } else {
                     // 如果不是同一天，提示用户不能设置为过去的时间
-                    if(timeMills<currentTimeMillis){
+                    if (timeMills < currentTimeMillis) {
                         showErrorToast(R.string.cant_set_previous_time.stringValue())
-                    }else{
+                    } else {
                         AppUtil.setTime(timeMills)
                         itemList[1].description = date
                         mBind.slide.adapter?.notifyItemRangeChanged(0, itemList.size)
@@ -224,7 +225,10 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
     private val isAutoTime: Boolean
         get() = try {
-            Settings.Global.getInt(requireActivity().contentResolver, Settings.Global.AUTO_TIME) == 1
+            Settings.Global.getInt(
+                requireActivity().contentResolver,
+                Settings.Global.AUTO_TIME
+            ) == 1
         } catch (e: SettingNotFoundException) {
             false
         }
@@ -252,14 +256,14 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
                 //val timeSecond = timeCalendar.get(Calendar.SECOND)
 
                 // 判断是否是同一天
-                if (currentHour == timeHour && currentMinute == timeMinute ) {
+                if (currentHour == timeHour && currentMinute == timeMinute) {
                     // 如果是同一分钟，继续处理其他逻辑
 
                 } else {
                     // 如果不是同一分钟，提示用户不能设置为过去的时间
-                    if(timeMills<currentTimeMillis){
+                    if (timeMills < currentTimeMillis) {
                         showErrorToast(R.string.cant_set_previous_time.stringValue())
-                    }else{
+                    } else {
                         AppUtil.setTime(timeMills)
                         itemList[2].description = time
                         mBind.slide.adapter?.notifyItemRangeChanged(0, itemList.size)
@@ -276,13 +280,13 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
     override fun onClick(v: View) {
         if (v == mBind.next) {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_browse_fragment, WifiGuidFragment.newInstance())
-                .addToBackStack(null).commit()
+            requireActivity().supportFragmentManager.navigateTo(
+                R.id.main_browse_fragment,
+                WifiGuidFragment.newInstance()
+            )
+
         }
     }
-
-
 
 
     protected fun showNext(show: Boolean) {

@@ -43,7 +43,6 @@ import com.soya.launcher.ui.activity.WifiListActivity
 import com.soya.launcher.ui.fragment.FocusFragment
 import com.soya.launcher.ui.fragment.GuideLanguageFragment
 import com.soya.launcher.ui.fragment.MainFragment
-import com.soya.launcher.ui.fragment.WelcomeFragment
 import com.soya.launcher.utils.AndroidSystem
 
 interface TVDeviceImpl : TVDevice {

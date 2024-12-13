@@ -86,12 +86,7 @@ object TVBox_713 : TVDeviceImpl {
     override fun switchFragment(): Fragment = run {
         AppCache.isSkipGuid.no {
             sendLiveEventDataDelay(IS_MAIN_CANBACK, true, 1000)
-           /* AppCache.isGuidChageLanguage.yes {
-                GuideLanguageFragment.newInstance()
-            }.otherwise {*/
-                GuideLanguageFragment.newInstance()
-            //}
-
+            GuideLanguageFragment.newInstance()
         }.otherwise {
             sendLiveEventDataDelay(IS_MAIN_CANBACK, false, 1000)
             MainFragment.newInstance()
@@ -102,38 +97,62 @@ object TVBox_713 : TVDeviceImpl {
 
     override fun addSettingItem(): MutableList<SettingItem> {
         return mutableListOf<SettingItem>().apply {
-            add(SettingItem(SETTING_NETWORK, appContext.getString(R.string.network), R.drawable.baseline_wifi_100))
             add(
                 SettingItem(
-                SETTING_BLUETOOTH,
-                appContext.getString(R.string.bluetooth),
-                R.drawable.baseline_bluetooth_100
-            )
-            )
-            add(
-                SettingItem(
-                SETTING_DISPLAY,
-                appContext.getString(R.string.display),
-                R.drawable.icon_display
-            )
+                    SETTING_NETWORK,
+                    appContext.getString(R.string.network),
+                    R.drawable.baseline_wifi_100
+                )
             )
             add(
                 SettingItem(
-                SETTING_WALLPAPER,
-                appContext.getString(R.string.wallpaper),
-                R.drawable.baseline_wallpaper_100
+                    SETTING_BLUETOOTH,
+                    appContext.getString(R.string.bluetooth),
+                    R.drawable.baseline_bluetooth_100
+                )
             )
-            )
-            add(SettingItem(SETTING_LAUNGUAGE, appContext.getString(R.string.language), R.drawable.baseline_translate_100))
             add(
                 SettingItem(
-                SETTING_DATE,
-                appContext.getString(R.string.date),
-                R.drawable.baseline_calendar_month_100
+                    SETTING_DISPLAY,
+                    appContext.getString(R.string.display),
+                    R.drawable.icon_display
+                )
             )
+            add(
+                SettingItem(
+                    SETTING_WALLPAPER,
+                    appContext.getString(R.string.wallpaper),
+                    R.drawable.baseline_wallpaper_100
+                )
             )
-            add(SettingItem(SETTING_ABOUT, appContext.getString(R.string.about), R.drawable.baseline_help_100))
-            add(SettingItem(SETTING_MORE, appContext.getString(R.string.more), R.drawable.baseline_more_horiz_100))
+            add(
+                SettingItem(
+                    SETTING_LAUNGUAGE,
+                    appContext.getString(R.string.language),
+                    R.drawable.baseline_translate_100
+                )
+            )
+            add(
+                SettingItem(
+                    SETTING_DATE,
+                    appContext.getString(R.string.date),
+                    R.drawable.baseline_calendar_month_100
+                )
+            )
+            add(
+                SettingItem(
+                    SETTING_ABOUT,
+                    appContext.getString(R.string.about),
+                    R.drawable.baseline_help_100
+                )
+            )
+            add(
+                SettingItem(
+                    SETTING_MORE,
+                    appContext.getString(R.string.more),
+                    R.drawable.baseline_more_horiz_100
+                )
+            )
         }
     }
 

@@ -10,6 +10,7 @@ import com.shudong.lib_base.ext.replaceFragment
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.ActivitySplashBinding
 import com.soya.launcher.enums.Atts
+import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.PreferencesUtils
 import com.thumbsupec.lib_base.ext.language.initMultiLanguage
@@ -78,7 +79,10 @@ class SplashFragment:BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>
                 delay(100) // 每 100 毫秒检测一次
                 if ( localWallPaperDrawable != null) {
                     withContext(Dispatchers.Main) { // 在主线程中启动 Activity
-                        product.switchFragment()?.let { requireActivity().replaceFragment(it, R.id.main_browse_fragment) }
+                        product.switchFragment()?.let {
+                            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment,it)
+                            //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
+                        }
                     }
                     break // 检测到条件满足后退出循环
                 }

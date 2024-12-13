@@ -49,6 +49,7 @@ import com.soya.launcher.ext.connectToSavedWiFi
 import com.soya.launcher.ext.connectToWiFi
 import com.soya.launcher.ext.disconnectCurrentWifi
 import com.soya.launcher.ext.isGreaterThanLollipop
+import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.pop.showWifiPWDDialog
 import com.soya.launcher.pop.showWifiSavedDialog
 import com.soya.launcher.ui.dialog.ProgressDialog
@@ -66,9 +67,10 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel> : BaseWallPaperFragment<VDB,VM>() {
+open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel> :
+    BaseWallPaperFragment<VDB, VM>() {
     private var exec = Executors.newCachedThreadPool()
-    
+
     private var mWifiManager: WifiManager? = null
     private var mAdapter: WifiListAdapter? = null
     private var receiver: WifiReceiver? = null
@@ -81,7 +83,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mWifiManager = requireActivity().getSystemService(WifiManager::class.java)
-        }else{
+        } else {
             mWifiManager = requireContext().getSystemService(Context.WIFI_SERVICE) as WifiManager?
         }
         mDialog = ProgressDialog.newInstance()
@@ -93,9 +95,9 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
         requireActivity().registerReceiver(receiver, intentFilter)
 
         lifecycleScope.launch {
-            repeatWithDelay(Int.MAX_VALUE,1800){
+            repeatWithDelay(Int.MAX_VALUE, 1800) {
                 val netType = NetworkUtils.getNetworkType()
-                (netType==NetworkUtils.NetworkType.NETWORK_ETHERNET).yes {
+                (netType == NetworkUtils.NetworkType.NETWORK_ETHERNET).yes {
                     //以太网
                     isEthrnet = true
                 }.otherwise {
@@ -106,6 +108,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
             }
         }
     }
+
     var isEthrnet = false
 
     override fun onDestroy() {
@@ -114,7 +117,6 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
         requireActivity().unregisterReceiver(receiver)
     }
 
-  
 
     fun setRVSaveHeight(height: Int) {
         mBind.apply {
@@ -128,7 +130,13 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
     @SuppressLint("MissingPermission")
     override fun initView() {
         mAdapter =
-            WifiListAdapter(requireActivity(), LayoutInflater.from(appContext), CopyOnWriteArrayList(), useNext(), newCallback())
+            WifiListAdapter(
+                requireActivity(),
+                LayoutInflater.from(appContext),
+                CopyOnWriteArrayList(),
+                useNext(),
+                newCallback()
+            )
         mAdapter!!.replace(fillterWifi(mWifiManager!!.scanResults))
 
 
@@ -137,8 +145,8 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
 
                 val info = mWifiManager!!.connectionInfo
 
-                val title =  R.string.connected_wifi_tip.stringValue()
-                val rightText =  R.string.disconnect_net.stringValue()
+                val title = R.string.connected_wifi_tip.stringValue()
+                val rightText = R.string.disconnect_net.stringValue()
                 val middleText = R.string.unsave.stringValue()
                 showWifiSavedDialog {
                     textTitleData.value = title
@@ -267,11 +275,13 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
 
         }
         mBind.next.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_browse_fragment, ChooseWallpaperFragment.newInstance())
-                .addToBackStack(null).commit()
+            requireActivity().supportFragmentManager.navigateTo(
+                R.id.main_browse_fragment,
+                ChooseWallpaperFragment.newInstance()
+            )
+
         }
-        mDialog!!.setCallback(object :ProgressDialog.Callback{
+        mDialog!!.setCallback(object : ProgressDialog.Callback {
             override fun onDismiss() {
                 connectedTime = -1
             }
@@ -283,7 +293,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
     override fun initdata() {
         mBind.content.setAdapter(mAdapter)
         mBind.switchItem.isChecked = mWifiManager!!.isWifiEnabled
-        if(exec.isShutdown)exec = Executors.newCachedThreadPool()
+        if (exec.isShutdown) exec = Executors.newCachedThreadPool()
         exec.execute(Runnable {
             var time = 0
             while (isAdded) {
@@ -299,7 +309,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                         mTarget = null
                         connectedTime = -1
                     }
-                    if (!TextUtils.isEmpty(info.ssid) && info.ipAddress != 0 && info.ssid != "<unknown ssid>"&& info.ssid != "0x") {
+                    if (!TextUtils.isEmpty(info.ssid) && info.ipAddress != 0 && info.ssid != "<unknown ssid>" && info.ssid != "0x") {
 
                         if (mTarget != null && connectedTime != -1L && mTarget!!.SSID == cleanSSID(
                                 info.ssid
@@ -344,17 +354,16 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mBind.wifiEnable.requestFocus()
     }
-    
+
 
     private fun toastFail() {
         if (!isAdded) return
         val netType = NetworkUtils.getNetworkType()
-        if (netType==NetworkUtils.NetworkType.NETWORK_WIFI&&NetworkUtils.isConnected()) {
+        if (netType == NetworkUtils.NetworkType.NETWORK_WIFI && NetworkUtils.isConnected()) {
             return
         }
         val dialog = ToastDialog.newInstance(
@@ -385,7 +394,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
         mBind.tvConnectedStatus.text =
             if (isConnected) getString(R.string.connected) else R.string.connecting.stringValue()
 
-        (info.ssid.contains("unknown")||info.ssid.contains("0x")).yes {
+        (info.ssid.contains("unknown") || info.ssid.contains("0x")).yes {
             mBind.wifiName.text = ""
             mBind.wifiConnected.isVisible = false
         }.otherwise {
@@ -397,8 +406,8 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
         var isNeedPwd = true
 
         items?.let {
-            it.forEach {wifiItem->
-                if(wifiItem.item.SSID==getNoDoubleQuotationSSID(info.ssid)){
+            it.forEach { wifiItem ->
+                if (wifiItem.item.SSID == getNoDoubleQuotationSSID(info.ssid)) {
                     isNeedPwd = AndroidSystem.isUsePassWifi(wifiItem.item)
                 }
             }
@@ -479,7 +488,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
             override fun onClick(wifiItem: WifiItem?) {
 
                 val netType = NetworkUtils.getNetworkType()
-                (netType==NetworkUtils.NetworkType.NETWORK_ETHERNET).yes {
+                (netType == NetworkUtils.NetworkType.NETWORK_ETHERNET).yes {
                     //以太网
                     ToastUtils.show(R.string.ethernet)
                     return
@@ -497,8 +506,8 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                 val isSave = item != null
                 if (isSave) {
 
-                    val title =  R.string.saved_wifi_tip.stringValue()
-                    val rightText =  R.string.connect.stringValue()
+                    val title = R.string.saved_wifi_tip.stringValue()
+                    val rightText = R.string.connect.stringValue()
                     val middleText = R.string.unsave.stringValue()
                     showWifiSavedDialog {
                         textTitleData.value = title
@@ -510,7 +519,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                             isGreaterThanLollipop().yes {
                                 connect(bean, item!!.networkId)
                             }.otherwise {
-                                context?.let { connectTo21_netId(it,bean, item!!.networkId) }
+                                context?.let { connectTo21_netId(it, bean, item!!.networkId) }
                             }
 
                             wifiItem.isSave = true
@@ -529,20 +538,21 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
 
                 } else if (usePass) {
                     showWifiPWDDialog {
-                        textTitleData.value = appContext.getString(R.string.wifi_password_prompt,
+                        textTitleData.value = appContext.getString(
+                            R.string.wifi_password_prompt,
                             wifiItem.item.SSID
                         )
                         confirmAction {
                             wifiItem.isSave = true
                             val index = mAdapter!!.getDataList().indexOf(wifiItem)
-                            if (index != -1){
+                            if (index != -1) {
                                 mAdapter?.getDataList()?.removeAt(index)
                                 mAdapter?.notifyItemRemoved(index)
                             }
                             isGreaterThanLollipop().yes {
                                 connect(bean, it)
                             }.otherwise {
-                                context?.let { context->connectTo_21(context,bean, it) }
+                                context?.let { context -> connectTo_21(context, bean, it) }
                             }
                         }
                     }
@@ -555,7 +565,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                     isGreaterThanLollipop().yes {
                         connect(bean, "")
                     }.otherwise {
-                        context?.let { connectTo_21(it,bean, "") }
+                        context?.let { connectTo_21(it, bean, "") }
                     }
                 }
             }
@@ -568,7 +578,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
             override fun onClick(wifiItem: WifiItem?) {
 
                 val netType = NetworkUtils.getNetworkType()
-                (netType==NetworkUtils.NetworkType.NETWORK_ETHERNET).yes {
+                (netType == NetworkUtils.NetworkType.NETWORK_ETHERNET).yes {
                     //以太网
                     ToastUtils.show(R.string.ethernet)
                     return
@@ -587,8 +597,8 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                 if (isSave) {
 
 
-                    val title =  R.string.saved_wifi_tip.stringValue()
-                    val rightText =  R.string.connect.stringValue()
+                    val title = R.string.saved_wifi_tip.stringValue()
+                    val rightText = R.string.connect.stringValue()
                     val middleText = R.string.unsave.stringValue()
                     showWifiSavedDialog {
                         textTitleData.value = title
@@ -600,7 +610,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                             isGreaterThanLollipop().yes {
                                 connect(bean, item!!.networkId)
                             }.otherwise {
-                                context?.let { connectTo21_netId(it,bean, item!!.networkId) }
+                                context?.let { connectTo21_netId(it, bean, item!!.networkId) }
                             }
                             wifiItem.isSave = true
                             if (index != -1) mAdapter!!.notifyItemChanged(index)
@@ -610,7 +620,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                             val index = mAdapter!!.getDataList().indexOf(wifiItem)
                             mWifiManager!!.removeNetwork(item!!.networkId)
                             wifiItem.isSave = false
-                            if (index != -1){
+                            if (index != -1) {
                                 mBind.rvSavedWifi.mutable.removeAt(index)
                                 mBind.rvSavedWifi.adapter?.notifyItemRemoved(index)
                             }
@@ -623,7 +633,8 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
 
                 } else if (usePass) {
                     showWifiPWDDialog {
-                        textTitleData.value = appContext.getString(R.string.wifi_password_prompt,
+                        textTitleData.value = appContext.getString(
+                            R.string.wifi_password_prompt,
                             wifiItem.item.SSID
                         )
                         confirmAction {
@@ -633,7 +644,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                             isGreaterThanLollipop().yes {
                                 connect(bean, it)
                             }.otherwise {
-                                context?.let {context-> connectTo_21(context,bean, it) }
+                                context?.let { context -> connectTo_21(context, bean, it) }
                             }
                         }
                     }
@@ -646,7 +657,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                     isGreaterThanLollipop().yes {
                         connect(bean, "")
                     }.otherwise {
-                        context?.let { connectTo_21(it,bean, "") }
+                        context?.let { connectTo_21(it, bean, "") }
                     }
                 }
             }
@@ -691,7 +702,6 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
     }
 
 
-
     fun connectTo_21(context: Context, scanResult: ScanResult, password: String) {
         "当前密码 的长度是$password====${password.length}"
         val pwd = password.toTrim()
@@ -716,7 +726,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
 
         // 添加网络并连接
         val netId = wifiManager.addNetwork(config)
-        if (netId!= -1) {
+        if (netId != -1) {
             wifiManager.enableNetwork(netId, true)
             wifiManager.reconnect()
         } else {
@@ -746,13 +756,14 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
         return true
     }
 
-    var items:MutableList<WifiItem>?=null
+    var items: MutableList<WifiItem>? = null
+
     @SuppressLint("MissingPermission")
     private fun availableAction(intent: Intent) {
 
         val success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
         val results = mWifiManager!!.scanResults
-         items = fillterWifi(results)
+        items = fillterWifi(results)
 
         items?.let {
 
@@ -871,7 +882,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                                     (it.getDataList()).removeAt(i)
                                     mAdapter?.notifyItemRemoved(i)
                                 }
-                            }catch (e:ArrayIndexOutOfBoundsException){
+                            } catch (e: ArrayIndexOutOfBoundsException) {
                                 e.printStackTrace()
                             }
 
@@ -962,7 +973,7 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
                     ) > WifiManager.calculateSignalLevel(o2.item.level, 5)
                 ) -1 else 1
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             "异常是====${e.message}"
             e.printStackTrace()
         }

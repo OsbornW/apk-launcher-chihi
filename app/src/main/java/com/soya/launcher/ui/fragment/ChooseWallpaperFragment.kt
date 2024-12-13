@@ -26,6 +26,8 @@ import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.FragmentChooseWallpaperBinding
 import com.soya.launcher.databinding.HolderWallpaperBinding
 import com.soya.launcher.enums.Atts
+import com.soya.launcher.ext.clearAndNavigate
+import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.ui.activity.MainActivity
 import com.soya.launcher.utils.GlideUtils
 import com.soya.launcher.utils.PreferencesUtils
@@ -58,13 +60,9 @@ class ChooseWallpaperFragment : BaseWallPaperFragment<FragmentChooseWallpaperBin
                     notifyItemRangeChanged(0,mBind.content.mutable.size)
                     updateWallpaper()
                     val fragmentManager = requireActivity().supportFragmentManager
-                    for (i in 0 until fragmentManager.backStackEntryCount) {
-                        fragmentManager.popBackStack()
-                    }
 
-                    fragmentManager.beginTransaction()
-                        .replace(R.id.main_browse_fragment, MainFragment.newInstance())
-                        .commit()
+                    fragmentManager.clearAndNavigate(R.id.main_browse_fragment, MainFragment.newInstance())
+
                 }
             }
         }

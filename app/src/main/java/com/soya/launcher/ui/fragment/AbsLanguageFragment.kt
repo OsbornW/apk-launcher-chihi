@@ -14,6 +14,8 @@ import com.drake.brv.utils.setup
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
+import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.obseverLiveEvent
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.bean.Language
@@ -36,6 +38,12 @@ abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseVi
 
         mBind.next.setOnClickListener(this)
     }
+
+    override fun excuteLang() {
+        "我执行了语言更新".e("chihi_error")
+        initView()
+    }
+
 
 
     private var selectIndex = 0

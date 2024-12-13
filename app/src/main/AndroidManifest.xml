@@ -106,7 +106,7 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:banner="@drawable/banner"
-            android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
+            android:configChanges="fontScale|locale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
@@ -144,9 +144,7 @@
         <activity
             android:name=".ui.activity.WallpaperActivity"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".ui.activity.GuideActivity"
-            android:screenOrientation="landscape" />
+
         <activity
             android:name=".ui.activity.LanguageActivity"
             android:screenOrientation="landscape" />

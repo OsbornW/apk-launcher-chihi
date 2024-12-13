@@ -1,5 +1,7 @@
 package com.soya.launcher
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -10,11 +12,14 @@ import com.shudong.lib_base.base.BaseVMFragment
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.margin
 import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.product.base.product
 import java.lang.reflect.ParameterizedType
+import java.util.Locale
 
 /**
  *
@@ -46,5 +51,50 @@ abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> 
             titleLayout.isVisible = isShowTitle
         }
 
+    }
+
+    open fun excuteLang(){}
+
+    override fun onStart() {
+        super.onStart()
+        "执行了onStart更新语言了哦".e("chihi_error")
+        // 获取系统默认语言
+        // 获取当前系统语言
+        val currentLocale = resources.configuration.locales.get(0)
+
+        // 获取系统的默认语言（用户设定的语言）
+        val newLocale = Locale.getDefault()
+
+        // 检查当前语言是否与新的语言不同
+       // if (currentLocale.language != newLocale.language) {
+            // 语言发生改变，执行更新配置的操作
+
+            // 创建一个新的 Configuration 对象
+            val config = Configuration(resources.configuration)
+
+            // 设置新的语言
+            config.setLocale(newLocale)
+
+            // 更新资源配置
+            resources.updateConfiguration(config, resources.displayMetrics)
+
+            // 可能需要手动刷新界面或者重启某些组件来应用语言变更
+            excuteLang()
+        //}
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        "执行了onattach了哦".e("chihi_error")
+        // 获取系统默认语言
+        val newLocale = Locale.getDefault()
+
+        // 更新配置
+        val config = Configuration(resources.configuration)
+        config.setLocale(newLocale)
+
+        // 更新资源配置
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 }

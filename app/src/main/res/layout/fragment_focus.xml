@@ -17,6 +17,7 @@
             android:layout_width="@dimen/qb_px_300"
             android:layout_height="@dimen/qb_px_300"/>
         <TextView
+            android:id="@+id/tv_tip"
             android:text="@string/focus_guide"
             android:textSize="@dimen/qb_px_sp_22"
             android:textColor="@color/text_color_style_1"
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
     <TextView
-        android:id="@+id/next"
+        android:id="@+id/tv_next"
         android:layout_marginBottom="@dimen/qb_px_26"
         android:textSize="@dimen/qb_px_sp_18"
         android:textColor="@color/text_color_style_1"

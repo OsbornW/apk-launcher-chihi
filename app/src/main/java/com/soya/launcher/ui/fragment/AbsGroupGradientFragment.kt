@@ -16,6 +16,7 @@ import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.R
 import com.soya.launcher.databinding.FragmentGuideGroupGradientBinding
 import com.soya.launcher.ext.isRK3326
+import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.ui.activity.GradientActivity
 import com.soya.launcher.ui.activity.ScaleScreenActivity
 import com.soya.launcher.utils.AndroidSystem
@@ -65,13 +66,16 @@ open class AbsGroupGradientFragment<VDB : FragmentGuideGroupGradientBinding, VM 
 
 
         }
-        mBind.skip.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View) {
-                if (isGuide) activity!!.supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_browse_fragment, GuideDateFragment.newInstance())
-                    .addToBackStack(null).commit() else activity!!.finish()
+        mBind.skip.setOnClickListener {
+            if (isGuide) {
+                requireActivity().supportFragmentManager.navigateTo(
+                    R.id.main_browse_fragment,
+                    GuideDateFragment.newInstance()
+                )
+            } else {
+                requireActivity().finish()
             }
-        })
+        }
     }
 
     override fun initdata() {

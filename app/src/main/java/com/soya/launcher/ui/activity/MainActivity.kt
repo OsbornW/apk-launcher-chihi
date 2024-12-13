@@ -1,5 +1,6 @@
 package com.soya.launcher.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -14,6 +15,7 @@ import com.google.gson.stream.JsonReader
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
+import com.shudong.lib_base.ext.RECREATE_MAIN
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
 import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
@@ -37,16 +39,20 @@ import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.ActivityMainBinding
 import com.soya.launcher.ext.bindNew
+import com.soya.launcher.ext.clearAndNavigate
+import com.soya.launcher.ext.clearStack
 import com.soya.launcher.ext.compareSizes
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getBasePath
 import com.soya.launcher.ext.isGame
 import com.soya.launcher.ext.isHome
+import com.soya.launcher.ext.navigateBack
 import com.soya.launcher.localWallPaperDrawable
 import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
+import com.soya.launcher.ui.fragment.GuideLanguageFragment
 import com.soya.launcher.utils.getFileNameFromUrl
 import com.soya.launcher.utils.toTrim
 import kotlinx.coroutines.CoroutineScope
@@ -95,6 +101,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     override fun onStart() {
         super.onStart()
+        supportFragmentManager.clearStack()
         lifecycleScope.launch {
             delay(300)
             fetchHomeData()
@@ -349,6 +356,10 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             updateWallPaper()
         }
 
+        obseverLiveEvent<Boolean>(RECREATE_MAIN){
+            recreate()
+        }
+
     }
 
 
@@ -361,9 +372,14 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         product.jumpToAuth(this)
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         if (canBackPressed) {
-            super.onBackPressed()
+            //super.onBackPressed()
+            val isCanNavi = supportFragmentManager.navigateBack()
+            if(!isCanNavi){
+                finish()
+            }
         } else {
             sendLiveEventData(HOME_EVENT, false)
         }

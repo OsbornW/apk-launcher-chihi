@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.FragmentManager
+import com.open.system.SystemUtils
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.isRepeatExcute
@@ -16,6 +17,7 @@ import com.soya.launcher.cache.AppCache
 import com.soya.launcher.cache.AppCache.isGuidChageLanguage
 import com.soya.launcher.databinding.FragmentSetLanguageBinding
 import com.soya.launcher.enums.Atts
+import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.PreferencesUtils
@@ -26,57 +28,25 @@ class GuideLanguageFragment : AbsLanguageFragment<FragmentSetLanguageBinding,Bas
     override fun initView() {
         super.initView()
         showNext(false)
-        "我又进来了引导语言：：$isGuidChageLanguage".e("zengyue2")
-        isGuidChageLanguage.yes {
-            jump()
-        }
+
     }
 
     override fun onSelectLanguage(bean: Language) {
-        isGuidChageLanguage = true
         PreferencesUtils.setProperty(Atts.LANGUAGE, bean.language.toLanguageTag())
+        SystemUtils.updateLocale(bean.language)
         AndroidSystem.setSystemLanguage(activity, bean.language)
-        jump()
-    }
-
-    override fun onNext() {
-        super.onNext()
+        "选中语言跳转了".e("chihi_error")
         jump()
     }
 
 
-    var fragmentTag = GuideDateFragment::class.java.name
 
     private fun jump() {
-        val fManager = activity!!.supportFragmentManager
-
-        // 检查当前显示的 Fragment 是否已经是目标 Fragment
-        /*val currentFragment = fManager.findFragmentById(R.id.main_browse_fragment)
-        if (currentFragment != null && currentFragment::class.java.name == fragmentTag) {
-            // 如果当前 Fragment 就是目标 Fragment，直接返回，不做任何操作
-            return
-        }*/
-
-       /* product.isJumpGuidGradient().no { fragmentTag = GuideDateFragment::class.java.name }
-        for (i in fManager.backStackEntryCount - 1 downTo 0) {
-            val entry = fManager.getBackStackEntryAt(i)
-            if (entry.name == fragmentTag) {
-                fManager.popBackStack(entry.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                break
-            }
-        }*/
+        val fManager = requireActivity().supportFragmentManager
 
         val fragment = product.isJumpGuidGradient().yes { GuideGroupGradientFragment.newInstance() }.otherwise { GuideDateFragment.newInstance() }
 
-        // 否则，执行替换操作，并将新的 Fragment 添加到回退栈中
-
-            if (fManager.findFragmentByTag(fragmentTag) == null) {
-                fManager.beginTransaction()
-                    .replace(R.id.main_browse_fragment, fragment)
-                    //.addToBackStack(null)
-                    .commit()
-            }
-
+        fManager.navigateTo(R.id.main_browse_fragment, fragment)
 
     }
 

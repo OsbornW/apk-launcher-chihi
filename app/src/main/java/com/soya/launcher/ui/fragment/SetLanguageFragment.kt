@@ -2,6 +2,8 @@ package com.soya.launcher.ui.fragment
 
 import android.os.Bundle
 import com.shudong.lib_base.base.BaseViewModel
+import com.shudong.lib_base.ext.RECREATE_MAIN
+import com.shudong.lib_base.ext.sendLiveEventData
 import com.soya.launcher.bean.Language
 import com.soya.launcher.databinding.FragmentSetLanguageBinding
 import com.soya.launcher.enums.Atts
@@ -24,6 +26,7 @@ class SetLanguageFragment : AbsLanguageFragment<FragmentSetLanguageBinding,BaseV
             activity,
             Locale.forLanguageTag(PreferencesManager.getLanguage())
         )
+        sendLiveEventData(RECREATE_MAIN,true)
     }
 
     companion object {

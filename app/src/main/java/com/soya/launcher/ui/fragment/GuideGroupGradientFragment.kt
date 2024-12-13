@@ -12,13 +12,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class GuideGroupGradientFragment : AbsGroupGradientFragment<FragmentGuideGroupGradientBinding,BaseViewModel>() {
-    override fun onResume() {
-        super.onResume()
-        lifecycleScope.launch {
-            delay(1500)
-            AppCache.isGuidChageLanguage = false
-        }
-    }
 
 
     override val isGuide: Boolean
