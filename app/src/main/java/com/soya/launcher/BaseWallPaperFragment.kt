@@ -55,19 +55,15 @@ abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> 
 
     open fun excuteLang(){}
 
+    // 标志变量，表示语言是否已经更新
+    private var isLanguageUpdated = false
+
     override fun onStart() {
         super.onStart()
-        "执行了onStart更新语言了哦".e("chihi_error")
-        // 获取系统默认语言
-        // 获取当前系统语言
-        val currentLocale = resources.configuration.locales.get(0)
 
-        // 获取系统的默认语言（用户设定的语言）
-        val newLocale = Locale.getDefault()
-
-        // 检查当前语言是否与新的语言不同
-       // if (currentLocale.language != newLocale.language) {
-            // 语言发生改变，执行更新配置的操作
+        if(!isLanguageUpdated){
+            // 获取系统的默认语言（用户设定的语言）
+            val newLocale = Locale.getDefault()
 
             // 创建一个新的 Configuration 对象
             val config = Configuration(resources.configuration)
@@ -80,7 +76,8 @@ abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> 
 
             // 可能需要手动刷新界面或者重启某些组件来应用语言变更
             excuteLang()
-        //}
+        }
+
     }
 
 
@@ -96,5 +93,6 @@ abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> 
 
         // 更新资源配置
         resources.updateConfiguration(config, resources.displayMetrics)
+        isLanguageUpdated = true
     }
 }

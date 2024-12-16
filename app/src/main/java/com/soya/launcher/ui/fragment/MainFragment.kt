@@ -483,6 +483,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
             }
         }.models = arrayListOf()
+        mBind.header.itemAnimator = null
     }
 
 
