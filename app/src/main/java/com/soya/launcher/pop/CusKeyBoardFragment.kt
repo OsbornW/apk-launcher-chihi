@@ -13,8 +13,10 @@ import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import com.drake.brv.utils.addModels
 import com.drake.brv.utils.grid
 import com.drake.brv.utils.setup
 import com.shudong.lib_base.ext.clickNoRepeat
@@ -40,6 +42,9 @@ import com.soya.launcher.ext.moveCursorLeft
 import com.soya.launcher.ext.moveCursorRight
 import com.soya.launcher.net.viewmodel.KeyBoardViewModel
 import com.soya.launcher.utils.toTrim
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 
 /**
@@ -69,7 +74,6 @@ class CusKeyBoardFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        keyBoardDtos = mViewModel.addLowerCase(false)
         editTextData.observe(this){
             editText = it
         }
@@ -88,9 +92,13 @@ class CusKeyBoardFragment : DialogFragment() {
                         }
                     }
                 }
-            }.models = mViewModel.addNumChar()
+            }.models
 
         }
+
+
+
+
 
         binding.rvLetter.apply {
 
@@ -161,8 +169,22 @@ class CusKeyBoardFragment : DialogFragment() {
                         }
                     }
                 }
-            }.models = keyBoardDtos
+            }.models
         }
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO){
+                keyBoardDtos = mViewModel.addLowerCase(false)
+            }
+            withContext(Dispatchers.Main){
+                binding.rvNumber.addModels(mViewModel.addNumChar())
+            }
+            withContext(Dispatchers.Main){
+                binding.rvLetter.addModels(keyBoardDtos )
+            }
+        }
+
+
         setKeyBoardLitsener()
         binding.rvLetter.apply { post { requestFocus() } }
     }

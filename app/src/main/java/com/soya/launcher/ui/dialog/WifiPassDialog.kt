@@ -76,7 +76,7 @@ class WifiPassDialog : SingleDialogFragment<DialogWifiPassBinding>() {
 
 
         lifecycleScope.launch {
-            delay(600)
+            //delay(600)
             showKeyBoardDialog {
                 editTextData.value = binding.editPass
             }

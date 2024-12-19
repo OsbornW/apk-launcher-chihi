@@ -1,38 +1,47 @@
 package com.soya.launcher.ext
 
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.e
 import dalvik.system.DexClassLoader
 import java.io.File
 
 
 fun loadJarAndCreateWebSocketClient(jarPath: String) {
     // 创建 URLClassLoader
-    val jarFile = File(jarPath)
     val dexClassLoader =
         DexClassLoader(jarPath, appContext.cacheDir.absolutePath, null, appContext.classLoader)
 
     try {
         // 使用反射加载类
-        val clazz = dexClassLoader.loadClass("cn.codezeng.testmyjar.MyLibrary")
+        val clazz = dexClassLoader.loadClass("com.chihi.test_lib.JarExample")
 
         // 创建类的实例
         val instance = clazz.getDeclaredConstructor().newInstance()
 
-        // 调用 `hello` 方法
-        val method = clazz.getMethod("hello")
-        val result = method.invoke(instance)
+        // 获取 `hello` 方法并传递回调函数
+        val method = clazz.getMethod("hello", (Function1::class.java))  // 获取带一个参数的 hello 方法
 
-        "当前返回的result是：$result"
-        // 打印方法的结果
-        println(result)
+        // 创建回调函数
+        val callback = object : Function1<String, Unit> {
+            override fun invoke(p1: String) {
+                // 在这里处理回调传递过来的 msg
+                "当前返回的result是：$p1".e("chihi_error")
+            }
+        }
+
+        // 调用 `hello` 方法并传递回调函数
+        method.invoke(instance, callback)
+
+
     } catch (e: Exception) {
         e.printStackTrace()
+        "当前的异常是：：${e.message}".e("chihi_error")
     }
 }
 
 
 fun loadJar() {
-    val jarPath = "${appContext.cacheDir.absolutePath}/testdex.jar"
+    val jarPath = "${appContext.cacheDir.absolutePath}/test_dex.jar"
     loadJarAndCreateWebSocketClient(jarPath)
 }
 

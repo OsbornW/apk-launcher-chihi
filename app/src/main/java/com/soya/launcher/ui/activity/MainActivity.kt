@@ -47,6 +47,7 @@ import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getBasePath
 import com.soya.launcher.ext.isGame
 import com.soya.launcher.ext.isHome
+import com.soya.launcher.ext.loadJar
 import com.soya.launcher.ext.navigateBack
 import com.soya.launcher.localWallPaperDrawable
 import com.soya.launcher.manager.FilePathMangaer
@@ -102,6 +103,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     override fun onStart() {
         super.onStart()
         supportFragmentManager.clearStack()
+        //loadJar()
         lifecycleScope.launch {
             delay(300)
             fetchHomeData()
