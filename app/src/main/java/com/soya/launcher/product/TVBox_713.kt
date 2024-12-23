@@ -161,4 +161,8 @@ object TVBox_713 : TVDeviceImpl {
     }
 
     override fun isShowMemoryInfo() = true
+
+    override fun isShowDefaultVideoApp() = false
+
+
 }

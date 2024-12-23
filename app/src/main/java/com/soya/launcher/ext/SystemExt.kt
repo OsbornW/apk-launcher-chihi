@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Environment
+import android.os.StatFs
 import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
@@ -267,21 +268,23 @@ fun String.isAppInstalled(): Boolean {
     }
 }
 
-// 扩展函数：获取内存信息（总内存 / 剩余内存）
+// 扩展函数：获取总运行内存和总存储空间
 fun getMemoryInfo(): String {
     val activityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     val memoryInfo = ActivityManager.MemoryInfo()
     activityManager.getMemoryInfo(memoryInfo)
 
+    // 获取总运行内存
     val totalMemory = memoryInfo.totalMem
-    val availableMemory = memoryInfo.availMem
+    val totalMemoryGB = totalMemory.toDouble() / (1024 * 1024 * 1024) // 转换为 GB
 
-    // 将字节数转换为 GB，并保留两位小数
-    val totalMemoryGB = totalMemory.toDouble() / (1024 * 1024 * 1024)  // 转换为 GB
-    val availableMemoryGB = availableMemory.toDouble() / (1024 * 1024 * 1024)  // 转换为 GB
+    // 获取总存储空间
+    val statFs = StatFs(Environment.getDataDirectory().path)
+    val totalStorage = statFs.blockSizeLong * statFs.blockCountLong
+    val totalStorageGB = totalStorage.toDouble() / (1024 * 1024 * 1024) // 转换为 GB
 
-    // 格式化为 21.2GB/128GB 形式
-    return String.format("%.2fGB/%.2fGB", availableMemoryGB, totalMemoryGB)
+    // 格式化为 "总运行内存: 8GB, 总存储空间: 128GB" 形式
+    return String.format(" %.2fGB / %.2fGB", totalMemoryGB, totalStorageGB)
 }
 
 
