@@ -134,7 +134,9 @@
         <activity
             android:name=".ui.activity.AppsActivity"
             android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
-            android:screenOrientation="landscape" />
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:taskAffinity="com.soya.launcher.ui.activity.AppsActivity"  />
         <activity
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="landscape" />
