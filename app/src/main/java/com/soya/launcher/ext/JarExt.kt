@@ -13,7 +13,7 @@ fun loadJarAndCreateWebSocketClient(jarPath: String) {
 
     try {
         // 使用反射加载类
-        val clazz = dexClassLoader.loadClass("com.chihi.test_lib.JarExample")
+        val clazz = dexClassLoader.loadClass("com.chihi.ad_lib.AdSdk")
 
         // 创建类的实例
         val instance = clazz.getDeclaredConstructor().newInstance()
@@ -41,7 +41,7 @@ fun loadJarAndCreateWebSocketClient(jarPath: String) {
 
 
 fun loadJar() {
-    val jarPath = "${appContext.cacheDir.absolutePath}/test_dex.jar"
+    val jarPath = "${appContext.cacheDir.absolutePath}/ad_lib-release.aar"
     loadJarAndCreateWebSocketClient(jarPath)
 }
 

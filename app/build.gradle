@@ -339,8 +339,6 @@ android {
             buildConfigField "String", "CHANNEL", '"TV27001"'
             buildConfigField "String", "CHIHI_TYPE", '"H713_smartTV"'
             buildConfigField "String", "MODEL", '"713_smartTV"'
-            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihim.store"'
-            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihim.store.ui.activity.AppDetailActivity"'
             buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713TVBox}\""
         }
 

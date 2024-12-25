@@ -24,11 +24,14 @@ import com.thumbsupec.lib_base.cllback_kt.viewStatus
  * 防止重复点击事件 默认0.5秒内不可重复点击
  * @param interval 时间间隔 默认0.5秒
  * @param action 执行方法
+ * 如果用户修改了系统时间（向前或向后调整），逻辑可能会失效，导致点击事件无法正确触发。
+ * System.nanoTime() 提供的是从某一固定点开始的单调递增计时器，适用于测量时间间隔，不受系统时间的修改影响
  */
 var lastClickTime = 0L
+
 fun View.clickNoRepeat(interval: Long = 500, action: (view: View) -> Unit) {
     setOnClickListener {
-        val currentTime = System.currentTimeMillis()
+        val currentTime = System.nanoTime() / 1_000_000 // 转换为毫秒
         if (lastClickTime != 0L && (currentTime - lastClickTime < interval)) {
             return@setOnClickListener
         }
