@@ -27,6 +27,9 @@ android {
         x50_713M{
             java.srcDirs = ['src/x50_713M/java']
         }
+        hongxin_713_smartTV{
+            java.srcDirs = ['src/hongxin_713_smartTV/java']
+        }
     }
 
     signingConfigs {
