@@ -63,6 +63,7 @@ import com.soya.launcher.LAYOUTTYPE_HOME_GAME
 import com.soya.launcher.LAYOUTTYPE_HOME_LANDSCAPE
 import com.soya.launcher.PACKAGE_NAME_713_BOX_DISPLAY
 import com.soya.launcher.R
+import com.soya.launcher.ad.unzipAndKeepApk
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Data
@@ -88,6 +89,7 @@ import com.soya.launcher.ext.compareSizes
 import com.soya.launcher.ext.convertH27002Json
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.findScreenCastApps
+import com.soya.launcher.ext.getBasePath
 import com.soya.launcher.ext.getUpdateList
 import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
@@ -199,14 +201,16 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         obseverLiveEvent<Boolean>(ADD_APPSTORE){
             val exists = items.any { it.type == Types.TYPE_APP_STORE }
             exists.no {
-                mBind.header.mutable.add(index_appstore,TypeItem(
+                val typeItem = TypeItem(
                     appContext.getString(R.string.app_store),
                     R.drawable.store,
                     0,
                     Types.TYPE_APP_STORE,
                     TypeItem.TYPE_ICON_IMAGE_RES,
                     TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                ))
+                )
+                items.add(0,typeItem)
+                mBind.header.mutable.add(index_appstore,typeItem)
                 mBind.header.adapter?.notifyItemInserted(index_appstore)
             }
         }
@@ -229,15 +233,16 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     override fun initdata() {
         product.addHeaderItem()?.let {
+            val typeItem = TypeItem(
+                appContext.getString(R.string.app_store),
+                R.drawable.store,
+                0,
+                Types.TYPE_APP_STORE,
+                TypeItem.TYPE_ICON_IMAGE_RES,
+                TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+            )
             if(AppCache.homeStoreFileData.dataList.size>=4){
-                items.add(TypeItem(
-                    appContext.getString(R.string.app_store),
-                    R.drawable.store,
-                    0,
-                    Types.TYPE_APP_STORE,
-                    TypeItem.TYPE_ICON_IMAGE_RES,
-                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
-                ))
+                items.add(typeItem)
             }
             items.addAll(it)
         }
@@ -948,7 +953,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             if (Config.COMPANY == 4) {
                 AndroidSystem.openSystemSetting(requireContext())
             } else {
-                startActivity(Intent(requireContext(), SettingActivity::class.java))
+                "开始解压".e("chihi_error1")
+                val destPath = "${"plugin".getBasePath()}/ADPlugin-1.0-1-release.zip"
+                val apkPath = destPath.unzipAndKeepApk()
+                //startActivity(Intent(requireContext(), SettingActivity::class.java))
             }
 
         } else if (v == mBind.search) {
