@@ -2,6 +2,8 @@ package com.soya.launcher.cache
 
 import com.drake.serialize.serialize.serial
 import com.soya.launcher.bean.HomeDataList
+import com.soya.launcher.bean.HomeStoreFileList
+import com.soya.launcher.bean.HomeStoreList
 import com.soya.launcher.bean.Wallpaper
 
 object AppCache {
@@ -14,6 +16,8 @@ object AppCache {
     var isGame:Boolean by serial(false)
     var isReload:Boolean by serial(false)
     var homeData: HomeDataList by serial(default = HomeDataList(mutableMapOf()))
+    var homeStoreFileData: HomeStoreFileList by serial(default = HomeStoreFileList(mutableMapOf()))
+    var homeStoreData: HomeStoreList by serial(default = HomeStoreList(mutableListOf()))
     var isAllDownload:Boolean by serial(default = false)
     var isSkipGuid:Boolean by serial(default = false)   //是否跳过引导页
     var isGuidChageLanguage:Boolean by serial(default = false)   //是否跳过引导页

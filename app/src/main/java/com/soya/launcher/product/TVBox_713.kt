@@ -41,7 +41,7 @@ object TVBox_713 : TVDeviceImpl {
         return mutableListOf<TypeItem>().apply {
 
             // APP Store
-            add(
+            /*add(
                 TypeItem(
                     appContext.getString(R.string.app_store),
                     R.drawable.store,
@@ -50,7 +50,7 @@ object TVBox_713 : TVDeviceImpl {
                     TypeItem.TYPE_ICON_IMAGE_RES,
                     TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
                 )
-            )
+            )*/
 
             // Local APP
             add(

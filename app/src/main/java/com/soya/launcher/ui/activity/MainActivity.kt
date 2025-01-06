@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_AVR_POWER
 import android.view.WindowManager
@@ -13,6 +14,7 @@ import com.blankj.utilcode.util.NetworkUtils
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
+import com.shudong.lib_base.ext.ADD_APPSTORE
 import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.RECREATE_MAIN
@@ -23,6 +25,7 @@ import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.downloadPic
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.isRepeatExcute
+import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
 import com.shudong.lib_base.ext.no
@@ -31,11 +34,15 @@ import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.ext.yes
+import com.soya.launcher.App
 import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
 import com.soya.launcher.SplashFragment
 import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.HomeInfoDto
+import com.soya.launcher.bean.HomeStoreFileList
+import com.soya.launcher.bean.HomeStoreList
+import com.soya.launcher.bean.SearchDto
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.ActivityMainBinding
 import com.soya.launcher.ext.bindNew
@@ -107,14 +114,58 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         lifecycleScope.launch {
             delay(300)
             fetchHomeData()
+
         }
 
     }
 
+    private fun fetchStoreData() {
+        errorJobStore?.cancel()
+        mViewModel.reqSearchAppList(
+            tag = "hot", pageSize = 5)
+            .lifecycle(this, errorCallback = {
+                    errorJobStore = lifecycleScope.launch(Dispatchers.Main) {
+                        while (true) {
+                            if(NetworkUtils.isConnected()){
+                                fetchStoreData()
+                            }
+                            delay(2000)
+
+                        }
+
+                    }
+            }) {
+                val dto = this.jsonToBean<SearchDto>()
+                if((dto.result?.appList?.size ?: 0) > 0){
+                    dto.result?.appList?.let {
+                        AppCache.homeStoreData.dataList = it
+                        it.forEach {
+                            "当前要下载的图片${it.appIcon}".e("chihi_error")
+                             mViewModel.loadImageToFileInViewModel(it.appIcon?:""){path->
+
+                                if(!path.isNullOrEmpty()){
+                                    val cacheList = AppCache.homeStoreFileData.dataList
+                                    cacheList[it.appIcon!!] = path
+                                    AppCache.homeStoreFileData = HomeStoreFileList(cacheList)
+                                    if(AppCache.homeStoreFileData.dataList.size==5){
+                                        //store图片下载完成
+                                        sendLiveEventData(ADD_APPSTORE,true)
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+    }
 
 
     private var fetchJob: Job? = null
     private var errorJob: Job? = null
+    private var errorJobStore: Job? = null
     private fun fetchHomeData(isRefresh: Boolean = false) {
         // 取消之前的任务（如果存在）
         isHandleUpdateList = false
@@ -163,15 +214,20 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                     if ((dto.reqId ?: 0) != AppCache.reqId|| AppCache.isGame != isGame()) {
                         AppCache.isAllDownload = false
                         deleteAllPic()
+                        AppCache.homeStoreFileData.dataList.clear()
                     }
 
                     AppCache.reqId = dto.reqId ?: 0
                     AppCache.isGame = isGame()
                     startPicTask(this)
+
+
                 }
 
             }
-
+        }
+        if ((dto.reqId ?: 0) != AppCache.reqId || AppCache.isGame != isGame()||AppCache.homeStoreFileData.dataList.size<4) {
+            fetchStoreData()
         }
     }
 

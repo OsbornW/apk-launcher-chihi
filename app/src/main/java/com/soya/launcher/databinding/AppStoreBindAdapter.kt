@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.soya.launcher.R
 import com.soya.launcher.bean.AppItem
+import com.soya.launcher.cache.AppCache
 import com.soya.launcher.h27002.getDrawableByName
 import com.soya.launcher.utils.GlideUtils
 import com.soya.launcher.view.MyFrameLayoutHouse
@@ -21,11 +22,12 @@ object AppStoreBindAdapter {
     @BindingAdapter(value = ["item_store_icon"])
     @JvmStatic
     fun itemStoreIcon(ivIcon: ImageView, dto: AppItem) {
-        if (TextUtils.isEmpty(dto.localIcon)) {
+        GlideUtils.bind(ivIcon, AppCache.homeStoreFileData.dataList[dto.appIcon])
+        /*if (TextUtils.isEmpty(dto.localIcon)) {
             GlideUtils.bind(ivIcon, dto.appIcon)
         } else {
             ivIcon.setImageDrawable(ivIcon.context.getDrawableByName(dto.localIcon))
-        }
+        }*/
 
     }
 

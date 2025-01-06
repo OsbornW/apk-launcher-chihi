@@ -1,11 +1,18 @@
 package com.soya.launcher.net.viewmodel
 
 import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.drawable.Drawable
 import android.os.Build
+import androidx.annotation.NonNull
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.DeviceUtils
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.appContext
@@ -18,6 +25,7 @@ import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
+import com.soya.launcher.GlideApp
 import com.soya.launcher.PACKAGE_NAME_AUTO_RESPONSE
 import com.soya.launcher.PACKAGE_NAME_IMAGE_MODE
 import com.soya.launcher.R
@@ -51,8 +59,12 @@ import com.soya.launcher.utils.AndroidSystem
 import com.soya.launcher.utils.MacTool
 import com.soya.launcher.utils.toTrim
 import com.thumbsupec.lib_base.toast.ToastUtils
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.inject
+import java.io.File
 
 /**
  *
@@ -297,6 +309,29 @@ class HomeViewModel : BaseViewModel() {
 
             }
         }
+    }
+
+    fun loadImageToFileInViewModel(
+        imageUrl: String,
+        callback: (String?) -> Unit
+    ) {
+        GlideApp.with(appContext)
+            .asFile()
+            .load(imageUrl)
+            .into(object : CustomTarget<File>() {
+                override fun onResourceReady(resource: File, transition: Transition<in File>?) {
+                    // 在这里可以访问到返回的 File 对象
+                    // 例如显示、保存等操作
+                    println("下载成功，文件路径：${resource.absolutePath}")
+                    callback.invoke(resource.absolutePath)
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    // 清除资源或释放占用
+                    println("加载被清除")
+                }
+            })
+
     }
 
 }

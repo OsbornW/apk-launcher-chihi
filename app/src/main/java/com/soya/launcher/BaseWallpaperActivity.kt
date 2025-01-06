@@ -3,6 +3,7 @@ package com.soya.launcher
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
 import com.shudong.lib_base.base.BaseVMActivity
@@ -73,6 +74,18 @@ open class BaseWallpaperActivity<VDB : ViewDataBinding, VM : BaseViewModel> :
 
 
 
+    }
+
+
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        "按下了遥控按键".e("chihi_error")
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        "松开了遥控按键".e("chihi_error")
+        return super.onKeyUp(keyCode, event)
     }
 
 

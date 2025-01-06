@@ -41,6 +41,16 @@ open class Projector713_M_G : TVDeviceImpl {
                     TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
                 )
             )
+            add(
+                TypeItem(
+                    appContext.getString(R.string.screencast),
+                    R.drawable.screencast,
+                    0,
+                    Types.TYPE_ScreenCast,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                )
+            )
             // 投影仪
             add(
                 TypeItem(

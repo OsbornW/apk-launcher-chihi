@@ -32,6 +32,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.shudong.lib_base.currentActivity
+import com.shudong.lib_base.ext.ADD_APPSTORE
 import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.REFRESH_HOME
@@ -143,7 +144,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private var receiver: InnerReceiver? = null
     private var maxVerticalOffset = com.shudong.lib_dimen.R.dimen.qb_px_60.dimenValue()
     private val items: MutableList<TypeItem> = ArrayList()
-    private val targetMenus: MutableList<TypeItem> = ArrayList()
     private var timeRunnable: MyRunnable? = null
     private var isConnectFirst = false
     private var isFullAll = false
@@ -196,6 +196,21 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             updateWallpaper()
         }
 
+        obseverLiveEvent<Boolean>(ADD_APPSTORE){
+            val exists = items.any { it.type == Types.TYPE_APP_STORE }
+            exists.no {
+                mBind.header.mutable.add(index_appstore,TypeItem(
+                    appContext.getString(R.string.app_store),
+                    R.drawable.store,
+                    0,
+                    Types.TYPE_APP_STORE,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                ))
+                mBind.header.adapter?.notifyItemInserted(index_appstore)
+            }
+        }
+
     }
 
     private fun backToHeadFirst() {
@@ -213,7 +228,19 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     override fun initdata() {
-        product.addHeaderItem()?.let { items.addAll(it) }
+        product.addHeaderItem()?.let {
+            if(AppCache.homeStoreFileData.dataList.size>=4){
+                items.add(TypeItem(
+                    appContext.getString(R.string.app_store),
+                    R.drawable.store,
+                    0,
+                    Types.TYPE_APP_STORE,
+                    TypeItem.TYPE_ICON_IMAGE_RES,
+                    TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                ))
+            }
+            items.addAll(it)
+        }
 
         //receiver?.let { mViewModel.addAppStatusBroadcast(it) }
 
@@ -530,6 +557,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
     }
 
+    var index_appstore = 0
     private fun setNetData(result: HomeInfoDto) {
 
         lifecycleScope.launch {
@@ -537,6 +565,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
            // mBind.setting.requestFocus()
 
             val header = fillData(result)
+            index_appstore = header.size
             header.addAll(items)
 
             addProduct5TypeItem(header)
@@ -699,8 +728,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
 
     private fun setHeader(items: List<TypeItem>) {
-        targetMenus.clear()
-        targetMenus.addAll(items)
         items.forEachIndexed { index, typeItem ->
             typeItem.itemPosition = index
         }
@@ -921,7 +948,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             if (Config.COMPANY == 4) {
                 AndroidSystem.openSystemSetting(requireContext())
             } else {
-                startActivity(Intent(requireContext(), SettingActivity::class.java))
+                mViewModel.loadImageToFileInViewModel("https://blob.czfp.cc/fs1/playicon/youtube.jpg"){
+                    "当前加载后的路径是：${it}".e("MainFragment")
+                    //大叔大婶
+                }
+                //startActivity(Intent(requireContext(), SettingActivity::class.java))
             }
 
         } else if (v == mBind.search) {
@@ -1053,7 +1084,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private fun fillAppStore() {
-        if (App.APP_STORE_ITEMS.isEmpty()) {
+        val list = AppCache.homeStoreData.dataList
+        setStoreContent(list)
+        /*if (App.APP_STORE_ITEMS.isEmpty()) {
             val emptys: MutableList<AppItem> = ArrayList()
             try {
                 val apps = Gson().fromJson(
@@ -1086,7 +1119,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             }
         } else {
             setStoreContent(App.APP_STORE_ITEMS)
-        }
+        }*/
         isFullAll = true
     }
 
@@ -1110,6 +1143,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 if (compareSizes(result)) {
                     "我加载的是网络的资源".e("zengyue3")
                     val header = fillData(result)
+                    index_appstore = header.size
                     header.addAll(items)
                     addProduct5TypeItem(header)
 
@@ -1164,6 +1198,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             )
 
             val header = fillData(result)
+            index_appstore = header.size
             header.addAll(items)
             addProduct5TypeItem(header)
 
@@ -1177,10 +1212,14 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         }
                     }
                 }
+                index_appstore = header.size
                 header.addAll(items)
             }
 
-            product.addGameItem()?.let { header.addAll(0, it) }
+            product.addGameItem()?.let {
+                index_appstore -= 1
+                header.addAll(0, it)
+            }
 
 
 
