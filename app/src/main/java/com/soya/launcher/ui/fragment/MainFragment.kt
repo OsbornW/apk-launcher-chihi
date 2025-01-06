@@ -948,11 +948,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             if (Config.COMPANY == 4) {
                 AndroidSystem.openSystemSetting(requireContext())
             } else {
-                mViewModel.loadImageToFileInViewModel("https://blob.czfp.cc/fs1/playicon/youtube.jpg"){
-                    "当前加载后的路径是：${it}".e("MainFragment")
-                    //大叔大婶
-                }
-                //startActivity(Intent(requireContext(), SettingActivity::class.java))
+                startActivity(Intent(requireContext(), SettingActivity::class.java))
             }
 
         } else if (v == mBind.search) {
