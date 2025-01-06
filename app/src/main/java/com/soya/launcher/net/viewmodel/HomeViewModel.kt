@@ -1,34 +1,21 @@
 package com.soya.launcher.net.viewmodel
 
 import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.drawable.Drawable
 import android.os.Build
-import androidx.annotation.NonNull
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.DeviceUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.currentActivity
-import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.downloadPic
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
-import com.shudong.lib_base.ext.showErrorToast
-import com.shudong.lib_base.ext.showSuccessToast
-import com.shudong.lib_base.ext.stringValue
-import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
-import com.soya.launcher.GlideApp
-import com.soya.launcher.PACKAGE_NAME_AUTO_RESPONSE
 import com.soya.launcher.PACKAGE_NAME_IMAGE_MODE
-import com.soya.launcher.R
 import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeInfoDto
@@ -41,12 +28,10 @@ import com.soya.launcher.bean.UpdateDto
 import com.soya.launcher.config.Config
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.Types
-import com.soya.launcher.ext.SYSTEM_PROPERTY_AUTO_RESPONSE
-import com.soya.launcher.ext.autoResponseText
+import com.soya.launcher.ext.getBasePath
 import com.soya.launcher.ext.getMacAddress
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.ext.setAutoResponseProperty
-import com.soya.launcher.ext.systemPropertyValueBoolean
 import com.soya.launcher.net.repository.AuthRepository
 import com.soya.launcher.net.repository.HomeRepository
 import com.soya.launcher.p50.AUTO_ENTRY
@@ -56,15 +41,11 @@ import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.AppsActivity
 import com.soya.launcher.ui.activity.MainActivity
 import com.soya.launcher.utils.AndroidSystem
-import com.soya.launcher.utils.MacTool
+import com.soya.launcher.utils.getFileNameFromUrl
 import com.soya.launcher.utils.toTrim
 import com.thumbsupec.lib_base.toast.ToastUtils
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.core.component.inject
-import java.io.File
 
 /**
  *
@@ -315,7 +296,22 @@ class HomeViewModel : BaseViewModel() {
         imageUrl: String,
         callback: (String?) -> Unit
     ) {
-        GlideApp.with(appContext)
+        val destPath =
+            "${"appstore".getBasePath()}/appstore_${imageUrl.getFileNameFromUrl()}"
+
+        (imageUrl).downloadPic(viewModelScope, destPath,
+            downloadComplete = { _, path ->
+
+                println("下载成功，文件路径：${path}")
+                callback.invoke(path)
+
+            },
+            downloadError = {
+
+            }
+        )
+
+       /* GlideApp.with(appContext)
             .asFile()
             .load(imageUrl)
             .into(object : CustomTarget<File>() {
@@ -330,7 +326,7 @@ class HomeViewModel : BaseViewModel() {
                     // 清除资源或释放占用
                     println("加载被清除")
                 }
-            })
+            })*/
 
     }
 

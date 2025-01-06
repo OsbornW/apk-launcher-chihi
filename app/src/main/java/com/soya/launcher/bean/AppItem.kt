@@ -32,5 +32,5 @@ data class AppItem(
     @SerialName("versionName")
     val versionName: String?,
     @SerialName("localIcon")
-    val localIcon: String
+    val localIcon: String?
 )

@@ -1085,6 +1085,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun fillAppStore() {
         val list = AppCache.homeStoreData.dataList
+        "当前大小是${list.size}---".e("chihi_error1")
         setStoreContent(list)
         /*if (App.APP_STORE_ITEMS.isEmpty()) {
             val emptys: MutableList<AppItem> = ArrayList()

@@ -5,6 +5,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.shudong.lib_base.ext.e
 import com.soya.launcher.R
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.cache.AppCache
@@ -22,7 +23,9 @@ object AppStoreBindAdapter {
     @BindingAdapter(value = ["item_store_icon"])
     @JvmStatic
     fun itemStoreIcon(ivIcon: ImageView, dto: AppItem) {
-        GlideUtils.bind(ivIcon, AppCache.homeStoreFileData.dataList[dto.appIcon])
+        val path = AppCache.homeStoreFileData.dataList[dto.appIcon]
+        "当前Path是：：：${path}".e("chihi_error1")
+        GlideUtils.bind(ivIcon, path)
         /*if (TextUtils.isEmpty(dto.localIcon)) {
             GlideUtils.bind(ivIcon, dto.appIcon)
         } else {

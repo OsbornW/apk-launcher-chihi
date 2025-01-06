@@ -138,9 +138,11 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 val dto = this.jsonToBean<SearchDto>()
                 if((dto.result?.appList?.size ?: 0) > 0){
                     dto.result?.appList?.let {
-                        AppCache.homeStoreData.dataList = it
+                        var cacheStoreData = AppCache.homeStoreData.dataList
+                        cacheStoreData.clear()
+                        cacheStoreData.addAll(it)
+                        AppCache.homeStoreData = HomeStoreList(cacheStoreData)
                         it.forEach {
-                            "当前要下载的图片${it.appIcon}".e("chihi_error")
                              mViewModel.loadImageToFileInViewModel(it.appIcon?:""){path->
 
                                 if(!path.isNullOrEmpty()){
@@ -234,8 +236,10 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     private fun deleteAllPic() {
         val headerDirPath = "${appContext.filesDir.absolutePath}/header"
         val contentDirPath = "${appContext.filesDir.absolutePath}/content"
+        val appstoreDirPath = "${appContext.filesDir.absolutePath}/appstore"
         headerDirPath.deleteAllImages()
         contentDirPath.deleteAllImages()
+        appstoreDirPath.deleteAllImages()
     }
 
     private fun startPicTask(coroutineScope: CoroutineScope) {

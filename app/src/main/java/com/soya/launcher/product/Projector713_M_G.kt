@@ -19,7 +19,7 @@ open class Projector713_M_G : TVDeviceImpl {
         return mutableListOf<TypeItem>().apply {
 
             // APP Store
-            add(
+            /*add(
                 TypeItem(
                     appContext.getString(R.string.app_store),
                     R.drawable.store,
@@ -28,7 +28,7 @@ open class Projector713_M_G : TVDeviceImpl {
                     TypeItem.TYPE_ICON_IMAGE_RES,
                     TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
                 )
-            )
+            )*/
 
             // Local APP
             add(
