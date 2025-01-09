@@ -134,9 +134,11 @@ android {
         }
 
         hongxin_713_M_G_2x {
-            applicationId "com.soya.launcher"
+            applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.x88
+            versionName "3.0"
+            versionCode 1
+            signingConfig signingConfigs.hongxin
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
@@ -290,13 +292,13 @@ android {
 
         //X98K (TV)
         X98K_M {
-            applicationId "com.chihiyxt.launcher"
+            applicationId "com.chihim.launcher"
             dimension "chihi"
             versionCode 1
             versionName "1.0"
             manifestPlaceholders = [share_uid: "android.uid.system"]
-            signingConfig signingConfigs.x88
-            //signingConfig signingConfigs.yxt
+            //signingConfig signingConfigs.x88
+            signingConfig signingConfigs.yxt
             // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://la.firehub.work/"'
             buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.firehub.work/"'
@@ -438,9 +440,13 @@ android {
     defaultConfig {
         applicationId "com.soya.launcher"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 57
         versionName "1.57"
+
+        vectorDrawables {
+            useSupportLibrary true
+        }
 
         buildConfigField "String", "BASE_URL", '"https://99soya.shop/"'
         buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
@@ -495,8 +501,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     buildFeatures {
@@ -506,11 +512,24 @@ android {
         viewBinding = true
     }
 
-    lintOptions {
-        abortOnError false
-    }
+
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        // 强制使用特定版本的 Fragment
+        force "androidx.fragment:fragment:1.5.4"
+        force "androidx.appcompat:appcompat:1.7.0"
+        force "androidx.core:core-ktx:1.13.0"
+        force "androidx.activity:activity:1.7.0"
     }
 }
 
@@ -523,10 +542,7 @@ dependencies {
 
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.leanback:leanback-preference:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.activity:activity:1.9.3'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+
 
     //这个是让注解生效的
     kapt 'com.github.bumptech.glide:compiler:4.16.0'

@@ -63,6 +63,10 @@ import com.soya.launcher.LAYOUTTYPE_HOME_GAME
 import com.soya.launcher.LAYOUTTYPE_HOME_LANDSCAPE
 import com.soya.launcher.PACKAGE_NAME_713_BOX_DISPLAY
 import com.soya.launcher.R
+import com.soya.launcher.ad.AdSdk
+import com.soya.launcher.ad.Plugin
+import com.soya.launcher.ad.config.AdIds
+import com.soya.launcher.ad.config.PluginCache
 import com.soya.launcher.ad.unzipAndKeepApk
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AuthBean
@@ -119,6 +123,7 @@ import com.soya.launcher.view.MyFrameLayout
 import com.soya.launcher.view.MyFrameLayoutHouse
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -519,17 +524,30 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
 
+    private var updateLauncherErrorJob: Job? = null
     private fun checkLauncherUpdate() {
         lifecycleScope.launch {
             delay(3000)
             mViewModel.reqLauncherVersionInfo()
-                .lifecycle(this@MainFragment, {}, isShowError = false) {
+                .lifecycle(this@MainFragment, {
+                    updateLauncherErrorJob?.cancel()
+                    updateLauncherErrorJob = lifecycleScope.launch(Dispatchers.Main) {
+                        while (true) {
+                            if(NetworkUtils.isConnected()){
+                                checkLauncherUpdate()
+                            }
+                            delay(2000)
+
+                        }
+
+                    }
+                }, isShowError = false) {
                     val dto = this
                     dto.downLink.isNullOrEmpty().no {
                         AppCache.updateInfoForLauncher = dto.jsonToString()
                         (dto.tip == 1).yes {
                             //强制更新
-                            dto.downLink?.downloadApkNopkName(this@launch, downloadError = {
+                            dto.downLink?.downloadApkNopkName(lifecycleScope, downloadError = {
 
                             }, downloadComplete = { str, destPath ->
                                 lifecycleScope.launch {
@@ -953,15 +971,32 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             if (Config.COMPANY == 4) {
                 AndroidSystem.openSystemSetting(requireContext())
             } else {
-                "开始解压".e("chihi_error1")
-                val destPath = "${"plugin".getBasePath()}/ADPlugin-1.0-1-release.zip"
-                val apkPath = destPath.unzipAndKeepApk()
-                //startActivity(Intent(requireContext(), SettingActivity::class.java))
+                //val destPath = "${"plugin".getBasePath()}/ADPlugin-1.0-1-release.zip"
+                //val apkPath = destPath.unzipAndKeepApk()
+                startActivity(Intent(requireContext(), SettingActivity::class.java))
+               /* AdSdk.loadAd {
+                    this.applyPluginInfo(PluginCache.pluginInfo)
+                    adId = AdIds.AD_ID_ENTER_HOME
+                }*/
+
             }
 
         } else if (v == mBind.search) {
             startActivity(Intent(activity, SearchActivity::class.java))
+            /*mViewModel.reqPluginInfo().lifecycle(this,{
+                "接口报错了".e("chihi_error1")
+            }){
+                "请求成功了：${this.sdkAddr}".e("chihi_error1")
+                PluginCache.pluginInfo = this
+
+            }*/
         } else if (v == mBind.wifi) {
+            /*val destPath = "${"plugin".getBasePath()}/ADPlugin-1.0.1-1-release.zip"
+            val apkPath = destPath.unzipAndKeepApk()
+            apkPath.isNullOrEmpty().no {
+                PluginCache.pluginPath = apkPath!!
+                Plugin.install(this@MainFragment.requireActivity().applicationContext,apkPath)
+            }*/
             if (Config.COMPANY == 3 || Config.COMPANY == 4) {
                 //startActivity(Intent(activity, WifiListActivity::class.java))
                 AndroidSystem.openWifiSetting(requireContext())
@@ -1141,10 +1176,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         try {
             val path = FilePathMangaer.getJsonPath(appContext) + "/Home.json"
             if (File(path).exists()) {
-                val result = Gson().fromJson<HomeInfoDto>(
+               /* val result = Gson().fromJson<HomeInfoDto>(
                     JsonReader(FileReader(path)),
                     HomeInfoDto::class.java
-                )
+                )*/
+                val result = AppCache.homeInfo
+                "缓存的数据是：${result==null}---${result.movies?.size}".e("zengyue3")
                 if (compareSizes(result)) {
                     "我加载的是网络的资源".e("zengyue3")
                     val header = fillData(result)
@@ -1168,7 +1205,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 setDefault()
             }
         } catch (e: Exception) {
-            "我加载的是默认的资源3".e("zengyue3")
+            "我加载的是默认的资源3==${e.message}".e("zengyue3")
             setDefault()
         }
     }

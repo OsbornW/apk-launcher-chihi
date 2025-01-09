@@ -11,7 +11,9 @@ import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.databinding.ActivityBaseWebBinding
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
+import com.soya.launcher.ad.AdSdk
 import com.soya.launcher.ext.loadBlurDrawable
 import com.soya.launcher.ext.setBlurBackground
 import com.soya.launcher.utils.GlideUtils
@@ -71,22 +73,24 @@ open class BaseWallpaperActivity<VDB : ViewDataBinding, VM : BaseViewModel> :
         }
 
 
-
-
-
     }
 
 
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        "按下了遥控按键".e("chihi_error")
+    /*override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        // 判断是否是遥控器的右键
+        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            // 这里可以执行你需要的逻辑
+            val isRemove = AdSdk.removeAd()
+            isRemove.yes {
+                return true
+            }.otherwise {
+                return super.onKeyUp(keyCode, event)
+            }
+        }
         return super.onKeyDown(keyCode, event)
-    }
+    }*/
 
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        "松开了遥控按键".e("chihi_error")
-        return super.onKeyUp(keyCode, event)
-    }
+
 
 
 }

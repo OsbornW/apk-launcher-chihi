@@ -60,7 +60,7 @@ class SplashActivity : BaseVMMainActivity<ActivitySplashBinding, BaseViewModel>(
                     if (TextUtils.isEmpty(PreferencesUtils.getString(Atts.UID, ""))) {
                         PreferencesUtils.setProperty(Atts.UID, UUID.randomUUID().toString())
                     }
-                    com.hs.App.init(appContext)
+                    //com.hs.App.init(appContext)
                     //BRV.modelId = BR.m
                     initMultiLanguage(appContext)
                     //"开始应用启动5".e("zengyue3")

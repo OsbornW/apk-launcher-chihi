@@ -38,6 +38,10 @@ import com.soya.launcher.App
 import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
 import com.soya.launcher.SplashFragment
+import com.soya.launcher.ad.Plugin
+import com.soya.launcher.ad.Plugin.currentApkPath
+import com.soya.launcher.ad.config.PluginCache
+import com.soya.launcher.ad.unzipAndKeepApk
 import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.HomeStoreFileList
@@ -114,9 +118,33 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         lifecycleScope.launch {
             delay(300)
             fetchHomeData()
-
         }
 
+        //reqPluginInfo()
+
+    }
+
+    private fun reqPluginInfo() {
+        mViewModel.reqPluginInfo().lifecycle(this,{
+
+        }){
+            PluginCache.pluginInfo = this
+
+            if (PluginCache.pluginVersion != this.sdkVersion) PluginCache.pluginPath = ""
+            if(PluginCache.pluginPath.isNullOrEmpty()){
+                val destPath = "${"plugin".getBasePath()}/ADPlugin-1.0.0-1-release.zip"
+                val apkPath = destPath.unzipAndKeepApk()
+                apkPath.isNullOrEmpty().no {
+                    PluginCache.pluginPath = apkPath!!
+                    Plugin.install(appContext,apkPath)
+                }
+
+            }else{
+                val path = PluginCache.pluginPath
+                Plugin.install(appContext,path)
+            }
+
+        }
     }
 
     private fun fetchStoreData() {
@@ -193,6 +221,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
             }
             dto.jsonToString().exportToJson("Home.json")
+            AppCache.homeInfo = dto
 
 
             if (isRefresh) {

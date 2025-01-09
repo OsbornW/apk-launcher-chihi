@@ -16,10 +16,12 @@ import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.PACKAGE_NAME_IMAGE_MODE
+import com.soya.launcher.ad.config.PluginCache
 import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.PackageName
+import com.soya.launcher.bean.PluginInfoEntity
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
@@ -72,13 +74,20 @@ class HomeViewModel : BaseViewModel() {
             "appId" to BuildConfig.APP_ID,
             "channel" to BuildConfig.CHANNEL,
             "chihi_type" to BuildConfig.CHIHI_TYPE,
-            "version" to BuildConfig.VERSION_CODE.toString(),
+            "version" to 1,
             "sdk" to Build.VERSION.SDK_INT.toString(),
             "uuid" to DeviceUtils.getUniqueDeviceId(),
             "model" to BuildConfig.MODEL,
             "brand" to Build.BRAND,
             "product" to Build.PRODUCT,
-            "mac" to (getMacAddress()?:""),
+            "mac" to "92:5f:10:4e:30:c6",
+        )
+    )
+
+    fun reqPluginInfo(): Flow<PluginInfoEntity> = repository.reqPluginInfo(
+        hashMapOf(
+            "channel" to BuildConfig.CHANNEL,
+            "sdk_version" to PluginCache.pluginVersion,
         )
     )
 

@@ -4,8 +4,8 @@ import java.nio.charset.StandardCharsets
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id 'com.android.application' version '8.1.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.9.24' apply false
+    id 'com.android.application' version '8.5.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.0' apply false
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20' apply false
 }
 
@@ -55,7 +55,7 @@ def getApkOutputDir() {
     return "${project.rootProject.projectDir}\\app\\build\\outputs\\apk"
 }
 
-def static String getBuildConfigFieldValue(def variant, def fiedName) {
+static String getBuildConfigFieldValue(def variant, def fiedName) {
     def properties = variant.productFlavors[0].properties
     def name = properties.get("name")
     if (name != variant.flavorName) {

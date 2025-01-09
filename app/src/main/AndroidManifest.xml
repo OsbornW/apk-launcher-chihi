@@ -62,6 +62,16 @@
     <uses-permission
         android:name="android.permission.STATUS_BAR_SERVICE"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.GRANT_RUNTIME_PERMISSIONS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -86,12 +96,13 @@
         android:theme="@style/Theme.MyTv"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+
         <activity
             android:name=".ui.activity.MoreActivity"
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="true"></activity> <!-- 自定义元数据 -->
+            android:exported="true" /> <!-- 自定义元数据 -->
         <meta-data
             android:name="tcl_app_key"
             android:value="your key" />
@@ -136,7 +147,7 @@
             android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:taskAffinity="com.soya.launcher.ui.activity.AppsActivity"  />
+            android:taskAffinity="com.soya.launcher.ui.activity.AppsActivity" />
         <activity
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="landscape" />
@@ -146,7 +157,6 @@
         <activity
             android:name=".ui.activity.WallpaperActivity"
             android:screenOrientation="landscape" />
-
         <activity
             android:name=".ui.activity.LanguageActivity"
             android:screenOrientation="landscape" />
@@ -163,7 +173,7 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.activity.WifiListActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".ui.activity.ScaleScreenActivity"
             android:screenOrientation="landscape" />

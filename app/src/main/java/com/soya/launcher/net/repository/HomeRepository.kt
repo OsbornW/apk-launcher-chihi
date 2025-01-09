@@ -4,6 +4,7 @@ import com.shudong.lib_base.base.viewmodel.BaseRepository
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.HomeInfoDto
+import com.soya.launcher.bean.PluginInfoEntity
 import com.soya.launcher.bean.SearchDto
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.bean.UpdateDto
@@ -32,6 +33,10 @@ class HomeRepository(private val api: HomeApi): BaseRepository(api) {
 
     fun reqVersionInfo(map: MutableMap<String, Any>): Flow<UpdateDto> = flow {
         emit(api.reqVersionInfo(map))
+    }
+
+    fun reqPluginInfo(map: MutableMap<String, Any>): Flow<PluginInfoEntity> = flow {
+        emit(api.reqPluginInfo(map))
     }
 
     fun reqSearchAppList(
