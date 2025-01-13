@@ -19,6 +19,7 @@ import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.RECREATE_MAIN
 import com.shudong.lib_base.ext.REFRESH_HOME
+import com.shudong.lib_base.ext.REGET_HOMEDATA
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
 import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.appContext
@@ -297,7 +298,6 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 // val size = result.movies?.size
                 if (!compareSizes(result)) {
 
-
                     result.movies?.forEachIndexed { index, homeItem ->
 
                         val destPath =
@@ -449,6 +449,10 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
         obseverLiveEvent<Boolean>(RECREATE_MAIN){
             recreate()
+        }
+
+        this.obseverLiveEvent<Boolean>(REGET_HOMEDATA) {
+            fetchHomeData()
         }
 
     }

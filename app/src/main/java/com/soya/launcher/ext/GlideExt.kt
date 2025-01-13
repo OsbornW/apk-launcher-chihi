@@ -1,5 +1,7 @@
 package com.soya.launcher.ext
 
+import android.app.ActivityManager
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
@@ -16,8 +18,10 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.bumptech.glide.request.transition.Transition
+import com.shudong.lib_base.ext.LOAD_DEFULT_RESOURCE
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.sendLiveEventData
 import com.shudong.lib_base.global.AppCacheBase.drawableCache
 import com.soya.launcher.GlideApp
 import com.soya.launcher.R
@@ -71,10 +75,12 @@ fun Any.bindNew(
 
 
 // 定义函数类型参数用于错误处理
+var count = 0
 fun ImageView.loadImageWithGlide(
     load: Any,
     errorCallback: (GlideException?) -> Unit
 ) {
+    "进入开始：：".e("zengyue3")
     Glide.with(appContext)
         .load(load)
         .diskCacheStrategy(DiskCacheStrategy.NONE) // 不缓存任何内容
@@ -87,6 +93,18 @@ fun ImageView.loadImageWithGlide(
                 target: Target<Drawable>,
                 isFirstResource: Boolean
             ): Boolean {
+                "加载异常：：${e?.message}".e("zengyue3")
+                ++count
+
+                if(count==1){
+                    "执行了重启：：${e?.localizedMessage}".e("zengyue3")
+                    //val am = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+                    //am.killBackgroundProcesses(appContext.packageName)
+                    //System.exit(0)
+                    sendLiveEventData(LOAD_DEFULT_RESOURCE,true)
+                }
+
+
                 errorCallback(e)
                 return true
             }
@@ -98,6 +116,8 @@ fun ImageView.loadImageWithGlide(
                 dataSource: DataSource,
                 isFirstResource: Boolean
             ): Boolean {
+                //count = 0
+                "资源准备好了：：".e("zengyue3")
                 return false
             }
         })

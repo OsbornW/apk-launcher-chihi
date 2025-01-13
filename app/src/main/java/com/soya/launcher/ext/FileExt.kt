@@ -14,7 +14,7 @@ import java.util.zip.ZipInputStream
 
 // 扩展函数，用于删除指定路径下的所有图片文件
 fun String.deleteAllImages() {
-    val imageExtensions = listOf("jpg", "jpeg", "png", "gif") // 支持的图片扩展名
+    val imageExtensions = listOf("jpg", "jpeg", "png", "gif","json") // 支持的图片扩展名
     val directory = File(this)
 
     if (directory.exists() && directory.isDirectory) {
@@ -24,10 +24,11 @@ fun String.deleteAllImages() {
                 if (fileExtension in imageExtensions) {
                     if (file.delete()) {
                         // 文件成功删除
+                        "文件删除成功".e("chihi_error")
 
                     } else {
                         // 文件删除失败
-
+                        "文件删除失败".e("chihi_error")
                     }
                 }
             }
@@ -135,7 +136,10 @@ fun HomeInfoDto.getTotalSize(): Int {
 fun getImageCount(directoryPath: String): Int {
     val directory = File(directoryPath)
     return if (directory.exists() && directory.isDirectory) {
-        directory.listFiles { file -> file.isFile && file.extension in listOf("jpg", "jpeg", "png","webp", "gif") }?.size ?: 0
+        directory.listFiles { file ->
+            "当前的文件路径是：${file.absolutePath}".e("zengyue3")
+            file.isFile && file.extension in
+                    listOf("jpg", "jpeg", "png","webp", "gif") }?.size ?: 0
     } else {
         0
     }

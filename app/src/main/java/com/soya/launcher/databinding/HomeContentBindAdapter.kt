@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.margin
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
@@ -58,8 +59,8 @@ object HomeContentBindAdapter {
                     ivIcon.setImageDrawable(appContext.getDrawableByName(image.toString()))
                 } else {
                     val cacheFile = AppCache.homeData.dataList.get(image)?.let { File(it) }
-                    if (cacheFile?.exists() == true && AppCache.isAllDownload) {
-
+                    if (cacheFile?.exists() == true ) {
+                        "当前文件存在2：：${cacheFile.absolutePath}".e("zengyue3")
                         // 使用缓存的 Drawable
                         //mIV.loadFileRadius1(cacheFile)
                         ivIcon.loadImageWithGlide(cacheFile) {

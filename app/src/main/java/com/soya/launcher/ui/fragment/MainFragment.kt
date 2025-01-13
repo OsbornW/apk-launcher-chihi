@@ -1,5 +1,6 @@
 package com.soya.launcher.ui.fragment
 
+import android.app.ActivityManager
 import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -35,7 +36,9 @@ import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.ADD_APPSTORE
 import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
+import com.shudong.lib_base.ext.LOAD_DEFULT_RESOURCE
 import com.shudong.lib_base.ext.REFRESH_HOME
+import com.shudong.lib_base.ext.REGET_HOMEDATA
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
 import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.animScale
@@ -172,12 +175,27 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         obseverLiveEvent<Boolean>(UPDATE_HOME_LIST) {
             val path = FilePathMangaer.getJsonPath(appContext) + "/Home.json"
             if (File(path).exists()) {
-                val result = Gson().fromJson<HomeInfoDto>(
+                /*val result = Gson().fromJson<HomeInfoDto>(
                     JsonReader(FileReader(path)),
                     HomeInfoDto::class.java
-                )
-                setNetData(result)
+                )*/
+                // val result = AppCache.homeInfo
+                "开始设置网络数据".e("zengyue3")
+                fillHeader()
+                //setNetData(result)
             }
+
+        }
+
+        obseverLiveEvent<Boolean>(LOAD_DEFULT_RESOURCE) {
+            val exists = items.any { it.type == Types.TYPE_APP_STORE }
+            exists.yes {
+                mBind.header.mutable.removeAt(index_appstore) // 删除数据
+                mBind.header.bindingAdapter.notifyItemRemoved(index_appstore) // 通知更新
+            }
+            deleteAllPic()
+            setDefault()
+            sendLiveEventData(REGET_HOMEDATA,true)
 
         }
 
@@ -199,11 +217,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         }
 
-        obseverLiveEvent<Boolean>(UPDATE_WALLPAPER_EVENT){
+        obseverLiveEvent<Boolean>(UPDATE_WALLPAPER_EVENT) {
             updateWallpaper()
         }
 
-        obseverLiveEvent<Boolean>(ADD_APPSTORE){
+        obseverLiveEvent<Boolean>(ADD_APPSTORE) {
             val exists = items.any { it.type == Types.TYPE_APP_STORE }
             exists.no {
                 val typeItem = TypeItem(
@@ -214,8 +232,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     TypeItem.TYPE_ICON_IMAGE_RES,
                     TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
                 )
-                items.add(0,typeItem)
-                mBind.header.mutable.add(index_appstore,typeItem)
+                items.add(0, typeItem)
+                mBind.header.mutable.add(index_appstore, typeItem)
                 mBind.header.adapter?.notifyItemInserted(index_appstore)
             }
         }
@@ -227,10 +245,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             mBind.header.requestFocus()
         }
         mBind.header.apply {
-            if(selectedPosition!=0){
+            if (selectedPosition != 0) {
                 postDelayed({
                     scrollToPosition(0)
-                },0)
+                }, 0)
             }
 
         }
@@ -246,7 +264,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 TypeItem.TYPE_ICON_IMAGE_RES,
                 TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
             )
-            if(AppCache.homeStoreFileData.dataList.size>=4){
+            if (AppCache.homeStoreFileData.dataList.size >= 4) {
                 items.add(typeItem)
             }
             items.addAll(it)
@@ -259,7 +277,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
         filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
         filter.addDataScheme("package")
-       requireContext().registerReceiver(receiver, filter)
+        requireContext().registerReceiver(receiver, filter)
 
 
         detectNetStaus()
@@ -270,9 +288,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
-                repeat(20){
+                repeat(20) {
                     delay(500)
-                    if (AppCache.isReload ) {
+                    if (AppCache.isReload) {
                         setDefault()
                         AppCache.isReload = false
                         return@repeatOnLifecycle
@@ -296,7 +314,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             if (Config.COMPANY == 0 || Config.COMPANY == 9) View.VISIBLE else View.GONE
 
         mBind.rlDisplayParent.visibility =
-            if (Config.COMPANY == 10 ) View.VISIBLE else View.GONE
+            if (Config.COMPANY == 10) View.VISIBLE else View.GONE
 
         AppCacheBase.isActive.yes {
             mViewModel.reqCheckActiveCode(AppCacheBase.activeCode)
@@ -305,7 +323,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     val authDto = this.jsonToBean<AuthBean>()
                     (authDto.status == 200).yes {
                         authDto.code.let {
-                            BuildConfig.DEBUG.no { mViewModel.handleActiveCodeData(it, authDto.msg) }
+                            BuildConfig.DEBUG.no {
+                                mViewModel.handleActiveCodeData(
+                                    it,
+                                    authDto.msg
+                                )
+                            }
                         }
                     }
                 }
@@ -320,7 +343,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             onBind {
                 product.isBlueDisableClick().yes {
                     val dto = getModel<Notify>()
-                    (dto.type==3).yes {
+                    (dto.type == 3).yes {
                         itemView.isFocusable = false
                         itemView.isFocusableInTouchMode = false
                     }.otherwise {
@@ -533,7 +556,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     updateLauncherErrorJob?.cancel()
                     updateLauncherErrorJob = lifecycleScope.launch(Dispatchers.Main) {
                         while (true) {
-                            if(NetworkUtils.isConnected()){
+                            if (NetworkUtils.isConnected()) {
                                 checkLauncherUpdate()
                             }
                             delay(2000)
@@ -585,7 +608,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         lifecycleScope.launch {
             "开始设置网络数据".e("zengyue3")
-           // mBind.setting.requestFocus()
+            // mBind.setting.requestFocus()
 
             val header = fillData(result)
             index_appstore = header.size
@@ -604,7 +627,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             mBind.header.apply {
                 postDelayed({
                     scrollToPosition(0)
-                },0)
+                }, 0)
             }
             //mBind.setting.clearFocus()
             //mBind.header.requestFocus()
@@ -666,9 +689,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             val areAllApplicationInfo =
                 mBind.horizontalContent.mutable.all { it is ApplicationInfo }
             areAllApplicationInfo.yes {
-                var infos = isAppStoreSelect.yes { AndroidSystem.getUserApps2(appContext) }.otherwise {
-                    findScreenCastApps()
-                }
+                var infos =
+                    isAppStoreSelect.yes { AndroidSystem.getUserApps2(appContext) }.otherwise {
+                        findScreenCastApps()
+                    }
                 val filteredList =
                     infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 
@@ -905,12 +929,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             }
 
             product.isBlueDisableClick().yes {
-                if(notifies.size==1&&notifies[0].type==3){
+                if (notifies.size == 1 && notifies[0].type == 3) {
                     // 禁止子控件获取焦点
                     mBind.notifyRecycler.descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
                     mBind.notifyRecycler.isFocusable = false
                     mBind.notifyRecycler.isFocusableInTouchMode = false
-                }else{
+                } else {
                     // 恢复子控件获取焦点
                     mBind.notifyRecycler.descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS
                     mBind.notifyRecycler.isFocusable = true
@@ -974,10 +998,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 //val destPath = "${"plugin".getBasePath()}/ADPlugin-1.0-1-release.zip"
                 //val apkPath = destPath.unzipAndKeepApk()
                 startActivity(Intent(requireContext(), SettingActivity::class.java))
-               /* AdSdk.loadAd {
-                    this.applyPluginInfo(PluginCache.pluginInfo)
-                    adId = AdIds.AD_ID_ENTER_HOME
-                }*/
+                /* AdSdk.loadAd {
+                     this.applyPluginInfo(PluginCache.pluginInfo)
+                     adId = AdIds.AD_ID_ENTER_HOME
+                 }*/
 
             }
 
@@ -1012,7 +1036,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         } else if (v == mBind.gradient) {
             product.openHomeTopKeystoneCorrection(requireContext())
 
-        }else if (v == mBind.ivDisplay) {
+        } else if (v == mBind.ivDisplay) {
             PACKAGE_NAME_713_BOX_DISPLAY.openApp()
 
         }
@@ -1030,7 +1054,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     var curType = -1
     var curId = -1L
     private fun selectWork(bean: TypeItem) {
-        if(curType!=bean.type||curId!==bean.id){
+        if (curType != bean.type || curId !== bean.id) {
             when (bean.type) {
                 Types.TYPE_MY_APPS -> {
                     isAppStoreSelect = true
@@ -1176,12 +1200,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         try {
             val path = FilePathMangaer.getJsonPath(appContext) + "/Home.json"
             if (File(path).exists()) {
-               /* val result = Gson().fromJson<HomeInfoDto>(
+                val result = Gson().fromJson<HomeInfoDto>(
                     JsonReader(FileReader(path)),
                     HomeInfoDto::class.java
-                )*/
-                val result = AppCache.homeInfo
-                "缓存的数据是：${result==null}---${result.movies?.size}".e("zengyue3")
+                )
+                //val result = AppCache.homeInfo
                 if (compareSizes(result)) {
                     "我加载的是网络的资源".e("zengyue3")
                     val header = fillData(result)
@@ -1206,7 +1229,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             }
         } catch (e: Exception) {
             "我加载的是默认的资源3==${e.message}".e("zengyue3")
-            setDefault()
+            sendLiveEventData(LOAD_DEFULT_RESOURCE,true)
+            //setDefault()
+            //val am = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            //am.killBackgroundProcesses(appContext.packageName)
+            //System.exit(0)
         }
     }
 
@@ -1246,11 +1273,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
             product.isShowDefaultVideoApp().no {
                 for (index in header.indices.reversed()) { // 倒序遍历索引
-                    when(header[index].name){
-                        "Youtube","Netflix"->{
+                    when (header[index].name) {
+                        "Youtube", "Netflix" -> {
                         }
-                        else->{
-                           header.removeAt(index)
+
+                        else -> {
+                            header.removeAt(index)
                         }
                     }
                 }
@@ -1342,9 +1370,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             //收缩
             mBind.header.width(5000)
             if ((mBind.header.adapter?.itemCount ?: 0) > 8) {
-                if((mBind.header.adapter?.itemCount ?: 0) ==9){
+                if ((mBind.header.adapter?.itemCount ?: 0) == 9) {
                     mBind.toolbar.height(com.shudong.lib_dimen.R.dimen.qb_px_110.dimenValue())
-                }else{
+                } else {
                     mBind.toolbar.height(com.shudong.lib_dimen.R.dimen.qb_px_105.dimenValue())
                 }
 
@@ -1359,7 +1387,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         toastInstallApp(name, object : ToastDialog.Callback {
             override fun onClick(type: Int) {
                 if (type == 1) {
-                    if((packages?.size ?: 0) > 1){
+                    if ((packages?.size ?: 0) > 1) {
 
                         lifecycleScope.launch {
                             for (pkg in packages!!) {
@@ -1380,7 +1408,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                                     // 判断请求结果
                                     if ((dto.result?.appList?.size ?: 0) > 0) {
                                         "找到有效结果，包名: $packageName".e("Search")
-                                        AndroidSystem.jumpAppStore(requireContext(), null, pkg.packageName)
+                                        AndroidSystem.jumpAppStore(
+                                            requireContext(),
+                                            null,
+                                            pkg.packageName
+                                        )
                                         break // 退出循环
                                     } else {
                                         "无效结果，包名: $packageName".e("Search")
@@ -1392,7 +1424,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                             }
                         }
 
-                    }else AndroidSystem.jumpAppStore(requireContext(), null, packages?.get(0)?.packageName)
+                    } else AndroidSystem.jumpAppStore(
+                        requireContext(),
+                        null,
+                        packages?.get(0)?.packageName
+                    )
 
                 }
             }
@@ -1411,7 +1447,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
 
-
     private fun setExpanded(isExpanded: Boolean) {
         mBind.appBar.setExpanded(isExpanded)
     }
@@ -1425,9 +1460,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     val areAllApplicationInfo =
                         mBind.horizontalContent.mutable.all { it is ApplicationInfo }
                     areAllApplicationInfo.yes {
-                        var infos = isAppStoreSelect.yes { AndroidSystem.getUserApps2(appContext) }.otherwise {
-                            findScreenCastApps()
-                        }
+                        var infos = isAppStoreSelect.yes { AndroidSystem.getUserApps2(appContext) }
+                            .otherwise {
+                                findScreenCastApps()
+                            }
                         val filteredList =
                             infos.toMutableList().let { product.filterRepeatApps(it) } ?: infos
 

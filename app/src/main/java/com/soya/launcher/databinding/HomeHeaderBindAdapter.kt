@@ -11,6 +11,7 @@ import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.dimenValue
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.margin
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
@@ -75,7 +76,8 @@ object HomeHeaderBindAdapter {
                 }else{
 
                     val cacheFile = AppCache.homeData.dataList.get(dto.icon)?.let { File(it) }
-                    if (cacheFile?.exists()==true&&AppCache.isAllDownload) {
+                    if (cacheFile?.exists()==true) {
+                        "当前文件存在1：：${cacheFile.absolutePath}".e("zengyue3")
                         // 使用缓存的 Drawable
                         ivIcon.loadImageWithGlide(cacheFile){
                             // 删除本地缓存文件
