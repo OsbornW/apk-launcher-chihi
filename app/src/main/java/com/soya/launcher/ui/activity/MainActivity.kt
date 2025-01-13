@@ -121,7 +121,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             fetchHomeData()
         }
 
-        //reqPluginInfo()
+        reqPluginInfo()
 
     }
 
@@ -129,7 +129,8 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         mViewModel.reqPluginInfo().lifecycle(this,{
 
         }){
-            PluginCache.pluginInfo = this
+            val dto = this
+            PluginCache.pluginInfo = dto
 
             if (PluginCache.pluginVersion != this.sdkVersion) PluginCache.pluginPath = ""
             if(PluginCache.pluginPath.isNullOrEmpty()){

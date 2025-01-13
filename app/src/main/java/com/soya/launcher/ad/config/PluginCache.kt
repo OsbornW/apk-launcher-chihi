@@ -9,7 +9,7 @@ import com.soya.launcher.bean.Wallpaper
 
 object PluginCache {
     var pluginPath:String by serial(default = "")
-    var pluginVersion:String by serial(default = "")
+    var pluginVersion:String by serial(default = "0")
     var pluginInfo:PluginInfoEntity by serial()
 
 }
