@@ -535,7 +535,7 @@ configurations.all {
 
 dependencies {
     implementation files(
-            'libs/hslib-r0.0.2-release-LA22001.aar',
+            //'libs/hslib-r0.0.2-release-LA22001.aar',
             'libs/system.jar',
             'libs/softwinner.keystone.jar',
     )

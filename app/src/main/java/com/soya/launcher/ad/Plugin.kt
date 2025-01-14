@@ -7,12 +7,13 @@ import android.content.res.Resources
 import com.shudong.lib_base.ext.e
 import dalvik.system.DexClassLoader
 import java.io.File
+import java.lang.ref.WeakReference
 
 object Plugin {
 
     @Volatile
     private var _dexClassLoader: DexClassLoader? = null
-    private var _pluginContext: Context? = null
+    private var _pluginContext: WeakReference<Context>? = null
     var currentApkPath: String? = null
 
     // 公共属性，直接访问插件的 DexClassLoader
@@ -22,7 +23,7 @@ object Plugin {
 
     // 公共属性，直接访问插件的 Context
     val pluginContext: Context
-        get() = _pluginContext
+        get() = _pluginContext?.get()
             ?: throw IllegalStateException("Plugin is not installed. Call install() first.")
 
     /**
@@ -34,7 +35,7 @@ object Plugin {
         synchronized(this) {
             if (apkPath != currentApkPath) {
                 _dexClassLoader = createDexClassLoader(context, apkPath)
-                _pluginContext = createPluginContext(context, apkPath)
+                _pluginContext = WeakReference(createPluginContext(context, apkPath))
                 currentApkPath = apkPath
                 initializePlugin()
             }

@@ -12,6 +12,7 @@ import java.util.zip.ZipInputStream
  * @return 解压后的 APK 文件路径，或者 null 如果解压失败
  */
 fun String.unzipAndKeepApk(): String? {
+    "当前的解压路径是：${this}".e("chihi_error1")
     val zipFile = File(this)
     val outputDir = zipFile.parentFile ?: return null
     var apkFile: File? = null

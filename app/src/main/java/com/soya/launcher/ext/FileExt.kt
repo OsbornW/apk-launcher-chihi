@@ -1,5 +1,6 @@
 package com.soya.launcher.ext
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import java.io.File
 import android.util.Log
@@ -37,6 +38,77 @@ fun String.deleteAllImages() {
 
     }
 }
+
+
+fun deleteApkFilesInPluginDir(): Boolean {
+    val pluginDir = File(appContext.filesDir, "plugin")
+    if (pluginDir.exists() && pluginDir.isDirectory) {
+        // 获取目录下所有 .apk 文件
+        val apkFiles = pluginDir.listFiles { file ->
+            file.extension == "apk"
+        }
+
+        // 删除每个 .apk 文件
+        apkFiles?.forEach { file ->
+            if (file.exists()) {
+                val deleted = file.delete()
+                if (deleted) {
+                    Log.d("FileDeletion", "Deleted: ${file.absolutePath}")
+                } else {
+                    Log.e("FileDeletion", "Failed to delete: ${file.absolutePath}")
+                }
+            }
+        }
+        return true
+    } else {
+        Log.e("FileDeletion", "Plugin directory does not exist or is not a directory.")
+    }
+    return false
+}
+
+/**
+ * 删除 filesDir 下的 ad 和 plugin 目录
+ *
+ * @param appContext 应用的 Context
+ */
+fun deleteAdAndPluginDirectories() {
+    val filesDir = appContext.filesDir
+    val adDir = File(filesDir, "ad")
+    val pluginDir = File(filesDir, "plugin")
+
+    if (adDir.exists() && deleteDirectory(adDir)) {
+        println("ad 目录及其内容删除成功")
+    } else {
+        println("ad 目录删除失败或不存在")
+    }
+
+    if (pluginDir.exists() && deleteDirectory(pluginDir)) {
+        println("plugin 目录及其内容删除成功")
+    } else {
+        println("plugin 目录删除失败或不存在")
+    }
+}
+
+/**
+ * 删除指定目录及其内容
+ *
+ * @param dir 要删除的目录
+ * @return 是否删除成功
+ */
+fun deleteDirectory(dir: File): Boolean {
+    if (dir.exists()) {
+        dir.listFiles()?.forEach { file ->
+            if (file.isDirectory) {
+                deleteDirectory(file) // 递归删除子目录
+            } else {
+                file.delete() // 删除文件
+            }
+        }
+    }
+    return dir.delete() // 删除空目录
+}
+
+
 
 fun String.exportToJson(fileName: String = "home.json") {
     try {

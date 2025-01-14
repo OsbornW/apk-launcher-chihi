@@ -1,6 +1,7 @@
 package com.soya.launcher.ad.helper
 
 import android.util.Log
+import com.shudong.lib_base.ext.e
 import com.soya.launcher.ad.Plugin
 import com.soya.launcher.ad.config.AdConfig
 import com.soya.launcher.ad.config.buildAdCallback
@@ -51,7 +52,6 @@ object LoadAdHelper {
             updateFieldIfNotNull( Pair(adConfig,adConfigClass),"isLoadFromLocal", launcherConfig.isLoadFromLocal)
             updateFieldIfNotNull( Pair(adConfig,adConfigClass),"isAutoFocus", launcherConfig.isAutoFocus)
 
-            Log.d("LoadAdHelper", "AdConfig updated through proxy")
         } catch (e: Exception) {
             Log.e("LoadAdHelper", "更新 AdConfig 失败: ${e.message}", e)
         }
@@ -99,8 +99,28 @@ object LoadAdHelper {
                 "onAdLoadFailed",
                 Plugin.dexClassLoader.loadClass("kotlin.jvm.functions.Function1")
             )
-            val fetchFailedCallback = createFunctionCallback(callback,"Function1","onAdLoadFailed","广告加载失败")
+            val fetchFailedCallback = createFunctionCallback(callback,"Function1",
+                "onAdLoadFailed","广告加载失败")
             fetchFailedMethod.invoke(arg, fetchFailedCallback)
+
+            val countdownFinishedMethod = builderClass.getDeclaredMethod(
+                "onAdLoadFailed",
+                Plugin.dexClassLoader.loadClass("kotlin.jvm.functions.Function0")
+            )
+            val countdownFinishedCallback = createFunctionCallback(callback,
+                "Function0",
+                "onAdCountdownFinished","广告倒计时结束")
+            countdownFinishedMethod.invoke(arg, countdownFinishedCallback)
+
+            val noLocalAdMethod = builderClass.getDeclaredMethod(
+                "onAdLoadFailed",
+                Plugin.dexClassLoader.loadClass("kotlin.jvm.functions.Function0")
+            )
+            val noLocalAdCallback = createFunctionCallback(callback,
+                "Function0",
+                "onNoLocalAd","没有本地缓存的广告")
+            noLocalAdMethod.invoke(arg, noLocalAdCallback)
+
 
 
         } catch (e: Exception) {
@@ -142,6 +162,13 @@ object LoadAdHelper {
                 "onAdDataFetchSuccess"->{
                     callback.onAdDataFetchSuccess()
                 }
+                "onAdCountdownFinished"->{
+                    callback.onAdCountdownFinished()
+                }
+
+                "onNoLocalAd"->{
+                    callback.onNoLocalAd()
+                }
                 else -> {
                     println("未知回调类型: $callbackType, 消息: $logMessage")
                 }
@@ -172,14 +199,15 @@ object LoadAdHelper {
     private fun updateFieldIfNotNull(config:Pair<Any,Class<*>>, fieldName: String, fieldValue: Any?) {
         fieldValue?.let {
             try {
+                "进来了吗".e("chihi_error1")
                 val(adConfig,adConfigClass) = config
                 val field = adConfigClass.getDeclaredField(fieldName)
                 field.isAccessible = true
                 field.set(adConfig, fieldValue)
             } catch (e: NoSuchFieldException) {
-                Log.e("LoadAdHelper", "未找到字段: $fieldName", e)
+                Log.e("chihi_error1", "未找到字段: $fieldName", e)
             } catch (e: IllegalAccessException) {
-                Log.e("LoadAdHelper", "无法访问字段: $fieldName", e)
+                Log.e("chihi_error1", "无法访问字段: $fieldName", e)
             }
         }
     }

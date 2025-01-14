@@ -6,10 +6,16 @@ import androidx.lifecycle.lifecycleScope
 import com.shudong.lib_base.ContextManager
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.replaceFragment
+import com.shudong.lib_base.ext.yes
+import com.soya.launcher.ad.AdSdk
+import com.soya.launcher.ad.Plugin
+import com.soya.launcher.ad.config.AdIds
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.ActivitySplashBinding
 import com.soya.launcher.enums.Atts
+import com.soya.launcher.ext.AdControllerState.adView
 import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.PreferencesUtils
@@ -62,7 +68,7 @@ class SplashFragment:BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>
                     if (TextUtils.isEmpty(PreferencesUtils.getString(Atts.UID, ""))) {
                         PreferencesUtils.setProperty(Atts.UID, UUID.randomUUID().toString())
                     }
-                    com.hs.App.init(appContext)
+                    //com.hs.App.init(appContext)
                     //BRV.modelId = BR.m
                     initMultiLanguage(appContext)
                     //"开始应用启动5".e("zengyue3")
@@ -79,14 +85,44 @@ class SplashFragment:BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>
                 delay(100) // 每 100 毫秒检测一次
                 if ( localWallPaperDrawable != null) {
                     withContext(Dispatchers.Main) { // 在主线程中启动 Activity
-                        product.switchFragment()?.let {
-                            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment,it)
-                            //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
+
+                        lifecycleScope.launch {
+                            try {
+                                val loader = Plugin.dexClassLoader
+                                AdSdk.loadAd {
+                                    adView = mBind.flContanner
+                                    adId = AdIds.AD_ID_SPLASH
+                                    isLoadFromLocal = true
+                                    isAutoFocus = true
+                                    onAdCallback {
+                                        onNoLocalAd {
+                                            enterHome()
+
+                                        }
+                                        onAdCountdownFinished {
+                                            enterHome()
+                                        }
+                                    }
+                                }
+                            }catch (e:Exception){
+                                enterHome()
+                            }
+
+
+
                         }
+
                     }
                     break // 检测到条件满足后退出循环
                 }
             }
+        }
+    }
+
+    private fun enterHome() {
+        product.switchFragment()?.let {
+            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment,it)
+            //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
         }
     }
 

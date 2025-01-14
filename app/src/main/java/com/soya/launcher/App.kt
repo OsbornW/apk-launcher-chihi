@@ -65,32 +65,8 @@ class App : Application() {
             localWallPaperDrawable = drawable
         }
 
-
-        initAd()
-
-
-
-
     }
 
-    private fun initAd() {
-        if (PluginCache.pluginVersion != currentApkPath) {
-            PluginCache.pluginPath = ""
-        }
-        //PluginCache.pluginPath = ""
-         if(PluginCache.pluginPath.isNullOrEmpty()){
-             val destPath = "${"plugin".getBasePath()}/ADPlugin-1.0.0-1-release.zip"
-             val apkPath = destPath.unzipAndKeepApk()
-             apkPath.isNullOrEmpty().no {
-                 PluginCache.pluginPath = apkPath!!
-                 Plugin.install(this,apkPath)
-             }
-
-         }else{
-             val path = PluginCache.pluginPath
-             Plugin.install(this,path)
-         }
-    }
 
     companion object {
 

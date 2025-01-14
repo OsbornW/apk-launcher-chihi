@@ -46,4 +46,8 @@ interface AdLoadCallback {
         // 广告倒计时结束
     }
 
+    fun onNoLocalAd() {
+        // 无本地缓存的广告
+    }
+
 }

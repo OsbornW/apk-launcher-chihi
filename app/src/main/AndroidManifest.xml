@@ -73,7 +73,6 @@
         tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
 
     <uses-feature

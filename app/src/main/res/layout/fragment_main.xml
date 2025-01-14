@@ -351,8 +351,8 @@
     <RelativeLayout
         android:layout_gravity="bottom|right"
         android:id="@+id/rl_ad"
-        android:layout_width="@dimen/qb_px_300"
-        android:layout_height="@dimen/qb_px_200">
+        android:layout_width="@dimen/qb_px_600"
+        android:layout_height="@dimen/qb_px_350">
 
     </RelativeLayout>
 </FrameLayout>

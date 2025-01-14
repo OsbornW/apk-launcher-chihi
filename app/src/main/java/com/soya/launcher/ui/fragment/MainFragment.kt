@@ -102,6 +102,7 @@ import com.soya.launcher.ext.isRK3326
 import com.soya.launcher.ext.isSDCard
 import com.soya.launcher.ext.isShowUpdate
 import com.soya.launcher.ext.isUDisk
+import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.ext.refresh
 import com.soya.launcher.ext.refreshAppList
@@ -195,7 +196,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             }
             deleteAllPic()
             setDefault()
-            sendLiveEventData(REGET_HOMEDATA,true)
+            sendLiveEventData(REGET_HOMEDATA, true)
 
         }
 
@@ -298,6 +299,36 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
 
             }
+        }
+
+        lifecycleScope.launch {
+            delay(3000)
+            /*AdSdk.loadAd {
+                this.applyPluginInfo(PluginCache.pluginInfo)
+                adId = AdIds.AD_ID_ENTER_HOME
+            }*/
+
+            /*AdSdk.loadAd {
+                adView = mBind.rlAd
+                adId = AdIds.AD_ID_SPLASH
+                isLoadFromLocal = true
+                onAdCallback {
+                    onNoLocalAd {
+                        "没有本地数据".e("chihi_error1")
+                        product.switchFragment()?.let {
+                            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment,it)
+                            //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
+                        }
+                    }
+                    onAdCountdownFinished {
+                        "倒计时完成".e("chihi_error1")
+                        product.switchFragment()?.let {
+                            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment,it)
+                            //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
+                        }
+                    }
+                }
+            }*/
         }
 
         mBind.header.requestFocus()
@@ -995,32 +1026,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             if (Config.COMPANY == 4) {
                 AndroidSystem.openSystemSetting(requireContext())
             } else {
-                //val destPath = "${"plugin".getBasePath()}/ADPlugin-1.0-1-release.zip"
-                //val apkPath = destPath.unzipAndKeepApk()
                 startActivity(Intent(requireContext(), SettingActivity::class.java))
-                /* AdSdk.loadAd {
-                     this.applyPluginInfo(PluginCache.pluginInfo)
-                     adId = AdIds.AD_ID_ENTER_HOME
-                 }*/
-
             }
 
         } else if (v == mBind.search) {
             startActivity(Intent(activity, SearchActivity::class.java))
-            /*mViewModel.reqPluginInfo().lifecycle(this,{
-                "接口报错了".e("chihi_error1")
-            }){
-                "请求成功了：${this.sdkAddr}".e("chihi_error1")
-                PluginCache.pluginInfo = this
-
-            }*/
         } else if (v == mBind.wifi) {
-            /*val destPath = "${"plugin".getBasePath()}/ADPlugin-1.0.1-1-release.zip"
-            val apkPath = destPath.unzipAndKeepApk()
-            apkPath.isNullOrEmpty().no {
-                PluginCache.pluginPath = apkPath!!
-                Plugin.install(this@MainFragment.requireActivity().applicationContext,apkPath)
-            }*/
             if (Config.COMPANY == 3 || Config.COMPANY == 4) {
                 //startActivity(Intent(activity, WifiListActivity::class.java))
                 AndroidSystem.openWifiSetting(requireContext())
@@ -1229,7 +1240,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             }
         } catch (e: Exception) {
             "我加载的是默认的资源3==${e.message}".e("zengyue3")
-            sendLiveEventData(LOAD_DEFULT_RESOURCE,true)
+            sendLiveEventData(LOAD_DEFULT_RESOURCE, true)
             //setDefault()
             //val am = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             //am.killBackgroundProcesses(appContext.packageName)

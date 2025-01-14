@@ -14,6 +14,7 @@ open class AdLoadCallbackBuilder : AdLoadCallback {
     private var onAdClosedAction: (() -> Unit)? = null
     private var onAdClickedAction: ((adId:String,adUrl:String?) -> Unit)? = null
     private var onAdCountdownFinishedAction: (() -> Unit)? = null
+    private var onNoLocalAdAction: (() -> Unit)? = null
 
     // Override AdLoadCallback methods and invoke the corresponding actions
     override fun onAdDataFetchStart() {
@@ -60,6 +61,10 @@ open class AdLoadCallbackBuilder : AdLoadCallback {
         onAdCountdownFinishedAction?.invoke()
     }
 
+    override fun onNoLocalAd(){
+        onNoLocalAdAction?.invoke()
+    }
+
     // Methods to configure each callback action
     fun onAdDataFetchStart(action: () -> Unit) {
         onAdDataFetchStartAction = action
@@ -104,4 +109,10 @@ open class AdLoadCallbackBuilder : AdLoadCallback {
     fun onAdCountdownFinished(action: () -> Unit) {
         onAdCountdownFinishedAction = action
     }
+
+    fun onNoLocalAd(action: () -> Unit) {
+        onNoLocalAdAction = action
+        // 无本地缓存的广告
+    }
+
 }

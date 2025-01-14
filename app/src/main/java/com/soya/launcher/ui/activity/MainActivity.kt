@@ -9,7 +9,9 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_AVR_POWER
 import android.view.WindowManager
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.blankj.utilcode.util.NetworkUtils
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
@@ -23,6 +25,7 @@ import com.shudong.lib_base.ext.REGET_HOMEDATA
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
 import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.downloadApkNopkName
 import com.shudong.lib_base.ext.downloadPic
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.isRepeatExcute
@@ -34,13 +37,16 @@ import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.sendLiveEventData
+import com.shudong.lib_base.ext.showTipToast
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.App
 import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
 import com.soya.launcher.SplashFragment
+import com.soya.launcher.ad.AdSdk
 import com.soya.launcher.ad.Plugin
 import com.soya.launcher.ad.Plugin.currentApkPath
+import com.soya.launcher.ad.config.AdIds
 import com.soya.launcher.ad.config.PluginCache
 import com.soya.launcher.ad.unzipAndKeepApk
 import com.soya.launcher.bean.HomeDataList
@@ -55,6 +61,7 @@ import com.soya.launcher.ext.clearAndNavigate
 import com.soya.launcher.ext.clearStack
 import com.soya.launcher.ext.compareSizes
 import com.soya.launcher.ext.deleteAllImages
+import com.soya.launcher.ext.deleteApkFilesInPluginDir
 import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getBasePath
 import com.soya.launcher.ext.isGame
@@ -67,6 +74,8 @@ import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.fragment.GuideLanguageFragment
 import com.soya.launcher.utils.getFileNameFromUrl
+import com.soya.launcher.utils.getZipFileNameFromUrl
+import com.soya.launcher.utils.replaceZipWithApk
 import com.soya.launcher.utils.toTrim
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -125,63 +134,107 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     }
 
-    private fun reqPluginInfo() {
-        mViewModel.reqPluginInfo().lifecycle(this,{
+    private fun startPluginCheckPolling() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 仅在生命周期为 RESUMED 时轮询
+                while (true) {
+                    delay(24 * 60 * 60 * 1000L) // 延迟 24 小时
+                    reqPluginInfo() // 执行任务
 
-        }){
-            val dto = this
-            PluginCache.pluginInfo = dto
-
-            if (PluginCache.pluginVersion != this.sdkVersion) PluginCache.pluginPath = ""
-            if(PluginCache.pluginPath.isNullOrEmpty()){
-                val destPath = "${"plugin".getBasePath()}/ADPlugin-1.0.0-1-release.zip"
-                val apkPath = destPath.unzipAndKeepApk()
-                apkPath.isNullOrEmpty().no {
-                    PluginCache.pluginPath = apkPath!!
-                    Plugin.install(appContext,apkPath)
                 }
+            }
+        }
+    }
 
-            }else{
-                val path = PluginCache.pluginPath
-                Plugin.install(appContext,path)
+    private fun reqPluginInfo() {
+        if (PluginCache.pluginPath.isNotEmpty()) {
+            val path = PluginCache.pluginPath
+            Plugin.install(appContext, path)
+        }
+        mViewModel.reqPluginInfo().lifecycle(this, {
+            deleteApkFilesInPluginDir()
+        }) {
+            val dto = this
+            if(dto.sdkAddr.isNullOrEmpty()){
+                deleteApkFilesInPluginDir()
+                return@lifecycle
+            }
+            PluginCache.pluginInfo = dto
+            if (PluginCache.pluginVersion != this.sdkVersion) {
+                val fileName = dto.sdkAddr.getZipFileNameFromUrl()
+                val destPath = "${"plugin".getBasePath()}/${fileName}"
+                deleteOldPlugin()
+                dto.sdkAddr.downloadApkNopkName(
+                    lifecycleScope,
+                    downloadPath = destPath,
+                    downloadError = {
+                        "下载错误".e("chihi_error1")
+                        errorJobPluginDownload?.cancel()
+                        errorJobPluginDownload = lifecycleScope.launch(Dispatchers.Main) {
+                            while (true) {
+                                if (NetworkUtils.isConnected()) {
+                                    reqPluginInfo()
+                                }
+                                delay(2000)
+
+                            }
+
+                        }
+                    },
+                    downloadComplete = { it, path ->
+                        val apkPath = destPath.unzipAndKeepApk()
+                        "下载成功${apkPath}".e("chihi_error1")
+                        apkPath.isNullOrEmpty().no {
+                            PluginCache.pluginPath = apkPath!!
+                            PluginCache.pluginVersion = dto.sdkVersion.toString()
+                            Plugin.install(appContext, apkPath)
+                        }
+                    }) {
+                    "下载插件进度：${it}".e("chihi_error1")
+                }
             }
 
         }
     }
 
+    private fun deleteOldPlugin() {
+        deleteApkFilesInPluginDir()
+    }
+
     private fun fetchStoreData() {
         errorJobStore?.cancel()
         mViewModel.reqSearchAppList(
-            tag = "hot", pageSize = 5)
+            tag = "hot", pageSize = 5
+        )
             .lifecycle(this, errorCallback = {
-                    errorJobStore = lifecycleScope.launch(Dispatchers.Main) {
-                        while (true) {
-                            if(NetworkUtils.isConnected()){
-                                fetchStoreData()
-                            }
-                            delay(2000)
-
+                errorJobStore = lifecycleScope.launch(Dispatchers.Main) {
+                    while (true) {
+                        if (NetworkUtils.isConnected()) {
+                            fetchStoreData()
                         }
+                        delay(2000)
 
                     }
+
+                }
             }) {
                 val dto = this.jsonToBean<SearchDto>()
-                if((dto.result?.appList?.size ?: 0) > 0){
+                if ((dto.result?.appList?.size ?: 0) > 0) {
                     dto.result?.appList?.let {
                         var cacheStoreData = AppCache.homeStoreData.dataList
                         cacheStoreData.clear()
                         cacheStoreData.addAll(it)
                         AppCache.homeStoreData = HomeStoreList(cacheStoreData)
                         it.forEach {
-                             mViewModel.loadImageToFileInViewModel(it.appIcon?:""){path->
+                            mViewModel.loadImageToFileInViewModel(it.appIcon ?: "") { path ->
 
-                                if(!path.isNullOrEmpty()){
+                                if (!path.isNullOrEmpty()) {
                                     val cacheList = AppCache.homeStoreFileData.dataList
                                     cacheList[it.appIcon!!] = path
                                     AppCache.homeStoreFileData = HomeStoreFileList(cacheList)
-                                    if(AppCache.homeStoreFileData.dataList.size==5){
+                                    if (AppCache.homeStoreFileData.dataList.size == 5) {
                                         //store图片下载完成
-                                        sendLiveEventData(ADD_APPSTORE,true)
+                                        sendLiveEventData(ADD_APPSTORE, true)
                                     }
                                 }
                             }
@@ -198,6 +251,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     private var fetchJob: Job? = null
     private var errorJob: Job? = null
     private var errorJobStore: Job? = null
+    private var errorJobPluginDownload: Job? = null
     private fun fetchHomeData(isRefresh: Boolean = false) {
         // 取消之前的任务（如果存在）
         isHandleUpdateList = false
@@ -206,7 +260,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         mViewModel.reqHomeInfo().lifecycle(this, errorCallback = {
             errorJob = lifecycleScope.launch(Dispatchers.Main) {
                 while (true) {
-                    if(NetworkUtils.isConnected()){
+                    if (NetworkUtils.isConnected()) {
                         fetchHomeData()
                     }
                     delay(2000)
@@ -219,7 +273,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             val dto = this
             val file = File(FilePathMangaer.getJsonPath(appContext) + "/Home.json")
             if ((dto.reqId ?: 0) != AppCache.reqId || AppCache.isGame != isGame()) {
-                if(file.exists())AppCache.isReload = true
+                if (file.exists()) AppCache.isReload = true
 
             }
             dto.jsonToString().exportToJson("Home.json")
@@ -242,9 +296,11 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     private fun startCoroutineScope(dto: HomeInfoDto) {
         fetchJob = lifecycleScope.launch {
-            if ((dto.reqId ?: 0) != AppCache.reqId || !compareSizes(dto)|| AppCache.isGame != isGame()) {
+            if ((dto.reqId
+                    ?: 0) != AppCache.reqId || !compareSizes(dto) || AppCache.isGame != isGame()
+            ) {
                 withContext(Dispatchers.IO) {
-                    if ((dto.reqId ?: 0) != AppCache.reqId|| AppCache.isGame != isGame()) {
+                    if ((dto.reqId ?: 0) != AppCache.reqId || AppCache.isGame != isGame()) {
                         AppCache.isAllDownload = false
                         deleteAllPic()
                         AppCache.homeStoreFileData.dataList.clear()
@@ -259,7 +315,9 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
             }
         }
-        if ((dto.reqId ?: 0) != AppCache.reqId || AppCache.isGame != isGame()||AppCache.homeStoreFileData.dataList.size<4) {
+        if ((dto.reqId
+                ?: 0) != AppCache.reqId || AppCache.isGame != isGame() || AppCache.homeStoreFileData.dataList.size < 4
+        ) {
             fetchStoreData()
         }
     }
@@ -402,7 +460,10 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         lifecycleScope.launch {
             registerReceiver(homeReceiver, IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
             commit()
+
         }
+
+        startPluginCheckPolling()
 
         /*lifecycleScope.launch {
 
@@ -441,14 +502,14 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         }
         this.obseverLiveEvent<Boolean>(REFRESH_HOME) {
             "执行网络请求2".e("zengyue3")
-           // fetchHomeData(true)
+            // fetchHomeData(true)
         }
 
-        obseverLiveEvent<Boolean>(UPDATE_WALLPAPER_EVENT){
+        obseverLiveEvent<Boolean>(UPDATE_WALLPAPER_EVENT) {
             updateWallPaper()
         }
 
-        obseverLiveEvent<Boolean>(RECREATE_MAIN){
+        obseverLiveEvent<Boolean>(RECREATE_MAIN) {
             recreate()
         }
 
@@ -473,7 +534,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         if (canBackPressed) {
             //super.onBackPressed()
             val isCanNavi = supportFragmentManager.navigateBack()
-            if(!isCanNavi){
+            if (!isCanNavi) {
                 finish()
             }
         } else {

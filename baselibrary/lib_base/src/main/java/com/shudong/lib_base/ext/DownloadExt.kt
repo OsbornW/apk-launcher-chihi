@@ -39,13 +39,14 @@ fun String.downloadApk(
 
 fun String.downloadApkNopkName(
     scope: CoroutineScope,
+    downloadPath: String = "${appContext.filesDir.absolutePath}/${AppUtils.getAppPackageName()}_update.apk",
     downloadError: ((error: String) -> Unit)? = null,
     downloadComplete: ((str: String, destPath: String) -> Unit)? = null,
     process: (progress: Int) -> Unit
 ) =
     scope.launch {
-        val destPath =
-            "${appContext.filesDir.absolutePath}/${AppUtils.getAppPackageName()}_update.apk"
+        val destPath = downloadPath
+
         RxHttp.get(this@downloadApkNopkName)
             .toDownloadFlow(destPath) {
                 //it为Progress对象

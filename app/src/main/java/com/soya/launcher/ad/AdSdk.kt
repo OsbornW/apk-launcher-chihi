@@ -50,7 +50,7 @@ object AdSdk {
         "进来了1".e("chihi_error1")
         try {
             // 加载 AdPlugin 类
-            "开始反射}".e("chihi_error1")
+            "开始反射".e("chihi_error1")
             val adPluginClass = dexClassLoader.loadClass("com.chihi.adplugin.AdPlugin")
             val function1Class =
                 dexClassLoader.loadClass("kotlin.jvm.functions.Function1")
@@ -61,7 +61,7 @@ object AdSdk {
             // 调用 loadAd 方法
             LoadAdHelper.invokeLoadAd(adPluginClass, function1Class, configFunction)
         } catch (e: Exception) {
-            Log.e("AdLoader", "反射调用失败: ${e.message}", e)
+            Log.e("chihi_error1", "反射调用失败: ${e.message}", e)
         }
         /* GlobalScope.launch(Dispatchers.Main) {
              "进来了1".e("chihi_error2")

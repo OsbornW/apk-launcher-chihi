@@ -23,6 +23,20 @@ fun String.getFileNameFromUrl(): String {
     return matchResult?.value ?: ""
 }
 
+fun String.getZipFileNameFromUrl(): String {
+    val regex = """([^/]+)\.(zip)""".toRegex()
+    val matchResult = regex.find(this)
+    return matchResult?.value ?: ""
+}
+
+fun String.replaceZipWithApk(): String {
+    return if (this.endsWith(".zip", ignoreCase = true)) {
+        this.replace(".zip", ".apk", ignoreCase = true)
+    } else {
+        this // 如果不是 .zip 文件，则返回原字符串
+    }
+}
+
 fun String.truncateTo13WithEllipsis(): String {
     return if (length > 14) {
         substring(0, 13) + ".."
