@@ -25,7 +25,6 @@ fun loadJarAndCreateWebSocketClient(jarPath: String) {
         val callback = object : Function1<String, Unit> {
             override fun invoke(p1: String) {
                 // 在这里处理回调传递过来的 msg
-                "当前返回的result是：$p1".e("chihi_error")
             }
         }
 

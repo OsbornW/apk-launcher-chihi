@@ -22,6 +22,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.blankj.utilcode.util.NetworkUtils
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.linear
@@ -88,6 +89,8 @@ import com.soya.launcher.cache.AppCache
 import com.soya.launcher.config.Config
 import com.soya.launcher.databinding.FragmentMainBinding
 import com.soya.launcher.databinding.HolderSetting3Binding
+import com.soya.launcher.databinding.ItemHomeContentGameBinding
+import com.soya.launcher.databinding.ItemHomeContentLanBinding
 import com.soya.launcher.databinding.ItemHomeContentPorBinding
 import com.soya.launcher.databinding.ItemHomeHeaderBinding
 import com.soya.launcher.databinding.ItemHomeLocalappsBinding
@@ -176,28 +179,13 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         obseverLiveEvent<Boolean>(UPDATE_HOME_LIST) {
             val path = FilePathMangaer.getJsonPath(appContext) + "/Home.json"
             if (File(path).exists()) {
-                /*val result = Gson().fromJson<HomeInfoDto>(
-                    JsonReader(FileReader(path)),
-                    HomeInfoDto::class.java
-                )*/
-                // val result = AppCache.homeInfo
-                "开始设置网络数据".e("zengyue3")
                 fillHeader()
-                //setNetData(result)
             }
 
         }
 
         obseverLiveEvent<Boolean>(LOAD_DEFULT_RESOURCE) {
-            val exists = items.any { it.type == Types.TYPE_APP_STORE }
-            exists.yes {
-                mBind.header.mutable.removeAt(index_appstore) // 删除数据
-                mBind.header.bindingAdapter.notifyItemRemoved(index_appstore) // 通知更新
-            }
-            deleteAllPic()
-            setDefault()
-            sendLiveEventData(REGET_HOMEDATA, true)
-
+            clearAppData()
         }
 
 
@@ -240,6 +228,21 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
 
     }
+
+    fun clearAppData(): Boolean {
+        return try {
+            val activityManager = appContext.getSystemService(
+                Context.ACTIVITY_SERVICE
+            ) as ActivityManager
+            // 调用清除用户数据的方法
+            activityManager.clearApplicationUserData()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
 
     private fun backToHeadFirst() {
         (mBind.header.isFocused).no {
@@ -301,35 +304,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             }
         }
 
-        lifecycleScope.launch {
-            delay(3000)
-            /*AdSdk.loadAd {
-                this.applyPluginInfo(PluginCache.pluginInfo)
-                adId = AdIds.AD_ID_ENTER_HOME
-            }*/
-
-            /*AdSdk.loadAd {
-                adView = mBind.rlAd
-                adId = AdIds.AD_ID_SPLASH
-                isLoadFromLocal = true
-                onAdCallback {
-                    onNoLocalAd {
-                        "没有本地数据".e("chihi_error1")
-                        product.switchFragment()?.let {
-                            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment,it)
-                            //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
-                        }
-                    }
-                    onAdCountdownFinished {
-                        "倒计时完成".e("chihi_error1")
-                        product.switchFragment()?.let {
-                            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment,it)
-                            //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
-                        }
-                    }
-                }
-            }*/
-        }
+        showEnterHomeAd()
 
         mBind.header.requestFocus()
 
@@ -388,6 +363,57 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     }
 
+    private var isCanShowHeaderFloatAd = false
+    private fun showEnterHomeAd() {
+        lifecycleScope.launch {
+            delay(3000)
+            AdSdk.loadAd {
+                this.applyPluginInfo(PluginCache.pluginInfo)
+                adId = AdIds.AD_ID_ENTER_HOME
+                onAdCallback {
+                    onNoAdData {
+                        isCanShowHeaderFloatAd = true
+                        showAdWithInterval()
+                    }
+                    onAdLoadSuccess {
+                        "广告加载成功了".e("chihi_error1")
+                    }
+                    onAdCountdownFinished {
+                        "广告播放倒计时完成了".e("chihi_error1")
+                        isCanShowHeaderFloatAd = true
+                        showAdWithInterval()
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun showAdWithInterval() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 仅在生命周期为 RESUMED 时轮询
+                while (true) {
+                    delay(PluginCache.pluginInfo.adShowInteval ?: 120000) // 间隔一段时间 展示一次广告
+                    isCanShowHeaderFloatAd.yes {
+                        AdSdk.loadAd {
+                            this.applyPluginInfo(PluginCache.pluginInfo)
+                            adId = AdIds.AD_ID_ITEM_FOCUSED
+                            onAdCallback {
+                                onAdLoadSuccess {
+                                    "广告加载成功了".e("chihi_error1")
+                                }
+
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
+    }
+
+
     private fun initContentForVertical() {
         mBind.verticalContent.setup {
             addType<Data> {
@@ -404,6 +430,53 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     is Data -> {
                         val dto = getModel<Data>()
                         val flRoot = findView<MyFrameLayoutHouse>(R.id.fl_root)
+
+                        var view: ViewGroup? = null
+                        var viewbinding: ViewBinding? = null
+                        when (dto.layoutType) {
+                            LAYOUTTYPE_HOME_LANDSCAPE -> {
+                                viewbinding = getBinding<ItemHomeContentLanBinding>()
+                                view = viewbinding.flAd
+                            }
+
+                            LAYOUTTYPE_HOME_GAME -> {
+                                viewbinding = getBinding<ItemHomeContentGameBinding>()
+                                view = viewbinding.flAd
+                            }
+                        }
+
+                        if (dto.isAd) {
+                            AdSdk.loadAd {
+                                adView = view
+                                adId = dto.adId
+                                onAdCallback {
+                                    onAdLoadSuccess {
+                                        if (viewbinding is ItemHomeContentLanBinding) {
+                                            viewbinding.image.isVisible = false
+                                            viewbinding.flAd.isVisible = true
+                                            viewbinding.tvLoadding.isVisible = false
+                                        } else if (viewbinding is ItemHomeContentGameBinding) {
+                                            viewbinding.image.isVisible = false
+                                            viewbinding.flAd.isVisible = true
+                                            viewbinding.tvLoadding.isVisible = false
+                                        }
+
+                                    }
+                                    onAdCountdownFinished {
+                                        if (viewbinding is ItemHomeContentLanBinding) {
+                                            viewbinding.image.isVisible = true
+                                            viewbinding.flAd.isVisible = false
+                                            viewbinding.tvLoadding.isVisible = true
+                                        } else if (viewbinding is ItemHomeContentGameBinding) {
+                                            viewbinding.image.isVisible = true
+                                            viewbinding.flAd.isVisible = false
+                                            viewbinding.tvLoadding.isVisible = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         flRoot.apply {
                             setCallback {
                                 if (it) {
@@ -471,6 +544,24 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     is Data -> {
                         val binding = getBinding<ItemHomeContentPorBinding>()
                         val dto = getModel<Data>()
+                        if (dto.isAd) {
+                            AdSdk.loadAd {
+                                adView = binding.flAd
+                                adId = dto.adId
+                                onAdCallback {
+                                    onAdLoadSuccess {
+                                        binding.image.isVisible = false
+                                        binding.flAd.isVisible = true
+                                        binding.tvLoadding.isVisible = false
+                                    }
+                                    onAdCountdownFinished {
+                                        binding.image.isVisible = true
+                                        binding.flAd.isVisible = false
+                                        binding.tvLoadding.isVisible = true
+                                    }
+                                }
+                            }
+                        }
                         binding.flRoot.apply {
                             setCallback {
                                 if (it) {
@@ -550,6 +641,22 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             onBind {
                 val binding = getBinding<ItemHomeHeaderBinding>()
                 val dto = getModel<TypeItem>()
+                if (dto.isAd) {
+                    AdSdk.loadAd {
+                        adView = binding.flAd
+                        adId = dto.adId
+                        onAdCallback {
+                            onAdLoadSuccess {
+                                binding.flAd.isVisible = true
+                                binding.image.isVisible = false
+                            }
+                            onAdCountdownFinished {
+                                binding.flAd.isVisible = false
+                                binding.image.isVisible = true
+                            }
+                        }
+                    }
+                }
                 binding.root.setCallback {
                     if (it) {
                         setRVHeight(true)
@@ -558,6 +665,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                             call?.cancel()
                             uuid = UUID.randomUUID().toString()
                             work(uuid!!, dto)
+                            "我当前被选中了头部Item".e("chihi_error1")
+
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -1159,7 +1268,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun fillAppStore() {
         val list = AppCache.homeStoreData.dataList
-        "当前大小是${list.size}---".e("chihi_error1")
         setStoreContent(list)
         /*if (App.APP_STORE_ITEMS.isEmpty()) {
             val emptys: MutableList<AppItem> = ArrayList()
@@ -1217,7 +1325,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 )
                 //val result = AppCache.homeInfo
                 if (compareSizes(result)) {
-                    "我加载的是网络的资源".e("zengyue3")
                     val header = fillData(result)
                     index_appstore = header.size
                     header.addAll(items)
@@ -1230,21 +1337,15 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         }, 500)
                     }
                 } else {
-                    "我加载的是默认的资源1".e("zengyue3")
                     setDefault()
                 }
 
             } else {
-                "我加载的是默认的资源2".e("zengyue3")
                 setDefault()
             }
         } catch (e: Exception) {
-            "我加载的是默认的资源3==${e.message}".e("zengyue3")
-            sendLiveEventData(LOAD_DEFULT_RESOURCE, true)
-            //setDefault()
-            //val am = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            //am.killBackgroundProcesses(appContext.packageName)
-            //System.exit(0)
+            clearAppData()
+
         }
     }
 
@@ -1329,12 +1430,18 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         movice?.appName = bean.name
                         //movice.appPackage = bean.packageNames
 
+                        //调试代码
+                        if (bean.name == "Youtube") {
+                            //movice?.isAd = true
+                        }
+
                         if (movice != null) {
                             movices.add(movice)
                         }
                     }
                 }
 
+                "当前的bean的Name是：${bean?.name}".e("chihi_error1")
                 val item = TypeItem(
                     bean?.name ?: "",
                     bean?.icon ?: "",
@@ -1345,6 +1452,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 )
                 item.iconName = bean?.iconName
                 item.data = bean?.packageNames
+
+                //调试代码
+                if (bean?.name == "Youtube") {
+                    //item.isAd = true
+                }
+                //item.
                 App.MOVIE_MAP.put(item.id, movices)
                 if (Config.COMPANY == 5) {
                     when (item.name) {

@@ -24,6 +24,11 @@
     android:layout_marginVertical="@dimen/qb_px_10"
     android:layout_width="@dimen/qb_px_200"
     android:layout_height="@dimen/qb_px_180">
+    <FrameLayout
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fl_ad"/>
     <ImageView
         item_home_header_img="@{m}"
         android:background="#3d3d3d"

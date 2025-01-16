@@ -76,7 +76,7 @@ open class BaseWallpaperActivity<VDB : ViewDataBinding, VM : BaseViewModel> :
     }
 
 
-    /*override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         // 判断是否是遥控器的右键
         if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
             // 这里可以执行你需要的逻辑
@@ -88,7 +88,7 @@ open class BaseWallpaperActivity<VDB : ViewDataBinding, VM : BaseViewModel> :
             }
         }
         return super.onKeyDown(keyCode, event)
-    }*/
+    }
 
 
 

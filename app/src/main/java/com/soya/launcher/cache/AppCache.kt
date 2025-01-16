@@ -5,7 +5,6 @@ import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.HomeStoreFileList
 import com.soya.launcher.bean.HomeStoreList
-import com.soya.launcher.bean.PluginInfoEntity
 import com.soya.launcher.bean.Wallpaper
 
 object AppCache {

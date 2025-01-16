@@ -83,7 +83,6 @@ abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        "执行了onattach了哦".e("chihi_error")
         // 获取系统默认语言
         val newLocale = Locale.getDefault()
 

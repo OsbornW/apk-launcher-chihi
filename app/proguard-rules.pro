@@ -135,6 +135,9 @@
 -dontwarn com.soya.launcher.bean.**
 -keepclassmembers class com.soya.launcher.bean.** { *; }
 
+-dontwarn com.soya.launcher.ad.bean.**
+-keepclassmembers class com.soya.launcher.ad.bean.** { *; }
+
 -dontwarn com.soya.launcher.http.**
 -keepclassmembers class com.soya.launcher.http.** { *; }
 

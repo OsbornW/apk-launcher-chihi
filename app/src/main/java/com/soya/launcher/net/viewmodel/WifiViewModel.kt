@@ -235,7 +235,6 @@ class WifiViewModel : BaseViewModel() {
                         existingItem.signalStrength = newItem.signalStrength
                         existingItem.networkType = newItem.networkType
 
-                        "开始更新数据".e("chihi_error")
                         rvList.adapter?.notifyItemChanged(existingIndex)
 
 
@@ -266,7 +265,6 @@ class WifiViewModel : BaseViewModel() {
                 .sortedDescending()
             toRemoveIndexes.forEach { index ->
 
-                "开始移除数据".e("chihi_error")
                 val removeItem = oldList.removeAt(index)
                 //if (removeItem.ssid != focusedSSID) rvList.bindingAdapter.notifyItemRemoved(index)
                  rvList.bindingAdapter.notifyItemRemoved(index)
@@ -333,7 +331,6 @@ class WifiViewModel : BaseViewModel() {
                 }
             }
         } catch (e: Exception) {
-            "捕捉到了大异常了".e("chihi_error")
         }
 
 

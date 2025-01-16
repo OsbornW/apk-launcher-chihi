@@ -96,7 +96,6 @@ object SearchBindingAdapter {
     @BindingAdapter(value = ["item_search_webicon"])
     @JvmStatic
     fun itemSearchWebIcon(ivIcon: ImageView, dto: WebItem) {
-        "我要加载webicon  binding了".e("chihi_error")
         GlideUtils.bind( ivIcon, dto.icon)
 
 

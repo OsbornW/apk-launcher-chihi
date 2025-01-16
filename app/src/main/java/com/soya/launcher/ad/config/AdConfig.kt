@@ -2,7 +2,7 @@ package com.soya.launcher.ad.config
 
 import android.view.ViewGroup
 import com.soya.launcher.ad.api.impl.AdLoadCallbackBuilder
-import com.soya.launcher.bean.PluginInfoEntity
+import com.soya.launcher.ad.bean.PluginInfoEntity
 
 // AdSdkConfig.kt
 data class AdConfig(

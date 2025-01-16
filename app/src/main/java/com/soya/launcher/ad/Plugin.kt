@@ -92,7 +92,6 @@ object Plugin {
      */
     private fun initializePlugin() {
         try {
-            "当前插件上下文是空的吗？${pluginContext==null}".e("chihi_error1")
             val pluginManagerClass = dexClassLoader.loadClass("com.chihi.adplugin.PluginManager")
             val instanceField = pluginManagerClass.getDeclaredField("INSTANCE")
             val pluginManagerInstance = instanceField.get(null)

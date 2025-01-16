@@ -1,15 +1,11 @@
 package com.soya.launcher.ad.config
 
 import com.drake.serialize.serialize.serial
-import com.soya.launcher.bean.HomeDataList
-import com.soya.launcher.bean.HomeStoreFileList
-import com.soya.launcher.bean.HomeStoreList
-import com.soya.launcher.bean.PluginInfoEntity
-import com.soya.launcher.bean.Wallpaper
+import com.soya.launcher.ad.bean.PluginInfoEntity
 
 object PluginCache {
     var pluginPath:String by serial(default = "")
     var pluginVersion:String by serial(default = "0")
-    var pluginInfo:PluginInfoEntity by serial()
+    var pluginInfo: PluginInfoEntity by serial()
 
 }

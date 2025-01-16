@@ -21,7 +21,7 @@ import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.PackageName
-import com.soya.launcher.bean.PluginInfoEntity
+import com.soya.launcher.ad.bean.PluginInfoEntity
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
@@ -31,7 +31,6 @@ import com.soya.launcher.config.Config
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.getBasePath
-import com.soya.launcher.ext.getMacAddress
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.ext.setAutoResponseProperty
 import com.soya.launcher.net.repository.AuthRepository

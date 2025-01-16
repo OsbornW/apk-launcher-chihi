@@ -269,3 +269,4 @@ fun findScreenCastApps(): List<ApplicationInfo> {
     }
 }
 
+var count = 0

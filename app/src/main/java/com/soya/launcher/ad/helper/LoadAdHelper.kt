@@ -3,9 +3,9 @@ package com.soya.launcher.ad.helper
 import android.util.Log
 import com.shudong.lib_base.ext.e
 import com.soya.launcher.ad.Plugin
+import com.soya.launcher.ad.api.impl.AdLoadCallbackBuilder
 import com.soya.launcher.ad.config.AdConfig
 import com.soya.launcher.ad.config.buildAdCallback
-import com.soya.launcher.ad.api.impl.AdLoadCallbackBuilder
 import java.lang.reflect.Proxy
 
 object LoadAdHelper {
@@ -83,7 +83,9 @@ object LoadAdHelper {
                 "onAdDataFetchStart",
                 Plugin.dexClassLoader.loadClass("kotlin.jvm.functions.Function0")
             )
-            val fetchStartCallback = createFunctionCallback(callback,"Function0","onAdDataFetchStart","广告数据开始加载")
+            val fetchStartCallback = createFunctionCallback(callback,
+                "Function0","onAdDataFetchStart",
+                "广告数据开始加载")
             fetchStartMethod.invoke(arg, fetchStartCallback)
 
             // onAdDataFetchSuccess 回调
@@ -91,7 +93,9 @@ object LoadAdHelper {
                 "onAdDataFetchSuccess",
                 Plugin.dexClassLoader.loadClass("kotlin.jvm.functions.Function0")
             )
-            val fetchSuccessCallback = createFunctionCallback(callback,"Function0","onAdDataFetchSuccess", "广告数据加载成功")
+            val fetchSuccessCallback = createFunctionCallback(callback,
+                "Function0","onAdDataFetchSuccess",
+                "广告数据加载成功")
             fetchSuccessMethod.invoke(arg, fetchSuccessCallback)
 
             // onAdLoadFailed 回调
@@ -99,12 +103,13 @@ object LoadAdHelper {
                 "onAdLoadFailed",
                 Plugin.dexClassLoader.loadClass("kotlin.jvm.functions.Function1")
             )
-            val fetchFailedCallback = createFunctionCallback(callback,"Function1",
+            val fetchFailedCallback = createFunctionCallback(callback,
+                "Function1",
                 "onAdLoadFailed","广告加载失败")
             fetchFailedMethod.invoke(arg, fetchFailedCallback)
 
             val countdownFinishedMethod = builderClass.getDeclaredMethod(
-                "onAdLoadFailed",
+                "onAdCountdownFinished",
                 Plugin.dexClassLoader.loadClass("kotlin.jvm.functions.Function0")
             )
             val countdownFinishedCallback = createFunctionCallback(callback,
@@ -113,13 +118,22 @@ object LoadAdHelper {
             countdownFinishedMethod.invoke(arg, countdownFinishedCallback)
 
             val noLocalAdMethod = builderClass.getDeclaredMethod(
-                "onAdLoadFailed",
+                "onNoLocalAd",
                 Plugin.dexClassLoader.loadClass("kotlin.jvm.functions.Function0")
             )
             val noLocalAdCallback = createFunctionCallback(callback,
                 "Function0",
                 "onNoLocalAd","没有本地缓存的广告")
             noLocalAdMethod.invoke(arg, noLocalAdCallback)
+
+
+            val adLoadSuccessMethod = builderClass.getDeclaredMethod(
+                "onAdLoadSuccess",
+                Plugin.dexClassLoader.loadClass("kotlin.jvm.functions.Function0")
+            )
+            val adLoadSuccessCallback = createFunctionCallback(callback,
+                "Function0","onAdLoadSuccess","广告数据加载成功")
+            adLoadSuccessMethod.invoke(arg, adLoadSuccessCallback)
 
 
 
@@ -145,6 +159,7 @@ object LoadAdHelper {
             Plugin.dexClassLoader,
             arrayOf(functionClass)
         ) { _, method, args ->
+            "没有进来任何回调吗？？？${callbackType}".e("chihi_error1")
             when (callbackType) {
                 "onAdDataFetchStart" -> {
                     println("回调类型: $callbackType, 消息: $logMessage")
@@ -168,6 +183,10 @@ object LoadAdHelper {
 
                 "onNoLocalAd"->{
                     callback.onNoLocalAd()
+                }
+
+                "onAdLoadSuccess"->{
+                    callback.onAdLoadSuccess()
                 }
                 else -> {
                     println("未知回调类型: $callbackType, 消息: $logMessage")
@@ -199,7 +218,6 @@ object LoadAdHelper {
     private fun updateFieldIfNotNull(config:Pair<Any,Class<*>>, fieldName: String, fieldValue: Any?) {
         fieldValue?.let {
             try {
-                "进来了吗".e("chihi_error1")
                 val(adConfig,adConfigClass) = config
                 val field = adConfigClass.getDeclaredField(fieldName)
                 field.isAccessible = true

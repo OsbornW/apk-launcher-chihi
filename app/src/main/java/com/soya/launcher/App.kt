@@ -1,27 +1,17 @@
 package com.soya.launcher
 
 import android.app.Application
-import androidx.lifecycle.ViewModelProvider
 import com.chihi.m98.hook.JsonSerializeHook
 import com.drake.brv.utils.BRV
 import com.drake.serialize.serialize.Serialize
 import com.shudong.lib_base.base.viewmodel.baseModules
 import com.shudong.lib_base.ext.MvvmHelper
 import com.shudong.lib_base.ext.appContext
-import com.shudong.lib_base.ext.net.lifecycle
-import com.shudong.lib_base.ext.no
-import com.soya.launcher.ad.Plugin
-import com.soya.launcher.ad.Plugin.currentApkPath
-import com.soya.launcher.ad.config.PluginCache
-import com.soya.launcher.ad.unzipAndKeepApk
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.Data
 import com.soya.launcher.cache.AppCache
-import com.soya.launcher.ext.getBasePath
 import com.soya.launcher.ext.loadBlurDrawable
 import com.soya.launcher.net.di.homeModules
-import com.soya.launcher.net.repository.HomeRepository
-import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
 import com.tencent.mmkv.MMKV
 import com.thumbsupec.lib_net.di.netModules
@@ -29,9 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.component.inject
 import org.koin.core.context.GlobalContext.startKoin
 import java.util.Arrays
 import java.util.concurrent.ConcurrentHashMap

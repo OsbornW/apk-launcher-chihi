@@ -75,7 +75,7 @@ fun Any.bindNew(
 
 
 // 定义函数类型参数用于错误处理
-var count = 0
+
 fun ImageView.loadImageWithGlide(
     load: Any,
     errorCallback: (GlideException?) -> Unit

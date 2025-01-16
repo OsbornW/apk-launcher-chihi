@@ -60,6 +60,8 @@ import com.soya.launcher.ext.bindNew
 import com.soya.launcher.ext.clearAndNavigate
 import com.soya.launcher.ext.clearStack
 import com.soya.launcher.ext.compareSizes
+import com.soya.launcher.ext.count
+import com.soya.launcher.ext.deleteAdAndPluginDirectories
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.deleteApkFilesInPluginDir
 import com.soya.launcher.ext.exportToJson
@@ -130,7 +132,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             fetchHomeData()
         }
 
-        reqPluginInfo()
+       // reqPluginInfo()
 
     }
 
@@ -147,22 +149,37 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     }
 
     private fun reqPluginInfo() {
+        errorJobPlugin?.cancel()
         if (PluginCache.pluginPath.isNotEmpty()) {
             val path = PluginCache.pluginPath
             Plugin.install(appContext, path)
         }
-        mViewModel.reqPluginInfo().lifecycle(this, {
-            deleteApkFilesInPluginDir()
+        mViewModel.reqPluginInfo().lifecycle(this, errorCallback = {
+            "删除旧插件相关的文件1".e("chihi_error1")
+            //deleteAdAndPluginDirectories()
+            errorJobPlugin?.cancel()
+            errorJobPlugin = lifecycleScope.launch(Dispatchers.Main) {
+                while (true) {
+                    if (NetworkUtils.isConnected()) {
+                        reqPluginInfo()
+                    }
+                    delay(2000)
+
+                }
+
+            }
         }) {
             val dto = this
             if(dto.sdkAddr.isNullOrEmpty()){
-                deleteApkFilesInPluginDir()
+                "删除旧插件相关的文件2".e("chihi_error1")
+                deleteAdAndPluginDirectories()
                 return@lifecycle
             }
             PluginCache.pluginInfo = dto
             if (PluginCache.pluginVersion != this.sdkVersion) {
                 val fileName = dto.sdkAddr.getZipFileNameFromUrl()
                 val destPath = "${"plugin".getBasePath()}/${fileName}"
+                "删除旧插件APK".e("chihi_error1")
                 deleteOldPlugin()
                 dto.sdkAddr.downloadApkNopkName(
                     lifecycleScope,
@@ -190,7 +207,6 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                             Plugin.install(appContext, apkPath)
                         }
                     }) {
-                    "下载插件进度：${it}".e("chihi_error1")
                 }
             }
 
@@ -252,6 +268,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     private var errorJob: Job? = null
     private var errorJobStore: Job? = null
     private var errorJobPluginDownload: Job? = null
+    private var errorJobPlugin: Job? = null
     private fun fetchHomeData(isRefresh: Boolean = false) {
         // 取消之前的任务（如果存在）
         isHandleUpdateList = false
@@ -457,6 +474,8 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     }
 
     override fun initView() {
+        "重新执行MainActivity的oncreate了哦".e("zengyue3")
+         count = 0
         lifecycleScope.launch {
             registerReceiver(homeReceiver, IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
             commit()

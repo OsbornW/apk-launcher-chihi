@@ -24,7 +24,6 @@ object AppStoreBindAdapter {
     @JvmStatic
     fun itemStoreIcon(ivIcon: ImageView, dto: AppItem) {
         val path = AppCache.homeStoreFileData.dataList[dto.appIcon]
-        "当前Path是：：：${path}".e("chihi_error1")
         GlideUtils.bind(ivIcon, path)
         /*if (TextUtils.isEmpty(dto.localIcon)) {
             GlideUtils.bind(ivIcon, dto.appIcon)

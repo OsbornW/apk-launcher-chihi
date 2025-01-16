@@ -4,16 +4,13 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import com.soya.launcher.R
+import com.shudong.lib_base.ext.yes
 import com.soya.launcher.databinding.DialogAppBinding
 import com.soya.launcher.enums.Atts
+import com.soya.launcher.ext.uninstallApp
 import com.soya.launcher.utils.AndroidSystem.isSystemApp
-import com.soya.launcher.utils.AndroidSystem.uninstallPackage
 
 class AppDialog : SingleDialogFragment<DialogAppBinding>(), View.OnClickListener {
 
@@ -24,7 +21,7 @@ class AppDialog : SingleDialogFragment<DialogAppBinding>(), View.OnClickListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        info = arguments!!.getParcelable(Atts.BEAN)
+        info = requireArguments().getParcelable(Atts.BEAN)
     }
 
 
@@ -49,7 +46,7 @@ class AppDialog : SingleDialogFragment<DialogAppBinding>(), View.OnClickListener
 
     override fun initBind( view: View) {
         try {
-            val pm = activity!!.packageManager
+            val pm = requireActivity().packageManager
             binding.icon.setImageDrawable(info!!.loadIcon(pm))
             binding.name.text = info!!.loadLabel(pm)
             binding.version.text = pm.getPackageInfo(info!!.packageName, 0).versionName
@@ -80,7 +77,14 @@ class AppDialog : SingleDialogFragment<DialogAppBinding>(), View.OnClickListener
         } else if (v == binding.delete) {
             //UninstallDialog.newInstance(info).show(getActivity().getSupportFragmentManager(), UninstallDialog.TAG);
 
-            uninstallPackage(activity!!, info!!.packageName)
+           // uninstallPackage(requireActivity(), info!!.packageName)
+            info?.packageName?.let {
+                it.uninstallApp{isUninstallSuccess->
+                    isUninstallSuccess.yes {
+                    }
+                }
+            }
+
             dismiss()
         } else if (v == binding.open) {
             if (callback != null) callback!!.onOpen()

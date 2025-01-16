@@ -2,11 +2,9 @@ package com.soya.launcher.net.api
 
 import com.soya.launcher.net.Update_INFO
 import com.shudong.lib_base.base.viewmodel.BaseApi
-import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.HomeInfoDto
-import com.soya.launcher.bean.PluginInfoEntity
-import com.soya.launcher.bean.SearchDto
+import com.soya.launcher.ad.bean.PluginInfoEntity
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.bean.UpdateDto
 import com.soya.launcher.net.CHECK_ACTIVE_CODE

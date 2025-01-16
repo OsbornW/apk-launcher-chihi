@@ -47,28 +47,31 @@ object AdSdk {
      * 加载广告
      */
     fun loadAd(config: AdConfig.() -> Unit) {
-        "进来了1".e("chihi_error1")
-        try {
-            // 加载 AdPlugin 类
-            "开始反射".e("chihi_error1")
-            val adPluginClass = dexClassLoader.loadClass("com.chihi.adplugin.AdPlugin")
-            val function1Class =
-                dexClassLoader.loadClass("kotlin.jvm.functions.Function1")
 
-            // 调用 LoadAdHelper 生成配置代理
-            val configFunction = LoadAdHelper.createConfigFunction(function1Class, config)
+        GlobalScope.launch(Dispatchers.Main) {
+            "进来了1".e("chihi_error1")
+            "开始加载，是否已经初始化-${ensureInitializedAsync()}".e("chihi_error1")
+            if (!ensureInitializedAsync()) return@launch
 
-            // 调用 loadAd 方法
-            LoadAdHelper.invokeLoadAd(adPluginClass, function1Class, configFunction)
-        } catch (e: Exception) {
-            Log.e("chihi_error1", "反射调用失败: ${e.message}", e)
+            try {
+                "开始加载广告".e("chihi_error1")
+                // 加载 AdPlugin 类
+                val adPluginClass = dexClassLoader.loadClass("com.chihi.adplugin.AdPlugin")
+                val function1Class =
+                    dexClassLoader.loadClass("kotlin.jvm.functions.Function1")
+
+                // 调用 LoadAdHelper 生成配置代理
+                val configFunction = LoadAdHelper.createConfigFunction(function1Class, config)
+
+                // 调用 loadAd 方法
+                LoadAdHelper.invokeLoadAd(adPluginClass, function1Class, configFunction)
+            } catch (e: Exception) {
+                Log.e("chihi_error1", "反射调用失败: ${e.message}", e)
+            }
+
         }
-        /* GlobalScope.launch(Dispatchers.Main) {
-             "进来了1".e("chihi_error2")
-             "开始加载，是否已经初始化-${ensureInitializedAsync()}".e("chihi_error1")
-             if (!ensureInitializedAsync()) return@launch
 
-         }*/
+
 
     }
 

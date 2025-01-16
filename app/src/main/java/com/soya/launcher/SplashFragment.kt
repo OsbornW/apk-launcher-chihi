@@ -2,6 +2,7 @@ package com.soya.launcher
 
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.shudong.lib_base.ContextManager
 import com.shudong.lib_base.base.BaseViewModel
@@ -34,19 +35,19 @@ import okhttp3.OkHttpClient
 import rxhttp.RxHttpPlugins
 import java.util.UUID
 
-class SplashFragment:BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>() {
+class SplashFragment : BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>() {
     override fun initView() {
         //"开始应用启动3".e("zengyue3")
         initApp()
     }
 
-    var job: Job?=null
-    var job1: Job?=null
+    var job: Job? = null
+    var job1: Job? = null
     private fun initApp() {
         //delay(1000)
         job?.cancel()
         job = lifecycleScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 if (!AppCache.isAppInited) {
                     //"开始应用启动4".e("zengyue3")
 
@@ -83,7 +84,7 @@ class SplashFragment:BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>
         job1 = lifecycleScope.launch {
             while (isActive) { // 确保协程在生命周期内运行
                 delay(100) // 每 100 毫秒检测一次
-                if ( localWallPaperDrawable != null) {
+                if (localWallPaperDrawable != null) {
                     withContext(Dispatchers.Main) { // 在主线程中启动 Activity
 
                         lifecycleScope.launch {
@@ -100,14 +101,14 @@ class SplashFragment:BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>
 
                                         }
                                         onAdCountdownFinished {
+                                            mBind.flContanner.isVisible = false
                                             enterHome()
                                         }
                                     }
                                 }
-                            }catch (e:Exception){
+                            } catch (e: Exception) {
                                 enterHome()
                             }
-
 
 
                         }
@@ -121,7 +122,7 @@ class SplashFragment:BaseWallPaperFragment<ActivitySplashBinding, BaseViewModel>
 
     private fun enterHome() {
         product.switchFragment()?.let {
-            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment,it)
+            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment, it)
             //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
         }
     }

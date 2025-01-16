@@ -37,6 +37,13 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="@dimen/qb_px_205"
+                android:layout_height="@dimen/qb_px_180"
+                android:id="@+id/fl_ad"/>
+
+
             <TextView
                 item_home_content_loading="@{m}"
                 android:id="@+id/tv_loadding"

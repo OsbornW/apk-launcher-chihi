@@ -25,11 +25,9 @@ fun String.deleteAllImages() {
                 if (fileExtension in imageExtensions) {
                     if (file.delete()) {
                         // 文件成功删除
-                        "文件删除成功".e("chihi_error")
 
                     } else {
                         // 文件删除失败
-                        "文件删除失败".e("chihi_error")
                     }
                 }
             }
@@ -209,7 +207,6 @@ fun getImageCount(directoryPath: String): Int {
     val directory = File(directoryPath)
     return if (directory.exists() && directory.isDirectory) {
         directory.listFiles { file ->
-            "当前的文件路径是：${file.absolutePath}".e("zengyue3")
             file.isFile && file.extension in
                     listOf("jpg", "jpeg", "png","webp", "gif") }?.size ?: 0
     } else {

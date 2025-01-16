@@ -1,4 +1,5 @@
 package com.soya.launcher.bean
+import com.soya.launcher.ad.config.AdIds
 import kotlinx.serialization.Serializable
 
 import kotlinx.serialization.SerialName
@@ -25,7 +26,10 @@ data class Movy(
     @SerialName("packageNames")
     val packageNames: List<PackageName>?,
     @SerialName("type")
-    val type: Int?
+    val type: Int?,
+    var isAd:Boolean = false,
+    var adId:String = AdIds.AD_ID_LIST,
+    var adUrl:String = ""
 )
 
 @Serializable
@@ -45,6 +49,10 @@ data class Data(
     @SerialName("appName")
     var appName: String?,
     var layoutType: Int = 0,
+
+    var isAd:Boolean = false,
+    var adId:String = AdIds.AD_ID_LIST,
+    var adUrl:String = ""
 )
 
 @Serializable

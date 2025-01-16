@@ -39,7 +39,6 @@ fun WifiManager.disconnectCurrentWifi() {
     // 如果当前有连接的网络，且网络 ID 不为 -1
     if (currentNetwork != null && currentNetwork.networkId != -1) {
         // 断开当前连接的 Wi-Fi 网络
-        "我调用断开了哦:${currentNetwork.ssid}".e("chihi_error")
         //disconnect()
         disableNetwork(currentNetwork.networkId)
     }
