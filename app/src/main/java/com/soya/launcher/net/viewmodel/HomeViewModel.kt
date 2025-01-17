@@ -31,6 +31,7 @@ import com.soya.launcher.config.Config
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.enums.Types
 import com.soya.launcher.ext.getBasePath
+import com.soya.launcher.ext.getMacAddress
 import com.soya.launcher.ext.openApp
 import com.soya.launcher.ext.setAutoResponseProperty
 import com.soya.launcher.net.repository.AuthRepository
@@ -73,13 +74,13 @@ class HomeViewModel : BaseViewModel() {
             "appId" to BuildConfig.APP_ID,
             "channel" to BuildConfig.CHANNEL,
             "chihi_type" to BuildConfig.CHIHI_TYPE,
-            "version" to 1,
+            "version" to BuildConfig.VERSION_CODE.toString(),
             "sdk" to Build.VERSION.SDK_INT.toString(),
             "uuid" to DeviceUtils.getUniqueDeviceId(),
             "model" to BuildConfig.MODEL,
             "brand" to Build.BRAND,
             "product" to Build.PRODUCT,
-            "mac" to "92:5f:10:4e:30:c6",
+            "mac" to (getMacAddress() ?:""),
         )
     )
 
