@@ -11,6 +11,7 @@ import com.soya.launcher.product.PrjectorAiboyou
 import com.soya.launcher.product.Projector713_M_G
 import com.soya.launcher.product.Projector713_M_G_2X
 import com.soya.launcher.product.Projector713_M_G_Test
+import com.soya.launcher.product.Projector713_M_G_X10
 import com.soya.launcher.product.ProjectorH6
 import com.soya.launcher.product.ProjectorP50
 import com.soya.launcher.product.ProjectorRK3326
@@ -78,7 +79,8 @@ val channelMap = mapOf(
     BuildConfig.FLAVOR_NAME_LAUNCHER_XHSX to TVBoxXHSX,
     BuildConfig.FLAVOR_NAME_LAUNCHER_713TVBox to TVBox_713,
     BuildConfig.FLAVOR_NAME_LAUNCHER_713M_G_2X to Projector713_M_G_2X,
-    BuildConfig.FLAVOR_NAME_LAUNCHER_X50 to ProjectorX50
+    BuildConfig.FLAVOR_NAME_LAUNCHER_X50 to ProjectorX50,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_X10 to Projector713_M_G_X10
 )
 
 val product: TVDevice = channelMap[BuildConfig.FLAVOR_NAME]?:DefaultDevice

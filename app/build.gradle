@@ -24,6 +24,11 @@ android {
         hongxin_713_M_G_2x{
             java.srcDirs = ['src/hongxin_713_M_G_2x/java']
         }
+
+        hongxin_713_M_G_X10{
+            java.srcDirs = ['src/hongxin_713_M_G_X10/java']
+        }
+
         x50_713M{
             java.srcDirs = ['src/x50_713M/java']
         }
@@ -149,6 +154,24 @@ android {
             buildConfigField "String", "CHIHI_TYPE", '"H713M"'
             buildConfigField "String", "MODEL", '"713M"'
             buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713M_G_2X}\""
+        }
+
+        hongxin_713_M_G_X10 {
+            applicationId "com.chihihx.launcher.x10"
+            dimension "chihi"
+            versionName "3.0"
+            versionCode 1
+            signingConfig signingConfigs.hongxin
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            // 自定义buildConfig.java中的变量供代码中使用
+            // buildConfigField "String", "BASE_URL", '""'
+            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+            buildConfigField "String", "COMPANY", '"0"'
+            buildConfigField "String", "APP_ID", '"launcher"'
+            buildConfigField "String", "CHANNEL", '"X10"'
+            buildConfigField "String", "CHIHI_TYPE", '"H713M"'
+            buildConfigField "String", "MODEL", '"713M"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_X10}\""
         }
 
         hongxin_713_M_G_test {
@@ -479,6 +502,7 @@ android {
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713_TEST", "\"${FLAVOR_NAME_LAUNCHER_713_TEST}\""
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713M_G_2X", "\"${FLAVOR_NAME_LAUNCHER_713M_G_2X}\""
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X50", "\"${FLAVOR_NAME_LAUNCHER_X50}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X10", "\"${FLAVOR_NAME_LAUNCHER_X10}\""
 
         /**
          *

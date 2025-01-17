@@ -676,29 +676,7 @@ object AndroidSystem {
         }
     }
 
-    @JvmStatic
-    fun uninstallPackage(context: Context, packageName: String?): Boolean {
-        var success = false
-        try {
-            val packageManger = context.packageManager
-            val packageInstaller = packageManger.packageInstaller
-            val params = SessionParams(SessionParams.MODE_FULL_INSTALL)
-            params.setAppPackageName(packageName)
-            val sessionId = packageInstaller.createSession(params)
-            val sender = PendingIntent.getBroadcast(
-                context,
-                sessionId,
-                Intent(IntentAction.ACTION_DELETE_PACKAGE),
-                PendingIntent.FLAG_MUTABLE
-            ).intentSender
-            packageInstaller.uninstall(packageName!!, sender)
-            success = true
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            return success
-        }
-    }
+
 
     fun restoreFactory(context: Context) {
         openActivityName(

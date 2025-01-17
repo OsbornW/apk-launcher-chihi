@@ -142,6 +142,7 @@ class HomeViewModel : BaseViewModel() {
             }
 
             Projector.TYPE_KEYSTONE_CORRECTION -> {
+                //跳转位置2
                 product.openKeystoneCorrectionOptions()
             }
             Projector.TYPE_AUTO_RESPONSE->{

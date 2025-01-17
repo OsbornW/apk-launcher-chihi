@@ -513,8 +513,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
                             clickNoRepeat {
                                 mViewModel.clickProjectorItem(dto) {
-                                    val type = it.first
-                                    val text = it.second
+                                    val(type,text) = it
                                     when (type) {
                                         Projector.TYPE_AUTO_RESPONSE -> {
                                             val tvName =
@@ -1154,6 +1153,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         } else if (v == mBind.hdmi) {
             AndroidSystem.openProjectorHDMI(requireContext())
         } else if (v == mBind.gradient) {
+           // 跳转位置1
             product.openHomeTopKeystoneCorrection(requireContext())
 
         } else if (v == mBind.ivDisplay) {

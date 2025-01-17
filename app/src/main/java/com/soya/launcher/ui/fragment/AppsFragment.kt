@@ -52,7 +52,7 @@ class AppsFragment : BaseWallPaperFragment<FragmentAppsBinding,BaseViewModel>() 
             filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
             filter.addAction(Intent.ACTION_PACKAGE_REPLACED)
             filter.addDataScheme("package")
-            activity!!.registerReceiver(receiver, filter)
+            requireActivity().registerReceiver(receiver, filter)
         }
 
 
@@ -60,7 +60,7 @@ class AppsFragment : BaseWallPaperFragment<FragmentAppsBinding,BaseViewModel>() 
 
     override fun onDestroy() {
         super.onDestroy()
-        activity!!.unregisterReceiver(receiver)
+        requireActivity().unregisterReceiver(receiver)
     }
 
 
