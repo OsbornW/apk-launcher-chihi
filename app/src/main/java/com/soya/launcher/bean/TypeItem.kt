@@ -1,6 +1,5 @@
 package com.soya.launcher.bean
 
-import com.soya.launcher.ad.config.AdIds
 import java.io.Serializable
 
 class TypeItem(
@@ -17,7 +16,7 @@ class TypeItem(
     var data: List<PackageName>? = null
     var itemPosition: Int = 0
     var isAd = false
-    var adId = AdIds.AD_ID_LIST
+    var adId = ""
     var adUrl = ""
 
     init {

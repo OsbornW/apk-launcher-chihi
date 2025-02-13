@@ -206,3 +206,11 @@ fun finishAllActivityExceptLogin() {
         }
     }
 }
+
+fun Activity.getNonSystemApps() = run {
+    val packageManager = this.packageManager
+    val installedApps = packageManager.getInstalledPackages(0)
+    installedApps.filter { appInfo ->
+        packageManager.getLaunchIntentForPackage(appInfo.packageName) != null
+    }
+}

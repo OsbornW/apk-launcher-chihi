@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.databinding.DialogAppBinding
 import com.soya.launcher.enums.Atts
+import com.soya.launcher.ext.uninstallApkForNormalApp
 import com.soya.launcher.ext.uninstallApp
 import com.soya.launcher.utils.AndroidSystem.isSystemApp
 
@@ -78,12 +80,14 @@ class AppDialog : SingleDialogFragment<DialogAppBinding>(), View.OnClickListener
             //UninstallDialog.newInstance(info).show(getActivity().getSupportFragmentManager(), UninstallDialog.TAG);
 
            // uninstallPackage(requireActivity(), info!!.packageName)
-            info?.packageName?.let {
+            /*info?.packageName?.let {
                 it.uninstallApp{isUninstallSuccess->
                     isUninstallSuccess.yes {
                     }
                 }
-            }
+            }*/
+            "开始进行卸载操作：${info?.packageName}".e("chihi_error")
+            info?.packageName?.uninstallApkForNormalApp()
 
             dismiss()
         } else if (v == binding.open) {

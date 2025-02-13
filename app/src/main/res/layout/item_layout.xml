@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<com.hjq.shape.layout.ShapeRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/qb_px_13"
+    android:orientation="vertical"
+    app:shape_radius="8dp">
+
+    <RelativeLayout
+        android:id="@+id/rl_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <ImageView
+            android:id="@+id/iv_app"
+            android:layout_width="@dimen/qb_px_190"
+            android:layout_height="@dimen/qb_px_120"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+           />
+
+        <com.hjq.shape.layout.ShapeRelativeLayout
+
+            android:id="@+id/rl_small"
+            android:layout_width="@dimen/qb_px_190"
+            android:layout_height="@dimen/qb_px_120"
+            app:shape_radius="@dimen/qb_px_3"
+            app:shape_solidColor="@color/white">
+
+            <ImageView
+                android:id="@+id/iv_app_small"
+                android:layout_width="@dimen/qb_px_65"
+                android:layout_height="@dimen/qb_px_65"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+               />
+
+        </com.hjq.shape.layout.ShapeRelativeLayout>
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:id="@+id/tv_app_name"
+        android:layout_width="@dimen/qb_px_110"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_pic"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/qb_px_18"
+        android:ellipsize="marquee"
+        android:gravity="center_horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:text="YouTube"
+        android:textSize="@dimen/qb_px_sp_15"
+        android:visibility="invisible" />
+</com.hjq.shape.layout.ShapeRelativeLayout>
+</layout>

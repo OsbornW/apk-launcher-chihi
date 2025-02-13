@@ -16,12 +16,10 @@ import com.shudong.lib_base.global.AppCacheBase
 import com.soya.launcher.App
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.PACKAGE_NAME_IMAGE_MODE
-import com.soya.launcher.ad.config.PluginCache
 import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.Data
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.PackageName
-import com.soya.launcher.ad.bean.PluginInfoEntity
 import com.soya.launcher.bean.Projector
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.TypeItem
@@ -84,12 +82,6 @@ class HomeViewModel : BaseViewModel() {
         )
     )
 
-    fun reqPluginInfo(): Flow<PluginInfoEntity> = repository.reqPluginInfo(
-        hashMapOf(
-            "channel" to BuildConfig.CHANNEL,
-            "sdk_version" to PluginCache.pluginVersion,
-        )
-    )
 
     fun reqCheckActiveCode(activeCode: String): Flow<String> = authRepository.reqCheckActiveCode(
         AuthParamsDto(activeCode.replace('-', ' ').toTrim())

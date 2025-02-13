@@ -315,13 +315,15 @@ android {
 
         //X98K (TV)
         X98K_M {
-            applicationId "com.chihim.launcher"
+            applicationId "com.chihim.launcher.x98m"
             dimension "chihi"
             versionCode 2
             versionName "1.2"
-            manifestPlaceholders = [share_uid: "android.uid.system"]
+            //manifestPlaceholders = [share_uid: "android.uid.system"]
+            manifestPlaceholders = [share_uid: ""]
             //signingConfig signingConfigs.x88
-            signingConfig signingConfigs.yxt
+            //signingConfig signingConfigs.yxt
+            signingConfig signingConfigs.h713_normal
             // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://la.firehub.work/"'
             buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.firehub.work/"'
@@ -558,7 +560,12 @@ configurations.all {
 }
 
 dependencies {
-    implementation files(
+
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.activity:activity:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    compileOnly files(
             //'libs/hslib-r0.0.2-release-LA22001.aar',
             'libs/system.jar',
             'libs/softwinner.keystone.jar',

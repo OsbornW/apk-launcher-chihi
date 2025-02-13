@@ -67,11 +67,6 @@ import com.soya.launcher.LAYOUTTYPE_HOME_GAME
 import com.soya.launcher.LAYOUTTYPE_HOME_LANDSCAPE
 import com.soya.launcher.PACKAGE_NAME_713_BOX_DISPLAY
 import com.soya.launcher.R
-import com.soya.launcher.ad.AdSdk
-import com.soya.launcher.ad.Plugin
-import com.soya.launcher.ad.config.AdIds
-import com.soya.launcher.ad.config.PluginCache
-import com.soya.launcher.ad.unzipAndKeepApk
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.AuthBean
 import com.soya.launcher.bean.Data
@@ -95,6 +90,7 @@ import com.soya.launcher.databinding.ItemHomeContentPorBinding
 import com.soya.launcher.databinding.ItemHomeHeaderBinding
 import com.soya.launcher.databinding.ItemHomeLocalappsBinding
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.AdControllerState.adView
 import com.soya.launcher.ext.compareSizes
 import com.soya.launcher.ext.convertH27002Json
 import com.soya.launcher.ext.deleteAllImages
@@ -114,6 +110,7 @@ import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
 import com.soya.launcher.ui.activity.AboutActivity
+import com.soya.launcher.ui.activity.DesktopSelectActivity
 import com.soya.launcher.ui.activity.LoginActivity
 import com.soya.launcher.ui.activity.SearchActivity
 import com.soya.launcher.ui.activity.SettingActivity
@@ -211,7 +208,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
 
         obseverLiveEvent<Boolean>(ADD_APPSTORE) {
-            val exists = items.any { it.type == Types.TYPE_APP_STORE }
+            /*val exists = items.any { it.type == Types.TYPE_APP_STORE }
             exists.no {
                 val typeItem = TypeItem(
                     appContext.getString(R.string.app_store),
@@ -224,7 +221,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 items.add(0, typeItem)
                 mBind.header.mutable.add(index_appstore, typeItem)
                 mBind.header.adapter?.notifyItemInserted(index_appstore)
-            }
+            }*/
         }
 
     }
@@ -367,51 +364,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun showEnterHomeAd() {
         lifecycleScope.launch {
             delay(3000)
-            AdSdk.loadAd {
-                this.applyPluginInfo(PluginCache.pluginInfo)
-                adId = AdIds.AD_ID_ENTER_HOME
-                onAdCallback {
-                    onNoAdData {
-                        isCanShowHeaderFloatAd = true
-                        showAdWithInterval()
-                    }
-                    onAdLoadSuccess {
-                        "广告加载成功了".e("chihi_error1")
-                    }
-                    onAdCountdownFinished {
-                        "广告播放倒计时完成了".e("chihi_error1")
-                        isCanShowHeaderFloatAd = true
-                        showAdWithInterval()
-                    }
-                }
-            }
+
 
         }
     }
 
-    private fun showAdWithInterval() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 仅在生命周期为 RESUMED 时轮询
-                while (true) {
-                    delay(PluginCache.pluginInfo.adShowInteval ?: 120000) // 间隔一段时间 展示一次广告
-                    isCanShowHeaderFloatAd.yes {
-                        AdSdk.loadAd {
-                            this.applyPluginInfo(PluginCache.pluginInfo)
-                            adId = AdIds.AD_ID_ITEM_FOCUSED
-                            onAdCallback {
-                                onAdLoadSuccess {
-                                    "广告加载成功了".e("chihi_error1")
-                                }
 
-                            }
-                        }
-                    }
-
-
-                }
-            }
-        }
-    }
 
 
     private fun initContentForVertical() {
@@ -445,37 +403,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                             }
                         }
 
-                        if (dto.isAd) {
-                            AdSdk.loadAd {
-                                adView = view
-                                adId = dto.adId
-                                onAdCallback {
-                                    onAdLoadSuccess {
-                                        if (viewbinding is ItemHomeContentLanBinding) {
-                                            viewbinding.image.isVisible = false
-                                            viewbinding.flAd.isVisible = true
-                                            viewbinding.tvLoadding.isVisible = false
-                                        } else if (viewbinding is ItemHomeContentGameBinding) {
-                                            viewbinding.image.isVisible = false
-                                            viewbinding.flAd.isVisible = true
-                                            viewbinding.tvLoadding.isVisible = false
-                                        }
 
-                                    }
-                                    onAdCountdownFinished {
-                                        if (viewbinding is ItemHomeContentLanBinding) {
-                                            viewbinding.image.isVisible = true
-                                            viewbinding.flAd.isVisible = false
-                                            viewbinding.tvLoadding.isVisible = true
-                                        } else if (viewbinding is ItemHomeContentGameBinding) {
-                                            viewbinding.image.isVisible = true
-                                            viewbinding.flAd.isVisible = false
-                                            viewbinding.tvLoadding.isVisible = true
-                                        }
-                                    }
-                                }
-                            }
-                        }
 
                         flRoot.apply {
                             setCallback {
@@ -543,24 +471,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     is Data -> {
                         val binding = getBinding<ItemHomeContentPorBinding>()
                         val dto = getModel<Data>()
-                        if (dto.isAd) {
-                            AdSdk.loadAd {
-                                adView = binding.flAd
-                                adId = dto.adId
-                                onAdCallback {
-                                    onAdLoadSuccess {
-                                        binding.image.isVisible = false
-                                        binding.flAd.isVisible = true
-                                        binding.tvLoadding.isVisible = false
-                                    }
-                                    onAdCountdownFinished {
-                                        binding.image.isVisible = true
-                                        binding.flAd.isVisible = false
-                                        binding.tvLoadding.isVisible = true
-                                    }
-                                }
-                            }
-                        }
+
                         binding.flRoot.apply {
                             setCallback {
                                 if (it) {
@@ -640,22 +551,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             onBind {
                 val binding = getBinding<ItemHomeHeaderBinding>()
                 val dto = getModel<TypeItem>()
-                if (dto.isAd) {
-                    AdSdk.loadAd {
-                        adView = binding.flAd
-                        adId = dto.adId
-                        onAdCallback {
-                            onAdLoadSuccess {
-                                binding.flAd.isVisible = true
-                                binding.image.isVisible = false
-                            }
-                            onAdCountdownFinished {
-                                binding.flAd.isVisible = false
-                                binding.image.isVisible = true
-                            }
-                        }
-                    }
-                }
+
                 binding.root.setCallback {
                     if (it) {
                         setRVHeight(true)
@@ -880,6 +776,13 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
             }
 
+            mBind.ivDesktopSwitch.let {
+                it.setOnFocusChangeListener { view, b ->
+                    if (b) desktopSwitchFocus.isVisible = true else desktopSwitchFocus.visibility = View.INVISIBLE
+                }
+            }
+            mBind.ivDesktopSwitch.clickNoRepeat { startKtxActivity<DesktopSelectActivity>() }
+
             mBind.gradient.let {
                 it.setOnFocusChangeListener { view, b ->
                     if (b) projection.isVisible = true else projection.visibility = View.INVISIBLE
@@ -988,7 +891,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
             }
         }
-        exec.execute(timeRunnable)
+        try {
+            exec.execute(timeRunnable)
+        }catch (e:Exception){
+
+        }
+
     }
 
     private fun detectNetStaus() {
@@ -1378,7 +1286,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 HomeInfoDto::class.java
             )
 
-            val header = fillData(result)
+            //val header = fillData(result)
+            val header = mutableListOf<TypeItem>()
             index_appstore = header.size
             header.addAll(items)
             addProduct5TypeItem(header)

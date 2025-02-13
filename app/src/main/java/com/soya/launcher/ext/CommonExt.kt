@@ -1,10 +1,18 @@
 package com.soya.launcher.ext
 
+import android.app.Activity
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.drake.brv.BindingAdapter
 import com.google.gson.Gson
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.dimenValue
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.stringValue
 import com.shudong.lib_base.ext.yes
@@ -270,3 +278,7 @@ fun findScreenCastApps(): List<ApplicationInfo> {
 }
 
 var count = 0
+
+
+
+

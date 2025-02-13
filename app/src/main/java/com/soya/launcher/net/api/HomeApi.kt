@@ -4,7 +4,6 @@ import com.soya.launcher.net.Update_INFO
 import com.shudong.lib_base.base.viewmodel.BaseApi
 import com.soya.launcher.bean.AuthParamsDto
 import com.soya.launcher.bean.HomeInfoDto
-import com.soya.launcher.ad.bean.PluginInfoEntity
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.bean.UpdateDto
 import com.soya.launcher.net.CHECK_ACTIVE_CODE
@@ -48,10 +47,7 @@ interface HomeApi : BaseApi {
         @QueryMap map: MutableMap<String, Any>,
     ): UpdateDto
 
-    @GET(PLUGIN_INFO)
-    suspend fun reqPluginInfo(
-        @QueryMap map: MutableMap<String, Any>,
-    ): PluginInfoEntity
+
 
     @FormUrlEncoded
     @POST(SEARCH_APPLIST)

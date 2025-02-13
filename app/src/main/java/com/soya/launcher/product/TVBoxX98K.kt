@@ -18,12 +18,14 @@ import com.soya.launcher.SETTING_SOUND
 import com.soya.launcher.SETTING_WALLPAPER
 import com.soya.launcher.bean.SettingItem
 import com.soya.launcher.bean.Wallpaper
+import com.soya.launcher.cache.AppCache
 import com.soya.launcher.cache.AppCache.WALLPAPERS
 import com.soya.launcher.product.base.TVDeviceImpl
+import com.soya.launcher.ui.fragment.Home2Fragment
 import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.utils.AndroidSystem
 
- open class TVBoxX98K : TVDeviceImpl {
+open class TVBoxX98K : TVDeviceImpl {
     /**
      *
      * 跳转系统时间设置页面
@@ -40,13 +42,22 @@ import com.soya.launcher.utils.AndroidSystem
 
 
     override fun switchFragment() = run {
-        sendLiveEventDataDelay(IS_MAIN_CANBACK, false,1000)
-        MainFragment.newInstance()
+        sendLiveEventDataDelay(IS_MAIN_CANBACK, false, 1000)
+        if (AppCache.curDesktop == 0)
+            Home2Fragment.newInstance()
+        else
+            MainFragment.newInstance()
     }
 
     override fun addSettingItem(): MutableList<SettingItem> {
         return mutableListOf<SettingItem>().apply {
-            add(SettingItem(SETTING_NETWORK, appContext.getString(R.string.network), R.drawable.baseline_wifi_100))
+            add(
+                SettingItem(
+                    SETTING_NETWORK,
+                    appContext.getString(R.string.network),
+                    R.drawable.baseline_wifi_100
+                )
+            )
 
             add(
                 SettingItem(
@@ -62,7 +73,13 @@ import com.soya.launcher.utils.AndroidSystem
                     R.drawable.baseline_wallpaper_100
                 )
             )
-            add(SettingItem(SETTING_LAUNGUAGE, appContext.getString(R.string.language), R.drawable.baseline_translate_100))
+            add(
+                SettingItem(
+                    SETTING_LAUNGUAGE,
+                    appContext.getString(R.string.language),
+                    R.drawable.baseline_translate_100
+                )
+            )
             add(
                 SettingItem(
                     SETTING_DATE,
@@ -71,9 +88,27 @@ import com.soya.launcher.utils.AndroidSystem
                 )
             )
 
-            add(SettingItem(SETTING_KEYBOARD, appContext.getString(R.string.keyboard), R.drawable.baseline_keyboard_100))
-            add(SettingItem(SETTING_ABOUT, appContext.getString(R.string.about), R.drawable.baseline_help_100))
-            add(SettingItem(SETTING_MORE, appContext.getString(R.string.more), R.drawable.baseline_more_horiz_100))
+            add(
+                SettingItem(
+                    SETTING_KEYBOARD,
+                    appContext.getString(R.string.keyboard),
+                    R.drawable.baseline_keyboard_100
+                )
+            )
+            add(
+                SettingItem(
+                    SETTING_ABOUT,
+                    appContext.getString(R.string.about),
+                    R.drawable.baseline_help_100
+                )
+            )
+            add(
+                SettingItem(
+                    SETTING_MORE,
+                    appContext.getString(R.string.more),
+                    R.drawable.baseline_more_horiz_100
+                )
+            )
         }
     }
 
@@ -90,7 +125,6 @@ import com.soya.launcher.utils.AndroidSystem
     }
 
 
-
     override fun addWallPaper() {
         if (WALLPAPERS.isEmpty()) {
             WALLPAPERS.add(Wallpaper(0, R.drawable.wallpaper_1))
@@ -102,6 +136,6 @@ import com.soya.launcher.utils.AndroidSystem
         }
     }
 
-     override fun isBlueDisableClick() = true
+    override fun isBlueDisableClick() = true
 
 }

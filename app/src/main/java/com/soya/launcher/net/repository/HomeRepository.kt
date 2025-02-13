@@ -3,7 +3,6 @@ package com.soya.launcher.net.repository
 import com.shudong.lib_base.base.viewmodel.BaseRepository
 import com.soya.launcher.BuildConfig
 import com.soya.launcher.bean.HomeInfoDto
-import com.soya.launcher.ad.bean.PluginInfoEntity
 import com.soya.launcher.bean.UpdateAppsDTO
 import com.soya.launcher.bean.UpdateDto
 import com.soya.launcher.net.api.HomeApi
@@ -33,9 +32,7 @@ class HomeRepository(private val api: HomeApi): BaseRepository(api) {
         emit(api.reqVersionInfo(map))
     }
 
-    fun reqPluginInfo(map: MutableMap<String, Any>): Flow<PluginInfoEntity> = flow {
-        emit(api.reqPluginInfo(map))
-    }
+
 
     fun reqSearchAppList(
         map: MutableMap<String, Any>,

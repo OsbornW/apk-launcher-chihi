@@ -2,6 +2,7 @@ package com.soya.launcher.ext
 
 import android.content.Intent
 import android.app.PendingIntent
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.pm.PackageInstaller
 import android.content.pm.PackageManager
@@ -10,6 +11,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.core.content.FileProvider
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.shudong.lib_base.currentActivity
@@ -191,5 +193,47 @@ private fun performInstallation(
 
     continuation.invokeOnCancellation {
         session.close()
+    }
+}
+
+
+fun File.installApkForNormalApp() {
+
+    val apkUri: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        // 适配 Android 7.0 及以上版本，使用 FileProvider 提供文件 URI
+        FileProvider.getUriForFile(appContext, "${appContext.packageName}.provider", this)
+    } else {
+        Uri.fromFile(this)
+    }
+
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        setDataAndType(apkUri, "application/vnd.android.package-archive")
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            flags = flags or Intent.FLAG_GRANT_READ_URI_PERMISSION
+        }
+    }
+
+    try {
+        appContext.startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        Log.e("InstallError", "No activity found to handle APK install", e)
+    }
+
+
+}
+
+
+fun String.uninstallApkForNormalApp() {
+    val packageUri: Uri = Uri.parse("package:$this")
+    val intent = Intent(Intent.ACTION_DELETE).apply {
+        data = packageUri
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    }
+
+    try {
+        appContext.startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        Log.e("UninstallError", "No activity found to handle APK uninstall", e)
     }
 }

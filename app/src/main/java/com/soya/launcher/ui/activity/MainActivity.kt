@@ -5,10 +5,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
+import android.os.Build
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_AVR_POWER
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,33 +23,23 @@ import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.RECREATE_MAIN
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.REGET_HOMEDATA
+import com.shudong.lib_base.ext.SWITCH_HOME
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
 import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.appContext
-import com.shudong.lib_base.ext.downloadApkNopkName
 import com.shudong.lib_base.ext.downloadPic
 import com.shudong.lib_base.ext.e
-import com.shudong.lib_base.ext.isRepeatExcute
 import com.shudong.lib_base.ext.jsonToBean
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
-import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.obseverLiveEvent
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.sendLiveEventData
-import com.shudong.lib_base.ext.showTipToast
 import com.shudong.lib_base.ext.yes
-import com.soya.launcher.App
 import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
 import com.soya.launcher.SplashFragment
-import com.soya.launcher.ad.AdSdk
-import com.soya.launcher.ad.Plugin
-import com.soya.launcher.ad.Plugin.currentApkPath
-import com.soya.launcher.ad.config.AdIds
-import com.soya.launcher.ad.config.PluginCache
-import com.soya.launcher.ad.unzipAndKeepApk
 import com.soya.launcher.bean.HomeDataList
 import com.soya.launcher.bean.HomeInfoDto
 import com.soya.launcher.bean.HomeStoreFileList
@@ -57,27 +48,22 @@ import com.soya.launcher.bean.SearchDto
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.ActivityMainBinding
 import com.soya.launcher.ext.bindNew
-import com.soya.launcher.ext.clearAndNavigate
 import com.soya.launcher.ext.clearStack
 import com.soya.launcher.ext.compareSizes
 import com.soya.launcher.ext.count
-import com.soya.launcher.ext.deleteAdAndPluginDirectories
 import com.soya.launcher.ext.deleteAllImages
 import com.soya.launcher.ext.deleteApkFilesInPluginDir
 import com.soya.launcher.ext.exportToJson
 import com.soya.launcher.ext.getBasePath
 import com.soya.launcher.ext.isGame
-import com.soya.launcher.ext.isHome
-import com.soya.launcher.ext.loadJar
 import com.soya.launcher.ext.navigateBack
 import com.soya.launcher.localWallPaperDrawable
 import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
-import com.soya.launcher.ui.fragment.GuideLanguageFragment
+import com.soya.launcher.ui.fragment.Home2Fragment
+import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.utils.getFileNameFromUrl
-import com.soya.launcher.utils.getZipFileNameFromUrl
-import com.soya.launcher.utils.replaceZipWithApk
 import com.soya.launcher.utils.toTrim
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -129,12 +115,28 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         //loadJar()
         lifecycleScope.launch {
             delay(300)
-            fetchHomeData()
+            //fetchHomeData()
         }
 
        // reqPluginInfo()
+        obseverLiveEvent<Int>(SWITCH_HOME){
+            onFragmentSwitch(it)
+        }
+
 
     }
+
+    fun onFragmentSwitch(i: Int) {
+        // 获取下一个 Fragment 的索引
+        //currentFragmentIndex = (currentFragmentIndex + 1) % fragmentList.size
+        // 获取下一个 Fragment
+        val nextFragment = fragmentList[i]
+        // 替换 Fragment
+        replaceFragment(nextFragment, R.id.main_browse_fragment)
+    }
+
+    val fragmentList = arrayListOf(Home2Fragment.newInstance(),MainFragment.newInstance())
+    private var currentFragmentIndex = 0
 
     private fun startPluginCheckPolling() {
         lifecycleScope.launch {
@@ -148,70 +150,6 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         }
     }
 
-    private fun reqPluginInfo() {
-        errorJobPlugin?.cancel()
-        if (PluginCache.pluginPath.isNotEmpty()) {
-            val path = PluginCache.pluginPath
-            Plugin.install(appContext, path)
-        }
-        mViewModel.reqPluginInfo().lifecycle(this, errorCallback = {
-            "删除旧插件相关的文件1".e("chihi_error1")
-            //deleteAdAndPluginDirectories()
-            errorJobPlugin?.cancel()
-            errorJobPlugin = lifecycleScope.launch(Dispatchers.Main) {
-                while (true) {
-                    if (NetworkUtils.isConnected()) {
-                        reqPluginInfo()
-                    }
-                    delay(2000)
-
-                }
-
-            }
-        }) {
-            val dto = this
-            if(dto.sdkAddr.isNullOrEmpty()){
-                "删除旧插件相关的文件2".e("chihi_error1")
-                deleteAdAndPluginDirectories()
-                return@lifecycle
-            }
-            PluginCache.pluginInfo = dto
-            if (PluginCache.pluginVersion != this.sdkVersion) {
-                val fileName = dto.sdkAddr.getZipFileNameFromUrl()
-                val destPath = "${"plugin".getBasePath()}/${fileName}"
-                "删除旧插件APK".e("chihi_error1")
-                deleteOldPlugin()
-                dto.sdkAddr.downloadApkNopkName(
-                    lifecycleScope,
-                    downloadPath = destPath,
-                    downloadError = {
-                        "下载错误".e("chihi_error1")
-                        errorJobPluginDownload?.cancel()
-                        errorJobPluginDownload = lifecycleScope.launch(Dispatchers.Main) {
-                            while (true) {
-                                if (NetworkUtils.isConnected()) {
-                                    reqPluginInfo()
-                                }
-                                delay(2000)
-
-                            }
-
-                        }
-                    },
-                    downloadComplete = { it, path ->
-                        val apkPath = destPath.unzipAndKeepApk()
-                        "下载成功${apkPath}".e("chihi_error1")
-                        apkPath.isNullOrEmpty().no {
-                            PluginCache.pluginPath = apkPath!!
-                            PluginCache.pluginVersion = dto.sdkVersion.toString()
-                            Plugin.install(appContext, apkPath)
-                        }
-                    }) {
-                }
-            }
-
-        }
-    }
 
     private fun deleteOldPlugin() {
         deleteApkFilesInPluginDir()
@@ -278,7 +216,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             errorJob = lifecycleScope.launch(Dispatchers.Main) {
                 while (true) {
                     if (NetworkUtils.isConnected()) {
-                        fetchHomeData()
+                       // fetchHomeData()
                     }
                     delay(2000)
 
@@ -473,11 +411,16 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun initView() {
         "重新执行MainActivity的oncreate了哦".e("zengyue3")
          count = 0
         lifecycleScope.launch {
-            registerReceiver(homeReceiver, IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+            registerReceiver(
+                homeReceiver,
+                IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS),
+                Context.RECEIVER_EXPORTED
+            )
             commit()
 
         }
@@ -533,7 +476,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         }
 
         this.obseverLiveEvent<Boolean>(REGET_HOMEDATA) {
-            fetchHomeData()
+           // fetchHomeData()
         }
 
     }

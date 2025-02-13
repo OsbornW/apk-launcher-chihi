@@ -235,6 +235,8 @@
     <string name="saved_wifi_tip">Saved Network</string>
     <string name="wifi_password_prompt">Enter the password for %1$s</string>
     <string name="cant_set_previous_time">Cannot set past time</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

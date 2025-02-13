@@ -2,21 +2,13 @@ package com.soya.launcher
 
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.shudong.lib_base.ContextManager
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
-import com.shudong.lib_base.ext.otherwise
-import com.shudong.lib_base.ext.replaceFragment
-import com.shudong.lib_base.ext.yes
-import com.soya.launcher.ad.AdSdk
-import com.soya.launcher.ad.Plugin
-import com.soya.launcher.ad.config.AdIds
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.ActivitySplashBinding
 import com.soya.launcher.enums.Atts
-import com.soya.launcher.ext.AdControllerState.adView
 import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.product.base.product
 import com.soya.launcher.utils.PreferencesUtils
@@ -87,31 +79,7 @@ class SplashFragment : BaseWallPaperFragment<ActivitySplashBinding, BaseViewMode
                 if (localWallPaperDrawable != null) {
                     withContext(Dispatchers.Main) { // 在主线程中启动 Activity
 
-                        lifecycleScope.launch {
-                            try {
-                                val loader = Plugin.dexClassLoader
-                                AdSdk.loadAd {
-                                    adView = mBind.flContanner
-                                    adId = AdIds.AD_ID_SPLASH
-                                    isLoadFromLocal = true
-                                    isAutoFocus = true
-                                    onAdCallback {
-                                        onNoLocalAd {
-                                            enterHome()
-
-                                        }
-                                        onAdCountdownFinished {
-                                            mBind.flContanner.isVisible = false
-                                            enterHome()
-                                        }
-                                    }
-                                }
-                            } catch (e: Exception) {
-                                enterHome()
-                            }
-
-
-                        }
+                        enterHome()
 
                     }
                     break // 检测到条件满足后退出循环

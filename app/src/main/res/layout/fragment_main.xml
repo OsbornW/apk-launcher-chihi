@@ -126,6 +126,33 @@
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/rl_desktop_switch"
+                            android:layout_marginLeft="@dimen/qb_px_6"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <com.hjq.shape.layout.ShapeRelativeLayout
+                                android:id="@+id/desktop_switch_focus"
+                                android:layout_width="@dimen/qb_px_40"
+                                android:layout_height="@dimen/qb_px_40"
+                                android:visibility="invisible"
+                                app:shape="oval"
+                                app:shape_solidColor="#80625356" />
+
+                            <com.soya.launcher.view.ImageViewHouse
+                                android:layout_centerInParent="true"
+                                android:id="@+id/iv_desktop_switch"
+                                android:layout_width="@dimen/qb_px_25"
+                                android:layout_height="@dimen/qb_px_25"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:src="@drawable/icon_desktop_switch" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
                             android:id="@+id/rl_gridient"
                             android:layout_marginLeft="@dimen/qb_px_6"
                             android:layout_gravity="center"
@@ -204,6 +231,8 @@
                                 android:focusableInTouchMode="true"
                                 android:src="@drawable/baseline_settings_input_hdmi_100" />
                         </RelativeLayout>
+
+
 
                         <ImageView
                             android:id="@+id/login"

@@ -68,7 +68,8 @@ dependencies {
     // ksp/kapt/annotationProcessor choose one
     kapt "com.github.liujingxing.rxhttp:rxhttp-compiler:3.0.0"
 
-    api 'io.github.jeremyliao:live-event-bus-x:1.8.0'
+    //api 'io.github.jeremyliao:live-event-bus-x:1.8.0'
+    api 'com.github.neo-turak:LiveEventBus:1.8.1'//兼容Android14
 
     api 'com.github.Justson.AgentWeb:agentweb-core:v5.0.6-androidx'
     api 'com.lcodecorex:tkrefreshlayout:1.0.7'
