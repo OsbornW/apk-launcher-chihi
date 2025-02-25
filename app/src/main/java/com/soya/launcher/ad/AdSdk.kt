@@ -3,23 +3,30 @@ package com.soya.launcher.ad
 import android.content.Context
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.e
+import com.soya.launcher.ad.AdSdk.isAdInitialized
 import com.soya.launcher.ad.Plugin.dexClassLoader
 import com.soya.launcher.ad.config.AdConfig
+import com.soya.launcher.ad.config.PluginCache
 import com.soya.launcher.ad.config.buildAdCallback
 import com.soya.launcher.ad.helper.LoadAdHelper
+import com.soya.launcher.cache.AppCache
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.reflect.Modifier
 import java.lang.reflect.Proxy
+import java.util.Locale
 
 object AdSdk {
 
-    private var isInitialized = false
-    private const val MAX_RETRY_COUNT = 10*60
-    private const val RETRY_DELAY_MS = 100L // 每次轮询间隔时间
+    var isAdInitialized = false
+    private const val MAX_RETRY_COUNT = 12
+    private const val RETRY_DELAY_MS = 800L // 每次轮询间隔时间
 
     /**
      * 初始化SDK
@@ -35,10 +42,11 @@ object AdSdk {
             // 方法是实例方法，创建类实例并调用
             val adSdkInstance = adPluginClass.getDeclaredConstructor().newInstance()
             adInitMethod.invoke(adSdkInstance)
-            isInitialized = true
+            PluginCache.pluginLang = Locale.getDefault().language
+            isAdInitialized = true
 
         } catch (e: Exception) {
-            Log.e("Reflection", "反射调用失败: ${e.message}", e)
+            Log.e("chihi_error1", "反射调用失败: ${e.message}", e)
         }
     }
 
@@ -46,15 +54,15 @@ object AdSdk {
      *
      * 加载广告
      */
-    fun loadAd(config: AdConfig.() -> Unit) {
+    private fun loadAdContent(config: AdConfig.() -> Unit) {
 
-        GlobalScope.launch(Dispatchers.Main) {
-            "进来了1".e("chihi_error1")
-            "开始加载，是否已经初始化-${ensureInitializedAsync()}".e("chihi_error1")
-            if (!ensureInitializedAsync()) return@launch
+        val (adConfig, callback) = buildAdCallback(config)
+        try {
 
-            try {
-                "开始加载广告".e("chihi_error1")
+            if (PluginCache.pluginLang != Locale.getDefault().language) {
+                Plugin.reinstall(appContext, PluginCache.pluginPath)
+                callback.onAdCountdownFinished()
+            } else {
                 // 加载 AdPlugin 类
                 val adPluginClass = dexClassLoader.loadClass("com.chihi.adplugin.AdPlugin")
                 val function1Class =
@@ -65,18 +73,30 @@ object AdSdk {
 
                 // 调用 loadAd 方法
                 LoadAdHelper.invokeLoadAd(adPluginClass, function1Class, configFunction)
-            } catch (e: Exception) {
-                Log.e("chihi_error1", "反射调用失败: ${e.message}", e)
             }
 
+        } catch (e: Exception) {
+            callback.onAdLoadFailed(e.message.toString())
         }
-
 
 
     }
 
-    fun removeAd():Boolean {
-        if(!isInitialized)return false
+    fun LifecycleOwner.loadAd(config: AdConfig.() -> Unit) {
+        this.lifecycleScope.launch {
+            repeat(MAX_RETRY_COUNT) {
+                delay(RETRY_DELAY_MS)
+                if (isAdInitialized) {
+                    loadAdContent(config)
+                    return@launch
+                }
+            }
+        }
+
+    }
+
+    fun removeAd(): Boolean {
+        if (!isAdInitialized) return false
         return try {
             // 加载 AdPlugin 类
             val adPluginClass = dexClassLoader.loadClass("com.chihi.adplugin.AdPlugin")
@@ -93,32 +113,9 @@ object AdSdk {
 
             result
         } catch (e: Exception) {
-            Log.e("Reflection", "Failed to invoke removeAd: ${e.message}", e)
             false
         }
     }
 
-    /**
-     * 确保SDK初始化完成（异步轮询）
-     */
-    private suspend fun ensureInitializedAsync(): Boolean {
-        if (isInitialized) return true
-
-        repeat(MAX_RETRY_COUNT) {
-            delay(RETRY_DELAY_MS)
-            if (isInitialized) return true
-        }
-
-        // 初始化未完成时通知 Application 重新初始化
-        Log.e("AdSdk", "SDK 未初始化，通知重新初始化")
-        reinitializeCallback?.invoke()
-        return false
-    }
-
-    private var reinitializeCallback: (() -> Unit)? = null
-
-    fun setReinitializeCallback(callback: () -> Unit) {
-        reinitializeCallback = callback
-    }
 
 }

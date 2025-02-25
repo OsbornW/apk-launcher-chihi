@@ -8,9 +8,11 @@ import com.shudong.lib_base.ContextManager
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.replaceChildFragment
 import com.shudong.lib_base.ext.replaceFragment
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.ad.AdSdk
+import com.soya.launcher.ad.AdSdk.loadAd
 import com.soya.launcher.ad.Plugin
 import com.soya.launcher.ad.config.AdIds
 import com.soya.launcher.cache.AppCache
@@ -19,6 +21,8 @@ import com.soya.launcher.enums.Atts
 import com.soya.launcher.ext.AdControllerState.adView
 import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.product.base.product
+import com.soya.launcher.ui.fragment.BlankFragment
+import com.soya.launcher.ui.fragment.MainFragment
 import com.soya.launcher.utils.PreferencesUtils
 import com.thumbsupec.lib_base.ext.language.initMultiLanguage
 import com.thumbsupec.lib_base.toast.ToastUtils
@@ -86,32 +90,8 @@ class SplashFragment : BaseWallPaperFragment<ActivitySplashBinding, BaseViewMode
                 delay(100) // 每 100 毫秒检测一次
                 if (localWallPaperDrawable != null) {
                     withContext(Dispatchers.Main) { // 在主线程中启动 Activity
+                        enterHome()
 
-                        lifecycleScope.launch {
-                            try {
-                                val loader = Plugin.dexClassLoader
-                                AdSdk.loadAd {
-                                    adView = mBind.flContanner
-                                    adId = AdIds.AD_ID_SPLASH
-                                    isLoadFromLocal = true
-                                    isAutoFocus = true
-                                    onAdCallback {
-                                        onNoLocalAd {
-                                            enterHome()
-
-                                        }
-                                        onAdCountdownFinished {
-                                            mBind.flContanner.isVisible = false
-                                            enterHome()
-                                        }
-                                    }
-                                }
-                            } catch (e: Exception) {
-                                enterHome()
-                            }
-
-
-                        }
 
                     }
                     break // 检测到条件满足后退出循环

@@ -29,7 +29,8 @@ const val BASE_URL = "http://api.ispruz.com/"
 const val BASE_URL_CHECK_CODE = "https://api.freedestop.com/"
 const val HEADERURL = ""
 
-private const val TIME_OUT = 8L
+
+private const val REQ_TIME_OUT = 8L
 private const val TAG = "chihi_zeng"
 
 
@@ -37,9 +38,21 @@ const val TOKEN_INVALID_1 = 1011006
 const val TOKEN_INVALID_2 = 1011004
 const val TOKEN_INVALID_3 = 1011008
 
-val httpLoggingInterceptor = HttpLoggingInterceptor { message -> Log.e(TAG, message) }.also {
+val httpLoggingInterceptor = HttpLoggingInterceptor { message ->
+    Log.e(TAG, message)
+    //println(message)
+}.also {
     it.level = HttpLoggingInterceptor.Level.BODY
 }
+
+val domains = mutableListOf(
+    //AppCacheNet.baseUrl,
+    //"https://apps.psnapp.org/",
+    //"https://primary-domain.com/",
+    "https://backup-domain1.com/",
+    "https://backup-domain2.com/",
+    AppCacheNet.randomUrl
+)
 
 
 // 定义 Retrofit 实例用于主域名
@@ -55,7 +68,7 @@ val mainRetrofitModule = module {
 
 // 定义 Retrofit 实例用于备用域名
 val alternateRetrofitModule = module {
-    single (named("alternate")){
+    single(named("alternate")) {
         Retrofit.Builder()
             .client(get())
             .baseUrl(AppCacheNet.baseUrl)  // 备用域名
@@ -66,7 +79,7 @@ val alternateRetrofitModule = module {
 
 // 定义 Retrofit 实例用于注册码检查激活码
 val activeCodeRetrofitModule = module {
-    single (named("activeCode")){
+    single(named("activeCode")) {
         Retrofit.Builder()
             .client(get())
             .baseUrl(BASE_URL_CHECK_CODE)  // 备用域名
@@ -80,13 +93,18 @@ val httpClientModule = module {
     single {
         val sslContext = getSSLContext()
         val sslSocketFactory = sslContext.socketFactory
+
+
+        val domainSwitchInterceptor = DomainSwitchInterceptor()
+
         OkHttpClient.Builder()
             .addInterceptor(AuthorizationInterceptor())
-            .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-            .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
-            .sslSocketFactory(sslSocketFactory,MyX509TrustManager())
+            .addInterceptor(domainSwitchInterceptor)
+            .connectTimeout(REQ_TIME_OUT, TimeUnit.SECONDS)
+            .writeTimeout(REQ_TIME_OUT, TimeUnit.SECONDS)
+            .sslSocketFactory(sslSocketFactory, MyX509TrustManager())
             .hostnameVerifier { _, _ -> true }
-            .readTimeout(TIME_OUT, TimeUnit.SECONDS).also {
+            .readTimeout(REQ_TIME_OUT, TimeUnit.SECONDS).also {
                 it.addInterceptor(httpLoggingInterceptor)
             }.build()
     }

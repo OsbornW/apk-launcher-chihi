@@ -20,7 +20,7 @@ data class PluginInfoEntity(
     var floatingX: Int?  = 0    ,         // 悬浮窗X轴偏移量
     var floatingY: Int?  = 0   ,         // 悬浮窗Y轴偏移量
     var isCountdownVisible: Boolean?  = true,   // 广告倒计时是否可见（默认不可见）
-    var adShowInteval: Long?  = 120000   // 广告显示间隔时间（默认不可见）
+    var adShowInteval: Long?  = 30000   // 广告显示间隔时间（默认不可见）
 )
 
 

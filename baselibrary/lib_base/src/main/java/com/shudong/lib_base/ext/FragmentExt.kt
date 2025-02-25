@@ -29,3 +29,17 @@ fun FragmentActivity.replaceFragment(fragment: Fragment, frameId: Int) {
 }
 
 fun String.reflectFragment() =  Class.forName(this).newInstance() as Fragment
+
+// 扩展函数，Fragment 中用于替换 Fragment
+fun Fragment.replaceChildFragment(fragment: Fragment, frameId: Int) {
+    childFragmentManager.inTransactionChild {
+        replace(frameId, fragment)
+    }
+}
+
+// 内联函数，简化 FragmentTransaction 的使用
+inline fun FragmentManager.inTransactionChild(action: FragmentTransaction.() -> Unit) {
+    beginTransaction().apply {
+        action(this) // 执行传入的操作
+    }.commitAllowingStateLoss() // 提交事务
+}

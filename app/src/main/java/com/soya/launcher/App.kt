@@ -7,6 +7,7 @@ import com.drake.serialize.serialize.Serialize
 import com.shudong.lib_base.base.viewmodel.baseModules
 import com.shudong.lib_base.ext.MvvmHelper
 import com.shudong.lib_base.ext.appContext
+import com.soya.launcher.BuildConfig.BASE_URL
 import com.soya.launcher.bean.AppItem
 import com.soya.launcher.bean.Data
 import com.soya.launcher.cache.AppCache
@@ -14,6 +15,7 @@ import com.soya.launcher.ext.loadBlurDrawable
 import com.soya.launcher.net.di.homeModules
 import com.soya.launcher.product.base.product
 import com.tencent.mmkv.MMKV
+import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.di.netModules
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +37,12 @@ class App : Application() {
         MvvmHelper.init(this@App)
         MMKV.initialize(appContext)
         Serialize.hook = JsonSerializeHook()
+
+        if(AppCacheNet.baseUrl!=BASE_URL){
+            println("要更新主域名：${BASE_URL}")
+            AppCacheNet.baseUrl = BASE_URL
+        }
+        if (AppCacheNet.baseUrl.isEmpty()) AppCacheNet.baseUrl = BASE_URL
 
         startKoin {
             androidContext(appContext)

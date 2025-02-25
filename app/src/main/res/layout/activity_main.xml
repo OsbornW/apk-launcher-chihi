@@ -15,6 +15,11 @@
         android:id="@+id/main_browse_fragment"
         />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fl_ad"/>
+
 
 </FrameLayout>
 

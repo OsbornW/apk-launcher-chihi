@@ -14,11 +14,19 @@ fun FragmentManager.navigateTo(
     addToBackStack: Boolean = true,
     tag: String? = null
 ) {
+    // 查找当前容器中是否已经有该类型的 Fragment
+    val existingFragment = findFragmentById(containerId)
+
+    // 如果已经有相同的 Fragment 实例，不需要重新初始化
+    if (existingFragment != null && existingFragment::class == fragment::class) {
+        return
+    }
+
     val transaction = beginTransaction()
     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-    transaction.replace(containerId, fragment, tag)
+    transaction.replace(containerId, fragment)
     if (addToBackStack) {
-        transaction.addToBackStack(tag)
+        transaction.addToBackStack(null)
     }
     transaction.commit()
 }
@@ -58,6 +66,7 @@ fun FragmentManager.clearAndNavigate(
     tag: String? = null
 ) {
     popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    println("即将跳转到MainFragment")
     navigateTo(containerId, fragment, addToBackStack = false, tag = tag)
 }
 

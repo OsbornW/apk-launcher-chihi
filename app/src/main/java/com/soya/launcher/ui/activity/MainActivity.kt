@@ -5,10 +5,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_AVR_POWER
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -17,6 +20,7 @@ import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.shudong.lib_base.ext.ACTIVE_SUCCESS
 import com.shudong.lib_base.ext.ADD_APPSTORE
+import com.shudong.lib_base.ext.CANCLE_MAIN_LIFECYCLESCOPE
 import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.RECREATE_MAIN
@@ -44,6 +48,7 @@ import com.soya.launcher.BaseWallpaperActivity
 import com.soya.launcher.R
 import com.soya.launcher.SplashFragment
 import com.soya.launcher.ad.AdSdk
+import com.soya.launcher.ad.AdSdk.loadAd
 import com.soya.launcher.ad.Plugin
 import com.soya.launcher.ad.Plugin.currentApkPath
 import com.soya.launcher.ad.config.AdIds
@@ -74,11 +79,15 @@ import com.soya.launcher.localWallPaperDrawable
 import com.soya.launcher.manager.FilePathMangaer
 import com.soya.launcher.net.viewmodel.HomeViewModel
 import com.soya.launcher.product.base.product
+import com.soya.launcher.ui.fragment.BlankFragment
 import com.soya.launcher.ui.fragment.GuideLanguageFragment
 import com.soya.launcher.utils.getFileNameFromUrl
 import com.soya.launcher.utils.getZipFileNameFromUrl
+import com.soya.launcher.utils.host.HostUtils
 import com.soya.launcher.utils.replaceZipWithApk
 import com.soya.launcher.utils.toTrim
+import com.thumbsupec.lib_net.AppCacheNet
+import com.thumbsupec.lib_net.di.domains
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -132,7 +141,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             fetchHomeData()
         }
 
-       // reqPluginInfo()
+        reqPluginInfo()
 
     }
 
@@ -141,7 +150,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 仅在生命周期为 RESUMED 时轮询
                 while (true) {
                     delay(24 * 60 * 60 * 1000L) // 延迟 24 小时
-                    //reqPluginInfo() // 执行任务
+                    reqPluginInfo() // 执行任务
 
                 }
             }
@@ -155,7 +164,6 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             Plugin.install(appContext, path)
         }
         mViewModel.reqPluginInfo().lifecycle(this, errorCallback = {
-            "删除旧插件相关的文件1".e("chihi_error1")
             //deleteAdAndPluginDirectories()
             errorJobPlugin?.cancel()
             errorJobPlugin = lifecycleScope.launch(Dispatchers.Main) {
@@ -171,21 +179,19 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         }) {
             val dto = this
             if(dto.sdkAddr.isNullOrEmpty()){
-                "删除旧插件相关的文件2".e("chihi_error1")
                 deleteAdAndPluginDirectories()
+                Plugin.uninstall()
                 return@lifecycle
             }
             PluginCache.pluginInfo = dto
             if (PluginCache.pluginVersion != this.sdkVersion) {
                 val fileName = dto.sdkAddr.getZipFileNameFromUrl()
                 val destPath = "${"plugin".getBasePath()}/${fileName}"
-                "删除旧插件APK".e("chihi_error1")
                 deleteOldPlugin()
                 dto.sdkAddr.downloadApkNopkName(
                     lifecycleScope,
                     downloadPath = destPath,
                     downloadError = {
-                        "下载错误".e("chihi_error1")
                         errorJobPluginDownload?.cancel()
                         errorJobPluginDownload = lifecycleScope.launch(Dispatchers.Main) {
                             while (true) {
@@ -200,7 +206,6 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                     },
                     downloadComplete = { it, path ->
                         val apkPath = destPath.unzipAndKeepApk()
-                        "下载成功${apkPath}".e("chihi_error1")
                         apkPath.isNullOrEmpty().no {
                             PluginCache.pluginPath = apkPath!!
                             PluginCache.pluginVersion = dto.sdkVersion.toString()
@@ -473,16 +478,66 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     }
 
+    var hostJob: Job? = null
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun initView() {
         "重新执行MainActivity的oncreate了哦".e("zengyue3")
          count = 0
         lifecycleScope.launch {
-            registerReceiver(homeReceiver, IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+            registerReceiver(
+                homeReceiver,
+                IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS),
+                Context.RECEIVER_EXPORTED
+            )
             commit()
+
+            loadAd {
+                adView = mBind.flAd
+                adId = AdIds.AD_ID_SPLASH
+                isLoadFromLocal = true
+                isAutoFocus = true
+                onAdCallback {
+                    onAdDataFetchFailed { println("拉取失败") }
+                    onAdLoadFailed { println("加载失败") }
+                    onNoLocalAd {
+                        println("本地没有数据")
+                        sendLiveEventData(CANCLE_MAIN_LIFECYCLESCOPE,true)
+                    }
+                    onAdLoadSuccess {
+                        println("广告加载成功")
+                        sendLiveEventData(CANCLE_MAIN_LIFECYCLESCOPE,true)
+                       replaceFragment(BlankFragment.newInstance(), R.id.main_browse_fragment)
+                    }
+                    onAdCountdownFinished {
+                        println("广告倒计时结束")
+                        mBind.flAd.isVisible = false
+                        commit()
+                    }
+                }
+            }
 
         }
 
         startPluginCheckPolling()
+
+        if (AppCacheNet.randomUrl.contains("localhost")) {
+            hostJob = lifecycleScope.launch(Dispatchers.IO) {
+
+                repeat(3) {
+                    HostUtils.getSlaveAvailableHost {
+                        it?.let {
+                            AppCacheNet.randomUrl = it
+                            domains[domains.size - 1] = AppCacheNet.randomUrl
+                            hostJob?.cancel()
+                        }
+                    }
+                    delay(3000)
+                }
+
+
+            }
+        }
 
         /*lifecycleScope.launch {
 

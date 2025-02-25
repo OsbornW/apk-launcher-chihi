@@ -35,6 +35,7 @@ import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import com.shudong.lib_base.currentActivity
 import com.shudong.lib_base.ext.ADD_APPSTORE
+import com.shudong.lib_base.ext.CANCLE_MAIN_LIFECYCLESCOPE
 import com.shudong.lib_base.ext.HOME_EVENT
 import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.LOAD_DEFULT_RESOURCE
@@ -68,6 +69,7 @@ import com.soya.launcher.LAYOUTTYPE_HOME_LANDSCAPE
 import com.soya.launcher.PACKAGE_NAME_713_BOX_DISPLAY
 import com.soya.launcher.R
 import com.soya.launcher.ad.AdSdk
+import com.soya.launcher.ad.AdSdk.loadAd
 import com.soya.launcher.ad.Plugin
 import com.soya.launcher.ad.config.AdIds
 import com.soya.launcher.ad.config.PluginCache
@@ -95,6 +97,7 @@ import com.soya.launcher.databinding.ItemHomeContentPorBinding
 import com.soya.launcher.databinding.ItemHomeHeaderBinding
 import com.soya.launcher.databinding.ItemHomeLocalappsBinding
 import com.soya.launcher.enums.Types
+import com.soya.launcher.ext.AdControllerState.adView
 import com.soya.launcher.ext.compareSizes
 import com.soya.launcher.ext.convertH27002Json
 import com.soya.launcher.ext.deleteAllImages
@@ -133,6 +136,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import java.io.File
@@ -143,6 +147,7 @@ import java.util.Calendar
 import java.util.UUID
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.resumeWithException
 import kotlin.math.abs
 
 class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>(),
@@ -181,6 +186,16 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             if (File(path).exists()) {
                 fillHeader()
             }
+
+        }
+
+        obseverLiveEvent<Boolean>(CANCLE_MAIN_LIFECYCLESCOPE) {
+            adHomeJob?.cancel()
+            initJob?.cancel()
+            updateLauncherJob?.cancel()
+            updateLauncherErrorJob?.cancel()
+            appsUpdateJob?.cancel()
+            netStatusJob?.cancel()
 
         }
 
@@ -258,6 +273,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
     }
 
+    private var initJob: Job? = null
     override fun initdata() {
         product.addHeaderItem()?.let {
             val typeItem = TypeItem(
@@ -290,7 +306,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         checkLauncherUpdate()
 
-        lifecycleScope.launch {
+        initJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 repeat(20) {
                     delay(500)
@@ -364,10 +380,12 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
     private var isCanShowHeaderFloatAd = false
+    private var adHomeJob: Job? = null
     private fun showEnterHomeAd() {
-        lifecycleScope.launch {
-            delay(3000)
-            AdSdk.loadAd {
+        println("开始执行MainFragment的Home广告")
+        adHomeJob = lifecycleScope.launch {
+            delay(5000)
+            this@MainFragment.loadAd {
                 this.applyPluginInfo(PluginCache.pluginInfo)
                 adId = AdIds.AD_ID_ENTER_HOME
                 onAdCallback {
@@ -375,11 +393,18 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         isCanShowHeaderFloatAd = true
                         showAdWithInterval()
                     }
+                    onAdDataFetchFailed {
+                        isCanShowHeaderFloatAd = true
+                        showAdWithInterval()
+                    }
+                    onAdLoadFailed {
+                        isCanShowHeaderFloatAd = true
+                        showAdWithInterval()
+                    }
                     onAdLoadSuccess {
-                        "广告加载成功了".e("chihi_error1")
+
                     }
                     onAdCountdownFinished {
-                        "广告播放倒计时完成了".e("chihi_error1")
                         isCanShowHeaderFloatAd = true
                         showAdWithInterval()
                     }
@@ -391,21 +416,30 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     private fun showAdWithInterval() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 仅在生命周期为 RESUMED 时轮询
-                while (true) {
-                    delay(PluginCache.pluginInfo.adShowInteval ?: 120000) // 间隔一段时间 展示一次广告
-                    isCanShowHeaderFloatAd.yes {
-                        AdSdk.loadAd {
+            //repeatOnLifecycle(Lifecycle.State.RESUMED) { // 仅在生命周期为 RESUMED 时轮询
+            while (true) {
+                delay(PluginCache.pluginInfo.adShowInteval ?: 30000) // 间隔一段时间 展示一次广告
+                isCanShowHeaderFloatAd.yes {
+                    // 创建挂起点等待回调
+                    suspendCancellableCoroutine { continuation ->
+                        this@MainFragment.loadAd {
                             this.applyPluginInfo(PluginCache.pluginInfo)
                             adId = AdIds.AD_ID_ITEM_FOCUSED
                             onAdCallback {
                                 onAdLoadSuccess {
-                                    "广告加载成功了".e("chihi_error1")
+
                                 }
+                                onAdCountdownFinished {
+                                    continuation.resume("", null)
+                                }
+                                onAdLoadFailed { continuation.resumeWithException(Throwable(it)) }
+                                onAdDataFetchFailed { continuation.resumeWithException(Throwable(it)) }
+                                onNoAdData { continuation.resume("", null) }
 
                             }
                         }
                     }
+                    //}
 
 
                 }
@@ -446,7 +480,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         }
 
                         if (dto.isAd) {
-                            AdSdk.loadAd {
+                            this@MainFragment.loadAd {
                                 adView = view
                                 adId = dto.adId
                                 onAdCallback {
@@ -513,7 +547,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
                             clickNoRepeat {
                                 mViewModel.clickProjectorItem(dto) {
-                                    val(type,text) = it
+                                    val (type, text) = it
                                     when (type) {
                                         Projector.TYPE_AUTO_RESPONSE -> {
                                             val tvName =
@@ -544,7 +578,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         val binding = getBinding<ItemHomeContentPorBinding>()
                         val dto = getModel<Data>()
                         if (dto.isAd) {
-                            AdSdk.loadAd {
+                            this@MainFragment.loadAd {
                                 adView = binding.flAd
                                 adId = dto.adId
                                 onAdCallback {
@@ -641,7 +675,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 val binding = getBinding<ItemHomeHeaderBinding>()
                 val dto = getModel<TypeItem>()
                 if (dto.isAd) {
-                    AdSdk.loadAd {
+                    this@MainFragment.loadAd {
                         adView = binding.flAd
                         adId = dto.adId
                         onAdCallback {
@@ -687,8 +721,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
 
     private var updateLauncherErrorJob: Job? = null
+    private var updateLauncherJob: Job? = null
     private fun checkLauncherUpdate() {
-        lifecycleScope.launch {
+        updateLauncherJob = lifecycleScope.launch {
             delay(3000)
             mViewModel.reqLauncherVersionInfo()
                 .lifecycle(this@MainFragment, {
@@ -730,8 +765,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     }
 
 
+    private var appsUpdateJob: Job? = null
     private fun startRepeatingTask() {
-        lifecycleScope.launch {
+        appsUpdateJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
                     delay(3000)
@@ -801,6 +837,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     override fun onDestroy() {
         super.onDestroy()
+        adHomeJob?.cancel()
         call?.cancel()
         if (homeCall != null) homeCall!!.cancel()
         //receiver?.let { mViewModel.removeAppStatusBroadcast(it) }
@@ -991,8 +1028,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         exec.execute(timeRunnable)
     }
 
+    private var netStatusJob: Job? = null
     private fun detectNetStaus() {
-        lifecycleScope.launch {
+        netStatusJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) { // 当生命周期至少为 STARTED 时执行
                 while (true) {
                     val netType = NetworkUtils.getNetworkType()
@@ -1153,7 +1191,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         } else if (v == mBind.hdmi) {
             AndroidSystem.openProjectorHDMI(requireContext())
         } else if (v == mBind.gradient) {
-           // 跳转位置1
+            // 跳转位置1
             product.openHomeTopKeystoneCorrection(requireContext())
 
         } else if (v == mBind.ivDisplay) {

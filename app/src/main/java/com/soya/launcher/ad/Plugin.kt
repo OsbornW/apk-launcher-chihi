@@ -43,6 +43,26 @@ object Plugin {
     }
 
     /**
+     * 卸载插件
+     */
+    fun uninstall() {
+        synchronized(this) {
+            _dexClassLoader = null
+            _pluginContext?.clear()
+            currentApkPath = null
+            AdSdk.isAdInitialized = false
+        }
+    }
+
+    /**
+     * 重新安装插件
+     */
+    fun reinstall(context: Context, apkPath: String) {
+        uninstall() // 卸载已有插件
+        install(context, apkPath) // 重新安装新的插件
+    }
+
+    /**
      * 创建 DexClassLoader
      */
     private fun createDexClassLoader(context: Context, apkPath: String): DexClassLoader {
@@ -97,7 +117,6 @@ object Plugin {
             val pluginManagerInstance = instanceField.get(null)
             val initMethod = pluginManagerClass.getMethod("init", Context::class.java)
             initMethod.invoke(pluginManagerInstance, pluginContext)
-
             AdSdk.init()
 
         } catch (e: Exception) {
