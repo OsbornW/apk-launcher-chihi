@@ -9,7 +9,10 @@ import kotlinx.coroutines.withContext
 import java.net.InetAddress
 
 object HostUtils {
-    private const val BASE = "H4sIAAAAAAAAALOUfVcx2/Slgu0yAPoaObsKAAAA" // a0eda9de4e   //TP25003
+    //private const val BASE = "H4sIAAAAAAAAALOUfVcx2/Slgu0yAPoaObsKAAAA" // a0eda9de4e   //TP25003
+
+    private const val BASE = "H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"  // 775cdf28a3  713  LA27001
+
 
     private suspend fun isHostKnown(
         domain: String,

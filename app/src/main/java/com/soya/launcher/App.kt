@@ -43,6 +43,7 @@ class App : Application() {
             AppCacheNet.baseUrl = BASE_URL
         }
         if (AppCacheNet.baseUrl.isEmpty()) AppCacheNet.baseUrl = BASE_URL
+        AppCacheNet.isDomainTryAll = false
 
         startKoin {
             androidContext(appContext)

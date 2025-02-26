@@ -131,6 +131,7 @@ import com.soya.launcher.utils.isSysApp
 import com.soya.launcher.view.AppLayout
 import com.soya.launcher.view.MyFrameLayout
 import com.soya.launcher.view.MyFrameLayoutHouse
+import com.thumbsupec.lib_net.AppCacheNet
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -730,7 +731,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     updateLauncherErrorJob?.cancel()
                     updateLauncherErrorJob = lifecycleScope.launch(Dispatchers.Main) {
                         while (true) {
-                            if (NetworkUtils.isConnected()) {
+                            if (NetworkUtils.isConnected()&&!AppCacheNet.isDomainTryAll) {
                                 checkLauncherUpdate()
                             }
                             delay(2000)

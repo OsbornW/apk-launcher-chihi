@@ -1,6 +1,7 @@
 package com.thumbsupec.lib_net.di
 
 import android.util.Log
+import com.shudong.lib_base.ext.net.intercept.DomainSwitchInterceptor
 import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.http.MyX509
 import com.thumbsupec.lib_net.http.MyX509TrustManager
@@ -46,12 +47,14 @@ val httpLoggingInterceptor = HttpLoggingInterceptor { message ->
 }
 
 val domains = mutableListOf(
+    AppCacheNet.baseUrl, //主域名
+    //"https://api.y2btop.cc/",
     //AppCacheNet.baseUrl,
     //"https://apps.psnapp.org/",
     //"https://primary-domain.com/",
-    "https://backup-domain1.com/",
-    "https://backup-domain2.com/",
-    AppCacheNet.randomUrl
+    //"https://backup-domain1.com/",
+    //"https://backup-domain2.com/",
+   // AppCacheNet.randomUrl
 )
 
 

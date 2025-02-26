@@ -17,5 +17,6 @@ object AppCacheNet {
     var baseUrl: String by serial("")
     var randomUrl: String by serial("https://localhost/")
     var successfulDomain: String by serial("")
+    var isDomainTryAll: Boolean by serial(false)
 
 }

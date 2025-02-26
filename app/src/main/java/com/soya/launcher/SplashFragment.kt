@@ -55,7 +55,7 @@ class SplashFragment : BaseWallPaperFragment<ActivitySplashBinding, BaseViewMode
                 if (!AppCache.isAppInited) {
                     //"开始应用启动4".e("zengyue3")
 
-                    AppCacheNet.baseUrl = BuildConfig.BASE_URL
+                   // AppCacheNet.baseUrl = BuildConfig.BASE_URL
                     AppCache.isGuidChageLanguage = false
 
                     ToastUtils.init(appContext)

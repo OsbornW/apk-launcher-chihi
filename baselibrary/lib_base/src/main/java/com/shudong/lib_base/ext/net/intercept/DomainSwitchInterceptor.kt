@@ -32,6 +32,7 @@ class DomainSwitchInterceptor : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
+        println("我进来拦截器了啊--------${chain.request().url}")
         if (isReq) {
             val originalRequest = chain.request()
             // 如果有 successfulDomain，先尝试使用它
@@ -117,6 +118,7 @@ class DomainSwitchInterceptor : Interceptor {
             }
 
             println("所有域名都不可用")
+            AppCacheNet.isDomainTryAll = true
             resetDomainIndex()
             isReq = false
             throw lastException ?: IOException("所有域名请求失败")

@@ -141,12 +141,12 @@ android {
         hongxin_713_M_G_2x {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            versionName "3.0"
-            versionCode 1
+            versionName "3.1"
+            versionCode 50
             signingConfig signingConfigs.hongxin
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
+             buildConfigField "String", "BASE_URL", '"https://99soya123.shop"'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
@@ -193,12 +193,13 @@ android {
 
 
         p50_713M {
-            applicationId "com.soya.launcher"
+            applicationId "com.chihihx.launcher"
             dimension "chihi"
-            versionCode 60
+            versionCode 65
             signingConfig signingConfigs.x88
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
+            buildConfigField "String", "BASE_URL", '"https://apps.psnapp.org"'
             // buildConfigField "String", "BASE_URL", '""'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
@@ -210,7 +211,7 @@ android {
         }
 
         x50_713M {
-            applicationId "com.soya.launcher"
+            applicationId "com.chihix.launcher"
             dimension "chihi"
             versionCode 60
             signingConfig signingConfigs.x88
@@ -428,7 +429,7 @@ android {
 
     buildTypes {
         release {
-            debuggable true
+            debuggable false
             minifyEnabled true
             //Zipalign优化
             zipAlignEnabled true

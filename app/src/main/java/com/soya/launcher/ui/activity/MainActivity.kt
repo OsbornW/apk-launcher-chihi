@@ -168,7 +168,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             errorJobPlugin?.cancel()
             errorJobPlugin = lifecycleScope.launch(Dispatchers.Main) {
                 while (true) {
-                    if (NetworkUtils.isConnected()) {
+                    if (NetworkUtils.isConnected()&&!AppCacheNet.isDomainTryAll) {
                         reqPluginInfo()
                     }
                     delay(2000)
@@ -230,7 +230,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             .lifecycle(this, errorCallback = {
                 errorJobStore = lifecycleScope.launch(Dispatchers.Main) {
                     while (true) {
-                        if (NetworkUtils.isConnected()) {
+                        if (NetworkUtils.isConnected()&&!AppCacheNet.isDomainTryAll) {
                             fetchStoreData()
                         }
                         delay(2000)
@@ -282,7 +282,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         mViewModel.reqHomeInfo().lifecycle(this, errorCallback = {
             errorJob = lifecycleScope.launch(Dispatchers.Main) {
                 while (true) {
-                    if (NetworkUtils.isConnected()) {
+                    if (NetworkUtils.isConnected()&&!AppCacheNet.isDomainTryAll) {
                         fetchHomeData()
                     }
                     delay(2000)
