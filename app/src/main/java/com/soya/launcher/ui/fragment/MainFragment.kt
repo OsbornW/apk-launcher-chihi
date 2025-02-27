@@ -392,7 +392,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             while (true) {
                 delay(300)
                 if(NetworkUtils.isConnected()){
-                    AppCacheNet.isDomainTryAll = false
                     checkLauncherUpdate()
                     startRepeatingTask()
                     cancel()
@@ -753,7 +752,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     updateLauncherErrorJob?.cancel()
                     updateLauncherErrorJob = lifecycleScope.launch(Dispatchers.Main) {
                         while (true) {
-                            if (NetworkUtils.isConnected()&&!AppCacheNet.isDomainTryAll) {
+                            if (NetworkUtils.isConnected()&&!AppCacheNet.isDomainTryAll.get()) {
                                 checkLauncherUpdate()
                             }
                             delay(2000)
@@ -794,7 +793,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
                     delay(3000)
-                    if(!AppCacheNet.isDomainTryAll){
+                    if(!AppCacheNet.isDomainTryAll.get()){
                         isShowUpdate().yes { performTask() }
                     }
 

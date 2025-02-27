@@ -2,6 +2,7 @@ package com.thumbsupec.lib_net
 
 import com.drake.serialize.serialize.serial
 import com.drake.serialize.serialize.serialLazy
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  *
@@ -17,6 +18,7 @@ object AppCacheNet {
     var baseUrl: String by serial("")
     var randomUrl: String by serial("https://localhost/")
     var successfulDomain: String by serial("")
-    var isDomainTryAll: Boolean by serial(false)
+    //var isDomainTryAll: Boolean by serial(false)
+    val isDomainTryAll = AtomicBoolean(false) // 使用 AtomicBoolean 替代普通 Boolean
 
 }

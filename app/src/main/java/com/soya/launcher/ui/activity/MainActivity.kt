@@ -149,7 +149,6 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 delay(300)
                 if (NetworkUtils.isConnected()) {
                     println("网络轮询成功，开始请求")
-                    AppCacheNet.isDomainTryAll = false
                     fetchHomeData()
                     reqPluginInfo()
                     cancel()
@@ -172,8 +171,8 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
         lifecycleScope.launch {
             repeat(5) {
-                if (AppCacheNet.isDomainTryAll) {
-                    AppCacheNet.isDomainTryAll = false
+                if (AppCacheNet.isDomainTryAll.get()) {
+                    AppCacheNet.isDomainTryAll.set(false) // 原子化设置为 false
                     delay(5000) // 延迟 3.5秒
                     println("调用了initHomeScope--${it}")
                     initHomeDataScope()
@@ -200,7 +199,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             errorJobPlugin?.cancel()
             errorJobPlugin = lifecycleScope.launch(Dispatchers.Main) {
                 while (true) {
-                    if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll) {
+                    if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll.get()) {
                         reqPluginInfo()
                     }
                     delay(2000)
@@ -262,7 +261,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             .lifecycle(this, errorCallback = {
                 errorJobStore = lifecycleScope.launch(Dispatchers.Main) {
                     while (true) {
-                        if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll) {
+                        if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll.get()) {
                             fetchStoreData()
                         }
                         delay(2000)
@@ -314,7 +313,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         mViewModel.reqHomeInfo().lifecycle(this, errorCallback = {
             errorJob = lifecycleScope.launch(Dispatchers.Main) {
                 while (true) {
-                    if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll) {
+                    if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll.get()) {
                         fetchHomeData()
                     }
                     delay(2000)

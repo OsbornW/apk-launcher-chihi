@@ -143,7 +143,7 @@ android {
             dimension "chihi"
             versionName "3.4"
             versionCode 50
-            signingConfig signingConfigs.hongxin
+            signingConfig signingConfigs.x88
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
              buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc"'

@@ -38,12 +38,12 @@ class App : Application() {
         MMKV.initialize(appContext)
         Serialize.hook = JsonSerializeHook()
 
-        if(AppCacheNet.baseUrl!=BASE_URL){
+        if (AppCacheNet.baseUrl != BASE_URL) {
             println("要更新主域名：${BASE_URL}")
             AppCacheNet.baseUrl = BASE_URL
         }
         if (AppCacheNet.baseUrl.isEmpty()) AppCacheNet.baseUrl = BASE_URL
-        AppCacheNet.isDomainTryAll = false
+        //AppCacheNet.isDomainTryAll = false
 
         startKoin {
             androidContext(appContext)

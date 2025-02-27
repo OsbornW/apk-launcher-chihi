@@ -36,7 +36,7 @@ class DomainSwitchInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         println("我进来拦截器了啊--------${chain.request().url}")
         println("当前网络是否连接的--------${NetworkUtils.isConnected()}------${NetworkUtils.isAvailable()}")
-        if (!AppCacheNet.isDomainTryAll) {
+        if (!AppCacheNet.isDomainTryAll.get()) {
             val originalRequest = chain.request()
             // 如果有 successfulDomain，先尝试使用它
             if (AppCacheNet.successfulDomain.isNotEmpty()) successfulDomain =
@@ -124,7 +124,7 @@ class DomainSwitchInterceptor : Interceptor {
             }
 
             println("所有域名都不可用")
-            AppCacheNet.isDomainTryAll = true
+            AppCacheNet.isDomainTryAll.compareAndSet(false, true) // 只有当前为 false 时才设为 true
             resetDomainIndex()
             isReq = false
             println("最终的异常是：---${lastException?.message}")
