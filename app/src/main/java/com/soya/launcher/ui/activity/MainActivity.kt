@@ -91,6 +91,7 @@ import com.thumbsupec.lib_net.di.domains
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -137,11 +138,20 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         supportFragmentManager.clearStack()
         //loadJar()
         lifecycleScope.launch {
-            delay(300)
-            fetchHomeData()
+            while (true) {
+                println("开始轮询网络")
+                delay(300)
+                if(NetworkUtils.isConnected()){
+                    println("网络轮询成功，开始请求")
+                    fetchHomeData()
+                    reqPluginInfo()
+                    cancel()
+                }
+                delay(3500)
+            }
         }
 
-        reqPluginInfo()
+
 
     }
 
@@ -525,6 +535,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             hostJob = lifecycleScope.launch(Dispatchers.IO) {
 
                 repeat(3) {
+                    delay(300)
                     HostUtils.getSlaveAvailableHost {
                         it?.let {
                             AppCacheNet.randomUrl = it
@@ -532,7 +543,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                             hostJob?.cancel()
                         }
                     }
-                    delay(3000)
+                    delay(3500)
                 }
 
 

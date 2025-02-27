@@ -141,12 +141,12 @@ android {
         hongxin_713_M_G_2x {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            versionName "3.1"
+            versionName "3.2"
             versionCode 50
             signingConfig signingConfigs.hongxin
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-             buildConfigField "String", "BASE_URL", '"https://99soya123.shop"'
+             buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc"'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
@@ -318,13 +318,14 @@ android {
         X98K_M {
             applicationId "com.chihim.launcher"
             dimension "chihi"
-            versionCode 2
-            versionName "1.2"
+            versionCode 4
+            versionName "1.4"
             manifestPlaceholders = [share_uid: "android.uid.system"]
-            signingConfig signingConfigs.x88
-            //signingConfig signingConfigs.yxt
+           // signingConfig signingConfigs.x88
+            signingConfig signingConfigs.yxt
             // 自定义buildConfig.java中的变量供代码中使用
-            buildConfigField "String", "BASE_URL", '"https://la.firehub.work/"'
+            //buildConfigField "String", "BASE_URL", '"https://la.firehub.work/"'
+            buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc"'
             buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.firehub.work/"'
             buildConfigField "String", "COMPANY", '"3"'
             buildConfigField "String", "APP_ID", '"launcher"'

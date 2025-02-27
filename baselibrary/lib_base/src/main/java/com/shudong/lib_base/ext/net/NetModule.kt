@@ -48,7 +48,7 @@ val httpLoggingInterceptor = HttpLoggingInterceptor { message ->
 
 val domains = mutableListOf(
     AppCacheNet.baseUrl, //主域名
-    //"https://api.y2btop.cc/",
+    "https://api.y2btop.cc/",
     //AppCacheNet.baseUrl,
     //"https://apps.psnapp.org/",
     //"https://primary-domain.com/",

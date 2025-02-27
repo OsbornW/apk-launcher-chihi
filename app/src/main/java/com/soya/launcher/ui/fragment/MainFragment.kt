@@ -135,6 +135,7 @@ import com.thumbsupec.lib_net.AppCacheNet
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -303,9 +304,20 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         detectNetStaus()
 
-        startRepeatingTask()
 
-        checkLauncherUpdate()
+
+        lifecycleScope.launch {
+            while (true) {
+                delay(300)
+                if(NetworkUtils.isConnected()){
+                    checkLauncherUpdate()
+                    startRepeatingTask()
+                    cancel()
+                }
+                delay(3500)
+            }
+        }
+
 
         initJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
@@ -772,7 +784,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
                     delay(3000)
-                    isShowUpdate().yes { performTask() }
+                    if(!AppCacheNet.isDomainTryAll){
+                        isShowUpdate().yes { performTask() }
+                    }
+
 
                 }
             }

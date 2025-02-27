@@ -1,5 +1,7 @@
 package com.shudong.lib_base.ext.net.intercept
 
+import android.os.Build.VERSION_CODES.N
+import com.blankj.utilcode.util.NetworkUtils
 import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.di.domains
 import okhttp3.Interceptor
@@ -33,6 +35,7 @@ class DomainSwitchInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         println("我进来拦截器了啊--------${chain.request().url}")
+        println("当前网络是否连接的--------${NetworkUtils.isConnected()}------${NetworkUtils.isAvailable()}")
         if (isReq) {
             val originalRequest = chain.request()
             // 如果有 successfulDomain，先尝试使用它
@@ -92,13 +95,16 @@ class DomainSwitchInterceptor : Interceptor {
                     val updatedRequest = updatedRequestBuilder.build()
                     val response = chain.proceed(updatedRequest)
                     if (response.isSuccessful) {
+                        println("请求成功了哦---${response.request.url}")
                         successfulDomain = currentDomain
                         AppCacheNet.successfulDomain = currentDomain
                         return response
                     } else {
+                        println("请求失败了哦---${response.request.url}")
                         response.close()
                     }
                 } catch (e: IOException) {
+                    println("请求抛出异常了哦---${e.message}")
                     when (e) {
                         is UnknownHostException,
                         is ConnectException,
@@ -121,8 +127,10 @@ class DomainSwitchInterceptor : Interceptor {
             AppCacheNet.isDomainTryAll = true
             resetDomainIndex()
             isReq = false
+            println("最终的异常是：---${lastException?.message}")
             throw lastException ?: IOException("所有域名请求失败")
         } else {
+            println("所有域名请求失败")
             throw IOException("所有域名请求失败")
         }
 
