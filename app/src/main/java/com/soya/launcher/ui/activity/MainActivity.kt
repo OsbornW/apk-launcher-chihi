@@ -137,12 +137,19 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         super.onStart()
         supportFragmentManager.clearStack()
         //loadJar()
+        initHomeDataScope()
+
+
+    }
+
+    private fun initHomeDataScope() {
         lifecycleScope.launch {
             while (true) {
                 println("开始轮询网络")
                 delay(300)
-                if(NetworkUtils.isConnected()){
+                if (NetworkUtils.isConnected()) {
                     println("网络轮询成功，开始请求")
+                    AppCacheNet.isDomainTryAll = false
                     fetchHomeData()
                     reqPluginInfo()
                     cancel()
@@ -150,9 +157,6 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 delay(3500)
             }
         }
-
-
-
     }
 
     private fun startPluginCheckPolling() {
@@ -165,6 +169,24 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeat(5) {
+                if (AppCacheNet.isDomainTryAll) {
+                    AppCacheNet.isDomainTryAll = false
+                    delay(5000) // 延迟 3.5秒
+                    println("调用了initHomeScope--${it}")
+                    initHomeDataScope()
+                    sendLiveEventData("restartscope", true)
+                }else{
+                    println("继续延迟5秒")
+                    delay(5000)
+                }
+
+            }
+
+        }
+
     }
 
     private fun reqPluginInfo() {
@@ -178,7 +200,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             errorJobPlugin?.cancel()
             errorJobPlugin = lifecycleScope.launch(Dispatchers.Main) {
                 while (true) {
-                    if (NetworkUtils.isConnected()&&!AppCacheNet.isDomainTryAll) {
+                    if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll) {
                         reqPluginInfo()
                     }
                     delay(2000)
@@ -188,7 +210,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             }
         }) {
             val dto = this
-            if(dto.sdkAddr.isNullOrEmpty()){
+            if (dto.sdkAddr.isNullOrEmpty()) {
                 deleteAdAndPluginDirectories()
                 Plugin.uninstall()
                 return@lifecycle
@@ -240,7 +262,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             .lifecycle(this, errorCallback = {
                 errorJobStore = lifecycleScope.launch(Dispatchers.Main) {
                     while (true) {
-                        if (NetworkUtils.isConnected()&&!AppCacheNet.isDomainTryAll) {
+                        if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll) {
                             fetchStoreData()
                         }
                         delay(2000)
@@ -292,7 +314,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         mViewModel.reqHomeInfo().lifecycle(this, errorCallback = {
             errorJob = lifecycleScope.launch(Dispatchers.Main) {
                 while (true) {
-                    if (NetworkUtils.isConnected()&&!AppCacheNet.isDomainTryAll) {
+                    if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll) {
                         fetchHomeData()
                     }
                     delay(2000)
@@ -493,7 +515,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
     @RequiresApi(Build.VERSION_CODES.O)
     override fun initView() {
         "重新执行MainActivity的oncreate了哦".e("zengyue3")
-         count = 0
+        count = 0
         lifecycleScope.launch {
             registerReceiver(
                 homeReceiver,
@@ -512,12 +534,12 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                     onAdLoadFailed { println("加载失败") }
                     onNoLocalAd {
                         println("本地没有数据")
-                        sendLiveEventData(CANCLE_MAIN_LIFECYCLESCOPE,true)
+                        sendLiveEventData(CANCLE_MAIN_LIFECYCLESCOPE, true)
                     }
                     onAdLoadSuccess {
                         println("广告加载成功")
-                        sendLiveEventData(CANCLE_MAIN_LIFECYCLESCOPE,true)
-                       replaceFragment(BlankFragment.newInstance(), R.id.main_browse_fragment)
+                        sendLiveEventData(CANCLE_MAIN_LIFECYCLESCOPE, true)
+                        replaceFragment(BlankFragment.newInstance(), R.id.main_browse_fragment)
                     }
                     onAdCountdownFinished {
                         println("广告倒计时结束")

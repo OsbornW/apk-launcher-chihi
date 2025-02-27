@@ -141,7 +141,7 @@ android {
         hongxin_713_M_G_2x {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            versionName "3.2"
+            versionName "3.4"
             versionCode 50
             signingConfig signingConfigs.hongxin
             manifestPlaceholders = [share_uid: "android.uid.system"]

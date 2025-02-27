@@ -227,6 +227,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             updateWallpaper()
         }
 
+        obseverLiveEvent<Boolean>("restartscope") {
+            initUpdateScope()
+        }
+
         obseverLiveEvent<Boolean>(ADD_APPSTORE) {
             val exists = items.any { it.type == Types.TYPE_APP_STORE }
             exists.no {
@@ -306,17 +310,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
 
 
-        lifecycleScope.launch {
-            while (true) {
-                delay(300)
-                if(NetworkUtils.isConnected()){
-                    checkLauncherUpdate()
-                    startRepeatingTask()
-                    cancel()
-                }
-                delay(3500)
-            }
-        }
+        initUpdateScope()
+
 
 
         initJob = lifecycleScope.launch {
@@ -390,6 +385,21 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             }
         }.models = arrayListOf()
 
+    }
+
+    private fun initUpdateScope() {
+        lifecycleScope.launch {
+            while (true) {
+                delay(300)
+                if(NetworkUtils.isConnected()){
+                    AppCacheNet.isDomainTryAll = false
+                    checkLauncherUpdate()
+                    startRepeatingTask()
+                    cancel()
+                }
+                delay(3500)
+            }
+        }
     }
 
     private var isCanShowHeaderFloatAd = false

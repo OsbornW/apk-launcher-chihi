@@ -31,7 +31,7 @@ const val BASE_URL_CHECK_CODE = "https://api.freedestop.com/"
 const val HEADERURL = ""
 
 
-private const val REQ_TIME_OUT = 8L
+private const val REQ_TIME_OUT = 12L
 private const val TAG = "chihi_zeng"
 
 
