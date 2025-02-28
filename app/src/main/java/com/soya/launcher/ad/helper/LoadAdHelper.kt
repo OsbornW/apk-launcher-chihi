@@ -53,7 +53,6 @@ object LoadAdHelper {
             updateFieldIfNotNull( Pair(adConfig,adConfigClass),"isAutoFocus", launcherConfig.isAutoFocus)
 
         } catch (e: Exception) {
-            Log.e("LoadAdHelper", "更新 AdConfig 失败: ${e.message}", e)
         }
     }
 
@@ -159,18 +158,14 @@ object LoadAdHelper {
             Plugin.dexClassLoader,
             arrayOf(functionClass)
         ) { _, method, args ->
-            "没有进来任何回调吗？？？${callbackType}".e("chihi_error1")
             when (callbackType) {
                 "onAdDataFetchStart" -> {
-                    println("回调类型: $callbackType, 消息: $logMessage")
                     // 处理无参数回调逻辑
                     callback.onAdDataFetchStart()
                 }
                 "onAdLoadFailed" -> {
-                    println("回调类型: $callbackType, 消息: $logMessage")
                     if (args != null && args.isNotEmpty()) {
                         val errorMsg = args[0] as? String
-                        println("广告加载失败，错误信息: $errorMsg")
                         callback.onAdLoadFailed(errorMsg?:"")
                     }
                 }
@@ -189,7 +184,6 @@ object LoadAdHelper {
                     callback.onAdLoadSuccess()
                 }
                 else -> {
-                    println("未知回调类型: $callbackType, 消息: $logMessage")
                 }
             }
             null
@@ -207,9 +201,7 @@ object LoadAdHelper {
             val loadAdMethod = adPluginClass.getMethod("loadAd", function1Class)
             val adSdkInstance = adPluginClass.getDeclaredConstructor().newInstance()
             loadAdMethod.invoke(adSdkInstance, configFunction)
-            Log.d("LoadAdHelper", "loadAd 调用成功")
         } catch (e: Exception) {
-            Log.e("LoadAdHelper", "调用 loadAd 失败: ${e.message}", e)
         }
     }
 
@@ -223,9 +215,7 @@ object LoadAdHelper {
                 field.isAccessible = true
                 field.set(adConfig, fieldValue)
             } catch (e: NoSuchFieldException) {
-                Log.e("chihi_error1", "未找到字段: $fieldName", e)
             } catch (e: IllegalAccessException) {
-                Log.e("chihi_error1", "无法访问字段: $fieldName", e)
             }
         }
     }

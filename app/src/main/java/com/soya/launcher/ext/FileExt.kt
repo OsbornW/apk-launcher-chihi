@@ -51,15 +51,12 @@ fun deleteApkFilesInPluginDir(): Boolean {
             if (file.exists()) {
                 val deleted = file.delete()
                 if (deleted) {
-                    Log.d("FileDeletion", "Deleted: ${file.absolutePath}")
                 } else {
-                    Log.e("FileDeletion", "Failed to delete: ${file.absolutePath}")
                 }
             }
         }
         return true
     } else {
-        Log.e("FileDeletion", "Plugin directory does not exist or is not a directory.")
     }
     return false
 }
@@ -75,15 +72,15 @@ fun deleteAdAndPluginDirectories() {
     val pluginDir = File(filesDir, "plugin")
 
     if (adDir.exists() && deleteDirectory(adDir)) {
-        println("ad 目录及其内容删除成功")
+        //println("ad 目录及其内容删除成功")
     } else {
-        println("ad 目录删除失败或不存在")
+        //println("ad 目录删除失败或不存在")
     }
 
     if (pluginDir.exists() && deleteDirectory(pluginDir)) {
-        println("plugin 目录及其内容删除成功")
+       // println("plugin 目录及其内容删除成功")
     } else {
-        println("plugin 目录删除失败或不存在")
+       // println("plugin 目录删除失败或不存在")
     }
 }
 

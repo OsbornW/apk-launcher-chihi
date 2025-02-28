@@ -26,6 +26,7 @@ import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.RECREATE_MAIN
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.REGET_HOMEDATA
+import com.shudong.lib_base.ext.RERUN_SCOPE
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
 import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.appContext
@@ -137,18 +138,14 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         super.onStart()
         supportFragmentManager.clearStack()
         //loadJar()
-        initHomeDataScope()
-
 
     }
 
     private fun initHomeDataScope() {
         lifecycleScope.launch {
             while (true) {
-                println("开始轮询网络")
                 delay(300)
                 if (NetworkUtils.isConnected()) {
-                    println("网络轮询成功，开始请求")
                     fetchHomeData()
                     reqPluginInfo()
                     cancel()
@@ -174,11 +171,9 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 if (AppCacheNet.isDomainTryAll.get()) {
                     AppCacheNet.isDomainTryAll.set(false) // 原子化设置为 false
                     delay(5000) // 延迟 3.5秒
-                    println("调用了initHomeScope--${it}")
                     initHomeDataScope()
-                    sendLiveEventData("restartscope", true)
+                    sendLiveEventData(RERUN_SCOPE, true)
                 }else{
-                    println("继续延迟5秒")
                     delay(5000)
                 }
 
@@ -532,16 +527,13 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                     onAdDataFetchFailed { println("拉取失败") }
                     onAdLoadFailed { println("加载失败") }
                     onNoLocalAd {
-                        println("本地没有数据")
                         sendLiveEventData(CANCLE_MAIN_LIFECYCLESCOPE, true)
                     }
                     onAdLoadSuccess {
-                        println("广告加载成功")
                         sendLiveEventData(CANCLE_MAIN_LIFECYCLESCOPE, true)
                         replaceFragment(BlankFragment.newInstance(), R.id.main_browse_fragment)
                     }
                     onAdCountdownFinished {
-                        println("广告倒计时结束")
                         mBind.flAd.isVisible = false
                         commit()
                     }
@@ -570,6 +562,8 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
             }
         }
+
+        initHomeDataScope()
 
         /*lifecycleScope.launch {
 

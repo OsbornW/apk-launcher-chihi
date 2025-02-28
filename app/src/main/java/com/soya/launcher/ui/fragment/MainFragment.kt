@@ -41,6 +41,7 @@ import com.shudong.lib_base.ext.IS_MAIN_CANBACK
 import com.shudong.lib_base.ext.LOAD_DEFULT_RESOURCE
 import com.shudong.lib_base.ext.REFRESH_HOME
 import com.shudong.lib_base.ext.REGET_HOMEDATA
+import com.shudong.lib_base.ext.RERUN_SCOPE
 import com.shudong.lib_base.ext.UPDATE_HOME_LIST
 import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
 import com.shudong.lib_base.ext.animScale
@@ -227,7 +228,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             updateWallpaper()
         }
 
-        obseverLiveEvent<Boolean>("restartscope") {
+        obseverLiveEvent<Boolean>(RERUN_SCOPE) {
             initUpdateScope()
         }
 
@@ -305,14 +306,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         filter.addDataScheme("package")
         requireContext().registerReceiver(receiver, filter)
 
-
         detectNetStaus()
 
-
-
         initUpdateScope()
-
-
 
         initJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
@@ -404,7 +400,6 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private var isCanShowHeaderFloatAd = false
     private var adHomeJob: Job? = null
     private fun showEnterHomeAd() {
-        println("开始执行MainFragment的Home广告")
         adHomeJob = lifecycleScope.launch {
             delay(5000)
             this@MainFragment.loadAd {
@@ -792,7 +787,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         appsUpdateJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
-                    delay(3000)
+                    delay(1000*30)
                     if(!AppCacheNet.isDomainTryAll.get()){
                         isShowUpdate().yes { performTask() }
                     }

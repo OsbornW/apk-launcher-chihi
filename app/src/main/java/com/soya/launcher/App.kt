@@ -39,11 +39,10 @@ class App : Application() {
         Serialize.hook = JsonSerializeHook()
 
         if (AppCacheNet.baseUrl != BASE_URL) {
-            println("要更新主域名：${BASE_URL}")
             AppCacheNet.baseUrl = BASE_URL
         }
         if (AppCacheNet.baseUrl.isEmpty()) AppCacheNet.baseUrl = BASE_URL
-        //AppCacheNet.isDomainTryAll = false
+        AppCacheNet.isDebug = BuildConfig.DEBUG
 
         startKoin {
             androidContext(appContext)

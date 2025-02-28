@@ -66,7 +66,6 @@ fun FragmentManager.clearAndNavigate(
     tag: String? = null
 ) {
     popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-    println("即将跳转到MainFragment")
     navigateTo(containerId, fragment, addToBackStack = false, tag = tag)
 }
 

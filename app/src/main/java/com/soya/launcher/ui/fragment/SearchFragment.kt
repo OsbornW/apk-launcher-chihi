@@ -323,7 +323,6 @@ class SearchFragment : BaseWallPaperFragment<FragmentSearchBinding, SearchViewMo
             searchText = text
             isRepeatExcute().no {
                 if (searchText?.endsWith(" ") == false) {
-                    println("chenhao" + searchText!!.length)
                     replace()
                 }
             }

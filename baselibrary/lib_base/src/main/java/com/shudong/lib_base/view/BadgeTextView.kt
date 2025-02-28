@@ -262,27 +262,6 @@ class BadgeTextView : AppCompatTextView {
 
         setMeasuredDimension(width, height)
 
-
-        if (isDebug) {
-            println(
-                "🚀 onMeasure() " +
-                        "minimumWidth: $minimumWidth, " +
-                        "suggestedMinimumWidth: $suggestedMinimumWidth, " +
-                        "minimumHeight: $minimumHeight, " +
-                        "suggestedMinimumHeight: $suggestedMinimumHeight, " +
-                        "verticalSpaceAroundText: $verticalSpaceAroundText, " +
-                        "horizontalSpaceAroundText: $horizontalSpaceAroundText, " +
-                        "textWidth: $textWidth, " +
-                        "textHeight: $textHeight, " +
-                        "rect width: ${rect.width()}, " +
-                        "rect: height: ${rect.height()}" +
-                        "padding: paddingStart: $paddingLeft, paddingTop: $paddingTop, " +
-                        "desiredWidth: $desiredWidth, " +
-                        "width: $width, " +
-                        "desiredHeight: $desiredHeight, " +
-                        "height: $height"
-            )
-        }
     }
 
 

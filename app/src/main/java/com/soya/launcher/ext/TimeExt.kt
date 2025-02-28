@@ -63,7 +63,6 @@ fun String.formatTimeyyyyMMddHHmm(): String {
         throw IllegalArgumentException("Invalid time format: $this")
     } catch (e: Exception) {
         // 日志记录
-        Log.e("TimeFormatter", "Error parsing time: $this", e)
         // 返回默认值或抛出异常
         return outputFormat.format(Date()) // 或 throw MyCustomException()
     }

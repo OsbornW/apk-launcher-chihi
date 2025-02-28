@@ -161,7 +161,7 @@ android {
             dimension "chihi"
             versionName "3.0"
             versionCode 1
-            signingConfig signingConfigs.hongxin
+            signingConfig signingConfigs.x88
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
@@ -450,7 +450,6 @@ android {
             variant.outputs.all {
                 // 获取 MODEL 值
                 def value = getBuildConfigFieldValue(variant, "MODEL")
-                println "Model: $value"
                 def versionName = variant.versionName
 
 

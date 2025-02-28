@@ -46,7 +46,6 @@ object AdSdk {
             isAdInitialized = true
 
         } catch (e: Exception) {
-            Log.e("chihi_error1", "反射调用失败: ${e.message}", e)
         }
     }
 

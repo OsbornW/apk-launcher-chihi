@@ -24,7 +24,6 @@ class MyHouse @JvmOverloads constructor(
 
         setOnClickListener {
             // 响应点击事件
-            println("Custom view clicked")
         }
     }
 

@@ -254,7 +254,6 @@ fun openFileM() {
     if (intent.resolveActivity(appContext.packageManager) != null) {
         currentActivity?.startActivity(intent)
     } else {
-        Log.e("FileBrower", "FileBrower is not installed on this device.")
     }
 }
 

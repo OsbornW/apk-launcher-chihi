@@ -41,7 +41,6 @@ const val TOKEN_INVALID_3 = 1011008
 
 val httpLoggingInterceptor = HttpLoggingInterceptor { message ->
     Log.e(TAG, message)
-    //println(message)
 }.also {
     it.level = HttpLoggingInterceptor.Level.BODY
 }

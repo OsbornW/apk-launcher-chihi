@@ -2,6 +2,8 @@ package com.shudong.lib_base.ext.net.intercept
 
 import android.os.Build.VERSION_CODES.N
 import com.blankj.utilcode.util.NetworkUtils
+import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.printSout
 import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.di.domains
 import okhttp3.Interceptor
@@ -22,8 +24,6 @@ class DomainSwitchInterceptor : Interceptor {
         private var successfulDomain: String? = null
 
 
-        private var isReq: Boolean = true
-
         fun resetDomainIndex() {
             currentDomainIndex.set(0)
             successfulDomain = null
@@ -34,8 +34,8 @@ class DomainSwitchInterceptor : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        println("我进来拦截器了啊--------${chain.request().url}")
-        println("当前网络是否连接的--------${NetworkUtils.isConnected()}------${NetworkUtils.isAvailable()}")
+        "拦截到请求----${chain.request().url}".printSout()
+        "".e()
         if (!AppCacheNet.isDomainTryAll.get()) {
             val originalRequest = chain.request()
             // 如果有 successfulDomain，先尝试使用它
@@ -66,6 +66,7 @@ class DomainSwitchInterceptor : Interceptor {
                         is NoRouteToHostException -> {
                             resetDomainIndex()
                         }
+
                         else -> throw e
                     }
                 }
@@ -82,7 +83,7 @@ class DomainSwitchInterceptor : Interceptor {
                 }
 
                 val currentDomain = domains[currentIndex]
-                println("尝试请求域名: $currentDomain (第 ${currentIndex + 1}/${domains.size} 次尝试)")
+                "尝试请求域名: $currentDomain (第 ${currentIndex + 1}/${domains.size} 次尝试)".printSout()
 
                 val newUrl = buildUrl(currentDomain, originalRequest)
                 val updatedRequestBuilder = originalRequest.newBuilder().url(newUrl)
@@ -95,21 +96,23 @@ class DomainSwitchInterceptor : Interceptor {
                     val updatedRequest = updatedRequestBuilder.build()
                     val response = chain.proceed(updatedRequest)
                     if (response.isSuccessful) {
-                        println("请求成功了哦---${response.request.url}")
+                        "请求成功---${response.request.url}".printSout()
                         successfulDomain = currentDomain
                         AppCacheNet.successfulDomain = currentDomain
                         return response
                     } else {
-                        println("请求失败了哦---${response.request.url}")
+                        "请求失败---${response.request.url}".printSout()
                         response.close()
                     }
                 } catch (e: IOException) {
-                    println("请求抛出异常了哦---${e.message}")
+                    "请求抛出异常---${e.message}".printSout()
                     when (e) {
                         is UnknownHostException,
                         is ConnectException,
                         is SocketTimeoutException,
-                        is NoRouteToHostException ->{}
+                        is NoRouteToHostException -> {
+                        }
+
                         else -> throw e
                     }
                     lastException = e
@@ -118,19 +121,18 @@ class DomainSwitchInterceptor : Interceptor {
                 // 如果不是最后一个域名，切换到下一个
                 if (currentIndex < domains.size - 1) {
                     if (currentDomainIndex.compareAndSet(currentIndex, currentIndex + 1)) {
-                        println("切换到备用域名: ${domains[currentIndex + 1]}")
+                        "切换到备用域名: ${domains[currentIndex + 1]}".printSout()
                     }
                 }
             }
 
-            println("所有域名都不可用")
+            "所有域名都不可用".printSout()
             AppCacheNet.isDomainTryAll.compareAndSet(false, true) // 只有当前为 false 时才设为 true
             resetDomainIndex()
-            isReq = false
-            println("最终的异常是：---${lastException?.message}")
+            "最终的异常是：---${lastException?.message}".printSout()
             throw lastException ?: IOException("所有域名请求失败")
         } else {
-            println("所有域名请求失败")
+            "所有域名请求失败".printSout()
             throw IOException("所有域名请求失败")
         }
 

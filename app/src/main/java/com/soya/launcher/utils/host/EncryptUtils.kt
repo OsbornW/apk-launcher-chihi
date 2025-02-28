@@ -20,10 +20,8 @@ object EncryptUtils {
             val byteEncrypted = GzipUtils.decompress(byteZip)
             val byteDecrypted = AESUtils.decrypt(byteEncrypted, key)
             val str = String(byteDecrypted, StandardCharsets.UTF_8)
-            println("当前解密之后的是：${str}")
             return str
         } catch (e: Exception) {
-            println("当前解密之后的1是：${encrypted}")
             return encrypted
         }
     }

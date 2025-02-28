@@ -23,11 +23,9 @@ object HostUtils {
             val address = InetAddress.getByName(domain).hostAddress
             val  isNotNu = address.isNotEmpty()
             callback.invoke("https://$domain/")
-            println("发现有效域名====${AppCacheNet.randomUrl}")
             isNotNu
         } catch (e: Exception) {
             e.printStackTrace()
-            //println("未发现有效域名${index+1}====${domain}")
             false
         }
     }

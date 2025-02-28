@@ -45,7 +45,6 @@ abstract class BaseResponseAuthBodyConverter(val type: Type) :
     @OptIn(ExperimentalSerializationApi::class)
     override fun convert(value: ResponseBody): Any? {
         val valueString = value.string()
-        Log.e("chihi_error", "当前返回的JSON是：$valueString" )
 
         // 直接解析 valueString 为 JsonElement
         val jsonElement = Json.parseToJsonElement(valueString)

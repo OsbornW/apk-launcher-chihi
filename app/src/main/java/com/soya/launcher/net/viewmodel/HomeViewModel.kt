@@ -312,7 +312,6 @@ class HomeViewModel : BaseViewModel() {
         (imageUrl).downloadPic(viewModelScope, destPath,
             downloadComplete = { _, path ->
 
-                println("下载成功，文件路径：${path}")
                 callback.invoke(path)
 
             },
@@ -334,7 +333,6 @@ class HomeViewModel : BaseViewModel() {
 
                 override fun onLoadCleared(placeholder: Drawable?) {
                     // 清除资源或释放占用
-                    println("加载被清除")
                 }
             })*/
 

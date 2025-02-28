@@ -18,7 +18,7 @@ object AppCacheNet {
     var baseUrl: String by serial("")
     var randomUrl: String by serial("https://localhost/")
     var successfulDomain: String by serial("")
-    //var isDomainTryAll: Boolean by serial(false)
+    var isDebug: Boolean by serialLazy()
     val isDomainTryAll = AtomicBoolean(false) // 使用 AtomicBoolean 替代普通 Boolean
 
 }

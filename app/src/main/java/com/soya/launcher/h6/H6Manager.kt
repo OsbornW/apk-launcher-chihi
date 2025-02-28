@@ -796,7 +796,6 @@ class H6Manager {
          * @param type：安装模式的类型(0：桌面正投   1：桌面背投   2：吊装正投   3：吊装背投)
          */
         set(type) {
-            //System.out.println("yxp setScreenMirror:"+type);
             ReflectUtils.setProperty("persist.sys.keystone.mirror", type.toString())
             writeFile_misc(type.toString())
         }
@@ -805,7 +804,6 @@ class H6Manager {
      * 四点梯形矫正--设置左上角坐标
      */
     fun setLeftTopOffset(x: Float, y: Float) {
-        println("yxp lefttop x:" + x + "yxp lefttop y:" + y)
         ReflectUtils.setProperty(
             "persist.sys.keystone.lb", x.toInt()
                 .toString() + "," + y.toInt()
@@ -833,7 +831,6 @@ class H6Manager {
      * 四点梯形矫正--设置右上角坐标
      */
     fun setRightTopOffset(x: Float, y: Float) {
-        println("yxp righttop x:" + x + "yxp righttop y:" + y)
 
         ReflectUtils.setProperty(
             "persist.sys.keystone.rb", x.toInt()
@@ -891,7 +888,6 @@ class H6Manager {
      * 四点梯形矫正--设置右下角坐标
      */
     fun setRightBottomOffset(x: Float, y: Float) {
-        println("yxp rightbottom x:" + x + "yxp rightbottom y:" + y)
         ReflectUtils.setProperty(
             "persist.sys.keystone.rt", x.toInt()
                 .toString() + "," + y.toInt()

@@ -10,6 +10,7 @@ package com.shudong.lib_base.ext
  */
 
 import android.util.Log
+import com.thumbsupec.lib_net.AppCacheNet
 
 /**
  * Created by luyao
@@ -38,5 +39,12 @@ private fun log(level: LEVEL, tag: String, message: String) {
         LEVEL.I -> Log.i(tag, message)
         LEVEL.W -> Log.w(tag, message)
         LEVEL.E -> Log.e(tag, message)
+    }
+}
+
+
+fun String.printSout() {
+    if (AppCacheNet.isDebug) {
+        println()
     }
 }

@@ -92,7 +92,6 @@ object MacTool {
                 }
             }
         } catch (ex: Exception) {
-            //Log.e("----->" + "NetInfoManager", "getMacAddress:" + ex.toString());
         }
         if (macSerial == null || "" == macSerial) {
             try {
@@ -114,7 +113,6 @@ object MacTool {
                 wifiInfo = wifiMgr.connectionInfo
                 return wifiInfo.macAddress
             } catch (e: Exception) {
-                //Log.e("----->" + "NetInfoManager", "getMacAddress0:" + e.toString());
             }
         }
         return ""
