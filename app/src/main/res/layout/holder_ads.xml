@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.soya.launcher.view.MyFrameLayout
+<com.chihihx.launcher.view.MyFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:layout_gravity="center"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
-    <com.soya.launcher.view.MyCardView
+    <com.chihihx.launcher.view.MyCardView
         app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/solid_style_1"
         android:clickable="true"
@@ -23,5 +23,5 @@
             android:scaleType="centerCrop"
             android:layout_width="@dimen/qb_px_140"
             android:layout_height="@dimen/qb_px_79"/>
-    </com.soya.launcher.view.MyCardView>
-</com.soya.launcher.view.MyFrameLayout>
+    </com.chihihx.launcher.view.MyCardView>
+</com.chihihx.launcher.view.MyFrameLayout>

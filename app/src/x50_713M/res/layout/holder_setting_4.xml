@@ -3,9 +3,9 @@
     <data>
         <variable
             name="m"
-            type="com.soya.launcher.bean.SettingItem" />
+            type="com.chihihx.launcher.bean.SettingItem" />
     </data>
-<com.soya.launcher.view.MyFrameLayoutHouse
+<com.chihihx.launcher.view.MyFrameLayoutHouse
     android:layout_marginTop="@dimen/qb_px_15"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,7 +14,7 @@
     android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <com.soya.launcher.view.MyCardView
+    <com.chihihx.launcher.view.MyCardView
         app:cardCornerRadius="@dimen/qb_px_5"
         app:cardElevation="0dp"
         app:cardBackgroundColor="@color/solid_style_3"
@@ -60,6 +60,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/qb_px_43"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.soya.launcher.view.MyCardView>
-</com.soya.launcher.view.MyFrameLayoutHouse>
+    </com.chihihx.launcher.view.MyCardView>
+</com.chihihx.launcher.view.MyFrameLayoutHouse>
 </layout>

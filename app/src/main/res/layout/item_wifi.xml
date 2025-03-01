@@ -3,7 +3,7 @@
     <data>
         <variable
             name="m"
-            type="com.soya.launcher.bean.WifiNetwork" />
+            type="com.chihihx.launcher.bean.WifiNetwork" />
     </data>
     <com.hjq.shape.layout.ShapeRelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -1,4 +1,4 @@
-package com.soya.launcher;
+package com.chihihx.launcher;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.soya.launcher", appContext.getPackageName());
+        assertEquals("com.chihihx.launcher", appContext.getPackageName());
     }
 }

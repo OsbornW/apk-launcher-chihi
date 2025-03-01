@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.soya.launcher.view.MyFrameLayout
+<com.chihihx.launcher.view.MyFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
@@ -7,7 +7,7 @@
     android:focusableInTouchMode="true"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
-    <com.soya.launcher.view.MyCardView
+    <com.chihihx.launcher.view.MyCardView
         app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="#0D47A1"
         app:cardElevation="0dp"
@@ -28,5 +28,5 @@
                 android:layout_width="@dimen/qb_px_129"
                 android:layout_height="@dimen/qb_px_129"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.soya.launcher.view.MyCardView>
-</com.soya.launcher.view.MyFrameLayout>
+    </com.chihihx.launcher.view.MyCardView>
+</com.chihihx.launcher.view.MyFrameLayout>

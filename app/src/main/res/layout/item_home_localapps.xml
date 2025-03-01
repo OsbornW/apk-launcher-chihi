@@ -5,7 +5,7 @@
             name="m"
             type="android.content.pm.ApplicationInfo" />
     </data>
-<com.soya.launcher.view.AppLayoutHouse
+<com.chihihx.launcher.view.AppLayoutHouse
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
@@ -17,7 +17,7 @@
     android:focusableInTouchMode="true"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
-    <com.soya.launcher.view.MyCardView
+    <com.chihihx.launcher.view.MyCardView
         app:cardCornerRadius="@dimen/qb_px_5"
         app:cardBackgroundColor="@color/transparent"
         app:cardElevation="0dp"
@@ -69,6 +69,6 @@
                     android:layout_height="match_parent"/>
             </FrameLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.soya.launcher.view.MyCardView>
-</com.soya.launcher.view.AppLayoutHouse>
+    </com.chihihx.launcher.view.MyCardView>
+</com.chihihx.launcher.view.AppLayoutHouse>
 </layout>

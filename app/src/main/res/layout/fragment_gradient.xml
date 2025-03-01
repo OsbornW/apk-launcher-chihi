@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<com.soya.launcher.view.KeyEventFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chihihx.launcher.view.KeyEventFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
@@ -13,24 +13,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.soya.launcher.view.SimpleGradientView
+    <com.chihihx.launcher.view.SimpleGradientView
         android:id="@+id/lt"
         android:layout_gravity="left|top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <com.soya.launcher.view.SimpleGradientView
+    <com.chihihx.launcher.view.SimpleGradientView
         android:id="@+id/rt"
         android:rotation="90"
         android:layout_gravity="right|top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <com.soya.launcher.view.SimpleGradientView
+    <com.chihihx.launcher.view.SimpleGradientView
         android:id="@+id/lb"
         android:rotation="270"
         android:layout_gravity="left|bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <com.soya.launcher.view.SimpleGradientView
+    <com.chihihx.launcher.view.SimpleGradientView
         android:id="@+id/rb"
         android:rotation="180"
         android:layout_gravity="right|bottom"
@@ -407,5 +407,5 @@
             android:layout_width="@dimen/qb_px_40"
             android:layout_height="@dimen/qb_px_40"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.soya.launcher.view.KeyEventFrameLayout>
+</com.chihihx.launcher.view.KeyEventFrameLayout>
 </layout>

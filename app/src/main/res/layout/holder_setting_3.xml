@@ -3,15 +3,15 @@
     <data>
         <variable
             name="m"
-            type="com.soya.launcher.bean.SettingItem" />
+            type="com.chihihx.launcher.bean.SettingItem" />
     </data>
-<com.soya.launcher.view.MyFrameLayoutHouse
+<com.chihihx.launcher.view.MyFrameLayoutHouse
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/qb_px_40"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <com.soya.launcher.view.RelativeLayoutHouse
+    <com.chihihx.launcher.view.RelativeLayoutHouse
         android:nextFocusUp="@id/header"
         android:id="@+id/rl_root"
         android:clickable="true"
@@ -21,7 +21,7 @@
         android:layout_width="@dimen/qb_px_180"
         android:layout_height="@dimen/qb_px_160">
 
-        <com.soya.launcher.view.MyCardView
+        <com.chihihx.launcher.view.MyCardView
             android:id="@+id/cardview"
             app:cardCornerRadius="@dimen/qb_px_5"
             app:cardElevation="0dp"
@@ -63,9 +63,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/qb_px_50"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </com.soya.launcher.view.MyCardView>
+        </com.chihihx.launcher.view.MyCardView>
 
-    </com.soya.launcher.view.RelativeLayoutHouse>
+    </com.chihihx.launcher.view.RelativeLayoutHouse>
 
-</com.soya.launcher.view.MyFrameLayoutHouse>
+</com.chihihx.launcher.view.MyFrameLayoutHouse>
 </layout>

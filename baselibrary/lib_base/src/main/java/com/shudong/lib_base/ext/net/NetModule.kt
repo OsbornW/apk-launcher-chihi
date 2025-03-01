@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit
  * @Date:  2022/10/20 17:49
  * @PACKAGE_NAME:  com.thumbsupec.lib_net.di
  */
-const val BASE_URL = "http://api.ispruz.com/"
 const val BASE_URL_CHECK_CODE = "https://api.freedestop.com/"
 const val HEADERURL = ""
 
@@ -47,13 +46,11 @@ val httpLoggingInterceptor = HttpLoggingInterceptor { message ->
 
 val domains = mutableListOf(
     AppCacheNet.baseUrl, //主域名
-    "https://api.y2btop.cc/",
-    //AppCacheNet.baseUrl,
-    //"https://apps.psnapp.org/",
+    AppCacheNet.backupDomain, //备用域名
     //"https://primary-domain.com/",
     //"https://backup-domain1.com/",
     //"https://backup-domain2.com/",
-   // AppCacheNet.randomUrl
+    AppCacheNet.randomUrl
 )
 
 
@@ -112,4 +109,5 @@ val httpClientModule = module {
     }
 }
 
-val netModules = listOf(mainRetrofitModule, alternateRetrofitModule, activeCodeRetrofitModule, httpClientModule)
+val netModules =
+    listOf(mainRetrofitModule, alternateRetrofitModule, activeCodeRetrofitModule, httpClientModule)

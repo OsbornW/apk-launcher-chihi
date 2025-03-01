@@ -8,7 +8,7 @@
             type="Object" />
     </data>
 
-    <com.soya.launcher.view.AppLayoutHouse xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.chihihx.launcher.view.AppLayoutHouse xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/root"
         android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
-        <com.soya.launcher.view.MyCardView
+        <com.chihihx.launcher.view.MyCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -81,6 +81,6 @@
                         android:textSize="@dimen/qb_px_sp_10" />
                 </FrameLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </com.soya.launcher.view.MyCardView>
-    </com.soya.launcher.view.AppLayoutHouse>
+        </com.chihihx.launcher.view.MyCardView>
+    </com.chihihx.launcher.view.AppLayoutHouse>
 </layout>

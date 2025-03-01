@@ -7,6 +7,119 @@ plugins {
 }
 
 android {
+
+    signingConfigs {
+        hongxin {
+            storeFile file("platform_H713.keystore")
+            storePassword "android"
+            keyAlias "platform"
+            keyPassword "android"
+        }
+
+
+        hongxin_rk3326 {
+            storeFile file("platform_rk3326.keystore")
+            storePassword "android"
+            keyAlias "platform"
+            keyPassword "android"
+        }
+
+        yxt {
+            storeFile file("yxt_X98K_10.keystore")
+            //storeFile file("platform_X98K_301.keystore")
+            storePassword "android"
+            keyAlias "platform"
+            keyPassword "android"
+        }
+
+
+
+        x88 {
+            storeFile file("platform_x88.keystore")
+            storePassword "platform"
+            keyAlias "platform"
+            keyPassword "platform"
+        }
+
+
+        h713_normal {
+            storeFile file("h713_normal.jks")
+            storePassword "936429"
+            keyAlias "chihi"
+            keyPassword "936429"
+        }
+
+
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
+            //清理多余的图片资源或raw中没有用到的资源等，一般会和混淆同时使用(和混淆都可以起到一定程度apk瘦身的作用)
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig signingConfigs.x88
+            //signingConfig signingConfigs.debug
+        }
+
+        //打包应用
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                // 获取 MODEL 值
+                def value = getBuildConfigFieldValue(variant, "MODEL")
+                def versionName = variant.versionName
+
+
+                outputFileName = "Launcher_${versionName}_${getTime()}_${value[1..-2]}.apk"
+            }
+        }
+    }
+
+    namespace 'com.chihihx.launcher'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.chihihx.launcher"
+        minSdk 24
+        targetSdk 34
+        versionCode 57
+        versionName "1.57"
+
+        vectorDrawables {
+            useSupportLibrary true
+        }
+
+        buildConfigField "String", "APP_ID", '"launcher"'
+
+        /**
+         *
+         * 渠道名称
+         * */
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713M_G", "\"${FLAVOR_NAME_LAUNCHER_713M_G}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713RK_M_G", "\"${FLAVOR_NAME_LAUNCHER_713RK_G}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X98K_M", "\"${FLAVOR_NAME_LAUNCHER_X98K_M}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_P50", "\"${FLAVOR_NAME_LAUNCHER_P50}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713_SMARTTV", "\"${FLAVOR_NAME_LAUNCHER_713_SMARTTV}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713_TEST", "\"${FLAVOR_NAME_LAUNCHER_713_TEST}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713M_G_2X", "\"${FLAVOR_NAME_LAUNCHER_713M_G_2X}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X50", "\"${FLAVOR_NAME_LAUNCHER_X50}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X10", "\"${FLAVOR_NAME_LAUNCHER_X10}\""
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi-v7a'
+            //abiFilters 'armeabi-v7a','arm64-v8a'
+            //abiFilters 'armeabi-v7a','x86','x86_64'
+        }
+    }
+
     // 源目录名字需要跟渠道名字对应，目录名字可以随意
     sourceSets {
         main {
@@ -14,9 +127,6 @@ android {
             java.srcDirs = ['src/main/java']
         }
 
-        hongxin_H27002 {
-            java.srcDirs = ['src/hongxin_H27002/java']
-        }
 
         p50_713M {
             java.srcDirs = ['src/p50_713m/java']
@@ -37,322 +147,130 @@ android {
         }
     }
 
-    signingConfigs {
-        hongxin {
-            storeFile file("platform_H713.keystore")
-            storePassword "android"
-            keyAlias "platform"
-            keyPassword "android"
-        }
 
-        h6 {
-            storeFile file("platform-H6.keystore")
-            storePassword "android"
-            keyAlias "platform"
-            keyPassword "android"
-        }
-
-        hongxin_rk3326 {
-            storeFile file("platform_rk3326.keystore")
-            storePassword "android"
-            keyAlias "platform"
-            keyPassword "android"
-        }
-
-        yxt {
-             storeFile file("yxt_X98K_10.keystore")
-            //storeFile file("platform_X98K_301.keystore")
-            storePassword "android"
-            keyAlias "platform"
-            keyPassword "android"
-        }
-
-        p_9255 {
-            storeFile file("platform_9255.keystore")
-            keyAlias = 'androiddebugkey'
-            storePassword 'android'
-            keyPassword 'android'
-        }
-
-        p_710_701 {
-            storeFile file("platform_H710_701.jks")
-            storePassword 'platform'
-            keyAlias 'platform'
-            keyPassword 'platform'
-        }
-
-        new_701 {
-            storeFile file("platform_701.keystore")
-            storePassword 'android'
-            keyAlias 'platform'
-            keyPassword 'android'
-        }
-
-        x88 {
-            storeFile file("platform_x88.keystore")
-            storePassword "platform"
-            keyAlias "platform"
-            keyPassword "platform"
-        }
-
-        AiBY {
-            storeFile file("platform_AiBY.keystore")
-            storePassword "android"
-            keyAlias "platform"
-            keyPassword "android"
-        }
-
-        h713_normal {
-            storeFile file("h713_normal.jks")
-            storePassword "936429"
-            keyAlias "chihi"
-            keyPassword "936429"
-        }
-
-
-    }
 
     flavorDimensions.add("chihi")
 
     productFlavors {
-        // {  713M,P50_713M,713Rk,713RK_G,713G------>0   }
+        // {  713M_G,P50_713M,713RK_M_G,713G------>0   }
         // {  aiboyou_projector------>1   }
         // {  aiboyou_tv------>2   }
         // {  aiboyou_launcher------>7   }
         // {  X98K------>3   }
         // {  H27002------>5   }
         // {  H6------>9   }
+
+
         //宏信(投影仪) 713M
         hongxin_713_M_G {
-            applicationId "com.soya.launcher"
+            applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.x88
+            signingConfig signingConfigs.hongxin
+            versionCode 59
+            versionName "1.67"
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+            buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
             buildConfigField "String", "COMPANY", '"0"'
-            buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"LA27001"'
             buildConfigField "String", "CHIHI_TYPE", '"H713M"'
             buildConfigField "String", "MODEL", '"713M"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihihx.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihihx.store.ui.activity.AppDetailActivity"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713M_G}\""
+            buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'
+            buildConfigField "String", "BACKUP_DOMAIN", '"https://api.y2btop.cc/"'
         }
 
         hongxin_713_M_G_2x {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            versionName "3.4"
-            versionCode 50
-            signingConfig signingConfigs.x88
+            signingConfig signingConfigs.hongxin
+            versionCode 8 //正式出货版本
+            versionName "3.1.6"
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-             buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc"'
+            buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"X30"'
             buildConfigField "String", "CHIHI_TYPE", '"H713M"'
             buildConfigField "String", "MODEL", '"713M"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihihx.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihihx.store.ui.activity.AppDetailActivity"'
             buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713M_G_2X}\""
+            buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'
+            buildConfigField "String", "BACKUP_DOMAIN", '"https://api.y2btop.cc/"'
         }
 
         hongxin_713_M_G_X10 {
-            applicationId "com.chihihx.launcher.x10"
+            applicationId "com.chihihx.launcher"
             dimension "chihi"
-            versionName "3.0"
-            versionCode 1
-            signingConfig signingConfigs.x88
+            versionCode 3
+            versionName "1.3"
+            signingConfig signingConfigs.hongxin
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"X10"'
-            buildConfigField "String", "CHIHI_TYPE", '"H713M"'
-            buildConfigField "String", "MODEL", '"713M"'
+            buildConfigField "String", "CHIHI_TYPE", '"713MG_X10"'
+            buildConfigField "String", "MODEL", '"713MG_X10"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihihx.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihihx.store.ui.activity.AppDetailActivity"'
             buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_X10}\""
-        }
-
-        hongxin_713_M_G_test {
-            applicationId "com.soya.launcher_test"
-            dimension "chihi"
-            //signingConfig signingConfigs.hongxin
-            signingConfig signingConfigs.x88
-            manifestPlaceholders = [share_uid: "android.uid.system"]
-            // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
-            buildConfigField "String", "COMPANY", '"0"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"TE27001"'
-            buildConfigField "String", "CHIHI_TYPE", '"H713M_Test"'
-            buildConfigField "String", "MODEL", '"713M_Test"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713_TEST}\""
+            buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'
+            buildConfigField "String", "BACKUP_DOMAIN", '"https://api.y2btop.cc/"'
         }
 
 
         p50_713M {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            versionCode 65
-            signingConfig signingConfigs.x88
+            signingConfig signingConfigs.hongxin
+            versionCode 61 //正式出货版本
+            versionName "1.79"
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-            buildConfigField "String", "BASE_URL", '"https://apps.psnapp.org"'
-            // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+            buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
+            //buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.keencloud.work/"'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"P50_H713M"'
             buildConfigField "String", "CHIHI_TYPE", '"P50_H713M"'
             buildConfigField "String", "MODEL", '"P50_713M"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihihx.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihihx.store.ui.activity.AppDetailActivity"'
             buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_P50}\""
+            buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'
+            buildConfigField "String", "BACKUP_DOMAIN", '"https://api.y2btop.cc/"'
         }
 
         x50_713M {
-            applicationId "com.chihix.launcher"
+            applicationId "com.chihihx.launcher"
             dimension "chihi"
-            versionCode 60
-            signingConfig signingConfigs.x88
+            signingConfig signingConfigs.hongxin
+            versionCode 61 //正式出货版本
+            versionName "4.0"
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
+            buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
             // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"X50"'
             buildConfigField "String", "CHIHI_TYPE", '"P50_H713M"'
             buildConfigField "String", "MODEL", '"P50_713M"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihihx.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihihx.store.ui.activity.AppDetailActivity"'
             buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_X50}\""
+            buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'
+            buildConfigField "String", "BACKUP_DOMAIN", '"https://api.y2btop.cc/"'
         }
 
-        hongxin_713RK {
-            applicationId "com.soya.launcher"
-            dimension "chihi"
-            signingConfig signingConfigs.hongxin_rk3326
-            //manifestPlaceholders = [share_uid: "android.uid.system"]
-            // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
-            buildConfigField "String", "COMPANY", '"0"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"RK3326M"'
-            buildConfigField "String", "CHIHI_TYPE", '"3326M"'
-            buildConfigField "String", "MODEL", '"3326M"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713RK}\""
-        }
-
-        hongxin_713RK_G {
-            applicationId "com.soya.launcher_game"
-            dimension "chihi"
-            signingConfig signingConfigs.hongxin_rk3326
-            //signingConfig signingConfigs.new_701
-            versionCode 56
-            versionName "1.57"
-            manifestPlaceholders = [share_uid: "android.uid.system"]
-            // 自定义buildConfig.java中的变量供代码中使用
-            buildConfigField "String", "BASE_URL", '"https://la.keencloud.work/"'
-            buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.keencloud.work/"'
-            buildConfigField "String", "COMPANY", '"0"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"RK3326G"'
-            buildConfigField "String", "CHIHI_TYPE", '"3326G"'
-            buildConfigField "String", "MODEL", '"3326G"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713RK_G}\""
-        }
-
-
-
-        // 爱泊优(投影仪)
-        aiboyou_projector {
-            applicationId "com.soya.launcher.aiboyouprojector"
-            dimension "chihi"
-            // manifestPlaceholders = [share_uid:"android.uid.system"]
-            // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
-            buildConfigField "String", "COMPANY", '"1"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LA22001"'
-            buildConfigField "String", "CHIHI_TYPE", '"PROJECTOR_001"'
-            buildConfigField "String", "MODEL", '"001"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_PROJECTOR}\""
-        }
-
-        //爱泊优(TV)
-        aiboyou_tv {
-            applicationId "com.soya.launcher.aiboyoutv"
-            dimension "chihi"
-            // manifestPlaceholders = [share_uid:"android.uid.system"]
-            // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
-            buildConfigField "String", "COMPANY", '"2"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LA22001"'
-            buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
-            buildConfigField "String", "MODEL", '"001"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_TV}\""
-        }
-
-
-        //爱泊优(TV)
-        aiboyou_launcher {
-            applicationId "com.soya.launcher.aiboyoutv"
-            dimension "chihi"
-            signingConfig signingConfigs.AiBY
-            //manifestPlaceholders = [share_uid: "android.uid.system"]
-            // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
-            buildConfigField "String", "COMPANY", '"7"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"TV22001"'
-            buildConfigField "String", "CHIHI_TYPE", '"TV_001"'
-            buildConfigField "String", "MODEL", '"001"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER}\""
-        }
-
-        //X98K (TV)
-        X98K_M {
-            applicationId "com.chihim.launcher"
-            dimension "chihi"
-            versionCode 4
-            versionName "1.4"
-            manifestPlaceholders = [share_uid: "android.uid.system"]
-           // signingConfig signingConfigs.x88
-            signingConfig signingConfigs.yxt
-            // 自定义buildConfig.java中的变量供代码中使用
-            //buildConfigField "String", "BASE_URL", '"https://la.firehub.work/"'
-            buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc"'
-            buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.firehub.work/"'
-            buildConfigField "String", "COMPANY", '"3"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LA23002"'
-            buildConfigField "String", "CHIHI_TYPE", '"X98K_M"'
-            buildConfigField "String", "MODEL", '"X98K_M"'
-            buildConfigField "String", "APPSTORE_APP_ID", "\"${APPSTORE_APP_ID_X98K_M}\""
-            buildConfigField "String", "APPSTORE_APPDETAIL_NAME", "\"${APPSTORE_APPDETAIL_NAME_X98K_M}\""
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_X98K_M}\""
-        }
-        XHSX {
-            applicationId "com.topbox.launcher"
-            dimension "chihi"
-            versionCode 1
-            versionName "1.1"
-            manifestPlaceholders = [share_uid: "android.uid.system"]
-            signingConfig signingConfigs.AiBY
-            // 自定义buildConfig.java中的变量供代码中使用
-            buildConfigField "String", "BASE_URL", '"https://la.pm2za.cc/"'
-            buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.pm2za.cc/"'
-            buildConfigField "String", "COMPANY", '"7"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LA29101"'
-            buildConfigField "String", "CHIHI_TYPE", '"XHSX"'
-            buildConfigField "String", "MODEL", '"XHSX"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_XHSX}\""
-        }
 
         hongxin_713_smartTV {
             applicationId "com.chihihx.launcher"
@@ -363,166 +281,57 @@ android {
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://la.keencloud.work/"'
-            buildConfigField "String", "APP_STORE_BASE_URL", '"https://as.keencloud.work/"'
             buildConfigField "String", "COMPANY", '"10"'
-            buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"TV27001"'
             buildConfigField "String", "CHIHI_TYPE", '"H713_smartTV"'
             buildConfigField "String", "MODEL", '"713_smartTV"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713TVBox}\""
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713_SMARTTV}\""
+            buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'
+            buildConfigField "String", "BACKUP_DOMAIN", '"https://api.y2btop.cc/"'
         }
 
-
-        // X98K (TV)
-        yxt_X98K {
-            applicationId "com.soya.launcher"
+        //X98K (TV)
+        X98K_M {
+            applicationId "com.chihim.launcher"
             dimension "chihi"
+            versionCode 5
+            versionName "1.5"
             manifestPlaceholders = [share_uid: "android.uid.system"]
-            //signingConfig signingConfigs.yxt
-            signingConfig signingConfigs.new_701
+            signingConfig signingConfigs.yxt
             // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
+            buildConfigField "String", "BASE_URL", '"https://api.svnmo.cc/"'
             buildConfigField "String", "COMPANY", '"3"'
             buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LA23001"'
-            buildConfigField "String", "CHIHI_TYPE", '"X98K"'
-            buildConfigField "String", "MODEL", '"X98K"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_X98K}\""
+            buildConfigField "String", "CHANNEL", '"LA23002"'
+            buildConfigField "String", "CHIHI_TYPE", '"X98K_M"'
+            buildConfigField "String", "MODEL", '"X98K_M"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihim.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihim.store.ui.activity.AppDetailActivity"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_X98K_M}\""
+            buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAALPy2KF/xnZrke0CAMcUizsKAAAA"'
+            buildConfigField "String", "BACKUP_DOMAIN", '"https://apps.psnapp.org/"'
         }
 
-        //激活码项目
-        hongxin_H27002 {
-            applicationId "com.soya.h27002"
-            minSdk 22
-            dimension "chihi"
-            manifestPlaceholders = [share_uid: ""]
-            //manifestPlaceholders = [share_uid: "android.uid.system"]
-            //signingConfig signingConfigs.new_701
-            // 自定义buildConfig.java中的变量供代码中使用
-            // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
-            buildConfigField "String", "COMPANY", '"5"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LA27002"'
-            buildConfigField "String", "CHIHI_TYPE", '"H27002"'
-            buildConfigField "String", "MODEL", '"H27002"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_H27002}\""
-        }
 
-        H6 {
-            applicationId "com.soya.launcher"
+        hongxin_713_M_G_test {
+            applicationId "com.chihihx.launcher_test"
             dimension "chihi"
-            signingConfig signingConfigs.h6
+            //signingConfig signingConfigs.hongxin
+            signingConfig signingConfigs.x88
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             // buildConfigField "String", "BASE_URL", '""'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
-            buildConfigField "String", "COMPANY", '"9"'
-            buildConfigField "String", "APP_ID", '"launcher"'
-            buildConfigField "String", "CHANNEL", '"LA28001"'
-            buildConfigField "String", "CHIHI_TYPE", '"H6"'
-            buildConfigField "String", "MODEL", '"H6"'
-            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_H6}\""
+            buildConfigField "String", "COMPANY", '"0"'
+            buildConfigField "String", "CHANNEL", '"TE27001"'
+            buildConfigField "String", "CHIHI_TYPE", '"H713M_Test"'
+            buildConfigField "String", "MODEL", '"713M_Test"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713_TEST}\""
+            buildConfigField "String", "MD5_VALUE", '"AS21001"'
+            buildConfigField "String", "BACKUP_DOMAIN", '"AS21001"'
         }
 
-    }
-
-    buildTypes {
-        release {
-            debuggable false
-            minifyEnabled true
-            //Zipalign优化
-            zipAlignEnabled true
-            //清理多余的图片资源或raw中没有用到的资源等，一般会和混淆同时使用(和混淆都可以起到一定程度apk瘦身的作用)
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-
-        debug {
-            //signingConfig signingConfigs.new_701
-            signingConfig signingConfigs.x88
-            //signingConfig signingConfigs.debug
-        }
-
-        //打包应用
-        android.applicationVariants.all { variant ->
-            variant.outputs.all {
-                // 获取 MODEL 值
-                def value = getBuildConfigFieldValue(variant, "MODEL")
-                def versionName = variant.versionName
 
 
-                outputFileName = "Launcher_${versionName}_${getTime()}_${value[1..-2]}.apk"
-            }
-        }
-    }
-
-    namespace 'com.soya.launcher'
-    compileSdk 34
-
-    defaultConfig {
-        applicationId "com.soya.launcher"
-        minSdk 24
-        targetSdk 34
-        versionCode 57
-        versionName "1.57"
-
-        vectorDrawables {
-            useSupportLibrary true
-        }
-
-        buildConfigField "String", "BASE_URL", '"https://99soya.shop/"'
-        buildConfigField "String", "APP_STORE_BASE_URL", '"https://appzones.info/"'
-        buildConfigField "String", "APP_ID", '"launcher"'
-        buildConfigField "String", "USER_ID", '"62"'
-        buildConfigField "String", "APPSTORE_APP_ID", "\"${APPSTORE_APP_ID_713M_G}\""
-        buildConfigField "String", "APPSTORE_APPDETAIL_NAME", "\"${APPSTORE_APPDETAIL_NAME_713M_G}\""
-
-        buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713M_G}\""
-        manifestPlaceholders = [share_uid: ""]
-
-
-        /**
-         *
-         * 渠道名称
-         * */
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713M_G", "\"${FLAVOR_NAME_LAUNCHER_713M_G}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713RK", "\"${FLAVOR_NAME_LAUNCHER_713RK}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713RK_G", "\"${FLAVOR_NAME_LAUNCHER_713RK_G}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_H27002", "\"${FLAVOR_NAME_LAUNCHER_H27002}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X98K", "\"${FLAVOR_NAME_LAUNCHER_X98K}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X98K_M", "\"${FLAVOR_NAME_LAUNCHER_X98K_M}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_H6", "\"${FLAVOR_NAME_LAUNCHER_H6}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_AIBOYOU_TV", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_TV}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_AIBOYOU_PROJECTOR", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_PROJECTOR}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER", "\"${FLAVOR_NAME_LAUNCHER_AIBOYOU_LAUNCHER}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_P50", "\"${FLAVOR_NAME_LAUNCHER_P50}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_XHSX", "\"${FLAVOR_NAME_LAUNCHER_XHSX}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713TVBox", "\"${FLAVOR_NAME_LAUNCHER_713TVBox}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713_TEST", "\"${FLAVOR_NAME_LAUNCHER_713_TEST}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713M_G_2X", "\"${FLAVOR_NAME_LAUNCHER_713M_G_2X}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X50", "\"${FLAVOR_NAME_LAUNCHER_X50}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X10", "\"${FLAVOR_NAME_LAUNCHER_X10}\""
-
-        /**
-         *
-         * appstore跳转配置
-         * */
-        buildConfigField "String", "APPSTORE_APP_ID_713M_G", "\"${APPSTORE_APP_ID_713M_G}\""
-        buildConfigField "String", "APPSTORE_APPDETAIL_NAME_713M_G", "\"${APPSTORE_APPDETAIL_NAME_713M_G}\""
-        buildConfigField "String", "APPSTORE_APP_ID_X98K_M", "\"${APPSTORE_APP_ID_X98K_M}\""
-        buildConfigField "String", "APPSTORE_APPDETAIL_NAME_X98K_M", "\"${APPSTORE_APPDETAIL_NAME_X98K_M}\""
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        manifestPlaceholders = [share_uid: ""]
-
-        ndk {
-            abiFilters 'armeabi-v7a'
-            //abiFilters 'armeabi-v7a','arm64-v8a'
-            //abiFilters 'armeabi-v7a','x86','x86_64'
-        }
     }
 
     compileOptions {
@@ -560,7 +369,6 @@ configurations.all {
 
 dependencies {
     implementation files(
-            //'libs/hslib-r0.0.2-release-LA22001.aar',
             'libs/system.jar',
             'libs/softwinner.keystone.jar',
     )

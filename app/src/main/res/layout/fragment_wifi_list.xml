@@ -123,7 +123,7 @@
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <com.soya.launcher.view.MyFrameLayout
+                    <com.chihihx.launcher.view.MyFrameLayout
                         android:id="@+id/wifi_enable"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
@@ -158,9 +158,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         </androidx.appcompat.widget.LinearLayoutCompat>
-                    </com.soya.launcher.view.MyFrameLayout>
+                    </com.chihihx.launcher.view.MyFrameLayout>
 
-                    <com.soya.launcher.view.MyFrameLayout
+                    <com.chihihx.launcher.view.MyFrameLayout
                         android:id="@+id/wifi_connected"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
@@ -215,7 +215,7 @@
                                 android:layout_width="@dimen/qb_px_23"
                                 android:layout_height="@dimen/qb_px_23"/>
                         </androidx.appcompat.widget.LinearLayoutCompat>
-                    </com.soya.launcher.view.MyFrameLayout>
+                    </com.chihihx.launcher.view.MyFrameLayout>
 
 
                     <androidx.leanback.widget.VerticalGridView

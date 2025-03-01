@@ -59,7 +59,7 @@
             android:textSize="@dimen/qb_px_sp_9" />
     </LinearLayout>
 
-    <com.soya.launcher.view.FlikerProgressBar
+    <com.chihihx.launcher.view.FlikerProgressBar
         android:id="@+id/pb_update"
         android:layout_width="@dimen/qb_px_75"
         android:layout_height="@dimen/qb_px_28"

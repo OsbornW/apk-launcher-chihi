@@ -5,7 +5,7 @@
 
         <variable
             name="m"
-            type="com.soya.launcher.bean.KeyBoardDto" />
+            type="com.chihihx.launcher.bean.KeyBoardDto" />
     </data>
 
     <com.hjq.shape.layout.ShapeRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

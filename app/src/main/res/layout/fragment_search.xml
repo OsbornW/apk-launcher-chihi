@@ -30,7 +30,7 @@
                     android:src="@drawable/baseline_search_100"
                     android:layout_width="@dimen/qb_px_35"
                     android:layout_height="@dimen/qb_px_35"/>
-                <com.soya.launcher.view.CustomEditText
+                <com.chihihx.launcher.view.CustomEditText
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:id="@+id/edit_query"

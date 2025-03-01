@@ -33,7 +33,7 @@
                 android:clipToOutline="false"
                 android:clipToPadding="false">
 
-                <com.soya.launcher.view.NoDragVerticalGridView
+                <com.chihihx.launcher.view.NoDragVerticalGridView
                     android:id="@+id/content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

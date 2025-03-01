@@ -10,6 +10,7 @@ plugins {
 }
 
 apply from: 'version.gradle'
+apply from: 'config.gradle'
 
 gradle.buildFinished {
     project('app') {

@@ -13,7 +13,7 @@
             android:layout_height="match_parent">
         <include layout="@layout/include_title"
             android:id="@+id/layout"/>
-        <com.soya.launcher.view.CustomVerticalGridView
+        <com.chihihx.launcher.view.CustomVerticalGridView
             android:id="@+id/content"
             android:layout_centerInParent="true"
             android:paddingVertical="@dimen/qb_px_80"

@@ -9,24 +9,24 @@
     android:id="@+id/root"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.soya.launcher.view.SimpleGradientView
+    <com.chihihx.launcher.view.SimpleGradientView
         android:id="@+id/lt"
         android:layout_gravity="left|top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <com.soya.launcher.view.SimpleGradientView
+    <com.chihihx.launcher.view.SimpleGradientView
         android:id="@+id/rt"
         android:rotation="90"
         android:layout_gravity="right|top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <com.soya.launcher.view.SimpleGradientView
+    <com.chihihx.launcher.view.SimpleGradientView
         android:id="@+id/lb"
         android:rotation="270"
         android:layout_gravity="left|bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <com.soya.launcher.view.SimpleGradientView
+    <com.chihihx.launcher.view.SimpleGradientView
         android:id="@+id/rb"
         android:rotation="180"
         android:layout_gravity="right|bottom"

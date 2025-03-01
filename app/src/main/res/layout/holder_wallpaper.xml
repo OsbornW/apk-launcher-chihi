@@ -5,10 +5,10 @@
 
         <variable
             name="m"
-            type="com.soya.launcher.bean.Wallpaper" />
+            type="com.chihihx.launcher.bean.Wallpaper" />
     </data>
 
-    <com.soya.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.chihihx.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,5 +49,5 @@
                 android:padding="@dimen/qb_px_6"
                 android:src="@drawable/baseline_check_100" />
         </androidx.cardview.widget.CardView>
-    </com.soya.launcher.view.MyFrameLayout>
+    </com.chihihx.launcher.view.MyFrameLayout>
 </layout>

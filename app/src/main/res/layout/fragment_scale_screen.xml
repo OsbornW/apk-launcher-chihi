@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<com.soya.launcher.view.KeyEventFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chihihx.launcher.view.KeyEventFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
@@ -210,5 +210,5 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.soya.launcher.view.KeyEventFrameLayout>
+</com.chihihx.launcher.view.KeyEventFrameLayout>
 </layout>

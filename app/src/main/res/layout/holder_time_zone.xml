@@ -3,9 +3,9 @@
     <data>
         <variable
             name="m"
-            type="com.soya.launcher.bean.SimpleTimeZone" />
+            type="com.chihihx.launcher.bean.SimpleTimeZone" />
     </data>
-<com.soya.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chihihx.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:focusable="true"
@@ -57,5 +57,5 @@
                 android:layout_height="@dimen/qb_px_13"/>
         </FrameLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
-</com.soya.launcher.view.MyFrameLayout>
+</com.chihihx.launcher.view.MyFrameLayout>
 </layout>

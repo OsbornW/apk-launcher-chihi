@@ -126,20 +126,20 @@
 -keep public class * extends android.support.v7.**
 -keep public class * extends android.support.annotation.**
 -keep public class * extends android.view.**
--keep public class * extends com.soya.launcher.view.**
+-keep public class * extends com.chihihx.launcher.view.**
 
 -dontwarn android.**
 -keep class android.** { *; }
 -keepclassmembers class android.** { *; }
 
--dontwarn com.soya.launcher.bean.**
--keepclassmembers class com.soya.launcher.bean.** { *; }
+-dontwarn com.chihihx.launcher.bean.**
+-keepclassmembers class com.chihihx.launcher.bean.** { *; }
 
--dontwarn com.soya.launcher.ad.bean.**
--keepclassmembers class com.soya.launcher.ad.bean.** { *; }
+-dontwarn com.chihihx.launcher.ad.bean.**
+-keepclassmembers class com.chihihx.launcher.ad.bean.** { *; }
 
--dontwarn com.soya.launcher.http.**
--keepclassmembers class com.soya.launcher.http.** { *; }
+-dontwarn com.chihihx.launcher.http.**
+-keepclassmembers class com.chihihx.launcher.http.** { *; }
 
 #
 # ----------------------------- 第三方 -----------------------------

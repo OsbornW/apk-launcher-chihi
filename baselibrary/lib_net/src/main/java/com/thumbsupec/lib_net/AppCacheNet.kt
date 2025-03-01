@@ -16,6 +16,7 @@ object AppCacheNet {
     // APP Token
     var token: String? by serialLazy()
     var baseUrl: String by serial("")
+    var backupDomain: String by serial("")
     var randomUrl: String by serial("https://localhost/")
     var successfulDomain: String by serial("")
     var isDebug: Boolean by serialLazy()

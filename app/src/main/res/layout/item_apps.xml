@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.soya.launcher.view.AppLayoutHouse xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chihihx.launcher.view.AppLayoutHouse xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
 
-    <com.soya.launcher.view.AppLayoutHouse xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.chihihx.launcher.view.AppLayoutHouse xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         android:focusableInTouchMode="true"
         android:layout_gravity="center_horizontal">
 
-        <com.soya.launcher.view.MyCardView
+        <com.chihihx.launcher.view.MyCardView
             android:id="@+id/card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,6 +75,6 @@
                         android:textSize="@dimen/qb_px_sp_15" />
                 </FrameLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </com.soya.launcher.view.MyCardView>
-    </com.soya.launcher.view.AppLayoutHouse>
-</com.soya.launcher.view.AppLayoutHouse>
+        </com.chihihx.launcher.view.MyCardView>
+    </com.chihihx.launcher.view.AppLayoutHouse>
+</com.chihihx.launcher.view.AppLayoutHouse>

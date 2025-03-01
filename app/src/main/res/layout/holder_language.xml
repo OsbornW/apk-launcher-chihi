@@ -5,10 +5,10 @@
 
         <variable
             name="m"
-            type="com.soya.launcher.bean.Language" />
+            type="com.chihihx.launcher.bean.Language" />
     </data>
 
-    <com.soya.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.chihihx.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="@dimen/qb_px_350"
         android:layout_height="@dimen/qb_px_45"
@@ -73,5 +73,5 @@
                     android:src="@drawable/baseline_check_100" />
             </FrameLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.soya.launcher.view.MyFrameLayout>
+    </com.chihihx.launcher.view.MyFrameLayout>
 </layout>

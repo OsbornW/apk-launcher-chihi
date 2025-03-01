@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.soya.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chihihx.launcher.view.MyFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:focusable="true"
@@ -43,4 +43,4 @@
                 android:layout_height="wrap_content"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
-</com.soya.launcher.view.MyFrameLayout>
+</com.chihihx.launcher.view.MyFrameLayout>

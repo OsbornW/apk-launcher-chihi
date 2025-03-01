@@ -113,7 +113,7 @@
                             app:shape="oval"/>
 
 
-                            <com.soya.launcher.view.ImageViewHouse
+                            <com.chihihx.launcher.view.ImageViewHouse
                                 android:id="@+id/setting"
                                 android:layout_width="@dimen/qb_px_25"
                                 android:layout_height="@dimen/qb_px_25"
@@ -140,7 +140,7 @@
                                 app:shape="oval"
                                 app:shape_solidColor="#80625356" />
 
-                            <com.soya.launcher.view.ImageViewHouse
+                            <com.chihihx.launcher.view.ImageViewHouse
                                 android:layout_centerInParent="true"
                                 android:id="@+id/gradient"
                                 android:layout_width="@dimen/qb_px_25"
@@ -167,7 +167,7 @@
                                 app:shape="oval"
                                 app:shape_solidColor="#80625356" />
 
-                            <com.soya.launcher.view.ImageViewHouse
+                            <com.chihihx.launcher.view.ImageViewHouse
                                 android:layout_centerInParent="true"
                                 android:id="@+id/iv_display"
                                 android:layout_width="@dimen/qb_px_25"
@@ -194,7 +194,7 @@
                                 app:shape_solidColor="#80625356"
                                 app:shape="oval"/>
 
-                            <com.soya.launcher.view.ImageViewHouse
+                            <com.chihihx.launcher.view.ImageViewHouse
                                 android:layout_centerInParent="true"
                                 android:id="@+id/hdmi"
                                 android:layout_width="@dimen/qb_px_25"
@@ -252,7 +252,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
 
-                        <com.soya.launcher.view.LinearLayoutHouse
+                        <com.chihihx.launcher.view.LinearLayoutHouse
                             android:id="@+id/search"
                             android:clickable="true"
                             android:focusable="true"
@@ -279,7 +279,7 @@
                                 android:textColor="@color/text_color_style_1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
-                        </com.soya.launcher.view.LinearLayoutHouse>
+                        </com.chihihx.launcher.view.LinearLayoutHouse>
 
                         <RelativeLayout
                             android:layout_marginLeft="@dimen/qb_px_6"
@@ -297,7 +297,7 @@
                             app:shape_solidColor="#80625356"
                             app:shape="oval"/>
 
-                        <com.soya.launcher.view.ImageViewHouse
+                        <com.chihihx.launcher.view.ImageViewHouse
                             android:id="@+id/wifi"
                             android:layout_gravity="center_vertical"
                             android:clickable="true"
@@ -332,7 +332,7 @@
                     android:id="@+id/horizontal_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
-                <com.soya.launcher.view.NoDragVerticalGridView
+                <com.chihihx.launcher.view.NoDragVerticalGridView
                     android:paddingTop="@dimen/qb_px_40"
                     android:paddingHorizontal="@dimen/qb_px_15"
                     android:layout_centerInParent="true"

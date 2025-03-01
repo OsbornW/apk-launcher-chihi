@@ -3,9 +3,9 @@
     <data>
         <variable
             name="m"
-            type="com.soya.launcher.bean.TypeItem" />
+            type="com.chihihx.launcher.bean.TypeItem" />
     </data>
-<com.soya.launcher.view.MyCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chihihx.launcher.view.MyCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     item_home_header_focus="@{m}"
     app:cardCornerRadius="@dimen/qb_px_8"
@@ -47,5 +47,5 @@
         android:background="@drawable/light_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/qb_px_35"/>
-</com.soya.launcher.view.MyCardView>
+</com.chihihx.launcher.view.MyCardView>
 </layout>

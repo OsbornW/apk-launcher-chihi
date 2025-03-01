@@ -3,7 +3,7 @@
     <data>
         <variable
             name="m"
-            type="com.soya.launcher.bean.DivSearch" />
+            type="com.chihihx.launcher.bean.DivSearch" />
     </data>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

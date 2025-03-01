@@ -1,0 +1,78 @@
+ext {
+    //复制代码的目录
+    fromPath = 'app/src/main/java/com/soya/launcher'
+    //复制要放到的新目录
+    intoPath = 'app/src/main/java/com.chihihx.launcher'
+    //删除以前的目录
+    deletePath = 'app/src/main/java/com'
+    //修改前的package
+    packageName = 'package com.soya.launcher'
+    //修改后的package
+    toPackageName = 'package com.chihihx.launcher'
+    //修改前的applicationId
+    applicationIds = 'com.chihihx.launcher'
+    //修改后的applicationId
+    toApplicationIds = 'com.chihihx.launcher'
+}
+//替换每一个java文件中的引用路径
+task replaceImportPath {
+    doFirst {
+        //生成一个文件树,替换import后面的路径
+        FileTree tree = fileTree('app/src/main') {
+            //需要包含xml，AndroidManifest.xml
+            include '**/*.java'
+            include '**/*.xml'
+        }
+        //遍历文件树
+        tree.each { File mfile ->
+            fileReader(mfile.path, toApplicationIds)
+        }
+        //单独替换混淆文件
+        fileReader("app/proguard-rules.pro", toApplicationIds)
+        fileReader("app/build.gradle", toApplicationIds)
+    }
+}
+def fileReader(path, target_package) {
+    def readerString = ""
+    def hasReplace = false
+    file(path).withReader('UTF-8') { reader ->
+        reader.eachLine {
+            if (it.find(applicationIds)) {
+                it = it.replace(applicationIds, target_package)
+                hasReplace = true
+            }
+            readerString <<= it
+            readerString << '\n'
+        }
+        if (hasReplace) {
+            //打印替换过的文件名字
+            println(path + " has replace package.")
+            file(path).withWriter('UTF-8') {
+                within ->
+                    within.append(readerString)
+            }
+        }
+        return readerString
+    }
+}
+task copyFile(type: Copy) {
+    //首先调用replacePackageName
+    dependsOn replaceImportPath
+    //进行文件替换
+    from fromPath
+    into intoPath
+    //替换文件 package后面路径
+    filter { String line ->
+        if (line.find(packageName)) {
+            //替换字符串
+            line = line.replace(packageName, toPackageName)
+        }
+        "$line"
+    }
+    //删除原目录
+    doLast {
+        File file1 = new File(deletePath)
+        file1.deleteDir()
+    }
+}
+
