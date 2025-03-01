@@ -22,13 +22,7 @@ fun <T> Flow<T>.lifecycle(
     base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycle.flowOn(Dispatchers.IO).onCompletion {
         }.catch { t ->
-            isShowError.yes {
-                t.handleNetError {
-                    errorCallback?.let {
-                        errorCallback(t)
-                    }
-                }
-            }.otherwise {
+            t.handleNetError {
                 errorCallback?.let {
                     errorCallback(t)
                 }
@@ -45,17 +39,32 @@ fun <T> Flow<T>.lifecycle(
     errorCallback: ((t: Throwable) -> Unit)? = null,
     isShowError: Boolean = true,
     callback: T.() -> Unit
-) :Job{
-    return base.lifecycleScope.launch(Dispatchers.Main) {
+) {
+    base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycle.flowOn(Dispatchers.IO).onCompletion {
         }.catch { t ->
-            isShowError.yes {
-                t.handleNetError {
-                    errorCallback?.let {
-                        errorCallback(t)
-                    }
+            t.handleNetError {
+                errorCallback?.let {
+                    errorCallback(t)
                 }
-            }.otherwise {
+            }
+
+        }.collect {
+            callback(it)
+        }
+    }
+}
+
+fun <T> Flow<T>.lifecycle1(
+    base: BaseFragment<*>,
+    errorCallback: ((t: Throwable) -> Unit)? = null,
+    isShowError: Boolean = true,
+    callback: T.() -> Unit
+) :Job{
+    return base.lifecycleScope.launch(Dispatchers.Main) {
+        this@lifecycle1.flowOn(Dispatchers.IO).onCompletion {
+        }.catch { t ->
+            t.handleNetError {
                 errorCallback?.let {
                     errorCallback(t)
                 }
@@ -80,13 +89,7 @@ fun <T> Flow<T>.lifecycleLoadingView(
         }.onCompletion {
             base.hideLoading()
         }.catch { t ->
-            isShowError.yes {
-                t.handleNetError {
-                    errorCallback?.let {
-                        errorCallback(t)
-                    }
-                }
-            }.otherwise {
+            t.handleNetError {
                 errorCallback?.let {
                     errorCallback(t)
                 }
@@ -104,17 +107,11 @@ fun <T> Flow<T>.lifecycle(
     errorCallback: ((t: Throwable) -> Unit)? = null,
     isShowError: Boolean = true,
     callback: T.() -> Unit
-) :Job{
-    return base.lifecycleScope.launch(Dispatchers.Main) {
+) {
+    base.lifecycleScope.launch(Dispatchers.Main) {
         this@lifecycle.flowOn(Dispatchers.IO).onCompletion {
         }.catch { t ->
-            isShowError.yes {
-                t.handleNetError {
-                    errorCallback?.let {
-                        errorCallback(t)
-                    }
-                }
-            }.otherwise {
+            t.handleNetError {
                 errorCallback?.let {
                     errorCallback(t)
                 }
@@ -140,13 +137,7 @@ fun <T> Flow<T>.lifecycleLoadingView(
         }.onCompletion {
             base.hideLoading()
         }.catch { t ->
-            isShowError.yes {
-                t.handleNetError {
-                    errorCallback?.let {
-                        errorCallback(t)
-                    }
-                }
-            }.otherwise {
+            t.handleNetError {
                 errorCallback?.let {
                     errorCallback(t)
                 }

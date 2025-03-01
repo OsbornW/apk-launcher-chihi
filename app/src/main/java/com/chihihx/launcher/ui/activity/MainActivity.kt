@@ -537,18 +537,14 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         if (AppCacheNet.randomUrl.contains("localhost")) {
             mainHostJob = lifecycleScope.launch {
                 while (true){
-                    println("开始轮询有效域名-----")
                     withContext(Dispatchers.IO){
                         if(NetworkUtils.isConnected()&&NetworkUtils.isAvailable()){
                             withContext(Dispatchers.Main){
                                 hostJob = lifecycleScope.launch {
-                                    println("准备repeat了-----")
                                     repeat(3) {
-                                        println("轮询次数${it}-----")
                                         delay(500)
                                         HostUtils.getSlaveAvailableHost {
                                             it?.let {
-                                                println("轮询到有效域名：${it}")
                                                 AppCacheNet.randomUrl = it
                                                 domains[domains.size - 1] = AppCacheNet.randomUrl
                                                 hostJob?.cancel()

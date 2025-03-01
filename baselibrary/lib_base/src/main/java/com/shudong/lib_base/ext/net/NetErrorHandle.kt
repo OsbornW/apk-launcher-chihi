@@ -1,6 +1,7 @@
 package com.shudong.lib_base.ext.net
 
 import com.shudong.lib_base.R
+import com.shudong.lib_base.ext.net.except.NetOfflineException
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.showErrorToast
 import com.shudong.lib_base.ext.stringValue
@@ -35,6 +36,9 @@ fun Throwable.handleNetError(handle:()->Unit) {
                 }
 
             }
+        }
+        is NetOfflineException->{
+
         }
         else -> {
             //其他异常

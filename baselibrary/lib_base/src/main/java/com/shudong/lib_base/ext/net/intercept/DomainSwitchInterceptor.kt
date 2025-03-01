@@ -1,8 +1,10 @@
 package com.shudong.lib_base.ext.net.intercept
 
+import android.annotation.SuppressLint
 import android.os.Build.VERSION_CODES.N
 import com.blankj.utilcode.util.NetworkUtils
 import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.net.except.NetOfflineException
 import com.shudong.lib_base.ext.printSout
 import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.di.domains
@@ -32,9 +34,11 @@ class DomainSwitchInterceptor : Interceptor {
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         "拦截到请求----${chain.request().url}".printSout()
+        if(!NetworkUtils.isConnected())throw NetOfflineException("当前网络没有连接")
         "".e()
         if (!AppCacheNet.isDomainTryAll.get()) {
             val originalRequest = chain.request()
