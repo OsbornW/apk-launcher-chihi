@@ -6,8 +6,11 @@ import com.chihihx.launcher.R
 import com.chihihx.launcher.bean.TypeItem
 import com.chihihx.launcher.enums.Types
 import com.chihihx.launcher.ext.convertGameJson
+import com.chihihx.launcher.ext.isGame
 import com.chihihx.launcher.ext.openApp
 import com.chihihx.launcher.product.base.TVDeviceImpl
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.yes
 
 object ProjectorRK3326G : TVDeviceImpl{
     override fun openScreenZoom()  = PACKAGE_NAME_SCREENZOOM_RK3326.openApp()
@@ -49,6 +52,18 @@ object ProjectorRK3326G : TVDeviceImpl{
         }
     }
 
-    override fun addGameItem(): MutableList<TypeItem> = convertGameJson()
+   // override fun addGameItem(): MutableList<TypeItem> = convertGameJson()
+
+    override fun addGameItem(): MutableList<TypeItem>? = run {
+        isGame().yes {
+            convertGameJson()
+        }.otherwise { null }
+    }
+
+    override fun isGameRes(): Int = run {
+        isGame().yes {
+            1
+        }.otherwise { 0 }
+    }
 
 }

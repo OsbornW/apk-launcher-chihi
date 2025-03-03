@@ -102,7 +102,8 @@ android {
          * 渠道名称
          * */
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713M_G", "\"${FLAVOR_NAME_LAUNCHER_713M_G}\""
-        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713RK_M_G", "\"${FLAVOR_NAME_LAUNCHER_713RK_G}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713RK_M_G", "\"${FLAVOR_NAME_LAUNCHER_713RK_M_G}\""
+        buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713RK_M", "\"${FLAVOR_NAME_LAUNCHER_713RK_M}\""
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_X98K_M", "\"${FLAVOR_NAME_LAUNCHER_X98K_M}\""
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_P50", "\"${FLAVOR_NAME_LAUNCHER_P50}\""
         buildConfigField "String", "FLAVOR_NAME_LAUNCHER_713_SMARTTV", "\"${FLAVOR_NAME_LAUNCHER_713_SMARTTV}\""
@@ -185,7 +186,7 @@ android {
         hongxin_713_M_G_2x {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.hongxin
+            signingConfig signingConfigs.yxt
             versionCode 8 //正式出货版本
             versionName "3.1.6"
             manifestPlaceholders = [share_uid: "android.uid.system"]
@@ -256,9 +257,7 @@ android {
             versionCode 61 //正式出货版本
             versionName "4.0"
             manifestPlaceholders = [share_uid: "android.uid.system"]
-            // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
-            // buildConfigField "String", "APP_STORE_BASE_URL", '""'
             buildConfigField "String", "COMPANY", '"0"'
             buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"X50"'
@@ -280,22 +279,65 @@ android {
             versionName "1.0"
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
-            buildConfigField "String", "BASE_URL", '"https://la.keencloud.work/"'
+            buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
             buildConfigField "String", "COMPANY", '"10"'
             buildConfigField "String", "CHANNEL", '"TV27001"'
             buildConfigField "String", "CHIHI_TYPE", '"H713_smartTV"'
             buildConfigField "String", "MODEL", '"713_smartTV"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihihx.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihihx.store.ui.activity.AppDetailActivity"'
             buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713_SMARTTV}\""
             buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'
             buildConfigField "String", "BACKUP_DOMAIN", '"https://api.y2btop.cc/"'
         }
 
+        hongxin_713RK_M_G {
+            applicationId "com.chihihx.launcher"
+            dimension "chihi"
+            //signingConfig signingConfigs.hongxin_rk3326
+            signingConfig signingConfigs.x88
+            versionCode 61
+            versionName "1.7.0"
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
+            buildConfigField "String", "COMPANY", '"0"'
+            buildConfigField "String", "CHANNEL", '"RK3326G"'
+            buildConfigField "String", "CHIHI_TYPE", '"3326G"'
+            buildConfigField "String", "MODEL", '"3326G"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihihx.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihihx.store.ui.activity.AppDetailActivity"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713RK_M_G}\""
+            buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'
+            buildConfigField "String", "BACKUP_DOMAIN", '"https://api.y2btop.cc/"'
+        }
+
+        hongxin_713RK_M {
+            applicationId "com.chihihx.launcher"
+            dimension "chihi"
+            signingConfig signingConfigs.hongxin_rk3326
+            //signingConfig signingConfigs.x88
+            versionCode 61  //2025-3-3发布版本号 61
+            versionName "1.7.0"     //2025-3-3发布版本名 1.7.0
+            manifestPlaceholders = [share_uid: "android.uid.system"]
+            buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
+            buildConfigField "String", "COMPANY", '"0"'
+            buildConfigField "String", "CHANNEL", '"RK3326M"'
+            buildConfigField "String", "CHIHI_TYPE", '"3326M"'
+            buildConfigField "String", "MODEL", '"3326M"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihihx.store"'
+            buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihihx.store.ui.activity.AppDetailActivity"'
+            buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_713RK_M}\""
+            buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'
+            buildConfigField "String", "BACKUP_DOMAIN", '"https://api.y2btop.cc/"'
+        }
+
+
         //X98K (TV)
         X98K_M {
             applicationId "com.chihim.launcher"
             dimension "chihi"
-            versionCode 5
-            versionName "1.5"
+            versionCode 6  //2025-3-3发布版本号 6
+            versionName "1.5.1"     //2025-3-3发布版本 1.5.1
             manifestPlaceholders = [share_uid: "android.uid.system"]
             signingConfig signingConfigs.yxt
             // 自定义buildConfig.java中的变量供代码中使用

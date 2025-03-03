@@ -30,7 +30,7 @@ const val BASE_URL_CHECK_CODE = "https://api.freedestop.com/"
 const val HEADERURL = ""
 
 
-private const val REQ_TIME_OUT = 12L
+private const val REQ_TIME_OUT = 10L
 private const val TAG = "chihi_zeng"
 
 
@@ -40,6 +40,7 @@ const val TOKEN_INVALID_3 = 1011008
 
 val httpLoggingInterceptor = HttpLoggingInterceptor { message ->
     Log.e(TAG, message)
+    //println(message)
 }.also {
     it.level = HttpLoggingInterceptor.Level.BODY
 }

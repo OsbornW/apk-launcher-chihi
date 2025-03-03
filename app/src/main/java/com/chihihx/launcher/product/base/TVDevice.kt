@@ -67,6 +67,7 @@ val channelMap = mapOf(
     BuildConfig.FLAVOR_NAME_LAUNCHER_713M_G to Projector713_M_G(),
     BuildConfig.FLAVOR_NAME_LAUNCHER_713_TEST to Projector713_M_G_Test,
     BuildConfig.FLAVOR_NAME_LAUNCHER_713RK_M_G to ProjectorRK3326G,
+    BuildConfig.FLAVOR_NAME_LAUNCHER_713RK_M to ProjectorRK3326,
     BuildConfig.FLAVOR_NAME_LAUNCHER_X98K_M to TVBoxX98KM,
     BuildConfig.FLAVOR_NAME_LAUNCHER_P50 to ProjectorP50(),
     BuildConfig.FLAVOR_NAME_LAUNCHER_713_SMARTTV to TVBox_713,
