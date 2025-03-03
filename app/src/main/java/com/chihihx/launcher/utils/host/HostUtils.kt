@@ -69,7 +69,6 @@ object HostUtils {
 
          try {
             val base = decrypt(BASE, Constants.HOST_AESKEY)
-            var domain: String?
              val startIndex = 0
 
             // 使用协程并行检查域名
@@ -80,11 +79,11 @@ object HostUtils {
                 for (index in 0..99) {
                     val newStartIndex = (startIndex + index) % 100
                     val newBase = incrementString(base, newStartIndex * newStartIndex * (base[0].code + 1))
-                    domain = "$newBase.cc"
+                    val domain = "$newBase.cc"
 
                     // 异步检查域名
                     jobs.add(launch {
-                        if (isHostKnown(domain!!,index,callback)) {
+                        if (isHostKnown(domain,index,callback)) {
                             jobs.forEach { it.cancel() } // 取消其他任务
                         }
                     })
