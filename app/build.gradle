@@ -6,6 +6,32 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+import com.google.gson.Gson
+
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+
+
+def createPath(file) {
+    if (!file.exists()) {
+        file.mkdirs()
+    }
+}
+
+def calculateMD5(File file) {
+    MessageDigest digest = MessageDigest.getInstance("MD5")
+    file.withInputStream { is ->
+        byte[] buffer = new byte[8192]
+        int read = 0
+        while ((read = is.read(buffer)) > 0) {
+            digest.update(buffer, 0, read)
+        }
+    }
+    byte[] md5sum = digest.digest()
+    // 将每个字节转为两位16进制字符
+    return md5sum.collect { String.format("%02x", it) }.join()
+}
+
 android {
 
     signingConfigs {
@@ -70,13 +96,42 @@ android {
 
         //打包应用
         android.applicationVariants.all { variant ->
-            variant.outputs.all {
-                // 获取 MODEL 值
+            variant.outputs.all { output ->
                 def value = getBuildConfigFieldValue(variant, "MODEL")
-                def versionName = variant.versionName
+                def apkFileName1 = "Launcher_${versionName}_${getTime()}_${value[1..-2]}.apk"
+                output.outputFileName = apkFileName1
 
+                // 在 APK 生成后生成 readme.json
+                variant.assemble.doLast {
+                    def placeholders = variant.mergedFlavor.manifestPlaceholders
 
-                outputFileName = "Launcher_${versionName}_${getTime()}_${value[1..-2]}.apk"
+                    Map<String, String> data = new HashMap<>()
+                    data.put("packageName", variant.applicationId)
+                    data.put("versionName", variant.versionName)
+                    data.put("version", variant.versionCode)
+                    data.put("appId", getBuildConfigFieldValue(variant, "APP_ID")[1..-2])
+                    data.put("channel", getBuildConfigFieldValue(variant, "CHANNEL")[1..-2])
+                    data.put("chihi_type", getBuildConfigFieldValue(variant, "CHIHI_TYPE")[1..-2])
+                    data.put("model", getBuildConfigFieldValue(variant, "MODEL")[1..-2])
+
+                    // 计算 APK 文件的 MD5
+                    def apkFile = new File(project.buildDir, "outputs/apk/${variant.productFlavors[0]?.name ?: 'default'}/${variant.buildType.name}/${apkFileName1}")
+
+                    // 检查 APK 文件是否存在
+                    if (apkFile.exists()) {
+                        data.put("md5", calculateMD5(apkFile))
+                    } else {
+                        throw new FileNotFoundException("APK 文件未找到: ${apkFile.absolutePath}")
+                    }
+
+                    def fileName = "readme.json"
+                    def dstFile = new File(apkFile.parentFile, fileName)
+                    FileOutputStream fos = new FileOutputStream(dstFile)
+                    def gson = new Gson()
+                    def json = gson.toJson(data)
+                    fos.write(json.getBytes(StandardCharsets.UTF_8))
+                    fos.close()
+                }
             }
         }
     }
