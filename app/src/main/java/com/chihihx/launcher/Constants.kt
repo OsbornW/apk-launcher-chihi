@@ -7,9 +7,9 @@ import com.chihihx.launcher.manager.PreferencesManager
 
 const val FLAVOUR_H6 = "flavour_h6"
 const val PACKAGE_NAME_FILE_MANAGER_713 = "com.softwinner.TvdFileManager"
-const val CLASS_NAME_AUTHFRAGMENT = "com.soya.launcher.AuthFragment"
+const val CLASS_NAME_AUTHFRAGMENT = "com.chihihx.launcher.AuthFragment"
 const val PACKAGE_NAME_SCREENZOOM_RK3326 = "com.lei.hxkeystone/.ScaleActivity"
-const val PACKAGE_NAME_AUTO_RESPONSE = "com.soya.launcher/.activity.AutoResponseActivity"
+const val PACKAGE_NAME_AUTO_RESPONSE = "com.chihihx.launcher/.activity.AutoResponseActivity"
 const val PACKAGE_NAME_PROJECTOR_MODE_P50 = "com.android.tv.settings/.display.ProjectionActivity"
 const val PACKAGE_NAME_SCREEN_ZOOM_P50 = "com.softwinner.tcorrection/.ScaleActivity"
 const val PACKAGE_NAME_KEYSTONE_CORRECTION_P50 = "com.android.tv.settings/.display.AutoCorrectionActivity"

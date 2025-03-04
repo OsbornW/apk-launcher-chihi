@@ -1,17 +1,17 @@
-package com.soya.launcher.fragment
+package com.chihihx.launcher.fragment
 
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.stringValue
 import com.shudong.lib_base.ext.yes
-import com.soya.launcher.BaseWallPaperFragment
-import com.soya.launcher.R
-import com.soya.launcher.databinding.FragmentAutoResponseBinding
-import com.soya.launcher.ext.SYSTEM_PROPERTY_AUTO_RESPONSE
-import com.soya.launcher.ext.setSystemPropertyValueBoolean
-import com.soya.launcher.ext.systemPropertyValueBoolean
-import com.soya.launcher.ui.fragment.ChooseGradientFragment
+import com.chihihx.launcher.BaseWallPaperFragment
+import com.chihihx.launcher.R
+import com.chihihx.launcher.databinding.FragmentAutoResponseBinding
+import com.chihihx.launcher.ext.SYSTEM_PROPERTY_AUTO_RESPONSE
+import com.chihihx.launcher.ext.setSystemPropertyValueBoolean
+import com.chihihx.launcher.ext.systemPropertyValueBoolean
+import com.chihihx.launcher.ui.fragment.ChooseGradientFragment
 
 class AutoResponseFragment:BaseWallPaperFragment<FragmentAutoResponseBinding,BaseViewModel>() {
 

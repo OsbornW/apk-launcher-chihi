@@ -1,10 +1,10 @@
-package com.soya.launcher.fragment
+package com.chihihx.launcher.fragment
 
 import androidx.lifecycle.MutableLiveData
 import com.shudong.lib_base.base.BaseViewModel
-import com.soya.launcher.bean.AuthParamsDto
-import com.soya.launcher.net.repository.AuthRepository
-import com.soya.launcher.utils.toTrim
+import com.chihihx.launcher.bean.AuthParamsDto
+import com.chihihx.launcher.net.repository.AuthRepository
+import com.chihihx.launcher.utils.toTrim
 import kotlinx.coroutines.flow.Flow
 import org.koin.core.component.inject
 

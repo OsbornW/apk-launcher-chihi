@@ -1,3 +1,3 @@
-package com.soya.launcher
+package com.chihihx.launcher
 
 class temp

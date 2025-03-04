@@ -1,4 +1,4 @@
-package com.soya.launcher
+package com.chihihx.launcher
 
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.NetworkUtils
@@ -17,16 +17,16 @@ import com.shudong.lib_base.ext.startKtxActivity
 import com.shudong.lib_base.ext.yes
 import com.shudong.lib_base.global.AppCacheBase
 import com.shudong.lib_base.global.AppCacheBase.activeCode
-import com.soya.launcher.R
-import com.soya.launcher.bean.AuthBean
-import com.soya.launcher.databinding.FragmentAuthBinding
-import com.soya.launcher.ext.getWifiName
-import com.soya.launcher.fragment.AuthViewModel
-import com.soya.launcher.pop.showKeyBoardDialog
-import com.soya.launcher.ui.activity.NetActivity
-import com.soya.launcher.utils.AndroidSystem
-import com.soya.launcher.utils.AutoSeparateTextWatcher
-import com.soya.launcher.utils.toTrim
+import com.chihihx.launcher.R
+import com.chihihx.launcher.bean.AuthBean
+import com.chihihx.launcher.databinding.FragmentAuthBinding
+import com.chihihx.launcher.ext.getWifiName
+import com.chihihx.launcher.fragment.AuthViewModel
+import com.chihihx.launcher.pop.showKeyBoardDialog
+import com.chihihx.launcher.ui.activity.NetActivity
+import com.chihihx.launcher.utils.AndroidSystem
+import com.chihihx.launcher.utils.AutoSeparateTextWatcher
+import com.chihihx.launcher.utils.toTrim
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -146,13 +146,13 @@
             android:configChanges="locale|layoutDirection|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:taskAffinity="com.soya.launcher.ui.activity.SettingActivity" />
+            android:taskAffinity="com.chihihx.launcher.ui.activity.SettingActivity" />
         <activity
             android:name=".ui.activity.AppsActivity"
             android:configChanges="fontScale|keyboard|keyboardHidden|layoutDirection|orientation|screenLayout|uiMode|screenSize|navigation"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:taskAffinity="com.soya.launcher.ui.activity.AppsActivity" />
+            android:taskAffinity="com.chihihx.launcher.ui.activity.AppsActivity" />
         <activity
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="landscape" />
@@ -169,7 +169,7 @@
             android:name=".ui.activity.GradientActivity"
             android:exported="true"
             android:screenOrientation="landscape"
-            android:taskAffinity="com.soya.launcher.ui.activity.GradientActivity" />
+            android:taskAffinity="com.chihihx.launcher.ui.activity.GradientActivity" />
         <activity
             android:name=".ui.activity.SetDateActivity"
             android:screenOrientation="landscape" />
