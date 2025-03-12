@@ -83,6 +83,7 @@
     <string name="time_picker">Time selector</string>
     <string name="year_month_day">%02d/%02d/%02d</string>
     <string name="hour_minute_second">%02d:%02d</string>
+    <string name="date_time">%1$d-%2$02d-%3$02d %4$d:%5$02d</string>
     <string name="is_auto_time_toast">Automatically obtain time, not supported for setting</string>
     <string name="year">Year</string>
     <string name="month">Month</string>

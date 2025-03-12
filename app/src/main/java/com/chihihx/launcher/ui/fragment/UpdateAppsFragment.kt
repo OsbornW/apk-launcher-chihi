@@ -129,7 +129,7 @@ class UpdateAppsFragment : BaseVMFragment<FragmentUpdateAppsBinding, BaseViewMod
     override fun initClick() {
         mBind.apply {
             tvNextTime.clickNoRepeat {
-                // 点击暂不提示，一周后再提示
+                // 点击暂不提示，三天后再提示
                 AppCache.updateInteval = "week"
                 AppCache.lastTipTime = System.currentTimeMillis()
                 requireActivity().finish()

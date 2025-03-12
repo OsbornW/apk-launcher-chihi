@@ -17,6 +17,7 @@ import com.chihihx.launcher.bean.SimpleTimeZone
 import com.chihihx.launcher.databinding.FragmentSetDateBinding
 import com.chihihx.launcher.databinding.HolderDateListBinding
 import com.chihihx.launcher.ext.navigateTo
+import com.chihihx.launcher.product.base.product
 import com.chihihx.launcher.ui.dialog.DatePickerDialog
 import com.chihihx.launcher.ui.dialog.TimePickerDialog
 import com.chihihx.launcher.ui.dialog.TimeZoneDialog
@@ -36,27 +37,12 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val is24 = AppUtil.is24Display(requireContext())
-        itemList.addAll(
-            Arrays.asList(
-                DateItem(
-                    0,
-                    getString(R.string.auto_time_title),
-                    if (isAutoTime) getString(R.string.open) else getString(R.string.close),
-                    isAutoTime,
-                    true
-                ),
-                DateItem(1, getString(R.string.set_date_title), date, false, false),
-                DateItem(2, getString(R.string.set_time_title), time, false, false),
-                DateItem(
-                    3,
-                    getString(R.string.time_display),
-                    if (is24) getString(R.string.open) else getString(R.string.close),
-                    is24,
-                    true
-                ),
-                DateItem(4, getString(R.string.time_zone), TimeZone.getDefault().id, false, false)
+
+        product.addTimeSetItem(isAutoTime,date,time,is24)?.let {
+            itemList.addAll(
+                it
             )
-        )
+        }
     }
 
 

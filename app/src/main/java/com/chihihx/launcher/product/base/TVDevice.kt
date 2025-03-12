@@ -5,24 +5,18 @@ import android.content.pm.ApplicationInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.chihihx.launcher.BuildConfig
+import com.chihihx.launcher.bean.DateItem
 import com.chihihx.launcher.bean.SettingItem
 import com.chihihx.launcher.bean.TypeItem
-import com.chihihx.launcher.product.PrjectorAiboyou
 import com.chihihx.launcher.product.Projector713_M_G
 import com.chihihx.launcher.product.Projector713_M_G_2X
 import com.chihihx.launcher.product.Projector713_M_G_Test
 import com.chihihx.launcher.product.Projector713_M_G_X10
-import com.chihihx.launcher.product.ProjectorH6
 import com.chihihx.launcher.product.ProjectorP50
 import com.chihihx.launcher.product.ProjectorRK3326
 import com.chihihx.launcher.product.ProjectorRK3326G
 import com.chihihx.launcher.product.ProjectorX50
-import com.chihihx.launcher.product.TVBox22001
-import com.chihihx.launcher.product.TVBoxAiboyou
-import com.chihihx.launcher.product.TVBoxH27002
-import com.chihihx.launcher.product.TVBoxX98K
 import com.chihihx.launcher.product.TVBoxX98KM
-import com.chihihx.launcher.product.TVBoxXHSX
 import com.chihihx.launcher.product.TVBox_713
 
 sealed interface TVDevice{
@@ -57,6 +51,7 @@ sealed interface TVDevice{
     fun addMoreItem():MutableList<SettingItem>?=null
     fun isShowDefaultVideoApp():Boolean = true
     fun isShowMemoryInfo() = false
+    fun addTimeSetItem(isAutoTime: Boolean, date: String, time: String, is24: Boolean):MutableList<DateItem>?=null
 
 }
 

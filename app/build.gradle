@@ -95,7 +95,7 @@ android {
         }
 
         //打包应用
-        android.applicationVariants.all { variant ->
+        /*android.applicationVariants.all { variant ->
             variant.outputs.all { output ->
                 def value = getBuildConfigFieldValue(variant, "MODEL")
                 def apkFileName1 = "Launcher_${versionName}_${getTime()}_${value[1..-2]}.apk"
@@ -133,7 +133,7 @@ android {
                     fos.close()
                 }
             }
-        }
+        }*/
     }
 
     namespace 'com.chihihx.launcher'
@@ -308,7 +308,7 @@ android {
         x50_713M {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.hongxin
+            signingConfig signingConfigs.x88
             versionCode 62     //2025-3-3发布版本号：62
             versionName "1.4.1"     //2025-3-3发布版本名：1.4.1
             manifestPlaceholders = [share_uid: "android.uid.system"]

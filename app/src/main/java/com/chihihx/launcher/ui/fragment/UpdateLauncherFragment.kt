@@ -29,6 +29,7 @@ class UpdateLauncherFragment : BaseVMFragment<FragmentUpdateLauncherBinding, Hom
         mBind.apply {
             tvNextTime.clickNoRepeat {
                 // 点击下次再说，一周后再提示
+                AppCache.lastLauncherUpdateTime = System.currentTimeMillis()
                 requireActivity().finish()
             }
             tvCancle.clickNoRepeat {

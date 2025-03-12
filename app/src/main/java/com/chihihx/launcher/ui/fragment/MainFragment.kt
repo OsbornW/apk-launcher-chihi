@@ -100,6 +100,7 @@ import com.chihihx.launcher.ext.findScreenCastApps
 import com.chihihx.launcher.ext.getUpdateList
 import com.chihihx.launcher.ext.isRK3326
 import com.chihihx.launcher.ext.isSDCard
+import com.chihihx.launcher.ext.isShowLauncherUpdate
 import com.chihihx.launcher.ext.isShowUpdate
 import com.chihihx.launcher.ext.isUDisk
 import com.chihihx.launcher.ext.openApp
@@ -301,6 +302,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         initUpdateScope()
 
+        startLauncherCheckPolling()
+
         initJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 repeat(20) {
@@ -372,6 +375,18 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
             }
         }.models = arrayListOf()
 
+    }
+
+    private fun startLauncherCheckPolling() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 仅在生命周期为 RESUMED 时轮询
+                while (true) {
+                    delay(24 * 60 * 60 * 1000L) // 延迟 24 小时
+                    checkLauncherUpdate()
+
+                }
+            }
+        }
     }
 
     private fun initUpdateScope() {
@@ -764,7 +779,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                             }
                         }.otherwise {
                             //非强制更新
-                            startKtxActivity<UpdateLauncherActivity>()
+                            isShowLauncherUpdate().yes {
+                                startKtxActivity<UpdateLauncherActivity>()
+                            }
+
                         }
                     }
                 }
@@ -778,11 +796,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         appsUpdateJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
-                    delay(1000*30)
+                    delay(1000*3)
                     if(!AppCacheNet.isDomainTryAll.get()){
                         isShowUpdate().yes { performTask() }
                     }
-
+                    delay(1000*60*15)
 
                 }
             }
@@ -1144,9 +1162,15 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
     private fun syncTime() {
         val is24 = AppUtil.is24Display(appContext)
         val calendar = Calendar.getInstance()
-        val h = calendar[if (is24) Calendar.HOUR_OF_DAY else Calendar.HOUR]
-        val m = calendar[Calendar.MINUTE]
-        val time = getString(R.string.hour_minute_second, h, m)
+        val year = calendar[Calendar.YEAR]           // 获取年份
+        val month = calendar[Calendar.MONTH] + 1     // 获取月份（注意：Calendar.MONTH 从0开始，所以加1）
+        val day = calendar[Calendar.DAY_OF_MONTH]    // 获取日期
+        val hour = calendar[if (is24) Calendar.HOUR_OF_DAY else Calendar.HOUR]  // 小时（24小时制或12小时制）
+        val minute = calendar[Calendar.MINUTE]       // 分钟
+
+        // 格式化日期和时间，假设 R.string.date_time 是 "yyyy-MM-dd HH:mm" 格式的占位符
+        val time = getString(R.string.date_time, year, month, day, hour, minute)
+
         val segment = if (calendar[Calendar.AM_PM] == 0) "AM" else "PM"
         mBind.loopSegment.visibility = if (is24) View.GONE else View.VISIBLE
         mBind.loopSegment.text = segment

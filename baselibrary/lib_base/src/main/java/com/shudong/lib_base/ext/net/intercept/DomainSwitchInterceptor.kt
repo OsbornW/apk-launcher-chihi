@@ -16,6 +16,7 @@ import java.net.NoRouteToHostException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.atomic.AtomicInteger
+import javax.net.ssl.SSLHandshakeException
 
 class DomainSwitchInterceptor : Interceptor {
     companion object {
@@ -38,8 +39,7 @@ class DomainSwitchInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         "拦截到请求----${chain.request().url}".printSout()
-        if(!NetworkUtils.isConnected())throw NetOfflineException("当前网络没有连接")
-        "".e()
+        if (!NetworkUtils.isConnected()) throw NetOfflineException("当前网络没有连接")
         if (!AppCacheNet.isDomainTryAll.get()) {
             val originalRequest = chain.request()
             // 如果有 successfulDomain，先尝试使用它
@@ -67,6 +67,7 @@ class DomainSwitchInterceptor : Interceptor {
                         is UnknownHostException,
                         is ConnectException,
                         is SocketTimeoutException,
+                        is SSLHandshakeException,
                         is NoRouteToHostException -> {
                             resetDomainIndex()
                         }
@@ -114,6 +115,7 @@ class DomainSwitchInterceptor : Interceptor {
                         is UnknownHostException,
                         is ConnectException,
                         is SocketTimeoutException,
+                        is SSLHandshakeException,
                         is NoRouteToHostException -> {
                         }
 

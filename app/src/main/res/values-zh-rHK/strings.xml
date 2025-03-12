@@ -83,6 +83,7 @@
     <string name="time_picker">時間選擇器</string>
     <string name="year_month_day">%02d/%02d/%02d</string>
     <string name="hour_minute_second">%02d:%02d</string>
+    <string name="date_time">%1$d年%2$02d月%3$02d日 %4$d:%5$02d</string>
     <string name="is_auto_time_toast">自動獲取時間，不支持設定</string>
     <string name="year">年</string>
     <string name="month">月</string>

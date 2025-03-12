@@ -10,6 +10,7 @@ import com.chihihx.launcher.bean.Wallpaper
 object AppCache {
     // (day,week)
     var updateInteval:String by serial(default = "day")
+    var lastLauncherUpdateTime:Long by serial(default = 0L)
     var lastTipTime:Long by serial(default = 0L)
     var updateInfo:String by serial()
     var updateInfoForLauncher:String by serial()

@@ -22,6 +22,7 @@ import com.chihihx.launcher.SETTING_MORE
 import com.chihihx.launcher.SETTING_NETWORK
 import com.chihihx.launcher.SETTING_PROJECTOR
 import com.chihihx.launcher.SETTING_WALLPAPER
+import com.chihihx.launcher.bean.DateItem
 import com.chihihx.launcher.bean.MoreConstants
 import com.chihihx.launcher.bean.Projector
 import com.chihihx.launcher.bean.SettingItem
@@ -44,6 +45,7 @@ import com.chihihx.launcher.ui.fragment.FocusFragment
 import com.chihihx.launcher.ui.fragment.GuideLanguageFragment
 import com.chihihx.launcher.ui.fragment.MainFragment
 import com.chihihx.launcher.utils.AndroidSystem
+import java.util.TimeZone
 
 interface TVDeviceImpl : TVDevice {
 
@@ -309,5 +311,25 @@ interface TVDeviceImpl : TVDevice {
 
     override fun openSound() {
         currentActivity?.let { AndroidSystem.openVoiceSetting(it) }
+    }
+
+    override fun addTimeSetItem(isAutoTime: Boolean, date: String, time: String, is24: Boolean) = mutableListOf<DateItem>().apply {
+        add(DateItem(
+            0,
+            appContext.getString(R.string.auto_time_title),
+            if (isAutoTime) appContext.getString(R.string.open) else appContext.getString(R.string.close),
+            isAutoTime,
+            true
+        ))
+        add(DateItem(1, appContext.getString(R.string.set_date_title), date, false, false))
+        add(DateItem(2, appContext.getString(R.string.set_time_title), time, false, false))
+        add(DateItem(
+            3,
+            appContext.getString(R.string.time_display),
+            if (is24) appContext.getString(R.string.open) else appContext.getString(R.string.close),
+            is24,
+            true
+        ))
+        add(DateItem(4, appContext.getString(R.string.time_zone), TimeZone.getDefault().id, false, false))
     }
 }

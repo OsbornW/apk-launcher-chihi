@@ -3,6 +3,7 @@ package com.chihihx.launcher.ext
 import com.shudong.lib_base.currentActivity
 import com.chihihx.launcher.cache.AppCache
 import com.chihihx.launcher.ui.activity.UpdateAppsActivity
+import com.chihihx.launcher.ui.activity.UpdateLauncherActivity
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 fun isShowUpdate(): Boolean {
 
-    if(currentActivity!=null&& currentActivity is UpdateAppsActivity){
+    if (currentActivity != null && currentActivity is UpdateAppsActivity) {
         return false
     }
 
@@ -29,14 +30,17 @@ fun isShowUpdate(): Boolean {
             // 判断从上次提示到现在是否已经超过 24 小时
             TimeUnit.MILLISECONDS.toHours(now - lastTipTime) >= 24
         }
+
         "hour" -> {
             // 判断从上次提示到现在是否已经超过 1 小时
             TimeUnit.MILLISECONDS.toHours(now - lastTipTime) >= 1
         }
+
         "week" -> {
-            // 判断从上次提示到现在是否已经超过一周
-            TimeUnit.MILLISECONDS.toDays(now - lastTipTime) >= 7
+            // 判断从上次提示到现在是否已经超过三天（72小时）
+            TimeUnit.MILLISECONDS.toDays(now - lastTipTime) >= 3
         }
+
         else -> false
     }
 }
@@ -65,5 +69,22 @@ fun String.formatTimeyyyyMMddHHmm(): String {
         // 返回默认值或抛出异常
         return outputFormat.format(Date()) // 或 throw MyCustomException()
     }
+}
+
+fun isShowLauncherUpdate(): Boolean {
+
+    if (currentActivity != null && currentActivity is UpdateLauncherActivity) {
+        return false
+    }
+
+    if (AppCache.lastLauncherUpdateTime == 0L) {
+        // 如果 lastTipTime 等于 0，则直接返回 true
+        return true
+    }
+
+    val now = System.currentTimeMillis()
+    val lastTipTime = AppCache.lastLauncherUpdateTime
+    // 判断从上次提示到现在是否已经超过三天（72小时）
+    return TimeUnit.MILLISECONDS.toDays(now - lastTipTime) >= 3
 }
 

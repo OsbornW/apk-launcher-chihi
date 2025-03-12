@@ -56,11 +56,33 @@ class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
             val aDefault = TimeZone.getDefault()
             withContext(Dispatchers.IO){
 
-                val ids = TimeZone.getAvailableIDs()
+                // 创建一个代表性时区的预定义列表
+                val representativeZones = arrayOf(
+                    "UTC",                  // 协调世界时
+                    "America/New_York",     // 美东时间
+                    "America/Los_Angeles",  // 美西时间
+                    "Europe/London",        // 伦敦时间
+                    "Europe/Paris",         // 巴黎时间
+                    "Asia/Tokyo",          // 东京时间
+                    "Asia/Shanghai",       // 上海时间
+                    "Australia/Sydney",    // 悉尼时间
+                    "Pacific/Auckland",    // 奥克兰时间
+                    "Asia/Dubai",          // 迪拜时间
+                    "Asia/Kolkata",        // 印度时间
+                    "Europe/Moscow",       // 莫斯科时间
+                    "America/Chicago",     // 芝加哥时间
+                    "America/Sao_Paulo",   // 圣保罗时间
+                    "Asia/Singapore",      // 新加坡时间
+                    "Africa/Johannesburg", // 约翰内斯堡时间
+                    "America/Mexico_City", // 墨西哥城时间
+                    "Asia/Seoul",          // 首尔时间
+                    "Europe/Berlin",       // 柏林时间
+                    "Pacific/Honolulu"     // 夏威夷时间
+                )
 
 
-                for (i in ids.indices) {
-                    val id = ids[i]
+                for (i in representativeZones.indices) {
+                    val id = representativeZones[i]
                     val zone = TimeZone.getTimeZone(id)
                     list.add(SimpleTimeZone(zone, id, zone.displayName))
                 }

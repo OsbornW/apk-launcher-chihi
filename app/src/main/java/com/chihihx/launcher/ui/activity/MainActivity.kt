@@ -146,13 +146,13 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     private fun startPluginCheckPolling() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) { // 仅在生命周期为 RESUMED 时轮询
+
                 while (true) {
                     delay(24 * 60 * 60 * 1000L) // 延迟 24 小时
                     reqPluginInfo() // 执行任务
 
                 }
-            }
+
         }
 
         lifecycleScope.launch {
