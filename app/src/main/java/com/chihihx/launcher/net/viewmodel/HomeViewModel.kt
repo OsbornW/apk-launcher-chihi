@@ -48,6 +48,7 @@ import com.chihihx.launcher.utils.toTrim
 import com.thumbsupec.lib_base.toast.ToastUtils
 import kotlinx.coroutines.flow.Flow
 import org.koin.core.component.inject
+import java.util.Locale
 
 /**
  *
@@ -81,6 +82,7 @@ class HomeViewModel : BaseViewModel() {
             "brand" to Build.BRAND,
             "product" to Build.PRODUCT,
             "mac" to (getMacAddress() ?:""),
+            "lang" to Locale.getDefault().language,
         )
     )
 

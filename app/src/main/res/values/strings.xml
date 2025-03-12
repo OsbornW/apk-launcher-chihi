@@ -201,7 +201,13 @@
 
 
     <string name="app_text_15">Available updates</string>
-    <string name="app_text_16">A brand new version has been launched! \Add [new features], optimize [optimization points], and improve your user experience. Update now and discover more surprises!</string>
+    <string name="app_text_16">
+New Version Awaits, Upgrade Your Smart Desktop!\n
+\u2022 Added Handy Features: Unlock more personalized options.\n
+\u2022 Enhanced Performance: Smoother operation, boosted efficiency.\n
+\u2022 Improved Experience: Refined details for a more intuitive feel.\n
+Update now to explore a better way to manage your desktop!
+</string>
     <string name="app_text_17">Let\'s talk about it next time</string>
     <string name="app_text_18">To update</string>
     <string name="app_text_35">In preparation</string>

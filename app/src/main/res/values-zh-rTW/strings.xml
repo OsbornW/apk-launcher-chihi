@@ -201,7 +201,13 @@
 
 
     <string name="app_text_15" >可用更新</string>
-    <string name="app_text_16" >全新版本上線！ \n新增[新功能]，優化[優化點]，\n提升你的使用體驗。 立即更新，\n發現更多驚喜！</string>
+    <string name="app_text_16">
+全新版本來襲，提升你的智能桌面體驗：\n
+\u2022 新增實用功能，解鎖更多個人化玩法。\n
+\u2022 優化性能表現，操作更流暢，效率再升級。\n
+\u2022 提升使用體驗，細節調整讓每一次互動更貼心。\n
+立即更新，發現更出色的桌面管理新方式！
+</string>
     <string name="app_text_17" >下次再說</string>
     <string name="app_text_18" >更新</string>
     <string name="app_text_35" >準備中</string>

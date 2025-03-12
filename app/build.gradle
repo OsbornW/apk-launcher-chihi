@@ -253,9 +253,9 @@ android {
         hongxin_713_M_G_2x {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.yxt
-            versionCode 9      //2025-3-3发布版本号：9
-            versionName "3.2.0"     //2025-3-3发布版本名：3.2.0
+            signingConfig signingConfigs.hongxin
+            versionCode 10      //2025-3-12发布版本号：10
+            versionName "3.2.1"     //2025-3-12发布版本名：3.2.1
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
@@ -275,8 +275,8 @@ android {
         hongxin_713_M_G_X10 {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            versionCode 4      //2025-3-3发布版本号：4
-            versionName "1.3.1"     //2025-3-3发布版本名：1.3.1
+            versionCode 5      //2025-3-12发布版本号：5
+            versionName "1.3.2"     //2025-3-12发布版本名：1.3.2
             signingConfig signingConfigs.hongxin
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
@@ -321,8 +321,8 @@ android {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
             signingConfig signingConfigs.hongxin
-            versionCode 62     //2025-3-3发布版本号：62
-            versionName "1.4.1"     //2025-3-3发布版本名：1.4.1
+            versionCode 63     //2025-3-12发布版本号：63
+            versionName "1.4.2"     //2025-3-12发布版本名：1.4.2
             manifestPlaceholders = [share_uid: "android.uid.system"]
             buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
             buildConfigField "String", "COMPANY", '"0"'
@@ -465,6 +465,13 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+}
+
+task assembleX10_X30_X50Release {
+    dependsOn 'assembleHongxin_713_M_G_2xRelease',
+            'assembleHongxin_713_M_G_X10Release',
+            'assembleX50_713MRelease'
+    description 'Assemble Release builds for x10 and x30 and x50 flavors'
 }
 
 configurations.all {

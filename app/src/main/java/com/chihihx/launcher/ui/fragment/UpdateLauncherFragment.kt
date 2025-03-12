@@ -27,6 +27,11 @@ class UpdateLauncherFragment : BaseVMFragment<FragmentUpdateLauncherBinding, Hom
 
     override fun initClick() {
         mBind.apply {
+            if(updateDto.updateContent.isNullOrEmpty()){
+                tvUpdateContent.text = R.string.app_text_16.stringValue()
+            }else{
+                tvUpdateContent.text = updateDto.updateContent
+            }
             tvNextTime.clickNoRepeat {
                 // 点击下次再说，一周后再提示
                 AppCache.lastLauncherUpdateTime = System.currentTimeMillis()

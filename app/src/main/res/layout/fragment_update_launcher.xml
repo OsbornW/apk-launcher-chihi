@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.hjq.shape.layout.ShapeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -31,12 +32,13 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/tv_update_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="@dimen/qb_px_20"
                 android:layout_marginTop="@dimen/qb_px_40"
-                android:text="@string/app_text_16"
+                tools:text="@string/app_text_16"
                 android:textColor="@color/white"
                 android:textSize="@dimen/qb_px_sp_14" />
 

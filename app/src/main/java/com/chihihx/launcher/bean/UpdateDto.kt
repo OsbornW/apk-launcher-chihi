@@ -19,7 +19,9 @@ data class UpdateDto(
     @SerialName("tip")
     val tip: Int?,
     @SerialName("version")
-    val version: Int?
+    val version: Int?,
+    @SerialName("updateContent")
+    val updateContent: String?
 )
 
 /*
