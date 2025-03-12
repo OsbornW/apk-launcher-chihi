@@ -95,45 +95,57 @@ android {
         }
 
         //打包应用
-        /*android.applicationVariants.all { variant ->
+        android.applicationVariants.all { variant ->
             variant.outputs.all { output ->
+                // 设置 APK 文件名
                 def value = getBuildConfigFieldValue(variant, "MODEL")
                 def apkFileName1 = "Launcher_${versionName}_${getTime()}_${value[1..-2]}.apk"
                 output.outputFileName = apkFileName1
 
-                // 在 APK 生成后生成 readme.json
-                variant.assemble.doLast {
-                    def placeholders = variant.mergedFlavor.manifestPlaceholders
+                // 使用 taskGraph 判断是否为 assemble 任务
+                gradle.taskGraph.whenReady { taskGraph ->
+                    // 判断是否是 assemble 任务
+                    if (taskGraph.hasTask(":app:assemble${variant.name.capitalize()}")) {
+                        variant.assemble.doLast {
+                            println("✅ assemble 任务执行，开始生成 readme.json")
 
-                    Map<String, String> data = new HashMap<>()
-                    data.put("packageName", variant.applicationId)
-                    data.put("versionName", variant.versionName)
-                    data.put("version", variant.versionCode)
-                    data.put("appId", getBuildConfigFieldValue(variant, "APP_ID")[1..-2])
-                    data.put("channel", getBuildConfigFieldValue(variant, "CHANNEL")[1..-2])
-                    data.put("chihi_type", getBuildConfigFieldValue(variant, "CHIHI_TYPE")[1..-2])
-                    data.put("model", getBuildConfigFieldValue(variant, "MODEL")[1..-2])
+                            // 在这里构建需要的 JSON 数据
+                            def placeholders = variant.mergedFlavor.manifestPlaceholders
+                            Map<String, String> data = new HashMap<>()
+                            data.put("packageName", variant.applicationId)
+                            data.put("versionName", variant.versionName)
+                            data.put("version", variant.versionCode)
+                            data.put("appId", getBuildConfigFieldValue(variant, "APP_ID")[1..-2])
+                            data.put("channel", getBuildConfigFieldValue(variant, "CHANNEL")[1..-2])
+                            data.put("chihi_type", getBuildConfigFieldValue(variant, "CHIHI_TYPE")[1..-2])
+                            data.put("model", getBuildConfigFieldValue(variant, "MODEL")[1..-2])
 
-                    // 计算 APK 文件的 MD5
-                    def apkFile = new File(project.buildDir, "outputs/apk/${variant.productFlavors[0]?.name ?: 'default'}/${variant.buildType.name}/${apkFileName1}")
+                            // 计算 APK 文件的 MD5
+                            def apkFile = new File(output.outputFile.parent, apkFileName1)
 
-                    // 检查 APK 文件是否存在
-                    if (apkFile.exists()) {
-                        data.put("md5", calculateMD5(apkFile))
+                            if (apkFile.exists()) {
+                                data.put("md5", calculateMD5(apkFile))
+                            } else {
+                                throw new FileNotFoundException("APK 文件未找到: ${apkFile.absolutePath}")
+                            }
+
+                            // 生成 readme.json 文件
+                            def fileName = "readme.json"
+                            def dstFile = new File(apkFile.parentFile, fileName)
+                            FileOutputStream fos = new FileOutputStream(dstFile)
+                            def gson = new Gson()
+                            def json = gson.toJson(data)
+                            fos.write(json.getBytes(StandardCharsets.UTF_8))
+                            fos.close()
+                            println("✅ readme.json 文件已生成")
+                        }
                     } else {
-                        throw new FileNotFoundException("APK 文件未找到: ${apkFile.absolutePath}")
+                        println("🚀 运行的是 `Run` 任务，跳过生成 JSON 文件的逻辑")
                     }
-
-                    def fileName = "readme.json"
-                    def dstFile = new File(apkFile.parentFile, fileName)
-                    FileOutputStream fos = new FileOutputStream(dstFile)
-                    def gson = new Gson()
-                    def json = gson.toJson(data)
-                    fos.write(json.getBytes(StandardCharsets.UTF_8))
-                    fos.close()
                 }
             }
-        }*/
+        }
+
     }
 
     namespace 'com.chihihx.launcher'
@@ -308,7 +320,7 @@ android {
         x50_713M {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.x88
+            signingConfig signingConfigs.hongxin
             versionCode 62     //2025-3-3发布版本号：62
             versionName "1.4.1"     //2025-3-3发布版本名：1.4.1
             manifestPlaceholders = [share_uid: "android.uid.system"]
@@ -329,13 +341,14 @@ android {
         hongxin_713_smartTV {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.x88
+            signingConfig signingConfigs.hongxin
             versionCode 2      //2025-3-3发布版本号：2
             versionName "1.1.0"     //2025-3-3发布版本名：1.1.0
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
             buildConfigField "String", "COMPANY", '"10"'
+            buildConfigField "String", "APP_ID", '"launcher"'
             buildConfigField "String", "CHANNEL", '"TV27001"'
             buildConfigField "String", "CHIHI_TYPE", '"H713_smartTV"'
             buildConfigField "String", "MODEL", '"713_smartTV"'
