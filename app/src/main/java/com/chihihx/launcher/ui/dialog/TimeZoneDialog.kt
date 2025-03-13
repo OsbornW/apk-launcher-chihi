@@ -102,7 +102,7 @@ class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
         fun onClick(bean: SimpleTimeZone?)
     }
 
-    fun filterTimeZones(): List<SimpleTimeZone> {
+    fun filterTimeZones(targetCount: Int = 90): List<SimpleTimeZone> {
         val ids = TimeZone.getAvailableIDs()
         val uniqueZones = mutableMapOf<Int, MutableList<String>>() // 偏移量 -> 时区 ID 列表
 
@@ -116,24 +116,26 @@ class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
             }
         }
 
-        // 第二步：从每个偏移量组中选择多个代表性时区
+        // 第二步：动态计算每组取的数量
+        val offsetCount = uniqueZones.size // 偏移量组数量
+        val baseTakeCount = targetCount / offsetCount // 每组基础数量
+        val extraCount = targetCount % offsetCount // 额外分配
+
         val selectedIds = mutableListOf<String>()
+        var index = 0
         for (offsetZones in uniqueZones.values) {
-            // 对每个偏移量组，按名称排序后取前几个（例如前 3 个）
             offsetZones.sort() // 按字母顺序排序
-            val takeCount = when {
-                offsetZones.size > 3 -> 3 // 每个偏移量最多取 3 个
-                else -> offsetZones.size
-            }
-            selectedIds.addAll(offsetZones.take(takeCount))
+            val takeCount = if (index < extraCount) baseTakeCount + 1 else baseTakeCount
+            selectedIds.addAll(offsetZones.take(takeCount.coerceAtMost(offsetZones.size)))
+            index++
         }
 
-        // 如果数量不足 90 个，补充更多时区
-        if (selectedIds.size < 90) {
+        // 第三步：如果不足 90 个，补充
+        if (selectedIds.size < targetCount) {
             val remainingIds = ids.filter { id ->
                 id.contains("/") && !selectedIds.contains(id)
-            }.sorted() // 按字母排序
-            selectedIds.addAll(remainingIds.take(90 - selectedIds.size))
+            }.sorted()
+            selectedIds.addAll(remainingIds.take(targetCount - selectedIds.size))
         }
 
         // 转换为 SimpleTimeZone 列表
@@ -142,11 +144,12 @@ class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
             val zone = TimeZone.getTimeZone(id)
             list.add(SimpleTimeZone(zone, id, zone.getFormattedTimeZone()))
         }
+        list.sortBy { it.zone.rawOffset } // 按偏移量排序
 
-        // 按偏移量排序
-        list.sortBy { it.zone.rawOffset }
-        "Filtered time zones: ${list.size}".printLog()
-        return list
+        // 截取或返回最终结果
+        val finalList = if (list.size > targetCount) list.take(targetCount) else list
+        "Filtered time zones: ${finalList.size}".printLog()
+        return finalList
     }
 
     companion object {
