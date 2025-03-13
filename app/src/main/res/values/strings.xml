@@ -244,4 +244,7 @@ Update now to explore a better way to manage your desktop!
     <string name="cant_set_previous_time">Cannot set past time</string>
 
 
+    <string name="Device">Device Total RAM</string>
+    <string name="Total">Total Storage</string>
+
 </resources>

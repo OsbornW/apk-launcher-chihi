@@ -243,6 +243,8 @@
     <string name="wifi_password_prompt">輸入 %1$s 的密碼</string>
     <string name="cant_set_previous_time">不能設定過去的時間</string>
 
+    <string name="Device">總執行記憶體</string>
+    <string name="Total">總儲存空間</string>
 
 
 </resources>
