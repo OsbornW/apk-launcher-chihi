@@ -270,17 +270,18 @@ fun getMemoryInfo(): String {
     val memoryInfo = ActivityManager.MemoryInfo()
     activityManager.getMemoryInfo(memoryInfo)
 
-    // 获取总运行内存
+    // 获取总运行内存 (单位: 字节)
     val totalMemory = memoryInfo.totalMem
-    val totalMemoryGB = totalMemory.toDouble() / (1024 * 1024 * 1024) // 转换为 GB
+    val totalMemoryGB = totalMemory.toDouble() / (1024 * 1024 * 1024) // 转成 GB
 
-    // 获取总存储空间
+      // 获取总存储空间 (单位: 字节)
     val statFs = StatFs(Environment.getDataDirectory().path)
     val totalStorage = statFs.blockSizeLong * statFs.blockCountLong
-    val totalStorageGB = totalStorage.toDouble() / (1024 * 1024 * 1024) // 转换为 GB
+    val totalStorageGB = totalStorage.toDouble() / (1024 * 1024 * 1024) // 转成 GB
 
-    // 格式化为 "总运行内存: 8GB, 总存储空间: 128GB" 形式
-    return String.format(" %.2fGB / %.2fGB", totalMemoryGB, totalStorageGB)
+    // 格式化字符串
+    return String.format("总运行内存: %.2fGB, 总存储空间: %.2fGB", totalMemoryGB, totalStorageGB)
+
 }
 
 
