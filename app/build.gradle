@@ -320,7 +320,7 @@ android {
         x50_713M {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.hongxin
+            signingConfig signingConfigs.x88
             versionCode 63     //2025-3-12发布版本号：63
             versionName "1.4.2"     //2025-3-12发布版本名：1.4.2
             manifestPlaceholders = [share_uid: "android.uid.system"]

@@ -31,6 +31,7 @@ import com.chihihx.launcher.bean.Wallpaper
 import com.chihihx.launcher.cache.AppCache
 import com.chihihx.launcher.cache.AppCache.WALLPAPERS
 import com.chihihx.launcher.enums.Types
+import com.chihihx.launcher.ext.getFormattedTimeZone
 import com.chihihx.launcher.ext.openApp
 import com.chihihx.launcher.ext.openFileM
 import com.chihihx.launcher.ui.activity.ChooseGradientActivity
@@ -313,7 +314,13 @@ interface TVDeviceImpl : TVDevice {
         currentActivity?.let { AndroidSystem.openVoiceSetting(it) }
     }
 
-    override fun addTimeSetItem(isAutoTime: Boolean, date: String, time: String, is24: Boolean) = mutableListOf<DateItem>().apply {
+    override fun addTimeSetItem(
+        isAutoTime: Boolean,
+        date: String,
+        time: String,
+        is24: Boolean,
+        isShowAllItem: Boolean
+    ) = mutableListOf<DateItem>().apply {
         add(DateItem(
             0,
             appContext.getString(R.string.auto_time_title),
@@ -330,6 +337,6 @@ interface TVDeviceImpl : TVDevice {
             is24,
             true
         ))
-        add(DateItem(4, appContext.getString(R.string.time_zone), TimeZone.getDefault().id, false, false))
+        add(DateItem(4, appContext.getString(R.string.time_zone), TimeZone.getTimeZone(TimeZone.getDefault().id).getFormattedTimeZone(), false, false))
     }
 }

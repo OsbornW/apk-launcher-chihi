@@ -23,14 +23,14 @@ import com.chihihx.launcher.ui.dialog.TimePickerDialog
 import com.chihihx.launcher.ui.dialog.TimeZoneDialog
 import com.chihihx.launcher.ui.dialog.ToastDialog
 import com.chihihx.launcher.utils.AppUtil
-import java.util.Arrays
+import com.shudong.lib_base.ext.printLog
 import java.util.Calendar
 import java.util.Locale
-import java.util.TimeZone
 
 abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel> :
     BaseWallPaperFragment<VDB, VM>(), View.OnClickListener {
 
+    open var isShowAllItem = true
 
     private val itemList: MutableList<DateItem> = ArrayList()
 
@@ -38,7 +38,7 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
         super.onCreate(savedInstanceState)
         val is24 = AppUtil.is24Display(requireContext())
 
-        product.addTimeSetItem(isAutoTime,date,time,is24)?.let {
+        product.addTimeSetItem(isAutoTime, date, time, is24,isShowAllItem)?.let {
             itemList.addAll(
                 it
             )
@@ -110,8 +110,10 @@ abstract class AbsDateFragment<VDB : FragmentSetDateBinding, VM : BaseViewModel>
 
                 alarmManager!!.setTimeZone(bean!!.zone.id)
                 item.description = bean.desc
-                itemList[1].description = date
-                itemList[2].description = time
+                if (itemList.size > 2) {
+                    itemList[1].description = date
+                    itemList[2].description = time
+                }
                 mBind.slide.adapter?.notifyDataSetChanged()
                 dialog.dismiss()
             }

@@ -170,6 +170,8 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
         }
 
+
+
     }
 
     private fun reqPluginInfo() {

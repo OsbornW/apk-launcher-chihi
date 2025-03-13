@@ -12,6 +12,8 @@ import com.chihihx.launcher.R
 import com.chihihx.launcher.bean.SimpleTimeZone
 import com.chihihx.launcher.databinding.DialogTimeZoneBinding
 import com.chihihx.launcher.databinding.HolderTimeZoneBinding
+import com.chihihx.launcher.ext.getFormattedTimeZone
+import com.shudong.lib_base.ext.printLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -52,44 +54,11 @@ class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
                 blur(mRootView, mBlur)
             }*/
             var select = 0
-            val list: MutableList<SimpleTimeZone> = ArrayList()
+            var list: MutableList<SimpleTimeZone> = ArrayList()
             val aDefault = TimeZone.getDefault()
             withContext(Dispatchers.IO){
 
-                // 创建一个代表性时区的预定义列表
-                val representativeZones = arrayOf(
-                    "UTC",                  // 协调世界时
-                    "America/New_York",     // 美东时间
-                    "America/Los_Angeles",  // 美西时间
-                    "Europe/London",        // 伦敦时间
-                    "Europe/Paris",         // 巴黎时间
-                    "Asia/Tokyo",          // 东京时间
-                    "Asia/Shanghai",       // 上海时间
-                    "Australia/Sydney",    // 悉尼时间
-                    "Pacific/Auckland",    // 奥克兰时间
-                    "Asia/Dubai",          // 迪拜时间
-                    "Asia/Kolkata",        // 印度时间
-                    "Europe/Moscow",       // 莫斯科时间
-                    "America/Chicago",     // 芝加哥时间
-                    "America/Sao_Paulo",   // 圣保罗时间
-                    "Asia/Singapore",      // 新加坡时间
-                    "Africa/Johannesburg", // 约翰内斯堡时间
-                    "America/Mexico_City", // 墨西哥城时间
-                    "Asia/Seoul",          // 首尔时间
-                    "Europe/Berlin",       // 柏林时间
-                    "Pacific/Honolulu"     // 夏威夷时间
-                )
-
-
-                for (i in representativeZones.indices) {
-                    val id = representativeZones[i]
-                    val zone = TimeZone.getTimeZone(id)
-                    list.add(SimpleTimeZone(zone, id, zone.displayName))
-                }
-
-                // 排序集合
-                Collections.sort(list, Comparator.comparingInt { o: SimpleTimeZone -> o.zone.rawOffset })
-
+                list = filterTimeZones().toMutableList()
                 for (i in list.indices) {
                     val id = list[i].zone.id
                     if (id == aDefault.id) select = i
@@ -101,12 +70,16 @@ class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
 
                 binding.content.apply {
                    postDelayed({
-                       "开始执行"
-                       scrollToPosition(select)
+                       if (select in 0 until list.size) {
+                           scrollToPosition(select)
+                       } else {
+                           "Invalid select index: $select, list size: ${list.size}".printLog()
+                           scrollToPosition(0) // 默认滚动到第一个
+                       }
                    },0)
                 }
 
-                "当前选中的时区是：${aDefault.displayName}::$select"
+                "当前选中的时区是：${aDefault.displayName}::$select".printLog()
 
             }
         }
@@ -127,6 +100,53 @@ class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
 
     interface Callback {
         fun onClick(bean: SimpleTimeZone?)
+    }
+
+    fun filterTimeZones(): List<SimpleTimeZone> {
+        val ids = TimeZone.getAvailableIDs()
+        val uniqueZones = mutableMapOf<Int, MutableList<String>>() // 偏移量 -> 时区 ID 列表
+
+        // 第一步：按偏移量分组，保留城市格式的 ID
+        for (id in ids) {
+            if (id.contains("/")) { // 只保留城市格式的 ID
+                val zone = TimeZone.getTimeZone(id)
+                val offset = zone.rawOffset
+                val zoneList = uniqueZones.getOrPut(offset) { mutableListOf() }
+                zoneList.add(id)
+            }
+        }
+
+        // 第二步：从每个偏移量组中选择多个代表性时区
+        val selectedIds = mutableListOf<String>()
+        for (offsetZones in uniqueZones.values) {
+            // 对每个偏移量组，按名称排序后取前几个（例如前 3 个）
+            offsetZones.sort() // 按字母顺序排序
+            val takeCount = when {
+                offsetZones.size > 3 -> 3 // 每个偏移量最多取 3 个
+                else -> offsetZones.size
+            }
+            selectedIds.addAll(offsetZones.take(takeCount))
+        }
+
+        // 如果数量不足 90 个，补充更多时区
+        if (selectedIds.size < 90) {
+            val remainingIds = ids.filter { id ->
+                id.contains("/") && !selectedIds.contains(id)
+            }.sorted() // 按字母排序
+            selectedIds.addAll(remainingIds.take(90 - selectedIds.size))
+        }
+
+        // 转换为 SimpleTimeZone 列表
+        val list: MutableList<SimpleTimeZone> = ArrayList()
+        for (id in selectedIds) {
+            val zone = TimeZone.getTimeZone(id)
+            list.add(SimpleTimeZone(zone, id, zone.getFormattedTimeZone()))
+        }
+
+        // 按偏移量排序
+        list.sortBy { it.zone.rawOffset }
+        "Filtered time zones: ${list.size}".printLog()
+        return list
     }
 
     companion object {

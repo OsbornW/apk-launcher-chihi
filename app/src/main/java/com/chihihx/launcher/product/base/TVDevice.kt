@@ -51,7 +51,13 @@ sealed interface TVDevice{
     fun addMoreItem():MutableList<SettingItem>?=null
     fun isShowDefaultVideoApp():Boolean = true
     fun isShowMemoryInfo() = false
-    fun addTimeSetItem(isAutoTime: Boolean, date: String, time: String, is24: Boolean):MutableList<DateItem>?=null
+    fun addTimeSetItem(
+        isAutoTime: Boolean,
+        date: String,
+        time: String,
+        is24: Boolean,
+        isShowAllItem: Boolean
+    ):MutableList<DateItem>?=null
 
 }
 

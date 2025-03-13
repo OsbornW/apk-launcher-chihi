@@ -43,8 +43,25 @@ private fun log(level: LEVEL, tag: String, message: String) {
 }
 
 
-fun String.printSout() {
-    if (AppCacheNet.isDebug) {
-        println()
+fun String.printLog() {
+    //if(SYSTEM_PROP_NAME.systemPropertyValueBoolean())Log.e(PRINT_TAG_NAME,this)
+    if(SYSTEM_PROP_NAME.systemPropertyValueBoolean()) println(this)
+}
+
+
+fun String.systemPropertyValueBoolean(defaultValue: Boolean = false): Boolean {
+    return try {
+        val systemProperties = Class.forName("android.os.SystemProperties")
+        val getMethod = systemProperties.getMethod(
+            "getBoolean",
+            String::class.java,
+            Boolean::class.javaPrimitiveType
+        )
+        getMethod.invoke(systemProperties, this, defaultValue) as Boolean
+    } catch (e: Exception) {
+        defaultValue
     }
 }
+
+internal var SYSTEM_PROP_NAME = "persist.log.enable"   //是否开启日志
+internal var PRINT_TAG_NAME = "App_Common"   //是否开启日志

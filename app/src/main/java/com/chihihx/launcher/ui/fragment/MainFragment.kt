@@ -125,6 +125,7 @@ import com.chihihx.launcher.utils.isSysApp
 import com.chihihx.launcher.view.AppLayout
 import com.chihihx.launcher.view.MyFrameLayout
 import com.chihihx.launcher.view.MyFrameLayoutHouse
+import com.shudong.lib_base.ext.printLog
 import com.thumbsupec.lib_net.AppCacheNet
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -225,8 +226,10 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         }
 
         obseverLiveEvent<Boolean>(ADD_APPSTORE) {
+            "准备添加AppStore".printLog()
             val exists = items.any { it.type == Types.TYPE_APP_STORE }
             exists.no {
+                "不存在AppStore的Item".printLog()
                 val typeItem = TypeItem(
                     appContext.getString(R.string.app_store),
                     R.drawable.store,
@@ -238,8 +241,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 items.add(0, typeItem)
                 mBind.header.mutable.add(index_appstore, typeItem)
                 mBind.header.adapter?.notifyItemInserted(index_appstore)
+            }.otherwise {
+                "已经存在AppStore的Item".printLog()
             }
         }
+
 
     }
 
@@ -377,6 +383,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
     }
 
+    var storeJob: Job? = null
     private fun startLauncherCheckPolling() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 仅在生命周期为 RESUMED 时轮询
@@ -387,13 +394,44 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
             }
         }
+
+
+        storeJob = lifecycleScope.launch {
+
+            while (true) {
+                delay(3 * 1000L) // 延迟 3秒钟
+                "准备添加AppStore1".printLog()
+                val exists = items.any { it.type == Types.TYPE_APP_STORE }
+                exists.no {
+                    "不存在AppStore的Item1".printLog()
+                    val typeItem = TypeItem(
+                        appContext.getString(R.string.app_store),
+                        R.drawable.store,
+                        0,
+                        Types.TYPE_APP_STORE,
+                        TypeItem.TYPE_ICON_IMAGE_RES,
+                        TypeItem.TYPE_LAYOUT_STYLE_UNKNOW
+                    )
+                    items.add(0, typeItem)
+                    mBind.header.mutable.add(index_appstore, typeItem)
+                    mBind.header.adapter?.notifyItemInserted(index_appstore)
+                }.otherwise {
+                    "已经存在AppStore的Item1".printLog()
+                    storeJob?.cancel()
+                }
+            }
+
+
+        }
+
     }
+
 
     private fun initUpdateScope() {
         lifecycleScope.launch {
             while (true) {
                 delay(300)
-                if(NetworkUtils.isConnected()){
+                if (NetworkUtils.isConnected()) {
                     checkLauncherUpdate()
                     startRepeatingTask()
                     cancel()
@@ -753,7 +791,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     updateLauncherErrorJob?.cancel()
                     updateLauncherErrorJob = lifecycleScope.launch(Dispatchers.Main) {
                         while (true) {
-                            if (NetworkUtils.isConnected()&&!AppCacheNet.isDomainTryAll.get()) {
+                            if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll.get()) {
                                 checkLauncherUpdate()
                             }
                             delay(2000)
@@ -796,11 +834,11 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         appsUpdateJob = lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
                 while (true) {
-                    delay(1000*3)
-                    if(!AppCacheNet.isDomainTryAll.get()){
+                    delay(1000 * 3)
+                    if (!AppCacheNet.isDomainTryAll.get()) {
                         isShowUpdate().yes { performTask() }
                     }
-                    delay(1000*60*15)
+                    delay(1000 * 60 * 15)
 
                 }
             }

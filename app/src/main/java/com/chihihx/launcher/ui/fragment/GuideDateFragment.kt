@@ -12,6 +12,8 @@ class GuideDateFragment : AbsDateFragment<FragmentSetDateBinding,BaseViewModel>(
         showNext(true)
     }
 
+    override var isShowAllItem: Boolean = false
+
     companion object {
         fun newInstance(): GuideDateFragment {
             val args = Bundle()

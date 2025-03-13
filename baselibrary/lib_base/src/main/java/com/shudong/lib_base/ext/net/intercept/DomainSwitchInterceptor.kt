@@ -5,7 +5,7 @@ import android.os.Build.VERSION_CODES.N
 import com.blankj.utilcode.util.NetworkUtils
 import com.shudong.lib_base.ext.e
 import com.shudong.lib_base.ext.net.except.NetOfflineException
-import com.shudong.lib_base.ext.printSout
+import com.shudong.lib_base.ext.printLog
 import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.di.domains
 import okhttp3.Interceptor
@@ -38,7 +38,7 @@ class DomainSwitchInterceptor : Interceptor {
     @SuppressLint("MissingPermission")
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        "拦截到请求----${chain.request().url}".printSout()
+        "拦截到请求----${chain.request().url}".printLog()
         if (!NetworkUtils.isConnected()) throw NetOfflineException("当前网络没有连接")
         if (!AppCacheNet.isDomainTryAll.get()) {
             val originalRequest = chain.request()
@@ -88,7 +88,7 @@ class DomainSwitchInterceptor : Interceptor {
                 }
 
                 val currentDomain = domains[currentIndex]
-                "尝试请求域名: $currentDomain (第 ${currentIndex + 1}/${domains.size} 次尝试)".printSout()
+                "尝试请求域名: $currentDomain (第 ${currentIndex + 1}/${domains.size} 次尝试)".printLog()
 
                 val newUrl = buildUrl(currentDomain, originalRequest)
                 val updatedRequestBuilder = originalRequest.newBuilder().url(newUrl)
@@ -101,16 +101,16 @@ class DomainSwitchInterceptor : Interceptor {
                     val updatedRequest = updatedRequestBuilder.build()
                     val response = chain.proceed(updatedRequest)
                     if (response.isSuccessful) {
-                        "请求成功---${response.request.url}".printSout()
+                        "请求成功---${response.request.url}".printLog()
                         successfulDomain = currentDomain
                         AppCacheNet.successfulDomain = currentDomain
                         return response
                     } else {
-                        "请求失败---${response.request.url}".printSout()
+                        "请求失败---${response.request.url}".printLog()
                         response.close()
                     }
                 } catch (e: IOException) {
-                    "请求抛出异常---${e.message}".printSout()
+                    "请求抛出异常---${e.message}".printLog()
                     when (e) {
                         is UnknownHostException,
                         is ConnectException,
@@ -127,18 +127,18 @@ class DomainSwitchInterceptor : Interceptor {
                 // 如果不是最后一个域名，切换到下一个
                 if (currentIndex < domains.size - 1) {
                     if (currentDomainIndex.compareAndSet(currentIndex, currentIndex + 1)) {
-                        "切换到备用域名: ${domains[currentIndex + 1]}".printSout()
+                        "切换到备用域名: ${domains[currentIndex + 1]}".printLog()
                     }
                 }
             }
 
-            "所有域名都不可用".printSout()
+            "所有域名都不可用".printLog()
             AppCacheNet.isDomainTryAll.compareAndSet(false, true) // 只有当前为 false 时才设为 true
             resetDomainIndex()
-            "最终的异常是：---${lastException?.message}".printSout()
+            "最终的异常是：---${lastException?.message}".printLog()
             throw lastException ?: IOException("所有域名请求失败")
         } else {
-            "所有域名请求失败".printSout()
+            "所有域名请求失败".printLog()
             throw IOException("所有域名请求失败")
         }
 

@@ -8,6 +8,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 fun isShowUpdate(): Boolean {
@@ -86,5 +87,21 @@ fun isShowLauncherUpdate(): Boolean {
     val lastTipTime = AppCache.lastLauncherUpdateTime
     // 判断从上次提示到现在是否已经超过三天（72小时）
     return TimeUnit.MILLISECONDS.toDays(now - lastTipTime) >= 3
+}
+
+fun TimeZone.getFormattedTimeZone(): String {
+    // 获取时区名称
+    val displayName = this.displayName
+
+    // 获取原始偏移量（以毫秒为单位）
+    val rawOffset = this.rawOffset
+    val hours = rawOffset / (1000 * 60 * 60) // 转换为小时
+    val minutes = (rawOffset / (1000 * 60)) % 60 // 剩余分钟
+
+    // 格式化 GMT 偏移量
+    val gmtOffset = String.format("GMT%+03d:%02d", hours, Math.abs(minutes))
+
+    // 组合名称和偏移量
+    return "$displayName $gmtOffset"
 }
 
