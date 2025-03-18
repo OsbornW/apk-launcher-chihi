@@ -5,6 +5,7 @@ import com.chihihx.launcher.ad.Plugin
 import com.chihihx.launcher.ad.api.impl.AdLoadCallbackBuilder
 import com.chihihx.launcher.ad.config.AdConfig
 import com.chihihx.launcher.ad.config.buildAdCallback
+import com.chihihx.launcher.ad.constants.ClassNameConstants.AD_CONFIG_PATH
 import java.lang.reflect.Proxy
 
 object LoadAdHelper {
@@ -29,7 +30,7 @@ object LoadAdHelper {
             val (launcherConfig,callback) = buildAdCallback(config)
             val adView = launcherConfig.adView
             val adId = launcherConfig.adId
-            val adConfigClass = Plugin.dexClassLoader.loadClass("com.chihi.adplugin.AdConfig")
+            val adConfigClass = Plugin.dexClassLoader.loadClass(AD_CONFIG_PATH)
 
             // 使用统一方法来更新字段
             updateFieldIfNotNull(Pair(adConfig,adConfigClass), "adView", adView)

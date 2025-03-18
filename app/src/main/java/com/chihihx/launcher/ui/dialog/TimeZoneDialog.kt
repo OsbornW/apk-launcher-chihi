@@ -106,7 +106,9 @@ class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
         val ids = TimeZone.getAvailableIDs()
         val uniqueZones = mutableMapOf<Int, MutableList<String>>() // 偏移量 -> 时区 ID 列表
 
-        // 第一步：按偏移量分组，保留城市格式的 ID
+        val requiredZones = listOf("Asia/Shanghai", "Asia/Taipei", "Asia/Hong_Kong", "Asia/Tokyo", "Asia/Seoul")
+
+        // 按偏移量分组
         for (id in ids) {
             if (id.contains("/")) { // 只保留城市格式的 ID
                 val zone = TimeZone.getTimeZone(id)
@@ -116,26 +118,25 @@ class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
             }
         }
 
-        // 第二步：动态计算每组取的数量
-        val offsetCount = uniqueZones.size // 偏移量组数量
-        val baseTakeCount = targetCount / offsetCount // 每组基础数量
-        val extraCount = targetCount % offsetCount // 额外分配
+        // 动态计算每组取的数量
+        val offsetCount = uniqueZones.size
+        val baseTakeCount = targetCount / offsetCount
+        val extraCount = targetCount % offsetCount
 
         val selectedIds = mutableListOf<String>()
         var index = 0
         for (offsetZones in uniqueZones.values) {
-            offsetZones.sort() // 按字母顺序排序
+            offsetZones.sort() // 按字母排序
             val takeCount = if (index < extraCount) baseTakeCount + 1 else baseTakeCount
             selectedIds.addAll(offsetZones.take(takeCount.coerceAtMost(offsetZones.size)))
             index++
         }
 
-        // 第三步：如果不足 90 个，补充
-        if (selectedIds.size < targetCount) {
-            val remainingIds = ids.filter { id ->
-                id.contains("/") && !selectedIds.contains(id)
-            }.sorted()
-            selectedIds.addAll(remainingIds.take(targetCount - selectedIds.size))
+        // 确保目标时区一定包含
+        for (zoneId in requiredZones) {
+            if (!selectedIds.contains(zoneId)) {
+                selectedIds.add(zoneId)
+            }
         }
 
         // 转换为 SimpleTimeZone 列表
@@ -151,6 +152,7 @@ class TimeZoneDialog : SingleDialogFragment<DialogTimeZoneBinding>() {
         "Filtered time zones: ${finalList.size}".printLog()
         return finalList
     }
+
 
     companion object {
         const val TAG: String = "TimeZoneDialog"

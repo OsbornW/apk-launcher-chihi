@@ -136,6 +136,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 delay(300)
                 if (NetworkUtils.isConnected()) {
                     fetchHomeData()
+                    println("发起请求1")
                     reqPluginInfo()
                     cancel()
                 }
@@ -186,7 +187,8 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             errorJobPlugin = lifecycleScope.launch(Dispatchers.Main) {
                 while (true) {
                     if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll.get()) {
-                        reqPluginInfo()
+                        if(AppCacheNet.successfulDomain.isEmpty())reqPluginInfo() else cancel()
+
                     }
                     delay(2000)
 
@@ -212,8 +214,9 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                         errorJobPluginDownload?.cancel()
                         errorJobPluginDownload = lifecycleScope.launch(Dispatchers.Main) {
                             while (true) {
-                                if (NetworkUtils.isConnected()) {
-                                    reqPluginInfo()
+                                if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll.get()) {
+                                    if(AppCacheNet.successfulDomain.isEmpty())reqPluginInfo() else cancel()
+
                                 }
                                 delay(2000)
 

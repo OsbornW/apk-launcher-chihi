@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.AssetManager
 import android.content.res.Resources
+import com.chihihx.launcher.ad.constants.ClassNameConstants.PLUGIN_MANAGER_PATH
 import dalvik.system.DexClassLoader
 import java.io.File
 import java.lang.ref.WeakReference
@@ -111,7 +112,7 @@ object Plugin {
      */
     private fun initializePlugin() {
         try {
-            val pluginManagerClass = dexClassLoader.loadClass("com.chihi.adplugin.PluginManager")
+            val pluginManagerClass = dexClassLoader.loadClass(PLUGIN_MANAGER_PATH)
             val instanceField = pluginManagerClass.getDeclaredField("INSTANCE")
             val pluginManagerInstance = instanceField.get(null)
             val initMethod = pluginManagerClass.getMethod("init", Context::class.java)

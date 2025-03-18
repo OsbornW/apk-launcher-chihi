@@ -7,6 +7,7 @@ import com.chihihx.launcher.ad.Plugin.dexClassLoader
 import com.chihihx.launcher.ad.config.AdConfig
 import com.chihihx.launcher.ad.config.PluginCache
 import com.chihihx.launcher.ad.config.buildAdCallback
+import com.chihihx.launcher.ad.constants.ClassNameConstants.AD_PLUGIN_PATH
 import com.chihihx.launcher.ad.helper.LoadAdHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,7 +25,7 @@ object AdSdk {
     fun init() {
         try {
             // 1. 加载 AdSdk 类
-            val adPluginClass = dexClassLoader.loadClass("com.chihi.adplugin.AdPlugin")
+            val adPluginClass = dexClassLoader.loadClass(AD_PLUGIN_PATH)
 
             // 获取目标方法
             val adInitMethod = adPluginClass.getDeclaredMethod("initialize")
@@ -53,7 +54,7 @@ object AdSdk {
                 callback.onAdCountdownFinished()
             } else {
                 // 加载 AdPlugin 类
-                val adPluginClass = dexClassLoader.loadClass("com.chihi.adplugin.AdPlugin")
+                val adPluginClass = dexClassLoader.loadClass(AD_PLUGIN_PATH)
                 val function1Class =
                     dexClassLoader.loadClass("kotlin.jvm.functions.Function1")
 
@@ -88,7 +89,7 @@ object AdSdk {
         if (!isAdInitialized) return false
         return try {
             // 加载 AdPlugin 类
-            val adPluginClass = dexClassLoader.loadClass("com.chihi.adplugin.AdPlugin")
+            val adPluginClass = dexClassLoader.loadClass(AD_PLUGIN_PATH)
 
             // 获取 removeAd 方法
             val removeAdMethod = adPluginClass.getDeclaredMethod("removeAd")

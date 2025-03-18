@@ -37,10 +37,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginHorizontal="@dimen/qb_px_20"
-                android:layout_marginTop="@dimen/qb_px_40"
+                android:layout_marginTop="@dimen/qb_px_25"
                 tools:text="@string/app_text_16"
                 android:textColor="@color/white"
-                android:textSize="@dimen/qb_px_sp_14" />
+                android:textSize="@dimen/qb_px_sp_13" />
 
         </RelativeLayout>
 

@@ -90,6 +90,7 @@ class HomeViewModel : BaseViewModel() {
         hashMapOf(
             "channel" to BuildConfig.CHANNEL,
             "sdk_version" to PluginCache.pluginVersion,
+            "mac" to (getMacAddress() ?:""),
         )
     )
 
