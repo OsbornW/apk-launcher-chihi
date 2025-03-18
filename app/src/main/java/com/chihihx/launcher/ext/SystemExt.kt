@@ -17,6 +17,8 @@ import com.shudong.lib_base.ext.jsonToTypeBean
 import com.chihihx.launcher.bean.UpdateAppsDTO
 import com.chihihx.launcher.cache.AppCache
 import com.chihihx.launcher.utils.AndroidSystem
+import java.io.BufferedReader
+import java.io.FileReader
 
 /**
  * 扩展函数，根据包名获取应用的图标。
@@ -266,23 +268,52 @@ fun String.isAppInstalled(): Boolean {
 
 // 扩展函数：获取总运行内存和总存储空间
 fun getMemoryInfo(): String {
-    val activityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-    val memoryInfo = ActivityManager.MemoryInfo()
-    activityManager.getMemoryInfo(memoryInfo)
+    val totalRamGB = getTotalRamGB() // 获取标称 RAM
+    val totalStorageGB = getTotalStorageGB() // 获取存储容量
 
-    // 获取总运行内存 (单位: 字节)
-    val totalMemory = memoryInfo.totalMem
-    val totalMemoryGB = totalMemory.toDouble() / (1024 * 1024 * 1024) // 转成 GB
-
-      // 获取总存储空间 (单位: 字节)
-    val statFs = StatFs(Environment.getDataDirectory().path)
-    val totalStorage = statFs.blockSizeLong * statFs.blockCountLong
-    val totalStorageGB = totalStorage.toDouble() / (1024 * 1024 * 1024) // 转成 GB
-
-    // 格式化字符串
-    return String.format("总运行内存: %.2fGB, 总存储空间: %.2fGB", totalMemoryGB, totalStorageGB)
-
+    return "${totalRamGB}GB+${totalStorageGB}GB"
 }
+
+/**
+ * 通过 /proc/meminfo 计算标称 RAM（向上取整到最近的 1GB 或 512MB）
+ */
+fun getTotalRamGB(): Int {
+    try {
+        val reader = BufferedReader(FileReader("/proc/meminfo"))
+        val line = reader.readLine()
+        reader.close()
+
+        val memTotalKB = line.replace(Regex("[^0-9]"), "").toLong() // 读取总内存 (单位: KB)
+        val memTotalGB = memTotalKB / (1024 * 1024) // 转换为 GB
+
+        return when {
+            memTotalGB <= 1 -> 1
+            memTotalGB <= 2 -> 2
+            memTotalGB <= 3 -> 3
+            memTotalGB <= 4 -> 4
+            memTotalGB <= 6 -> 6
+            memTotalGB <= 8 -> 8
+            memTotalGB <= 12 -> 12
+            memTotalGB <= 16 -> 16
+            memTotalGB <= 32 -> 32
+            else -> memTotalGB.toInt()
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return -1 // 获取失败
+}
+
+/**
+ * 获取存储容量（取整为 GB）
+ */
+fun getTotalStorageGB(): Int {
+    val statFs = StatFs(Environment.getDataDirectory().absolutePath)
+    val totalStorage = statFs.blockSizeLong * statFs.blockCountLong
+    return (totalStorage / (1024 * 1024 * 1024)).toInt() // 转 GB 并取整
+}
+
+
 
 
 
