@@ -17,6 +17,7 @@ import com.shudong.lib_base.ext.jsonToTypeBean
 import com.chihihx.launcher.bean.UpdateAppsDTO
 import com.chihihx.launcher.cache.AppCache
 import com.chihihx.launcher.utils.AndroidSystem
+import kotlin.math.ceil
 
 /**
  * 扩展函数，根据包名获取应用的图标。
@@ -266,22 +267,36 @@ fun String.isAppInstalled(): Boolean {
 
 // 扩展函数：获取总运行内存和总存储空间
 fun getMemoryInfo(): String {
+    // 获取总内存（RAM）
     val activityManager = appContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     val memoryInfo = ActivityManager.MemoryInfo()
     activityManager.getMemoryInfo(memoryInfo)
+    val totalRamGB = adjustRamSize(memoryInfo.totalMem / (1024.0 * 1024 * 1024)) // 取整 RAM
 
-    // 获取总运行内存 (单位: 字节)
-    val totalMemory = memoryInfo.totalMem
-    val totalMemoryGB = totalMemory.toDouble() / (1024 * 1024 * 1024) // 转成 GB
+    // 获取存储空间（内部存储）
+    val statFs = StatFs(Environment.getDataDirectory().absolutePath)
+    val totalStorageGB = adjustStorageSize(statFs.totalBytes / (1024.0 * 1024 * 1024)) // 取整 ROM
 
-      // 获取总存储空间 (单位: 字节)
-    val statFs = StatFs(Environment.getDataDirectory().path)
-    val totalStorage = statFs.blockSizeLong * statFs.blockCountLong
-    val totalStorageGB = totalStorage.toDouble() / (1024 * 1024 * 1024) // 转成 GB
+    return "${totalRamGB}+${totalStorageGB}G"
+}
 
-    // 格式化字符串
-    return String.format("总运行内存: %.2fGB, 总存储空间: %.2fGB", totalMemoryGB, totalStorageGB)
+/**
+ * 按照 1G、2G、4G、8G、16G... 规则取整
+ */
+private fun adjustRamSize(ram: Double): Int {
+    var size = 1
+    while (size < ram) {
+        size *= 2
+    }
+    return size
+}
 
+/**
+ * 按照 8G、16G、32G、64G、128G... 规则取整
+ */
+private fun adjustStorageSize(storage: Double): Int {
+    val thresholds = listOf(8, 16, 32, 64, 128, 256, 512, 1024, 2048) // 扩展到 2TB
+    return thresholds.firstOrNull { it >= storage } ?: thresholds.last() // 找到最接近的存储容量
 }
 
 
