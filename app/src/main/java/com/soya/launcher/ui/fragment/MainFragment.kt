@@ -283,9 +283,9 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
 
         detectNetStaus()
 
-        startRepeatingTask()
+        //startRepeatingTask()
 
-        checkLauncherUpdate()
+       // checkLauncherUpdate()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) { // 当生命周期至少为 RESUMED 时执行
