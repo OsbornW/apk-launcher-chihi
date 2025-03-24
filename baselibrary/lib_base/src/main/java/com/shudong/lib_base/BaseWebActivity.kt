@@ -1,6 +1,7 @@
 package com.shudong.lib_base
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -18,73 +19,71 @@ import com.shudong.lib_base.base.BaseVMActivity
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.databinding.ActivityBaseWebBinding
 import com.shudong.lib_base.ext.appContext
-import com.shudong.lib_base.ext.i
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.yes
 import com.thumbsupec.lib_base.ext.language.changeLanguage
 import com.thumbsupec.lib_base.web.WebLayout
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
+
 
 open class BaseWebActivity : BaseVMActivity<ActivityBaseWebBinding, BaseViewModel>() {
     override fun isShowTitlerBar() = true
 
     protected var mAgentWeb: AgentWeb? = null
     private lateinit var url: String
-    private lateinit var webTitle: String
-    private lateinit var webRightText: String
-    private lateinit var reportId: String
-    private  var jumpType = 0
 
     /**
      *
      * 解决打开webview导致语言切换失效问题
      */
     override fun onCreate(savedInstanceState: Bundle?) {
-        WebView(this).destroy()
-        //changeLanguage(appContext, AppCacheBase.curLanguage)
+        //WebView(this).destroy()
+        changeLanguage(appContext, Locale.getDefault().language)
         super.onCreate(savedInstanceState)
         loadLayout()
     }
 
-    companion object{
-        const val INTENT_JUMP_TYPE = "jump_type"
+    override fun initBeforeContent() {
+        hookWebView()
+    }
+
+    companion object {
         const val INTENT_WEB_URL = "web_url"
-        const val INTENT_WEB_TITLE = "web_title"
-        const val INTENT_WEB_RIGHT_TEXT = "web_right_text"
-        const val INTENT_REPORT_ID = "report_id"
     }
 
     override fun initView() {
-        jumpType = intent.getIntExtra(INTENT_JUMP_TYPE,0)
         url = intent.getStringExtra(INTENT_WEB_URL) ?: getUrl()
-        webTitle = intent.getStringExtra(INTENT_WEB_TITLE) ?: ""
-        webRightText = intent.getStringExtra(INTENT_WEB_RIGHT_TEXT) ?: ""
-        reportId = intent.getStringExtra(INTENT_REPORT_ID) ?: ""
-        webTitle.setTitlebarText()
-        webRightText.isNotEmpty().yes {
-            webRightText.setTitlebarRightText {
-
+        println("当前的本地语言是：${Locale.getDefault().language}")
+        url = when (Locale.getDefault().language) {
+            "zh" -> {
+                val country = Locale.getDefault().country
+                when (country) {
+                    "tw", "hk", "mo" -> "file:///android_asset/privacy_policy_rTW.html"
+                    else -> "file:///android_asset/privacy_policy_rCN.html"
+                }
             }
+
+            else -> "file:///android_asset/privacy_policy_en.html"
         }
         initWebView()
-
-
     }
-
 
 
     private fun getUrl() = "https://m.jd.com/"
 
     private fun initWebView() {
         lifecycleScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 (NetworkUtils.isAvailable()).yes {
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         mAgentWeb = AgentWeb.with(this@BaseWebActivity)
-                            .setAgentWebParent(mBind.llContainer, RelativeLayout.LayoutParams(-1, -1))
+                            .setAgentWebParent(
+                                mBind.llContainer,
+                                RelativeLayout.LayoutParams(-1, -1)
+                            )
                             .useDefaultIndicator()
                             .setWebChromeClient(mWebChromeClient)
                             .setWebViewClient(mWebViewClient)
@@ -96,9 +95,16 @@ open class BaseWebActivity : BaseVMActivity<ActivityBaseWebBinding, BaseViewMode
                             .createAgentWeb()
                             .ready()
                             .go(url)
-                        mAgentWeb!!.agentWebSettings.webSettings.useWideViewPort = true //将图片调整到适合webview的大小
-                        mAgentWeb!!.agentWebSettings.webSettings.loadWithOverviewMode = true // 缩放至屏幕的大小
-                        mAgentWeb!!.agentWebSettings.webSettings.cacheMode = LOAD_NO_CACHE // 缩放至屏幕的大小
+                        mAgentWeb!!.agentWebSettings.webSettings.useWideViewPort =
+                            true //将图片调整到适合webview的大小
+                        mAgentWeb!!.agentWebSettings.webSettings.loadWithOverviewMode =
+                            true // 缩放至屏幕的大小
+                        mAgentWeb!!.agentWebSettings.webSettings.cacheMode =
+                            LOAD_NO_CACHE // 缩放至屏幕的大小
+                        mAgentWeb?.webCreator?.webView?.isFocusable = true
+                        mAgentWeb?.webCreator?.webView?.isFocusableInTouchMode = true
+                        mAgentWeb?.webCreator?.webView?.setBackgroundColor(Color.parseColor("#1A2C3E")) // 设置背景色
+
                     }
                 }.otherwise {
                     runOnUiThread {
@@ -116,9 +122,6 @@ open class BaseWebActivity : BaseVMActivity<ActivityBaseWebBinding, BaseViewMode
     private val mWebChromeClient: WebChromeClient = object : WebChromeClient() {
         override fun onReceivedTitle(view: WebView, title: String?) {
             super.onReceivedTitle(view, title)
-            webTitle.isNullOrEmpty().yes {
-                title?.setTitlebarText()
-            }
 
         }
     }

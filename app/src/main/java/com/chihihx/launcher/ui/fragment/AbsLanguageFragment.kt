@@ -14,6 +14,7 @@ import com.chihihx.launcher.R
 import com.chihihx.launcher.bean.Language
 import com.chihihx.launcher.databinding.FragmentSetLanguageBinding
 import com.chihihx.launcher.databinding.HolderLanguageBinding
+import com.shudong.lib_base.ext.stringValue
 import java.util.Locale
 
 abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseViewModel> :
@@ -25,6 +26,7 @@ abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseVi
         mBind.content.post {
             mBind.content.requestFocus()
         }
+        mBind.tvTitle.text = R.string.set_language.stringValue()
 
         mBind.next.setOnClickListener(this)
     }

@@ -1,5 +1,6 @@
 package com.chihihx.launcher.ui.fragment
 
+import android.content.res.Configuration
 import android.os.Bundle
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.RECREATE_MAIN
@@ -10,6 +11,9 @@ import com.chihihx.launcher.enums.Atts
 import com.chihihx.launcher.manager.PreferencesManager
 import com.chihihx.launcher.utils.AndroidSystem
 import com.chihihx.launcher.utils.PreferencesUtils
+import com.open.system.SystemUtils
+import com.shudong.lib_base.ext.LANGUAGE_CHANGED
+import com.shudong.lib_base.ext.obseverLiveEvent
 import java.util.Locale
 
 class SetLanguageFragment : AbsLanguageFragment<FragmentSetLanguageBinding,BaseViewModel>() {
@@ -20,12 +24,16 @@ class SetLanguageFragment : AbsLanguageFragment<FragmentSetLanguageBinding,BaseV
         showNext(false)
     }
 
+
+
     override fun onSelectLanguage(bean: Language) {
         PreferencesUtils.setProperty(Atts.LANGUAGE, bean.language.toLanguageTag())
-        AndroidSystem.setSystemLanguage(
-            activity,
-            Locale.forLanguageTag(PreferencesManager.getLanguage())
-        )
+        SystemUtils.updateLocale(bean.language)
+        AndroidSystem.setSystemLanguage(activity, bean.language)
+
+        println("设定后的语言是：${bean.language.language}")
+
+
         sendLiveEventData(RECREATE_MAIN,true)
     }
 

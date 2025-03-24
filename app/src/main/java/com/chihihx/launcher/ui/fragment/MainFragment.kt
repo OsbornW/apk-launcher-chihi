@@ -126,6 +126,7 @@ import com.chihihx.launcher.view.AppLayout
 import com.chihihx.launcher.view.MyFrameLayout
 import com.chihihx.launcher.view.MyFrameLayoutHouse
 import com.shudong.lib_base.ext.printLog
+import com.shudong.lib_base.ext.stringValue
 import com.thumbsupec.lib_net.AppCacheNet
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -172,6 +173,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         uiHandler = Handler()
         receiver = InnerReceiver()
 
+        mBind.tvSearchHint.text = R.string.search.stringValue()
         sendLiveEventData(IS_MAIN_CANBACK, false)
     }
 
@@ -908,7 +910,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
         call?.cancel()
         if (homeCall != null) homeCall!!.cancel()
         //receiver?.let { mViewModel.removeAppStatusBroadcast(it) }
-        requireContext().unregisterReceiver(receiver)
+        if(receiver!=null)requireContext().unregisterReceiver(receiver)
         exec.shutdownNow()
     }
 

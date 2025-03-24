@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
+import com.chihihx.launcher.enums.Atts
 import com.shudong.lib_base.base.BaseVMFragment
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.currentActivity
@@ -14,6 +15,9 @@ import com.shudong.lib_base.ext.margin
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.yes
 import com.chihihx.launcher.product.base.product
+import com.chihihx.launcher.utils.PreferencesUtils
+import com.shudong.lib_base.ext.LANGUAGE_CHANGED
+import com.shudong.lib_base.ext.sendLiveEventData
 import java.util.Locale
 
 /**
@@ -58,7 +62,9 @@ abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> 
 
         if(!isLanguageUpdated){
             // 获取系统的默认语言（用户设定的语言）
-            val newLocale = Locale.getDefault()
+            val lang = PreferencesUtils.getProperty(Atts.LANGUAGE, Locale.getDefault().language)
+            println("准备改变的语言1---${lang}")
+            val newLocale = Locale(lang)
 
             // 创建一个新的 Configuration 对象
             val config = Configuration(resources.configuration)
@@ -79,7 +85,9 @@ abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         // 获取系统默认语言
-        val newLocale = Locale.getDefault()
+        val lang = PreferencesUtils.getProperty(Atts.LANGUAGE, Locale.getDefault().language)
+        println("准备改变的语言2---${lang}")
+        val newLocale = Locale(lang)
 
         // 更新配置
         val config = Configuration(resources.configuration)

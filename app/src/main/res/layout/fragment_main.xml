@@ -272,6 +272,7 @@
                                 android:layout_width="@dimen/qb_px_15"
                                 android:layout_height="@dimen/qb_px_15"/>
                             <TextView
+                                android:id="@+id/tv_searchHint"
                                 android:textSize="@dimen/qb_px_sp_15"
                                 android:layout_marginLeft="@dimen/qb_px_5"
                                 android:layout_gravity="center_vertical"

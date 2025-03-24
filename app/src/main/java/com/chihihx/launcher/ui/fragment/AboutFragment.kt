@@ -28,6 +28,8 @@ import com.chihihx.launcher.ui.activity.UpdateLauncherActivity
 import com.chihihx.launcher.ui.dialog.ProgressDialog
 import com.chihihx.launcher.ui.dialog.ToastDialog
 import com.chihihx.launcher.utils.AndroidSystem
+import com.shudong.lib_base.BaseWebActivity
+import com.shudong.lib_base.BaseWebActivity.Companion.INTENT_WEB_URL
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -118,6 +120,16 @@ class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(
             )
         )
 
+        list.add(
+            AboutItem(
+                1,
+                R.drawable.baseline_workspaces_100,
+                "隐私政策",
+                ""
+            )
+        )
+
+
         product.isShowMemoryInfo().yes {
             list.add(
                 AboutItem(
@@ -155,6 +167,13 @@ class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(
                 val dto = getModel<AboutItem>()
                 itemView.clickNoRepeat {
                     when (dto.type) {
+                        1->{
+                            val url = "https://agree.xiaohongshu.com/h5/terms/ZXXY20220509001/-1"
+                            //val url = "https://t.cp31.ott.cibntv.net/yep/page/s/vk7h5cfgnp"
+                            startKtxActivity<BaseWebActivity>(
+                                values = arrayOf(Pair(INTENT_WEB_URL, url))
+                            )
+                        }
                         2 -> AndroidSystem.restoreFactory(requireContext())
                     }
                 }

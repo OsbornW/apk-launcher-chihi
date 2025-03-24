@@ -618,6 +618,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         }
 
         obseverLiveEvent<Boolean>(RECREATE_MAIN) {
+            println("收到重建MAIN的消息了")
             recreate()
         }
 

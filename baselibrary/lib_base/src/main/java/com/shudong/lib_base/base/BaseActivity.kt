@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -190,57 +191,45 @@ abstract class BaseActivity<VDB : ViewDataBinding> : FragmentActivity(), BaseVMV
             field.isAccessible = true
             var sProviderInstance = field.get(null)
             if (sProviderInstance != null) {
-
-                return
+                return // 如果 sProviderInstance 已存在，直接返回
             }
 
-            val getProviderClassMethod: Method
-            getProviderClassMethod = when {
+            // 根据 SDK 版本选择方法
+            val getProviderClassMethod = when {
                 sdkInt > 22 -> factoryClass.getDeclaredMethod("getProviderClass")
                 sdkInt == 22 -> factoryClass.getDeclaredMethod("getFactoryClass")
-                else -> {
-
-                    return
-                }
+                else -> return // 不支持低于 22 的版本
             }
             getProviderClassMethod.isAccessible = true
             val factoryProviderClass = getProviderClassMethod.invoke(factoryClass) as Class<*>
+
+            // 获取 WebViewDelegate 类并创建实例
             val delegateClass = Class.forName("android.webkit.WebViewDelegate")
             val delegateConstructor = delegateClass.getDeclaredConstructor()
             delegateConstructor.isAccessible = true
-            if (sdkInt < 26) {//低于Android O版本
+
+            // 根据 SDK 版本创建 sProviderInstance
+            sProviderInstance = if (sdkInt < 26) {
                 val providerConstructor = factoryProviderClass.getConstructor(delegateClass)
-                if (providerConstructor != null) {
-                    providerConstructor.isAccessible = true
-                    sProviderInstance =
-                        providerConstructor.newInstance(delegateConstructor.newInstance())
-                }
+                providerConstructor.isAccessible = true
+                providerConstructor.newInstance(delegateConstructor.newInstance())
             } else {
-                val chromiumMethodName =
-                    factoryClass.getDeclaredField("CHROMIUM_WEBVIEW_FACTORY_METHOD")
+                val chromiumMethodName = factoryClass.getDeclaredField("CHROMIUM_WEBVIEW_FACTORY_METHOD")
                 chromiumMethodName.isAccessible = true
-                var chromiumMethodNameStr: String? = chromiumMethodName.get(null) as String
-                if (chromiumMethodNameStr == null) {
-                    chromiumMethodNameStr = "create"
-                }
-                val staticFactory =
-                    factoryProviderClass.getMethod(chromiumMethodNameStr, delegateClass)
-                if (staticFactory != null) {
-                    sProviderInstance =
-                        staticFactory.invoke(null, delegateConstructor.newInstance())
-                }
+                val methodName = chromiumMethodName.get(null) as? String ?: "create"
+                val staticFactory = factoryProviderClass.getMethod(methodName, delegateClass)
+                staticFactory.invoke(null, delegateConstructor.newInstance())
             }
 
+            // 设置 sProviderInstance
             if (sProviderInstance != null) {
-                field.set("sProviderInstance", sProviderInstance)
-
+                field.set(null, sProviderInstance)
             } else {
-
+                Log.e("WebViewHook", "Failed to create sProviderInstance")
             }
         } catch (e: Throwable) {
-
+            Log.e("WebViewHook", "Error during WebView hooking", e)
         }
-
     }
 
 

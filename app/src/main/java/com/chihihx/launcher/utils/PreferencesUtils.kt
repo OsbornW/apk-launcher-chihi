@@ -73,6 +73,17 @@ object PreferencesUtils {
         editor.commit()
     }
 
+    fun getProperty(key: String?, defaultValue: String?): String? {
+        if (appContext == null) {
+            return defaultValue
+        }
+
+        val sp = appContext.getSharedPreferences(
+            appContext.packageName, Context.MODE_PRIVATE
+        )
+        return sp.getString(key, defaultValue)
+    }
+
     fun setProperty(key: String?, value: Float) {
         if (appContext == null) {
             return
