@@ -30,6 +30,7 @@ import com.chihihx.launcher.ui.dialog.ToastDialog
 import com.chihihx.launcher.utils.AndroidSystem
 import com.shudong.lib_base.BaseWebActivity
 import com.shudong.lib_base.BaseWebActivity.Companion.INTENT_WEB_URL
+import com.shudong.lib_base.ext.stringValue
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -124,7 +125,7 @@ class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(
             AboutItem(
                 1,
                 R.drawable.baseline_workspaces_100,
-                "隐私政策",
+                R.string.privacy_policy.stringValue(),
                 ""
             )
         )

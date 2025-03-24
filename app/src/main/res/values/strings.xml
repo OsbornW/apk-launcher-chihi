@@ -247,4 +247,6 @@ Update now to explore a better way to manage your desktop!
     <string name="Device">Device Total RAM</string>
     <string name="Total">Total Storage</string>
 
+    <string name="privacy_policy">Privacy Policy</string>
+
 </resources>

@@ -246,4 +246,6 @@
     <string name="Device">总运行内存</string>
     <string name="Total">总存储空间</string>
 
+    <string name="privacy_policy">隐私政策</string>
+
 </resources>
