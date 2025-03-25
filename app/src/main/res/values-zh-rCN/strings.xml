@@ -199,28 +199,34 @@
     <string name="Activate_Now">立即激活</string>
 
 
-    <string name="app_text_15" >可用更新</string>
-    <string name="app_text_16" >全新版本上线！\n新增[新功能]，优化[优化点]，\n提升你的使用体验。立即更新，\n发现更多惊喜！</string>
-    <string name="app_text_17" >下次再说</string>
-    <string name="app_text_18" >更新</string>
-    <string name="app_text_35" >准备中</string>
-    <string name="app_text_36" >下载失败</string>
-    <string name="app_text_37" >开始安装</string>
-    <string name="app_text_38" >下载: %d%%</string>
+    <string name="app_text_15">可用更新</string>
+    <string name="app_text_16">
+全新版本来袭，提升你的智能桌面体验：\n
+\u2022 新增实用功能，解锁更多个性化玩法。\n
+\u2022 优化性能表现，操作更流畅，效率再升级。\n
+\u2022 提升使用体验，细节调整让每一次互动更贴心。\n
+立即更新，发现更出色的桌面管理新方式！
+</string>
+    <string name="app_text_17">下次再说</string>
+    <string name="app_text_18">更新</string>
+    <string name="app_text_35">准备中</string>
+    <string name="app_text_36">下载失败</string>
+    <string name="app_text_37">开始安装</string>
+    <string name="app_text_38">下载: %d%%</string>
 
 
-    <string name="auto_response_off" >自动响应(关)</string>
-    <string name="auto_response_on" >自动响应(开)</string>
-    <string name="auto_focus" >自动聚焦</string>
-    <string name="auto_entry" >自动入幕</string>
-    <string name="projector_method" >投影方式</string>
-    <string name="screen_zoom" >屏幕缩放</string>
-    <string name="auto_calibrate" >自动梯形</string>
-    <string name="manual_calibration" >手动梯形</string>
-    <string name="open_response" >打开</string>
-    <string name="close_response" >关闭</string>
-    <string name="set_success" >设置成功</string>
-    <string name="set_failed" >设置失败</string>
+    <string name="auto_response_off">自动响应(关)</string>
+    <string name="auto_response_on">自动响应(开)</string>
+    <string name="auto_focus">自动聚焦</string>
+    <string name="auto_entry">自动入幕</string>
+    <string name="projector_method">投影方式</string>
+    <string name="screen_zoom">屏幕缩放</string>
+    <string name="auto_calibrate">自动梯形</string>
+    <string name="manual_calibration">手动梯形</string>
+    <string name="open_response">打开</string>
+    <string name="close_response">关闭</string>
+    <string name="set_success">设置成功</string>
+    <string name="set_failed">设置失败</string>
 
     <string name="screencast">投屏功能</string>
     <string name="finish">完成</string>
@@ -235,6 +241,16 @@
     <string name="saved_wifi_tip">已保存的网络</string>
     <string name="wifi_password_prompt">输入 %1$s 的密码</string>
     <string name="cant_set_previous_time">不能设置过去的时间</string>
+    <string name="privacy_policy">隐私政策</string>
+
+    <string name="privacy_policy_tip">温馨提示：为了提供本软件的相关服务，我们会根据您使用服务的具体
+        功能要求，收\n集必要的用户信息。请您仔细阅读《隐私政策》，充分理解协议中的条款内容后再点\n击同意。
+        如果不同意本隐私权政策的内容，将可能导致我们的某些产品与/或服务无\n法正常运行。
+        (仅支持遥控器或键盘操作)\n\n点击同意即表示您已阅读并同意：</string>
+    <string name="privacy_policy_link">《隐私政策》</string>
+    <string name="privacy_policy_agree">同意</string>
+    <string name="privacy_policy_disagree">不同意并退出应用</string>
+
 
 
 </resources>

@@ -9,12 +9,15 @@ import androidx.leanback.widget.ItemBridgeAdapter
 import androidx.lifecycle.lifecycleScope
 import com.drake.brv.utils.addModels
 import com.drake.brv.utils.setup
+import com.shudong.lib_base.BaseWebActivity
+import com.shudong.lib_base.BaseWebActivity.Companion.INTENT_WEB_URL
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.jsonToString
 import com.shudong.lib_base.ext.net.lifecycle
 import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.otherwise
 import com.shudong.lib_base.ext.startKtxActivity
+import com.shudong.lib_base.ext.stringValue
 import com.shudong.lib_base.ext.yes
 import com.soya.launcher.BaseWallPaperFragment
 import com.soya.launcher.BuildConfig
@@ -119,6 +122,14 @@ class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(
                 BuildConfig.VERSION_NAME
             )
         )
+        list.add(
+            AboutItem(
+                1,
+                R.drawable.privacy_policy,
+                R.string.privacy_policy.stringValue(),
+                ""
+            )
+        )
 
         product.isShowMemoryInfo().yes {
             list.add(
@@ -157,6 +168,13 @@ class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(
                 val dto = getModel<AboutItem>()
                 itemView.clickNoRepeat {
                     when (dto.type) {
+                        1->{
+                            val url = "https://agree.xiaohongshu.com/h5/terms/ZXXY20220509001/-1"
+                            //val url = "https://t.cp31.ott.cibntv.net/yep/page/s/vk7h5cfgnp"
+                            startKtxActivity<BaseWebActivity>(
+                                values = arrayOf(Pair(INTENT_WEB_URL, url))
+                            )
+                        }
                         2 -> AndroidSystem.restoreFactory(requireContext())
                     }
                 }

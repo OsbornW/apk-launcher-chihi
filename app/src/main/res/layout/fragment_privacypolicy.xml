@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.hjq.shape.layout.ShapeLinearLayout
+                android:layout_marginHorizontal="@dimen/qb_px_180"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/qb_px_300"
+                android:orientation="vertical"
+                app:shape_solidColor="#252C37"
+                app:shape_radius="@dimen/qb_px_5">
+
+                <TextView
+                    android:layout_marginVertical="@dimen/qb_px_20"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy_policy"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_sp_18" />
+
+                <TextView
+                    android:layout_marginHorizontal="@dimen/qb_px_25"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy_policy_tip"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_sp_14" />
+
+                <com.hjq.shape.view.ShapeTextView
+                    android:id="@+id/tv_privacy_policy"
+                    app:shape_radius="@dimen/qb_px_5"
+                    android:paddingVertical="@dimen/qb_px_12"
+                    android:paddingHorizontal="@dimen/qb_px_100"
+                    android:layout_marginTop="@dimen/qb_px_20"
+                    android:layout_gravity="center_horizontal"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    app:shape_solidColor="#393F4B"
+                    app:shape_solidFocusedColor="#2963FF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy_policy_link"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_sp_18" />
+
+            </com.hjq.shape.layout.ShapeLinearLayout>
+
+            <LinearLayout
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/qb_px_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.hjq.shape.view.ShapeTextView
+                    app:shape_radius="@dimen/qb_px_12"
+                    android:textSize="@dimen/qb_px_sp_16"
+                    android:gravity="center"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    app:shape_solidColor="#1F2127"
+                    app:shape_solidFocusedColor="#2963FF"
+                    android:layout_width="@dimen/qb_px_170"
+                    android:layout_height="@dimen/qb_px_50"
+                    android:text="@string/privacy_policy_agree"
+                    android:id="@+id/tv_agree"
+                    android:textColor="@color/white" />
+
+                <com.hjq.shape.view.ShapeTextView
+                    android:id="@+id/tv_disagree"
+                    android:layout_marginLeft="@dimen/qb_px_20"
+                    app:shape_radius="@dimen/qb_px_12"
+                    android:textSize="@dimen/qb_px_sp_16"
+                    android:gravity="center"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    app:shape_solidColor="#1F2127"
+                    app:shape_solidFocusedColor="#2963FF"
+                    android:layout_width="@dimen/qb_px_170"
+                    android:layout_height="@dimen/qb_px_50"
+                    android:text="@string/privacy_policy_disagree"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

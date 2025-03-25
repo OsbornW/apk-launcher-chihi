@@ -235,6 +235,17 @@
     <string name="saved_wifi_tip">已保存的網絡</string>
     <string name="wifi_password_prompt">輸入 %1$s 的密碼</string>
     <string name="cant_set_previous_time">不能設定過去的時間</string>
+    <string name="privacy_policy">隱私政策</string>
+
+    <string name="privacy_policy_tip">溫馨提示：為了提供本軟件的相關服務，我們會根據您使用服務的具體功能要
+        求，收\n集必要的用戶資訊。請您仔細閱讀《隱私政策》，
+        充分理解協議中的條款內容後再點\n擊同意。如果不同意本隱私權政策的內容，
+        將可能導致我們的某些產品與/或服務無\n法正常運行。
+        (僅支援遙控器或鍵盤操作)\n\n點擊同意即表示您已閱讀並同意：</string>
+    <string name="privacy_policy_link">《隱私政策》</string>
+    <string name="privacy_policy_agree">同意</string>
+    <string name="privacy_policy_disagree">不同意並退出應用</string>
+
 
 
 </resources>
