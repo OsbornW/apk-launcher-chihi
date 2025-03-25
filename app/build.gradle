@@ -331,7 +331,7 @@ android {
             buildConfigField "String", "CHANNEL", '"X50"'
             buildConfigField "String", "CHIHI_TYPE", '"P50_H713M"'
             buildConfigField "String", "MODEL", '"P50_713M"'
-            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihihx.store"'
+            buildConfigField "String", "ABPPSTORE_APP_ID",'"com.chihihx.store"'
             buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihihx.store.ui.activity.AppDetailActivity"'
             buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_X50}\""
             buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'

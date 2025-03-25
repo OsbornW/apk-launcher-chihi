@@ -93,6 +93,7 @@ abstract class BaseActivity<VDB : ViewDataBinding> : FragmentActivity(), BaseVMV
 
     lateinit var inflate: View
     override fun onCreate(savedInstanceState: Bundle?) {
+
         initBeforeContent()
         super.setContentView(rootBinding.root)
         super.onCreate(savedInstanceState)

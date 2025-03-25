@@ -8,6 +8,8 @@ import com.chihihx.launcher.BaseWallPaperFragment
 import com.chihihx.launcher.R
 import com.chihihx.launcher.databinding.FragmentFocusBinding
 import com.chihihx.launcher.ext.navigateTo
+import com.shudong.lib_base.ext.REFRESH_GUID
+import com.shudong.lib_base.ext.obseverLiveEvent
 
 class FocusFragment : BaseWallPaperFragment<FragmentFocusBinding, BaseViewModel>(),
     View.OnClickListener {
@@ -16,6 +18,12 @@ class FocusFragment : BaseWallPaperFragment<FragmentFocusBinding, BaseViewModel>
     override fun initView() {
         mBind.tvNext.setOnClickListener { v: View -> this.onClick(v) }
         mBind.tvNext.apply { post { requestFocus() } }
+
+        obseverLiveEvent<Boolean>(REFRESH_GUID){
+            mBind.tvTip.text = R.string.focus_guide.stringValue()
+            mBind.tvNext.text = R.string.next.stringValue()
+
+        }
 
     }
 
@@ -30,8 +38,6 @@ class FocusFragment : BaseWallPaperFragment<FragmentFocusBinding, BaseViewModel>
     }
 
     override fun excuteLang() {
-        mBind.tvTip.text = R.string.focus_guide.stringValue()
-        mBind.tvNext.text = R.string.next.stringValue()
 
     }
 

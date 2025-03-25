@@ -16,6 +16,7 @@ import com.shudong.lib_base.ext.no
 import com.shudong.lib_base.ext.yes
 import com.chihihx.launcher.product.base.product
 import com.chihihx.launcher.utils.PreferencesUtils
+import com.shudong.lib_base.base.BaseActivity
 import com.shudong.lib_base.ext.LANGUAGE_CHANGED
 import com.shudong.lib_base.ext.sendLiveEventData
 import java.util.Locale
@@ -54,47 +55,5 @@ abstract class BaseWallPaperFragment<VDB : ViewDataBinding, VM : BaseViewModel> 
 
     open fun excuteLang(){}
 
-    // 标志变量，表示语言是否已经更新
-    private var isLanguageUpdated = false
 
-    override fun onStart() {
-        super.onStart()
-
-        if(!isLanguageUpdated){
-            // 获取系统的默认语言（用户设定的语言）
-            val lang = PreferencesUtils.getProperty(Atts.LANGUAGE, Locale.getDefault().language)
-            println("准备改变的语言1---${lang}")
-            val newLocale = Locale(lang)
-
-            // 创建一个新的 Configuration 对象
-            val config = Configuration(resources.configuration)
-
-            // 设置新的语言
-            config.setLocale(newLocale)
-
-            // 更新资源配置
-            resources.updateConfiguration(config, resources.displayMetrics)
-
-            // 可能需要手动刷新界面或者重启某些组件来应用语言变更
-            excuteLang()
-        }
-
-    }
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        // 获取系统默认语言
-        val lang = PreferencesUtils.getProperty(Atts.LANGUAGE, Locale.getDefault().language)
-        println("准备改变的语言2---${lang}")
-        val newLocale = Locale(lang)
-
-        // 更新配置
-        val config = Configuration(resources.configuration)
-        config.setLocale(newLocale)
-
-        // 更新资源配置
-        resources.updateConfiguration(config, resources.displayMetrics)
-        isLanguageUpdated = true
-    }
 }

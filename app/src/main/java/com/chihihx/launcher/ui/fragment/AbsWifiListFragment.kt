@@ -119,6 +119,9 @@ open class AbsWifiListFragment<VDB : FragmentWifiListBinding, VM : BaseViewModel
 
     @SuppressLint("MissingPermission")
     override fun initView() {
+        mBind.tvNet1.text = R.string.connected_to_net.stringValue()
+        mBind.tvNet2.text = R.string.ip_address.stringValue()
+        mBind.tvNet3.text = R.string.signal_strength.stringValue()
         mAdapter =
             WifiListAdapter(
                 requireActivity(),

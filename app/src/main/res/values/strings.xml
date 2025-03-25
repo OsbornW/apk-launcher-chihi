@@ -249,4 +249,9 @@ Update now to explore a better way to manage your desktop!
 
     <string name="privacy_policy">Privacy Policy</string>
 
+    <string name="privacy_policy_tip">Friendly Reminder: To provide the relevant services of this software, we will collect necessary user information based on the specific functional requirements of the services you use. Please carefully read the Privacy Policy and fully understand the terms of the agreement before clicking Agree. If you do not agree to the content of this Privacy Policy, it may result in certain products and/or services not functioning properly. (Only supports remote control or keyboard operation)\n\nBy clicking Agree, you indicate that you have read and agree to:</string>
+    <string name="privacy_policy_link">Privacy Policy</string>
+    <string name="privacy_policy_agree">Agree</string>
+    <string name="privacy_policy_disagree">Disagree and Exit</string>
+
 </resources>

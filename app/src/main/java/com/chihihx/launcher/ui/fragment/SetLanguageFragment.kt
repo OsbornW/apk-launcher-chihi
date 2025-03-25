@@ -31,9 +31,6 @@ class SetLanguageFragment : AbsLanguageFragment<FragmentSetLanguageBinding,BaseV
         SystemUtils.updateLocale(bean.language)
         AndroidSystem.setSystemLanguage(activity, bean.language)
 
-        println("设定后的语言是：${bean.language.language}")
-
-
         sendLiveEventData(RECREATE_MAIN,true)
     }
 

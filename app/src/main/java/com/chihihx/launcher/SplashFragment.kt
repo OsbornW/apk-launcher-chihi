@@ -11,7 +11,11 @@ import com.chihihx.launcher.databinding.ActivitySplashBinding
 import com.chihihx.launcher.enums.Atts
 import com.chihihx.launcher.ext.navigateTo
 import com.chihihx.launcher.product.base.product
+import com.chihihx.launcher.ui.fragment.PrivacyPolicyFragment
 import com.chihihx.launcher.utils.PreferencesUtils
+import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.replaceFragment
 import com.thumbsupec.lib_base.ext.language.initMultiLanguage
 import com.thumbsupec.lib_base.toast.ToastUtils
 import com.thumbsupec.lib_net.http.MyX509TrustManager
@@ -88,10 +92,15 @@ class SplashFragment : BaseWallPaperFragment<ActivitySplashBinding, BaseViewMode
     }
 
     private fun enterHome() {
-        product.switchFragment()?.let {
-            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment, it)
-            //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
+        AppCache.isPrivacyPolicyAgreed.no {
+            requireActivity().replaceFragment(PrivacyPolicyFragment(), R.id.main_browse_fragment)
+        }.otherwise {
+            product.switchFragment()?.let {
+                requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment, it)
+                //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
+            }
         }
+
     }
 
     companion object {

@@ -5,42 +5,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Configuration
 import android.os.Build
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_AVR_POWER
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.blankj.utilcode.util.NetworkUtils
-import com.google.gson.Gson
-import com.google.gson.stream.JsonReader
-import com.shudong.lib_base.ext.ACTIVE_SUCCESS
-import com.shudong.lib_base.ext.ADD_APPSTORE
-import com.shudong.lib_base.ext.CANCLE_MAIN_LIFECYCLESCOPE
-import com.shudong.lib_base.ext.HOME_EVENT
-import com.shudong.lib_base.ext.IS_MAIN_CANBACK
-import com.shudong.lib_base.ext.RECREATE_MAIN
-import com.shudong.lib_base.ext.REFRESH_HOME
-import com.shudong.lib_base.ext.REGET_HOMEDATA
-import com.shudong.lib_base.ext.RERUN_SCOPE
-import com.shudong.lib_base.ext.UPDATE_HOME_LIST
-import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
-import com.shudong.lib_base.ext.appContext
-import com.shudong.lib_base.ext.downloadApkNopkName
-import com.shudong.lib_base.ext.downloadPic
-import com.shudong.lib_base.ext.e
-import com.shudong.lib_base.ext.jsonToBean
-import com.shudong.lib_base.ext.jsonToString
-import com.shudong.lib_base.ext.net.lifecycle
-import com.shudong.lib_base.ext.no
-import com.shudong.lib_base.ext.obseverLiveEvent
-import com.shudong.lib_base.ext.otherwise
-import com.shudong.lib_base.ext.replaceFragment
-import com.shudong.lib_base.ext.sendLiveEventData
-import com.shudong.lib_base.ext.yes
 import com.chihihx.launcher.BaseWallpaperActivity
 import com.chihihx.launcher.R
 import com.chihihx.launcher.SplashFragment
@@ -76,6 +49,33 @@ import com.chihihx.launcher.utils.getFileNameFromUrl
 import com.chihihx.launcher.utils.getZipFileNameFromUrl
 import com.chihihx.launcher.utils.host.HostUtils
 import com.chihihx.launcher.utils.toTrim
+import com.google.gson.Gson
+import com.google.gson.stream.JsonReader
+import com.shudong.lib_base.ext.ACTIVE_SUCCESS
+import com.shudong.lib_base.ext.ADD_APPSTORE
+import com.shudong.lib_base.ext.CANCLE_MAIN_LIFECYCLESCOPE
+import com.shudong.lib_base.ext.HOME_EVENT
+import com.shudong.lib_base.ext.IS_MAIN_CANBACK
+import com.shudong.lib_base.ext.RECREATE_MAIN
+import com.shudong.lib_base.ext.REFRESH_GUID
+import com.shudong.lib_base.ext.REFRESH_HOME
+import com.shudong.lib_base.ext.REGET_HOMEDATA
+import com.shudong.lib_base.ext.RERUN_SCOPE
+import com.shudong.lib_base.ext.UPDATE_HOME_LIST
+import com.shudong.lib_base.ext.UPDATE_WALLPAPER_EVENT
+import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.downloadApkNopkName
+import com.shudong.lib_base.ext.downloadPic
+import com.shudong.lib_base.ext.e
+import com.shudong.lib_base.ext.jsonToBean
+import com.shudong.lib_base.ext.jsonToString
+import com.shudong.lib_base.ext.net.lifecycle
+import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.obseverLiveEvent
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.replaceFragment
+import com.shudong.lib_base.ext.sendLiveEventData
+import com.shudong.lib_base.ext.yes
 import com.thumbsupec.lib_net.AppCacheNet
 import com.thumbsupec.lib_net.di.domains
 import kotlinx.coroutines.CoroutineScope
@@ -87,6 +87,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileReader
+import java.util.Locale
 
 
 class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>() {
@@ -121,6 +122,19 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             //window.setBackgroundDrawableResource(R.drawable.wallpaper_1)
         }
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // 检测语言变化
+        if (newConfig.locale != null) {
+            val locale = newConfig.locale
+            Locale.setDefault(locale)
+            val config = Configuration()
+            config.locale = locale
+            resources.updateConfiguration(config, resources.displayMetrics)
+            sendLiveEventData(REFRESH_GUID,true)
+        }
     }
 
     override fun onStart() {

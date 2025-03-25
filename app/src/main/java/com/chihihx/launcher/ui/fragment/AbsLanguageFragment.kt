@@ -32,7 +32,6 @@ abstract class AbsLanguageFragment<VDB : FragmentSetLanguageBinding, VM : BaseVi
     }
 
     override fun excuteLang() {
-        "我执行了语言更新".e("chihi_error")
         initView()
     }
 

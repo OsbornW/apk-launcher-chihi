@@ -41,7 +41,7 @@ open class BaseWebActivity : BaseVMActivity<ActivityBaseWebBinding, BaseViewMode
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         //WebView(this).destroy()
-        changeLanguage(appContext, Locale.getDefault().language)
+        //changeLanguage(appContext, Locale.getDefault().language)
         super.onCreate(savedInstanceState)
         loadLayout()
     }
@@ -60,7 +60,8 @@ open class BaseWebActivity : BaseVMActivity<ActivityBaseWebBinding, BaseViewMode
         url = when (Locale.getDefault().language) {
             "zh" -> {
                 val country = Locale.getDefault().country
-                when (country) {
+                println("当前的本地语言国家是：${country}")
+                when (country.lowercase()) {
                     "tw", "hk", "mo" -> "file:///android_asset/privacy_policy_rTW.html"
                     else -> "file:///android_asset/privacy_policy_rCN.html"
                 }

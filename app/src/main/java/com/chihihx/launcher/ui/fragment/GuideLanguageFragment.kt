@@ -28,7 +28,6 @@ class GuideLanguageFragment : AbsLanguageFragment<FragmentSetLanguageBinding,Bas
         PreferencesUtils.setProperty(Atts.LANGUAGE, bean.language.toLanguageTag())
         SystemUtils.updateLocale(bean.language)
         AndroidSystem.setSystemLanguage(activity, bean.language)
-        "选中语言跳转了".e("chihi_error")
         jump()
     }
 
