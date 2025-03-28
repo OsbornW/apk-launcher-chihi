@@ -1,0 +1,253 @@
+<resources>
+    <string name="app_name">HaiHai Desktop</string>
+
+    <!-- Project -->
+    <string name="search">Suchen</string>
+    <string name="setting">Einstellungen</string>
+
+    <string name="wifi">WLAN</string>
+    <string name="bluetooth">Bluetooth.</string>
+    <string name="language">Sprache.</string>
+    <string name="date">Zeit</string>
+    <string name="system">System</string>
+    <string name="about">Über</string>
+    <string name="account">Konto</string>
+    <string name="recommend_for_you">Empfohlen für Sie (%d)</string>
+    <string name="apps">Softwareliste</string>
+    <string name="netflix">Netflix</string>
+    <string name="disney">Disney+</string>
+    <string name="operate">Bedienen</string>
+    <string name="youtube">YouTube</string>
+    <string name="app_store">App Store</string>
+    <string name="recommend_city">Empfohlene Städte (%d)</string>
+    <string name="calendar_format">%02d/%02d/%02d</string>
+    <string name="date_des">%s, %02d.%02d</string>
+    <string name="place_install_app">Bitte installieren Sie die entsprechende App</string>
+    <string name="pojector">Projektor</string>
+    <string name="update">Aktualisieren</string>
+    <string name="tool">Werkzeuge</string>
+    <string name="file_management">Dateiverwaltung</string>
+
+    <string name="monday">Mo</string>
+    <string name="tuesday">Di</string>
+    <string name="wednesday">Mi</string>
+    <string name="thursday">Do</string>
+    <string name="friday">Fr</string>
+    <string name="saturday">Sa</string>
+    <string name="sunday">So</string>
+
+    <string name="network">Netzwerk</string>
+    <string name="keyboard">Tastatur</string>
+    <string name="place_waiting">Bitte warten Sie</string>
+    <string name="password">Passwort</string>
+    <string name="login">Anmelden</string>
+    <string name="open">Öffnen</string>
+    <string name="uninstall">Deinstallieren</string>
+    <string name="close">Schließen</string>
+    <string name="version">Version:</string>
+    <string name="wallpaper">Die Tapete</string>
+    <string name="upgrade">Upgraden</string>
+    <string name="storage">Speicher</string>
+    <string name="android_tv_os_version">Und jetzt gibt es die Android version</string>
+    <string name="software_version">Version der DVD</string>
+    <string name="storage_total_mask">Gesamtkapazität: %.02f GB</string>
+    <string name="already_latest_version">Sie haben die neueste Version</string>
+    <string name="launcher">Startmenü</string>
+    <string name="loading">Laden...</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="download_progress">Download (%d%%)</string>
+    <string name="download_fail">Download fehlgeschlagen. Bitte erneut versuchen</string>
+    <string name="upgrade_now">Download abgeschlossen. Klicken Sie zum Installieren</string>
+    <string name="tip_upgrade">Hinweis: %s</string>
+    <string name="install">Installieren</string>
+    <string name="retry">Wiederholen</string>
+    <string name="focus_guide">Stellen Sie den Projektor-Fokus ein, bis das Bild scharf ist</string>
+    <string name="next">Nächster Schritt</string>
+    <string name="set_language">Standardsprache festlegen</string>
+    <string name="set_date">Setze die aktuelle Systemzeit</string>
+    <string name="set_gradient">Legen Sie einen Gradient fest</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="choose_wallpaper">Standard-Hintergrundbild auswählen</string>
+    <string name="click_to_setting">Klicken Sie zum Einrichten</string>
+    <string name="or_skip">Oder überspringen</string>
+
+    <string name="hulu">Hulu</string>
+    <string name="max">Max</string>
+    <string name="prime_video">Prime Video</string>
+    <string name="more">Weitere</string>
+    <string name="left">Links</string>
+    <string name="right">Rechts</string>
+    <string name="up">Oben</string>
+    <string name="down">Unten</string>
+    <string name="date_picker">Datumsauswahl</string>
+    <string name="time_picker">Zeitauswahl</string>
+    <string name="year_month_day">%02d/%02d/%02d</string>
+    <string name="hour_minute_second">%02d:%02d</string>
+    <string name="is_auto_time_toast">Automatische Zeitabfrage, Einstellung nicht möglich</string>
+    <string name="year">Jahr</string>
+    <string name="month">Monat</string>
+    <string name="day">Tag</string>
+    <string name="hour">Stunde</string>
+    <string name="minute">Minute</string>
+    <string name="second">Sekunde</string>
+    <string name="remote_toast_1">1. Halten Sie die Pfeiltasten links/rechts 3 Sekunden lang gedrückt, bis die rote LED blinkt</string>
+    <string name="remote_toast_2">2. Die Paarung erfolgt automatisch. Bitte warten Sie 5 Sekunden</string>
+    <string name="remote_toast_3">3. Wenn die Meldung "Fernbedienung erfolgreich gepaart" erscheint, ist die Einrichtung abgeschlossen</string>
+    <string name="remote_toast_4">4. Wenn die Verbindung fehlschlägt, wiederholen Sie Schritt 1 und drücken Sie kurz die Pfeiltaste</string>
+    <string name="auto_time_title">Datum und Zeit automatisch festlegen</string>
+    <string name="set_date_title">Datum einstellen</string>
+    <string name="set_time_title">Zeit einstellen</string>
+    <string name="set_netword_title">Stellen Sie die Systemnetzwerkverbindung ein</string>
+    <string name="remote_control_connect">Bluetooth-Fernbedienung verbinden</string>
+    <string name="project_crop">Bildschirm zuschneiden</string>
+    <string name="image_mode">Bildmodus</string>
+    <string name="project_gradient">Trapezkorrektur</string>
+    <string name="project_hdmi">HDMI</string>
+    <string name="project_mode">Projektionsmode</string>
+    <string name="long_ok_next_action">Drücken Sie die *OK-Taste* langsam für die nächste Aktion</string>
+    <string name="click_ok_changer_dir">OK-Punktauswahl</string>
+    <string name="click_menu_reset">Zurücksetzen</string>
+    <string name="vertical_dir">Vertikale Richtung</string>
+    <string name="horizontal_dir">Waagerecht.</string>
+    <string name="edit_wifi_pass">WIFI-Passwort eingeben</string>
+    <string name="clean">Löschen</string>
+    <string name="connect_netword">Netzwerk verbinden</string>
+    <string name="connect">Verbinden</string>
+    <string name="unsave">Speichern abbrechen</string>
+    <string name="saved_networks">Gespeicherte Netzwerke</string>
+    <string name="signal_low">Sehr schwach</string>
+    <string name="signal_middle">Gut</string>
+    <string name="signal_strong">Sehr stark</string>
+    <string name="tip">Hinweis</string>
+    <string name="unable_to_wifi">Kann nicht mit %s verbinden</string>
+    <string name="connected_to_net">Netzwerk netzwerk</string>
+    <string name="ip_address">Die IP-Adresse</string>
+    <string name="signal_strength">Signalstärke</string>
+    <string name="connected">Caroline turing klone telefon- - verbunden</string>
+    <string name="connecting">Verbinden</string>
+    <string name="blu_connected_fail">Bluetooth-Verbindung getrennt</string>
+    <string name="blu_connected_success">Bluetooth-Verbindung erfolgreich</string>
+    <string name="set_the_screen_trimming">Bildschirmränder anpassen</string>
+    <string name="use_website_search">Websuche verwenden</string>
+    <string name="app_list">Anwendungen</string>
+    <string name="no_data">Keine Daten gefunden</string>
+    <string name="place_install">Bitte installieren Sie %s</string>
+    <string name="set_bluetooth_connected">Bluetooth-Verbindung einrichten</string>
+    <string name="searching">Suche...</string>
+    <string name="pairing_mark">%s wird gepaart</string>
+    <string name="pairing_fail">Kann %s nicht verbinden</string>
+    <string name="pairing_success">%s erfolgreich verbunden</string>
+    <string name="time_display">24-Stunden-Format verwenden</string>
+    <string name="sound">Ton</string>
+    <string name="remote_control">Fernbedienung</string>
+    <string name="device_id">Geräte-ID</string>
+
+    <string name="waiting">Warten...</string>
+    <string name="download_fail_mask">Download fehlgeschlagen</string>
+    <string name="install_failed">Installation fehlgeschlagen</string>
+    <string name="installed">Installation erfolgreich</string>
+    <string name="installing">Installieren...</string>
+    <string name="notice">Benachrichtigung</string>
+    <string name="remove_notify_apk_download">Ausführen</string>
+    <string name="remove">Entfernen</string>
+    <string name="time_zone">Zeitzone</string>
+    <string name="factory_reset">Die werkseinstellungen wieder herstellen.</string>
+    <string name="auto">Automatik</string>
+    <string name="auto_calibration">Horizontale Kalibrierung</string>
+    <string name="manual">Manuelle Kalibrierung</string>
+    <string name="guide_group_gradient_tip_next">Die Korrektur ist abgeschlossen. Wählen Sie "Manuell", wenn eine Korrektur notwendig ist. Andernfalls wählen Sie "Weiter".</string>
+    <string name="guide_group_gradient_tip_done">Korrektur abgeschlossen. Wählen Sie "Manuell" für Anpassungen, sonst "Fertig"</string>
+    <string name="manual_text">Handbetrieb.</string>
+    <string name="skip">Überspringen</string>
+    <string name="manual_gradient_tip">Der automatische filter ist abgeschaltet, sie können das mädchen in die projektionseinstellungen einfügen, dieses auswählen und dann zur weiteren verwendung umschalten</string>
+    <string name="uninstalling">Deinstallieren...</string>
+    <string name="uninstalled">Deinstallation erfolgreich</string>
+    <string name="uninstall_failed">Deinstallation fehlgeschlagen</string>
+    <string name="done">Fertig</string>
+    <string name="saved">Gespeichert</string>
+
+    <string name="disconnect_net">Verbindung trennen</string>
+    <string name="ethernet" translatable="false">Ethernet verbunden, WLAN nicht verfügbar</string>
+
+    <string name="available_updates">Verfügbare Updates</string>
+    <string name="No_prompt_yet">Später erinnern</string>
+    <string name="Cancell">Abbrechen</string>
+    <string name="Finish">Fertig</string>
+
+    <string name="Installation_Complete">Installation abgeschlossen</string>
+    <string name="Installation_failed">Installation fehlgeschlagen</string>
+    <string name="Installation_Errors">Installationsfehler</string>
+    <string name="In_preparation">Vorbereitung...</string>
+    <string name="download">Download %d%%</string>
+    <string name="Download_failed">Download fehlgeschlagen</string>
+    <string name="update1">Aktualisieren</string>
+
+    <string name="The_author_of_The_New_York_Times">Wartet auf Installation</string>
+
+
+    <string name="Activating">Aktivieren...</string>
+    <string name="Success">Aktivierung erfolgreich</string>
+    <string name="Failed_please">Fehlgeschlagen. Bitte erneut versuchen!</string>
+    <string name="Invalid_PIN">Ungültige PIN. Bitte erneut eingeben!</string>
+    <string name="The_input">Eingabefeld darf nicht leer sein</string>
+    <string name="The_author">Installieren...</string>
+
+
+    <string name="System_activation">Systemaktivierung</string>
+    <string name="Please_input">Bitte PIN eingeben</string>
+    <string name="active_the_app">Geben Sie die PIN ein, um die App zu aktivieren</string>
+    <string name="Activate_Now">Jetzt aktivieren</string>
+
+
+    <string name="app_text_15">Verfügbare Updates</string>
+    <string name="app_text_16">
+Neue Version verfügbar! Verbessern Sie Ihr Smart-Desktop-Erlebnis:\n
+\u2022 Neue nützliche Funktionen für mehr Individualität\n
+\u2022 Optimierte Leistung für flüssiges Arbeiten\n
+\u2022 Verbesserte Benutzererfahrung durch Details\n
+Aktualisieren Sie jetzt und entdecken Sie bessere Desktop-Verwaltung!
+</string>
+    <string name="app_text_17"> Später</string>
+    <string name="app_text_18">Aktualisieren</string>
+    <string name="app_text_35">Vorbereitung...</string>
+    <string name="app_text_36">Download fehlgeschlagen</string>
+    <string name="app_text_37">Installation starten</string>
+    <string name="app_text_38">Download: %d%%</string>
+
+
+    <string name="auto_response_off">Autoresponse (aus)</string>
+    <string name="auto_response_on">Autoresponse (an)</string>
+    <string name="auto_focus">Autofokus</string>
+    <string name="auto_entry">Automatischer Bildwechsel</string>
+    <string name="projector_method">Projektionsmethode</string>
+    <string name="screen_zoom">Bildvergrößerung</string>
+    <string name="auto_calibrate">Automatische Trapezkorrektur</string>
+    <string name="manual_calibration">Manuelle Trapezkorrektur</string>
+    <string name="open_response">Öffnen</string>
+    <string name="close_response">Schließen</string>
+    <string name="set_success">Einstellung erfolgreich</string>
+    <string name="set_failed">Einstellung fehlgeschlagen</string>
+
+    <string name="screencast">Bildschirmprojektion Funktion</string>
+    <string name="finish">Fertig</string>
+    <string name="back">Zurück</string>
+
+    <string name="display">Anzeige</string>
+    <string name="input_method">Eingabemethode</string>
+    <string name="mouse">Maus</string>
+    <string name="memory">Speicher</string>
+
+    <string name="connected_wifi_tip">Verbundenes Netzwerk</string>
+    <string name="saved_wifi_tip">Gespeicherte Netzwerke</string>
+    <string name="wifi_password_prompt">Passwort für %1$s eingeben</string>
+    <string name="cant_set_previous_time">Vergangene Zeit kann nicht eingestellt werden</string>
+    <string name="privacy_policy">Datenschutzerklärung</string>
+
+    <string name="privacy_policy_tip">Hinweis: Zur Bereitstellung der Dienste erheben wir personenbezogene Daten. Lesen Sie bitte die 《Datenschutzerklärung》 sorgfältig durch. Wenn Sie nicht zustimmen, funktionieren einige Dienste nicht.\n(Nur Fernbedienung oder Tastatur möglich)\n\nMit Klick auf "Zustimmen" akzeptieren Sie:</string>
+    <string name="privacy_policy_link">《Datenschutzerklärung》</string>
+    <string name="privacy_policy_agree">Zustimmen</string>
+    <string name="privacy_policy_disagree">Ablehnen und App beenden</string>
+
+</resources>
+
+

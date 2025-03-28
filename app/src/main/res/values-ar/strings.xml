@@ -1,0 +1,251 @@
+<resources>
+    <string name="app_name">هايهاي دسك طوب</string>
+
+    <!-- Project -->
+    <string name="search">البحث</string>
+    <string name="setting">الإعدادات</string>
+
+    <string name="wifi">شبكة اللاسلك</string>
+    <string name="bluetooth">ثوﺗوﻠﺑﻟا</string>
+    <string name="language">ﺔﻐﻠﻟا</string>
+    <string name="date">تﻗوﻟا</string>
+    <string name="system">النظام</string>
+    <string name="about">نﺄﺷﺑ</string>
+    <string name="account">الحساب</string>
+    <string name="recommend_for_you">موصى به لك (%d)</string>
+    <string name="apps">تﺎﯾﺟﻣرﺑﻟا ﺔﻣﺋﺎﻗ</string>
+    <string name="netflix">نتفلكس</string>
+    <string name="disney">ديزني+</string>
+    <string name="operate">العمليات</string>
+    <string name="youtube">يوتيوب</string>
+    <string name="app_store">متجر التطبيقات</string>
+    <string name="recommend_city">مدن موصوفة (%d)</string>
+    <string name="calendar_format">%02d/%02d/%02d</string>
+    <string name="date_des">%s، %02d/%02d</string>
+    <string name="place_install_app">يرجى تثبيت التطبيق المقابل</string>
+    <string name="pojector">ضرﻋ زﺎﮭﺟ</string>
+    <string name="update">التحديث</string>
+    <string name="tool">الأدوات</string>
+    <string name="file_management">إدارة الملفات</string>
+
+    <string name="monday">الاثنين</string>
+    <string name="tuesday">الثلاثاء</string>
+    <string name="wednesday">الأربعاء</string>
+    <string name="thursday">الخميس</string>
+    <string name="friday">الجمعة</string>
+    <string name="saturday">السبت</string>
+    <string name="sunday">الأحد</string>
+
+    <string name="network">ﺔﻛﺑﺷ</string>
+    <string name="keyboard">المفاتيح</string>
+    <string name="place_waiting">يرجى الانتظار</string>
+    <string name="password">كلمة المرور</string>
+    <string name="login">الدخول</string>
+    <string name="open">الفتح</string>
+    <string name="uninstall">الإزالة</string>
+    <string name="close">الإغلاق</string>
+    <string name="version">الإصدار:</string>
+    <string name="wallpaper">طﺋﺎﺣﻟا قرو</string>
+    <string name="upgrade">التحديث</string>
+    <string name="storage">المساحة التخزينية</string>
+    <string name="android_tv_os_version">مﺎظﻧ نﻣ ﺔﺧﺳﻧ Android</string>
+    <string name="software_version">ﻖﯾﺑطﺗﻟا ﺔﺧﺳﻧ</string>
+    <string name="storage_total_mask">الإجمالي: %.02f جيجابايت</string>
+    <string name="already_latest_version">هذا الإصدار الأحدث</string>
+    <string name="launcher">مبدئ التشغيل</string>
+    <string name="loading">جاري التحميل...</string>
+    <string name="cancel">الغاء</string>
+    <string name="download_progress">جاري التنزيل (%.1f %%)</string>
+    <string name="download_fail">فشل التنزيل. الرجاء المحاولة مرة أخرى</string>
+    <string name="upgrade_now">تم التنزيل. انقر لتثبيت</string>
+    <string name="tip_upgrade">تنبيه: %s</string>
+    <string name="install">التثبيت</string>
+    <string name="retry">المحاولة مرة أخرى</string>
+    <string name="focus_guide">ضبط تركيز المشخص حتى تصبح الصورة واضحة</string>
+    <string name="next">اﻟﺧطوة اﻟﺗﺎﻟﯾﺔ</string>
+    <string name="set_language">ضبط لغة النظام</string>
+    <string name="set_date">ﺿﺑط اﻟوﻗت اﻟﺣﺎﻟﻲ ﻟﻠﻧظﺎم</string>
+    <string name="set_gradient">ضرﻋ جردﺗ طﺑﺿ</string>
+    <string name="confirm">تأكيد</string>
+    <string name="choose_wallpaper">اختيار الخلفية الافتراضية</string>
+    <string name="click_to_setting">انقر لتحديد الإعدادات</string>
+    <string name="or_skip">أو تخطي</string>
+
+    <string name="hulu">هولو</string>
+    <string name="max">مكس</string>
+    <string name="prime_video">بريم فيديو</string>
+    <string name="more">المزيد</string>
+    <string name="left">اليسار</string>
+    <string name="right">اليمين</string>
+    <string name="up">الاعلى</string>
+    <string name="down">الأسفل</string>
+    <string name="date_picker">اختيار التاريخ</string>
+    <string name="time_picker">اختيار الوقت</string>
+    <string name="year_month_day">%02d/%02d/%02d</string>
+    <string name="hour_minute_second">%02d:%02d</string>
+    <string name="is_auto_time_toast">التوقيت التلقائي، لا يمكن تحديده</string>
+    <string name="year">سنة</string>
+    <string name="month">شهر</string>
+    <string name="day">يوم</string>
+    <string name="hour">ساعة</string>
+    <string name="minute">دقيقة</string>
+    <string name="second">ثانية</string>
+    <string name="remote_toast_1">1. اضغط ونحتفظ بالفاتيح الأيسر/اليمين على جهاز التحكم عن بعد لمدة 3 ثوانٍ حتى تبدأ الإشارة الحمراء بالوميض</string>
+    <string name="remote_toast_2">2. يتم التشابك تلقائياً. الرجاء الانتظار 5 ثوانٍ</string>
+    <string name="remote_toast_3">3. عند ظهور التنبيه "تم تشابك جهاز التحكم عن بعد بنجاح" يكون الأمر مكتملاً</string>
+    <string name="remote_toast_4">4. إذا فشلت الاتصال، اعادة الخطوة الأولى ثم اضغط قصيراً على مفتاح الاتجاه</string>
+    <string name="auto_time_title">تحديد التاريخ والوقت تلقائياً</string>
+    <string name="set_date_title">ضبط التاريخ</string>
+    <string name="set_time_title">ضبط الوقت</string>
+    <string name="set_netword_title">ﺿﺑط اﺗﺻﺎل ﺷﺑﻛﺔ اﻟﻧظﺎم</string>
+    <string name="remote_control_connect">تشابك جهاز التحكم عن بعد Bluetooth</string>
+    <string name="project_crop">ﺔﺷﺎﺷﻟا ﻊطﻗ</string>
+    <string name="image_mode">وضع الصورة</string>
+    <string name="project_gradient">فارﺣﻧﻻا ﺢﯾﺣﺻ</string>
+    <string name="project_hdmi">HDMI</string>
+    <string name="project_mode">طﺎﻘﺳﻹا ﻊﺿو </string>
+    <string name="long_ok_next_action">اضغط ونحتفظ بالزر *موافق* لاجراء الخطوة التالية</string>
+    <string name="click_ok_changer_dir"> ﺔطﻘﻧﻟا رﺎﯾﺗﺧا ،ًﺎﻧﺳﺣ</string>
+    <string name="click_menu_reset">لادﺑﺗﺳﻻا</string>
+    <string name="vertical_dir">يدوﻣﻌﻟا هﺎﺟﺗﻻا</string>
+    <string name="horizontal_dir">ﻲﻘﻓﻷا هﺎﺟﺗﻻا</string>
+    <string name="edit_wifi_pass">ادخل كلمة المرور لـWIFI</string>
+    <string name="clean">مسح</string>
+    <string name="connect_netword">اتصال بالشبكة</string>
+    <string name="connect">الاتصال</string>
+    <string name="unsave">إلغاء الحفظ</string>
+    <string name="saved_networks">الشبكات المحفوظة</string>
+    <string name="signal_low">ضعيف جداً</string>
+    <string name="signal_middle">جيد</string>
+    <string name="signal_strong">قوي جداً</string>
+    <string name="tip">تنبيه</string>
+    <string name="unable_to_wifi">لا يمكن الاتصال بـ %s</string>
+    <string name="connected_to_net">ﻗم ﺑﺗوﺻﯾل اﻹﻹﻧﺗرﻧت</string>
+    <string name="ip_address">ن IP</string>
+    <string name="signal_strength">ﺎرة ﻗ </string>
+    <string name="connected">ﺗم اﻻﻻﺗﺻﺎل</string>
+    <string name="connecting">ﺟﺎري اﻻﻻﺗﺻﺎل</string>
+    <string name="blu_connected_fail">قطع اتصال Bluetooth</string>
+    <string name="blu_connected_success">نجح اتصال Bluetooth</string>
+    <string name="set_the_screen_trimming">ﺔﺷﺎﺷﻟا فاوﺣ طﺑﺿ</string>
+    <string name="use_website_search">استخدام البحث على الانترنت</string>
+    <string name="app_list">التطبيقات</string>
+    <string name="no_data">لم يتم العثور على بيانات</string>
+    <string name="place_install">يرجى تثبيت %s</string>
+    <string name="set_bluetooth_connected">ضبط اتصال Bluetooth</string>
+    <string name="searching">جاري البحث...</string>
+    <string name="pairing_mark">جاري التشابك بـ %s</string>
+    <string name="pairing_fail">فشل التشابك بـ %s</string>
+    <string name="pairing_success">تم التشابك بـ %s</string>
+    <string name="time_display"> ﺳﺗﺧدم ﺗﻧﺳﯾﻖ 24 ساعة</string>
+    <string name="sound">الموسيقى</string>
+    <string name="remote_control">جهاز التحكم عن بعد</string>
+    <string name="device_id">معرف الجهاز</string>
+
+    <string name="waiting">جاري الانتظار...</string>
+    <string name="download_fail_mask">فشل التنزيل</string>
+    <string name="install_failed">فشل التثبيت</string>
+    <string name="installed">تم التثبيت</string>
+    <string name="installing">جاري التثبيت...</string>
+    <string name="notice">إشعار</string>
+    <string name="remove_notify_apk_download">اجراء</string>
+    <string name="remove">الإزالة</string>
+    <string name="time_zone">اﻟﻣﻧطﻘﺔ اﻟزﻣﻧﯾﺔ</string>
+    <string name="factory_reset">ﻊﻧﺻﻣﻟا دادﻋإ ةدﺎﻋإ</string>
+    <string name="auto">ﺎﯾﺋﺎﻘﻠﺗ</string>
+    <string name="auto_calibration">تصحيح أفقي</string>
+    <string name="manual">تصحيح يدوي</string>
+    <string name="guide_group_gradient_tip_next">وأخر اتمام التصحيح، إذا كان هناك حاجة إلى تعديل، يرحى الاخبار الوعي البدوى، خلاف ذلك، يرحى الاخبار "الخطة النالية".</string>
+    <string name="guide_group_gradient_tip_done">تم التصحيح. إذا كنت ترغب في تعديل، اختر "يدوي"، وإلا اختر "انتهاء"</string>
+    <string name="manual_text">اﻟﯾدوي</string>
+    <string name="skip">التخطي</string>
+    <string name="manual_gradient_tip">كﻧﻛﻣﯾو ﻲﺋﺎﻘﻠﺗﻟا ﺢﯾﺣﺻﺗﻟا قﻼﻏإ مﺗ ﺢﯾﺣﺻﺗ" رﺎﯾﺗﺧاو طﺎﻘﺳﻹا تادادﻋإ لﺎﺧدإمادﺧﺗﺳﻻا نﻣ دﯾزﻣﻟ ﻲﺋﺎﻘﻠﺗﻟا ﻰﻟإ لﯾدﺑﺗﻟاو "جردﺗﻟا</string>
+    <string name="uninstalling">جاري الإزالة...</string>
+    <string name="uninstalled">تم الإزالة</string>
+    <string name="uninstall_failed">فشل الإزالة</string>
+    <string name="done">انتهى</string>
+    <string name="saved">حفظ</string>
+
+    <string name="disconnect_net">القطع</string>
+    <string name="ethernet" translatable="false">موصوف بواسطة Ethernet، غير متاح WiFi</string>
+
+    <string name="available_updates">التحديثات المتاحة</string>
+    <string name="No_prompt_yet">تذكير لاحقاً</string>
+    <string name="Cancell">الغاء</string>
+    <string name="Finish">انتهاء</string>
+
+    <string name="Installation_Complete">تم التثبيت</string>
+    <string name="Installation_failed">فشل التثبيت</string>
+    <string name="Installation_Errors">خطأ في التثبيت</string>
+    <string name="In_preparation">جاري التحضير...</string>
+    <string name="download">تنزيل %d%%</string>
+    <string name="Download_failed">فشل التنزيل</string>
+    <string name="update1">التحديث</string>
+
+    <string name="The_author_of_The_New_York_Times">بانتظار التثبيت</string>
+
+
+    <string name="Activating">جاري التنشيط...</string>
+    <string name="Success">تم التنشيط بنجاح</string>
+    <string name="Failed_please">فشل. الرجاء المحاولة مرة أخرى!</string>
+    <string name="Invalid_PIN">كود PIN غير صحيح. الرجاء إعادة الإدخال!</string>
+    <string name="The_input">لا يمكن ترك الحقل فارغاً</string>
+    <string name="The_author">جاري التثبيت...</string>
+
+
+    <string name="System_activation">تنشيط النظام</string>
+    <string name="Please_input">ادخل كود PIN</string>
+    <string name="active_the_app">ادخل كود PIN لتشغيل التطبيق</string>
+    <string name="Activate_Now">تنشيط الآن</string>
+
+
+    <string name="app_text_15">التحديثات المتاحة</string>
+    <string name="app_text_16">
+إصدار جديد متاح! تحسين تجربة دسك طوب الذكي:\n
+\u2022 ميزات مفيدة جديدة لتخصيص أكثر\n
+\u2022 تحسين الأداء لاستخدام أكثر سلاسة\n
+\u2022 تحسين تجربة المستخدم من خلال التعديلات التفصيلية\n
+قم بالتحديث الآن وتكتشف طريقة أفضل لإدارة دسك طوبك!
+</string>
+    <string name="app_text_17">لاحقاً</string>
+    <string name="app_text_18">التحديث</string>
+    <string name="app_text_35">جاري التحضير...</string>
+    <string name="app_text_36">فشل التنزيل</string>
+    <string name="app_text_37">بدء التثبيت</string>
+    <string name="app_text_38">تنزيل: %d%%</string>
+
+
+    <string name="auto_response_off">الرد التلقائي (مغلق)</string>
+    <string name="auto_response_on">الرد التلقائي (مفتوح)</string>
+    <string name="auto_focus">انظار تلقائي</string>
+    <string name="auto_entry">دخول شاشة تلقائي</string>
+    <string name="projector_method">طريقة البث</string>
+    <string name="screen_zoom">تكبير الشاشة</string>
+    <string name="auto_calibrate">تصحيح طوابق تلقائي</string>
+    <string name="manual_calibration">تصحيح طوابق يدوي</string>
+    <string name="open_response">فتح</string>
+    <string name="close_response">إغلاق</string>
+    <string name="set_success">تم التحديد بنجاح</string>
+    <string name="set_failed">فشل التحديد</string>
+
+    <string name="screencast">طﺎﻘﺳﻹا ﺔﻔﯾظو</string>
+    <string name="finish">انتهاء</string>
+    <string name="back">رجوع</string>
+
+    <string name="display">العرض</string>
+    <string name="input_method">طريقة الإدخال</string>
+    <string name="mouse">المس</string>
+    <string name="memory">ذاكرة</string>
+
+    <string name="connected_wifi_tip">شبكة متصلة</string>
+    <string name="saved_wifi_tip">شبكات محفوظة</string>
+    <string name="wifi_password_prompt">ادخل كلمة المرور لـ %1$s</string>
+    <string name="cant_set_previous_time">لا يمكن تحديد وقت سابق</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+
+    <string name="privacy_policy_tip">تنبيه: لمنح الخدمات، نقوم بجمع معلومات المستخدم اللازمة. يرجى قراءة 《سياسة الخصوصية》 بعناية قبل الموافقة. إذا رفضت، قد لا تعمل بعض الخدمات.\n(الدخول فقط عن طريق جهاز التحكم عن بعد أو المفاتيح)\n\nبإختيار "موافق"، فإنك توافق على:</string>
+    <string name="privacy_policy_link">《سياسة الخصوصية》</string>
+    <string name="privacy_policy_agree">موافق</string>
+    <string name="privacy_policy_disagree">رفض وإغلاق التطبيق</string>
+
+</resources>
