@@ -75,6 +75,13 @@ android {
             keyPassword "936429"
         }
 
+        AiBY {
+            storeFile file("platform_AiBY.keystore")
+            storePassword "android"
+            keyAlias "platform"
+            keyPassword "android"
+        }
+
 
     }
 
@@ -254,7 +261,7 @@ android {
         hongxin_713_M_G_2x {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.hongxin
+            signingConfig signingConfigs.AiBY
             versionCode 12      //2025-3-19发布版本号：12
             versionName "3.2.3"     //2025-3-19发布版本名：3.2.3
             manifestPlaceholders = [share_uid: "android.uid.system"]
@@ -331,7 +338,7 @@ android {
             buildConfigField "String", "CHANNEL", '"X50"'
             buildConfigField "String", "CHIHI_TYPE", '"P50_H713M"'
             buildConfigField "String", "MODEL", '"P50_713M"'
-            buildConfigField "String", "ABPPSTORE_APP_ID",'"com.chihihx.store"'
+            buildConfigField "String", "APPSTORE_APP_ID",'"com.chihihx.store"'
             buildConfigField "String", "APPSTORE_APPDETAIL_NAME",'"com.chihihx.store.ui.activity.AppDetailActivity"'
             buildConfigField "String", "FLAVOR_NAME", "\"${FLAVOR_NAME_LAUNCHER_X50}\""
             buildConfigField "String", "MD5_VALUE", '"H4sIAAAAAAAAAMuX2lc/L2t/bcYHAJA1m94KAAAA"'
