@@ -1,0 +1,251 @@
+<resources>
+    <string name="app_name">Хай-Хай Десktop</string>
+
+    <!-- Project -->
+    <string name="search">Поиск</string>
+    <string name="setting">Настройки</string>
+
+    <string name="wifi">Беспроводная сеть</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="language">язык</string>
+    <string name="date">время</string>
+    <string name="system">Система</string>
+    <string name="about">О нас</string>
+    <string name="account">Аккаунт</string>
+    <string name="recommend_for_you">Рекомендуем для вас (%d)</string>
+    <string name="apps">Список программ</string>
+    <string name="netflix">Netflix</string>
+    <string name="disney">Disney+</string>
+    <string name="operate">Операции</string>
+    <string name="youtube">YouTube</string>
+    <string name="app_store">Магазин приложений</string>
+    <string name="recommend_city">Рекомендуемые города (%d)</string>
+    <string name="calendar_format">%02d/%02d/%02d</string>
+    <string name="date_des">%s, %02d.%02d</string>
+    <string name="place_install_app">Установите необходимое приложение</string>
+    <string name="pojector">проектор</string>
+    <string name="update">Обновление</string>
+    <string name="tool">Инструменты</string>
+    <string name="file_management">Управление файлами</string>
+
+    <string name="monday">Пн</string>
+    <string name="tuesday">Вт</string>
+    <string name="wednesday">Ср</string>
+    <string name="thursday">Чт</string>
+    <string name="friday">Пт</string>
+    <string name="saturday">Сб</string>
+    <string name="sunday">Вс</string>
+
+    <string name="network">Сеть</string>
+    <string name="keyboard">Клавиатура</string>
+    <string name="place_waiting">Пожалуйста, подождите</string>
+    <string name="password">Пароль</string>
+    <string name="login">Вход</string>
+    <string name="open">Открыть</string>
+    <string name="uninstall">Удалить</string>
+    <string name="close">Закрыть</string>
+    <string name="version">Версия:</string>
+    <string name="wallpaper">Обои</string>
+    <string name="upgrade">Обновить</string>
+    <string name="storage">Хранилище</string>
+    <string name="android_tv_os_version">Версия системы Android</string>
+    <string name="software_version">Прикладная версия</string>
+    <string name="storage_total_mask">Общий объем: %.02f GB</string>
+    <string name="already_latest_version">Уже последняя версия</string>
+    <string name="launcher">Запускатор</string>
+    <string name="loading">Загрузка...</string>
+    <string name="cancel">Отмена</string>
+    <string name="download_progress">Скачивание (%.1f %%)</string>
+    <string name="download_fail">Скачивание не удалось. Повторите попытку</string>
+    <string name="upgrade_now">Скачивание завершено. Нажмите для установки</string>
+    <string name="tip_upgrade">Внимание: %s</string>
+    <string name="install">Установить</string>
+    <string name="retry">Повторить</string>
+    <string name="focus_guide">Настройте фокус проектора до ясности изображения</string>
+    <string name="next">Следующий шаг</string>
+    <string name="set_language">Установить язык системы</string>
+    <string name="set_date">Установите текущее время</string>
+    <string name="set_gradient">Установите градиент проектора</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="choose_wallpaper">Выбрать стандартный фон</string>
+    <string name="click_to_setting">Нажмите для настройки</string>
+    <string name="or_skip">Или пропустить</string>
+
+    <string name="hulu">Hulu</string>
+    <string name="max">Max</string>
+    <string name="prime_video">Prime Video</string>
+    <string name="more">Ещё</string>
+    <string name="left">Влево</string>
+    <string name="right">Вправо</string>
+    <string name="up">Вверх</string>
+    <string name="down">Вниз</string>
+    <string name="date_picker">Выбор даты</string>
+    <string name="time_picker">Выбор времени</string>
+    <string name="year_month_day">%02d/%02d/%02d</string>
+    <string name="hour_minute_second">%02d:%02d</string>
+    <string name="is_auto_time_toast">Автоматическое получение времени. Настройка невозможна</string>
+    <string name="year">Год</string>
+    <string name="month">Месяц</string>
+    <string name="day">День</string>
+    <string name="hour">Часы</string>
+    <string name="minute">Минуты</string>
+    <string name="second">Секунды</string>
+    <string name="remote_toast_1">1. Нажмите и удерживайте клавиши влево/вправо на пульте 3 секунды, пока не начнет мигать красный свет</string>
+    <string name="remote_toast_2">2. Параметры устанавливаются автоматически. Пожалуйста, подождите 5 секунд</string>
+    <string name="remote_toast_3">3. После появления уведомления "Пульт успешно подключен" можно пользоваться</string>
+    <string name="remote_toast_4">4. Если подключение не удалось, повторите первый шаг и нажмите клавишу</string>
+    <string name="auto_time_title">Автоматическое определение даты и времени</string>
+    <string name="set_date_title">Установить дату</string>
+    <string name="set_time_title">Установить время</string>
+    <string name="set_netword_title">Установите сетевоесоединение системы</string>
+    <string name="remote_control_connect">Подключение Bluetooth пульта</string>
+    <string name="project_crop">Обрезка экрана</string>
+    <string name="image_mode">Режим изображения</string>
+    <string name="project_gradient">Коррекция трапеции</string>
+    <string name="project_hdmi">HDMI</string>
+    <string name="project_mode">Проекционный режим</string>
+    <string name="long_ok_next_action">Нажмите и удерживайте кнопку *OK* для продолжения</string>
+    <string name="click_ok_changer_dir">OK, точка выбора</string>
+    <string name="click_menu_reset">перезагрузка</string>
+    <string name="vertical_dir">Вертикальное направление</string>
+    <string name="horizontal_dir">Горизонтально.</string>
+    <string name="edit_wifi_pass">Введите пароль WIFI</string>
+    <string name="clean">Очистить</string>
+    <string name="connect_netword">Подключиться к сети</string>
+    <string name="connect">Подключиться</string>
+    <string name="unsave">Отменить сохранение</string>
+    <string name="saved_networks">Сохраненные сети</string>
+    <string name="signal_low">Очень слабый</string>
+    <string name="signal_middle">Хороший</string>
+    <string name="signal_strong">Очень сильный</string>
+    <string name="tip">Сообщение</string>
+    <string name="unable_to_wifi">Невозможно подключиться к %s</string>
+    <string name="connected_to_net">Подключение к интернету</string>
+    <string name="ip_address">IP адрес.</string>
+    <string name="signal_strength">Интенсивностьсигнала</string>
+    <string name="connected">Связь установлена.</string>
+    <string name="connecting">Соединение</string>
+    <string name="blu_connected_fail">Bluetooth подключение прервано</string>
+    <string name="blu_connected_success">Bluetooth подключение успешно</string>
+    <string name="set_the_screen_trimming">Настройка краев экрана</string>
+    <string name="use_website_search">Использовать веб-поиск</string>
+    <string name="app_list">Приложения</string>
+    <string name="no_data">Данные не найдены</string>
+    <string name="place_install">Установите %s</string>
+    <string name="set_bluetooth_connected">Настроить Bluetooth</string>
+    <string name="searching">Идет поиск...</string>
+    <string name="pairing_mark">Параметры %s</string>
+    <string name="pairing_fail">Не удалось подключить %s</string>
+    <string name="pairing_success">Успешно подключено %s</string>
+    <string name="time_display">Использовать 24-часовой формат</string>
+    <string name="sound">Звук</string>
+    <string name="remote_control">Пульт</string>
+    <string name="device_id">ID устройства</string>
+
+    <string name="waiting">Ожидание...</string>
+    <string name="download_fail_mask">Скачивание не удалось</string>
+    <string name="install_failed">Установка не удалась</string>
+    <string name="installed">Установка завершена</string>
+    <string name="installing">Установка...</string>
+    <string name="notice">Уведомление</string>
+    <string name="remove_notify_apk_download">Выполнить</string>
+    <string name="remove">Удалить</string>
+    <string name="time_zone">Часовой пояс</string>
+    <string name="factory_reset">Восстановить заводские настройки</string>
+    <string name="auto">автоматическ</string>
+    <string name="auto_calibration">Горизонтальная калибровка</string>
+    <string name="manual">Ручная калибровка</string>
+    <string name="guide_group_gradient_tip_next"> Поправка завершена. Если необходимо внести изменения, выберите ручной режим; в противном случае выберите "Следующий шаг".</string>
+    <string name="guide_group_gradient_tip_done">Коррекция завершена. Для изменения выберите "Ручной", иначе нажмите "Завершить"</string>
+    <string name="manual_text">вручн</string>
+    <string name="skip">Пропустить</string>
+    <string name="manual_gradient_tip">Автоматическая коррекция была выключена, и вы можете войти в проекционную настройку, выбрать "трапецовую коррекцию" и переключить ее обратно на автоматическую для дальнейшего использования</string>
+    <string name="uninstalling">Удаление...</string>
+    <string name="uninstalled">Удаление завершено</string>
+    <string name="uninstall_failed">Удаление не удалось</string>
+    <string name="done">Завершено</string>
+    <string name="saved">Сохранено</string>
+
+    <string name="disconnect_net">Отключиться</string>
+    <string name="ethernet" translatable="false">Подключено Ethernet, WiFi не доступен</string>
+
+    <string name="available_updates">Доступные обновления</string>
+    <string name="No_prompt_yet">Не показывать сейчас</string>
+    <string name="Cancell">Отмена</string>
+    <string name="Finish">Завершить</string>
+
+    <string name="Installation_Complete">Установка завершена</string>
+    <string name="Installation_failed">Установка не удалась</string>
+    <string name="Installation_Errors">Ошибка установки</string>
+    <string name="In_preparation">Подготовка...</string>
+    <string name="download">Скачивание %d%%</string>
+    <string name="Download_failed">Скачивание не удалось</string>
+    <string name="update1">Обновить</string>
+
+    <string name="The_author_of_The_New_York_Times">Ожидание установки</string>
+
+
+    <string name="Activating">Активация...</string>
+    <string name="Success">Активация успешна</string>
+    <string name="Failed_please">Неудача. Повторите попытку!</string>
+    <string name="Invalid_PIN">Неверный PIN-код. Повторите ввод!</string>
+    <string name="The_input">Поле не может быть пустым</string>
+    <string name="The_author">Установка...</string>
+
+
+    <string name="System_activation">Активация системы</string>
+    <string name="Please_input">Введите PIN-код</string>
+    <string name="active_the_app">Введите PIN-код для активации приложения</string>
+    <string name="Activate_Now">Активировать сейчас</string>
+
+
+    <string name="app_text_15">Доступные обновления</string>
+    <string name="app_text_16">
+Новая версия доступна! Улучшите ваш опыт с интеллектуальным десктопом:\n
+\u2022 Добавлены новые функции для персонализации\n
+\u2022 Оптимизирован производительность для плавного использования\n
+\u2022 Улучшены интерфейсные элементы для удобства взаимодействия\n
+Обновите сейчас и откройте новые возможности управления рабочим столом!
+</string>
+    <string name="app_text_17">Позже</string>
+    <string name="app_text_18">Обновить</string>
+    <string name="app_text_35">Подготовка...</string>
+    <string name="app_text_36">Скачивание не удалось</string>
+    <string name="app_text_37">Начать установку</string>
+    <string name="app_text_38">Скачивание: %d%%</string>
+
+
+    <string name="auto_response_off">Автоответ (выкл)</string>
+    <string name="auto_response_on">Автоответ (вкл)</string>
+    <string name="auto_focus">Автофокус</string>
+    <string name="auto_entry">Автоматический вход</string>
+    <string name="projector_method">Способ проекции</string>
+    <string name="screen_zoom">Масштаб экрана</string>
+    <string name="auto_calibrate">Автоматическая коррекция</string>
+    <string name="manual_calibration">Ручная коррекция</string>
+    <string name="open_response">Открыть</string>
+    <string name="close_response">Закрыть</string>
+    <string name="set_success">Настройка успешна</string>
+    <string name="set_failed">Настройка не удалась</string>
+
+    <string name="screencast">Функция трансляции экрана.</string>
+    <string name="finish">Завершить</string>
+    <string name="back">Назад</string>
+
+    <string name="display">Дисплей</string>
+    <string name="input_method">Метод ввода</string>
+    <string name="mouse">Мышь</string>
+    <string name="memory">Память</string>
+
+    <string name="connected_wifi_tip">Подключенные сети</string>
+    <string name="saved_wifi_tip">Сохраненные сети</string>
+    <string name="wifi_password_prompt">Введите пароль для %1$s</string>
+    <string name="cant_set_previous_time">Нельзя установить прошедшее время</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+
+    <string name="privacy_policy_tip">Внимание: Для предоставления услуг мы собираем необходимые данные. Пожалуйста, прочитайте 《Политику конфиденциальности》 перед согласием. Если вы не согласны, некоторые функции могут не работать.\n(Управление только пультом или клавиатурой)\n\nНажмите "Согласиться", чтобы подтвердить:</string>
+    <string name="privacy_policy_link">《Политика конфиденциальности》</string>
+    <string name="privacy_policy_agree">Согласиться</string>
+    <string name="privacy_policy_disagree">Отказаться и выйти</string>
+
+</resources>

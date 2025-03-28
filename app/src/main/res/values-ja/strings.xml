@@ -1,0 +1,251 @@
+<resources>
+    <string name="app_name">ハイハイデスクトップ</string>
+
+    <!-- Project -->
+    <string name="search">検索</string>
+    <string name="setting">設定</string>
+
+    <string name="wifi">無線LAN</string>
+    <string name="bluetooth">ブルートゥース</string>
+    <string name="language">言語です</string>
+    <string name="date">時間</string>
+    <string name="system">システム</string>
+    <string name="about">について</string>
+    <string name="account">アカウント</string>
+    <string name="recommend_for_you">おすすめ (%d)</string>
+    <string name="apps">ソフトウェア一覧</string>
+    <string name="netflix">Netflix</string>
+    <string name="disney">ディズニープラス</string>
+    <string name="operate">操作</string>
+    <string name="youtube">YouTube</string>
+    <string name="app_store">アプリストア</string>
+    <string name="recommend_city">おすすめ都市 (%d)</string>
+    <string name="calendar_format">%02d/%02d/%02d</string>
+    <string name="date_des">%s曜日 %02d月%02d日</string>
+    <string name="place_install_app">関連アプリをインストールしてください</string>
+    <string name="pojector">プロジェクター</string>
+    <string name="update">更新</string>
+    <string name="tool">ツール</string>
+    <string name="file_management">ファイル管理</string>
+
+    <string name="monday">月</string>
+    <string name="tuesday">火</string>
+    <string name="wednesday">水</string>
+    <string name="thursday">木</string>
+    <string name="friday">金</string>
+    <string name="saturday">土</string>
+    <string name="sunday">日</string>
+
+    <string name="network">ネットワーク</string>
+    <string name="keyboard">キーボード</string>
+    <string name="place_waiting">しばらくお待ちください</string>
+    <string name="password">パスワード</string>
+    <string name="login">ログイン</string>
+    <string name="open">開く</string>
+    <string name="uninstall">アンインストール</string>
+    <string name="close">閉じる</string>
+    <string name="version">バージョン:</string>
+    <string name="wallpaper">壁紙です</string>
+    <string name="upgrade">アップグレード</string>
+    <string name="storage">ストレージ</string>
+    <string name="android_tv_os_version">Android版です</string>
+    <string name="software_version">アプリ版です</string>
+    <string name="storage_total_mask">合計容量: %.02fGB</string>
+    <string name="already_latest_version">最新バージョンです</string>
+    <string name="launcher">ランチャー</string>
+    <string name="loading">読み込み中</string>
+    <string name="cancel">キャンセル</string>
+    <string name="download_progress">ダウンロード中 (%.1f %%)</string>
+    <string name="download_fail">ダウンロードに失敗しました。もう一度試してください</string>
+    <string name="upgrade_now">ダウンロードが完了しました。インストールをクリックしてください</string>
+    <string name="tip_upgrade">注意: %s</string>
+    <string name="install">インストール</string>
+    <string name="retry">再試行</string>
+    <string name="focus_guide">プロジェクターの焦点を調整して、画面が鮮明になるまでお待ちください</string>
+    <string name="next">次のステップ</string>
+    <string name="set_language">システムデフォルト言語を設定</string>
+    <string name="set_date">システムの現在時刻を設定します</string>
+    <string name="set_gradient">プロジェクター勾配を設定します</string>
+    <string name="confirm">確認</string>
+    <string name="choose_wallpaper">デフォルト壁纸を選択</string>
+    <string name="click_to_setting">設定を実行するには確定をクリックしてください</string>
+    <string name="or_skip">またはスキップ</string>
+
+    <string name="hulu">Hulu</string>
+    <string name="max">MAX</string>
+    <string name="prime_video">Primeビデオ</string>
+    <string name="more">もっと</string>
+    <string name="left">左</string>
+    <string name="right">右</string>
+    <string name="up">上</string>
+    <string name="down">下</string>
+    <string name="date_picker">日付ピッカー</string>
+    <string name="time_picker">時刻ピッカー</string>
+    <string name="year_month_day">%02d/%02d/%02d</string>
+    <string name="hour_minute_second">%02d:%02d</string>
+    <string name="is_auto_time_toast">自動で時間を取得します。設定はできません</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hour">時</string>
+    <string name="minute">分</string>
+    <string name="second">秒</string>
+    <string name="remote_toast_1">1. リモコンの方向左右キーを3秒間長押しし、赤いライトが点滅するまで続けます</string>
+    <string name="remote_toast_2">2. 自動的にペアリングが開始されますので、5秒間お待ちください</string>
+    <string name="remote_toast_3">3. 「リモコンのペアリングが完了しました」と表示されたら完了です</string>
+    <string name="remote_toast_4">4. 接続が失敗した場合は、最初の手順を繰り返し、方向キーを短く押してください</string>
+    <string name="auto_time_title">日付と時刻を自動で確定</string>
+    <string name="set_date_title">日付を設定</string>
+    <string name="set_time_title">時刻を設定</string>
+    <string name="set_netword_title">システムネットワーク接続を設定します</string>
+    <string name="remote_control_connect">ブルートゥースリモコンのペアリング</string>
+    <string name="project_crop">スクリーンカット</string>
+    <string name="image_mode">画像モード</string>
+    <string name="project_gradient">台形補正です</string>
+    <string name="project_hdmi">HDMI</string>
+    <string name="project_mode">投影モードです</string>
+    <string name="long_ok_next_action">*OKキー*を長押しして次のアクションを実行</string>
+    <string name="click_ok_changer_dir">OKポイント選択</string>
+    <string name="click_menu_reset">リセットします</string>
+    <string name="vertical_dir">垂直方向です</string>
+    <string name="horizontal_dir">水平方向です。</string>
+    <string name="edit_wifi_pass">WIFIパスワードを入力</string>
+    <string name="clean">クリア</string>
+    <string name="connect_netword">ネットワークに接続</string>
+    <string name="connect">接続</string>
+    <string name="unsave">保存を取り消す</string>
+    <string name="saved_networks">保存済みのネットワーク</string>
+    <string name="signal_low">非常に弱い</string>
+    <string name="signal_middle">良好</string>
+    <string name="signal_strong">非常に強い</string>
+    <string name="tip">注意</string>
+    <string name="unable_to_wifi">%sに接続できません</string>
+    <string name="connected_to_net">インターネットに接続します</string>
+    <string name="ip_address">IPアドレス</string>
+    <string name="signal_strength">信号強度です</string>
+    <string name="connected">接続しました</string>
+    <string name="connecting">接続中です</string>
+    <string name="blu_connected_fail">ブルートゥース接続が切断されました</string>
+    <string name="blu_connected_success">ブルートゥース接続が成功しました</string>
+    <string name="set_the_screen_trimming">画面の切り取りを設定する</string>
+    <string name="use_website_search">ウェブサイト検索を使用</string>
+    <string name="app_list">アプリケーション</string>
+    <string name="no_data">データが見つかりません</string>
+    <string name="place_install">%sをインストールしてください</string>
+    <string name="set_bluetooth_connected">ブルートゥース接続を設定</string>
+    <string name="searching">検索中</string>
+    <string name="pairing_mark">%sのペアリング中</string>
+    <string name="pairing_fail">%sのペアリングに失敗しました</string>
+    <string name="pairing_success">%sのペアリングが完了しました</string>
+    <string name="time_display">24時間制を使用します</string>
+    <string name="sound">音声</string>
+    <string name="remote_control">リモコン</string>
+    <string name="device_id">デバイスID</string>
+
+    <string name="waiting">待機中</string>
+    <string name="download_fail_mask">ダウンロードに失敗しました</string>
+    <string name="install_failed">インストールに失敗しました</string>
+    <string name="installed">インストールが完了しました</string>
+    <string name="installing">インストール中</string>
+    <string name="notice">通知</string>
+    <string name="remove_notify_apk_download">実行</string>
+    <string name="remove">削除</string>
+    <string name="time_zone">タイムゾーン設定</string>
+    <string name="factory_reset">工場出荷時の設定に戻ります</string>
+    <string name="auto">自動です</string>
+    <string name="auto_calibration">水平キャリブレーション</string>
+    <string name="manual">手動キャリブレーション</string>
+    <string name="guide_group_gradient_tip_next">訂正が完了しました。調整が必 要な場合は、手動を選択してくださ い。そうでなければ「次へ」を選び ます</string>
+    <string name="guide_group_gradient_tip_done">キャリブレーションが完了しました。調整が必要な場合は「手動」を選択してください。そうでなければ「完了」を選択してください</string>
+    <string name="manual_text">手動です</string>
+    <string name="skip">スキップ</string>
+    <string name="manual_gradient_tip">自動補正がオフになりましたので、投影設定に入り、「台形補正」を選択して自動に戻します。自動補正がオフになっています。引き続きご利用になるには、投影設定に進み「台形補正」を自動モードに切り替えてください</string>
+    <string name="uninstalling">アンインストール中</string>
+    <string name="uninstalled">アンインストールが完了しました</string>
+    <string name="uninstall_failed">アンインストールに失敗しました</string>
+    <string name="done">完了</string>
+    <string name="saved">保存されました</string>
+
+    <string name="disconnect_net">接続を切断</string>
+    <string name="ethernet" translatable="false">Ethernet接続中、WiFiは利用不可</string>
+
+    <string name="available_updates">利用可能な更新</string>
+    <string name="No_prompt_yet">後で提示</string>
+    <string name="Cancell">キャンセル</string>
+    <string name="Finish">完了</string>
+
+    <string name="Installation_Complete">インストール完了</string>
+    <string name="Installation_failed">インストール失敗</string>
+    <string name="Installation_Errors">インストールエラー</string>
+    <string name="In_preparation">準備中</string>
+    <string name="download">ダウンロード %d%%</string>
+    <string name="Download_failed">ダウンロード失敗</string>
+    <string name="update1">更新</string>
+
+    <string name="The_author_of_The_New_York_Times">インストール待ち</string>
+
+
+    <string name="Activating">アクティベーション中...</string>
+    <string name="Success">アクティベーション成功</string>
+    <string name="Failed_please">失敗しました。もう一度試してください!</string>
+    <string name="Invalid_PIN">PINコードが無効です。もう一度入力してください!</string>
+    <string name="The_input">入力を空にすることはできません</string>
+    <string name="The_author">インストール中</string>
+
+
+    <string name="System_activation">システムアクティベーション</string>
+    <string name="Please_input">PINコードを入力してください</string>
+    <string name="active_the_app">アプリケーションをアクティベートするためにPINコードを入力してください</string>
+    <string name="Activate_Now">今すぐアクティベート</string>
+
+
+    <string name="app_text_15">利用可能な更新</string>
+    <string name="app_text_16">
+新しいバージョンが登場！あなたのスマートデスクトップ体験をアップグレードします：\n
+\u2022 新しい便利な機能を追加し、より個性的な使い方ができます。\n
+\u2022 パフォーマンスを最適化し、操作がよりスムーズに、効率が向上します。\n
+\u2022 ユーザーエクスペリエンスを向上させ、細かな調整でより心地よい操作ができます。\n
+今すぐ更新して、より優れたデスクトップ管理の新しい方法を発見しましょう！
+</string>
+    <string name="app_text_17">次回まで保留</string>
+    <string name="app_text_18">更新</string>
+    <string name="app_text_35">準備中</string>
+    <string name="app_text_36">ダウンロード失敗</string>
+    <string name="app_text_37">インストール開始</string>
+    <string name="app_text_38">ダウンロード: %d%%</string>
+
+
+    <string name="auto_response_off">自動応答(オフ)</string>
+    <string name="auto_response_on">自動応答(オン)</string>
+    <string name="auto_focus">自動フォーカス</string>
+    <string name="auto_entry">自動入幕</string>
+    <string name="projector_method">投影方式</string>
+    <string name="screen_zoom">画面ズーム</string>
+    <string name="auto_calibrate">自動テレスコピック</string>
+    <string name="manual_calibration">手動テレスコピック</string>
+    <string name="open_response">オープン</string>
+    <string name="close_response">クローズ</string>
+    <string name="set_success">設定成功</string>
+    <string name="set_failed">設定失敗</string>
+
+    <string name="screencast">プロジェクター</string>
+    <string name="finish">完了</string>
+    <string name="back">戻る</string>
+
+    <string name="display">表示</string>
+    <string name="input_method">入力メソッド</string>
+    <string name="mouse">マウス</string>
+    <string name="memory">メモリ</string>
+
+    <string name="connected_wifi_tip">接続済みのネットワーク</string>
+    <string name="saved_wifi_tip">保存済みのネットワーク</string>
+    <string name="wifi_password_prompt">%1$sのパスワードを入力してください</string>
+    <string name="cant_set_previous_time">過去の時間を設定することはできません</string>
+    <string name="privacy_policy">プライバシーポリシー</string>
+
+    <string name="privacy_policy_tip">ご注意：本ソフトウェアの関連サービスを提供するため、利用するサービスの具体的な機能要件に応じて必要なユーザー情報を収集します。《プライバシーポリシー》を慎重にお読みください。協定の内容を十分に理解した上で同意をクリックしてください。\n同意されない場合は、一部の製品および/またはサービスが正常に動作しない場合があります。\n（リモコンまたはキボード操作のみ対応）\n\n同意をクリックすると、以下に同意したものとみなします：</string>
+    <string name="privacy_policy_link">《プライバシーポリシー》</string>
+    <string name="privacy_policy_agree">同意する</string>
+    <string name="privacy_policy_disagree">同意しないでアプリを終了する</string>
+
+</resources>

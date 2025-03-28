@@ -13,7 +13,7 @@
     <string name="about">About</string>
     <string name="account">Account</string>
     <string name="recommend_for_you">Recommended for you (% d)</string>
-    <string name="apps">App List</string>
+    <string name="apps">Software list</string>
     <string name="netflix">Netflix</string>
     <string name="disney">Disney+</string>
     <string name="operate">operation</string>
@@ -62,10 +62,10 @@
     <string name="install">Install</string>
     <string name="retry">Retry </string>
     <string name="focus_guide">Please adjust the focus of the projector until the image is clear</string>
-    <string name="next">Next Step</string>
+    <string name="next">Next</string>
     <string name="set_language">Set system default language</string>
     <string name="set_date">Set the current system time</string>
-    <string name="set_gradient">Set projector gradient</string>
+    <string name="set_gradient">Set the projector gradient</string>
     <string name="confirm">Confirm</string>
     <string name="choose_wallpaper">Select default wallpaper</string>
     <string name="click_to_setting">Click OK to set</string>
@@ -98,18 +98,18 @@
     <string name="auto_time_title">Automatically determine date and time</string>
     <string name="set_date_title">Set Date</string>
     <string name="set_time_title">Set Time</string>
-    <string name="set_netword_title">Set up system network connection</string>
+    <string name="set_netword_title">Set the system network connection</string>
     <string name="remote_control_connect">Bluetooth remote control pairing</string>
-    <string name="project_crop">Screen Percent</string>
+    <string name="project_crop">Screen trimming</string>
     <string name="image_mode">Picture Mode</string>
-    <string name="project_gradient">Keystone Correction</string>
+    <string name="project_gradient">Trapezoidal correction</string>
     <string name="project_hdmi">HDMI</string>
-    <string name="project_mode">Projection Mode</string>
+    <string name="project_mode">Projection mode</string>
     <string name="long_ok_next_action">Long press the * OK key * to proceed to the next step</string>
-    <string name="click_ok_changer_dir">Selecting points</string>
+    <string name="click_ok_changer_dir">OK Point selection</string>
     <string name="click_menu_reset">Reset</string>
-    <string name="vertical_dir">Vertical Direction</string>
-    <string name="horizontal_dir">Horizontal Direction</string>
+    <string name="vertical_dir">Vertical direction</string>
+    <string name="horizontal_dir">Horizontal direction</string>
     <string name="edit_wifi_pass">Enter WIFI password</string>
     <string name="clean">Clean up</string>
     <string name="connect_netword">Connect to the network</string>
@@ -123,7 +123,7 @@
     <string name="unable_to_wifi">Unable to connect to %s</string>
     <string name="connected_to_net">Connect to the Internet</string>
     <string name="ip_address">IP address</string>
-    <string name="signal_strength">Signal Intensity </string>
+    <string name="signal_strength">Signal strength</string>
     <string name="connected">Connected</string>
     <string name="connecting">Connecting</string>
     <string name="blu_connected_fail">Bluetooth connection disconnected</string>
@@ -138,7 +138,7 @@
     <string name="pairing_mark">Pairing% s</string>
     <string name="pairing_fail">Unable to pair% s</string>
     <string name="pairing_success">Complete pairing% s</string>
-    <string name="time_display">Using a 24-hour system</string>
+    <string name="time_display">Use 24-hour format</string>
     <string name="sound">Voice</string>
     <string name="remote_control">Remote control</string>
     <string name="device_id">Device ID</string>
@@ -152,15 +152,15 @@
     <string name="remove_notify_apk_download">Implement</string>
     <string name="remove">Remove</string>
     <string name="time_zone">Time zone</string>
-    <string name="factory_reset">Restore factory settings</string>
-    <string name="auto">Automatic</string>
+    <string name="factory_reset">Factory data reset</string>
+    <string name="auto">Auto</string>
     <string name="auto_calibration">Horizontal calibration</string>
     <string name="manual">Manual calibration</string>
-    <string name="guide_group_gradient_tip_next">The correction has been completed. If adjustments are needed, please select manual; Otherwise, please select \"Next\"</string>
+    <string name="guide_group_gradient_tip_next">The correction has been completed. If you need to adjust, please select manual; Otherwise, select \"Next"\</string>
     <string name="guide_group_gradient_tip_done">The correction has been completed. If adjustments are needed, please select manual; Otherwise, please select \"Complete\"</string>
     <string name="manual_text">Manual</string>
     <string name="skip">Skip</string>
-    <string name="manual_gradient_tip">Automatic correction has been turned off. You can enter the projection settings, select \"trapezoidal correction\", and switch it back to automatic for further use.</string>
+    <string name="manual_gradient_tip">Auto correction is turned off, you can go to the projection Settings, select"Ladder Correction" and switch it back to auto for further use.</string>
     <string name="uninstalling">Uninstalling</string>
     <string name="uninstalled">Uninstallation successful</string>
     <string name="uninstall_failed">Uninstall Failed</string>
@@ -229,7 +229,7 @@ Update now to explore a better way to manage your desktop!
     <string name="set_success">Setting successful</string>
     <string name="set_failed">Setting failed</string>
 
-    <string name="screencast">Mirror &amp; Cast</string>
+    <string name="screencast">Screen projection function</string>
     <string name="finish">Done</string>
     <string name="back">Back</string>
 
