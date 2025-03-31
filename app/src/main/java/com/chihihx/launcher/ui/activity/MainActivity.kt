@@ -265,7 +265,8 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
                 errorJobStore = lifecycleScope.launch(Dispatchers.Main) {
                     while (true) {
                         if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll.get()) {
-                            fetchStoreData()
+                            if(AppCacheNet.successfulDomain.isEmpty())fetchStoreData() else cancel()
+
                         }
                         delay(2000)
 

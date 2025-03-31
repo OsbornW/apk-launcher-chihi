@@ -121,14 +121,14 @@ class AboutFragment : BaseWallPaperFragment<FragmentAboutBinding,HomeViewModel>(
             )
         )
 
-        list.add(
+       /* list.add(
             AboutItem(
                 1,
                 R.drawable.baseline_workspaces_100,
                 R.string.privacy_policy.stringValue(),
                 ""
             )
-        )
+        )*/
 
 
         product.isShowMemoryInfo().yes {

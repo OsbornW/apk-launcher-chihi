@@ -92,14 +92,14 @@ class SplashFragment : BaseWallPaperFragment<ActivitySplashBinding, BaseViewMode
     }
 
     private fun enterHome() {
-        AppCache.isPrivacyPolicyAgreed.no {
+       /* AppCache.isPrivacyPolicyAgreed.no {
             requireActivity().replaceFragment(PrivacyPolicyFragment(), R.id.main_browse_fragment)
-        }.otherwise {
+        }.otherwise {*/
             product.switchFragment()?.let {
                 requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment, it)
                 //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
             }
-        }
+        //}
 
     }
 

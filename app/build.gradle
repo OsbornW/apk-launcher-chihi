@@ -261,9 +261,9 @@ android {
         hongxin_713_M_G_2x {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.AiBY
-            versionCode 12      //2025-3-19发布版本号：12
-            versionName "3.2.3"     //2025-3-19发布版本名：3.2.3
+            signingConfig signingConfigs.hongxin
+            versionCode 13      //2025-3-28发布版本号：13
+            versionName "3.2.4"     //2025-3-28发布版本名：3.2.4
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
             buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
@@ -283,8 +283,8 @@ android {
         hongxin_713_M_G_X10 {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            versionCode 7      //2025-3-19发布版本号：7
-            versionName "1.3.5"     //2025-3-19发布版本名：1.3.5
+            versionCode 8      //2025-3-28发布版本号：8
+            versionName "1.3.6"     //2025-3-28发布版本名：1.3.6
             signingConfig signingConfigs.hongxin
             manifestPlaceholders = [share_uid: "android.uid.system"]
             // 自定义buildConfig.java中的变量供代码中使用
@@ -328,9 +328,9 @@ android {
         x50_713M {
             applicationId "com.chihihx.launcher"
             dimension "chihi"
-            signingConfig signingConfigs.x88
-            versionCode 65     //2025-3-19发布版本号：65
-            versionName "1.4.5"     //2025-3-19发布版本名：1.4.5
+            signingConfig signingConfigs.hongxin
+            versionCode 66     //2025-3-28发布版本号：66
+            versionName "1.4.6"     //2025-3-28发布版本名：1.4.6
             manifestPlaceholders = [share_uid: "android.uid.system"]
             buildConfigField "String", "BASE_URL", '"https://api.fpxokc.cc/"'
             buildConfigField "String", "COMPANY", '"0"'

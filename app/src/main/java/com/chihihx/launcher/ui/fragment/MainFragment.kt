@@ -755,6 +755,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                 }
                 binding.root.setCallback {
                     if (it) {
+                        binding.title.isSelected = true
                         setRVHeight(true)
                         setExpanded(true)
                         try {
@@ -766,6 +767,8 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
+                    }else{
+                        binding.title.isSelected = false
                     }
                 }
                 itemView.clickNoRepeat {
@@ -794,7 +797,7 @@ class MainFragment : BaseWallPaperFragment<FragmentMainBinding, HomeViewModel>()
                     updateLauncherErrorJob = lifecycleScope.launch(Dispatchers.Main) {
                         while (true) {
                             if (NetworkUtils.isConnected() && !AppCacheNet.isDomainTryAll.get()) {
-                                checkLauncherUpdate()
+                                if(AppCacheNet.successfulDomain.isEmpty())checkLauncherUpdate() else cancel()
                             }
                             delay(2000)
 

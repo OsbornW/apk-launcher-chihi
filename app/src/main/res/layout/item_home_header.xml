@@ -38,6 +38,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <TextView
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:paddingHorizontal="@dimen/qb_px_5"
+        android:singleLine="true"
         android:text="@{m.name}"
         android:id="@+id/title"
         android:textSize="@dimen/qb_px_sp_17"
