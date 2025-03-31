@@ -28,5 +28,6 @@ object AppCache {
     var isAppInited:Boolean by serial(default = true)
     var homeInfo: HomeInfoDto by serial()
     var curDesktop: Int by serial(0)
+    var isPrivacyPolicyAgreed: Boolean by serial(false)
 
 }

@@ -6,11 +6,15 @@ import androidx.lifecycle.lifecycleScope
 import com.shudong.lib_base.ContextManager
 import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
+import com.shudong.lib_base.ext.no
+import com.shudong.lib_base.ext.otherwise
+import com.shudong.lib_base.ext.replaceFragment
 import com.soya.launcher.cache.AppCache
 import com.soya.launcher.databinding.ActivitySplashBinding
 import com.soya.launcher.enums.Atts
 import com.soya.launcher.ext.navigateTo
 import com.soya.launcher.product.base.product
+import com.soya.launcher.ui.fragment.PrivacyPolicyFragment
 import com.soya.launcher.utils.PreferencesUtils
 import com.thumbsupec.lib_base.ext.language.initMultiLanguage
 import com.thumbsupec.lib_base.toast.ToastUtils
@@ -89,10 +93,15 @@ class SplashFragment : BaseWallPaperFragment<ActivitySplashBinding, BaseViewMode
     }
 
     private fun enterHome() {
-        product.switchFragment()?.let {
-            requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment, it)
-            //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
+        AppCache.isPrivacyPolicyAgreed.no {
+            requireActivity().replaceFragment(PrivacyPolicyFragment(), R.id.main_browse_fragment)
+        }.otherwise {
+            product.switchFragment()?.let {
+                requireActivity().supportFragmentManager.navigateTo(R.id.main_browse_fragment, it)
+                //requireActivity().replaceFragment(it, R.id.main_browse_fragment)
+            }
         }
+
     }
 
     companion object {
