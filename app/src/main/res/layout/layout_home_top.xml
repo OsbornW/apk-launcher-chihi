@@ -109,6 +109,7 @@
         android:paddingRight="@dimen/qb_px_10">
 
         <com.soya.launcher.view.LinearLayoutHouse
+            android:visibility="gone"
             android:id="@+id/search"
             android:layout_width="@dimen/qb_px_130"
             android:layout_height="@dimen/qb_px_30"

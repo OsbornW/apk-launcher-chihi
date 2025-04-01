@@ -135,7 +135,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
         replaceFragment(nextFragment, R.id.main_browse_fragment)
     }
 
-    val fragmentList = arrayListOf(Home2Fragment.newInstance(),MainFragment.newInstance())
+    val fragmentList = arrayListOf(MainFragment.newInstance(),Home2Fragment.newInstance(),)
     private var currentFragmentIndex = 0
 
     private fun startPluginCheckPolling() {
@@ -493,7 +493,8 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
 
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-        if (canBackPressed) {
+        finish()
+       /* if (canBackPressed) {
             //super.onBackPressed()
             val isCanNavi = supportFragmentManager.navigateBack()
             if (!isCanNavi) {
@@ -501,7 +502,7 @@ class MainActivity : BaseWallpaperActivity<ActivityMainBinding, HomeViewModel>()
             }
         } else {
             sendLiveEventData(HOME_EVENT, false)
-        }
+        }*/
 
     }
 

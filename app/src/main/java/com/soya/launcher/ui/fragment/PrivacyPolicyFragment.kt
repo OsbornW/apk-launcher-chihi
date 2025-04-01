@@ -12,6 +12,8 @@ import com.shudong.lib_base.base.BaseViewModel
 import com.shudong.lib_base.ext.appContext
 import com.shudong.lib_base.ext.clickNoRepeat
 import com.shudong.lib_base.ext.startKtxActivity
+import com.shudong.lib_base.finishActivity
+import com.shudong.lib_base.finishAllActivity
 
 class PrivacyPolicyFragment : BaseVMFragment<FragmentPrivacypolicyBinding, BaseViewModel>() {
     override fun initView() {
@@ -34,7 +36,10 @@ class PrivacyPolicyFragment : BaseVMFragment<FragmentPrivacypolicyBinding, BaseV
             }
             tvDisagree.clickNoRepeat {
                 //点击不同意
-                forceStopApp(requireContext(), appContext.packageName)
+                //forceStopApp(requireContext(), appContext.packageName)
+                finishAllActivity()
+                android.os.Process.killProcess(android.os.Process.myPid())
+                System.exit(0)
             }
         }
     }

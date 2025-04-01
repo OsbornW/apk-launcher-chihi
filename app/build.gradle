@@ -317,8 +317,8 @@ android {
         X98K_M {
             applicationId "com.chihim.launcher.x98m"
             dimension "chihi"
-            versionCode 2
-            versionName "1.2"
+            versionCode 1
+            versionName "1.0.0"
             //manifestPlaceholders = [share_uid: "android.uid.system"]
             manifestPlaceholders = [share_uid: ""]
             //signingConfig signingConfigs.x88

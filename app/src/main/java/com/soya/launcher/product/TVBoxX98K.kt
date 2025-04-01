@@ -44,9 +44,10 @@ open class TVBoxX98K : TVDeviceImpl {
     override fun switchFragment() = run {
         sendLiveEventDataDelay(IS_MAIN_CANBACK, false, 1000)
         if (AppCache.curDesktop == 0)
-            Home2Fragment.newInstance()
-        else
             MainFragment.newInstance()
+        else
+            Home2Fragment.newInstance()
+
     }
 
     override fun addSettingItem(): MutableList<SettingItem> {

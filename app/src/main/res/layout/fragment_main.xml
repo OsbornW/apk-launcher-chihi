@@ -282,6 +282,7 @@
                         android:layout_height="match_parent">
 
                         <com.soya.launcher.view.LinearLayoutHouse
+                            android:visibility="gone"
                             android:id="@+id/search"
                             android:clickable="true"
                             android:focusable="true"
