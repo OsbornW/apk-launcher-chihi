@@ -36,7 +36,7 @@
     <string name="saturday">Sáb</string>
     <string name="sunday">Dom</string>
 
-    <string name="network">La red</string>
+    <string name="network">Configuración de red</string>
     <string name="keyboard">Teclado</string>
     <string name="place_waiting">Por favor, espere</string>
     <string name="password">Contraseña</string>
@@ -157,7 +157,7 @@
     <string name="manual">Calibración manual</string>
     <string name="guide_group_gradient_tip_next">Se ha realizado la corrección. Si necesita ajustes, seleccione "Manual"; de lo contrario, seleccione "Siguiente".</string>
     <string name="guide_group_gradient_tip_done">Corrección completada. Si desea ajustar, seleccione "Manual"; de lo contrario, seleccione "Finalizar"</string>
-    <string name="manual_text">Manual.</string>
+    <string name="manual_text">Siguiente paso</string>
     <string name="skip">Saltar</string>
     <string name="manual_gradient_tip">La corrección automática está desactivada. Puede ir a la configuración de proyección, seleccionar "corrección trapezoidal" y cambiar de nuevo a automático para un uso posterior</string>
     <string name="uninstalling">Desinstalando...</string>
@@ -215,10 +215,10 @@
     <string name="app_text_38">Descarga: %d%%</string>
 
 
-    <string name="auto_response_off">Respuesta automática (apagada)</string>
-    <string name="auto_response_on">Respuesta automática (encendida)</string>
+    <string name="auto_response_off">automáticamente (apagada)</string>
+    <string name="auto_response_on">automáticamente (encendida)</string>
     <string name="auto_focus">Enfoque automático</string>
-    <string name="auto_entry">Ingreso automático</string>
+    <string name="auto_entry">Entrada automática en pantalla</string>
     <string name="projector_method">Método de proyección</string>
     <string name="screen_zoom">Zoom de pantalla</string>
     <string name="auto_calibrate">Corrección trapezoidal automática</string>
