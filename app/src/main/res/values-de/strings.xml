@@ -67,7 +67,7 @@
     <string name="set_date">Setze die aktuelle Systemzeit</string>
     <string name="set_gradient">Legen Sie einen Gradient fest</string>
     <string name="confirm">Bestätigen</string>
-    <string name="choose_wallpaper">Standard-Hintergrundbild auswählen</string>
+    <string name="choose_wallpaper">浏览Standard-Hintergrundbild.</string>
     <string name="click_to_setting">Klicken Sie zum Einrichten</string>
     <string name="or_skip">Oder überspringen</string>
 
@@ -123,7 +123,7 @@
     <string name="connected_to_net">Netzwerk netzwerk</string>
     <string name="ip_address">Die IP-Adresse</string>
     <string name="signal_strength">Signalstärke</string>
-    <string name="connected">Caroline turing klone telefon- - verbunden</string>
+    <string name="connected">Verbindung erfolgreich.</string>
     <string name="connecting">Verbinden</string>
     <string name="blu_connected_fail">Bluetooth-Verbindung getrennt</string>
     <string name="blu_connected_success">Bluetooth-Verbindung erfolgreich</string>

@@ -7,7 +7,7 @@
 
     <string name="wifi">無線LAN</string>
     <string name="bluetooth">ブルートゥース</string>
-    <string name="language">言語です</string>
+    <string name="language">言語</string>
     <string name="date">時間</string>
     <string name="system">システム</string>
     <string name="about">について</string>
@@ -48,8 +48,8 @@
     <string name="wallpaper">壁紙です</string>
     <string name="upgrade">アップグレード</string>
     <string name="storage">ストレージ</string>
-    <string name="android_tv_os_version">Android版です</string>
-    <string name="software_version">アプリ版です</string>
+    <string name="android_tv_os_version">Android版</string>
+    <string name="software_version">アプリ版</string>
     <string name="storage_total_mask">合計容量: %.02fGB</string>
     <string name="already_latest_version">最新バージョンです</string>
     <string name="launcher">ランチャー</string>

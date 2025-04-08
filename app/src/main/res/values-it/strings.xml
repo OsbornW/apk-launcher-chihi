@@ -77,7 +77,7 @@
     <string name="hulu">Hulu</string>
     <string name="max">Max</string>
     <string name="prime_video">Prime Video</string>
-    <string name="more">Altro</string>
+    <string name="more">più</string>
     <string name="left">Sinistra</string>
     <string name="right">Destra</string>
     <string name="up">Su</string>
@@ -99,8 +99,8 @@
     <string name="remote_toast_3">3. Quando appare \"Abbinamento completato\" significa che è riuscito</string>
     <string name="remote_toast_4">4. Se non funziona, ripetere il passo 1 e premere brevemente un tasto direzionale</string>
     <string name="auto_time_title">Data e ora automatiche</string>
-    <string name="set_date_title">Imposta data</string>
-    <string name="set_time_title">Imposta ora</string>
+    <string name="set_date_title">Data attuale</string>
+    <string name="set_time_title">Ora attuale</string>
     <string name="set_netword_title">Impostare la connessione di rete del sistema</string>
     <string name="remote_control_connect">Abbinamento telecomando Bluetooth</string>
     <string name="project_crop">Ritaglio dello schermo</string>
@@ -154,7 +154,7 @@
     <string name="remove_notify_apk_download">Esegui</string>
     <string name="remove">Rimuovi</string>
     <string name="time_zone">Fuso orario</string>
-    <string name="factory_reset">Ripristino dello stabilimento franco fabbrica</string>
+    <string name="factory_reset">Reimpostare su fabbrica</string>
     <string name="auto">automaticamente</string>
     <string name="auto_calibration">Calibrazione automatica</string>
     <string name="manual">Calibrazione manuale</string>
@@ -200,8 +200,8 @@
     <string name="app_text_36">Download fallito</string>
     <string name="app_text_37">Avvia installazione</string>
     <string name="app_text_38">Download: %d%%</string>
-    <string name="auto_response_off">Risposta automatica (disattivata)</string>
-    <string name="auto_response_on">Risposta automatica (attivata)</string>
+    <string name="auto_response_off">Entrata in vigore automatica (disattivata)</string>
+    <string name="auto_response_on">Entrata in vigore automatica (attivata)</string>
     <string name="auto_focus">Messa a fuoco automatica</string>
     <string name="auto_entry">Ingresso automatico</string>
     <string name="projector_method">Metodo proiezione</string>
@@ -218,7 +218,7 @@
     <string name="display">Schermo</string>
     <string name="input_method">Metodo input</string>
     <string name="mouse">Mouse</string>
-    <string name="memory">Memoria</string>
+    <string name="memory">memorizzazione</string>
     <string name="connected_wifi_tip">Rete connessa</string>
     <string name="saved_wifi_tip">Rete salvata</string>
     <string name="wifi_password_prompt">Password per %1$s</string>

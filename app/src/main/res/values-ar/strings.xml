@@ -61,7 +61,7 @@
     <string name="tip_upgrade">تنبيه: %s</string>
     <string name="install">التثبيت</string>
     <string name="retry">المحاولة مرة أخرى</string>
-    <string name="focus_guide">ضبط تركيز المشخص حتى تصبح الصورة واضحة</string>
+    <string name="focus_guide">العرض التلقائي، إعادة التركيز تصبح واضحة</string>
     <string name="next">اﻟﺧطوة اﻟﺗﺎﻟﯾﺔ</string>
     <string name="set_language">ضبط لغة النظام</string>
     <string name="set_date">ﺿﺑط اﻟوﻗت اﻟﺣﺎﻟﻲ ﻟﻠﻧظﺎم</string>
@@ -155,7 +155,7 @@
     <string name="auto">ﺎﯾﺋﺎﻘﻠﺗ</string>
     <string name="auto_calibration">تصحيح أفقي</string>
     <string name="manual">تصحيح يدوي</string>
-    <string name="guide_group_gradient_tip_next">وأخر اتمام التصحيح، إذا كان هناك حاجة إلى تعديل، يرحى الاخبار الوعي البدوى، خلاف ذلك، يرحى الاخبار "الخطة النالية".</string>
+    <string name="guide_group_gradient_tip_next">وقد اكتمل التصويب. إذا كان هناك حاجة إلى تعديل، فيرجى الاختيار اليدوي ؛ خلاف ذلك، يرجى اختيار "الخطوة التالية"</string>
     <string name="guide_group_gradient_tip_done">تم التصحيح. إذا كنت ترغب في تعديل، اختر "يدوي"، وإلا اختر "انتهاء"</string>
     <string name="manual_text">اﻟﯾدوي</string>
     <string name="skip">التخطي</string>
