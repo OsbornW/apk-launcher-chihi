@@ -250,7 +250,7 @@
                     android:layout_marginLeft="@dimen/qb_px_6"
                     android:textColor="@color/text_color_style_1"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/vertical_dir"
+                    android:text="@string/horizontal_dir"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -284,7 +284,7 @@
                     android:layout_marginLeft="@dimen/qb_px_6"
                     android:textColor="@color/text_color_style_1"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/horizontal_dir"
+                    android:text="@string/vertical_dir"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
