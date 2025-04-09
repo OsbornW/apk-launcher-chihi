@@ -48,8 +48,8 @@
     <string name="wallpaper">Die Tapete</string>
     <string name="upgrade">Upgraden</string>
     <string name="storage">Speicher</string>
-    <string name="android_tv_os_version">Und jetzt gibt es die Android version</string>
-    <string name="software_version">Version der DVD</string>
+    <string name="android_tv_os_version">Android-Systemversion</string>
+    <string name="software_version">Anwendungsversion</string>
     <string name="storage_total_mask">Gesamtkapazität: %.02f GB</string>
     <string name="already_latest_version">Sie haben die neueste Version</string>
     <string name="launcher">Startmenü</string>
@@ -67,7 +67,7 @@
     <string name="set_date">Setze die aktuelle Systemzeit</string>
     <string name="set_gradient">Legen Sie einen Gradient fest</string>
     <string name="confirm">Bestätigen</string>
-    <string name="choose_wallpaper">浏览Standard-Hintergrundbild.</string>
+    <string name="choose_wallpaper">Hintergrundbild auswählen</string>
     <string name="click_to_setting">Klicken Sie zum Einrichten</string>
     <string name="or_skip">Oder überspringen</string>
 
@@ -151,7 +151,7 @@
     <string name="remove_notify_apk_download">Ausführen</string>
     <string name="remove">Entfernen</string>
     <string name="time_zone">Zeitzone</string>
-    <string name="factory_reset">Die werkseinstellungen wieder herstellen.</string>
+    <string name="factory_reset">Werksreset</string>
     <string name="auto">Automatik</string>
     <string name="auto_calibration">Horizontale Kalibrierung</string>
     <string name="manual">Manuelle Kalibrierung</string>

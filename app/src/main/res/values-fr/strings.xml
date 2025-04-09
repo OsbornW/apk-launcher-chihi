@@ -113,7 +113,7 @@
     <string name="project_mode">Mode de projection</string>
     <string name="long_ok_next_action">Appuyez longuement sur *OK* pour passer à l\'étape suivante</string>
     <string name="click_ok_changer_dir">OK Point de sélection</string>
-    <string name="click_menu_reset">La valeur de remplacement</string>
+    <string name="click_menu_reset">Réinitialiser</string>
     <string name="vertical_dir">La direction verticale</string>
     <string name="horizontal_dir">La direction horizontale</string>
     <string name="edit_wifi_pass">Entrer le mot de passe Wi-Fi</string>

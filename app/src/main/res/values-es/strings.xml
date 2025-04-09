@@ -62,7 +62,7 @@
     <string name="install">Instalar</string>
     <string name="retry">Reintentar</string>
     <string name="focus_guide">Ajuste el enfoque del proyector hasta que la imagen quede nítida</string>
-    <string name="next">Manual</string>
+    <string name="next">Siguiente paso</string>
     <string name="set_language">Configurar idioma predeterminado</string>
     <string name="set_date">Establecer la hora actual del sistem</string>
     <string name="set_gradient">Establezca el gradiente del proyector</string>
@@ -157,7 +157,7 @@
     <string name="manual">Calibración manual</string>
     <string name="guide_group_gradient_tip_next">Se ha realizado la corrección. Si necesita ajustes, seleccione "Manual"; de lo contrario, seleccione "Siguiente".</string>
     <string name="guide_group_gradient_tip_done">Corrección completada. Si desea ajustar, seleccione "Manual"; de lo contrario, seleccione "Finalizar"</string>
-    <string name="manual_text">Siguiente paso</string>
+    <string name="manual_text">Manual</string>
     <string name="skip">Saltar</string>
     <string name="manual_gradient_tip">La corrección automática está desactivada. Puede ir a la configuración de proyección, seleccionar "corrección trapezoidal" y cambiar de nuevo a automático para un uso posterior</string>
     <string name="uninstalling">Desinstalando...</string>
